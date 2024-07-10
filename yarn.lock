@@ -688,6 +688,11 @@
     "@types/babel__core" "^7.20.5"
     react-refresh "^0.14.2"
 
+"@xpd/tailwind-3dtransforms@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@xpd/tailwind-3dtransforms/-/tailwind-3dtransforms-1.0.3.tgz#71871c860943f81333473006b2af88ac49d19233"
+  integrity sha512-LEKfNj57djZAucQ1itu/zinRkYnkhzNjAMhz8DkbguTyBcTDHF1R6CuXO536BFE/YGyHDCYd7tDF5ghSrViUgQ==
+
 acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"

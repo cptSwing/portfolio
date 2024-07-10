@@ -4,5 +4,5 @@ export default {
     theme: {
         extend: {},
     },
-    plugins: [require("tailwindcss-breakpoints-inspector")],
+    plugins: [require("@xpd/tailwind-3dtransforms"), require("tailwindcss-breakpoints-inspector")],
 };
