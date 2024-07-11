@@ -13,7 +13,7 @@ export default {
                 },
             },
             boxShadow: {
-                "inner-md": "inset 0 0 4rem var(--tw-shadow-color)",
+                "inner-md": "inset 0 0 4rem 1rem var(--tw-shadow-color)",
             },
         },
     },

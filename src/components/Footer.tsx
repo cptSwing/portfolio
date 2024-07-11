@@ -5,6 +5,10 @@ const Footer = () => {
                 <div className="bg-green-900 px-2 py-1">Resumé</div>
                 <div className="bg-green-900 px-2 py-1">Code</div>
                 <div className="bg-green-900 px-2 py-1">3D Art</div>
+                <div className="bg-green-900 px-2 py-1">Menu</div>
+                <div className="bg-green-900 px-2 py-1">Back</div>
+                <div className="bg-green-900 px-2 py-1">Forward</div>
+                <div className="bg-green-900 px-2 py-1">Settings</div>
             </nav>
         </footer>
     );

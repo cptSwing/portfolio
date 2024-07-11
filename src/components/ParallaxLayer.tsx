@@ -8,7 +8,7 @@ const ParallaxLayer: FC<{ level: number | "bg"; content: ReactNode; boostZ?: boo
             className={classNames(
                 "parallax-layer m-auto transform overflow-hidden",
                 classNamePerLevel(level),
-                level === "bg" ? "size-full" : "h-5/6 w-5/6",
+                level === "bg" ? "size-full" : "h-2/3 w-4/5",
             )}
         >
             <div
@@ -32,29 +32,29 @@ const classNamePerLevel = (level: number | "bg") => {
             return "translate-z-24 bg-red-500/0" /* "parallax-bg-clip" */;
 
         case 4:
-            return "translate-z-32 parallax-clip bg-black/25";
+            return "translate-z-32 parallax-clip ";
         case 3:
-            return "translate-z-24 parallax-clip bg-black/25";
+            return "translate-z-24 parallax-clip ";
         case 2:
-            return "translate-z-16 parallax-clip bg-black/25";
+            return "translate-z-16 parallax-clip ";
         case 1:
-            return "translate-z-8 parallax-clip bg-black/25";
+            return "translate-z-8 parallax-clip ";
 
         // case 0
         default:
-            return "translate-z-0 bg-black/25";
+            return "translate-z-0 ";
 
         case -1:
-            return "-translate-z-8 bg-black/50";
+            return "-translate-z-8 ";
         case -1.5:
             // return "scale-[88.999999%]";
             // return "scale-[calc(100%-calc(100*calc(1/9)))]";
             return "";
 
         case -2:
-            return "-translate-z-16 bg-black/50";
+            return "-translate-z-16 ";
         case -3:
-            return "-translate-z-24 bg-black/50";
+            return "-translate-z-24 ";
         case -4:
             return "-translate-z-32 bg-black";
     }

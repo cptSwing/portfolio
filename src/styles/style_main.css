@@ -22,22 +22,10 @@ button {
 }
 
 .parallax-layer {
-    @apply absolute bottom-[-5vw] left-[-5vw] right-[-5vw] top-[-5vw];
+    @apply absolute bottom-0 left-0 right-0 top-0;
 }
 
 .parallax-clip {
-    clip-path: polygon(
-        0% 0% /* top-left */,
-        0% 100% /* bottom-left */,
-        5% 100% /* start-inner (bottom-leftish) */,
-        5% 5% /* inner-top-left */,
-        95% 5% /* inner-top-right */,
-        95% 95% /* inner-bottom-right */,
-        0 95% /* end-inner (left 0, bottom) */,
-        5% 100% /* end-outer (same as start-inner) */,
-        100% 100% /* bottom-right */,
-        100% 0% /* top-right */
-    );
 }
 
 .parallax-bg-clip {
