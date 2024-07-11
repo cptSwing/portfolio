@@ -1,13 +1,35 @@
 const Header = () => {
     return (
-        <header className="flex h-40 w-full items-end justify-start">
-            <div className="mx-1 w-16 rounded-t-md border text-center">Resumé</div>
-            <div className="mx-1 w-16 rounded-t-md border text-center">Code</div>
-            <div className="mx-1 w-16 rounded-t-md border text-center">3D Art</div>
+        <header className="h-[10svh] w-full">
+            <nav className="relative flex size-full items-end justify-evenly">
+                <div className="absolute left-0 top-1 ml-2 italic text-white/70">
+                    <span>jens brandenburg</span> <br />
+                    <span className="text-sm text-white/40">frontend developer with a penchant for 3D art / 3D integration</span>
+                </div>
 
-            <div className="ml-auto">
-                <SocialLinks />
-            </div>
+                <div className="flex select-none items-end justify-between gap-1 text-green-200">
+                    <div className="bg-green-1000 min-w-16 cursor-pointer rounded-tr-md border border-b border-green-950 px-2 text-center transition-transform hover:text-white active:translate-x-4 active:border-b-0">
+                        Updates
+                    </div>
+                    <div className="bg-green-1000 min-w-16 cursor-pointer rounded-tr-md border border-b border-green-950 px-2 text-center transition-transform hover:text-white active:ml-4 active:translate-x-4 active:border-b-0">
+                        Contact / Impressum
+                    </div>
+                </div>
+
+                <div className="group absolute -bottom-1/3 right-1/2 z-50 m-1 flex w-16 translate-x-1/2 select-none flex-col items-center justify-center rounded-full border-2 border-gray-500/50 bg-green-200/30 px-1 text-center hover:cursor-pointer">
+                    <div className="relative flex items-center justify-around text-green-200">
+                        <div className="pb-1 text-3xl transition-colors group-hover:text-green-200/30">&lt;</div>
+                        <div className="text-3xs absolute whitespace-nowrap text-green-200/0 transition-colors group-hover:text-green-200">
+                            View Source
+                        </div>
+                        <div className="pb-1 text-3xl transition-colors group-hover:text-green-200/30">&gt;</div>
+                    </div>
+                </div>
+
+                <div className="my-auto ml-auto overflow-hidden">
+                    <SocialLinks />
+                </div>
+            </nav>
         </header>
     );
 };
@@ -16,12 +38,12 @@ export default Header;
 
 const SocialLinks = () => {
     return (
-        <div className="flex border border-r-0">
-            <div className="mx-1 text-center text-sm">Github</div>
-            <div className="mx-1 text-center text-sm">LinkedIn</div>
-            <div className="mx-1 text-center text-sm">Email</div>
-            <div className="mx-1 text-center text-sm">TurboSquid</div>
-            <div className="mx-1 text-center text-sm">CGTrader</div>
+        <div className="flex min-h-8 translate-x-1/2 select-none items-center justify-between gap-2 rounded-l-full border border-r-0 border-green-950 bg-black/10 pl-3 pr-2 text-center text-sm text-green-200/20 transition-all delay-500 hover:translate-x-0 hover:bg-gray-700 hover:text-green-200">
+            <div className="cursor-pointer transition-colors hover:text-white">Github</div>
+            <div className="cursor-pointer transition-colors hover:text-white">LinkedIn</div>
+            <div className="cursor-pointer transition-colors hover:text-white">Email</div>
+            <div className="cursor-pointer transition-colors hover:text-white">TurboSquid</div>
+            <div className="cursor-pointer transition-colors hover:text-white">CGTrader</div>
         </div>
     );
 };
