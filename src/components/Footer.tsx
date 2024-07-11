@@ -5,6 +5,7 @@ const Footer = () => {
                 <div className="cursor-pointer bg-green-900 px-2 py-1">Resumé</div>
                 <div className="cursor-pointer bg-green-900 px-2 py-1">Code</div>
                 <div className="cursor-pointer bg-green-900 px-2 py-1">3D Art</div>
+
                 <div className="cursor-pointer bg-green-900 px-2 py-1">Menu</div>
                 <div className="cursor-pointer bg-green-900 px-2 py-1">Back</div>
                 <div className="cursor-pointer bg-green-900 px-2 py-1">Forward</div>
