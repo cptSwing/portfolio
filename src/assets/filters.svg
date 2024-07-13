@@ -1,35 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg">
 	<defs>
-		<filter id="bloom-svg-filter" x="-10%" y="-10%" width="120%" height="120%">
-			<feGaussianBlur in="SourceGraphic" stdDeviation="4" edgeMode="wrap" result="blurResult" />
-			<feBlend in="blurResult" in2="SourceGraphic" mode="screen" result="blendedBlur" />
-			
-			<!-- <feBlend in="blendedBlur" in2="blurResult" mode="screen" result="final" />  -->
-            
+		<filter id="bloom-svg-filter" x="-5%" y="-5%" width="110%" height="110%">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="2" edgeMode="wrap" result="blurResult1" />
+			<feGaussianBlur in="blurResult1" stdDeviation="2" edgeMode="wrap" result="blurResult2" />
+			<feBlend in="blurResult1" in2="blurResult2" mode="screen" result="blendedBlurs" />
+			<feBlend in="SourceGraphic" in2="blendedBlurs" mode="screen" result="final" />
 			<feMerge result="merge">
 				<feMergeNode in="SourceGraphic" />
-				<!-- <feMergeNode in="final" /> -->
-				<feMergeNode in="blendedBlur" />
-            </feMerge> 
+				<feMergeNode in="final" />
+			</feMerge>
 		</filter>
 	</defs>
 </svg>
-
-<!-- <svg xmlns="http://www.w3.org/2000/svg"> -->
-	<!-- <defs> -->
-		<!-- <filter id="bloom-svg-filter" x="0" y="0" width="100%" height="100%"> -->
-          <!-- <feFlood result="flood" flood-color="#7d26cd" flood-opacity="1"></feFlood> -->
-
-          <!-- <feMorphology in="SourceGraphic" result="dilated" operator="dilate" radius="2"></feMorphology> -->
-
-          <!-- <feGaussianBlur in="dilated" result="blurred" stdDeviation="5"></feGaussianBlur> -->
-          <!-- <feGaussianBlur in="SourceGraphic" result="blurred" stdDeviation="5"></feGaussianBlur> -->
-          <!-- <feComposite in="blurred" result="mask" in2="SourceGraphic" operator="in"></feComposite> -->
-
-          <!-- <feMerge>
-              <feMergeNode in="SourceGraphic"></feMergeNode>
-              <feMergeNode in="blurred"></feMergeNode>
-          </feMerge>
-		</filter>
-	</defs> -->
-<!-- </svg> -->
