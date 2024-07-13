@@ -13,7 +13,11 @@ export default {
                 },
             },
             boxShadow: {
+                "inner-sm": "inset 0 0 2rem 0.5rem var(--tw-shadow-color)",
                 "inner-md": "inset 0 0 4rem 1rem var(--tw-shadow-color)",
+            },
+            willChange: {
+                filter: "filter",
             },
         },
     },

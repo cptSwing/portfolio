@@ -1,5 +1,5 @@
-const classNames = (...classes: string[]) => {
-    return classes.filter(Boolean).join(" ");
+const classNames = (...classes: (string | undefined)[]) => {
+    return classes.filter(Boolean).join(" ") as string;
 };
 
 export default classNames;

@@ -18,14 +18,16 @@ body {
 }
 
 button {
-    @apply rounded-md border border-blue-500 bg-transparent px-4 py-2 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white;
+    @apply rounded-md border border-blue-500 bg-transparent px-4 py-2 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white active:border-2 active:border-lime-500;
 }
 
-.parallax-layer {
-    @apply absolute bottom-0 left-0 right-0 top-0;
+.button-test {
+    @apply border-2 border-blue-500;
 }
 
-.parallax-clip {
+.parallax-transform {
+    transform: rotateX(var(--parallax-horizontal)) rotateY(var(--parallax-vertical));
+    transition: transform var(--parallax-transition);
 }
 
 .parallax-bg-clip {
@@ -41,6 +43,10 @@ button {
         100% 100% /* bottom-right */,
         100% 0% /* top-right */
     );
+}
+
+.filter-bloom {
+    filter: saturate(200%) url(src/assets/filters.svg#bloom-svg-filter);
 }
 
 .logo {

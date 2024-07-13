@@ -1,14 +1,19 @@
 import { useState } from "react";
 import reactLogo from "../assets/react.svg";
 import viteLogo from "/vite.svg";
-import { mainContentClassNames } from "./ParallaxLayer";
+import { mainContentClassNames } from "./ParallaxScene";
 import classNames from "../lib/classNames";
 
 const Main = () => {
     const [count, setCount] = useState(0);
 
     return (
-        <main className={classNames(mainContentClassNames, "flex w-full flex-col items-center justify-start p-12 text-green-600")}>
+        <main
+            className={classNames(
+                mainContentClassNames,
+                "flex w-full flex-col items-center justify-start bg-transparent p-12 text-green-600",
+            )}
+        >
             <p className="read-the-docs">
                 Click on the Vite and React logos to learn more Click on the Vite and React logos to learn more Click on the Vite and React
                 logos to learn more Click on the Vite and React logos to learn more
