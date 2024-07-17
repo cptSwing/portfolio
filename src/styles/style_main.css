@@ -49,6 +49,12 @@ button {
     border-image: url(src/assets/borders.svg) 1;
 }
 
+@keyframes stroke {
+    to {
+        stroke-dashoffset: 776;
+    }
+}
+
 .bloom {
     @apply [filter:saturate(200%)_url(src/assets/filters.svg#bloom-svg-filter)];
 }

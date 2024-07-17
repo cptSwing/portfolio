@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { FC, ReactNode, useCallback, useEffect, useLayoutEffect, useState } from "react";
 import classNames from "../lib/classNames";
 import Main from "./Main";
 import NavMenu from "./NavMenu";
@@ -23,7 +23,7 @@ const ParallaxScene = () => {
     });
 
     useEffect(() => {
-        parallaxEffect(2);
+        parallaxEffect(1);
     }, []);
 
     return (
@@ -58,12 +58,7 @@ const ParallaxVisuals = () => {
                 content={<></>}
             />
 
-            <ParallaxLayer
-                key={3}
-                parallaxLevelClassName="translate-z-24"
-                extraClassNames="!shadow-green-700/10"
-                content={<></>}
-            />
+            <ParallaxLayer key={3} parallaxLevelClassName="translate-z-24" extraClassNames="!shadow-green-700/10" content={<></>} />
 
             {/* Quad Layer: */}
             <ParallaxLayer
@@ -86,12 +81,7 @@ const ParallaxVisuals = () => {
 
             {/* Below Zero */}
             <ParallaxLayer key={-1} parallaxLevelClassName="-translate-z-8" extraClassNames="border-opacity-70" content={<></>} />
-            <ParallaxLayer
-                key={-2}
-                parallaxLevelClassName="-translate-z-16"
-                extraClassNames="border-opacity-60"
-                content={<></>}
-            />
+            <ParallaxLayer key={-2} parallaxLevelClassName="-translate-z-16" extraClassNames="border-opacity-60" content={<></>} />
             <ParallaxLayer key={-3} parallaxLevelClassName="-translate-z-24" extraClassNames="border-opacity-50" content={<></>} />
             <ParallaxLayer key={-4} parallaxLevelClassName="-translate-z-32" extraClassNames="border-opacity-40" content={<></>} />
 
