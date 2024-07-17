@@ -45,8 +45,44 @@ button {
     );
 }
 
-.filter-bloom {
-    filter: saturate(200%) url(src/assets/filters.svg#bloom-svg-filter);
+.parallax-border {
+    border-image: url(src/assets/borders.svg) 1;
+}
+
+.bloom {
+    @apply [filter:saturate(200%)_url(src/assets/filters.svg#bloom-svg-filter)];
+}
+
+.translateZ-0 {
+    transform: translateZ(0);
+}
+
+.translateZ-2 {
+    transform: translateZ(0.5rem);
+}
+
+.translateZ-4 {
+    transform: translateZ(1rem);
+}
+
+.translateZ-8 {
+    transform: translateZ(2rem);
+}
+
+.-translateZ-2 {
+    transform: translateZ(-0.5rem);
+}
+
+.-translateZ-4 {
+    transform: translateZ(-1rem);
+}
+
+.-translateZ-8 {
+    transform: translateZ(-2rem);
+}
+
+.-translateZ-400 {
+    transform: translateZ(-100rem);
 }
 
 .logo {

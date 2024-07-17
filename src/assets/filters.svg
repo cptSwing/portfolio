@@ -1,10 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg">
 	<defs>
 		<filter id="bloom-svg-filter" x="-5%" y="-5%" width="110%" height="110%">
-			<feGaussianBlur in="SourceGraphic" stdDeviation="2" edgeMode="wrap" result="blurResult1" />
-			<feGaussianBlur in="blurResult1" stdDeviation="2" edgeMode="wrap" result="blurResult2" />
+			<feGaussianBlur in="SourceGraphic" stdDeviation="3" edgeMode="wrap" result="blurResult" />
+
+			<feBlend in="blurResult" in2="SourceGraphic" mode="screen" result="final" />
+			<feMerge result="merge">
+				<feMergeNode in="SourceGraphic" />
+				<feMergeNode in="final" />
+			</feMerge>
+		</filter>
+
+		<filter id="bloom-svg-filter-double-blend" x="-5%" y="-5%" width="110%" height="110%">
+
+			<feGaussianBlur in="SourceGraphic" stdDeviation="1" edgeMode="wrap" result="blurResult1" />
+			<feGaussianBlur in="blurResult1" stdDeviation="1" edgeMode="wrap" result="blurResult2" />
+
 			<feBlend in="blurResult1" in2="blurResult2" mode="screen" result="blendedBlurs" />
 			<feBlend in="SourceGraphic" in2="blendedBlurs" mode="screen" result="final" />
+
 			<feMerge result="merge">
 				<feMergeNode in="SourceGraphic" />
 				<feMergeNode in="final" />

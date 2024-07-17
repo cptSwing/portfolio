@@ -1,29 +1,44 @@
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import classNames from "../lib/classNames";
 import Main from "./Main";
+import NavMenu from "./NavMenu";
+import TocMenu from "./TocMenu";
+import pickRandomFromArray from "../lib/pickRandomFromArray";
+
+const parallaxHoleDimensionClassNames = "h-2/3 w-4/5";
+export type MenuCheckedType = {
+    [key: string]: boolean;
+};
 
 const ParallaxScene = () => {
-    const menuHomeIsClickedState = useState(false);
-    // const [menuHomeIsClicked, setMenuHomeIsClicked] = menuHomeIsClickedState;
+    const menuCheckedStateSet = useState<MenuCheckedType>({
+        home: false,
+        back: false,
+        forward: false,
+        settings: false,
+        viewCode: false,
+        resume: false,
+        code: false,
+        art: false,
+    });
 
     useEffect(() => {
-        parallaxEffect(10);
+        parallaxEffect(2);
     }, []);
 
     return (
-        <div className="size-full">
-            <div className="pointer-events-none absolute left-0 top-0 size-full perspective-1000">
-                <div className="parallax-transform mt-8 h-svh w-svw backface-hidden transform-style-3d">
+        <div id="parallax" className="h-dvh w-dvw">
+            <div id="parallax-visuals" className="pointer-events-none absolute bottom-0 left-0 right-0 top-0 mt-8 perspective-1000">
+                <div className="parallax-transform size-full translate-z-36 backface-hidden transform-style-3d">
+                    <ParallaxMenu isEffectLayer={false} menuCheckedStateSet={menuCheckedStateSet} />
                     <ParallaxVisuals />
-
-                    <ParallaxMenu isEffectLayer={false} menuHomeIsClickedState={menuHomeIsClickedState} />
                 </div>
             </div>
 
             {/* Creates new stacking context: */}
-            <div className="pointer-events-none absolute left-0 top-0 size-full perspective-1000">
-                <div className="parallax-transform mt-8 h-svh w-svw backface-hidden transform-style-3d">
-                    <ParallaxMenu isEffectLayer={true} menuHomeIsClickedState={menuHomeIsClickedState} />
+            <div id="parallax-menu" className="pointer-events-none absolute bottom-0 left-0 right-0 top-0 mt-8 perspective-1000">
+                <div className="parallax-transform size-full backface-hidden transform-style-3d">
+                    <ParallaxMenu isEffectLayer={true} menuCheckedStateSet={menuCheckedStateSet} />
                 </div>
             </div>
         </div>
@@ -39,11 +54,16 @@ const ParallaxVisuals = () => {
             <ParallaxLayer
                 key={4}
                 parallaxLevelClassName="translate-z-32"
-                extraClassNames="!shadow-green-600/50 !shadow-inner-sm filter-bloom will-change-filter !overflow-visible outline outline-2 outline-green-900/50 outline-offset-8"
+                extraClassNames="!shadow-green-600/50 !shadow-inner-sm bloom will-change-filter !overflow-visible outline outline-2 outline-green-900/50 outline-offset-8"
                 content={<></>}
             />
 
-            <ParallaxLayer key={3} parallaxLevelClassName="translate-z-24" extraClassNames="!shadow-green-700/10 " content={<></>} />
+            <ParallaxLayer
+                key={3}
+                parallaxLevelClassName="translate-z-24"
+                extraClassNames="!shadow-green-700/10"
+                content={<></>}
+            />
 
             {/* Quad Layer: */}
             <ParallaxLayer
@@ -57,15 +77,21 @@ const ParallaxVisuals = () => {
             <ParallaxLayer
                 key={1}
                 parallaxLevelClassName="translate-z-8"
-                extraClassNames="border-opacity-90 filter-bloom will-change-filter"
+                extraClassNames="border-opacity-90 bloom will-change-filter"
                 content={<></>}
             />
 
             {/* Zero: */}
             <ParallaxLayer key={0} parallaxLevelClassName="translate-z-0" extraClassNames="border-opacity-80" content={<></>} />
 
+            {/* Below Zero */}
             <ParallaxLayer key={-1} parallaxLevelClassName="-translate-z-8" extraClassNames="border-opacity-70" content={<></>} />
-            <ParallaxLayer key={-2} parallaxLevelClassName="-translate-z-16" extraClassNames="border-opacity-60" content={<></>} />
+            <ParallaxLayer
+                key={-2}
+                parallaxLevelClassName="-translate-z-16"
+                extraClassNames="border-opacity-60"
+                content={<></>}
+            />
             <ParallaxLayer key={-3} parallaxLevelClassName="-translate-z-24" extraClassNames="border-opacity-50" content={<></>} />
             <ParallaxLayer key={-4} parallaxLevelClassName="-translate-z-32" extraClassNames="border-opacity-40" content={<></>} />
 
@@ -75,40 +101,98 @@ const ParallaxVisuals = () => {
     );
 };
 
-const ParallaxLayer: FC<{
-    content: ReactNode;
-    parallaxLevelClassName: string;
-    extraClassNames?: string;
-}> = ({ content, parallaxLevelClassName, extraClassNames }) => {
-    return (
-        <div
-            className={classNames(
-                "absolute bottom-0 left-0 right-0 top-0 m-auto h-2/3 w-4/5 transform overflow-hidden rounded-md border-2 border-green-800 shadow-inner-md shadow-black",
-                parallaxLevelClassName,
-                extraClassNames,
-            )}
-        >
-            {content}
-        </div>
-    );
-};
+const ParallaxMenu: FC<{
+    isEffectLayer: boolean;
+    menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>];
+}> = ({ isEffectLayer, menuCheckedStateSet }) => {
+    const [menuChecked] = menuCheckedStateSet;
 
-const ParallaxMenuLayer: FC<{
-    content: ReactNode;
-    parallaxLevelClassName: string;
-    extraClassNames?: string;
-}> = ({ content, parallaxLevelClassName, extraClassNames }) => {
     return (
-        <div
-            className={classNames(
-                "pointer-events-none absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md transition-transform will-change-transform",
-                parallaxLevelClassName,
-                extraClassNames,
+        <>
+            {/* Menu: */}
+            {isEffectLayer && (
+                <MenuWrapper menuCheckedStateSet={menuCheckedStateSet} isNavMenu={true} positionClassNames="top-2 left-2 w-48 h-12" />
             )}
-            onMouseOver={(e) => console.log("%c[ParallaxScene]", "color: #29c793", `e.target :`, e.target)}
-        >
-            {content}
-        </div>
+
+            {/* Menu: */}
+            {isEffectLayer && (
+                <MenuWrapper menuCheckedStateSet={menuCheckedStateSet} isNavMenu={false} positionClassNames="bottom-0 right-0 w-40 h-12" />
+            )}
+
+            {/* Content: */}
+            {isEffectLayer && (
+                <ParallaxMenuLayer
+                    key={0}
+                    parallaxLevelClassName={"translate-z-0"}
+                    extraClassNames={classNames(
+                        "p-6 delay-200 duration-300 transform",
+                        menuChecked.home ? "-translate-x-full" : "translate-x-0",
+                    )}
+                    content={<Main menuCheckedStateSet={menuCheckedStateSet} />}
+                    menuCheckedStateSet={menuCheckedStateSet}
+                />
+            )}
+
+            <ParallaxMenuLayer
+                id="Resume"
+                key={-1.5}
+                parallaxLevelClassName="-translateZ-400"
+                extraClassNames="p-8  opacity-0"
+                content={
+                    <div
+                        className={classNames(
+                            "h-1/5 w-1/5 rounded-md border-2 border-dashed border-transparent p-1 outline outline-offset-2 outline-green-800/50",
+                            isEffectLayer
+                                ? "pointer-events-auto cursor-pointer hover:border-2 hover:border-l-white hover:border-t-white hover:outline-4 hover:outline-green-800/70"
+                                : "bg-gray-400 outline-2",
+                        )}
+                    >
+                        {isEffectLayer && <h2>Resume</h2>}
+                    </div>
+                }
+                menuCheckedStateSet={menuCheckedStateSet}
+            />
+
+            <ParallaxMenuLayer
+                id="Code"
+                key={-2.5}
+                parallaxLevelClassName="-translateZ-400"
+                extraClassNames="p-8  opacity-0"
+                content={
+                    <div
+                        className={classNames(
+                            "h-1/5 w-1/5 rounded-md border-2 border-purple-400 p-1",
+                            isEffectLayer
+                                ? "bloom pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-green-600"
+                                : "bg-gray-400",
+                        )}
+                    >
+                        {!isEffectLayer && "Code"}
+                    </div>
+                }
+                menuCheckedStateSet={menuCheckedStateSet}
+            />
+
+            <ParallaxMenuLayer
+                id="3D Art"
+                key={-3.5}
+                parallaxLevelClassName="-translateZ-400"
+                extraClassNames={classNames("p-8  opacity-0")}
+                content={
+                    <div
+                        className={classNames(
+                            "h-1/5 w-1/5 rounded-md border-2 border-red-900 p-1",
+                            isEffectLayer
+                                ? "bloom pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-red-400"
+                                : "bg-gray-400",
+                        )}
+                    >
+                        {!isEffectLayer && "3D Art"}
+                    </div>
+                }
+                menuCheckedStateSet={menuCheckedStateSet}
+            />
+        </>
     );
 };
 
@@ -127,13 +211,13 @@ const ParallaxQuadLayer = () => {
                         <div className="h-full w-1/5" />
                     </div>
 
-                    <div className="filter-bloom absolute bottom-0 left-1/2 mb-8 flex -translate-x-1/2 flex-col items-start justify-end rounded-md border-2 border-green-800 bg-green-1000 px-8 py-2 will-change-filter">
-                        <div className="">jens brandenburg</div>
-
-                        <div className="text-sm italic text-white/40">I build websites, I build 3D scenes. Then I combine the two.</div>
+                    <div className="parallax-border bloom absolute bottom-0 left-1/2 mb-8 flex -translate-x-1/2 flex-col items-start justify-end rounded-md border-2 border-green-800 bg-green-1000 px-8 py-2 will-change-filter">
+                        <div className="filter-none">jens brandenburg</div>
+                        <div className="text-sm italic text-white/40 filter-none">
+                            I build websites, I build 3D scenes. Then I combine the two.
+                        </div>
                     </div>
                 </div>
-                <div className="filter-bloom h-full w-[10%] border-b border-l border-green-900/50 will-change-filter"></div>
             </div>
 
             {/* Middle row (horizontal) */}
@@ -173,161 +257,243 @@ const ParallaxQuadLayer = () => {
     );
 };
 
-const ParallaxMenu: FC<{ isEffectLayer: boolean; menuHomeIsClickedState: [boolean, React.Dispatch<React.SetStateAction<boolean>>] }> = ({
-    isEffectLayer,
-    menuHomeIsClickedState,
-}) => {
-    const [menuHomeIsClicked] = menuHomeIsClickedState;
+const MenuWrapper: FC<{
+    menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>];
+    isNavMenu: boolean;
+    positionClassNames: string;
+}> = ({ menuCheckedStateSet, isNavMenu, positionClassNames }) => {
+    const menuClassNames = "rounded-md bloom pointer-events-none absolute border-2 border-slate-400 p-1.5";
 
     return (
         <>
-            {/* Menu: */}
-            {isEffectLayer && <TopLeftMenu menuHomeIsClickedState={menuHomeIsClickedState} />}
-
-            {/* Menu: */}
-            {/* TODO This is stubbornly not working */}
-            {isEffectLayer && (
-                <ParallaxMenuLayer
-                    key={3}
-                    parallaxLevelClassName="translate-z-28"
-                    extraClassNames="!overflow-visible"
-                    content={
-                        <div className="absolute bottom-0 left-0 right-0 top-0 mb-24 size-full">
-                            <TOCMenu menuHomeIsClickedState={menuHomeIsClickedState} />
-                        </div>
-                    }
-                />
-            )}
-
-            {/* Content: */}
-            {isEffectLayer && (
-                <ParallaxMenuLayer
-                    key={0}
-                    parallaxLevelClassName={"translate-z-0"}
-                    extraClassNames={classNames(
-                        "p-6 delay-200 duration-300  h-2/3 w-4/5",
-                        menuHomeIsClicked ? "-translate-x-full" : "translate-x-0",
-                    )}
-                    content={<Main />}
-                />
-            )}
-
             <ParallaxMenuLayer
-                key={-2.5}
-                parallaxLevelClassName={classNames(menuHomeIsClicked ? "translate-z-16 hover:translate-z-[4.5rem]" : "-translate-z-16")}
-                extraClassNames="p-8  h-2/3 w-4/5 delay-100 duration-500 hover:delay-0 hover:duration-100"
-                content={
-                    <div
-                        className={classNames(
-                            "h-1/5 w-1/5 translate-x-[400%] translate-y-1/4 rounded-md border-2 border-purple-400 p-1",
-                            isEffectLayer
-                                ? "filter-bloom pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-green-600"
-                                : "bg-gray-400",
-                        )}
-                    >
-                        {!isEffectLayer && "Menu Item #2"}
-                    </div>
-                }
-            />
-
-            <ParallaxMenuLayer
-                key={-3.5}
-                parallaxLevelClassName={classNames(menuHomeIsClicked ? "translate-z-16 hover:translate-z-[4.5rem]" : "-translate-z-40")}
-                extraClassNames="p-8  h-2/3 w-4/5 delay-100 duration-500 hover:delay-0 hover:duration-100"
-                content={
-                    <div
-                        className={classNames(
-                            "h-1/5 w-1/5 translate-x-[300%] translate-y-[400%] rounded-md border-2 border-red-900 p-1",
-                            isEffectLayer
-                                ? "filter-bloom pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-red-400"
-                                : "bg-gray-400 hover:bg-yellow-500",
-                        )}
-                    >
-                        {!isEffectLayer && "Menu Item #3"}
-                    </div>
-                }
-            />
-
-            <ParallaxMenuLayer
-                key={-1.5}
-                parallaxLevelClassName={classNames(menuHomeIsClicked ? "translate-z-16 hover:translate-z-[4.5rem]" : "-translate-z-8")}
-                extraClassNames="p-8  h-2/3 w-4/5 delay-100 duration-500 hover:delay-0 hover:duration-100"
-                content={
-                    <div
-                        className={classNames(
-                            "h-1/5 w-1/5 translate-x-[0%] translate-y-[100%] rounded-md border-2 border-dashed border-transparent p-1 outline outline-offset-2 outline-green-800/50",
-                            isEffectLayer
-                                ? "pointer-events-auto cursor-pointer hover:border-2 hover:border-l-white hover:border-t-white hover:outline-4 hover:outline-green-800/70"
-                                : "bg-gray-400 outline-2",
-                        )}
-                    >
-                        {isEffectLayer && <h2>Menu Item #1</h2>}
-                    </div>
-                }
-            />
-        </>
-    );
-};
-
-const TopLeftMenu: FC<{
-    menuHomeIsClickedState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-}> = ({ menuHomeIsClickedState }) => {
-    return (
-        <>
-            <ParallaxMenuLayer
-                key={4}
-                parallaxLevelClassName={"translate-z-36"}
-                extraClassNames="!overflow-visible size-full"
-                content={
-                    <div className="ml-48 mr-auto mt-32 h-full">
-                        <TOCMenu menuHomeIsClickedState={menuHomeIsClickedState} />
-                    </div>
-                }
-            />
-            <ParallaxMenuLayer
-                key={3.9}
-                parallaxLevelClassName={"translate-z-32"}
-                extraClassNames="!overflow-visible size-full"
-                content={
-                    <div className="ml-48 mr-auto mt-32 h-full">
-                        <div className="size-full border-2 border-gray-600"></div>
-                    </div>
-                }
+                key={3.7}
+                parallaxLevelClassName={"translate-z-[8.5rem]"}
+                extraClassNames="transform"
+                content={<div className={classNames(menuClassNames, positionClassNames)} />}
+                menuCheckedStateSet={menuCheckedStateSet}
             />
             <ParallaxMenuLayer
                 key={3.8}
-                parallaxLevelClassName={"translate-z-28"}
-                extraClassNames="!overflow-visible size-full"
+                parallaxLevelClassName={"translate-z-[8.75rem]"}
+                extraClassNames="transform"
+                content={<div className={classNames(menuClassNames, positionClassNames)} />}
+                menuCheckedStateSet={menuCheckedStateSet}
+            />
+
+            <ParallaxMenuLayer
+                key={4}
+                parallaxLevelClassName={"translate-z-36"}
+                extraClassNames="transform"
                 content={
-                    <div className="ml-48 mr-auto mt-32 h-full">
-                        <div className="size-full border-2 border-gray-600"></div>
-                    </div>
+                    isNavMenu ? (
+                        <NavMenu
+                            menuCheckedStateSet={menuCheckedStateSet}
+                            menuClassNames={classNames(menuClassNames, positionClassNames)}
+                        />
+                    ) : (
+                        <TocMenu
+                            menuCheckedStateSet={menuCheckedStateSet}
+                            menuClassNames={classNames(menuClassNames, positionClassNames)}
+                        />
+                    )
                 }
+                menuCheckedStateSet={menuCheckedStateSet}
+            />
+
+            <ParallaxMenuLayer
+                key={4.1}
+                parallaxLevelClassName={"translate-z-[9.25rem]"}
+                extraClassNames="transform"
+                content={<div className={classNames(menuClassNames, positionClassNames)} />}
+                menuCheckedStateSet={menuCheckedStateSet}
             />
         </>
     );
 };
 
-const TOCMenu: FC<{ menuHomeIsClickedState: [boolean, React.Dispatch<React.SetStateAction<boolean>>] }> = ({ menuHomeIsClickedState }) => {
-    const [, setMenuHomeIsClicked] = menuHomeIsClickedState;
-
+const ParallaxLayer: FC<{
+    content: ReactNode;
+    parallaxLevelClassName: string;
+    extraClassNames?: string;
+}> = ({ content, parallaxLevelClassName, extraClassNames }) => {
     return (
-        <div className="filter-bloom pointer-events-auto w-1/5 border-2 border-slate-400 p-1.5 will-change-filter">
-            <label className="relative size-full">
-                <input
-                    type="checkbox"
-                    className="peer pointer-events-none hidden"
-                    onChange={() => setMenuHomeIsClicked((menuHomeIsClicked) => !menuHomeIsClicked)}
-                />
-                <div className="inline-block cursor-pointer select-none border-2 border-fuchsia-500 p-1 filter-none hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black">
-                    Menu
-                </div>
-            </label>
+        <div
+            className={classNames(
+                "absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md border-2 border-green-800 shadow-inner-md shadow-black",
+                parallaxHoleDimensionClassNames,
+                parallaxLevelClassName,
+                extraClassNames,
+            )}
+        >
+            {content}
         </div>
     );
 };
 
-export const mainContentClassNames = "bg-black/10 pointer-events-auto overflow-y-visible";
+const usedIndices: Record<string, number> = {};
+
+const ParallaxMenuLayer: FC<{
+    content: ReactNode;
+    menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>];
+    parallaxLevelClassName: string;
+    extraClassNames?: string;
+    style?: React.CSSProperties;
+    id?: string;
+}> = ({ content, menuCheckedStateSet, parallaxLevelClassName, extraClassNames, style, id }) => {
+    const [menuChecked] = menuCheckedStateSet;
+    const [nodeAnim, setNodeAnim] = useState<[HTMLDivElement, Animation]>();
+
+    const measureRef = useCallback((node: HTMLDivElement) => {
+        if (node) {
+            const id = node.getAttribute("id");
+            if (id) {
+                let startTileSet, startTile, startTileIndex;
+
+                if (id in usedIndices) {
+                    startTileIndex = usedIndices[id];
+                    startTile = tileLocations[startTileIndex];
+                } else {
+                    startTileSet = pickRandomFromArray(tileLocations);
+                    startTile = startTileSet[0];
+                    startTileIndex = startTileSet[1];
+                }
+
+                if (!(id in usedIndices)) {
+                    usedIndices[id] = startTileIndex;
+                }
+
+                const [startTileX, startTileY] = startTile;
+
+                node.style.setProperty("transform", `translate3d(${wrapLocation(startTileX)}%, ${wrapLocation(startTileY)}%, initial)`);
+
+                const movement = pickRandomFromArray(Object.values(keyframes(startTile, startTileIndex)))[0];
+                const anim = node.animate(...movement);
+                anim.finish();
+                setNodeAnim([node, anim]);
+            }
+        }
+    }, []);
+
+    useLayoutEffect(() => {
+        if (nodeAnim) {
+            const [node, anim] = nodeAnim;
+            anim.reverse();
+        }
+    }, [menuChecked.home, nodeAnim]);
+
+    return (
+        <div
+            id={`${id ? id.replace(" ", "") : id}-wrapper`}
+            ref={measureRef}
+            className={classNames(
+                "absolute bottom-0 left-0 right-0 top-0 m-auto rounded-md",
+                parallaxHoleDimensionClassNames,
+                parallaxLevelClassName,
+                extraClassNames,
+            )}
+            style={style}
+        >
+            {content}
+        </div>
+    );
+};
+
+const tileLocations = [
+    [0, 0],
+    [20, 0],
+    [40, 0],
+    [60, 0],
+    [80, 0],
+    [0, 20],
+    [0, 40],
+    [0, 60],
+    [0, 80],
+] as [number, number][];
+
+const delays = tileLocations.map((tileLoc, idx) => 100 * idx);
+
+const fadeInKeyframe: (startTile: [number, number]) => [PropertyIndexedKeyframes, KeyframeAnimationOptions] = (
+    startTile: [number, number],
+) => {
+    const [startTileX, startTileY] = wrapLocation(startTile);
+
+    return [
+        {
+            transform: [`translate3d(${startTileX}%, ${startTileY}%, -10rem)`, `translate3d(${startTileX}%, ${startTileY}%, -4rem)`],
+            opacity: [0, 1],
+            offset: [0.2],
+        },
+        {
+            duration: 500,
+            direction: "normal",
+            fill: "forwards",
+            iterations: 1,
+            delay: 100,
+            // playbackRate: 0,
+        },
+    ];
+};
+
+const keyframes: (
+    startTile: [number, number],
+    delayIndex: number,
+) => Record<string, [PropertyIndexedKeyframes, KeyframeAnimationOptions]> = (startTile: [number, number], delayIndex) => {
+    const [startTileX, startTileY] = startTile;
+
+    return {
+        leftToRight: [
+            {
+                opacity: [0.25, 1],
+                transform: [
+                    `translate3d(${wrapLocation(startTileX)}%, ${wrapLocation(startTileY)}%, -8rem)`,
+                    `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY)}%, -4rem)`,
+                    `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY + 60)}%, -4rem)`,
+                    `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY + 60)}%, 4rem)`,
+                ],
+                offset: [0.001, 0.2, 0.666],
+            },
+            {
+                duration: 700,
+                direction: "normal",
+                fill: "forwards",
+                iterations: 1,
+                delay: delays[delayIndex],
+                // playbackRate: 0,
+            },
+        ],
+        // rightToLeft: [
+        //     {
+        //         opacity: [0, 1],
+        //         transform: [
+        //             `translate3d(${startTileX}%, ${startTileY}%, -4rem)`,
+        //             `translate3d(${startTileX}%, ${startTileY}%, -4rem)`,
+        //             `translate3d(${startTileX}%, ${startTileY}%, -4rem)`,
+        //             `translate3d(${startTileX}%, ${startTileY}%, 4rem)`,
+        //         ],
+        //         offset: [0.3, 0.6],
+        //     },
+        //     {
+        //         duration: 1500,
+        //         direction: "normal",
+        //         fill: "forwards",
+        //         iterations: 1,
+        //         delay: 100,
+        //         // playbackRate: 0,
+        //     },
+        // ],
+    };
+};
+
+const wrapLocation = (tileAxisLoc: number) => {
+    let newTileAxisLoc = tileAxisLoc;
+
+    if (newTileAxisLoc >= 80) {
+        newTileAxisLoc = 0;
+    }
+
+    return newTileAxisLoc;
+};
 
 const parallaxEffect = (smoothing: number) => {
     const root = document.documentElement;
