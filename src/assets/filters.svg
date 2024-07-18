@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position:absolute;margin-left: -100%;">
 	<defs>
 		<filter id="bloom-svg-filter" x="-5%" y="-5%" width="110%" height="110%">
 			<feGaussianBlur in="SourceGraphic" stdDeviation="3" edgeMode="wrap" result="blurResult" />
@@ -22,6 +22,29 @@
 				<feMergeNode in="SourceGraphic" />
 				<feMergeNode in="final" />
 			</feMerge>
+		</filter>
+
+		<filter id='shadow' color-interpolation-filters="sRGB">
+			<feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.5"/>
+		</filter>
+
+		<!-- https://css-tricks.com/adding-shadows-to-svg-icons-with-css-and-svg-filters/#aa-inset-shadows -->
+		<filter id='inset-shadow'>
+			<!-- Shadow offset -->
+			<feOffset dx='0' dy='0' />
+
+			<!-- Shadow blur -->
+			<feGaussianBlur stdDeviation='20' result='offset-blur'  />
+
+			<!-- Invert drop shadow to make an inset shadow -->
+			<feComposite operator='out' in='SourceGraphic' in2='offset-blur' result='inverse'  />
+
+			<!-- Cut color inside shadow -->
+			<feFlood flood-color='var(--tw-shadow-color)' flood-opacity='1' result='color'  />
+			<feComposite operator='in' in='color' in2='inverse' result='shadow'  />
+
+			<!-- Placing shadow over element -->
+			<feComposite operator='over' in='shadow' in2='SourceGraphic'  />
 		</filter>
 	</defs>
 </svg>

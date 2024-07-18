@@ -54,7 +54,8 @@ const ParallaxVisuals = () => {
             <ParallaxLayer
                 key={4}
                 parallaxLevelClassName="translate-z-32"
-                extraClassNames="!shadow-green-600/50 !shadow-inner-sm bloom will-change-filter !overflow-visible outline outline-2 outline-green-900/50 outline-offset-8"
+                // extraClassNames="!shadow-green-600/50 !shadow-inner-sm bloom-svg will-change-filter !overflow-visible outline outline-2 outline-green-900/50 outline-offset-8"
+                extraClassNames="bloom-svg will-change-filter !overflow-visible"
                 content={<></>}
             />
 
@@ -63,7 +64,7 @@ const ParallaxVisuals = () => {
             {/* Quad Layer: */}
             <ParallaxLayer
                 parallaxLevelClassName="translate-z-16"
-                extraClassNames="!size-full !shadow-none !border-0"
+                extraClassNames="!size-full shadow-inner-svg-none !parallax-border-none"
                 content={<ParallaxQuadLayer />}
             />
 
@@ -72,7 +73,7 @@ const ParallaxVisuals = () => {
             <ParallaxLayer
                 key={1}
                 parallaxLevelClassName="translate-z-8"
-                extraClassNames="border-opacity-90 bloom will-change-filter"
+                extraClassNames="border-opacity-90 bloom-svg will-change-filter"
                 content={<></>}
             />
 
@@ -80,10 +81,30 @@ const ParallaxVisuals = () => {
             <ParallaxLayer key={0} parallaxLevelClassName="translate-z-0" extraClassNames="border-opacity-80" content={<></>} />
 
             {/* Below Zero */}
-            <ParallaxLayer key={-1} parallaxLevelClassName="-translate-z-8" extraClassNames="border-opacity-70" content={<></>} />
-            <ParallaxLayer key={-2} parallaxLevelClassName="-translate-z-16" extraClassNames="border-opacity-60" content={<></>} />
-            <ParallaxLayer key={-3} parallaxLevelClassName="-translate-z-24" extraClassNames="border-opacity-50" content={<></>} />
-            <ParallaxLayer key={-4} parallaxLevelClassName="-translate-z-32" extraClassNames="border-opacity-40" content={<></>} />
+            <ParallaxLayer
+                key={-1}
+                parallaxLevelClassName="-translate-z-8"
+                extraClassNames="border-opacity-70 bg-black/10"
+                content={<></>}
+            />
+            <ParallaxLayer
+                key={-2}
+                parallaxLevelClassName="-translate-z-16"
+                extraClassNames="border-opacity-60 bg-black/20"
+                content={<></>}
+            />
+            <ParallaxLayer
+                key={-3}
+                parallaxLevelClassName="-translate-z-24"
+                extraClassNames="border-opacity-50 bg-black/30"
+                content={<></>}
+            />
+            <ParallaxLayer
+                key={-4}
+                parallaxLevelClassName="-translate-z-32"
+                extraClassNames="border-opacity-40 bg-black/40"
+                content={<></>}
+            />
 
             {/* Bottom: */}
             <ParallaxLayer key={-5} parallaxLevelClassName="-translate-z-40" extraClassNames="bg-black border-opacity-10" content={<></>} />
@@ -153,7 +174,7 @@ const ParallaxMenu: FC<{
                         className={classNames(
                             "h-1/5 w-1/5 rounded-md border-2 border-purple-400 p-1",
                             isEffectLayer
-                                ? "bloom pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-green-600"
+                                ? "bloom-svg pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-green-600"
                                 : "bg-gray-400",
                         )}
                     >
@@ -173,7 +194,7 @@ const ParallaxMenu: FC<{
                         className={classNames(
                             "h-1/5 w-1/5 rounded-md border-2 border-red-900 p-1",
                             isEffectLayer
-                                ? "bloom pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-red-400"
+                                ? "bloom-svg pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-red-400"
                                 : "bg-gray-400",
                         )}
                     >
@@ -201,9 +222,9 @@ const ParallaxQuadLayer = () => {
                         <div className="h-full w-1/5" />
                     </div>
 
-                    <div className="parallax-border bloom absolute bottom-0 left-1/2 mb-8 flex -translate-x-1/2 flex-col items-start justify-end rounded-md border-2 border-green-800 bg-green-1000 px-8 py-2 will-change-filter">
-                        <div className="filter-none">jens brandenburg</div>
-                        <div className="text-sm italic text-white/40 filter-none">
+                    <div className="parallax-border-animated bloom-svg absolute bottom-0 left-1/2 mb-8 flex -translate-x-1/2 flex-col items-start justify-end rounded-md border-2 border-green-800 bg-green-1000 px-8 py-2 will-change-filter">
+                        <div className="!filter-none">jens brandenburg</div>
+                        <div className="text-sm italic text-white/40 !filter-none">
                             I build websites, I build 3D scenes. Then I combine the two.
                         </div>
                     </div>
@@ -252,7 +273,7 @@ const MenuWrapper: FC<{
     isNavMenu: boolean;
     positionClassNames: string;
 }> = ({ menuCheckedStateSet, isNavMenu, positionClassNames }) => {
-    const menuClassNames = "rounded-md bloom pointer-events-none absolute border-2 border-slate-400 p-1.5";
+    const menuClassNames = "rounded-md bloom-svg pointer-events-none absolute border-2 border-slate-400 p-1.5";
 
     return (
         <>
@@ -310,7 +331,8 @@ const ParallaxLayer: FC<{
     return (
         <div
             className={classNames(
-                "absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md border-2 border-green-800 shadow-inner-md shadow-black",
+                // "shadow-inner-md absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md border-2 border-green-800 shadow-black",
+                "shadow-inner-svg parallax-border absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md shadow-yellow-500",
                 parallaxHoleDimensionClassNames,
                 parallaxLevelClassName,
                 extraClassNames,
@@ -396,9 +418,25 @@ const tileLocations = [
     [60, 0],
     [80, 0],
     [0, 20],
+    [20, 20],
+    [40, 20],
+    [60, 20],
+    [80, 20],
     [0, 40],
+    [20, 40],
+    [40, 40],
+    [60, 40],
+    [80, 40],
     [0, 60],
+    [20, 60],
+    [40, 60],
+    [60, 60],
+    [80, 60],
     [0, 80],
+    [20, 80],
+    [40, 80],
+    [60, 80],
+    [80, 80],
 ] as [number, number][];
 
 const delays = tileLocations.map((tileLoc, idx) => 100 * idx);
@@ -436,7 +474,7 @@ const keyframes: (
             {
                 opacity: [0.25, 1],
                 transform: [
-                    `translate3d(${wrapLocation(startTileX)}%, ${wrapLocation(startTileY)}%, -8rem)`,
+                    `translate3d(${startTileX}%, ${startTileY}%, -8rem)`,
                     `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY)}%, -4rem)`,
                     `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY + 60)}%, -4rem)`,
                     `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY + 60)}%, 4rem)`,
