@@ -29,6 +29,21 @@ const ParallaxScene = () => {
     return (
         <div id="parallax" className="h-dvh w-dvw">
             <div id="parallax-visuals" className="pointer-events-none absolute bottom-0 left-0 right-0 top-0 mt-8 perspective-1000">
+                <svg
+                    // class="parallax-border-variables"
+                    width="400px"
+                    height="400px"
+                    viewBox="0 0 24 24"
+                    id="banana"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        id="secondary"
+                        d="M4,6V4A1,1,0,0,1,5,3H7A1,1,0,0,1,8,4c0,.6,0,1.38,0,2a9.09,9.09,0,0,0,4,8.08c2,1.31,5,1.57,7,1.59a2,2,0,0,1,2,2h0a2,2,0,0,1-1.16,1.81c-2.69,1.2-9.46,3.44-14.35-1.66C1,13.08,4,6,4,6Z"
+                        stroke="var(--banana-stroke-color)"
+                        fill="none"
+                    />
+                </svg>
                 <div className="parallax-transform size-full translate-z-36 backface-hidden transform-style-3d">
                     <ParallaxMenu isEffectLayer={false} menuCheckedStateSet={menuCheckedStateSet} />
                     <ParallaxVisuals />
