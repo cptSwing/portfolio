@@ -4,6 +4,7 @@ import Main from "./Main";
 import NavMenu from "./NavMenu";
 import TocMenu from "./TocMenu";
 import pickRandomFromArray from "../lib/pickRandomFromArray";
+import returnSvg from "../lib/returnSvg";
 
 const parallaxHoleDimensionClassNames = "h-2/3 w-4/5";
 export type MenuCheckedType = {
@@ -29,21 +30,6 @@ const ParallaxScene = () => {
     return (
         <div id="parallax" className="h-dvh w-dvw">
             <div id="parallax-visuals" className="pointer-events-none absolute bottom-0 left-0 right-0 top-0 mt-8 perspective-1000">
-                <svg
-                    // class="parallax-border-variables"
-                    width="400px"
-                    height="400px"
-                    viewBox="0 0 24 24"
-                    id="banana"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        id="secondary"
-                        d="M4,6V4A1,1,0,0,1,5,3H7A1,1,0,0,1,8,4c0,.6,0,1.38,0,2a9.09,9.09,0,0,0,4,8.08c2,1.31,5,1.57,7,1.59a2,2,0,0,1,2,2h0a2,2,0,0,1-1.16,1.81c-2.69,1.2-9.46,3.44-14.35-1.66C1,13.08,4,6,4,6Z"
-                        stroke="var(--banana-stroke-color)"
-                        fill="none"
-                    />
-                </svg>
                 <div className="parallax-transform size-full translate-z-36 backface-hidden transform-style-3d">
                     <ParallaxMenu isEffectLayer={false} menuCheckedStateSet={menuCheckedStateSet} />
                     <ParallaxVisuals />
@@ -63,18 +49,36 @@ const ParallaxScene = () => {
 export default ParallaxScene;
 
 const ParallaxVisuals = () => {
+    // Testing dynamic Svg attribute change
+    // const [svgStroke, setSvgStroke] = useState("yellow");
+    // useLayoutEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setSvgStroke("red");
+    //     }, 2000);
+
+    //     // returning clearTimeout breaks things?
+    //     // return clearTimeout(timer);
+    // }, []);
+
     return (
         <>
+            <SvgLayer parallaxLevelClassName="translate-z-36" svgStroke="yellow" svgStrokeWidth="1px" svgFill="none" />
+            <SvgLayer parallaxLevelClassName="translate-z-32" svgStroke="yellow" svgStrokeWidth="1px" svgFill="none" />
+            <SvgLayer parallaxLevelClassName="translate-z-28" svgStroke="yellow" svgStrokeWidth="1px" svgFill="none" />
+            <SvgLayer parallaxLevelClassName="translate-z-24" svgStroke="yellow" svgStrokeWidth="1px" svgFill="none" />
+            <SvgLayer parallaxLevelClassName="translate-z-20" svgStroke="yellow" svgStrokeWidth="1px" svgFill="blue" />
+
             {/* Top: */}
-            <ParallaxLayer
+            {/* <ParallaxLayer
                 key={4}
                 parallaxLevelClassName="translate-z-32"
                 // extraClassNames="!shadow-green-600/50 !shadow-inner-sm bloom-svg will-change-filter !overflow-visible outline outline-2 outline-green-900/50 outline-offset-8"
                 extraClassNames="bloom-svg will-change-filter !overflow-visible"
+                // svgStyle={{ svg: "banana", svgStroke: "red", svgStrokeWidth: "20px", svgFill: "none" }}
                 content={<></>}
-            />
+            /> */}
 
-            <ParallaxLayer key={3} parallaxLevelClassName="translate-z-24" extraClassNames="!shadow-green-700/10" content={<></>} />
+            {/* <ParallaxLayer key={3} parallaxLevelClassName="translate-z-24" extraClassNames="!shadow-green-700/10" content={<></>} /> */}
 
             {/* Quad Layer: */}
             <ParallaxLayer
@@ -83,20 +87,20 @@ const ParallaxVisuals = () => {
                 content={<ParallaxQuadLayer />}
             />
 
-            <ParallaxLayer key={2} parallaxLevelClassName="translate-z-16" content={<></>} />
+            {/* <ParallaxLayer key={2} parallaxLevelClassName="translate-z-16" content={<></>} /> */}
 
-            <ParallaxLayer
+            {/* <ParallaxLayer
                 key={1}
                 parallaxLevelClassName="translate-z-8"
                 extraClassNames="border-opacity-90 bloom-svg will-change-filter"
                 content={<></>}
-            />
+            /> */}
 
             {/* Zero: */}
-            <ParallaxLayer key={0} parallaxLevelClassName="translate-z-0" extraClassNames="border-opacity-80" content={<></>} />
+            {/* <ParallaxLayer key={0} parallaxLevelClassName="translate-z-0" extraClassNames="border-opacity-80" content={<></>} /> */}
 
             {/* Below Zero */}
-            <ParallaxLayer
+            {/* <ParallaxLayer
                 key={-1}
                 parallaxLevelClassName="-translate-z-8"
                 extraClassNames="border-opacity-70 bg-black/10"
@@ -119,11 +123,83 @@ const ParallaxVisuals = () => {
                 parallaxLevelClassName="-translate-z-32"
                 extraClassNames="border-opacity-40 bg-black/40"
                 content={<></>}
-            />
+            /> */}
 
             {/* Bottom: */}
-            <ParallaxLayer key={-5} parallaxLevelClassName="-translate-z-40" extraClassNames="bg-black border-opacity-10" content={<></>} />
+            {/* <ParallaxLayer key={-5} parallaxLevelClassName="-translate-z-40" extraClassNames="bg-black border-opacity-10" content={<></>} /> */}
         </>
+    );
+};
+
+const SvgLayer: FC<{
+    svgStroke: string;
+    svgStrokeWidth: string;
+    svgFill: string;
+    parallaxLevelClassName: string;
+}> = ({ svgStroke, svgStrokeWidth, svgFill, parallaxLevelClassName }) => {
+    return (
+        <svg
+            className={classNames(
+                "absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md",
+                // parallaxHoleDimensionClassNames,
+                "size-full",
+                "shadow-inner-svg shadow-red-500",
+                parallaxLevelClassName,
+            )}
+            viewBox="0 0 24 24"
+            id="banana"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                id="secondary"
+                d="M4,6V4A1,1,0,0,1,5,3H7A1,1,0,0,1,8,4c0,.6,0,1.38,0,2a9.09,9.09,0,0,0,4,8.08c2,1.31,5,1.57,7,1.59a2,2,0,0,1,2,2h0a2,2,0,0,1-1.16,1.81c-2.69,1.2-9.46,3.44-14.35-1.66C1,13.08,4,6,4,6Z"
+                stroke={svgStroke}
+                strokeWidth={svgStrokeWidth}
+                fill={svgFill}
+            />
+        </svg>
+    );
+};
+
+const ParallaxLayer: FC<{
+    content: ReactNode;
+    parallaxLevelClassName: string;
+    extraClassNames?: string;
+    svgStyle?: {
+        svg: string;
+        svgStroke: string;
+        svgStrokeWidth: string;
+        svgFill: string;
+    };
+}> = ({ content, parallaxLevelClassName, extraClassNames, svgStyle }) => {
+    const [svgParams, setSvgParams] = useState({ svg: "banana", svgStroke: "purple", svgStrokeWidth: "10px", svgFill: "none" });
+
+    useLayoutEffect(() => {
+        if (svgStyle) {
+            setSvgParams(() => ({
+                svg: svgStyle.svg,
+                svgStroke: svgStyle.svgStroke,
+                svgStrokeWidth: svgStyle.svgStrokeWidth,
+                svgFill: svgStyle.svgFill,
+            }));
+        }
+    }, [svgStyle]);
+
+    return (
+        <div
+            className={classNames(
+                // "shadow-inner-md absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md border-2 border-green-800 shadow-black",
+                "parallax-border absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md shadow-yellow-500",
+                parallaxHoleDimensionClassNames,
+                parallaxLevelClassName,
+                extraClassNames,
+            )}
+            style={{
+                borderImageSource: `url('data:image/svg+xml,${returnSvg(svgParams.svg, svgParams.svgStroke, svgParams.svgStrokeWidth, svgParams.svgFill)}')`,
+            }}
+        >
+            {content}
+        </div>
     );
 };
 
@@ -335,26 +411,6 @@ const MenuWrapper: FC<{
                 menuCheckedStateSet={menuCheckedStateSet}
             />
         </>
-    );
-};
-
-const ParallaxLayer: FC<{
-    content: ReactNode;
-    parallaxLevelClassName: string;
-    extraClassNames?: string;
-}> = ({ content, parallaxLevelClassName, extraClassNames }) => {
-    return (
-        <div
-            className={classNames(
-                // "shadow-inner-md absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md border-2 border-green-800 shadow-black",
-                "shadow-inner-svg parallax-border absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md shadow-yellow-500",
-                parallaxHoleDimensionClassNames,
-                parallaxLevelClassName,
-                extraClassNames,
-            )}
-        >
-            {content}
-        </div>
     );
 };
 
