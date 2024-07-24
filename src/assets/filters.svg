@@ -24,43 +24,12 @@
 			</feMerge>
 		</filter>
 
-		<filter id='shadow' color-interpolation-filters="sRGB">
-			<feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.5"/>
-		</filter>
-
-		<!-- https://css-tricks.com/adding-shadows-to-svg-icons-with-css-and-svg-filters/#aa-inset-shadows -->
-		<filter id='inset-shadow'>
-			<!-- Shadow offset -->
-			<feOffset dx='0' dy='0' />
-
-			<!-- Shadow blur -->
-			<feGaussianBlur stdDeviation='20' result='offset-blur'  />
-
-			<!-- Invert drop shadow to make an inset shadow -->
-			<feComposite operator='out' in='SourceGraphic' in2='offset-blur' result='inverse'  />
-
-			<!-- Cut color inside shadow -->
-			<feFlood flood-color='green' flood-opacity='1' result='color'  />
-			<feComposite operator='in' in='color' in2='inverse' result='shadow'  />
-
-			<!-- Placing shadow over element -->
-			<feComposite operator='over' in='shadow' in2='SourceGraphic'  />
-		</filter>
-
-
-		<filter id="inset-shadow-stroked-svg" x="-50%" y="-50%" width="200%" height="200%">
-			<feComponentTransfer in="SourceAlpha">
-				<feFuncA type="table" tableValues="1 0" />
+		<filter id="shadow2" color-interpolation-filters="sRGB">
+			<feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="black" flood-opacity="1" />
+			<feComponentTransfer>
+				<feFuncA type="linear" slope="2.5" intercept="0.1"/>
 			</feComponentTransfer>
-			<feGaussianBlur stdDeviation="10"/>
-			<feOffset dx="0" dy="0" result="offsetblur"/>
-			<feFlood flood-color="rgb(255, 0, 0)" result="color"/>
-			<feComposite in2="offsetblur" operator="in"/>
-			<feComposite in2="SourceAlpha" operator="in" />
-			<feMerge>
-				<feMergeNode in="SourceGraphic" />
-				<feMergeNode />
-			</feMerge>
+
 		</filter>
 	</defs>
 </svg>
