@@ -62,9 +62,9 @@ const ParallaxVisuals = () => {
 
     return (
         <>
-            <SvgLayer parallaxLevelClassName="translate-z-32" svgStroke="rgba(0, 255, 0, 1)" svgStrokeWidth="0.1" svgFill="none" />
+            <SvgLayer parallaxLevelClassName="translate-z-32" svgStroke="rgba(0, 255, 0, 1)" svgStrokeWidth="0.1" svgFill="green" />
 
-            <SvgLayer parallaxLevelClassName="translate-z-24" svgStroke="rgba(0, 255, 0, 0.75)" svgStrokeWidth="0.1" svgFill="none" />
+            <SvgLayer parallaxLevelClassName="translate-z-24" svgStroke="rgba(0, 255, 0, 0.75)" svgStrokeWidth="0.1" svgFill="red" />
 
             {/* Quad Layer: */}
             <ParallaxLayer
@@ -73,9 +73,9 @@ const ParallaxVisuals = () => {
                 content={<ParallaxQuadLayer />}
             />
 
-            <SvgLayer parallaxLevelClassName="translate-z-16" svgStroke="rgba(0, 225, 0, 0.75)" svgStrokeWidth="0.1" svgFill="none" />
-            <SvgLayer parallaxLevelClassName="translate-z-8" svgStroke="rgba(0, 200, 0, 0.75)" svgStrokeWidth="0.1" svgFill="none" />
-            <SvgLayer parallaxLevelClassName="translate-z-0" svgStroke="rgba(0, 175, 0, 0.75)" svgStrokeWidth="0.1" svgFill="none" />
+            <SvgLayer parallaxLevelClassName="translate-z-16" svgStroke="rgba(0, 225, 0, 0.75)" svgStrokeWidth="0.1" svgFill="red" />
+            <SvgLayer parallaxLevelClassName="translate-z-8" svgStroke="rgba(0, 200, 0, 0.75)" svgStrokeWidth="0.1" svgFill="red" />
+            <SvgLayer parallaxLevelClassName="translate-z-0" svgStroke="rgba(0, 175, 0, 0.75)" svgStrokeWidth="0.1" svgFill="red" />
             <SvgLayer
                 parallaxLevelClassName="-translate-z-8"
                 svgStroke="rgba(0, 150, 0, 0.75)"

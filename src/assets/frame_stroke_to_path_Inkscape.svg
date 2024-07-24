@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   sodipodi:docname="frame_Inkscape.svg"
+   sodipodi:docname="frame_stroke_to_path_Inkscape.svg"
    inkscape:export-filename="frame.svg"
    inkscape:export-xdpi="72"
    inkscape:export-ydpi="72"
@@ -86,11 +86,8 @@
        id="perspective2" />
   </defs>
   <path
-     d="M 2.5693503,0 1.4458596,1.1376694 H 0 V 9.6807155 L 0.3165592,10.00127 H 12.013394 V 9.1838572 l 0.237417,-0.2404145 h 2.833205 l 0.23742,0.2404145 V 10.00127 h 0.364035 L 16.002032,9.6807155 V 0.32055471 L 15.685471,0 Z"
-     style="fill:#ffffff;fill-opacity:0;stroke-width:0.42333418;stroke:#c30000;stroke-opacity:1;stroke-dasharray:none;stroke-linejoin:miter;stroke-linecap:butt;stroke-miterlimit:1.3;fill-rule:nonzero"
-     id="path2"
-     inkscape:export-filename="frame.svg"
-     inkscape:export-xdpi="72"
-     inkscape:export-ydpi="72"
-     inkscape:label="frame" />
+     id="path4"
+     style="color:#000000;display:inline;fill:#f63eca;stroke-miterlimit:1.3;fill-opacity:1;stroke-width:0.99906867;stroke-dasharray:none"
+     d="m 15.597529,0.21084026 0.19327,0.19740436 V 9.5937489 l -0.19327,0.1953373 H 15.53345 V 9.0976541 L 15.171714,8.732301 H 12.162073 L 11.800854,9.0976541 V 9.7890862 H 0.40411051 L 0.21084027,9.5937489 V 1.3497911 H 1.5353099 L 2.6585387,0.21166709 Z M 2.4807383,-0.21166709 1.3575422,0.92552675 H 0 L -0.21084027,1.1368838 V 9.767382 l 0.43925056,0.445452 H 12.013761 l 0.21084,-0.21084 V 9.2712873 l 0.115239,-0.116789 h 2.656174 l 0.113172,0.116789 v 0.7307067 l 0.212907,0.21084 h 0.451136 L 16.212996,9.767382 V 0.23461147 l -0.439767,-0.44545174 z"
+     sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccc" />
 </svg>

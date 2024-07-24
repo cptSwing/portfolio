@@ -25,9 +25,9 @@
 		</filter>
 
 		<filter id="shadow2" color-interpolation-filters="sRGB">
-			<feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="black" flood-opacity="1" />
+			<feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="black" flood-opacity="1" />
 			<feComponentTransfer>
-				<feFuncA type="linear" slope="2.5" intercept="0.1"/>
+				<feFuncA type="linear" slope="2" intercept="0.1"/>
 			</feComponentTransfer>
 
 		</filter>
