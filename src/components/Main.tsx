@@ -1,75 +1,75 @@
-import { FC, useState } from "react";
-import reactLogo from "../assets/react.svg";
-import viteLogo from "/vite.svg";
+import React, { FC, useEffect, useRef, useState } from "react";
+
 import { MenuCheckedType } from "./ParallaxScene";
 import classNames from "../lib/classNames";
 import Resume from "./Resume";
+import Code from "./Code";
+import Art from "./Art";
+import Settings from "./Settings";
+import ViewCode from "./ViewCode";
+import { useCompare } from "../hooks/useCompare";
+import Default from "./Default";
 
-const mainContentClassNames = "bg-black/10 pointer-events-auto";
+const menuContentPairings: Record<keyof MenuCheckedType, JSX.Element> = {
+    default: <Default />,
+    home: <></>,
+    back: <>Back</>,
+    forward: <>Forward</>,
+    settings: <Settings />,
+    viewCode: <ViewCode />,
+    resume: <Resume />,
+    code: <Code />,
+    art: <Art />,
+};
 
 const Main: FC<{ menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>] }> = ({
     menuCheckedStateSet,
 }) => {
     const [menuChecked] = menuCheckedStateSet;
+    const [activeMenuItem, setActiveMenuItem] = useState<keyof MenuCheckedType>("home");
+    const activeHasChanged = useCompare(activeMenuItem);
+
+    const [returnComponent, setReturnComponent] = useState(menuContentPairings.default);
+    const contentWrapperRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const menuCheckedKeys = Object.keys(menuChecked);
+
+        menuCheckedKeys.every((key, idx, arr) => {
+            if (menuChecked[key]) {
+                setActiveMenuItem(key);
+                setReturnComponent((curState) => (menuContentPairings[key] !== curState ? menuContentPairings[key] : curState));
+                return false;
+            } else if (idx === arr.length - 1) {
+                setReturnComponent(menuContentPairings.default);
+                return false;
+            } else {
+                return true;
+            }
+        });
+    }, [menuChecked]);
+
+    const [classes, setClasses] = useState("-translate-x-full");
+
+    useEffect(() => {
+        console.log("%c[Main]", "color: #abe155", `activeHasChanged :`, activeHasChanged);
+        if (activeHasChanged) {
+            setClasses("translate-x-0");
+        } else {
+            // setClasses("translate-x-0");
+        }
+    }, [activeHasChanged]);
 
     return (
-        <main
-            className={classNames(
-                mainContentClassNames,
-                "flex w-full flex-col items-center justify-start bg-transparent p-12 text-green-600",
-            )}
-        >
-            {menuChecked.resume ? <Resume /> : <ViteDefault />}
+        <main className="pointer-events-auto size-full overflow-x-hidden overflow-y-scroll p-12" /* bg-black/10 */>
+            <div
+                ref={contentWrapperRef}
+                className={classNames("flex w-full flex-col items-center justify-start px-4 transition-transform duration-1000", classes)}
+            >
+                {returnComponent}
+            </div>
         </main>
     );
 };
 
 export default Main;
-
-const ViteDefault = () => {
-    const [count, setCount] = useState(0);
-    return (
-        <>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more Click on the Vite and React logos to learn more Click on the Vite and React
-                logos to learn more Click on the Vite and React logos to learn more
-            </p>
-            <div>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more Click on the Vite and React logos to learn more Click on the Vite and React
-                logos to learn more Click on the Vite and React logos to learn more
-            </p>
-            <div>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-        </>
-    );
-};

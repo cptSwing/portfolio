@@ -1,18 +1,18 @@
-import { FC, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import classNames from "../lib/classNames";
 import Main from "./Main";
-import NavMenu from "./NavMenu";
-import TocMenu from "./TocMenu";
-import pickRandomFromArray from "../lib/pickRandomFromArray";
-import returnSvg from "../lib/returnSvg";
+import MenuWrapper from "./MenuWrapper";
+import { ParallaxLayer, ParallaxMenuLayer, SvgLayer } from "./ParallaxLayers";
 
-const parallaxHoleDimensionClassNames = "h-2/3 w-4/5";
+export const parallaxHoleDimensionClassNames = "h-2/3 w-4/5";
+
 export type MenuCheckedType = {
     [key: string]: boolean;
 };
 
 const ParallaxScene = () => {
     const menuCheckedStateSet = useState<MenuCheckedType>({
+        default: true,
         home: false,
         back: false,
         forward: false,
@@ -31,15 +31,7 @@ const ParallaxScene = () => {
         <div id="parallax" className="h-dvh w-dvw">
             <div id="parallax-visuals" className="pointer-events-none absolute bottom-0 left-0 right-0 top-0 mt-8 perspective-1000">
                 <div className="parallax-transform size-full translate-z-36 backface-hidden transform-style-3d">
-                    <ParallaxMenu isEffectLayer={false} menuCheckedStateSet={menuCheckedStateSet} />
-                    <ParallaxVisuals />
-                </div>
-            </div>
-
-            {/* Creates new stacking context: */}
-            <div id="parallax-menu" className="pointer-events-none absolute bottom-0 left-0 right-0 top-0 mt-8 perspective-1000">
-                <div className="parallax-transform size-full backface-hidden transform-style-3d">
-                    <ParallaxMenu isEffectLayer={true} menuCheckedStateSet={menuCheckedStateSet} />
+                    <ParallaxVisuals isEffectLayer={true} menuCheckedStateSet={menuCheckedStateSet} />
                 </div>
             </div>
         </div>
@@ -48,23 +40,29 @@ const ParallaxScene = () => {
 
 export default ParallaxScene;
 
-const ParallaxVisuals = () => {
-    // Testing dynamic Svg attribute change
-    // const [svgStroke, setSvgStroke] = useState("yellow");
-    // useLayoutEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         setSvgStroke("red");
-    //     }, 2000);
-
-    //     // returning clearTimeout breaks things?
-    //     // return clearTimeout(timer);
-    // }, []);
+const ParallaxVisuals: FC<{
+    isEffectLayer: boolean;
+    menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>];
+}> = ({ isEffectLayer, menuCheckedStateSet }) => {
+    const [menuChecked] = menuCheckedStateSet;
 
     return (
         <>
-            <SvgLayer parallaxLevelClassName="translate-z-32" svgStroke="rgba(0, 255, 0, 1)" svgStrokeWidth="0.1" svgFill="green" />
+            <SvgLayer
+                parallaxLevelClassName="translate-z-32"
+                svgStroke="rgba(0, 255, 0, 1)"
+                svgStrokeWidth="0.05"
+                svgFill="rgba(0, 255, 0, 0.5)"
+                content={<></>}
+            />
 
-            <SvgLayer parallaxLevelClassName="translate-z-24" svgStroke="rgba(0, 255, 0, 0.75)" svgStrokeWidth="0.1" svgFill="red" />
+            <SvgLayer
+                parallaxLevelClassName="translate-z-24"
+                svgStroke="none"
+                svgStrokeWidth="0"
+                svgFill="rgba(0, 255, 0, 0.5)"
+                content={<></>}
+            />
 
             {/* Quad Layer: */}
             <ParallaxLayer
@@ -73,148 +71,62 @@ const ParallaxVisuals = () => {
                 content={<ParallaxQuadLayer />}
             />
 
-            <SvgLayer parallaxLevelClassName="translate-z-16" svgStroke="rgba(0, 225, 0, 0.75)" svgStrokeWidth="0.1" svgFill="red" />
-            <SvgLayer parallaxLevelClassName="translate-z-8" svgStroke="rgba(0, 200, 0, 0.75)" svgStrokeWidth="0.1" svgFill="red" />
-            <SvgLayer parallaxLevelClassName="translate-z-0" svgStroke="rgba(0, 175, 0, 0.75)" svgStrokeWidth="0.1" svgFill="red" />
+            <SvgLayer
+                parallaxLevelClassName="translate-z-16"
+                svgStroke="none"
+                svgStrokeWidth="0"
+                svgFill="rgba(0, 255, 0, 0.5)"
+                content={<Main menuCheckedStateSet={menuCheckedStateSet} />}
+            />
+            <SvgLayer
+                parallaxLevelClassName="translate-z-8"
+                svgStroke="none"
+                svgStrokeWidth="0"
+                svgFill="rgba(0, 255, 0, 0.5)"
+                content={<></>}
+            />
+            <SvgLayer
+                parallaxLevelClassName="translate-z-0"
+                svgStroke="none"
+                svgStrokeWidth="0"
+                svgFill="rgba(0, 255, 0, 0.5)"
+                content={<></>}
+            />
             <SvgLayer
                 parallaxLevelClassName="-translate-z-8"
-                svgStroke="rgba(0, 150, 0, 0.75)"
-                svgStrokeWidth="0.1"
-                svgFill="rgba(0, 0, 0, 0.155)"
+                svgStroke="none"
+                svgStrokeWidth="0"
+                svgFill="rgba(0, 255, 0, 0.4)"
+                content={<></>}
                 fill
             />
             <SvgLayer
                 parallaxLevelClassName="-translate-z-16"
-                svgStroke="rgba(0, 125, 0, 0.75)"
-                svgStrokeWidth="0.1"
-                svgFill="rgba(0, 0, 0, 0.5)"
+                svgStroke="none"
+                svgStrokeWidth="0"
+                svgFill="rgba(0, 255, 0, 0.3)"
+                content={<></>}
                 fill
             />
             <SvgLayer
                 parallaxLevelClassName="-translate-z-24"
-                svgStroke="rgba(0, 100, 0, 0.75)"
-                svgStrokeWidth="0.1"
-                svgFill="rgba(0, 0, 0, 0.75)"
+                svgStroke="none"
+                svgStrokeWidth="0"
+                svgFill="rgba(0, 255, 0, 0.2)"
+                content={<></>}
                 fill
             />
             <SvgLayer
                 parallaxLevelClassName="-translate-z-32"
-                svgStroke="rgba(0, 75, 0, 0.75)"
-                svgStrokeWidth="0.1"
-                svgFill="rgba(0, 0, 0, 1)"
+                svgStroke="none"
+                svgStrokeWidth="0"
+                svgFill="rgba(0, 255, 0, 0.1)"
+                content={<></>}
                 fill
             />
 
-            {/* Top: */}
-            {/* <ParallaxLayer
-                key={4}
-                parallaxLevelClassName="translate-z-32"
-                // extraClassNames="!shadow-green-600/50 !shadow-inner-sm bloom-svg will-change-filter !overflow-visible outline outline-2 outline-green-900/50 outline-offset-8"
-                extraClassNames="bloom-svg will-change-filter !overflow-visible"
-                // svgStyle={{ svg: "banana", svgStroke: "red", svgStrokeWidth: "20px", svgFill: "none" }}
-                content={<></>}
-            /> */}
-
-            {/* <ParallaxLayer key={3} parallaxLevelClassName="translate-z-24" extraClassNames="!shadow-green-700/10" content={<></>} /> */}
-        </>
-    );
-};
-
-const SvgLayer: FC<{
-    svgStroke: string;
-    svgStrokeWidth: string;
-    svgFill: string;
-    parallaxLevelClassName: string;
-    fill?: boolean;
-    bloom?: boolean;
-}> = ({ svgStroke, svgStrokeWidth, svgFill, parallaxLevelClassName, fill = false, bloom = false }) => {
-    const svgStyle = useMemo(() => {
-        return {
-            borderImageSource: `url('data:image/svg+xml,${returnSvg("frame", svgStroke, svgStrokeWidth, svgFill)}')`,
-
-            borderImageSlice: `15.5% 27.5% 15.5% 17.75% ${fill ? "fill" : ""}`,
-            borderImageWidth: "5rem 15.5rem 6rem 12.5rem",
-            borderImageRepeat: "repeat repeat",
-            borderImageOutset: "1rem",
-            borderStyle: "solid",
-        };
-    }, [svgStroke, svgStrokeWidth, svgFill, fill]);
-
-    return (
-        <div
-            className={classNames(
-                "shadow-inner-svg absolute bottom-0 left-0 right-0 top-0 m-auto box-border transform",
-                parallaxHoleDimensionClassNames,
-                parallaxLevelClassName,
-                bloom ? "bloom-svg" : "",
-            )}
-            style={svgStyle}
-        ></div>
-    );
-};
-
-const ParallaxLayer: FC<{
-    content: ReactNode;
-    parallaxLevelClassName: string;
-    extraClassNames?: string;
-    svgStyle?: {
-        svg: string;
-        svgStroke: string;
-        svgStrokeWidth: string;
-        svgFill: string;
-    };
-}> = ({ content, parallaxLevelClassName, extraClassNames, svgStyle }) => {
-    const [svgParams, setSvgParams] = useState({ svg: "banana", svgStroke: "purple", svgStrokeWidth: "10px", svgFill: "none" });
-
-    useLayoutEffect(() => {
-        if (svgStyle) {
-            setSvgParams(() => ({
-                svg: svgStyle.svg,
-                svgStroke: svgStyle.svgStroke,
-                svgStrokeWidth: svgStyle.svgStrokeWidth,
-                svgFill: svgStyle.svgFill,
-            }));
-        }
-    }, [svgStyle]);
-
-    return (
-        <div
-            className={classNames(
-                // "shadow-inner-md absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md border-2 border-green-800 shadow-black",
-                "parallax-border absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md shadow-yellow-500",
-                parallaxHoleDimensionClassNames,
-                parallaxLevelClassName,
-                extraClassNames,
-            )}
-            style={{
-                borderImageSource: `url('data:image/svg+xml,${returnSvg(svgParams.svg, svgParams.svgStroke, svgParams.svgStrokeWidth, svgParams.svgFill)}')`,
-            }}
-        >
-            {content}
-        </div>
-    );
-};
-
-const ParallaxMenu: FC<{
-    isEffectLayer: boolean;
-    menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>];
-}> = ({ isEffectLayer, menuCheckedStateSet }) => {
-    const [menuChecked] = menuCheckedStateSet;
-
-    return (
-        <>
-            {/* Menu: */}
-            {isEffectLayer && (
-                <MenuWrapper menuCheckedStateSet={menuCheckedStateSet} isNavMenu={true} positionClassNames="top-2 left-2 w-48 h-12" />
-            )}
-
-            {/* Menu: */}
-            {isEffectLayer && (
-                <MenuWrapper menuCheckedStateSet={menuCheckedStateSet} isNavMenu={false} positionClassNames="bottom-0 right-12 w-40 h-12" />
-            )}
-
             {/* Content: */}
-            {isEffectLayer && (
+            {/* {isEffectLayer && (
                 <ParallaxMenuLayer
                     key={0}
                     parallaxLevelClassName={"translate-z-0"}
@@ -225,7 +137,7 @@ const ParallaxMenu: FC<{
                     content={<Main menuCheckedStateSet={menuCheckedStateSet} />}
                     menuCheckedStateSet={menuCheckedStateSet}
                 />
-            )}
+            )} */}
 
             <ParallaxMenuLayer
                 id="Resume"
@@ -286,10 +198,19 @@ const ParallaxMenu: FC<{
                 }
                 menuCheckedStateSet={menuCheckedStateSet}
             />
+
+            {/* Nav Menu: */}
+            {isEffectLayer && (
+                <MenuWrapper menuCheckedStateSet={menuCheckedStateSet} isNavMenu={true} positionClassNames="top-2 left-2 w-48 h-12" />
+            )}
+
+            {/* TOC Menu: */}
+            {isEffectLayer && (
+                <MenuWrapper menuCheckedStateSet={menuCheckedStateSet} isNavMenu={false} positionClassNames="bottom-0 right-12 w-40 h-12" />
+            )}
         </>
     );
 };
-
 const ParallaxQuadLayer = () => {
     return (
         <div className="m-auto flex size-full flex-col items-center justify-start">
@@ -349,241 +270,6 @@ const ParallaxQuadLayer = () => {
             </div>
         </div>
     );
-};
-
-const MenuWrapper: FC<{
-    menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>];
-    isNavMenu: boolean;
-    positionClassNames: string;
-}> = ({ menuCheckedStateSet, isNavMenu, positionClassNames }) => {
-    const menuClassNames = "rounded-md bloom-svg pointer-events-none absolute border-2 border-slate-400 p-1.5";
-
-    return (
-        <>
-            <ParallaxMenuLayer
-                key={3.7}
-                parallaxLevelClassName={"translate-z-[8.5rem]"}
-                extraClassNames="transform"
-                content={<div className={classNames(menuClassNames, positionClassNames)} />}
-                menuCheckedStateSet={menuCheckedStateSet}
-            />
-            <ParallaxMenuLayer
-                key={3.8}
-                parallaxLevelClassName={"translate-z-[8.75rem]"}
-                extraClassNames="transform"
-                content={<div className={classNames(menuClassNames, positionClassNames)} />}
-                menuCheckedStateSet={menuCheckedStateSet}
-            />
-
-            <ParallaxMenuLayer
-                key={4}
-                parallaxLevelClassName={"translate-z-36"}
-                extraClassNames="transform"
-                content={
-                    isNavMenu ? (
-                        <NavMenu
-                            menuCheckedStateSet={menuCheckedStateSet}
-                            menuClassNames={classNames(menuClassNames, positionClassNames)}
-                        />
-                    ) : (
-                        <TocMenu
-                            menuCheckedStateSet={menuCheckedStateSet}
-                            menuClassNames={classNames(menuClassNames, positionClassNames)}
-                        />
-                    )
-                }
-                menuCheckedStateSet={menuCheckedStateSet}
-            />
-
-            <ParallaxMenuLayer
-                key={4.1}
-                parallaxLevelClassName={"translate-z-[9.25rem]"}
-                extraClassNames="transform"
-                content={<div className={classNames(menuClassNames, positionClassNames)} />}
-                menuCheckedStateSet={menuCheckedStateSet}
-            />
-        </>
-    );
-};
-
-const usedIndices: Record<string, number> = {};
-
-const ParallaxMenuLayer: FC<{
-    content: ReactNode;
-    menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>];
-    parallaxLevelClassName: string;
-    extraClassNames?: string;
-    style?: React.CSSProperties;
-    id?: string;
-}> = ({ content, menuCheckedStateSet, parallaxLevelClassName, extraClassNames, style, id }) => {
-    const [menuChecked] = menuCheckedStateSet;
-    const [nodeAnim, setNodeAnim] = useState<[HTMLDivElement, Animation]>();
-
-    const measureRef = useCallback((node: HTMLDivElement) => {
-        if (node) {
-            const id = node.getAttribute("id");
-            if (id) {
-                let startTileSet, startTile, startTileIndex;
-
-                if (id in usedIndices) {
-                    startTileIndex = usedIndices[id];
-                    startTile = tileLocations[startTileIndex];
-                } else {
-                    startTileSet = pickRandomFromArray(tileLocations);
-                    startTile = startTileSet[0];
-                    startTileIndex = startTileSet[1];
-                }
-
-                if (!(id in usedIndices)) {
-                    usedIndices[id] = startTileIndex;
-                }
-
-                const [startTileX, startTileY] = startTile;
-
-                node.style.setProperty("transform", `translate3d(${wrapLocation(startTileX)}%, ${wrapLocation(startTileY)}%, initial)`);
-
-                const movement = pickRandomFromArray(Object.values(keyframes(startTile, startTileIndex)))[0];
-                const anim = node.animate(...movement);
-                anim.finish();
-                setNodeAnim([node, anim]);
-            }
-        }
-    }, []);
-
-    useLayoutEffect(() => {
-        if (nodeAnim) {
-            const [node, anim] = nodeAnim;
-            anim.reverse();
-        }
-    }, [menuChecked.home, nodeAnim]);
-
-    return (
-        <div
-            id={`${id ? id.replace(" ", "") : id}-wrapper`}
-            ref={measureRef}
-            className={classNames(
-                "absolute bottom-0 left-0 right-0 top-0 m-auto rounded-md",
-                parallaxHoleDimensionClassNames,
-                parallaxLevelClassName,
-                extraClassNames,
-            )}
-            style={style}
-        >
-            {content}
-        </div>
-    );
-};
-
-const tileLocations = [
-    [0, 0],
-    [20, 0],
-    [40, 0],
-    [60, 0],
-    [80, 0],
-    [0, 20],
-    [20, 20],
-    [40, 20],
-    [60, 20],
-    [80, 20],
-    [0, 40],
-    [20, 40],
-    [40, 40],
-    [60, 40],
-    [80, 40],
-    [0, 60],
-    [20, 60],
-    [40, 60],
-    [60, 60],
-    [80, 60],
-    [0, 80],
-    [20, 80],
-    [40, 80],
-    [60, 80],
-    [80, 80],
-] as [number, number][];
-
-const delays = tileLocations.map((tileLoc, idx) => 100 * idx);
-
-const fadeInKeyframe: (startTile: [number, number]) => [PropertyIndexedKeyframes, KeyframeAnimationOptions] = (
-    startTile: [number, number],
-) => {
-    const [startTileX, startTileY] = wrapLocation(startTile);
-
-    return [
-        {
-            transform: [`translate3d(${startTileX}%, ${startTileY}%, -10rem)`, `translate3d(${startTileX}%, ${startTileY}%, -4rem)`],
-            opacity: [0, 1],
-            offset: [0.2],
-        },
-        {
-            duration: 500,
-            direction: "normal",
-            fill: "forwards",
-            iterations: 1,
-            delay: 100,
-            // playbackRate: 0,
-        },
-    ];
-};
-
-const keyframes: (
-    startTile: [number, number],
-    delayIndex: number,
-) => Record<string, [PropertyIndexedKeyframes, KeyframeAnimationOptions]> = (startTile: [number, number], delayIndex) => {
-    const [startTileX, startTileY] = startTile;
-
-    return {
-        leftToRight: [
-            {
-                opacity: [0.25, 1],
-                transform: [
-                    `translate3d(${startTileX}%, ${startTileY}%, -8rem)`,
-                    `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY)}%, -4rem)`,
-                    `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY + 60)}%, -4rem)`,
-                    `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY + 60)}%, 4rem)`,
-                ],
-                offset: [0.001, 0.2, 0.666],
-            },
-            {
-                duration: 700,
-                direction: "normal",
-                fill: "forwards",
-                iterations: 1,
-                delay: delays[delayIndex],
-                // playbackRate: 0,
-            },
-        ],
-        // rightToLeft: [
-        //     {
-        //         opacity: [0, 1],
-        //         transform: [
-        //             `translate3d(${startTileX}%, ${startTileY}%, -4rem)`,
-        //             `translate3d(${startTileX}%, ${startTileY}%, -4rem)`,
-        //             `translate3d(${startTileX}%, ${startTileY}%, -4rem)`,
-        //             `translate3d(${startTileX}%, ${startTileY}%, 4rem)`,
-        //         ],
-        //         offset: [0.3, 0.6],
-        //     },
-        //     {
-        //         duration: 1500,
-        //         direction: "normal",
-        //         fill: "forwards",
-        //         iterations: 1,
-        //         delay: 100,
-        //         // playbackRate: 0,
-        //     },
-        // ],
-    };
-};
-
-const wrapLocation = (tileAxisLoc: number) => {
-    let newTileAxisLoc = tileAxisLoc;
-
-    if (newTileAxisLoc >= 80) {
-        newTileAxisLoc = 0;
-    }
-
-    return newTileAxisLoc;
 };
 
 const parallaxEffect = (smoothing: number) => {

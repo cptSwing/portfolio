@@ -29,7 +29,7 @@
      showborder="true"
      inkscape:zoom="11.313709"
      inkscape:cx="19.445436"
-     inkscape:cy="17.89864"
+     inkscape:cy="17.987028"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
      inkscape:window-x="-8"
@@ -87,7 +87,11 @@
   </defs>
   <path
      id="path4"
-     style="color:#000000;display:inline;fill:#f63eca;stroke-miterlimit:1.3;fill-opacity:1;stroke-width:0.99906867;stroke-dasharray:none"
+     style="color:#000000;display:inline;fill:#f63eca;fill-opacity:1;stroke-width:0.999069;stroke-miterlimit:1.3;stroke-dasharray:none"
      d="m 15.597529,0.21084026 0.19327,0.19740436 V 9.5937489 l -0.19327,0.1953373 H 15.53345 V 9.0976541 L 15.171714,8.732301 H 12.162073 L 11.800854,9.0976541 V 9.7890862 H 0.40411051 L 0.21084027,9.5937489 V 1.3497911 H 1.5353099 L 2.6585387,0.21166709 Z M 2.4807383,-0.21166709 1.3575422,0.92552675 H 0 L -0.21084027,1.1368838 V 9.767382 l 0.43925056,0.445452 H 12.013761 l 0.21084,-0.21084 V 9.2712873 l 0.115239,-0.116789 h 2.656174 l 0.113172,0.116789 v 0.7307067 l 0.212907,0.21084 h 0.451136 L 16.212996,9.767382 V 0.23461147 l -0.439767,-0.44545174 z"
-     sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccc" />
+     sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccc"
+     inkscape:export-filename="frame.svg"
+     inkscape:export-xdpi="72"
+     inkscape:export-ydpi="72"
+     sodipodi:insensitive="true" />
 </svg>
