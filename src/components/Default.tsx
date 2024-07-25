@@ -5,7 +5,7 @@ import viteLogo from "/vite.svg";
 const Default = () => {
     const [count, setCount] = useState(0);
     return (
-        <>
+        <div id="default-content" className="flex flex-col items-center justify-between">
             <p className="read-the-docs">
                 Click on the Vite and React logos to learn more Click on the Vite and React logos to learn more Click on the Vite and React
                 logos to learn more Click on the Vite and React logos to learn more
@@ -46,7 +46,7 @@ const Default = () => {
                 </p>
             </div>
             <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-        </>
+        </div>
     );
 };
 export default Default;

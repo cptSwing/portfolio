@@ -10,21 +10,23 @@ export type MenuCheckedType = {
     [key: string]: boolean;
 };
 
+const menuCheckedDefault: MenuCheckedType = {
+    default: true,
+    home: false,
+    back: false,
+    forward: false,
+    settings: false,
+    viewCode: false,
+    resume: false,
+    code: false,
+    art: false,
+};
+
 const ParallaxScene = () => {
-    const menuCheckedStateSet = useState<MenuCheckedType>({
-        default: true,
-        home: false,
-        back: false,
-        forward: false,
-        settings: false,
-        viewCode: false,
-        resume: false,
-        code: false,
-        art: false,
-    });
+    const menuCheckedStateSet = useState<MenuCheckedType>(menuCheckedDefault);
 
     useEffect(() => {
-        parallaxEffect(1);
+        // parallaxEffect(1);
     }, []);
 
     return (

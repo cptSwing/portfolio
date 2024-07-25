@@ -1,3 +1,4 @@
+import { menuSetter } from "./NavMenu";
 import { MenuCheckedType } from "./ParallaxScene";
 import { FC } from "react";
 
@@ -13,15 +14,7 @@ const TocMenu: FC<{
                 <input
                     type="checkbox"
                     className="peer pointer-events-none hidden"
-                    onChange={() =>
-                        setMenuChecked((menuChecked) => {
-                            const newState = { ...menuChecked };
-                            for (const key in newState) {
-                                newState[key as string] = key === "resume" ? !newState[key] : false;
-                            }
-                            return newState;
-                        })
-                    }
+                    onChange={() => setMenuChecked((menuChecked) => menuSetter(menuChecked, "resume"))}
                     checked={resume}
                 />
                 <div className="pointer-events-auto inline-block cursor-pointer select-none rounded-sm border-pink-500 p-1 hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black">
@@ -33,15 +26,7 @@ const TocMenu: FC<{
                 <input
                     type="checkbox"
                     className="peer pointer-events-none hidden"
-                    onChange={() =>
-                        setMenuChecked((menuChecked) => {
-                            const newState = { ...menuChecked };
-                            for (const key in newState) {
-                                newState[key as string] = key === "code" ? !newState[key] : false;
-                            }
-                            return newState;
-                        })
-                    }
+                    onChange={() => setMenuChecked((menuChecked) => menuSetter(menuChecked, "code"))}
                     checked={code}
                 />
                 <div className="pointer-events-auto inline-block cursor-pointer select-none rounded-sm border-indigo-500 p-1 hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black">
@@ -53,15 +38,7 @@ const TocMenu: FC<{
                 <input
                     type="checkbox"
                     className="peer pointer-events-none hidden"
-                    onChange={() =>
-                        setMenuChecked((menuChecked) => {
-                            const newState = { ...menuChecked };
-                            for (const key in newState) {
-                                newState[key as string] = key === "art" ? !newState[key] : false;
-                            }
-                            return newState;
-                        })
-                    }
+                    onChange={() => setMenuChecked((menuChecked) => menuSetter(menuChecked, "art"))}
                     checked={art}
                 />
                 <div className="pointer-events-auto inline-block cursor-pointer select-none rounded-sm border-fuchsia-500 p-1 hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black">

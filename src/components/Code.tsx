@@ -1,6 +1,6 @@
 const Code = () => {
     return (
-        <div className="text-blue-300">
+        <div id="code-content" className="text-blue-300">
             <h2 className="text-center">CODE</h2> <br />
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas enim velit, finibus a pellentesque vel, suscipit eu diam.
             Nulla nisi lorem, imperdiet sit amet maximus eu, aliquam volutpat nisl. Aenean ac lacus a justo consequat dictum quis a enim.

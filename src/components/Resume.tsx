@@ -1,6 +1,6 @@
 const Resume = () => {
     return (
-        <div className="text-red-400">
+        <div id="resume-content" className="text-red-400">
             <h2 className="text-center">RESUME</h2>
             <br />
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas enim velit, finibus a pellentesque vel, suscipit eu diam.

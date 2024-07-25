@@ -1,6 +1,6 @@
 const Art = () => {
     return (
-        <div className="text-green-600">
+        <div id="art-content" className="text-green-600">
             <h2 className="text-center">ART</h2>
             <br />
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas enim velit, finibus a pellentesque vel, suscipit eu diam.
