@@ -84,7 +84,7 @@ button {
 }
 
 .frame-transition-enter-done {
-    @apply translate-x-0 overflow-y-scroll;
+    @apply translate-x-0 overflow-y-auto;
 }
 
 .frame-transition-exit {
