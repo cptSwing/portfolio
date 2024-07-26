@@ -1,85 +1,65 @@
-import {
-    AdjustmentsHorizontalIcon,
-    ArrowUturnLeftIcon,
-    ArrowUturnRightIcon,
-    CodeBracketSquareIcon,
-    HomeIcon,
-} from "@heroicons/react/20/solid";
-import { MenuCheckedType } from "./ParallaxScene";
-import { FC } from "react";
+import { AdjustmentsHorizontalIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, CodeBracketSquareIcon, HomeIcon } from '@heroicons/react/20/solid';
+import { FC } from 'react';
+import { MENUTARGET } from '../types/types';
+import { useZustand } from '../lib/zustand';
 
-export const menuSetter = (menuChecked: MenuCheckedType, menuKey: string) => {
-    const newState = { ...menuChecked };
-
-    // Toggle menuKey, set all others to false
-    for (const key in newState) {
-        newState[key] = key === menuKey ? !newState[key] : false;
-    }
-
-    // If all keys are 'false', set default to true
-    if (newState[menuKey] === false) {
-        newState.default = true;
-    }
-
-    return newState;
-};
+const store_toggleMenuItem = useZustand.getState().methods.store_toggleMenuItem;
 
 const NavMenu: FC<{
-    menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>];
     menuClassNames: string;
-}> = ({ menuCheckedStateSet, menuClassNames }) => {
-    const [{ home, back, forward, settings, viewCode }, setMenuChecked] = menuCheckedStateSet;
+}> = ({ menuClassNames }) => {
+    const { home, back, forward, settings, viewCode } = useZustand((state) => state.menuState);
 
     return (
-        <nav className={"flex items-center justify-between gap-x-1" + " " + menuClassNames}>
+        <nav className={'flex items-center justify-between gap-x-1' + ' ' + menuClassNames}>
             <label>
                 <input
-                    type="checkbox"
-                    className="peer pointer-events-none hidden"
-                    onChange={() => setMenuChecked((menuChecked) => menuSetter(menuChecked, "home"))}
+                    type='checkbox'
+                    className='peer pointer-events-none hidden'
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.Home : null)}
                     checked={home}
                 />
-                <HomeIcon className="pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-pink-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black" />
+                <HomeIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-pink-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
             </label>
 
             <label>
                 <input
-                    type="checkbox"
-                    className="peer pointer-events-none hidden"
-                    onChange={() => setMenuChecked((menuChecked) => menuSetter(menuChecked, "back"))}
+                    type='checkbox'
+                    className='peer pointer-events-none hidden'
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.Back : null)}
                     checked={back}
                 />
-                <ArrowUturnLeftIcon className="pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-indigo-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black" />
+                <ArrowUturnLeftIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-indigo-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
             </label>
 
             <label>
                 <input
-                    type="checkbox"
-                    className="peer pointer-events-none hidden"
-                    onChange={() => setMenuChecked((menuChecked) => menuSetter(menuChecked, "forward"))}
+                    type='checkbox'
+                    className='peer pointer-events-none hidden'
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.Forward : null)}
                     checked={forward}
                 />
-                <ArrowUturnRightIcon className="pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-indigo-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black" />
+                <ArrowUturnRightIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-indigo-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
             </label>
 
             <label>
                 <input
-                    type="checkbox"
-                    className="peer pointer-events-none hidden"
-                    onChange={() => setMenuChecked((menuChecked) => menuSetter(menuChecked, "settings"))}
+                    type='checkbox'
+                    className='peer pointer-events-none hidden'
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.Settings : null)}
                     checked={settings}
                 />
-                <AdjustmentsHorizontalIcon className="pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-fuchsia-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black" />
+                <AdjustmentsHorizontalIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-fuchsia-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
             </label>
 
             <label>
                 <input
-                    type="checkbox"
-                    className="peer pointer-events-none hidden"
-                    onChange={() => setMenuChecked((menuChecked) => menuSetter(menuChecked, "viewCode"))}
+                    type='checkbox'
+                    className='peer pointer-events-none hidden'
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.ViewCode : null)}
                     checked={viewCode}
                 />
-                <CodeBracketSquareIcon className="pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-fuchsia-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black" />
+                <CodeBracketSquareIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-fuchsia-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
             </label>
         </nav>
     );

@@ -1,8 +1,9 @@
 import { FC, useMemo, ReactNode, useState, useLayoutEffect, useCallback } from "react";
 import classNames from "../lib/classNames";
 import returnSvg from "../lib/returnSvg";
-import { MenuCheckedType, parallaxHoleDimensionClassNames } from "./ParallaxScene";
+import { parallaxHoleDimensionClassNames } from "./ParallaxScene";
 import pickRandomFromArray from "../lib/pickRandomFromArray";
+import { useZustand } from "../lib/zustand";
 
 export const SvgLayer: FC<{
     content: ReactNode;
@@ -88,13 +89,13 @@ const usedIndices: Record<string, number> = {};
 
 export const ParallaxMenuLayer: FC<{
     content: ReactNode;
-    menuCheckedStateSet: [MenuCheckedType, React.Dispatch<React.SetStateAction<MenuCheckedType>>];
     parallaxLevelClassName: string;
     extraClassNames?: string;
     style?: React.CSSProperties;
     id?: string;
-}> = ({ content, menuCheckedStateSet, parallaxLevelClassName, extraClassNames, style, id }) => {
-    const [menuChecked] = menuCheckedStateSet;
+}> = ({ content, parallaxLevelClassName, extraClassNames, style, id }) => {
+    const menuState = useZustand((state) => state.menuState);
+
     const [nodeAnim, setNodeAnim] = useState<[HTMLDivElement, Animation]>();
 
     const measureRef = useCallback((node: HTMLDivElement) => {
@@ -133,7 +134,7 @@ export const ParallaxMenuLayer: FC<{
             const [node, anim] = nodeAnim;
             anim.reverse();
         }
-    }, [menuChecked.home, nodeAnim]);
+    }, [menuState.home, nodeAnim]);
 
     return (
         <div

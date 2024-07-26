@@ -6,10 +6,6 @@
     --parallax-vertical: 0;
     --parallax-horizontal: 0;
     --parallax-transition: 1.5s cubic-bezier(0.05, 0.5, 0, 1);
-
-    --banana-stroke-color: white;
-    --banana-stroke-width: 1px;
-    /* --bloom-color:  */
 }
 
 body {
@@ -65,6 +61,44 @@ button {
     @apply [filter:saturate(200%)_url(src/assets/filters.svg#bloom-svg-filter)];
 }
 
+/* Classes necessary for CSSTransition: */
+
+/* .frame-transition-appear {
+    @apply -translate-x-full;
+}
+
+.frame-transition-appear-active {
+    @apply translate-x-0 transition-transform duration-[2000ms];
+}
+
+.frame-transition-appear-done {
+    @apply translate-x-0;
+} */
+
+.frame-transition-enter {
+    @apply -translate-x-full overflow-hidden;
+}
+
+.frame-transition-enter-active {
+    @apply translate-x-0 transition-transform;
+}
+
+.frame-transition-enter-done {
+    @apply translate-x-0 overflow-y-scroll;
+}
+
+.frame-transition-exit {
+    @apply translate-x-0 overflow-hidden;
+}
+
+.frame-transition-exit-active {
+    @apply -translate-x-full transition-transform;
+}
+
+.frame-transition-exit-done {
+    @apply -translate-x-full overflow-hidden;
+}
+
 .translateZ-0 {
     transform: translateZ(0);
 }
@@ -96,6 +130,8 @@ button {
 .-translateZ-400 {
     transform: translateZ(-100rem);
 }
+
+/* Default classes from Vite default content: */
 
 .logo {
     height: 6em;
