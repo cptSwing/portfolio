@@ -1,8 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export const usePrevious = <T>(val: T): T | undefined => {
     const ref = useRef<T | undefined>();
-
     useEffect(() => {
         ref.current = val;
     }, [val]);
@@ -31,4 +30,26 @@ export const usePreviousPersistent = <T>(val: T): T | undefined | null => {
 
     // return the previous value only
     return ref.current.prev;
+};
+
+// Being a hook and all, the return value should be 'reactive' when used in a component
+export const usePreviousPersistentArray = <T>(arr: T[] | undefined | null): { previous: T[] | undefined | null; hasChanged: boolean } => {
+    const ref = useRef<{ arr: T[] | undefined | null; prev: T[] | undefined | null }>({
+        arr,
+        prev: null,
+    });
+
+    const current = ref.current.arr;
+    const allIdentical = current?.every((elem, idx) => {
+        return elem === arr?.[idx];
+    });
+
+    if (!allIdentical) {
+        ref.current = {
+            arr,
+            prev: current,
+        };
+    }
+
+    return { previous: ref.current.prev, hasChanged: !allIdentical };
 };
