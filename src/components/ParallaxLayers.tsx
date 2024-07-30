@@ -1,9 +1,9 @@
-import { FC, useMemo, ReactNode, useState, useLayoutEffect, useCallback } from "react";
-import classNames from "../lib/classNames";
-import returnSvg from "../lib/returnSvg";
-import { parallaxHoleDimensionClassNames } from "./ParallaxScene";
-import pickRandomFromArray from "../lib/pickRandomFromArray";
-import { useZustand } from "../lib/zustand";
+import { FC, useMemo, ReactNode, useState, useLayoutEffect, useCallback } from 'react';
+import classNames from '../lib/classNames';
+import returnSvg from '../lib/returnSvg';
+import { parallaxHoleDimensionClassNames } from './ParallaxScene';
+import pickRandomFromArray from '../lib/pickRandomFromArray';
+import { useZustand } from '../lib/zustand';
 
 export const SvgLayer: FC<{
     content: ReactNode;
@@ -15,26 +15,26 @@ export const SvgLayer: FC<{
     bloom?: boolean;
 }> = ({ content, svgStroke, svgStrokeWidth, svgFill, parallaxLevelClassName, fill = false, bloom = false }) => {
     const svgStyle = useMemo(() => {
-        const { svg, svgSlice, svgSliceWidth } = returnSvg("frame", svgStroke, svgStrokeWidth, svgFill);
+        const { svg, svgSlice, svgSliceWidth } = returnSvg('frame', svgStroke, svgStrokeWidth, svgFill);
 
         return {
             borderImageSource: `url('data:image/svg+xml,${svg}')`,
 
-            borderImageSlice: `${svgSlice} ${fill ? "fill" : ""}`,
+            borderImageSlice: `${svgSlice} ${fill ? 'fill' : ''}`,
             borderImageWidth: svgSliceWidth,
-            borderImageRepeat: "repeat repeat",
-            borderImageOutset: "1rem",
-            borderStyle: "solid",
+            borderImageRepeat: 'repeat repeat',
+            borderImageOutset: '1rem',
+            borderStyle: 'solid',
         };
     }, [svgStroke, svgStrokeWidth, svgFill, fill]);
 
     return (
         <div
             className={classNames(
-                "shadow-inner-svg absolute bottom-0 left-0 right-0 top-0 m-auto box-border transform",
+                'shadow-inner-svg absolute bottom-0 left-0 right-0 top-0 m-auto box-border transform',
                 parallaxHoleDimensionClassNames,
                 parallaxLevelClassName,
-                bloom ? "bloom-svg" : "",
+                bloom ? 'bloom-svg' : '',
             )}
             style={svgStyle}
         >
@@ -54,7 +54,7 @@ export const ParallaxLayer: FC<{
         svgFill: string;
     };
 }> = ({ content, parallaxLevelClassName, extraClassNames, svgStyle }) => {
-    const [svgParams, setSvgParams] = useState({ svg: "banana", svgStroke: "purple", svgStrokeWidth: "10px", svgFill: "none" });
+    const [svgParams, setSvgParams] = useState({ svg: 'banana', svgStroke: 'purple', svgStrokeWidth: '10px', svgFill: 'none' });
 
     useLayoutEffect(() => {
         if (svgStyle) {
@@ -71,13 +71,13 @@ export const ParallaxLayer: FC<{
         <div
             className={classNames(
                 // "shadow-inner-md absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md border-2 border-green-800 shadow-black",
-                "parallax-border absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md shadow-yellow-500",
+                'parallax-border absolute bottom-0 left-0 right-0 top-0 m-auto transform overflow-hidden rounded-md shadow-yellow-500',
                 parallaxHoleDimensionClassNames,
                 parallaxLevelClassName,
                 extraClassNames,
             )}
             style={{
-                borderImageSource: `url('data:image/svg+xml,${returnSvg(svgParams.svg, svgParams.svgStroke, svgParams.svgStrokeWidth, svgParams.svgFill)}')`,
+                borderImageSource: `url('data:image/svg+xml,${returnSvg(svgParams.svg, svgParams.svgStroke, svgParams.svgStrokeWidth, svgParams.svgFill).svg}')`,
             }}
         >
             {content}
@@ -100,7 +100,7 @@ export const ParallaxMenuLayer: FC<{
 
     const measureRef = useCallback((node: HTMLDivElement) => {
         if (node) {
-            const id = node.getAttribute("id");
+            const id = node.getAttribute('id');
             if (id) {
                 let startTileSet, startTile, startTileIndex;
 
@@ -118,8 +118,9 @@ export const ParallaxMenuLayer: FC<{
                 }
 
                 const [startTileX, startTileY] = startTile;
+                console.log('%c[ParallaxLayers]', 'color: #f3b2a7', `startTileX, startTileY :`, startTileX, startTileY);
 
-                node.style.setProperty("transform", `translate3d(${wrapLocation(startTileX)}%, ${wrapLocation(startTileY)}%, initial)`);
+                node.style.setProperty('transform', `translate3d(${wrapLocation(startTileX)}%, ${wrapLocation(startTileY)}%, initial)`);
 
                 const movement = pickRandomFromArray(Object.values(keyframes(startTile, startTileIndex)))[0];
                 const anim = node.animate(...movement);
@@ -138,10 +139,10 @@ export const ParallaxMenuLayer: FC<{
 
     return (
         <div
-            id={`${id ? id.replace(" ", "") : id}-wrapper`}
+            id={`${id ? id.replace(' ', '') : id}-wrapper`}
             ref={measureRef}
             className={classNames(
-                "absolute bottom-0 left-0 right-0 top-0 m-auto rounded-md",
+                'absolute bottom-0 left-0 right-0 top-0 m-auto rounded-md',
                 parallaxHoleDimensionClassNames,
                 parallaxLevelClassName,
                 extraClassNames,
@@ -193,10 +194,10 @@ const wrapLocation = (tileAxisLoc: number) => {
     return newTileAxisLoc;
 };
 
-const keyframes: (
+const keyframes: (startTile: [number, number], delayIndex: number) => Record<string, [PropertyIndexedKeyframes, KeyframeAnimationOptions]> = (
     startTile: [number, number],
-    delayIndex: number,
-) => Record<string, [PropertyIndexedKeyframes, KeyframeAnimationOptions]> = (startTile: [number, number], delayIndex) => {
+    delayIndex,
+) => {
     const [startTileX, startTileY] = startTile;
 
     return {
@@ -205,16 +206,16 @@ const keyframes: (
                 opacity: [0.25, 1],
                 transform: [
                     `translate3d(${startTileX}%, ${startTileY}%, -8rem)`,
-                    `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY)}%, -4rem)`,
-                    `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY + 60)}%, -4rem)`,
-                    `translate3d(${wrapLocation(startTileX + 40)}%, ${wrapLocation(startTileY + 60)}%, 4rem)`,
+                    `translate3d(${wrapLocation(startTileX + 20)}%, ${wrapLocation(startTileY)}%, -4rem)`,
+                    `translate3d(${wrapLocation(startTileX + 20)}%, ${wrapLocation(startTileY + 40)}%, -4rem)`,
+                    `translate3d(${wrapLocation(startTileX + 20)}%, ${wrapLocation(startTileY + 40)}%, 4rem)`,
                 ],
                 offset: [0.001, 0.2, 0.666],
             },
             {
                 duration: 700,
-                direction: "normal",
-                fill: "forwards",
+                direction: 'normal',
+                fill: 'forwards',
                 iterations: 1,
                 delay: delays[delayIndex],
                 // playbackRate: 0,

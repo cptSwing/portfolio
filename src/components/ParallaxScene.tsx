@@ -54,36 +54,13 @@ const ParallaxVisuals: FC<{
             <SvgLayer parallaxLevelClassName='-translate-z-24' svgStroke='none' svgStrokeWidth='0' svgFill='rgba(0, 255, 0, 0.2)' content={<></>} fill />
             <SvgLayer parallaxLevelClassName='-translate-z-32' svgStroke='none' svgStrokeWidth='0' svgFill='rgba(0, 255, 0, 0.1)' content={<></>} fill />
 
-            {/* Content: */}
-            {/* {isEffectLayer && (
-                <ParallaxMenuLayer
-                    key={0}
-                    parallaxLevelClassName={"translate-z-0"}
-                    extraClassNames={classNames(
-                        "p-6 delay-200 duration-300 transform",
-                        menuChecked.home ? "-translate-x-full" : "translate-x-0",
-                    )}
-                    content={<Main menuCheckedStateSet={menuCheckedStateSet} />}
-                    menuCheckedStateSet={menuCheckedStateSet}
-                />
-            )} */}
-
             <ParallaxMenuLayer
                 id='Resume'
                 key={-1.5}
                 parallaxLevelClassName='-translateZ-400'
-                extraClassNames='p-8  opacity-0'
+                extraClassNames='p-8 opacity-0'
                 content={
-                    <div
-                        className={classNames(
-                            'h-1/5 w-1/5 rounded-md border-2 border-dashed border-transparent p-1 outline outline-offset-2 outline-green-800/50',
-                            isEffectLayer
-                                ? 'pointer-events-auto cursor-pointer hover:border-2 hover:border-l-white hover:border-t-white hover:outline-4 hover:outline-green-800/70'
-                                : 'bg-gray-400 outline-2',
-                        )}
-                    >
-                        {isEffectLayer && <h2>Resume</h2>}
-                    </div>
+                    <div className='pointer-events-auto h-1/5 w-1/5 cursor-pointer rounded-md border-2 border-dashed border-transparent bg-gray-500 p-1 outline outline-offset-2 outline-green-800/50 hover:border-2 hover:border-l-white hover:border-t-white hover:outline-4 hover:outline-green-800/70'></div>
                 }
             />
 
@@ -91,18 +68,9 @@ const ParallaxVisuals: FC<{
                 id='Code'
                 key={-2.5}
                 parallaxLevelClassName='-translateZ-400'
-                extraClassNames='p-8  opacity-0'
+                extraClassNames='p-8 opacity-0'
                 content={
-                    <div
-                        className={classNames(
-                            'h-1/5 w-1/5 rounded-md border-2 border-purple-400 p-1',
-                            isEffectLayer
-                                ? 'bloom-svg pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-green-600'
-                                : 'bg-gray-400',
-                        )}
-                    >
-                        {!isEffectLayer && 'Code'}
-                    </div>
+                    <div className='bloom-svg pointer-events-auto h-1/5 w-1/5 cursor-pointer rounded-md border-2 border-purple-400 bg-gray-500 p-1 will-change-filter hover:border-2 hover:border-green-600'></div>
                 }
             />
 
@@ -110,18 +78,9 @@ const ParallaxVisuals: FC<{
                 id='3D Art'
                 key={-3.5}
                 parallaxLevelClassName='-translateZ-400'
-                extraClassNames={classNames('p-8  opacity-0')}
+                extraClassNames={classNames('p-8 opacity-0')}
                 content={
-                    <div
-                        className={classNames(
-                            'h-1/5 w-1/5 rounded-md border-2 border-red-900 p-1',
-                            isEffectLayer
-                                ? 'bloom-svg pointer-events-auto cursor-pointer will-change-filter hover:border-2 hover:border-red-400'
-                                : 'bg-gray-400',
-                        )}
-                    >
-                        {!isEffectLayer && '3D Art'}
-                    </div>
+                    <div className='bloom-svg pointer-events-auto h-1/5 w-1/5 cursor-pointer rounded-md border-2 border-red-900 bg-gray-500 p-1 will-change-filter hover:border-2 hover:border-red-400'></div>
                 }
             />
 
@@ -133,6 +92,7 @@ const ParallaxVisuals: FC<{
         </>
     );
 };
+
 const ParallaxQuadLayer = () => {
     return (
         <div className='m-auto flex size-full flex-col items-center justify-start'>

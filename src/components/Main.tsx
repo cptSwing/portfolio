@@ -6,7 +6,6 @@ import Settings from './Settings';
 import ViewCode from './ViewCode';
 import { CSSTransition } from 'react-transition-group';
 import Default from './Default';
-import { usePrevious } from '../hooks/usePrevious';
 import { MENUTARGET } from '../types/types';
 import { useZustand } from '../lib/zustand';
 
@@ -23,9 +22,10 @@ const menuContentPairings: Record<MENUTARGET, JSX.Element> = {
 };
 
 const Main: FC = () => {
-    const menuState = useZustand((state) => state.menuState);
+    // const menuState = useZustand((state) => state.menuState);
     const menuLastUpdated = useZustand((state) => state.menuLastUpdated);
 
+    const nodeRef = useRef(null);
     const [inProp, setInProp] = useState(true);
     const [childComponent, setChildComponent] = useState(menuContentPairings[menuLastUpdated]);
 
@@ -33,28 +33,8 @@ const Main: FC = () => {
         setInProp(false);
     }, [menuLastUpdated]);
 
-    // useEffect(() => {
-    //     const menuCheckedKeys = Object.keys(menuState) as MENUTARGET[];
-
-    //     menuCheckedKeys.length &&
-    //         menuCheckedKeys.every((key) => {
-    //             if (menuState[key]) {
-    //                 setActiveMenuItem(key);
-    //                 return false;
-    //             } else {
-    //                 return true;
-    //             }
-    //         });
-    // }, [menuState, previousMenuItem, inProp]);
-
-    const nodeRef = useRef(null);
-
     return (
         <>
-            <div className='pointer-events-auto flex w-full items-center justify-center'>
-                <button className='bg-blue-200' onClick={() => setInProp((inProp) => !inProp)}>{`${inProp}`}</button>
-            </div>
-
             <CSSTransition
                 in={inProp}
                 nodeRef={nodeRef}
@@ -69,7 +49,7 @@ const Main: FC = () => {
                     setInProp(true);
                 }}
             >
-                <main ref={nodeRef} className='pointer-events-auto size-full overflow-x-hidden overflow-y-scroll p-12' /* bg-black/10 */>
+                <main ref={nodeRef} className='scrollbar-gutter pointer-events-auto size-full overflow-y-auto overflow-x-hidden p-12' /* bg-black/10 */>
                     {childComponent}
                 </main>
             </CSSTransition>

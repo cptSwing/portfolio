@@ -56,6 +56,11 @@ button {
     filter: none !important;
 }
 
+.scrollbar-gutter {
+    /* scrollbar-gutter: both-edges; */
+    scrollbar-gutter: stable both-edges;
+}
+
 .bloom-svg {
     /* filter: saturate(200%) url(src/assets/filters.svg#bloom-svg-filter); */
     @apply [filter:saturate(200%)_url(src/assets/filters.svg#bloom-svg-filter)];
@@ -76,7 +81,7 @@ button {
 } */
 
 .frame-transition-enter {
-    @apply -translate-x-full overflow-hidden;
+    @apply -translate-x-full;
 }
 
 .frame-transition-enter-active {
@@ -84,11 +89,11 @@ button {
 }
 
 .frame-transition-enter-done {
-    @apply translate-x-0 overflow-y-auto;
+    @apply translate-x-0;
 }
 
 .frame-transition-exit {
-    @apply translate-x-0 overflow-hidden;
+    @apply translate-x-0;
 }
 
 .frame-transition-exit-active {
@@ -96,7 +101,7 @@ button {
 }
 
 .frame-transition-exit-done {
-    @apply -translate-x-full overflow-hidden;
+    @apply -translate-x-full;
 }
 
 .translateZ-0 {

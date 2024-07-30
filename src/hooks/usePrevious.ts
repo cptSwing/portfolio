@@ -19,7 +19,6 @@ export const usePreviousPersistent = <T>(val: T): T | undefined | null => {
     });
 
     const current = ref.current.val;
-
     // if the value passed into hook doesn't match what we store as "current", move the "current" to the "previous" and store the passed value as "current"
     if (val !== current) {
         ref.current = {
@@ -27,29 +26,29 @@ export const usePreviousPersistent = <T>(val: T): T | undefined | null => {
             prev: current,
         };
     }
-
     // return the previous value only
     return ref.current.prev;
 };
 
 // Being a hook and all, the return value should be 'reactive' when used in a component
-export const usePreviousPersistentArray = <T>(arr: T[] | undefined | null): { previous: T[] | undefined | null; hasChanged: boolean } => {
-    const ref = useRef<{ arr: T[] | undefined | null; prev: T[] | undefined | null }>({
-        arr,
+export const usePreviousPersistentArray = <T>(arrIncoming: T[] | undefined | null): T[] | undefined | null => {
+    const ref = useRef<{ arr: T[] | undefined | null; prev: T[] | undefined | null } | null>({
+        arr: arrIncoming,
         prev: null,
     });
+    const currentArr = ref.current?.arr;
+    let areIdentical = true;
 
-    const current = ref.current.arr;
-    const allIdentical = current?.every((elem, idx) => {
-        return elem === arr?.[idx];
-    });
+    if (arrIncoming?.length && currentArr?.length) {
+        areIdentical = arrIncoming.every((elem, idx) => elem === currentArr[idx]) || false;
+    }
 
-    if (!allIdentical) {
+    if (!areIdentical) {
         ref.current = {
-            arr,
-            prev: current,
+            arr: arrIncoming,
+            prev: currentArr,
         };
     }
 
-    return { previous: ref.current.prev, hasChanged: !allIdentical };
+    return ref.current?.prev;
 };
