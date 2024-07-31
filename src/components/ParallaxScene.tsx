@@ -1,21 +1,21 @@
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import classNames from '../lib/classNames';
 import Main from './Main';
 import MenuWrapper from './MenuWrapper';
-import { ParallaxLayer, ParallaxMenuLayer, SvgLayer } from './ParallaxLayers';
+import { ParallaxLayer, ParallaxMenuCard, SvgLayer } from './ParallaxLayers';
 
-export const parallaxHoleDimensionClassNames = 'h-2/3 w-4/5';
+export const parallaxHoleDimensionClassNames = 'h-3/4  w-3/4';
 
 const ParallaxScene = () => {
     useEffect(() => {
-        // parallaxEffect(1);
+        parallaxEffect(0.5);
     }, []);
 
     return (
         <div id='parallax' className='h-dvh w-dvw'>
             <div id='parallax-visuals' className='pointer-events-none absolute bottom-0 left-0 right-0 top-0 mt-8 perspective-1000'>
                 <div className='parallax-transform size-full translate-z-36 backface-hidden transform-style-3d'>
-                    <ParallaxVisuals isEffectLayer={true} />
+                    <ParallaxVisuals />
                 </div>
             </div>
         </div>
@@ -24,9 +24,7 @@ const ParallaxScene = () => {
 
 export default ParallaxScene;
 
-const ParallaxVisuals: FC<{
-    isEffectLayer: boolean;
-}> = ({ isEffectLayer }) => {
+const ParallaxVisuals = () => {
     return (
         <>
             <SvgLayer
@@ -54,41 +52,9 @@ const ParallaxVisuals: FC<{
             <SvgLayer parallaxLevelClassName='-translate-z-24' svgStroke='none' svgStrokeWidth='0' svgFill='rgba(0, 255, 0, 0.2)' content={<></>} fill />
             <SvgLayer parallaxLevelClassName='-translate-z-32' svgStroke='none' svgStrokeWidth='0' svgFill='rgba(0, 255, 0, 0.1)' content={<></>} fill />
 
-            <ParallaxMenuLayer
-                id='Resume'
-                key={-1.5}
-                parallaxLevelClassName='-translateZ-400'
-                extraClassNames='p-8 opacity-0'
-                content={
-                    <div className='pointer-events-auto h-1/5 w-1/5 cursor-pointer rounded-md border-2 border-dashed border-transparent bg-gray-500 p-1 outline outline-offset-2 outline-green-800/50 hover:border-2 hover:border-l-white hover:border-t-white hover:outline-4 hover:outline-green-800/70'></div>
-                }
-            />
+            <ParallaxMenuCards />
 
-            <ParallaxMenuLayer
-                id='Code'
-                key={-2.5}
-                parallaxLevelClassName='-translateZ-400'
-                extraClassNames='p-8 opacity-0'
-                content={
-                    <div className='bloom-svg pointer-events-auto h-1/5 w-1/5 cursor-pointer rounded-md border-2 border-purple-400 bg-gray-500 p-1 will-change-filter hover:border-2 hover:border-green-600'></div>
-                }
-            />
-
-            <ParallaxMenuLayer
-                id='3D Art'
-                key={-3.5}
-                parallaxLevelClassName='-translateZ-400'
-                extraClassNames={classNames('p-8 opacity-0')}
-                content={
-                    <div className='bloom-svg pointer-events-auto h-1/5 w-1/5 cursor-pointer rounded-md border-2 border-red-900 bg-gray-500 p-1 will-change-filter hover:border-2 hover:border-red-400'></div>
-                }
-            />
-
-            {/* Nav Menu: */}
-            {isEffectLayer && <MenuWrapper isNavMenu={true} positionClassNames='top-2 left-2 w-48 h-12' />}
-
-            {/* TOC Menu: */}
-            {isEffectLayer && <MenuWrapper isNavMenu={false} positionClassNames='bottom-0 right-12 w-40 h-12' />}
+            <ParallaxMenus />
         </>
     );
 };
@@ -149,6 +115,60 @@ const ParallaxQuadLayer = () => {
                 <div className='h-full w-[10%] border-l border-t border-green-900/50'></div>
             </div>
         </div>
+    );
+};
+
+const ParallaxMenus = () => {
+    return (
+        <>
+            {/* Nav Menu: */}
+            <MenuWrapper isNavMenu={true} positionClassNames='top-2 left-2 w-48 h-12' />
+
+            {/* TOC Menu: */}
+            <MenuWrapper isNavMenu={false} positionClassNames='bottom-0 right-12 w-40 h-12' />
+        </>
+    );
+};
+
+const ParallaxMenuCards = () => {
+    return (
+        <>
+            <ParallaxMenuCard
+                id='Resume'
+                index={0}
+                parallaxLevelClassName='-translateZ-400'
+                extraClassNames='p-8 opacity-0'
+                content={
+                    <div className='pointer-events-auto h-1/5 w-1/5 cursor-pointer rounded-md border-2 border-dashed border-transparent bg-gray-500 p-1 outline outline-offset-2 outline-green-800/50 hover:border-2 hover:border-l-white hover:border-t-white hover:outline-4 hover:outline-green-800/70'>
+                        Resume
+                    </div>
+                }
+            />
+
+            <ParallaxMenuCard
+                id='Code'
+                index={1}
+                parallaxLevelClassName='-translateZ-400'
+                extraClassNames='p-8 opacity-0'
+                content={
+                    <div className='bloom-svg pointer-events-auto h-1/5 w-1/5 cursor-pointer rounded-md border-2 border-purple-400 bg-gray-500 p-1 will-change-filter hover:border-2 hover:border-green-600'>
+                        Code
+                    </div>
+                }
+            />
+
+            <ParallaxMenuCard
+                id='3D Art'
+                index={2}
+                parallaxLevelClassName='-translateZ-400'
+                extraClassNames={classNames('p-8 opacity-0')}
+                content={
+                    <div className='bloom-svg pointer-events-auto h-1/5 w-1/5 cursor-pointer rounded-md border-2 border-red-900 bg-gray-500 p-1 will-change-filter hover:border-2 hover:border-red-400'>
+                        3D Art
+                    </div>
+                }
+            />
+        </>
     );
 };
 

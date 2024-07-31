@@ -87,52 +87,55 @@ export const ParallaxLayer: FC<{
 
 const usedIndices: Record<string, number> = {};
 
-export const ParallaxMenuLayer: FC<{
+export const ParallaxMenuCard: FC<{
     content: ReactNode;
     parallaxLevelClassName: string;
     extraClassNames?: string;
+    index: number;
     style?: React.CSSProperties;
     id?: string;
-}> = ({ content, parallaxLevelClassName, extraClassNames, style, id }) => {
+}> = ({ content, parallaxLevelClassName, extraClassNames, index, style, id }) => {
     const menuState = useZustand((state) => state.menuState);
-
     const [nodeAnim, setNodeAnim] = useState<[HTMLDivElement, Animation]>();
+    const [unfold, setUnfold] = useState(false);
 
-    const measureRef = useCallback((node: HTMLDivElement) => {
-        if (node) {
-            const id = node.getAttribute('id');
-            if (id) {
-                let startTileSet, startTile, startTileIndex;
+    const menuCardRef = useCallback(
+        (node: HTMLDivElement) => {
+            if (node) {
+                const id = node.getAttribute('id');
+                if (id) {
+                    let startTileSet, startTile, startTileIndex;
 
-                if (id in usedIndices) {
-                    startTileIndex = usedIndices[id];
-                    startTile = tileLocations[startTileIndex];
-                } else {
-                    startTileSet = pickRandomFromArray(tileLocations);
-                    startTile = startTileSet[0];
-                    startTileIndex = startTileSet[1];
+                    if (id in usedIndices) {
+                        startTileIndex = usedIndices[id];
+                        startTile = tileLocations[startTileIndex];
+                    } else {
+                        startTileSet = pickRandomFromArray(tileLocations);
+                        startTile = startTileSet[0];
+                        startTileIndex = startTileSet[1];
+                    }
+
+                    if (!(id in usedIndices)) {
+                        usedIndices[id] = startTileIndex;
+                    }
+
+                    const [startTileX, startTileY] = startTile;
+                    node.style.setProperty('transform', `translate3d(${wrapLocation(startTileX)}%, ${wrapLocation(startTileY)}%, initial)`);
+
+                    console.log('%c[ParallaxLayers]', 'color: #c74bf1', `index :`, index);
+                    const movement = pickRandomFromArray(Object.values(keyframes(startTile, startTileIndex, index)))[0];
+                    const anim = node.animate(...movement);
+                    anim.finish();
+                    setNodeAnim([node, anim]);
                 }
-
-                if (!(id in usedIndices)) {
-                    usedIndices[id] = startTileIndex;
-                }
-
-                const [startTileX, startTileY] = startTile;
-                console.log('%c[ParallaxLayers]', 'color: #f3b2a7', `startTileX, startTileY :`, startTileX, startTileY);
-
-                node.style.setProperty('transform', `translate3d(${wrapLocation(startTileX)}%, ${wrapLocation(startTileY)}%, initial)`);
-
-                const movement = pickRandomFromArray(Object.values(keyframes(startTile, startTileIndex)))[0];
-                const anim = node.animate(...movement);
-                anim.finish();
-                setNodeAnim([node, anim]);
             }
-        }
-    }, []);
+        },
+        [index],
+    );
 
     useLayoutEffect(() => {
         if (nodeAnim) {
-            const [node, anim] = nodeAnim;
+            const [, anim] = nodeAnim;
             anim.reverse();
         }
     }, [menuState.home, nodeAnim]);
@@ -140,7 +143,7 @@ export const ParallaxMenuLayer: FC<{
     return (
         <div
             id={`${id ? id.replace(' ', '') : id}-wrapper`}
-            ref={measureRef}
+            ref={menuCardRef}
             className={classNames(
                 'absolute bottom-0 left-0 right-0 top-0 m-auto rounded-md',
                 parallaxHoleDimensionClassNames,
@@ -148,8 +151,14 @@ export const ParallaxMenuLayer: FC<{
                 extraClassNames,
             )}
             style={style}
+            onClick={() => {
+                setUnfold((unfold) => !unfold);
+            }}
         >
-            {content}
+            <div className='flex size-full flex-col'>
+                {content}
+                {unfold && <div>LOLOLOL</div>}
+            </div>
         </div>
     );
 };
@@ -182,6 +191,8 @@ const tileLocations = [
     [80, 80],
 ] as [number, number][];
 
+const endLocations = [tileLocations[1], tileLocations[2], tileLocations[3]];
+
 const delays = tileLocations.map((tileLoc, idx) => 100 * idx);
 
 const wrapLocation = (tileAxisLoc: number) => {
@@ -194,11 +205,13 @@ const wrapLocation = (tileAxisLoc: number) => {
     return newTileAxisLoc;
 };
 
-const keyframes: (startTile: [number, number], delayIndex: number) => Record<string, [PropertyIndexedKeyframes, KeyframeAnimationOptions]> = (
-    startTile: [number, number],
+const keyframes: (startTile: [number, number], delayIndex: number, index: number) => Record<string, [PropertyIndexedKeyframes, KeyframeAnimationOptions]> = (
+    startTile,
     delayIndex,
+    index,
 ) => {
     const [startTileX, startTileY] = startTile;
+    const [endTileX, endTileY] = endLocations[index];
 
     return {
         leftToRight: [
@@ -208,7 +221,7 @@ const keyframes: (startTile: [number, number], delayIndex: number) => Record<str
                     `translate3d(${startTileX}%, ${startTileY}%, -8rem)`,
                     `translate3d(${wrapLocation(startTileX + 20)}%, ${wrapLocation(startTileY)}%, -4rem)`,
                     `translate3d(${wrapLocation(startTileX + 20)}%, ${wrapLocation(startTileY + 40)}%, -4rem)`,
-                    `translate3d(${wrapLocation(startTileX + 20)}%, ${wrapLocation(startTileY + 40)}%, 4rem)`,
+                    `translate3d(${endTileX}%, ${endTileY}%, 4rem)`,
                 ],
                 offset: [0.001, 0.2, 0.666],
             },
