@@ -1,9 +1,9 @@
 import { FC, useMemo, ReactNode, useState, useLayoutEffect, useCallback } from 'react';
-import classNames from '../lib/classNames';
-import returnSvg from '../lib/returnSvg';
+import classNames from '../../lib/classNames';
+import returnSvg from '../../lib/returnSvg';
 import { parallaxHoleDimensionClassNames } from './ParallaxScene';
-import pickRandomFromArray from '../lib/pickRandomFromArray';
-import { useZustand } from '../lib/zustand';
+import pickRandomFromArray from '../../lib/pickRandomFromArray';
+import { useZustand } from '../../lib/zustand';
 
 export const SvgLayer: FC<{
     content: ReactNode;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { usePreviousPersistentArray } from '../hooks/usePrevious';
+import { usePreviousPersistentArray } from '../../hooks/usePrevious';
 
 const previousVals = [false, false, false];
 

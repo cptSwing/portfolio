@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import classNames from '../lib/classNames';
+import classNames from '../../lib/classNames';
 import Main from './Main';
 import MenuWrapper from './MenuWrapper';
 import { ParallaxLayer, ParallaxMenuCard, SvgLayer } from './ParallaxLayers';

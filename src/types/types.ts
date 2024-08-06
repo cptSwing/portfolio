@@ -1,13 +1,9 @@
 export enum MENUTARGET {
-    Default = 'default',
-    Home = 'home',
-    Back = 'back',
-    Forward = 'forward',
-    Settings = 'settings',
-    ViewCode = 'viewCode',
+    Updates = 'updates',
     Resume = 'resume',
     Code = 'code',
     Art = 'art',
+    Contact = 'contact',
 }
 
 export type MenuToggleState = {
@@ -16,8 +12,7 @@ export type MenuToggleState = {
 
 export type ZustandState = {
     menuState: MenuToggleState;
-    menuLastUpdated: MENUTARGET;
     methods: {
-        store_toggleMenuItem: (menuItem: MENUTARGET | null) => void;
+        store_toggleMenuItem: (menuItem: MENUTARGET) => void;
     };
 };

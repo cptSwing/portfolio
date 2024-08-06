@@ -1,7 +1,7 @@
 import { AdjustmentsHorizontalIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, CodeBracketSquareIcon, HomeIcon } from '@heroicons/react/20/solid';
 import { FC } from 'react';
-import { MENUTARGET } from '../types/types';
-import { useZustand } from '../lib/zustand';
+import { MENUTARGET } from '../../types/types';
+import { useZustand } from '../../lib/zustand';
 
 const store_toggleMenuItem = useZustand.getState().methods.store_toggleMenuItem;
 

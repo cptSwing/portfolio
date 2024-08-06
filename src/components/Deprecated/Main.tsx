@@ -6,8 +6,8 @@ import Settings from './Settings';
 import ViewCode from './ViewCode';
 import { CSSTransition } from 'react-transition-group';
 import Default from './Default';
-import { MENUTARGET } from '../types/types';
-import { useZustand } from '../lib/zustand';
+import { MENUTARGET } from '../../types/types';
+import { useZustand } from '../../lib/zustand';
 
 const menuContentPairings: Record<MENUTARGET, JSX.Element> = {
     default: <Default />,

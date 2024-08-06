@@ -1,13 +1,11 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import ParallaxScene from "../components/ParallaxScene";
+import Content from '../components/Content';
+import Nav from '../components/Nav';
 
 const App = () => {
     return (
         <>
-            <Header />
-            <ParallaxScene />
-            <Footer />
+            <Content />
+            <Nav />
         </>
     );
 };

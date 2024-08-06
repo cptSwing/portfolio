@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import classNames from '../lib/classNames';
+import classNames from '../../lib/classNames';
 import NavMenu from './NavMenu';
 import TocMenu from './TocMenu';
 import { parallaxHoleDimensionClassNames } from './ParallaxScene';

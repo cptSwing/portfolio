@@ -1,5 +1,5 @@
-import { useZustand } from '../lib/zustand';
-import { MENUTARGET } from '../types/types';
+import { useZustand } from '../../lib/zustand';
+import { MENUTARGET } from '../../types/types';
 import { FC } from 'react';
 
 const store_toggleMenuItem = useZustand.getState().methods.store_toggleMenuItem;
