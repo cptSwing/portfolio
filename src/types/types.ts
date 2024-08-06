@@ -11,7 +11,10 @@ export type MenuToggleState = {
 };
 
 export type ZustandState = {
-    menuState: MenuToggleState;
+    menu: {
+        state: MenuToggleState;
+        isAnyChecked: boolean;
+    };
     methods: {
         store_toggleMenuItem: (menuItem: MENUTARGET) => void;
     };

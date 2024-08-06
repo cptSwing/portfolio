@@ -1,15 +1,18 @@
-import { useMemo } from 'react';
 import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
 
 const Content = () => {
-    const { updates, resume, code, art, contact } = useZustand((state) => state.menuState);
-    const isAnyChecked = useMemo(() => [updates, resume, code, art, contact].some((menuItem) => menuItem === true), [updates, resume, code, art, contact]);
+    const isAnyChecked = useZustand((state) => state.menu.isAnyChecked);
 
     return (
         <div className='z-0 flex size-full flex-col items-center justify-center'>
             {/* TODO keyframe animation w-0 to w-fit */}
-            <div className={classNames('size-4/5 bg-gray-700 transition-[--tw-bg-opacity]', isAnyChecked ? 'bg-opacity-100' : 'bg-opacity-0')}></div>
+            <div
+                className={classNames(
+                    'size-4/5 transform-gpu rounded border-2 border-gray-800 bg-gray-700 transition-[transform,opacity] duration-300',
+                    isAnyChecked ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0',
+                )}
+            ></div>
         </div>
     );
 };

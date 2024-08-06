@@ -8,13 +8,13 @@
     --parallax-transition: 1.5s cubic-bezier(0.05, 0.5, 0, 1);
 }
 
-.svg-background {
+.svg-background-image {
     background-image: url(src/assets/bg_flattened.svg);
     background-size: cover;
 }
 
 #root {
-    @apply svg-background h-dvh w-dvw bg-gray-400 text-white;
+    @apply svg-background-image h-dvh w-dvw bg-gray-400 text-white;
 }
 
 /* From https://css-tip.com/corner-only-border-image/ .. */
@@ -52,12 +52,12 @@
     @apply peer-checked:after:nav-card-border-color-change after:nav-card-border-base hover:after:nav-card-border-color-change after:absolute after:left-2 after:top-2 after:size-[calc(100%-(2*theme(spacing.2)))] after:rounded-sm after:transition-[outline-color] after:duration-300;
 }
 
+/* Parallax Stuff: */
+
 .parallax-transform {
     transform: rotateX(var(--parallax-horizontal)) rotateY(var(--parallax-vertical));
     transition: transform var(--parallax-transition);
 }
-
-/* Parallax Stuff: */
 
 .parallax-bg-clip {
     clip-path: polygon(

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { MENUTARGET, MenuToggleState, ZustandState } from '../types/types';
 
-const menuToggledFalse: MenuToggleState = {
+const menuToggled: MenuToggleState = {
     updates: false,
     resume: false,
     code: false,
@@ -12,17 +12,22 @@ const menuToggledFalse: MenuToggleState = {
 
 export const useZustand = create<ZustandState>()(
     immer((set) => ({
-        menuState: menuToggledFalse,
+        menu: { state: menuToggled, isAnyChecked: false },
         methods: {
             store_toggleMenuItem: (menuItem) => {
                 set((draftState) => {
                     let key: MENUTARGET;
-                    for (key in draftState.menuState) {
-                        if (key === menuItem) {
-                            draftState.menuState[key] = !draftState.menuState[key];
-                        } else {
-                            draftState.menuState[key] = false;
+
+                    if (draftState.menu.isAnyChecked) {
+                        for (key in draftState.menu.state) {
+                            draftState.menu.state[key] = false;
                         }
+                        draftState.menu.isAnyChecked = false;
+                    } else {
+                        for (key in draftState.menu.state) {
+                            draftState.menu.state[key] = key === menuItem ? true : false;
+                        }
+                        draftState.menu.isAnyChecked = true;
                     }
                 });
             },
