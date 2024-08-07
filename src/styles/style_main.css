@@ -13,10 +13,6 @@
     background-size: cover;
 }
 
-#root {
-    @apply svg-background-image h-dvh w-dvw bg-gray-400 text-white;
-}
-
 /* From https://css-tip.com/corner-only-border-image/ .. */
 .nav-card-border-base {
     --s: 20px; /* the size on the corner */
