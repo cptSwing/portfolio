@@ -2,21 +2,25 @@ import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
 
 const Content = () => {
-    const isAnyChecked = useZustand((state) => state.menu.isAnyChecked);
+    // const isAnyChecked = useZustand((state) => state.menu.isAnyChecked);
+    const isAnyChecked = false;
 
     return (
         <main
             className={classNames(
-                'absolute left-1/2 flex -translate-x-1/2 flex-col items-center justify-start',
-                'w-[90%] sm:w-4/5 lg:w-2/3',
-                'p-4 lg:px-6',
-                'transform-gpu rounded border-2 border-gray-800 transition-[transform,_opacity,_z-index,_top,_bottom,_color,_background-color] duration-200',
+                'absolute flex items-start justify-start',
+                'w-[calc(100%-(100%-theme(width[2/3]))/2)]',
+                // 'w-full lg:left-[calc(100%-75%)]',
+                'overflow-hidden',
+                'transform-gpu rounded rounded-r-none border-2 border-r-0 border-gray-800 transition-[transform,_opacity,_right,_color,_background-color] duration-200',
                 isAnyChecked
-                    ? 'bottom-8 top-16 z-20 scale-100 overflow-y-auto overflow-x-hidden bg-gray-700 opacity-100 lg:bottom-12 lg:top-24'
-                    : 'bottom-0 top-0 z-0 scale-x-0 scale-y-75 overflow-hidden bg-black text-black opacity-5',
+                    ? 'bottom-8 right-0 top-16 z-20 scale-y-100 bg-gray-700 opacity-100 lg:bottom-12 lg:top-24'
+                    : '-right-full bottom-0 top-0 z-0 scale-y-[.2] bg-black text-black opacity-5',
             )}
         >
-            <LoremText />
+            <div className='flex h-fit w-[90%] flex-col items-center justify-start overflow-auto bg-gray-400 p-3 sm:w-4/5 lg:w-[100%-calc(100%-(100%-theme(width[2/3]))/2)]'>
+                <LoremText />
+            </div>
         </main>
     );
 };
