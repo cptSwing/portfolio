@@ -19,9 +19,7 @@ const Nav = () => {
             )}
             // style={isAnyChecked ? { clipPath: `polygon(0 -1rem, 100% -1rem, 100% 1.55rem, 0 1.55rem)` } : {}}
         >
-            {isAnyChecked && <NavCardSubMenu menuState={{ updates, resume, code, art, contact }} />}
-
-            <div className='flex size-full items-end justify-start space-x-2 sm:space-x-3 md:space-x-4'>
+            <div className='flex h-96 items-end justify-start space-x-2 sm:space-x-3 md:space-x-4'>
                 <NavCard title='Updates' toggleState={[MENUTARGET.Updates, updates]} isAnyChecked={isAnyChecked} />
                 <NavCard title='Resume' toggleState={[MENUTARGET.Resume, resume]} isAnyChecked={isAnyChecked} />
                 <NavCard title='Code' toggleState={[MENUTARGET.Code, code]} isAnyChecked={isAnyChecked} />
@@ -35,26 +33,25 @@ const Nav = () => {
 export default Nav;
 
 const NavCard: FC<{ title: string; toggleState: [MENUTARGET, boolean]; isAnyChecked: boolean }> = ({ title, toggleState, isAnyChecked }) => {
-    const [thisMenuTarget, thisTargetIsChecked] = toggleState;
+    const [menuTarget, targetIsChecked] = toggleState;
 
     return (
-        <label id={`nav-card-${title}`} className='relative h-96 w-1/5'>
-            <input type='radio' name='nav-card' className='peer hidden' onChange={() => store_toggleMenuItem(thisMenuTarget)} checked={thisTargetIsChecked} />
+        <label id={`nav-card-${title}`} className='nav-card-label h-full flex-[1] transition-[flex]'>
+            <input type='radio' name='nav-card' className='peer hidden' onChange={() => store_toggleMenuItem(menuTarget)} checked={targetIsChecked} />
             <div
                 id='nav-card-updates'
                 className={classNames(
                     // 'before:absolute before:left-1/2 before:top-1/2 before:size-[120%] before:-translate-x-1/2 before:-translate-y-1/2 hover:before:border-t-2',
-                    'size-full cursor-pointer rounded border-2 border-gray-500 bg-gray-300/75',
+                    'relative h-full cursor-pointer rounded border-2 border-gray-500 bg-gray-300/75',
                     'transform-gpu transition-[background-color,margin,transform,height] duration-300',
                     'hover:border-gray-200 hover:!bg-gray-300 group-hover:bg-gray-300/50 peer-checked:border-gray-700',
                     'after:nav-card-border',
                     isAnyChecked ? '' : '',
                 )}
             >
-                <div className='absolute bottom-0 origin-bottom-left -translate-y-4 translate-x-24 -rotate-90 transform-gpu whitespace-nowrap text-5xl'>
-                    {title}
-                </div>
+                <div className='absolute bottom-0 right-0 transform-gpu whitespace-nowrap text-5xl [writing-mode:vertical-lr]'>{title}</div>
             </div>
+            {isAnyChecked && <NavCardSubMenu menuTarget={menuTarget} />}
         </label>
     );
 };
@@ -70,22 +67,15 @@ const subMenuItems = {
 };
 
 const NavCardSubMenu: FC<{
-    menuState: MenuToggleState;
-}> = ({ menuState }) => {
+    menuTarget: MENUTARGET;
+}> = ({ menuTarget }) => {
     // const { updates, resume, code, art, contact } = menuState;
-
-    const activeMenuItem = useMemo(() => {
-        let key: MENUTARGET;
-        for (key in menuState) {
-            if (menuState[key]) {
-                return key;
-            }
-        }
-    }, [menuState]);
 
     return (
         <div className='pointer-events-none absolute left-1/2 top-0 flex w-full -translate-x-1/2 items-center justify-center space-x-2 bg-gray-300 sm:space-x-3 md:space-x-4'>
-            {activeMenuItem && subMenuItems[activeMenuItem].map((item, idx) => <NavCardSubMenuItem key={item + idx} testContent={item} />)}
+            {subMenuItems[menuTarget].map((item, idx) => (
+                <NavCardSubMenuItem key={item + idx} testContent={item} />
+            ))}
         </div>
     );
 };

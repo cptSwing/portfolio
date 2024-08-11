@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .nav-card-label:has(input:checked) {
+        @apply flex-[5];
+    }
+}
+
 :root {
     --parallax-vertical: 0;
     --parallax-horizontal: 0;
@@ -11,10 +17,6 @@
 .svg-background-image {
     background-image: url(src/assets/bg_flattened.svg);
     background-size: cover;
-}
-
-.all-checked-test & > label:has(input:checked) {
-    @apply bg-red-500;
 }
 
 /* From https://css-tip.com/corner-only-border-image/ .. */
