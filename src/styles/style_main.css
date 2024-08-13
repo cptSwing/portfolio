@@ -5,19 +5,26 @@
 @layer components {
     /* Adapted from https://css-tip.com/corner-only-border-image/ : */
     .nav-card-border {
-        @apply [--corner-inset:0.5rem] [--corner-size:10px] [--corner-thickness:2px];
+        @apply [--corner-inset:0.5rem] [--corner-outline-color:theme(colors.palette.primary)] [--corner-size:10px] [--corner-thickness:2px];
         @apply [mask:conic-gradient(at_var(--corner-size)_var(--corner-size),_theme(colors.transparent)_75%,_theme(colors.black)_0)_0_0_/_calc(100%-var(--corner-size))_calc(100%-var(--corner-size))];
-        @apply absolute bottom-[--corner-inset] left-[--corner-inset] right-[--corner-inset] top-[--corner-inset] rounded-sm outline outline-[length:--corner-thickness] outline-offset-[calc(-1*var(--corner-thickness))] outline-[color:theme(colors.palette.primary)];
+        @apply absolute bottom-[--corner-inset] left-[--corner-inset] right-[--corner-inset] top-[--corner-inset] rounded-sm outline outline-[length:--corner-thickness] outline-offset-[calc(-1*var(--corner-thickness))] outline-[color:--corner-outline-color];
     }
 
-    /* size-[calc(100%-(2*var(--corner-inset)))] */
-
     .nav-card-border-secondary {
-        @apply nav-card-border outline-[color:theme(colors.palette.test)];
+        @apply [--corner-outline-color:theme(colors.palette.test)];
+    }
+
+    .nav-card-border-gray-200 {
+        @apply [--corner-outline-color:theme(colors.gray.200)];
     }
 }
 
 @layer utilities {
+    .svg-background-image {
+        background-image: url(../assets/bg_flattened.svg);
+        background-size: cover;
+    }
+
     .writing-mode-vert-lr {
         writing-mode: vertical-lr;
     }
@@ -29,6 +36,27 @@
     .scroll-gutter-both {
         scrollbar-gutter: stable both-edges;
     }
+
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+
+    .parallax-transform {
+        transform: rotateX(var(--parallax-horizontal)) rotateY(var(--parallax-vertical));
+        transition: transform var(--parallax-transition);
+    }
+
+    .transform-style-3d {
+        transform-style: preserve-3d;
+    }
+
+    .translate-z-4 {
+        transform: translateZ(1rem);
+    }
+
+    .translate-z-20 {
+        transform: translateZ(5rem);
+    }
 }
 
 :root {
@@ -37,29 +65,7 @@
     --parallax-transition: 1.5s cubic-bezier(0.05, 0.5, 0, 1);
 }
 
-.svg-background-image {
-    background-image: url(../assets/bg_flattened.svg);
-    background-size: cover;
-}
-
-.nav-card-border-color-change {
-    outline-color: theme(colors.palette.primary);
-}
-
-.peer:checked ~ .peer-checked\:after\:nav-card-border-color-change:after {
-    outline-color: theme(colors.gray.700);
-}
-/* 
-.after\:nav-card-border {
-    @apply peer-checked:after:nav-card-border-color-change after:nav-card-border-base hover:after:nav-card-border-color-change after:absolute after:left-2 after:top-2 after:size-[calc(100%-(2*theme(spacing.2)))] after:rounded-sm after:transition-[outline-color] after:duration-300;
-} */
-
 /* Parallax Stuff: */
-
-.parallax-transform {
-    transform: rotateX(var(--parallax-horizontal)) rotateY(var(--parallax-vertical));
-    transition: transform var(--parallax-transition);
-}
 
 .parallax-bg-clip {
     clip-path: polygon(

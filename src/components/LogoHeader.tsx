@@ -1,25 +1,16 @@
 import classNames from '../lib/classNames';
-import { useZustand } from '../lib/zustand';
 
 const LogoHeader = () => {
-    const isAnyChecked = useZustand((state) => state.menu.isAnyChecked);
-
     return (
         <header
             id='logo'
             className={classNames(
                 'absolute transition-[left,top,transform]',
-                'left-1/2 top-[calc(50%-(theme(spacing.96)/2))] -translate-x-1/2 -translate-y-full',
-                // isAnyChecked                    ? 'lg:left-[calc((100%-66.666667%)/2)] lg:top-24 lg:-translate-y-full'                    : 'left-1/2 top-[calc(50%-(theme(spacing.96)/2))] -translate-x-1/2 -translate-y-full',
+                'left-1/2 top-[calc(50%-(theme(spacing.96)/2))] -translate-x-1/2 -translate-y-full select-none',
             )}
         >
             <LogoSvg />
-            <hr
-                className={classNames(
-                    '-ml-[50%] mb-3 mt-2 w-[200%]',
-                    // isAnyChecked ? 'mb-2 mt-1 w-[200%]' : '-ml-[50%] mb-3 mt-2 w-[200%]'
-                )}
-            />
+            <hr className={classNames('-ml-[50%] mb-3 mt-2 w-[200%]')} />
         </header>
     );
 };

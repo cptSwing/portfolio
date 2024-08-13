@@ -13,8 +13,8 @@ const ParallaxScene = () => {
 
     return (
         <div id='parallax' className='h-dvh w-dvw'>
-            <div id='parallax-visuals' className='pointer-events-none absolute bottom-0 left-0 right-0 top-0 mt-8 perspective-1000'>
-                <div className='parallax-transform size-full translate-z-36 backface-hidden transform-style-3d'>
+            <div id='parallax-visuals' className='perspective-1000 pointer-events-none absolute bottom-0 left-0 right-0 top-0 mt-8'>
+                <div className='parallax-transform translate-z-36 backface-hidden transform-style-3d size-full'>
                     <ParallaxVisuals />
                 </div>
             </div>
@@ -74,7 +74,7 @@ const ParallaxQuadLayer = () => {
                         <div className='h-full w-1/5' />
                     </div>
 
-                    <div className='parallax-border-animated bloom-svg absolute bottom-0 left-1/2 mb-8 flex -translate-x-1/2 flex-col items-start justify-end rounded-md border-2 border-green-800 bg-green-1000 px-8 py-2 will-change-filter'>
+                    <div className='parallax-border-animated bloom-svg bg-green-1000 absolute bottom-0 left-1/2 mb-8 flex -translate-x-1/2 flex-col items-start justify-end rounded-md border-2 border-green-800 px-8 py-2 will-change-filter'>
                         <div className='!filter-none'>jens brandenburg</div>
                         <div className='text-sm italic text-white/40 !filter-none'>I build websites, I build 3D scenes. Then I combine the two.</div>
                     </div>

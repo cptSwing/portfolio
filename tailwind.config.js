@@ -36,11 +36,12 @@ export default {
             colors: {
                 palette: {
                     primary: colors.gray[700],
-                    secondary: colors.gray[300],
+                    secondary: colors.gray[400],
                     test: colors.red[500],
                 },
             },
             boxShadow: {
+                'inner-sm-border': 'inset 0 0 1.5rem 1.5rem var(--tw-shadow-color)',
                 'inner-sm': 'inset 0 0 2rem 0.5rem var(--tw-shadow-color)',
                 'inner-md': 'inset 0 0 4rem 1rem var(--tw-shadow-color)',
             },
