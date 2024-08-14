@@ -6,9 +6,12 @@ import { FC, useState } from 'react';
 const tempSubMenuItems: { [key in MENUTARGET]: { posts: string[]; cardBg: string } } = {
     updates: { posts: ['Updates 1', 'Updates 2', 'Updates 3', 'Updates 4', 'Updates 5'], cardBg: 'https://picsum.photos/seed/updates/500?grayscale' },
     resume: { posts: ['Resumé', 'About'], cardBg: 'https://picsum.photos/seed/resume/500?grayscale' },
-    code: { posts: ['Design Your Ring', 'Fader', 'Scrollmersive', 'Car Configurator', 'Plate Calc'], cardBg: 'https://picsum.photos/seed/code/500?grayscale' },
+    code: {
+        posts: ['Design Your Ring', 'Fader', 'Scrollmersive', 'Hilux Configurator', 'Brotherland', 'Plate Calc'],
+        cardBg: 'https://picsum.photos/seed/code/500?grayscale',
+    },
     art: { posts: ['Grundwasser', 'BER Tagesspiegel', 'Stasi VR', 'Art 4', 'Art 5'], cardBg: 'https://picsum.photos/seed/art/500?grayscale' },
-    contact: { posts: ['Contact'], cardBg: 'https://picsum.photos/seed/contact/500?grayscale' },
+    contact: { posts: ['Contact', 'Impressum'], cardBg: 'https://picsum.photos/seed/contact/500?grayscale' },
 };
 
 const Nav = () => {
@@ -22,7 +25,8 @@ const Nav = () => {
     return (
         <nav
             id='nav-cards-wrapper'
-            className={classNames('group absolute left-1/2 z-10 w-2/5 -translate-x-1/2 transition-[top,transform] duration-300', 'top-1/2 -translate-y-1/2')}
+            // className={classNames('group absolute left-1/2 z-10 w-2/5 -translate-x-1/2 transition-[top,transform] duration-300', 'top-1/2 -translate-y-1/2')}
+            className='group z-10 w-2/5'
         >
             <form className='group flex h-96 items-end justify-start space-x-2 sm:space-x-3 md:space-x-4'>
                 <NavCard cardData={{ category: MENUTARGET.Updates, data: tempSubMenuItems[MENUTARGET.Updates] }} isCheckedState={isCheckedState} />
