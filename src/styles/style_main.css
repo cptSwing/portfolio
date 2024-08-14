@@ -17,6 +17,11 @@
     .nav-card-border-gray-200 {
         @apply [--corner-outline-color:theme(colors.gray.200)];
     }
+
+    .fake-border-bg {
+        @apply [--fake-border-color:theme(colors.green.500/50%)] [--fake-border-width-side:calc(theme(spacing.1)/2)];
+        @apply absolute -bottom-[--fake-border-width-side] -left-[--fake-border-width-side] -right-[--fake-border-width-side] -top-[--fake-border-width-side] rounded bg-gradient-to-r from-[--fake-border-color] to-[--fake-border-color];
+    }
 }
 
 @layer utilities {

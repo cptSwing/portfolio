@@ -9,7 +9,7 @@ const App = () => {
         <>
             <Background />
 
-            <div className='relative flex size-full flex-col items-center justify-center'>
+            <div className='flex size-full flex-col items-center justify-center'>
                 <LogoHeader />
                 <Nav />
                 <Content />

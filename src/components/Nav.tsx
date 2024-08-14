@@ -23,18 +23,12 @@ const Nav = () => {
     const isCheckedState = useState<string | null>(null);
 
     return (
-        <nav
-            id='nav-cards-wrapper'
-            // className={classNames('group absolute left-1/2 z-10 w-2/5 -translate-x-1/2 transition-[top,transform] duration-300', 'top-1/2 -translate-y-1/2')}
-            className='group z-10 w-2/5'
-        >
-            <form className='group flex h-96 items-end justify-start space-x-2 sm:space-x-3 md:space-x-4'>
-                <NavCard cardData={{ category: MENUTARGET.Updates, data: tempSubMenuItems[MENUTARGET.Updates] }} isCheckedState={isCheckedState} />
-                <NavCard cardData={{ category: MENUTARGET.Resume, data: tempSubMenuItems[MENUTARGET.Resume] }} isCheckedState={isCheckedState} />
-                <NavCard cardData={{ category: MENUTARGET.Code, data: tempSubMenuItems[MENUTARGET.Code] }} isCheckedState={isCheckedState} />
-                <NavCard cardData={{ category: MENUTARGET.Art, data: tempSubMenuItems[MENUTARGET.Art] }} isCheckedState={isCheckedState} />
-                <NavCard cardData={{ category: MENUTARGET.Contact, data: tempSubMenuItems[MENUTARGET.Contact] }} isCheckedState={isCheckedState} />
-            </form>
+        <nav id='nav-cards-wrapper' className='group flex w-1/2 items-start justify-center space-x-2 sm:space-x-3 md:space-x-4'>
+            <NavCard cardData={{ category: MENUTARGET.Updates, data: tempSubMenuItems[MENUTARGET.Updates] }} isCheckedState={isCheckedState} />
+            <NavCard cardData={{ category: MENUTARGET.Resume, data: tempSubMenuItems[MENUTARGET.Resume] }} isCheckedState={isCheckedState} />
+            <NavCard cardData={{ category: MENUTARGET.Code, data: tempSubMenuItems[MENUTARGET.Code] }} isCheckedState={isCheckedState} />
+            <NavCard cardData={{ category: MENUTARGET.Art, data: tempSubMenuItems[MENUTARGET.Art] }} isCheckedState={isCheckedState} />
+            <NavCard cardData={{ category: MENUTARGET.Contact, data: tempSubMenuItems[MENUTARGET.Contact] }} isCheckedState={isCheckedState} />
         </nav>
     );
 };
@@ -54,11 +48,10 @@ const NavCard: FC<{
     return (
         <label
             className={
-                'transition-[flex] duration-700 before:[--fake-border-color:theme(colors.gray.500/50%)] before:[--fake-border-width-side:calc(theme(spacing.1)/2)]' +
-                ' before:absolute before:-bottom-[--fake-border-width-side] before:-left-[--fake-border-width-side] before:-right-[--fake-border-width-side] before:-top-[--fake-border-width-side] before:-z-50 before:rounded before:bg-gradient-to-r before:from-[--fake-border-color] before:to-[--fake-border-color] hover:before:![--fake-border-color:theme(colors.gray.500)] group-hover:before:[--fake-border-color:theme(colors.gray.500/25%)] has-[:checked]:before:!bg-gradient-to-r has-[:checked]:before:from-[--fake-border-color] has-[:checked]:before:to-transparent has-[:checked]:before:![--fake-border-color:theme(colors.gray.500)]' +
-                ' pointer-events-none relative flex h-full flex-[1] cursor-pointer rounded bg-gradient-to-r from-gray-300/75 to-gray-300/75' +
-                ' hover:from-gray-300 hover:to-gray-300 has-[:checked]:!flex-[6] has-[:checked]:from-gray-300 has-[:checked]:via-gray-300/80 has-[:checked]:to-transparent' +
-                ' after:nav-card-border after:hover:nav-card-border-gray-200 has-[:checked]:after:nav-card-border-secondary'
+                'before:fake-border-bg before:-z-10 before:hover:![--fake-border-color:theme(colors.green.500)] before:group-hover:[--fake-border-color:theme(colors.green.600/25%)] has-[:checked]:before:to-transparent has-[:checked]:before:[--fake-border-color:theme(colors.green.500)]' +
+                ' after:nav-card-border after:hover:nav-card-border-gray-200 has-[:checked]:after:nav-card-border-secondary' +
+                ' pointer-events-auto relative h-96 flex-[1] cursor-pointer rounded bg-gradient-to-r from-gray-300/75 to-gray-300/75 transition-[flex] duration-700' +
+                ' hover:from-gray-300 hover:to-gray-300 has-[:checked]:!flex-[6] has-[:checked]:from-gray-300 has-[:checked]:via-gray-300/80 has-[:checked]:to-transparent'
             }
         >
             {/* Hidden checkbox input: */}
@@ -68,18 +61,18 @@ const NavCard: FC<{
                 value={category}
                 className='peer hidden'
                 checked={isChecked === category}
-                onChange={(e) => setIsChecked((cur) => (cur === e.target.value ? null : e.target.value))}
+                onChange={(e) => setIsChecked((state) => (state === e.target.value ? null : e.target.value))}
             />
 
             <div
                 className={classNames(
-                    'group pointer-events-auto relative flex size-full cursor-pointer items-end justify-start rounded p-3',
+                    'pointer-events-none absolute bottom-0 cursor-pointer rounded p-3',
                     '[&>div]:hover:opacity-50 peer-checked:[&>div]:opacity-50 peer-checked:[&>span]:decoration-gray-200',
 
                     // 'backdrop-blur',
                 )}
             >
-                <span className='writing-mode-vert-lr z-10 rotate-180 select-none whitespace-nowrap text-5xl underline decoration-gray-200/0 transition-[text-decoration-color] duration-700 first-letter:capitalize'>
+                <span className='writing-mode-vert-lr mb-0 ml-0 mr-auto size-full rotate-180 select-none whitespace-nowrap text-5xl underline decoration-gray-200/0 transition-[text-decoration-color] duration-700 first-letter:capitalize'>
                     {category}
                 </span>
                 <div
@@ -95,7 +88,7 @@ const NavCard: FC<{
 
 const store_toggleMenuItem = useZustand.getState().methods.store_toggleMenuItem;
 
-const staggeredDelayArr = ['delay-75', 'delay-150', 'delay-300', 'delay-500', 'delay-700'];
+const staggeredDelayArr = ['delay-[100ms]', 'delay-[200ms]', 'delay-300', 'delay-[400ms]', 'delay-500'];
 
 const NavCardSubMenu: FC<{
     categoryPosts: string[];
@@ -103,16 +96,13 @@ const NavCardSubMenu: FC<{
 }> = ({ categoryPosts, isVisible }) => {
     return (
         <div
-            className={classNames(
-                'absolute flex size-full flex-col items-end justify-end space-y-2 p-4',
-                isVisible ? '*:opacity-100' : '*:opacity-0 *:!delay-75',
-            )}
+            className={classNames('relative z-50 ml-auto h-full w-3/4 space-y-2 p-4', isVisible ? '*:block *:opacity-100' : '*:hidden *:opacity-0 *:!delay-75')}
         >
-            {categoryPosts.reverse().map((item, idx) => (
+            {categoryPosts.map((item, idx) => (
                 <div
                     key={item + idx}
                     className={classNames(
-                        'pointer-events-auto h-1/4 w-3/4 cursor-pointer rounded-sm bg-gradient-to-l from-gray-400/90 to-gray-400/60 p-1 text-center outline outline-1 outline-offset-0 transition-opacity duration-300 hover:to-gray-400/90 hover:outline-offset-2',
+                        'pointer-events-auto h-20 w-full cursor-pointer rounded-sm bg-gradient-to-l from-gray-400/90 to-gray-400/60 p-1 text-center outline outline-1 outline-offset-0 transition-opacity duration-300 hover:to-gray-400/90 hover:outline-offset-2',
                         staggeredDelayArr[idx] ? staggeredDelayArr[idx] : staggeredDelayArr[staggeredDelayArr.length - 1],
                     )}
                     // onClick={() => store_toggleMenuItem(thisMenuLink)}
