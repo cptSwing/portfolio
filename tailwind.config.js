@@ -1,7 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 
 import colors from 'tailwindcss/colors';
-import tailwindBreakpoints from 'tailwindcss-breakpoints-inspector';
+import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
+import tailwindScrollbar from 'tailwind-scrollbar';
 
 export default {
     content: ['./index.html', './src/**/*.{js,ts,tsx}'],
@@ -30,6 +31,14 @@ export default {
             //         '66.666%': {},
             //     },
             // },
+            spacing: {
+                100: '25rem',
+                104: '26rem',
+                108: '27rem',
+                112: '28rem',
+                116: '29rem',
+                120: '30rem',
+            },
             fontSize: {
                 '2xs': '0.666rem',
                 '3xs': '0.55rem',
@@ -51,5 +60,5 @@ export default {
             },
         },
     },
-    plugins: [tailwindBreakpoints],
+    plugins: [tailwindScrollbar, tailwindBreakpointsInspector],
 };

@@ -1,0 +1,147 @@
+{
+    "updates": {
+        "posts": [
+            {
+                "title": "Updates 1",
+                "titleBg": "https://picsum.photos/seed/updates1/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Updates 2",
+                "titleBg": "https://picsum.photos/seed/updates2/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Updates 3",
+                "titleBg": "https://picsum.photos/seed/updates3/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Updates 4",
+                "titleBg": "https://picsum.photos/seed/updates4/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Updates 5",
+                "titleBg": "https://picsum.photos/seed/updates5/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            }
+        ],
+        "headerBg": "https://picsum.photos/seed/updates/500?grayscale"
+    },
+    "resume": {
+        "posts": [
+            {
+                "title": "Resumé",
+                "titleBg": "https://picsum.photos/seed/resume1/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "About",
+                "titleBg": "https://picsum.photos/seed/about/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            }
+        ],
+        "headerBg": "https://picsum.photos/seed/resume/500?grayscale"
+    },
+    "code": {
+        "posts": [
+            {
+                "title": "Design Your Ring",
+                "titleBg": "https://picsum.photos/seed/dyr/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Fader",
+                "titleBg": "https://picsum.photos/seed/fader/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Scrollmersive",
+                "titleBg": "https://picsum.photos/seed/scrollm/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Hilux Configurator",
+                "titleBg": "https://picsum.photos/seed/hilux/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Brotherland",
+                "titleBg": "https://picsum.photos/seed/brother/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Plate Calc",
+                "titleBg": "https://picsum.photos/seed/plate/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            }
+        ],
+        "headerBg": "https://picsum.photos/seed/code/500?grayscale"
+    },
+    "art": {
+        "posts": [
+            {
+                "title": "Grundwasser",
+                "titleBg": "https://picsum.photos/seed/wasser/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "BER Tagesspiegel",
+                "titleBg": "https://picsum.photos/seed/ber/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Stasi VR",
+                "titleBg": "https://picsum.photos/seed/stasi/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Art 4",
+                "titleBg": "https://picsum.photos/seed/art4/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Art 5",
+                "titleBg": "https://picsum.photos/seed/art5/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            }
+        ],
+        "headerBg": "https://picsum.photos/seed/art/500?grayscale"
+    },
+    "contact": {
+        "posts": [
+            {
+                "title": "Contact",
+                "titleBg": "https://picsum.photos/seed/contact1/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            },
+            {
+                "title": "Impressum",
+                "titleBg": "https://picsum.photos/seed/impressum/500?grayscale",
+                "galleryImages": ["assets/img.jpg", "assets/img2.jpg"],
+                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+            }
+        ],
+        "headerBg": "https://picsum.photos/seed/contact/500?grayscale"
+    }
+}

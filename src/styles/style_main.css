@@ -4,22 +4,14 @@
 
 @layer components {
     /* Adapted from https://css-tip.com/corner-only-border-image/ : */
-    .nav-card-border {
+    .nav-card-corners {
         @apply [--corner-inset:0.5rem] [--corner-outline-color:theme(colors.palette.primary)] [--corner-size:10px] [--corner-thickness:2px];
         @apply [mask:conic-gradient(at_var(--corner-size)_var(--corner-size),_theme(colors.transparent)_75%,_theme(colors.black)_0)_0_0_/_calc(100%-var(--corner-size))_calc(100%-var(--corner-size))];
         @apply absolute bottom-[--corner-inset] left-[--corner-inset] right-[--corner-inset] top-[--corner-inset] rounded-sm outline outline-[length:--corner-thickness] outline-offset-[calc(-1*var(--corner-thickness))] outline-[color:--corner-outline-color];
     }
 
-    .nav-card-border-secondary {
-        @apply [--corner-outline-color:theme(colors.palette.test)];
-    }
-
-    .nav-card-border-gray-200 {
-        @apply [--corner-outline-color:theme(colors.gray.200)];
-    }
-
     .fake-border-bg {
-        @apply [--fake-border-color:theme(colors.green.500/50%)] [--fake-border-width-side:calc(theme(spacing.1)/2)];
+        @apply [--fake-border-color:theme(colors.gray.500/50%)] [--fake-border-width-side:calc(theme(spacing.1)/2)];
         @apply absolute -bottom-[--fake-border-width-side] -left-[--fake-border-width-side] -right-[--fake-border-width-side] -top-[--fake-border-width-side] rounded bg-gradient-to-r from-[--fake-border-color] to-[--fake-border-color];
     }
 }

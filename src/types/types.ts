@@ -19,3 +19,14 @@ export type ZustandState = {
         store_toggleMenuItem: (menuItem: MENUTARGET) => void;
     };
 };
+
+export type DataBase_Posts = {
+    title: string;
+    titleBg: string;
+    galleryImages: string[];
+    innerHtml: string;
+};
+
+export type DataBase = {
+    [key in MENUTARGET]: { posts: DataBase_Posts[]; headerBg: string };
+};
