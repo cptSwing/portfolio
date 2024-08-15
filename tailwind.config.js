@@ -1,9 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 
-const colors = require('tailwindcss/colors');
+import colors from 'tailwindcss/colors';
+import tailwindBreakpoints from 'tailwindcss-breakpoints-inspector';
 
 export default {
-    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+    content: ['./index.html', './src/**/*.{js,ts,tsx}'],
     theme: {
         extend: {
             // animation: {
@@ -50,5 +51,5 @@ export default {
             },
         },
     },
-    plugins: [require('tailwindcss-breakpoints-inspector')],
+    plugins: [tailwindBreakpoints],
 };
