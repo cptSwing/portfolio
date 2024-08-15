@@ -36,12 +36,15 @@ const NavCard: FC<{
 
     return (
         <label
-            className={
-                'before:fake-border-bg before:-z-10 before:hover:![--fake-border-color:theme(colors.gray.500)] before:group-hover:[--fake-border-color:theme(colors.gray.600/25%)] has-[:checked]:before:to-transparent has-[:checked]:before:[--fake-border-color:theme(colors.gray.500)]' +
-                ' after:nav-card-corners after:hover:[--corner-outline-color:theme(colors.gray.200)] has-[:checked]:after:[--corner-outline-color:theme(colors.palette.test)]' +
-                ' h-120 pointer-events-auto relative flex-[1] cursor-pointer rounded bg-gradient-to-r from-gray-300/75 to-gray-300/75 transition-[flex] duration-700' +
-                ' hover:from-gray-300 hover:to-gray-300 has-[:checked]:!flex-[6] has-[:checked]:from-gray-300 has-[:checked]:via-gray-300/80 has-[:checked]:to-transparent'
-            }
+            className={classNames(
+                'before:fake-border-bg before:-z-10 before:group-hover:[--fake-border-color:theme(colors.gray.600/25%)] before:hover:![--fake-border-color:theme(colors.gray.500)]',
+                'after:nav-card-corners after:hover:[--corner-outline-color:theme(colors.gray.200)]',
+                'pointer-events-auto relative h-120 cursor-pointer rounded bg-gradient-to-r from-gray-300/75 to-gray-300/75 transition-[flex] duration-700',
+                'hover:from-gray-300 hover:to-gray-300',
+                isChecked === category
+                    ? 'flex-[5] from-gray-300 via-gray-300/80 to-transparent before:to-transparent before:[--fake-border-color:theme(colors.gray.500)] after:[--corner-outline-color:theme(colors.palette.test)]'
+                    : 'flex-[1]', //  'has-[:checked]:!flex-[5]' not working on FF
+            )}
         >
             {/* Hidden checkbox input: */}
             <input
@@ -56,7 +59,7 @@ const NavCard: FC<{
             <div
                 className={classNames(
                     'pointer-events-none absolute bottom-0 flex size-full cursor-pointer rounded p-3',
-                    'hover:[&>.bg-image-select]:opacity-50 peer-checked:[&>.bg-image-select]:opacity-25',
+                    'peer-checked:[&>.bg-image-select]:opacity-25 hover:[&>.bg-image-select]:opacity-50',
                 )}
             >
                 <span className='title-select writing-mode-vert-lr rotate-180 select-none whitespace-nowrap text-5xl first-letter:capitalize'>{category}</span>
@@ -88,22 +91,25 @@ const NavCardSubMenu: FC<{
 
     return (
         <div className={classNames('relative z-10 ml-auto h-full w-5/6 overflow-x-visible p-4 pl-0', isVisible ? 'block' : 'hidden')}>
-            <div className='scrollbar-thin size-full -scale-x-100 overflow-y-auto overflow-x-visible'>
+            <div className='size-full -scale-x-100 overflow-y-auto overflow-x-visible scrollbar-thin'>
                 {/* Move scrollbar to left side: https://stackoverflow.com/a/45824265 */}
                 <div className='-scale-x-100 space-y-2 pl-4'>
                     {categoryPosts.map(({ title, titleBg }, idx) => (
                         <div
                             key={title + idx}
                             className={classNames(
-                                'pointer-events-auto h-28 w-full cursor-pointer rounded-sm bg-gradient-to-l from-gray-400/90 to-gray-400/60 p-1 text-center outline outline-1 -outline-offset-1 outline-gray-500/50 transition-opacity duration-300 hover:to-gray-400/90 hover:-outline-offset-4 hover:outline-gray-300',
+                                'pointer-events-auto relative h-28 w-full cursor-pointer rounded-sm bg-gradient-to-l from-gray-400/90 to-gray-400/60 p-1 text-center outline outline-1 -outline-offset-1 outline-gray-500/50 transition-opacity duration-300 hover:to-gray-400/90 hover:-outline-offset-4 hover:outline-gray-300',
                                 staggeredDelayArr[idx] ? staggeredDelayArr[idx] : staggeredDelayArr[staggeredDelayArr.length - 1],
                                 childrenVisible ? 'opacity-100' : 'opacity-0 !delay-75',
                             )}
-                            style={{ backgroundImage: `url('${titleBg}')` }}
 
                             // onClick={() => store_toggleMenuItem(thisMenuLink)}
                         >
                             {title}
+                            <div
+                                className='absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat opacity-30'
+                                style={{ backgroundImage: `url('${titleBg}')` }}
+                            />
                         </div>
                     ))}
                 </div>
