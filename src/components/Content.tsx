@@ -1,25 +1,31 @@
 import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
 
+const store_activePost = useZustand.getState().methods.store_activePost;
+
 const Content = () => {
-    // const isAnyChecked = useZustand((state) => state.menu.isAnyChecked);
-    const isAnyChecked = false;
+    const activePost = useZustand((state) => state.active.post);
 
     return (
         <main
             className={classNames(
-                'absolute flex items-start justify-start',
+                'fixed flex items-start justify-start',
                 'w-[calc(100%-(100%-theme(width[2/3]))/2)]',
                 // 'w-full lg:left-[calc(100%-75%)]',
                 'overflow-hidden',
                 'transform-gpu rounded rounded-r-none border-2 border-r-0 border-gray-800 transition-[transform,_opacity,_right,_color,_background-color] duration-200',
-                isAnyChecked
+                activePost
                     ? 'bottom-8 right-0 top-16 z-20 scale-y-100 bg-gray-700 opacity-100 lg:bottom-12 lg:top-24'
                     : '-right-full bottom-0 top-0 z-0 scale-y-[.2] bg-black text-black opacity-5',
             )}
         >
-            <div className='flex h-fit w-[90%] flex-col items-center justify-start overflow-auto bg-gray-400 p-3 sm:w-4/5 lg:w-[100%-calc(100%-(100%-theme(width[2/3]))/2)]'>
-                <LoremText />
+            <div className='flex h-120 w-[90%] flex-col items-center justify-start overflow-auto bg-gray-400 p-3 sm:w-4/5 lg:w-[100%-calc(100%-(100%-theme(width[2/3]))/2)]'>
+                {/* <LoremText /> */}
+                {activePost && activePost.title}
+                {activePost && <div dangerouslySetInnerHTML={{ __html: activePost.innerHtml }} />}
+                <span className='cursor-pointer hover:bg-purple-300' onClick={() => store_activePost(null)}>
+                    Close X
+                </span>
             </div>
         </main>
     );

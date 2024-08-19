@@ -6,21 +6,15 @@ export enum MENUTARGET {
     Contact = 'contact',
 }
 
-export type MenuToggleState = {
-    [key in MENUTARGET]: boolean;
-};
-
 export type ZustandState = {
-    menu: {
-        state: MenuToggleState;
-        isAnyChecked: boolean;
-    };
+    active: { post: DataBase_Post | null };
+
     methods: {
-        store_toggleMenuItem: (menuItem: MENUTARGET) => void;
+        store_activePost: (post: DataBase_Post | null) => void;
     };
 };
 
-export type DataBase_Posts = {
+export type DataBase_Post = {
     title: string;
     titleBg: string;
     galleryImages: string[];
@@ -28,5 +22,5 @@ export type DataBase_Posts = {
 };
 
 export type DataBase = {
-    [key in MENUTARGET]: { posts: DataBase_Posts[]; headerBg: string };
+    [key in MENUTARGET]: { posts: DataBase_Post[]; headerBg: string };
 };

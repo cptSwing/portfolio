@@ -1,20 +1,17 @@
 import { useZustand } from '../lib/zustand';
-import { DataBase, DataBase_Posts, MENUTARGET } from '../types/types';
+import { DataBase, DataBase_Post, MENUTARGET } from '../types/types';
 import classNames from '../lib/classNames';
 import { FC, useEffect, useState } from 'react';
 import testDb from '../queries/testDb.json';
 
 const Nav = () => {
-    // const {
-    //     state: { updates, resume, code, art, contact },
-    //     isAnyChecked,
-    // } = useZustand((state) => state.menu);
-
     const isCheckedState = useState<string | null>(null);
 
-    console.log('%c[Nav]', 'color: #c6f2a6', `testDb[MENUTARGET.Updates] :`, testDb[MENUTARGET.Updates]);
     return (
-        <nav id='nav-cards-wrapper' className='group flex w-2/5 items-start justify-center space-x-2 sm:space-x-3 md:space-x-4'>
+        <nav
+            id='nav-cards-wrapper'
+            className='group flex w-4/5 items-start justify-center space-x-2 sm:w-3/4 sm:space-x-3 md:w-2/3 md:space-x-4 lg:w-3/5 xl:w-2/5'
+        >
             <NavCard category={MENUTARGET.Updates} cardData={testDb[MENUTARGET.Updates]} isCheckedState={isCheckedState} />
             <NavCard category={MENUTARGET.Resume} cardData={testDb[MENUTARGET.Resume]} isCheckedState={isCheckedState} />
             <NavCard category={MENUTARGET.Code} cardData={testDb[MENUTARGET.Code]} isCheckedState={isCheckedState} />
@@ -74,12 +71,12 @@ const NavCard: FC<{
     );
 };
 
-const store_toggleMenuItem = useZustand.getState().methods.store_toggleMenuItem;
+const store_activePost = useZustand.getState().methods.store_activePost;
 
 const staggeredDelayArr = ['delay-[100ms]', 'delay-[200ms]', 'delay-300', 'delay-[400ms]', 'delay-500'];
 
 const NavCardSubMenu: FC<{
-    categoryPosts: DataBase_Posts[];
+    categoryPosts: DataBase_Post[];
     isVisible: boolean;
 }> = ({ categoryPosts, isVisible }) => {
     const [childrenVisible, setChildrenVisible] = useState(isVisible);
@@ -89,29 +86,38 @@ const NavCardSubMenu: FC<{
         setChildrenVisible(isVisible);
     }, [isVisible]);
 
+    // const [post, setPost] = useState<number | null>(null);
+    // useEffect(() => {
+    //     store_activePost(typeof post === 'number' ? categoryPosts[post] : null);
+    // }, [post, categoryPosts]);
+
     return (
         <div className={classNames('relative z-10 ml-auto h-full w-5/6 overflow-x-visible p-4 pl-0', isVisible ? 'block' : 'hidden')}>
             <div className='size-full -scale-x-100 overflow-y-auto overflow-x-visible scrollbar-thin'>
                 {/* Move scrollbar to left side: https://stackoverflow.com/a/45824265 */}
                 <div className='-scale-x-100 space-y-2 pl-4'>
-                    {categoryPosts.map(({ title, titleBg }, idx) => (
-                        <div
-                            key={title + idx}
-                            className={classNames(
-                                'pointer-events-auto relative h-28 w-full cursor-pointer rounded-sm bg-gradient-to-l from-gray-400/90 to-gray-400/60 p-1 text-center outline outline-1 -outline-offset-1 outline-gray-500/50 transition-opacity duration-300 hover:to-gray-400/90 hover:-outline-offset-4 hover:outline-gray-300',
-                                staggeredDelayArr[idx] ? staggeredDelayArr[idx] : staggeredDelayArr[staggeredDelayArr.length - 1],
-                                childrenVisible ? 'opacity-100' : 'opacity-0 !delay-75',
-                            )}
+                    {categoryPosts.map((databasePost, idx, arr) => {
+                        const { title, titleBg } = databasePost;
 
-                            // onClick={() => store_toggleMenuItem(thisMenuLink)}
-                        >
-                            {title}
+                        return (
                             <div
-                                className='absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat opacity-30'
-                                style={{ backgroundImage: `url('${titleBg}')` }}
-                            />
-                        </div>
-                    ))}
+                                key={title + idx}
+                                className={classNames(
+                                    'pointer-events-auto relative h-28 w-full cursor-pointer rounded-sm bg-gradient-to-l from-gray-400/90 to-gray-400/60 p-1 text-center outline outline-1 -outline-offset-1 outline-gray-500/50 transition-opacity duration-300 hover:to-gray-400/90 hover:-outline-offset-4 hover:outline-gray-300',
+                                    staggeredDelayArr[idx] ? staggeredDelayArr[idx] : staggeredDelayArr[staggeredDelayArr.length - 1],
+                                    childrenVisible ? 'opacity-100' : 'opacity-0 !delay-75',
+                                )}
+                                // onClick={() => setPost(idx)}
+                                onClick={() => store_activePost(arr[idx])}
+                            >
+                                {title}
+                                <div
+                                    className='absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat opacity-30'
+                                    style={{ backgroundImage: `url('${titleBg}')` }}
+                                />
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </div>

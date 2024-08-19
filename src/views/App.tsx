@@ -9,7 +9,7 @@ const App = () => {
         <>
             <Background />
 
-            <div className='flex size-full flex-col items-center justify-center'>
+            <div className='mt-12 flex size-full flex-col items-center justify-start xl:mt-16'>
                 <LogoHeader />
                 <Nav />
                 <Content />
