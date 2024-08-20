@@ -4,14 +4,13 @@ import classNames from '../lib/classNames';
 import { FC, useEffect, useState } from 'react';
 import testDb from '../queries/testDb.json';
 
+export const navWidthClasses = 'w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3';
+
 const Nav = () => {
     const isCheckedState = useState<string | null>(null);
 
     return (
-        <nav
-            id='nav-cards-wrapper'
-            className='group flex w-4/5 items-start justify-center space-x-2 sm:w-3/4 sm:space-x-3 md:w-2/3 md:space-x-4 lg:w-3/5 xl:w-2/5'
-        >
+        <nav id='nav-cards-wrapper' className={navWidthClasses + 'group flex items-start justify-center space-x-2 sm:space-x-3 md:space-x-4'}>
             <NavCard category={MENUTARGET.Updates} cardData={testDb[MENUTARGET.Updates]} isCheckedState={isCheckedState} />
             <NavCard category={MENUTARGET.Resume} cardData={testDb[MENUTARGET.Resume]} isCheckedState={isCheckedState} />
             <NavCard category={MENUTARGET.Code} cardData={testDb[MENUTARGET.Code]} isCheckedState={isCheckedState} />
@@ -29,7 +28,7 @@ const NavCard: FC<{
     isCheckedState: [string | null, React.Dispatch<React.SetStateAction<string | null>>];
 }> = ({ category, cardData, isCheckedState }) => {
     const [isChecked, setIsChecked] = isCheckedState;
-    const { posts, headerBg } = cardData;
+    const { posts, headerCardBg } = cardData;
 
     return (
         <label
@@ -62,7 +61,7 @@ const NavCard: FC<{
                 <span className='title-select writing-mode-vert-lr rotate-180 select-none whitespace-nowrap text-5xl first-letter:capitalize'>{category}</span>
                 <div
                     className='bg-image-select absolute bottom-0 left-0 h-3/4 w-4/5 bg-cover opacity-10 transition-opacity [mask-composite:intersect] [mask-image:linear-gradient(to_right,rgba(0,0,0,0)_0%,rgba(0,0,0,1)_30%_60%,rgba(0,0,0,0)_100%),_linear-gradient(to_top,rgba(0,0,0,0)_0%,rgba(0,0,0,1)_20%_80%,rgba(0,0,0,0)_100%)]'
-                    style={{ backgroundImage: `url('${headerBg}')` }}
+                    style={{ backgroundImage: `url('${headerCardBg}')` }}
                 />
             </div>
 
@@ -97,7 +96,7 @@ const NavCardSubMenu: FC<{
                 {/* Move scrollbar to left side: https://stackoverflow.com/a/45824265 */}
                 <div className='-scale-x-100 space-y-2 pl-4'>
                     {categoryPosts.map((databasePost, idx, arr) => {
-                        const { title, titleBg } = databasePost;
+                        const { title, titleCardBg } = databasePost;
 
                         return (
                             <div
@@ -113,7 +112,7 @@ const NavCardSubMenu: FC<{
                                 {title}
                                 <div
                                     className='absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat opacity-30'
-                                    style={{ backgroundImage: `url('${titleBg}')` }}
+                                    style={{ backgroundImage: `url('${titleCardBg}')` }}
                                 />
                             </div>
                         );

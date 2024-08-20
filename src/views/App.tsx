@@ -9,10 +9,10 @@ const App = () => {
         <>
             <Background />
 
-            <div className='mt-12 flex size-full flex-col items-center justify-start xl:mt-16'>
+            <div className='relative flex size-full flex-col items-center justify-start'>
                 <LogoHeader />
-                <Nav />
                 <Content />
+                <Nav />
                 <SocialsFooter />
             </div>
         </>

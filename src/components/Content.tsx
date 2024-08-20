@@ -1,37 +1,52 @@
 import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
+import { DataBase_Post } from '../types/types';
+import { FC, useCallback, useState } from 'react';
+import { navWidthClasses } from './Nav';
 
 const store_activePost = useZustand.getState().methods.store_activePost;
 
 const Content = () => {
     const activePost = useZustand((state) => state.active.post);
+    const [topVal, setTopVal] = useState<number>(0);
+
+    const contentRefCb = useCallback((node: HTMLElement) => {
+        node && setTopVal(node.offsetTop);
+    }, []);
 
     return (
         <main
+            ref={contentRefCb}
             className={classNames(
-                'fixed flex items-start justify-start',
-                'w-[calc(100%-(100%-theme(width[2/3]))/2)]',
-                // 'w-full lg:left-[calc(100%-75%)]',
+                'w-full',
+                'flex items-start justify-center',
                 'overflow-hidden',
-                'transform-gpu rounded rounded-r-none border-2 border-r-0 border-gray-800 transition-[transform,_opacity,_right,_color,_background-color] duration-200',
-                activePost
-                    ? 'bottom-8 right-0 top-16 z-20 scale-y-100 bg-gray-700 opacity-100 lg:bottom-12 lg:top-24'
-                    : '-right-full bottom-0 top-0 z-0 scale-y-[.2] bg-black text-black opacity-5',
+                'transform-gpu transition-[transform,_opacity,_height,_color,_background-color]',
+                activePost ? 'absolute z-20 h-full bg-gray-700/75 opacity-100 duration-700' : 'relative z-0 h-1 bg-black text-black opacity-100 duration-0',
             )}
+            style={{ top: activePost ? topVal : 0 }}
         >
-            <div className='flex h-120 w-[90%] flex-col items-center justify-start overflow-auto bg-gray-400 p-3 sm:w-4/5 lg:w-[100%-calc(100%-(100%-theme(width[2/3]))/2)]'>
-                {/* <LoremText /> */}
-                {activePost && activePost.title}
-                {activePost && <div dangerouslySetInnerHTML={{ __html: activePost.innerHtml }} />}
-                <span className='cursor-pointer hover:bg-purple-300' onClick={() => store_activePost(null)}>
-                    Close X
-                </span>
+            <div className={navWidthClasses + ' flex flex-col items-center justify-start overflow-auto bg-gray-400 p-3'}>
+                {activePost && <ContentWrapper_Test title={activePost.title} galleryImages={activePost.galleryImages} />}
+                {/* {activePost && <div dangerouslySetInnerHTML={{ __html: activePost.innerHtml }} />} */}
             </div>
         </main>
     );
 };
 
 export default Content;
+
+const ContentWrapper_Test: FC<Omit<DataBase_Post, 'titleCardBg'>> = ({ title, galleryImages }) => {
+    return (
+        <>
+            <span className='absolute right-0 top-0 cursor-pointer p-1 hover:bg-purple-300' onClick={() => store_activePost(null)}>
+                X Close
+            </span>
+            <h1>{title}</h1>
+            <LoremText />
+        </>
+    );
+};
 
 const LoremText = () => {
     return (

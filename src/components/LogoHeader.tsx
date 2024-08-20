@@ -4,7 +4,7 @@ const LogoHeader = () => {
     return (
         <header
             id='logo'
-            className='select-none'
+            className='mt-12 select-none'
             // className={
             // classNames(
             // ' transition-[left,top,transform]',

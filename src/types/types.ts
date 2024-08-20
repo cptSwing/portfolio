@@ -16,11 +16,12 @@ export type ZustandState = {
 
 export type DataBase_Post = {
     title: string;
-    titleBg: string;
-    galleryImages: string[];
-    innerHtml: string;
+    titleCardBg: string;
+    galleryImages: string[] | null;
+
+    // innerHtml: string;
 };
 
 export type DataBase = {
-    [key in MENUTARGET]: { posts: DataBase_Post[]; headerBg: string };
+    [key in MENUTARGET]: { posts: DataBase_Post[]; headerCardBg: string };
 };
