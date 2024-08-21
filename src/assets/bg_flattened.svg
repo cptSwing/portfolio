@@ -6,7 +6,7 @@
 	xmlns:svg="http://www.w3.org/2000/svg">
 	<style>
 		<!-- https://css-tricks.com/svg-line-animation-works/ -->
-		path {
+		<!-- path {
 			fill: none;
 			fill-opacity: 0;
 
@@ -19,7 +19,7 @@
 			stroke-opacity: 0.75;
 
 			animation: dash 3s linear forwards;
-		}
+		} -->
 
 		@keyframes dash {
 			to {

@@ -8,7 +8,7 @@ const store_activePost = useZustand.getState().methods.store_activePost;
 
 const Content = () => {
     const activePost = useZustand((state) => state.active.post);
-    const [topVal, setTopVal] = useState<number>(0);
+    const [topVal, setTopVal] = useState<number | undefined>();
 
     const contentRefCb = useCallback((node: HTMLElement) => {
         node && setTopVal(node.offsetTop);
@@ -18,41 +18,41 @@ const Content = () => {
         <main
             ref={contentRefCb}
             className={classNames(
-                'w-full',
-                'flex items-start justify-center',
-                'overflow-hidden',
-                'transform-gpu transition-[transform,_opacity,_height,_color,_background-color]',
-                activePost ? 'absolute z-20 h-full bg-gray-700/75 opacity-100 duration-700' : 'relative z-0 h-1 bg-black text-black opacity-100 duration-0',
+                'relative mb-4 flex h-0.5 justify-center bg-gray-700/50 transition-[width,background-color] duration-300',
+                activePost ? 'w-full' : navWidthClasses + '',
             )}
-            style={{ top: activePost ? topVal : 0 }}
         >
-            <div className={navWidthClasses + ' flex flex-col items-center justify-start overflow-auto bg-gray-400 p-3'}>
-                {activePost && <ContentWrapper_Test title={activePost.title} galleryImages={activePost.galleryImages} />}
-                {/* {activePost && <div dangerouslySetInnerHTML={{ __html: activePost.innerHtml }} />} */}
-            </div>
+            <ContentWrapper_Test title={activePost?.title} galleryImages={activePost?.galleryImages} active={activePost ? true : false} />
         </main>
     );
 };
 
 export default Content;
 
-const ContentWrapper_Test: FC<Omit<DataBase_Post, 'titleCardBg'>> = ({ title, galleryImages }) => {
+const ContentWrapper_Test: FC<{ active: boolean; title: DataBase_Post['title'] | undefined; galleryImages: DataBase_Post['galleryImages'] | undefined }> = ({
+    title,
+    galleryImages,
+    active,
+}) => {
     return (
-        <>
-            <span className='absolute right-0 top-0 cursor-pointer p-1 hover:bg-purple-300' onClick={() => store_activePost(null)}>
-                X Close
-            </span>
-            <h1>{title}</h1>
-            <LoremText />
-        </>
+        <div className={classNames('relative -z-10 w-full overflow-hidden bg-inherit', active ? '!absolute top-0 !z-10' : 'h-0')}>
+            <div
+                className={'relative mx-auto flex flex-col items-center justify-start overflow-scroll bg-gray-400 p-3 scrollbar-thin' + navWidthClasses}
+                style={{ height: window.innerHeight - 0 }}
+            >
+                <span className='cursor-pointer self-end p-1 hover:bg-purple-300' onClick={() => store_activePost(null)}>
+                    X Close
+                </span>
+                <h1>{title}</h1>
+                <LoremText />
+            </div>
+        </div>
     );
 };
 
 const LoremText = () => {
     return (
         <div>
-            <h2 className='text-center'>ART</h2>
-            <br />
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas enim velit, finibus a pellentesque vel, suscipit eu diam. Nulla nisi lorem,
             imperdiet sit amet maximus eu, aliquam volutpat nisl. Aenean ac lacus a justo consequat dictum quis a enim. Curabitur eleifend facilisis aliquet.
             Donec massa nulla, rutrum ac elementum blandit, efficitur nec augue. Curabitur sit amet tempor massa. Praesent feugiat scelerisque neque, eleifend
@@ -102,6 +102,9 @@ const LoremText = () => {
             dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus
             scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet
             ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit.
+            <br />
+            <br />
+            END
         </div>
     );
 };

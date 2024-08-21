@@ -1,5 +1,3 @@
-import classNames from '../lib/classNames';
-
 const LogoHeader = () => {
     return (
         <header
@@ -13,7 +11,6 @@ const LogoHeader = () => {
             // }
         >
             <LogoSvg />
-            <hr className={classNames('-ml-[50%] mb-3 mt-2 w-[200%]')} />
         </header>
     );
 };

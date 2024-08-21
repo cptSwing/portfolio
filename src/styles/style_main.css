@@ -12,16 +12,11 @@
 
     .fake-border-bg {
         @apply [--fake-border-color:theme(colors.gray.500/50%)] [--fake-border-width-side:calc(theme(spacing.1)/2)];
-        @apply absolute -bottom-[--fake-border-width-side] -left-[--fake-border-width-side] -right-[--fake-border-width-side] -top-[--fake-border-width-side] rounded bg-gradient-to-r from-[--fake-border-color] to-[--fake-border-color];
+        @apply absolute -bottom-[--fake-border-width-side] -left-[--fake-border-width-side] -right-[--fake-border-width-side] -top-[--fake-border-width-side] bg-gradient-to-r from-[--fake-border-color] to-[--fake-border-color];
     }
 }
 
 @layer utilities {
-    .svg-background-image {
-        background-image: url(../assets/bg_flattened.svg);
-        background-size: cover;
-    }
-
     .writing-mode-vert-lr {
         writing-mode: vertical-lr;
     }
@@ -34,53 +29,48 @@
         scrollbar-gutter: stable both-edges;
     }
 
-    .perspective-1000 {
+    .perspective-1000px {
         perspective: 1000px;
     }
 
     .parallax-transform {
-        transform: rotateX(var(--parallax-horizontal)) rotateY(var(--parallax-vertical));
-        transition: transform var(--parallax-transition);
-    }
-
-    .transform-style-3d {
+        transform: translateZ(var(--parallax-translateZ)) rotate3d(1, 0, 0, var(--parallax-horizontal)) rotate3d(0, 1, 0, var(--parallax-vertical));
         transform-style: preserve-3d;
-    }
-
-    .translate-z-4 {
-        transform: translateZ(1rem);
-    }
-
-    .translate-z-20 {
-        transform: translateZ(5rem);
+        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
     }
 }
 
 :root {
+    @apply bg-gray-400;
+
+    --parallax-translateZ: 4rem;
     --parallax-vertical: 0;
     --parallax-horizontal: 0;
-    --parallax-transition: 1.5s cubic-bezier(0.05, 0.5, 0, 1);
+
+    --bg-stroke-max-opacity: 0.666;
 }
 
-/* Parallax Stuff: */
+#bg-svg {
+    fill: none;
+    fill-opacity: 0;
+    stroke: #6f6f6f;
+    stroke-opacity: 0.15;
+    stroke-width: 0.05;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dashoffset: 2501;
+    stroke-dasharray: 2500;
 
-.parallax-bg-clip {
-    clip-path: polygon(
-        0% 0% /* top-left */,
-        0% 100% /* bottom-left */,
-        7.5% 100% /* start-inner (bottom-leftish) */,
-        7.5% 7.5% /* inner-top-left */,
-        92.5% 7.5% /* inner-top-right */,
-        92.5% 92.5% /* inner-bottom-right */,
-        0 92.5% /* end-inner (left 0, bottom) */,
-        7.5% 100% /* end-outer (same as start-inner) */,
-        100% 100% /* bottom-right */,
-        100% 0% /* top-right */
-    );
+    animation: bg-dash 3s linear forwards;
 }
 
-.parallax-border-animated {
-    border-image: url(src/assets/border-animated.svg) 1;
+@keyframes bg-dash {
+    to {
+        stroke-dashoffset: 0;
+        stroke-dasharray: 0.5;
+        stroke-opacity: var(--bg-stroke-max-opacity);
+        stroke-width: 0.1;
+    }
 }
 
 .shadow-inner-svg {

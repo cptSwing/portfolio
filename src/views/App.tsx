@@ -7,9 +7,10 @@ import Background from '../components/Background';
 const App = () => {
     return (
         <>
+            {/* Fixed Position, Background: */}
             <Background />
 
-            <div className='relative flex size-full flex-col items-center justify-start'>
+            <div className='relative flex size-full min-h-screen flex-col items-center justify-start overflow-hidden text-white scrollbar-track-transparent scrollbar-thumb-gray-800/15'>
                 <LogoHeader />
                 <Content />
                 <Nav />

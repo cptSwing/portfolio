@@ -4,7 +4,7 @@ import classNames from '../lib/classNames';
 import { FC, useEffect, useState } from 'react';
 import testDb from '../queries/testDb.json';
 
-export const navWidthClasses = 'w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3';
+export const navWidthClasses = /* tw */ ' w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 ';
 
 const Nav = () => {
     const isCheckedState = useState<string | null>(null);
@@ -35,7 +35,7 @@ const NavCard: FC<{
             className={classNames(
                 'before:fake-border-bg before:-z-10 before:group-hover:[--fake-border-color:theme(colors.gray.600/25%)] before:hover:![--fake-border-color:theme(colors.gray.500)]',
                 'after:nav-card-corners after:hover:[--corner-outline-color:theme(colors.gray.200)]',
-                'pointer-events-auto relative h-120 cursor-pointer rounded bg-gradient-to-r from-gray-300/75 to-gray-300/75 transition-[flex] duration-700',
+                'pointer-events-auto relative h-120 cursor-pointer bg-gradient-to-r from-gray-300/75 to-gray-300/75 transition-[flex] duration-700',
                 'hover:from-gray-300 hover:to-gray-300',
                 isChecked === category
                     ? 'flex-[5] from-gray-300 via-gray-300/80 to-transparent before:to-transparent before:[--fake-border-color:theme(colors.gray.500)] after:[--corner-outline-color:theme(colors.palette.test)]'
