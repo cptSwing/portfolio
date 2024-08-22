@@ -18,8 +18,8 @@ export type DataBase_Post = {
     title: string;
     titleCardBg: string;
     galleryImages: string[] | null;
-
-    // innerHtml: string;
+    textContent: string[];
+    codeLink?: string;
 };
 
 export type DataBase = {

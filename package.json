@@ -32,6 +32,7 @@
     "postcss": "^8.4.39",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
+    "react-remark": "^2.1.0",
     "react-transition-group": "^4.4.5",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-breakpoints-inspector": "^1.1.0",

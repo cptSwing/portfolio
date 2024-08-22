@@ -10,7 +10,7 @@ const App = () => {
             {/* Fixed Position, Background: */}
             <Background />
 
-            <div className='relative flex size-full min-h-screen flex-col items-center justify-start overflow-hidden text-white scrollbar-track-transparent scrollbar-thumb-gray-800/15'>
+            <div className='relative flex size-full min-h-screen flex-col items-center justify-start'>
                 <LogoHeader />
                 <Content />
                 <Nav />

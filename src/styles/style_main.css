@@ -41,7 +41,7 @@
 }
 
 :root {
-    @apply bg-gray-400;
+    @apply overflow-hidden bg-gray-400 text-white scrollbar-track-transparent scrollbar-thumb-gray-800/15;
 
     --parallax-translateZ: 4rem;
     --parallax-vertical: 0;
