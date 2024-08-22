@@ -1,9 +1,10 @@
 import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
 import { DataBase_Post } from '../types/types';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { navWidthClasses } from './Nav';
 import { useRemark } from 'react-remark';
+import SimpleLightbox from 'simplelightbox';
 
 const store_activePost = useZustand.getState().methods.store_activePost;
 
@@ -28,9 +29,13 @@ const ContentWrapper_Test: FC<{
     post: DataBase_Post | null;
 }> = ({ post }) => {
     const [topVal, setTopVal] = useState<number | undefined>();
+    const [lightbox, setLightbox] = useState<SimpleLightbox>();
 
     const contentRefCb = useCallback((node: HTMLElement | null) => {
-        node && setTopVal(node.getBoundingClientRect().top);
+        if (node) {
+            setTopVal(node.getBoundingClientRect().top);
+            setLightbox(new SimpleLightbox(node.id)); // TODO this is superwrong :)
+        }
     }, []);
 
     if (!post) return null;
@@ -38,7 +43,11 @@ const ContentWrapper_Test: FC<{
     const { title, galleryImages, textContent, codeLink } = post;
 
     return (
-        <div ref={contentRefCb} className={classNames('absolute top-0 w-full overflow-hidden bg-inherit shadow-lg', post ? 'z-10 h-fit' : '-z-10 h-0')}>
+        <div
+            id={'lightbox'}
+            ref={contentRefCb}
+            className={classNames('absolute top-0 w-full overflow-hidden bg-inherit shadow-lg', post ? 'z-10 h-fit' : '-z-10 h-0')}
+        >
             <div
                 className={
                     'relative mx-auto flex flex-col items-center justify-start overflow-y-auto bg-gray-400 p-4 shadow-md scrollbar-thin' + navWidthClasses
