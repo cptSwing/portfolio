@@ -1,10 +1,13 @@
 import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
-import { DataBase_Post } from '../types/types';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { navWidthClasses } from './Nav';
-import { useRemark } from 'react-remark';
-import SimpleLightbox from 'simplelightbox';
+import { Post } from '../types/types';
+import { FC, useCallback, useState } from 'react';
+import { navWidthClassesUnchecked } from './Nav';
+import { Remark } from 'react-remark';
+import Lightbox from 'yet-another-react-lightbox';
+import { Captions } from 'yet-another-react-lightbox/plugins';
+import 'yet-another-react-lightbox/styles.css';
+import 'yet-another-react-lightbox/plugins/captions.css';
 
 const store_activePost = useZustand.getState().methods.store_activePost;
 
@@ -15,7 +18,7 @@ const Content = () => {
         <main
             className={classNames(
                 'relative mb-4 flex h-0.5 justify-center bg-gray-700/50 transition-[width] duration-300',
-                activePost ? 'w-full' : navWidthClasses,
+                activePost ? 'w-full' : navWidthClassesUnchecked,
             )}
         >
             <ContentWrapper_Test post={activePost} />
@@ -26,21 +29,21 @@ const Content = () => {
 export default Content;
 
 const ContentWrapper_Test: FC<{
-    post: DataBase_Post | null;
+    post: Post | null;
 }> = ({ post }) => {
     const [topVal, setTopVal] = useState<number | undefined>();
-    const [lightbox, setLightbox] = useState<SimpleLightbox>();
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [slideIndex, setSlideIndex] = useState(0);
 
     const contentRefCb = useCallback((node: HTMLElement | null) => {
         if (node) {
             setTopVal(node.getBoundingClientRect().top);
-            setLightbox(new SimpleLightbox(node.id)); // TODO this is superwrong :)
         }
     }, []);
 
     if (!post) return null;
 
-    const { title, galleryImages, textContent, codeLink } = post;
+    const { title, images, textContent, codeLink } = post;
 
     return (
         <div
@@ -50,10 +53,11 @@ const ContentWrapper_Test: FC<{
         >
             <div
                 className={
-                    'relative mx-auto flex flex-col items-center justify-start overflow-y-auto bg-gray-400 p-4 shadow-md scrollbar-thin' + navWidthClasses
+                    'relative mx-auto flex flex-col items-center justify-start overflow-y-auto bg-gray-400 p-4 shadow-md scrollbar-thin' +
+                    navWidthClassesUnchecked
                 }
                 style={{ height: window.innerHeight - (topVal ?? 0) - 32 }}
-                onBlur={() => store_activePost(null)} // TODO
+                // onBlur={() => store_activePost(null)} // TODO
             >
                 {codeLink && (
                     <a
@@ -70,43 +74,78 @@ const ContentWrapper_Test: FC<{
                     </a>
                 )}
 
-                <div
-                    className='absolute right-0 cursor-pointer rounded-full rounded-r-none p-1 pl-2 shadow hover:bg-purple-300'
-                    onClick={() => store_activePost(null)}
-                >
-                    X Close
+                <div className='absolute right-0 flex flex-col items-end justify-start space-y-1'>
+                    <div
+                        className='cursor-pointer border border-r-0 border-gray-300 p-1 pl-2 shadow hover:bg-purple-300'
+                        onClick={() => store_activePost(null)}
+                    >
+                        X
+                    </div>
+
+                    <button
+                        type='button'
+                        className='cursor-pointer border border-r-0 border-gray-300 p-1 pl-2 shadow hover:bg-purple-300'
+                        onClick={() => {
+                            setSlideIndex(0);
+                            setLightboxOpen(true);
+                        }}
+                    >
+                        Gallery
+                    </button>
                 </div>
 
                 <h1>{title}</h1>
 
-                {textContent.map((text, idx) => (
-                    <ContentBlock key={idx} text={text} images={galleryImages} index={idx} />
-                ))}
+                {/* Text/Image Blocks */}
+                {textContent.map((text, idx) => {
+                    const { imgUrl, caption } = images?.[idx] ?? { imgUrl: '', caption: '' };
+                    const isIndexEven = idx % 2 === 0;
+
+                    return (
+                        <div key={idx}>
+                            <br />
+
+                            <div className='relative'>
+                                <img
+                                    src={imgUrl}
+                                    className={classNames(
+                                        'peer cursor-pointer',
+                                        text ? 'w-2/3' : 'w-full',
+                                        isIndexEven ? 'float-left mr-6' : 'float-right ml-6',
+                                    )}
+                                    onClick={() => {
+                                        setSlideIndex(idx);
+                                        setLightboxOpen(true);
+                                    }}
+                                />
+                                <div
+                                    className={classNames(
+                                        'absolute -top-full bg-gray-200/10 p-1 text-sm text-gray-200/50 peer-hover:bg-gray-200/25 peer-hover:text-gray-200',
+                                        isIndexEven ? 'left-0' : 'right-0',
+                                    )}
+                                >
+                                    {caption + idx}
+                                </div>
+                            </div>
+
+                            <Remark>{text}</Remark>
+
+                            <br />
+                        </div>
+                    );
+                })}
+
+                <br />
+                <br />
+
+                <Lightbox
+                    open={lightboxOpen}
+                    index={slideIndex}
+                    close={() => setLightboxOpen(false)}
+                    slides={images?.map(({ imgUrl, caption }) => ({ src: imgUrl, title: caption }))}
+                    plugins={[Captions]}
+                />
             </div>
-        </div>
-    );
-};
-
-const ContentBlock: FC<{ text: string; index: number; images: string[] | null; key: string | number }> = ({ text, index, images, key }) => {
-    const [reactContent, setMarkdownSource] = useRemark();
-
-    useEffect(() => {
-        setMarkdownSource(text);
-    }, [text, setMarkdownSource]);
-
-    return (
-        <div key={key} className='w-full'>
-            <br />
-
-            {index % 2 === 0 ? (
-                <img src={images?.[index]} className={classNames(text ? 'float-left mr-6 w-2/3' : 'w-full')} />
-            ) : (
-                <img src={images?.[index]} className={classNames(text ? 'float-right ml-6 w-2/3' : 'w-full')} />
-            )}
-
-            <span className='text-left'>{reactContent}</span>
-
-            <br />
         </div>
     );
 };

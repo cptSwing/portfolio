@@ -10,7 +10,7 @@ const App = () => {
             {/* Fixed Position, Background: */}
             <Background />
 
-            <div className='relative flex size-full min-h-screen flex-col items-center justify-start'>
+            <div className='relative flex size-full min-h-screen flex-col items-center justify-start text-left'>
                 <LogoHeader />
                 <Content />
                 <Nav />

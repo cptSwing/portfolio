@@ -1,16 +1,24 @@
 import { useZustand } from '../lib/zustand';
-import { DataBase, DataBase_Post, MENUTARGET } from '../types/types';
+import { DataBase, Post, MENUTARGET } from '../types/types';
 import classNames from '../lib/classNames';
 import { FC, useEffect, useState } from 'react';
 import testDb from '../queries/testDb.json';
 
-export const navWidthClasses = /* tw */ ' w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 ';
+export const navWidthClassesUnchecked = /* tw */ ' w-[90%] sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-1/2 ';
+export const navWidthClassesChecked = /* tw */ ' w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 ';
 
 const Nav = () => {
     const isCheckedState = useState<string | null>(null);
+    const [isCheckedStr] = isCheckedState;
 
     return (
-        <nav id='nav-cards-wrapper' className={navWidthClasses + 'group flex items-start justify-center space-x-2 sm:space-x-3 md:space-x-4'}>
+        <nav
+            id='nav-cards-wrapper'
+            className={classNames(
+                'group flex items-start justify-center space-x-2 transition-[width] sm:space-x-3 md:space-x-4',
+                isCheckedStr ? navWidthClassesChecked : navWidthClassesUnchecked,
+            )}
+        >
             <NavCard category={MENUTARGET.Updates} cardData={testDb[MENUTARGET.Updates]} isCheckedState={isCheckedState} />
             <NavCard category={MENUTARGET.Resume} cardData={testDb[MENUTARGET.Resume]} isCheckedState={isCheckedState} />
             <NavCard category={MENUTARGET.Code} cardData={testDb[MENUTARGET.Code]} isCheckedState={isCheckedState} />
@@ -27,18 +35,18 @@ const NavCard: FC<{
     cardData: DataBase[MENUTARGET];
     isCheckedState: [string | null, React.Dispatch<React.SetStateAction<string | null>>];
 }> = ({ category, cardData, isCheckedState }) => {
-    const [isChecked, setIsChecked] = isCheckedState;
+    const [isCheckedStr, setIsChecked] = isCheckedState;
     const { posts, headerCardBg } = cardData;
+    const isThisCategoryChecked = isCheckedStr === category;
 
     return (
         <label
             className={classNames(
-                'before:fake-border-bg before:-z-10 before:group-hover:[--fake-border-color:theme(colors.gray.600/25%)] before:hover:![--fake-border-color:theme(colors.gray.500)]',
                 'after:nav-card-corners after:hover:[--corner-outline-color:theme(colors.gray.200)]',
-                'pointer-events-auto relative h-120 cursor-pointer bg-gradient-to-r from-gray-300/75 to-gray-300/75 transition-[flex] duration-700',
+                'pointer-events-auto relative h-120 cursor-pointer bg-gradient-to-r from-gray-300/75 to-gray-300/75 shadow-md transition-[flex]',
                 'hover:from-gray-300 hover:to-gray-300',
-                isChecked === category
-                    ? 'flex-[5] from-gray-300 via-gray-300/80 to-transparent before:to-transparent before:[--fake-border-color:theme(colors.gray.500)] after:[--corner-outline-color:theme(colors.palette.test)]'
+                isThisCategoryChecked
+                    ? 'flex-[5] from-gray-300 via-gray-300/80 to-transparent after:[--corner-outline-color:theme(colors.palette.test)]'
                     : 'flex-[1]', //  'has-[:checked]:!flex-[5]' not working on FF
             )}
         >
@@ -48,7 +56,7 @@ const NavCard: FC<{
                 name='nav-card-input'
                 value={category}
                 className='peer hidden'
-                checked={isChecked === category}
+                checked={isThisCategoryChecked}
                 onChange={(e) => setIsChecked((state) => (state === e.target.value ? null : e.target.value))}
             />
 
@@ -65,7 +73,7 @@ const NavCard: FC<{
                 />
             </div>
 
-            <NavCardSubMenu categoryPosts={posts} isVisible={isChecked === category} />
+            <NavCardSubMenu categoryPosts={posts} isVisible={isThisCategoryChecked} />
         </label>
     );
 };
@@ -75,7 +83,7 @@ const store_activePost = useZustand.getState().methods.store_activePost;
 const staggeredDelayArr = ['delay-[100ms]', 'delay-[200ms]', 'delay-300', 'delay-[400ms]', 'delay-500'];
 
 const NavCardSubMenu: FC<{
-    categoryPosts: DataBase_Post[];
+    categoryPosts: Post[];
     isVisible: boolean;
 }> = ({ categoryPosts, isVisible }) => {
     const [childrenVisible, setChildrenVisible] = useState(isVisible);
@@ -85,13 +93,8 @@ const NavCardSubMenu: FC<{
         setChildrenVisible(isVisible);
     }, [isVisible]);
 
-    // const [post, setPost] = useState<number | null>(null);
-    // useEffect(() => {
-    //     store_activePost(typeof post === 'number' ? categoryPosts[post] : null);
-    // }, [post, categoryPosts]);
-
     return (
-        <div className={classNames('relative z-10 ml-auto h-full w-5/6 overflow-x-visible p-4 pl-0', isVisible ? 'block' : 'hidden')}>
+        <div className={classNames('pointer-events-none relative z-10 ml-auto h-full w-5/6 overflow-x-visible p-4 pl-0', isVisible ? 'block' : 'hidden')}>
             <div className='size-full -scale-x-100 overflow-y-auto overflow-x-visible scrollbar-thin'>
                 {/* Move scrollbar to left side: https://stackoverflow.com/a/45824265 */}
                 <div className='-scale-x-100 space-y-2 pl-4'>
@@ -102,7 +105,7 @@ const NavCardSubMenu: FC<{
                             <div
                                 key={title + idx}
                                 className={classNames(
-                                    'pointer-events-auto relative h-28 w-full cursor-pointer rounded-sm bg-gradient-to-l from-gray-400/90 to-gray-400/60 p-1 text-center outline outline-1 -outline-offset-1 outline-gray-500/50 transition-opacity duration-300 hover:to-gray-400/90 hover:-outline-offset-4 hover:outline-gray-300',
+                                    'pointer-events-auto relative h-28 w-full cursor-pointer bg-gray-400/50 p-1 text-center outline outline-1 -outline-offset-1 outline-gray-500/50 transition-[outline-color,background-color,outline-offset] hover:bg-gray-400/90 hover:-outline-offset-4 hover:outline-gray-300',
                                     staggeredDelayArr[idx] ? staggeredDelayArr[idx] : staggeredDelayArr[staggeredDelayArr.length - 1],
                                     childrenVisible ? 'opacity-100' : 'opacity-0 !delay-75',
                                 )}
@@ -111,7 +114,7 @@ const NavCardSubMenu: FC<{
                             >
                                 {title}
                                 <div
-                                    className='absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat opacity-30'
+                                    className='pointer-events-none absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat opacity-50'
                                     style={{ backgroundImage: `url('${titleCardBg}')` }}
                                 />
                             </div>

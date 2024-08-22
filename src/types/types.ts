@@ -7,21 +7,26 @@ export enum MENUTARGET {
 }
 
 export type ZustandState = {
-    active: { post: DataBase_Post | null };
+    active: { post: Post | null };
 
     methods: {
-        store_activePost: (post: DataBase_Post | null) => void;
+        store_activePost: (post: Post | null) => void;
     };
 };
 
-export type DataBase_Post = {
+export type Post_Image = {
+    imgUrl: string;
+    caption: string;
+};
+
+export type Post = {
     title: string;
     titleCardBg: string;
-    galleryImages: string[] | null;
+    images?: Post_Image[];
     textContent: string[];
     codeLink?: string;
 };
 
 export type DataBase = {
-    [key in MENUTARGET]: { posts: DataBase_Post[]; headerCardBg: string };
+    [key in MENUTARGET]: { posts: Post[]; headerCardBg: string };
 };

@@ -2798,11 +2798,6 @@ signal-exit@^4.0.1:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-4.1.0.tgz#952188c1cbd546070e2dd20d0f41c0ae0530cb04"
   integrity sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==
 
-simplelightbox@^2.14.3:
-  version "2.14.3"
-  resolved "https://registry.yarnpkg.com/simplelightbox/-/simplelightbox-2.14.3.tgz#de00b70509fc5087cf2eacb7b275a55b7a5eaf49"
-  integrity sha512-k2MxHsoRoFDPumO7KTPyqvUPtXAnykCuEZ5xQ7YN8Jq4XF+QLyhWVblXLRCYMRp4+TiNR7PCrcpocW7oQmgSQQ==
-
 slash@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
@@ -3338,6 +3333,11 @@ yaml@^2.3.4:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.5.0.tgz#c6165a721cf8000e91c36490a41d7be25176cf5d"
   integrity sha512-2wWLbGbYDiSqqIKoPjar3MPgB94ErzCtrNE1FdqGuaO0pi2JGjmE8aW8TDZwzU7vuxcGRdL/4gPQwQ7hD5AMSw==
+
+yet-another-react-lightbox@^3.21.4:
+  version "3.21.4"
+  resolved "https://registry.yarnpkg.com/yet-another-react-lightbox/-/yet-another-react-lightbox-3.21.4.tgz#2eb1e3e182fa3c23ea1db76b27973bc2fc188f5d"
+  integrity sha512-xlYs+F8it8DhCRXcgwXFh58HOuGpNFWmBqaUoo1gkZvHpCaiGAEkAUfAIRz9+sWEcZLSK45zB65+n3gDjjuz1Q==
 
 yocto-queue@^0.1.0:
   version "0.1.0"

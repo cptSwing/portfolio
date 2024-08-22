@@ -34,10 +34,10 @@
     "prettier-plugin-tailwindcss": "^0.6.5",
     "react-remark": "^2.1.0",
     "react-transition-group": "^4.4.5",
-    "simplelightbox": "^2.14.3",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-breakpoints-inspector": "^1.1.0",
     "typescript": "^5.2.2",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "yet-another-react-lightbox": "^3.21.4"
   }
 }
