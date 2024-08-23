@@ -7,23 +7,17 @@ import testDb from '../queries/testDb.json';
 export const navWidthClassesUnchecked = /* tw */ ' w-[90%] sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-1/2 ';
 export const navWidthClassesChecked = /* tw */ ' w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 ';
 
-const Nav = () => {
-    const isCheckedState = useState<string | null>(null);
-    const [isCheckedStr] = isCheckedState;
-
+const Nav: FC<{ categoryIsCheckedState: [string | null, React.Dispatch<React.SetStateAction<string | null>>] }> = ({ categoryIsCheckedState }) => {
     return (
         <nav
             id='nav-cards-wrapper'
-            className={classNames(
-                'group flex items-start justify-center space-x-2 transition-[width] sm:space-x-3 md:space-x-4',
-                isCheckedStr ? navWidthClassesChecked : navWidthClassesUnchecked,
-            )}
+            className='group flex size-full flex-col items-center justify-start space-y-8 sm:space-y-6 md:flex-row md:items-start md:justify-center md:space-x-4 md:space-y-0'
         >
-            <NavCard category={MENUTARGET.Updates} cardData={testDb[MENUTARGET.Updates]} isCheckedState={isCheckedState} />
-            <NavCard category={MENUTARGET.Resume} cardData={testDb[MENUTARGET.Resume]} isCheckedState={isCheckedState} />
-            <NavCard category={MENUTARGET.Code} cardData={testDb[MENUTARGET.Code]} isCheckedState={isCheckedState} />
-            <NavCard category={MENUTARGET.Art} cardData={testDb[MENUTARGET.Art]} isCheckedState={isCheckedState} />
-            <NavCard category={MENUTARGET.Contact} cardData={testDb[MENUTARGET.Contact]} isCheckedState={isCheckedState} />
+            <NavCard category={MENUTARGET.Updates} cardData={testDb[MENUTARGET.Updates]} categoryIsCheckedState={categoryIsCheckedState} />
+            <NavCard category={MENUTARGET.Resume} cardData={testDb[MENUTARGET.Resume]} categoryIsCheckedState={categoryIsCheckedState} />
+            <NavCard category={MENUTARGET.Code} cardData={testDb[MENUTARGET.Code]} categoryIsCheckedState={categoryIsCheckedState} />
+            <NavCard category={MENUTARGET.Art} cardData={testDb[MENUTARGET.Art]} categoryIsCheckedState={categoryIsCheckedState} />
+            <NavCard category={MENUTARGET.Contact} cardData={testDb[MENUTARGET.Contact]} categoryIsCheckedState={categoryIsCheckedState} />
         </nav>
     );
 };
@@ -33,17 +27,19 @@ export default Nav;
 const NavCard: FC<{
     category: MENUTARGET;
     cardData: DataBase[MENUTARGET];
-    isCheckedState: [string | null, React.Dispatch<React.SetStateAction<string | null>>];
-}> = ({ category, cardData, isCheckedState }) => {
-    const [isCheckedStr, setIsChecked] = isCheckedState;
+    categoryIsCheckedState: [string | null, React.Dispatch<React.SetStateAction<string | null>>];
+}> = ({ category, cardData, categoryIsCheckedState }) => {
     const { posts, headerCardBg } = cardData;
+    const activePost = useZustand((state) => state.active.post);
+
+    const [isCheckedStr, setIsChecked] = categoryIsCheckedState;
     const isThisCategoryChecked = isCheckedStr === category;
 
     return (
         <label
             className={classNames(
                 'after:nav-card-corners after:hover:[--corner-outline-color:theme(colors.gray.200)]',
-                'pointer-events-auto relative h-120 cursor-pointer bg-gradient-to-r from-gray-300/75 to-gray-300/75 shadow-md transition-[flex]',
+                'pointer-events-auto relative h-64 w-full cursor-pointer bg-gradient-to-b from-gray-300/75 to-gray-300/75 shadow-md transition-[flex] md:h-120 md:bg-gradient-to-r',
                 'hover:from-gray-300 hover:to-gray-300',
                 isThisCategoryChecked
                     ? 'flex-[5] from-gray-300 via-gray-300/80 to-transparent after:[--corner-outline-color:theme(colors.palette.test)]'
@@ -57,7 +53,7 @@ const NavCard: FC<{
                 value={category}
                 className='peer hidden'
                 checked={isThisCategoryChecked}
-                onChange={(e) => setIsChecked((state) => (state === e.target.value ? null : e.target.value))}
+                onChange={(e) => setIsChecked((state) => (state === e.target.value ? (activePost ? e.target.value : null) : e.target.value))}
             />
 
             <div
@@ -66,7 +62,9 @@ const NavCard: FC<{
                     'peer-checked:[&>.bg-image-select]:opacity-25 hover:[&>.bg-image-select]:opacity-50',
                 )}
             >
-                <span className='title-select writing-mode-vert-lr rotate-180 select-none whitespace-nowrap text-5xl first-letter:capitalize'>{category}</span>
+                <span className='title-select md:writing-mode-vert-lr select-none whitespace-nowrap text-3xl first-letter:capitalize md:rotate-180 md:text-5xl'>
+                    {category}
+                </span>
                 <div
                     className='bg-image-select absolute bottom-0 left-0 h-3/4 w-4/5 bg-cover opacity-10 transition-opacity [mask-composite:intersect] [mask-image:linear-gradient(to_right,rgba(0,0,0,0)_0%,rgba(0,0,0,1)_30%_60%,rgba(0,0,0,0)_100%),_linear-gradient(to_top,rgba(0,0,0,0)_0%,rgba(0,0,0,1)_20%_80%,rgba(0,0,0,0)_100%)]'
                     style={{ backgroundImage: `url('${headerCardBg}')` }}
@@ -94,29 +92,44 @@ const NavCardSubMenu: FC<{
     }, [isVisible]);
 
     return (
-        <div className={classNames('pointer-events-none relative z-10 ml-auto h-full w-5/6 overflow-x-visible p-4 pl-0', isVisible ? 'block' : 'hidden')}>
-            <div className='size-full -scale-x-100 overflow-y-auto overflow-x-visible scrollbar-thin'>
+        <div
+            className={classNames(
+                'pointer-events-none relative z-10 h-5/6 w-fit overflow-x-visible p-4 md:ml-auto md:h-full md:w-5/6 md:pl-0',
+                isVisible ? 'block' : 'hidden',
+            )}
+        >
+            <div className='size-full scrollbar-thin md:-scale-x-100 md:overflow-y-auto md:overflow-x-visible'>
                 {/* Move scrollbar to left side: https://stackoverflow.com/a/45824265 */}
-                <div className='-scale-x-100 space-y-2 pl-4'>
+                <div className='flex md:-scale-x-100 md:flex-col md:space-y-2 md:pl-4'>
                     {categoryPosts.map((databasePost, idx, arr) => {
-                        const { title, titleCardBg } = databasePost;
+                        const { title, titleCardBg, textContent } = databasePost;
 
                         return (
                             <div
                                 key={title + idx}
                                 className={classNames(
-                                    'pointer-events-auto relative h-28 w-full cursor-pointer bg-gray-400/50 p-1 text-center outline outline-1 -outline-offset-1 outline-gray-500/50 transition-[outline-color,background-color,outline-offset] hover:bg-gray-400/90 hover:-outline-offset-4 hover:outline-gray-300',
-                                    staggeredDelayArr[idx] ? staggeredDelayArr[idx] : staggeredDelayArr[staggeredDelayArr.length - 1],
-                                    childrenVisible ? 'opacity-100' : 'opacity-0 !delay-75',
+                                    'aspect-video h-full w-fit cursor-pointer opacity-100 transition-opacity md:h-fit md:w-full',
+                                    childrenVisible
+                                        ? staggeredDelayArr[idx]
+                                            ? staggeredDelayArr[idx]
+                                            : staggeredDelayArr[staggeredDelayArr.length - 1]
+                                        : '!opacity-0 !delay-75',
                                 )}
-                                // onClick={() => setPost(idx)}
-                                onClick={() => store_activePost(arr[idx])}
                             >
-                                {title}
                                 <div
-                                    className='pointer-events-none absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat opacity-50'
-                                    style={{ backgroundImage: `url('${titleCardBg}')` }}
-                                />
+                                    className={
+                                        'pointer-events-auto relative size-full bg-gray-400/50 p-1 outline outline-1 -outline-offset-1 outline-gray-500/50 transition-[outline-color,background-color,outline-offset] duration-100 hover:bg-gray-400/90 hover:-outline-offset-4 hover:outline-gray-300' +
+                                        ' after:absolute after:bottom-0 after:truncate after:text-xs after:opacity-0 after:transition-opacity after:delay-300 after:duration-200 hover:after:opacity-100 hover:after:content-[attr(data-after-content)]'
+                                    }
+                                    data-after-content={textContent[0]}
+                                    onClick={() => store_activePost(arr[idx])}
+                                >
+                                    <div className='text-center'>{title}</div>
+                                    <div
+                                        className='pointer-events-none absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat opacity-50'
+                                        style={{ backgroundImage: `url('${titleCardBg}')` }}
+                                    />
+                                </div>
                             </div>
                         );
                     })}
