@@ -2,17 +2,15 @@ import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
 import { Post } from '../types/types';
 import { FC, useCallback, useState } from 'react';
-import { navWidthClassesChecked } from './Nav';
+import { TopMenuOnOpened } from './Nav';
 import { Remark } from 'react-remark';
 import Lightbox from 'yet-another-react-lightbox';
 import { Captions } from 'yet-another-react-lightbox/plugins';
 import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
 
-const store_activePost = useZustand.getState().methods.store_activePost;
-
 const Content = () => {
-    const activePost = useZustand((state) => state.active.post);
+    const activePost = useZustand((state) => state.nav.activePost);
 
     return (
         <main className={classNames('relative mb-4 flex h-0.5 justify-center bg-gray-700/50', activePost ? 'z-50 w-screen' : 'w-full')}>
@@ -43,51 +41,11 @@ const ContentWrapper_Test: FC<{
 
     return (
         <div ref={contentRefCb} className={classNames('absolute top-4 bg-inherit shadow-lg', post ? 'z-10 h-fit' : '-z-10 h-0')}>
-            <div className={'relative mx-auto' + navWidthClassesChecked}>
-                <div className='absolute right-0 top-[-50px] flex items-end justify-end space-x-1 shadow'>
-                    {images && (
-                        <button
-                            type='button'
-                            className='cursor-pointer border border-b-0 border-gray-300 p-1 hover:bg-purple-300'
-                            onClick={() => {
-                                setSlideIndex(0);
-                                setLightboxOpen(true);
-                            }}
-                        >
-                            Gallery
-                        </button>
-                    )}
-
-                    {codeLink && (
-                        <a
-                            className='group block cursor-pointer border border-b-0 p-1 shadow hover:bg-purple-300'
-                            href={codeLink}
-                            target='_blank'
-                            rel='noreferrer'
-                        >
-                            Code lbr rbr
-                            <span className='absolute right-0 z-50 mt-2 hidden whitespace-nowrap text-right text-sm group-hover:block'>
-                                Link goes to {codeLink} <br /> bla bla explanatory <br /> new window/tab
-                            </span>
-                        </a>
-                    )}
-
-                    {/* TODO fade out instead of instantly closing */}
-                    <div
-                        className='aspect-square h-fit cursor-pointer border border-b-0 border-gray-300 p-1 hover:bg-purple-300'
-                        onClick={() => store_activePost(null)}
-                    >
-                        X
-                    </div>
-                </div>
-            </div>
+            <TopMenuOnOpened images={images} codeLink={codeLink} setLightbox={setLightboxOpen} setSlide={setSlideIndex} />
 
             <div className={classNames('absolute flex justify-center overflow-hidden bg-inherit', post ? 'w-screen' : 'w-full')}>
                 <div
-                    className={classNames(
-                        'relative mx-auto flex h-0 flex-col items-center justify-start overflow-y-auto bg-gray-400 p-4 shadow-md scrollbar-thin',
-                        navWidthClassesChecked,
-                    )}
+                    className='nav-checked-width relative mx-auto flex h-0 flex-col items-center justify-start overflow-y-auto bg-gray-400 p-4 shadow-md scrollbar-thin'
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >

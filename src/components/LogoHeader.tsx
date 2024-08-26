@@ -1,27 +1,27 @@
 import classNames from '../lib/classNames';
 import { useZustand } from '../lib/zustand';
 
+const store_activePost = useZustand.getState().methods.store_activePost;
+const store_isOpened = useZustand.getState().methods.store_isOpened;
+
 const LogoHeader = () => {
-    const activePost = useZustand((state) => state.active.post);
+    const activePost = useZustand((state) => state.nav.activePost);
 
     return (
         <header
             id='logo'
             className={classNames(
-                'transform-gpu select-none transition-[margin,transform] duration-300',
-                activePost ? 'ml-0 mr-[100%] mt-6 translate-x-1/2' : 'mx-0 mt-12 translate-x-0',
+                'w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height] duration-300',
+                activePost ? 'ml-0 mr-[100%] mt-4 h-[70px] translate-x-1/2' : 'mx-0 mt-8 h-[100px] translate-x-0',
             )}
+            onClick={() => {
+                store_isOpened(null);
+                store_activePost(null);
+            }}
         >
-            <svg
-                width={activePost ? 262 : 350}
-                height={activePost ? 60 : 80}
-                viewBox='-19.5 0 70 25'
-                version='1.1'
-                id='logo-svg'
-                xmlns='http://www.w3.org/2000/svg'
-            >
+            <svg height='100%' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
                 <g id='layer1' transform='translate(-77.964769,-127.41715)'>
-                    <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1'>
+                    <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1' className='fill-black hover:fill-slate-800'>
                         <tspan
                             id='tspan1'
                             style={{
@@ -30,7 +30,7 @@ const LogoHeader = () => {
                                 fontFamily: 'Arial',
                                 textAlign: 'end',
                                 textAnchor: 'end',
-                                fill: '#000000',
+                                // fill: '#000000',
                                 fillOpacity: 1,
                                 stroke: 'none',
                                 strokeWidth: 0.881,
@@ -51,7 +51,6 @@ const LogoHeader = () => {
                                 fontFamily: 'Times New Roman',
                                 textAlign: 'end',
                                 textAnchor: 'end',
-                                fill: '#000000',
                                 fillOpacity: 1,
                                 stroke: 'none',
                                 strokeWidth: 0.881,

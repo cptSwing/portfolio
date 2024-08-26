@@ -1,13 +1,13 @@
 import Content from '../components/Content';
 import LogoHeader from '../components/LogoHeader';
-import Nav, { navWidthClassesChecked, navWidthClassesUnchecked } from '../components/Nav';
+import Nav from '../components/Nav';
 import SocialsFooter from '../components/SocialsFooter';
 import Background from '../components/Background';
-import { useState } from 'react';
 import classNames from '../lib/classNames';
+import { useZustand } from '../lib/zustand';
 
 const App = () => {
-    const [categoryIsChecked, setCategoryIsChecked] = useState<string | null>(null);
+    const isOpened = useZustand((state) => state.nav.isOpened);
 
     return (
         <>
@@ -17,12 +17,12 @@ const App = () => {
             <div
                 className={classNames(
                     'relative mx-auto flex h-full min-h-screen flex-col items-center justify-start text-left transition-[width]',
-                    categoryIsChecked ? navWidthClassesChecked : navWidthClassesUnchecked,
+                    isOpened ? 'nav-checked-width' : 'nav-unchecked-width',
                 )}
             >
                 <LogoHeader />
                 <Content />
-                <Nav categoryIsCheckedState={[categoryIsChecked, setCategoryIsChecked]} />
+                <Nav />
                 <SocialsFooter />
             </div>
         </>

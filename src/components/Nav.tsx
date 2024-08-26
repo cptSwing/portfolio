@@ -1,39 +1,37 @@
 import { useZustand } from '../lib/zustand';
-import { DataBase, Post, MENUTARGET } from '../types/types';
+import { DataBase, Post, MENUTARGET, Post_Image } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import testDb from '../queries/testDb.json';
 
-export const navWidthClassesUnchecked = /* tw */ ' w-[90%] sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-1/2 ';
-export const navWidthClassesChecked = /* tw */ ' w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 ';
-
-const Nav: FC<{ categoryIsCheckedState: [string | null, React.Dispatch<React.SetStateAction<string | null>>] }> = ({ categoryIsCheckedState }) => {
+const Nav = () => {
     return (
         <nav
             id='nav-cards-wrapper'
             className='group flex size-full flex-col items-center justify-start space-y-8 sm:space-y-6 md:flex-row md:items-start md:justify-center md:space-x-4 md:space-y-0'
         >
-            <NavCard category={MENUTARGET.Updates} cardData={testDb[MENUTARGET.Updates]} categoryIsCheckedState={categoryIsCheckedState} />
-            <NavCard category={MENUTARGET.Resume} cardData={testDb[MENUTARGET.Resume]} categoryIsCheckedState={categoryIsCheckedState} />
-            <NavCard category={MENUTARGET.Code} cardData={testDb[MENUTARGET.Code]} categoryIsCheckedState={categoryIsCheckedState} />
-            <NavCard category={MENUTARGET.Art} cardData={testDb[MENUTARGET.Art]} categoryIsCheckedState={categoryIsCheckedState} />
-            <NavCard category={MENUTARGET.Contact} cardData={testDb[MENUTARGET.Contact]} categoryIsCheckedState={categoryIsCheckedState} />
+            <NavCard category={MENUTARGET.Updates} cardData={testDb[MENUTARGET.Updates]} />
+            <NavCard category={MENUTARGET.Resume} cardData={testDb[MENUTARGET.Resume]} />
+            <NavCard category={MENUTARGET.Code} cardData={testDb[MENUTARGET.Code]} />
+            <NavCard category={MENUTARGET.Art} cardData={testDb[MENUTARGET.Art]} />
+            <NavCard category={MENUTARGET.Contact} cardData={testDb[MENUTARGET.Contact]} />
         </nav>
     );
 };
 
 export default Nav;
 
+const store_isOpened = useZustand.getState().methods.store_isOpened;
+
 const NavCard: FC<{
     category: MENUTARGET;
     cardData: DataBase[MENUTARGET];
-    categoryIsCheckedState: [string | null, React.Dispatch<React.SetStateAction<string | null>>];
-}> = ({ category, cardData, categoryIsCheckedState }) => {
+}> = ({ category, cardData }) => {
     const { posts, headerCardBg } = cardData;
-    const activePost = useZustand((state) => state.active.post);
+    const isOpened = useZustand((state) => state.nav.isOpened);
+    const activePost = useZustand((state) => state.nav.activePost);
 
-    const [isCheckedStr, setIsChecked] = categoryIsCheckedState;
-    const isThisCategoryChecked = isCheckedStr === category;
+    const isThisCategoryChecked = useMemo(() => isOpened === category, [isOpened, category]);
 
     return (
         <label
@@ -53,7 +51,10 @@ const NavCard: FC<{
                 value={category}
                 className='peer hidden'
                 checked={isThisCategoryChecked}
-                onChange={(e) => setIsChecked((state) => (state === e.target.value ? (activePost ? e.target.value : null) : e.target.value))}
+                onChange={({ currentTarget }) => {
+                    const typedValue = currentTarget.value as MENUTARGET;
+                    store_isOpened(isOpened === typedValue ? (activePost ? typedValue : null) : typedValue);
+                }}
             />
 
             <div
@@ -133,6 +134,49 @@ const NavCardSubMenu: FC<{
                             </div>
                         );
                     })}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export const TopMenuOnOpened: FC<{
+    images: Post_Image[] | undefined;
+    codeLink: string | undefined;
+    setLightbox: React.Dispatch<React.SetStateAction<boolean>>;
+    setSlide: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ images, codeLink, setLightbox, setSlide }) => {
+    return (
+        <div className='nav-checked-width relative mx-auto'>
+            <div className='absolute right-0 top-[-50px] flex items-end justify-end space-x-1 shadow'>
+                {images && (
+                    <button
+                        type='button'
+                        className='cursor-pointer border border-b-0 border-gray-300 p-1 hover:bg-purple-300'
+                        onClick={() => {
+                            setSlide(0);
+                            setLightbox(true);
+                        }}
+                    >
+                        Gallery
+                    </button>
+                )}
+
+                {codeLink && (
+                    <a className='group block cursor-pointer border border-b-0 p-1 shadow hover:bg-purple-300' href={codeLink} target='_blank' rel='noreferrer'>
+                        Code lbr rbr
+                        <span className='absolute right-0 z-50 mt-2 hidden whitespace-nowrap text-right text-sm group-hover:block'>
+                            Link goes to {codeLink} <br /> bla bla explanatory <br /> new window/tab
+                        </span>
+                    </a>
+                )}
+
+                {/* TODO fade out instead of instantly closing */}
+                <div
+                    className='aspect-square h-fit cursor-pointer border border-b-0 border-gray-300 p-1 hover:bg-purple-300'
+                    onClick={() => store_activePost(null)}
+                >
+                    X
                 </div>
             </div>
         </div>

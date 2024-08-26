@@ -1,15 +1,21 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { ZustandState } from '../types/types';
+import { ZustandStore } from '../types/types';
 
-export const useZustand = create<ZustandState>()(
+export const useZustand = create<ZustandStore>()(
     immer((set) => ({
-        active: { post: null },
+        nav: { isOpened: null, activePost: null },
 
         methods: {
+            store_isOpened: (opened) => {
+                set((draftState) => {
+                    draftState.nav.isOpened = opened;
+                });
+            },
+
             store_activePost: (post) => {
                 set((draftState) => {
-                    draftState.active.post = post;
+                    draftState.nav.activePost = post;
                 });
             },
         },

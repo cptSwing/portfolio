@@ -6,10 +6,16 @@ export enum MENUTARGET {
     Contact = 'contact',
 }
 
-export type ZustandState = {
-    active: { post: Post | null };
+export type ZustandStore = {
+    nav: {
+        /** Has a category in menu been opened? */
+        isOpened: MENUTARGET | null;
+        /** Which, if any, post was chosen? */
+        activePost: Post | null;
+    };
 
     methods: {
+        store_isOpened: (opened: MENUTARGET | null) => void;
         store_activePost: (post: Post | null) => void;
     };
 };
