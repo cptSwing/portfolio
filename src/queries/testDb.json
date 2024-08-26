@@ -21,8 +21,11 @@
             {
                 "title": "Updates 2",
                 "titleCardBg": "https://picsum.photos/seed/updates2/500?grayscale",
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": [
+                    "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc.",
+                    "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit.",
+                    "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                ]
             },
             {
                 "title": "Updates 3",
@@ -33,8 +36,7 @@
                     { "imgUrl": "https://picsum.photos/seed/updates3_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/updates3_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
                 "title": "Updates 4",
@@ -45,8 +47,7 @@
                     { "imgUrl": "https://picsum.photos/seed/updates4_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/updates4_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
                 "title": "Updates 5",
@@ -57,8 +58,7 @@
                     { "imgUrl": "https://picsum.photos/seed/updates5_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/updates5_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             }
         ],
         "headerCardBg": "https://picsum.photos/seed/updates/500?grayscale"
@@ -68,8 +68,7 @@
             {
                 "title": "Resumé",
                 "titleCardBg": "https://picsum.photos/seed/resume1/500?grayscale",
-                "textContent": ["I've done **cool** stuff", "More `cool` stuff", "Even more of the ***cool stuff*** tbh"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["I've done **cool** stuff", "More `cool` stuff", "Even more of the ***cool stuff*** tbh"]
             },
             {
                 "title": "About",
@@ -80,8 +79,7 @@
                     { "imgUrl": "https://picsum.photos/seed/about_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/about_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             }
         ],
         "headerCardBg": "https://picsum.photos/seed/resume/500?grayscale"
@@ -109,8 +107,7 @@
                     { "imgUrl": "https://picsum.photos/seed/fader_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/fader_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
                 "title": "Scrollmersive",
@@ -121,8 +118,7 @@
                     { "imgUrl": "https://picsum.photos/seed/scrollm_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/scrollm_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
                 "title": "Hilux Configurator",
@@ -133,8 +129,7 @@
                     { "imgUrl": "https://picsum.photos/seed/hilux_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/hilux_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
                 "title": "Brotherland",
@@ -145,8 +140,7 @@
                     { "imgUrl": "https://picsum.photos/seed/brotherland_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/brotherland_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
                 "title": "Plate Calc",
@@ -157,8 +151,7 @@
                     { "imgUrl": "https://picsum.photos/seed/plate_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/plate_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             }
         ],
         "headerCardBg": "https://picsum.photos/seed/code/500?grayscale"
@@ -174,8 +167,7 @@
                     { "imgUrl": "https://picsum.photos/seed/gruyndw_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/gruyndw_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
                 "title": "BER Tagesspiegel",
@@ -186,35 +178,95 @@
                     { "imgUrl": "https://picsum.photos/seed/ber_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/ber_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
                 "title": "Stasi VR",
-                "titleCardBg": "https://picsum.photos/seed/stasi/500?grayscale",
+                "titleCardBg": "src/assets/images/db/stasi_featured_image.jpg",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/stasi_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/stasi_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/stasi_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/stasi_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    { "imgUrl": "src/assets/images/db/stasi_1.jpg", "caption": "stast 1k" },
+                    { "imgUrl": "src/assets/images/db/stasi_2.jpg", "caption": "2 2 2 2" },
+                    { "imgUrl": "src/assets/images/db/stasi_3.jpg", "caption": "STASI 3" },
+                    { "imgUrl": "src/assets/images/db/stasi_4.jpg", "caption": "ksdkjsdk" },
+                    { "imgUrl": "src/assets/images/db/stasi_5.jpg", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["Stasi first image lalslalsals", "Stasi second image lalslalsals", "Stasi third image lalslalsals"]
             },
             {
-                "title": "Art 4",
+                "title": "A 100",
+                "titleCardBg": "src/assets/images/db/a100_featured_image.jpg",
+                "images": [
+                    { "imgUrl": "src/assets/images/db/a100_1.jpg", "caption": "ksdkjsdk" },
+                    { "imgUrl": "src/assets/images/db/a100_2.jpg", "caption": "ksdkjsdk" },
+                    { "imgUrl": "src/assets/images/db/a100_3.jpg", "caption": "ksdkjsdk" },
+                    { "imgUrl": "src/assets/images/db/a100_4.jpg", "caption": "ksdkjsdk" }
+                ],
+                "textContent": ["lol", "rofl", "lmao"]
+            },
+            {
+                "title": "Emergency 5",
                 "titleCardBg": "https://picsum.photos/seed/art4/500?grayscale",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/art4_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/art4_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/art4_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/art4_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    { "imgUrl": "src/assets/images/db/em5_civilian_equipment_01.jpg", "caption": "Civilian Equipment 1" },
+                    { "imgUrl": "src/assets/images/db/em5_civilian_equipment_02.jpg", "caption": "Civilian Equipment 2" },
+                    { "imgUrl": "src/assets/images/db/em5_civilian_equipment_03.jpg", "caption": "Civilian Equipment 3" },
+                    { "imgUrl": "src/assets/images/db/em5_engineer_equipment_wires.jpg", "caption": "Engineer Equipment (wireframes)" },
+                    { "imgUrl": "src/assets/images/db/em5_firefighter_equipments_01.jpg", "caption": "Firefighter Equipment" },
+                    { "imgUrl": "src/assets/images/db/em5_hotdog_barrel.jpg", "caption": "Hotdog Stand" },
+                    { "imgUrl": "src/assets/images/db/em5_hotdog_ingame.jpg", "caption": "Hotdog Stand (ingame cutscene)" },
+                    { "imgUrl": "src/assets/images/db/em5_medic_equipment.jpg", "caption": "Medic Equipment" },
+                    { "imgUrl": "src/assets/images/db/em5_medic_equipment_wires.jpg", "caption": "Medic Equipment (wires)" },
+                    { "imgUrl": "src/assets/images/db/em5_police_equipment_01.jpg", "caption": "Police Equipment 1" },
+                    { "imgUrl": "src/assets/images/db/em5_police_equipment_02.jpg", "caption": "Police Equipment 2" },
+                    { "imgUrl": "src/assets/images/db/em5_ubahn_flags.jpg", "caption": "Various city assets" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
-                "title": "Art 5",
+                "title": "U Stadtmitte (for Lange Nacht d. Wissenschaften)",
+                "titleCardBg": "src/assets/images/db/usm_featured_image.jpg",
+                "images": [
+                    { "imgUrl": "src/assets/images/db/usm_3.jpg" },
+                    { "imgUrl": "src/assets/images/db/usm_4.jpg" },
+                    { "imgUrl": "src/assets/images/db/usm_6.jpg" },
+                    { "imgUrl": "src/assets/images/db/usm_7.jpg" }
+                ],
+                "textContent": ["lol", "rofl", "lmao"]
+            },
+            {
+                "title": "Personal 3D Projects (where WIP's come to die..)",
+                "titleCardBg": "src/assets/images/db/satellite_featured_image.jpg",
+                "images": [
+                    { "imgUrl": "src/assets/images/db/satellite_close.jpg", "caption": "Retro-Style Satellite (high poly)" },
+                    { "imgUrl": "src/assets/images/db/satellite_total.jpg", "caption": "Retro-Style Satellite (high poly)" },
+                    { "imgUrl": "src/assets/images/db/Mosin_001.jpg", "caption": "Mosin Nagant WW2 Rifle" },
+                    { "imgUrl": "src/assets/images/db/Mosin_004.jpg", "caption": "Mosin Nagant WW2 Rifle" },
+                    { "imgUrl": "src/assets/images/db/Mosin_002_wires.jpg", "caption": "Mosin Nagant WW2 Rifle (wireframes)" },
+                    { "imgUrl": "src/assets/images/db/Stretcher_Low_2_PC.jpg", "caption": "Incomplete Entry for polycount.com competition \"The Escape\"" },
+                    { "imgUrl": "src/assets/images/db/Stretcher_Low_3_PC.jpg", "caption": "Incomplete Entry for polycount.com competition \"The Escape\"" },
+                    {
+                        "imgUrl": "src/assets/images/db/Stretcher_Low_6_wires_PC.jpg",
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\""
+                    },
+
+                    { "imgUrl": "src/assets/images/db/t35_t35_high1.jpg", "caption": "T-35 - Pre-WW2 Soviet Tank (high poly)" },
+                    { "imgUrl": "src/assets/images/db/t35_t35_high2.jpg", "caption": "T-35 - Pre-WW2 Soviet Tank (high poly)" }
+                ],
+                "textContent": ["lol", "rofl", "lmao"]
+            },
+            {
+                "title": "Various 2D Artwork",
+                "titleCardBg": "src/assets/images/db/bbb_bnf_featured_image.jpg",
+                "images": [
+                    { "imgUrl": "src/assets/images/db/bbb_plakat.jpg", "caption": "ksdkjsdk" },
+                    { "imgUrl": "src/assets/images/db/bbb_vid.jpg", "caption": "ksdkjsdk" },
+                    { "imgUrl": "src/assets/images/db/bnf_plakat.jpg", "caption": "ksdkjsdk" }
+                ],
+                "textContent": ["lol", "rofl", "lmao"]
+            },
+
+            {
+                "title": "Student Projects",
                 "titleCardBg": "https://picsum.photos/seed/art5/500?grayscale",
                 "images": [
                     { "imgUrl": "https://picsum.photos/seed/updates1_1/900/600?grayscale", "caption": "ksdkjsdk" },
@@ -222,8 +274,7 @@
                     { "imgUrl": "https://picsum.photos/seed/updates1_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/updates1_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             }
         ],
         "headerCardBg": "https://picsum.photos/seed/art/500?grayscale"
@@ -239,8 +290,7 @@
                     { "imgUrl": "https://picsum.photos/seed/contact_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/contact_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             },
             {
                 "title": "Impressum",
@@ -251,8 +301,7 @@
                     { "imgUrl": "https://picsum.photos/seed/impr_3/900/600?grayscale", "caption": "ksdkjsdk" },
                     { "imgUrl": "https://picsum.photos/seed/impr_4/900/600?grayscale", "caption": "ksdkjsdk" }
                 ],
-                "textContent": ["lol", "rofl", "lmao"],
-                "innerHtml": "<div className='size-1/2 border border-red-500' />"
+                "textContent": ["lol", "rofl", "lmao"]
             }
         ],
         "headerCardBg": "https://picsum.photos/seed/contact/500?grayscale"

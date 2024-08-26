@@ -22,7 +22,7 @@ export type ZustandStore = {
 
 export type Post_Image = {
     imgUrl: string;
-    caption: string;
+    caption?: string;
 };
 
 export type Post = {

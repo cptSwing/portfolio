@@ -37,11 +37,11 @@ const NavCard: FC<{
         <label
             className={classNames(
                 'after:nav-card-corners after:hover:[--corner-outline-color:theme(colors.gray.200)]',
-                'pointer-events-auto relative h-64 w-full cursor-pointer bg-gradient-to-b from-gray-300/75 to-gray-300/75 shadow-md transition-[flex] md:h-120 md:bg-gradient-to-r',
-                'hover:from-gray-300 hover:to-gray-300',
+                'pointer-events-auto relative h-64 w-full cursor-pointer bg-gradient-to-b shadow-md transition-[flex] md:h-120 md:bg-gradient-to-r',
+                'hover:from-gray-300 hover:to-gray-300 hover:text-gray-400',
                 isThisCategoryChecked
-                    ? 'flex-[5] from-gray-300 via-gray-300/80 to-transparent after:[--corner-outline-color:theme(colors.palette.test)]'
-                    : 'flex-[1]', //  'has-[:checked]:!flex-[5]' not working on FF
+                    ? 'flex-[5] from-gray-300 to-gray-300 after:[--corner-outline-color:theme(colors.palette.test)]'
+                    : 'flex-[1] from-gray-300/75 to-gray-300/25', //  'has-[:checked]:!flex-[5]' not working on FF
             )}
         >
             {/* Hidden checkbox input: */}
@@ -57,12 +57,7 @@ const NavCard: FC<{
                 }}
             />
 
-            <div
-                className={classNames(
-                    'pointer-events-none absolute bottom-0 flex size-full cursor-pointer rounded p-3',
-                    'peer-checked:[&>.bg-image-select]:opacity-25 hover:[&>.bg-image-select]:opacity-50',
-                )}
-            >
+            <div className='pointer-events-none absolute bottom-0 flex size-full cursor-pointer rounded p-3'>
                 <span className='title-select md:writing-mode-vert-lr select-none whitespace-nowrap text-3xl first-letter:capitalize md:rotate-180 md:text-5xl'>
                     {category}
                 </span>
@@ -109,7 +104,7 @@ const NavCardSubMenu: FC<{
                             <div
                                 key={title + idx}
                                 className={classNames(
-                                    'aspect-video h-full w-fit cursor-pointer opacity-100 transition-opacity md:h-fit md:w-full',
+                                    'aspect-[3/1] h-full w-fit cursor-pointer opacity-100 transition-opacity md:h-fit md:w-full',
                                     childrenVisible
                                         ? staggeredDelayArr[idx]
                                             ? staggeredDelayArr[idx]
@@ -119,15 +114,15 @@ const NavCardSubMenu: FC<{
                             >
                                 <div
                                     className={
-                                        'pointer-events-auto relative size-full bg-gray-400/50 p-1 outline outline-1 -outline-offset-1 outline-gray-500/50 transition-[outline-color,background-color,outline-offset] duration-100 hover:bg-gray-400/90 hover:-outline-offset-4 hover:outline-gray-300' +
+                                        'pointer-events-auto relative size-full bg-gray-400/50 p-1 outline outline-1 -outline-offset-4 outline-gray-300/75 transition-[outline-color,background-color,outline-offset] duration-100 hover:bg-transparent hover:outline-2 hover:-outline-offset-8 hover:outline-gray-300' +
                                         ' after:absolute after:bottom-0 after:truncate after:text-xs after:opacity-0 after:transition-opacity after:delay-300 after:duration-200 hover:after:opacity-100 hover:after:content-[attr(data-after-content)]'
                                     }
                                     data-after-content={textContent[0]}
                                     onClick={() => store_activePost(arr[idx])}
                                 >
-                                    <div className='text-center'>{title}</div>
+                                    <div className='text-center text-white'>{title}</div>
                                     <div
-                                        className='pointer-events-none absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat opacity-50'
+                                        className='pointer-events-none absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat'
                                         style={{ backgroundImage: `url('${titleCardBg}')` }}
                                     />
                                 </div>
