@@ -11,8 +11,8 @@ const LogoHeader = () => {
         <header
             id='logo'
             className={classNames(
-                'w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height] duration-300',
-                activePost ? 'ml-0 mr-[100%] mt-4 h-[70px] translate-x-1/2' : 'mx-0 mt-8 h-[100px] translate-x-0',
+                'mb-1 w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height] duration-300',
+                activePost ? 'ml-0 mr-[100%] mt-4 h-[70px] translate-x-1/2' : 'ml-0 mt-8 h-[100px] translate-x-0',
             )}
             onClick={() => {
                 store_isOpened(null);

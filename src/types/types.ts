@@ -1,10 +1,12 @@
 export enum MENUTARGET {
-    Updates = 'updates',
-    Resume = 'resume',
-    Code = 'code',
-    Art = 'art',
-    Contact = 'contact',
+    News = 'News',
+    About = 'About',
+    Code = 'Code',
+    Art = 'Art',
+    // Undef = 'Undef',
 }
+
+export const menuTargetArray = Object.values(MENUTARGET);
 
 export type ZustandStore = {
     nav: {
@@ -28,6 +30,7 @@ export type Post_Image = {
 export type Post = {
     title: string;
     titleCardBg: string;
+    subTitle?: string;
     images?: Post_Image[];
     textContent: string[];
     codeLink?: string;

@@ -1,5 +1,5 @@
 {
-    "updates": {
+    "News": {
         "posts": [
             {
                 "title": "Updates 1",
@@ -63,7 +63,7 @@
         ],
         "headerCardBg": "https://picsum.photos/seed/updates/500?grayscale"
     },
-    "resume": {
+    "About": {
         "posts": [
             {
                 "title": "Resumé",
@@ -71,7 +71,7 @@
                 "textContent": ["I've done **cool** stuff", "More `cool` stuff", "Even more of the ***cool stuff*** tbh"]
             },
             {
-                "title": "About",
+                "title": "About Me",
                 "titleCardBg": "https://picsum.photos/seed/about/500?grayscale",
                 "images": [
                     { "imgUrl": "https://picsum.photos/seed/about_1/900/600?grayscale", "caption": "ksdkjsdk" },
@@ -84,7 +84,7 @@
         ],
         "headerCardBg": "https://picsum.photos/seed/resume/500?grayscale"
     },
-    "code": {
+    "Code": {
         "posts": [
             {
                 "title": "Design Your Ring",
@@ -156,7 +156,7 @@
         ],
         "headerCardBg": "https://picsum.photos/seed/code/500?grayscale"
     },
-    "art": {
+    "Art": {
         "posts": [
             {
                 "title": "Grundwasser",
@@ -206,6 +206,7 @@
             {
                 "title": "Emergency 5",
                 "titleCardBg": "https://picsum.photos/seed/art4/500?grayscale",
+                "subTitle": "Some 3D assets I created while working on strategy game \"Emergency 5\"",
                 "images": [
                     { "imgUrl": "src/assets/images/db/em5_civilian_equipment_01.jpg", "caption": "Civilian Equipment 1" },
                     { "imgUrl": "src/assets/images/db/em5_civilian_equipment_02.jpg", "caption": "Civilian Equipment 2" },
@@ -279,7 +280,7 @@
         ],
         "headerCardBg": "https://picsum.photos/seed/art/500?grayscale"
     },
-    "contact": {
+    "Undef": {
         "posts": [
             {
                 "title": "Contact",

@@ -2,7 +2,7 @@ import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
 import { Post } from '../types/types';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { TopMenuOnOpened } from './Nav';
+import { MenuOpenedPost } from './Nav';
 import { Remark } from 'react-remark';
 import Lightbox from 'yet-another-react-lightbox';
 import { Captions } from 'yet-another-react-lightbox/plugins';
@@ -12,11 +12,7 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 const Content = () => {
     const activePost = useZustand((state) => state.nav.activePost);
 
-    return (
-        <main className={classNames('relative mb-4 flex h-0.5 justify-center bg-gray-700/50', activePost ? 'z-50 w-screen' : 'w-full')}>
-            {activePost && <ContentWrapper_Test post={activePost} />}
-        </main>
-    );
+    return <main className={classNames('relative z-50 -mb-[2px] flex justify-center')}>{activePost && <ContentWrapper_Test post={activePost} />}</main>;
 };
 
 export default Content;
@@ -31,7 +27,7 @@ const ContentWrapper_Test: FC<{
     const contentRefCb = useCallback((node: HTMLElement | null) => {
         if (node) {
             setTopVal(node.getBoundingClientRect().top);
-            node.classList.toggle('w-screen');
+            // node.classList.toggle('w-screen');
         }
     }, []);
 
@@ -42,12 +38,18 @@ const ContentWrapper_Test: FC<{
     }, [textContent, images]);
 
     return (
-        <div ref={contentRefCb} className={classNames('absolute top-4 bg-inherit shadow-lg', post ? 'z-10 h-fit' : '-z-10 h-0')}>
-            <TopMenuOnOpened images={images} codeLink={codeLink} setLightbox={setLightboxOpen} setSlide={setSlideIndex} />
+        <div
+            ref={contentRefCb}
+            className={classNames(
+                'transform-[width,opacity] relative bg-gray-800/75 drop-shadow-lg duration-500',
+                post ? 'z-10 h-fit w-screen opacity-100' : '-z-10 h-0 w-auto opacity-10',
+            )}
+        >
+            <MenuOpenedPost images={images} codeLink={codeLink} setLightbox={setLightboxOpen} setSlide={setSlideIndex} />
 
-            <div className={classNames('absolute flex justify-center overflow-hidden bg-inherit', post ? 'w-screen' : 'w-full')}>
+            <div className={classNames('absolute flex w-full justify-center overflow-hidden bg-inherit')}>
                 <div
-                    className='nav-checked-width relative mx-auto flex flex-wrap items-start justify-center gap-2 overflow-y-auto bg-gray-400 p-4 shadow-md scrollbar-thin'
+                    className='nav-checked-width relative mx-auto flex flex-wrap items-start justify-center gap-2 overflow-y-auto bg-gray-400 p-4 drop-shadow-lg scrollbar-thin'
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >
@@ -60,7 +62,7 @@ const ContentWrapper_Test: FC<{
 
                         return imgUrl ? (
                             text ? (
-                                <div key={idx} className='w-full'>
+                                <div key={`${idx}-${isIndexEven}`} className='w-full'>
                                     <br />
                                     <div className='relative'>
                                         <img

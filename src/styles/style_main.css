@@ -5,9 +5,11 @@
 @layer components {
     /* Adapted from https://css-tip.com/corner-only-border-image/ : */
     .nav-card-corners {
-        @apply [--corner-inset:0.5rem] [--corner-outline-color:theme(colors.palette.primary)] [--corner-size:10px] [--corner-thickness:2px];
+        @apply [--corner-inset:theme(spacing.2)] [--corner-outline-color:theme(colors.palette.primary)] [--corner-size:theme(spacing.2)] [--corner-thickness:theme(spacing[0.5])];
         @apply [mask:conic-gradient(at_var(--corner-size)_var(--corner-size),_theme(colors.transparent)_75%,_theme(colors.black)_0)_0_0_/_calc(100%-var(--corner-size))_calc(100%-var(--corner-size))];
-        @apply absolute bottom-[--corner-inset] left-[--corner-inset] right-[--corner-inset] top-[--corner-inset] outline outline-[length:--corner-thickness] outline-offset-[calc(-1*var(--corner-thickness))] outline-[color:--corner-outline-color];
+        @apply [clip-path:polygon(0_0,_100%_0,_100%_100%,_var(--corner-inset)_100%,_0_var(--corner-inset))]; /* Cut bottom left corner */
+        @apply pointer-events-none absolute bottom-[--corner-inset] left-[--corner-inset] right-[--corner-inset] top-[--corner-inset] outline outline-[length:--corner-thickness] outline-offset-[calc(-1*var(--corner-thickness))] outline-[color:--corner-outline-color];
+        @apply hover:[--corner-outline-color:theme(colors.gray.200)];
     }
 
     .fake-border-bg {
@@ -27,6 +29,10 @@
 
     .scroll-gutter-both {
         scrollbar-gutter: stable both-edges;
+    }
+
+    .scroll-gutter {
+        scrollbar-gutter: stable;
     }
 
     .perspective-1000px {
@@ -55,11 +61,19 @@ a {
 }
 
 .nav-unchecked-width {
-    @apply w-[90%] sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-1/2;
+    /* @apply w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4; */
+    /* @apply max-w-fit; */
+
+    @apply max-w-[90%] sm:max-w-[80%] md:max-w-[75%] lg:max-w-[66.666%] xl:max-w-[50%];
+    @apply w-fit;
 }
 
 .nav-checked-width {
     @apply w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3;
+    /* @apply max-w-fit; */
+
+    /* @apply max-w-[95%] sm:max-w-[90%] md:max-w-[80%] lg:max-w-[75%] xl:max-w-[66.666%]; */
+    /* @apply w-fit; */
 }
 
 #bg-svg {
