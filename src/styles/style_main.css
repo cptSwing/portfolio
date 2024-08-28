@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    a {
+        @apply text-palette-accent-900 hover:underline;
+    }
+
+    a:visited {
+        @apply brightness-50;
+    }
+}
+
 @layer components {
     /* Adapted from https://css-tip.com/corner-only-border-image/ : */
     .nav-card-corners {
@@ -55,15 +65,7 @@
 }
 
 #root {
-    @apply text-palette-utility-text bg-palette-utility-bg fixed h-dvh w-dvw overflow-hidden text-left scrollbar-track-transparent scrollbar-thumb-gray-800/15;
-}
-
-a {
-    @apply brightness-90 hover:underline;
-}
-
-a:visited {
-    @apply brightness-50;
+    @apply fixed h-dvh w-dvw overflow-hidden bg-palette-utility-bg text-left text-palette-utility-text scrollbar-track-transparent scrollbar-thumb-gray-800/15;
 }
 
 .nav-unchecked-width {

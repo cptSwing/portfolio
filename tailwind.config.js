@@ -8,37 +8,67 @@ import tailwindScrollbar from 'tailwind-scrollbar';
 const customPalettes = {
     bloodOrange: {
         primary: {
-            900: '#6B1104', // text, for example
-            700: '#A6210E',
-            500: '#C73723', // base
-            300: '#E05744',
-            100: '#EF8A7C', // message background, for example
+            DEFAULT: '#CC3723',
+            950: '#3A0801', // dark text, for example
+            900: '#661004',
+            800: '#8A1707',
+            700: '#A6200D',
+            600: '#BA2A17',
+            500: '#CC3723', // base
+            400: '#DA4834',
+            300: '#E65E4B',
+            200: '#EF7767',
+            100: '#F49B8F',
+            50: '#F8C1B9', // message background, for example
         },
         utility: {
             bg: colors.gray[50],
             text: colors.gray[950],
         },
         accent: {
-            900: '#037382',
-            700: '#0B9AAD',
-            500: '#23B3C7',
-            300: '#46D5E8',
-            100: '#8AEEFB',
+            DEFAULT: '#2AA6B6',
+            950: '#012B31',
+            900: '#034851',
+            800: '#08626E',
+            700: '#0F7A88',
+            600: '#1B91A1',
+            500: '#2AA6B6',
+            400: '#3DBACA',
+            300: '#56CBDB',
+            200: '#71DAE8',
+            100: '#92E8F4',
+            50: '#B7F2FA',
         },
+        critical: { ...colors.orange },
+        attention: {
+            DEFAULT: '#F8C72D',
+            50: '#FEF6DF',
+            100: '#FDF1CB',
+            200: '#FCE7A3',
+            300: '#FBDC7C',
+            400: '#F9D254',
+            500: '#F8C72D',
+            600: '#E5B008',
+            700: '#AF8606',
+            800: '#795D04',
+            900: '#423302',
+            950: '#271E01',
+        },
+        success: { ...colors.emerald },
+        neutral: { ...colors.zinc },
+    },
+
+    _undefined: {
+        primary: {},
+        utility: {
+            bg: colors.gray[50],
+            text: colors.gray[950],
+        },
+        accent: {},
         critical: {},
         attention: {},
         success: {},
-        neutral: {
-            900: colors.slate[900],
-            800: colors.slate[800],
-            700: colors.slate[700],
-            600: colors.slate[600],
-            500: colors.slate[500],
-            400: colors.slate[400],
-            300: colors.slate[300],
-            200: colors.slate[200],
-            100: colors.slate[100],
-        },
+        neutral: { ...colors.slate },
     },
 };
 
