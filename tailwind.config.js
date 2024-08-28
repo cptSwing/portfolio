@@ -4,6 +4,44 @@ import colors from 'tailwindcss/colors';
 import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
 import tailwindScrollbar from 'tailwind-scrollbar';
 
+/* https://www.palettte.app/ */
+const customPalettes = {
+    bloodOrange: {
+        primary: {
+            900: '#6B1104', // text, for example
+            700: '#A6210E',
+            500: '#C73723', // base
+            300: '#E05744',
+            100: '#EF8A7C', // message background, for example
+        },
+        utility: {
+            bg: colors.gray[50],
+            text: colors.gray[950],
+        },
+        accent: {
+            900: '#037382',
+            700: '#0B9AAD',
+            500: '#23B3C7',
+            300: '#46D5E8',
+            100: '#8AEEFB',
+        },
+        critical: {},
+        attention: {},
+        success: {},
+        neutral: {
+            900: colors.slate[900],
+            800: colors.slate[800],
+            700: colors.slate[700],
+            600: colors.slate[600],
+            500: colors.slate[500],
+            400: colors.slate[400],
+            300: colors.slate[300],
+            200: colors.slate[200],
+            100: colors.slate[100],
+        },
+    },
+};
+
 export default {
     content: ['./index.html', './src/**/*.{js,ts,tsx}'],
     theme: {
@@ -32,9 +70,7 @@ export default {
             },
             colors: {
                 palette: {
-                    primary: colors.gray[700],
-                    secondary: colors.gray[400],
-                    test: colors.red[500],
+                    ...customPalettes.bloodOrange,
                 },
             },
             boxShadow: {

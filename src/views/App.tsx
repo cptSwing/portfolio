@@ -11,7 +11,7 @@ const App = () => {
             {/* Fixed Position, Background: */}
             <Background />
 
-            <div className={classNames('mx-auto flex flex-col items-center justify-start text-left', 'nav-checked-width')}>
+            <div className='nav-checked-width mx-auto flex flex-col items-center justify-start'>
                 <LogoHeader />
                 <Content />
                 <Nav />
