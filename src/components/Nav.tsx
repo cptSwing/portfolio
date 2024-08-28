@@ -12,11 +12,11 @@ const Nav = () => {
 
     return (
         // Fixed Height Cards Wrapper here!
-        <nav id='nav-cards-wrapper' className='flex h-160 flex-col items-center justify-start'>
+        <nav id='nav-cards-wrapper' className='flex h-156 flex-col items-center justify-start'>
             {/* Top Bar: */}
             <div
                 className={classNames(
-                    'bg-palette-primary-300 relative mb-4 flex h-0.5 justify-center transition-[width] duration-500',
+                    'relative mb-4 flex h-0.5 justify-center bg-palette-primary-300 transition-[width] duration-300',
                     activePost ? 'w-screen' : 'w-full',
                 )}
             />
@@ -50,12 +50,9 @@ const CategoryCard: FC<{
         <label
             // Fixed Width of labels here!
             className={classNames(
-                'after:nav-card-corners after:z-20',
-                'pointer-events-auto relative flex h-full cursor-pointer items-end bg-gradient-to-r p-6 shadow-md transition-[width] duration-700',
-                'hover:from-palette-neutral-100/25 hover:to-palette-neutral-100/25',
-                isThisCategoryChecked
-                    ? 'from-palette-neutral-100 to-palette-neutral-200 w-152 justify-between after:[--corner-outline-color:theme(colors.palette.accent.700)]'
-                    : 'from-palette-neutral-200/50 to-palette-neutral-200/50 w-24 justify-center',
+                'pointer-events-none relative h-full transition-[width,transform] duration-500',
+                'after:nav-card-corners after:z-20 after:transition-transform',
+                isThisCategoryChecked ? 'w-152 -translate-y-0.5' : 'w-24 after:hover:-translate-y-px',
             )}
         >
             {/* Hidden checkbox input: */}
@@ -70,18 +67,24 @@ const CategoryCard: FC<{
                     store_isOpened(isOpened === typedValue ? (activePost ? typedValue : null) : typedValue);
                 }}
             />
-
             <div
                 className={classNames(
-                    'writing-mode-vert-lr text-palette-primary-300 peer-hover:text-palette-primary-100 peer-checked:text-palette-accent-500 -ml-2 mb-0 rotate-180 select-none whitespace-nowrap text-5xl text-inherit transition-[margin-bottom,color] delay-[400ms] duration-300 peer-checked:mb-[25%] peer-checked:mr-6',
+                    'group/category group pointer-events-auto relative flex h-full cursor-pointer items-end justify-center bg-gradient-to-r from-palette-neutral-200/50 to-palette-neutral-200/50 p-6 shadow transition-[background-image,transform] duration-75',
+                    'hover:-translate-y-px hover:shadow-md',
+                    'peer-checked:-translate-y-0.5 peer-checked:justify-between peer-checked:from-palette-neutral-100 peer-checked:to-palette-neutral-200 peer-checked:shadow-lg',
                 )}
             >
-                {category}
+                <div
+                    className={classNames(
+                        'writing-mode-vert-lr -ml-2 mb-0 rotate-180 select-none whitespace-nowrap text-5xl text-inherit text-palette-primary-100 transition-[margin-bottom,color] delay-[400ms] duration-300 group-hover/category:text-palette-primary-300 group-hover/category:delay-0 peer-checked:group-[]:mb-[25%] peer-checked:group-[]:mr-6 peer-checked:group-[]:text-palette-primary-500',
+                    )}
+                >
+                    {category}
+                </div>
+                {isThisCategoryChecked && <PostCardContainer category={category} posts={posts} />}
             </div>
-            {isThisCategoryChecked && <PostCardContainer category={category} posts={posts} />}
-
             <div
-                className='absolute bottom-0 left-0 h-3/4 w-4/5 bg-cover opacity-10 [mask-composite:intersect] [mask-image:linear-gradient(to_right,rgba(0,0,0,0)_0%,rgba(0,0,0,1)_30%_60%,rgba(0,0,0,0)_100%),_linear-gradient(to_top,rgba(0,0,0,0)_0%,rgba(0,0,0,1)_20%_80%,rgba(0,0,0,0)_100%)]'
+                className='peer-checked:mask-edges-40 mask-edges-[30_10_0.2] absolute bottom-0 left-0 -z-10 size-full bg-cover'
                 style={{ backgroundImage: `url('${headerCardBg}')` }}
             />
         </label>
@@ -136,7 +139,7 @@ const PostCard: FC<{
         <div
             id={`${category}-${title.replace(' ', '_')}-card`}
             className={classNames(
-                'relative cursor-pointer shadow transition-[transform,opacity] duration-300',
+                'relative cursor-pointer overflow-clip shadow transition-[transform,opacity] duration-300',
                 entry?.isIntersecting ? 'translate-x-0 opacity-100' : 'translate-x-[80%] opacity-25',
             )}
             ref={cardRef}
@@ -144,16 +147,18 @@ const PostCard: FC<{
             <div
                 //  Fixed Height of Post Cards here!
                 className={classNames(
-                    'bg-palette-neutral-300/75 pointer-events-auto h-40 p-1 transition-[outline-color,background-color,outline-offset] duration-100 hover:bg-transparent *:hover:bg-contain *:hover:bg-repeat-round',
-                    // ' outline outline-1 -outline-offset-4 outline-gray-300/75 hover:outline-2 hover:-outline-offset-8 hover:outline-gray-300',
+                    'border-palette-neutral-50 group/card pointer-events-auto relative h-40 border-4 bg-palette-neutral-300/20 p-1 outline outline-8 -outline-offset-2 outline-transparent transition-[background-color,border-color,outline-color,outline-offset,outline-width]',
+                    'hover:outline-palette-neutral-50/75 hover:bg-transparent hover:outline-4 hover:-outline-offset-8',
                     'after:absolute after:bottom-0 after:truncate after:text-xs after:opacity-0 after:transition-opacity after:delay-300 after:duration-200 hover:after:opacity-100 hover:after:content-[attr(data-after-content)]',
                 )}
                 data-after-content={subTitle}
                 onClick={() => store_activePost(post)}
             >
-                <div className='text-palette-primary-900 text-center'>{title}</div>
+                <div className='text-palette-neutral-50 group-hover/card:text-palette-primary-600 absolute right-0 top-0 mr-1 mt-1 px-1 before:absolute before:right-0 before:top-0 before:-z-30 before:h-full before:w-full before:bg-palette-neutral-500/75 group-hover/card:before:bg-palette-neutral-100/75'>
+                    {title}
+                </div>
                 <div
-                    className='absolute bottom-0 left-0 right-0 top-0 -z-10 size-full bg-cover bg-center bg-no-repeat'
+                    className='fixed bottom-0 left-0 right-0 top-0 -z-50 h-full w-auto scale-105 transform-gpu bg-cover transition-transform group-hover/card:!scale-100'
                     style={{ backgroundImage: `url('${titleCardBg}')` }}
                 />
             </div>
@@ -174,7 +179,7 @@ export const MenuOpenedPost: FC<{
                 {images && (
                     <button
                         type='button'
-                        className='border-palette-primary-300 hover:bg-palette-primary-100/50 bg-palette-neutral-200 cursor-pointer border-2 border-b-0 p-1 shadow'
+                        className='cursor-pointer border-2 border-b-0 border-palette-primary-300 bg-palette-neutral-200 p-1 shadow hover:bg-palette-primary-100/50'
                         onClick={() => {
                             setSlide(0);
                             setLightbox(true);
@@ -186,7 +191,7 @@ export const MenuOpenedPost: FC<{
 
                 {codeLink && (
                     <a
-                        className='hover:bg-palette-primary-100/50 bg-palette-neutral-200 group block cursor-pointer border-2 border-b-0 p-1 shadow'
+                        className='group block cursor-pointer border-2 border-b-0 bg-palette-neutral-200 p-1 shadow hover:bg-palette-primary-100/50'
                         href={codeLink}
                         target='_blank'
                         rel='noreferrer'
@@ -200,7 +205,7 @@ export const MenuOpenedPost: FC<{
 
                 {/* TODO fade out instead of instantly closing */}
                 <div
-                    className='border-palette-primary-300 hover:bg-palette-primary-100/50 bg-palette-neutral-200 flex aspect-square w-fit cursor-pointer items-center justify-center border-2 border-b-0 shadow'
+                    className='flex aspect-square w-fit cursor-pointer items-center justify-center border-2 border-b-0 border-palette-primary-300 bg-palette-neutral-200 shadow hover:bg-palette-primary-100/50'
                     onClick={() => store_activePost(null)}
                 >
                     X

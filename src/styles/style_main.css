@@ -17,7 +17,8 @@
     .nav-card-corners {
         @apply [--corner-inset:theme(spacing.2)] [--corner-outline-color:theme(colors.palette.primary.100)] [--corner-size:theme(spacing.2)] [--corner-thickness:theme(spacing[0.5])];
         @apply [mask:conic-gradient(at_var(--corner-size)_var(--corner-size),_theme(colors.transparent)_75%,_theme(colors.black)_0)_0_0_/_calc(100%-var(--corner-size))_calc(100%-var(--corner-size))];
-        @apply [clip-path:polygon(0_0,_100%_0,_100%_100%,_var(--corner-inset)_100%,_0_var(--corner-inset))]; /* Cut bottom left corner */
+        /* Cut bottom left corner: */
+        /* @apply [clip-path:polygon(0_0,_100%_0,_100%_100%,_var(--corner-inset)_100%,_0_var(--corner-inset))]; */
         @apply pointer-events-none absolute bottom-[--corner-inset] left-[--corner-inset] right-[--corner-inset] top-[--corner-inset] outline outline-[length:--corner-thickness] outline-offset-[calc(-1*var(--corner-thickness))] outline-[color:--corner-outline-color];
         @apply hover:[--corner-outline-color:theme(colors.palette.primary.300)];
     }

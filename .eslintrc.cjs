@@ -6,7 +6,7 @@ module.exports = {
         project: ['./tsconfig.app.json'],
     },
     plugins: ['@typescript-eslint', 'react', 'react-hooks', 'react-refresh'],
-    ignorePatterns: ['dist', '.eslintrc.cjs'],
+    ignorePatterns: ['dist', '.eslintrc.cjs', 'tailwind.config.js'],
     extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',

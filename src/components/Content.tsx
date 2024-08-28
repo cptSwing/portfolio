@@ -41,20 +41,20 @@ const ContentWrapper_Test: FC<{
         <div
             ref={contentRefCb}
             className={classNames(
-                'transform-[width,opacity] bg-palette-neutral-600/75 relative drop-shadow-lg duration-500',
+                'transform-[width,opacity] relative bg-palette-neutral-600/75 drop-shadow-lg duration-500',
                 post ? 'z-10 h-fit w-screen opacity-100' : '-z-10 h-0 w-auto opacity-10',
             )}
         >
             <MenuOpenedPost images={images} codeLink={codeLink} setLightbox={setLightboxOpen} setSlide={setSlideIndex} />
 
-            <div className={classNames('absolute flex w-full justify-center overflow-hidden bg-inherit')}>
+            <div className='absolute flex w-full justify-center overflow-hidden bg-inherit'>
                 <div
-                    className='nav-checked-width bg-palette-utility-bg relative mx-auto flex flex-wrap items-start justify-center gap-2 overflow-y-auto p-4 drop-shadow-lg scrollbar-thin'
+                    className='nav-checked-width relative mx-auto flex flex-wrap items-start justify-center gap-2 overflow-y-auto bg-palette-utility-bg p-4 drop-shadow-lg scrollbar-thin'
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >
                     <br />
-                    <h1 className='text-palette-primary-500 ml-[10%] w-full text-xl font-semibold italic underline'>{title}</h1>
+                    <h1 className='ml-[10%] w-full text-xl font-semibold italic text-palette-primary-500 underline'>{title}</h1>
 
                     {/* Text/Image Blocks */}
                     {lengthAdjustedTextContent?.map((text, idx) => {
@@ -81,7 +81,7 @@ const ContentWrapper_Test: FC<{
 
                                         <div
                                             className={classNames(
-                                                'bg-palette-neutral-300/20 text-palette-neutral-100/75 peer-hover:text-palette-accent-300 peer-hover:bg-palette-neutral-300 absolute -top-full p-1 text-sm transition-colors',
+                                                'absolute -top-full bg-palette-neutral-300/20 p-1 text-sm text-palette-neutral-100/75 transition-colors peer-hover:bg-palette-neutral-300 peer-hover:text-palette-accent-300',
                                                 isIndexEven ? 'left-0' : 'right-0',
                                             )}
                                         >
