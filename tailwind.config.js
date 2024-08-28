@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 import colors from 'tailwindcss/colors';
+import plugin from 'tailwindcss/plugin';
 import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
 import tailwindScrollbar from 'tailwind-scrollbar';
 
@@ -75,6 +76,14 @@ const customPalettes = {
 export default {
     content: ['./index.html', './src/**/*.{js,ts,tsx}'],
     theme: {
+        maskEdges: {
+            DEFAULT: '20 20 1',
+            0: '20 20 0',
+            25: '20 20 0.25',
+            50: '20 20 0.5',
+            75: '20 20 0.75',
+            100: '20 20 1',
+        },
         extend: {
             spacing: {
                 100: '25rem',
@@ -113,5 +122,27 @@ export default {
             },
         },
     },
-    plugins: [tailwindScrollbar, tailwindBreakpointsInspector],
+    plugins: [
+        tailwindScrollbar,
+        tailwindBreakpointsInspector,
+        plugin(({ matchUtilities, theme }) => {
+            matchUtilities(
+                {
+                    'mask-edges': (rangeX_rangeY_opacity) => {
+                        const [rangeX, rangeY, opacity] = rangeX_rangeY_opacity.split(' ', 3);
+                        console.log(rangeX_rangeY_opacity, rangeX, rangeY, opacity);
+                        const rangeXCapped = Math.max(0, Math.min(50, parseInt(rangeX)));
+                        const rangeYCapped = Math.max(0, Math.min(50, parseInt(rangeY)));
+                        const opacityCapped = Math.max(0, Math.min(1, parseFloat(opacity)));
+
+                        return {
+                            'mask-composite': 'intersect',
+                            'mask-image': `linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${opacityCapped}) ${rangeXCapped}% ${100 - rangeXCapped}%, rgba(0, 0, 0, 0) 100%), linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${opacityCapped}) ${rangeYCapped}% ${100 - rangeYCapped}%, rgba(0, 0, 0, 0) 100%)`,
+                        };
+                    },
+                },
+                { values: theme('maskEdges') },
+            );
+        }),
+    ],
 };
