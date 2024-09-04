@@ -176,3 +176,15 @@
 .read-the-docs {
     color: #888;
 }
+
+.appear-done {
+    @apply border border-green-700;
+}
+
+.enter-done {
+    @apply border border-yellow-700;
+}
+
+.exit-done {
+    @apply border border-red-700;
+}

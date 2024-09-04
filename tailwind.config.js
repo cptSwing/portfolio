@@ -138,7 +138,6 @@ export default {
                 {
                     'mask-edges': (rangeX_rangeY_opacity) => {
                         const [rangeX, rangeY, opacity] = rangeX_rangeY_opacity.split(' ', 3);
-                        console.log(rangeX_rangeY_opacity, rangeX, rangeY, opacity);
                         const rangeXCapped = Math.max(0, Math.min(50, parseInt(rangeX)));
                         const rangeYCapped = Math.max(0, Math.min(50, parseInt(rangeY)));
                         const opacityCapped = Math.max(0, Math.min(1, parseFloat(opacity)));
