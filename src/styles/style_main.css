@@ -1,14 +1,28 @@
+@import './fonts.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
     a {
-        @apply text-palette-accent-900 hover:underline;
+        @apply text-palette-accent-900 before:content-['->_'] after:content-['_<-'] hover:underline;
     }
 
     a:visited {
         @apply brightness-50;
+    }
+
+    h1 {
+        @apply font-protest-riot text-6xl;
+    }
+
+    h2 {
+        @apply font-dm-serif relative w-full text-3xl font-semibold after:absolute after:left-0 after:top-0 after:-z-10 after:h-full after:w-full after:bg-palette-primary-50 after:px-1;
+    }
+
+    h3 {
+        @apply font-barlow relative w-full text-2xl;
     }
 }
 
@@ -50,23 +64,37 @@
         perspective: 1000px;
     }
 
-    .parallax-transform {
-        transform: translateZ(var(--parallax-translateZ)) rotate3d(1, 0, 0, var(--parallax-horizontal)) rotate3d(0, 1, 0, var(--parallax-vertical));
+    .parallax-static {
+        transform: translateZ(var(--parallax-translateZ));
+        transform-style: preserve-3d;
+        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
+    }
+
+    .parallax-rotXY {
+        transform: translateZ(var(--parallax-translateZ)) rotate3d(1, 0, 0, var(--parallax-rotateX)) rotate3d(0, 1, 0, var(--parallax-rotateY));
+        transform-style: preserve-3d;
+        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
+    }
+
+    .parallax-rotX {
+        transform: translateZ(var(--parallax-translateZ)) rotate3d(1, 0, 0, var(--parallax-rotateX));
+        transform-style: preserve-3d;
+        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
+    }
+
+    .parallax-rotY {
+        transform: translateZ(var(--parallax-translateZ)) rotate3d(0, 1, 0, var(--parallax-rotateY));
         transform-style: preserve-3d;
         transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
     }
 }
 
 :root {
-    --parallax-translateZ: 4rem;
-    --parallax-vertical: 0;
-    --parallax-horizontal: 0;
-
     --bg-stroke-max-opacity: 0.666;
 }
 
 #root {
-    @apply fixed h-dvh w-dvw overflow-hidden bg-palette-utility-bg text-left text-palette-utility-text scrollbar-track-transparent scrollbar-thumb-gray-800/15;
+    @apply font-barlow fixed h-dvh w-dvw overflow-hidden bg-palette-utility-bg text-left text-palette-utility-text scrollbar-track-transparent scrollbar-thumb-gray-800/15;
 }
 
 .nav-unchecked-width {
@@ -99,44 +127,6 @@
 .bloom-svg {
     /* filter: saturate(200%) url(src/assets/filters.svg#bloom-svg-filter); */
     @apply [filter:saturate(200%)_url(src/assets/filters.svg#bloom-svg-filter)];
-}
-
-/* Classes necessary for CSSTransition: */
-
-/* .frame-transition-appear {
-    @apply -translate-x-full;
-}
-
-.frame-transition-appear-active {
-    @apply translate-x-0 transition-transform duration-[2000ms];
-}
-
-.frame-transition-appear-done {
-    @apply translate-x-0;
-} */
-
-.frame-transition-enter {
-    @apply -translate-x-full;
-}
-
-.frame-transition-enter-active {
-    @apply translate-x-0 transition-transform;
-}
-
-.frame-transition-enter-done {
-    @apply translate-x-0;
-}
-
-.frame-transition-exit {
-    @apply translate-x-0;
-}
-
-.frame-transition-exit-active {
-    @apply -translate-x-full transition-transform;
-}
-
-.frame-transition-exit-done {
-    @apply -translate-x-full;
 }
 
 /* Default classes from Vite default content: */
@@ -175,16 +165,4 @@
 
 .read-the-docs {
     color: #888;
-}
-
-.appear-done {
-    @apply border border-green-700;
-}
-
-.enter-done {
-    @apply border border-yellow-700;
-}
-
-.exit-done {
-    @apply border border-red-700;
 }

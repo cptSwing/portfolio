@@ -111,6 +111,11 @@ export default {
                 156: '39rem',
                 160: '40rem',
             },
+            fontFamily: {
+                'barlow': ['"Barlow Semi Condensed"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                'dm-serif': ['"DM Serif Display"', 'ui-serif', 'serif'],
+                'protest-riot': ['"Protest Riot"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            },
             fontSize: {
                 '2xs': '0.666rem',
                 '3xs': '0.55rem',
