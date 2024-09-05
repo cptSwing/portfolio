@@ -52,7 +52,7 @@ const ContentWrapper_Test: FC<{
                     // onBlur={() => store_activePost(null)} // TODO
                 >
                     <br />
-                    <h1 className='ml-[10%] w-full text-xl font-semibold italic text-palette-primary-500 underline'>{title}</h1>
+                    <h2 className='ml-[10%] w-full text-palette-primary-500'>{title}</h2>
 
                     {/* Text/Image Blocks */}
                     {lengthAdjustedTextContent?.map((text, idx) => {

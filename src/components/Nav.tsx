@@ -1,11 +1,10 @@
 import { useZustand } from '../lib/zustand';
-import { DataBase, Post, MENUTARGET, Post_Image, menuTargetArray } from '../types/types';
+import { DataBase, Post, MENUTARGET, menuTargetArray } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useIntersectionObserver, useIsFirstRender } from '@uidotdev/usehooks';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useIntersectionObserver } from '@uidotdev/usehooks';
 import testDb from '../queries/testDb.json';
-import { CSSTransition } from 'react-transition-group';
-import { label } from 'yet-another-react-lightbox';
+import { Transition } from 'react-transition-group';
 import { useClassListOnMount } from '../hooks/useClassListOnMount';
 
 const testDbTyped = testDb as DataBase;
@@ -14,8 +13,6 @@ const Nav = () => {
     const activePost = useZustand((state) => state.nav.activePost);
 
     return (
-        // Fixed Height Cards Wrapper here!
-
         <nav id='nav-cards-wrapper' className='flex flex-col items-center justify-start'>
             {/* Top Bar: */}
             <div
@@ -26,9 +23,9 @@ const Nav = () => {
             />
 
             {/* Category Cards: */}
-            <div className='group flex size-full flex-row items-start justify-center space-x-4'>
+            <div className='flex w-full flex-row items-start justify-center space-x-4'>
                 {menuTargetArray.map((menuTarget, idx, arr) => (
-                    <CategoryCard key={menuTarget + idx} category={menuTarget} cardData={testDbTyped[menuTarget]} numCategories={arr.length} />
+                    <CategoryCard key={menuTarget + idx} cardCategory={menuTarget} cardData={testDbTyped[menuTarget]} numCategories={arr.length} />
                 ))}
             </div>
         </nav>
@@ -37,164 +34,143 @@ const Nav = () => {
 
 export default Nav;
 
-const store_isOpened = useZustand.getState().methods.store_isOpened;
-const durationMs = 2000;
+const store_categoryOpened = useZustand.getState().methods.store_categoryOpened;
 
 const CategoryCard: FC<{
-    category: MENUTARGET;
+    cardCategory: MENUTARGET;
     cardData: DataBase[MENUTARGET];
     numCategories: number;
-}> = ({ category, cardData }) => {
+}> = ({ cardCategory, cardData }) => {
     const { posts, headerCardBg } = cardData;
-    const isOpened = useZustand((state) => state.nav.isOpened);
+    const categoryOpened = useZustand((state) => state.nav.categoryOpened);
     const activePost = useZustand((state) => state.nav.activePost);
 
-    const isThisCategoryChecked = useMemo(() => isOpened === category, [isOpened, category]);
+    const categoryCardRef = useRef<HTMLDivElement | null>(null);
+    const [componentEntered, setComponentEntered] = useState(false);
 
-    useIsFirstRender();
-
-    const labelRef = useRef<HTMLLabelElement | null>(null);
-
-    useClassListOnMount({
-        elementRef: labelRef,
-        classes: { remove: ['h-0'], add: ['h-156', 'transition-[height]', 'duration-1000'], removeAfter: ['transition-[height]', 'duration-1000'] },
+    const hasRunOnce = useClassListOnMount({
+        elementRef: categoryCardRef,
+        /* NOTE Fixed Heights of Category Card here! */
+        removeBefore: 'h-24',
+        add: 'h-156 !transition-[height] !duration-700',
+        removeAfter: '!transition-[height] !duration-700',
     });
 
+    const thisCategoryOpened = useMemo(() => hasRunOnce && categoryOpened === cardCategory, [hasRunOnce, categoryOpened, cardCategory]);
+
     return (
-        <CSSTransition
-            nodeRef={labelRef}
-            in={isThisCategoryChecked}
-            classNames={{
-                enter: 'w-24',
-                enterActive: 'w-152 transition-[width,transform] duration-500 -translate-y-0.5',
-                enterDone: 'w-152 -translate-y-0.5',
-                exit: 'w-152',
-                exitActive: 'w-24 transition-[width] duration-300',
-                exitDone: 'w-24',
+        <Transition
+            nodeRef={categoryCardRef}
+            in={thisCategoryOpened}
+            timeout={{ enter: 300, exit: 150 }}
+            onEntered={() => {
+                setComponentEntered(true);
             }}
-            timeout={{
-                enter: 500,
-                exit: 300,
+            onExited={() => {
+                setComponentEntered(false);
             }}
         >
-            <label
-                ref={labelRef}
-                // Fixed Width of labels here!
+            <div
+                ref={categoryCardRef}
+                /* NOTE Fixed Widths (opened/closed) of Category Card here! */
                 className={classNames(
-                    'pointer-events-none relative h-0',
-                    // 'transition-[width,transform] duration-500',
-                    'after:nav-card-corners after:z-20 after:transition-transform',
-                    // isThisCategoryChecked ? 'w-152 ' : 'w-24 after:hover:-translate-y-px',
+                    'after:nav-card-corners pointer-events-none relative cursor-pointer transition-[width,transform] duration-[400ms] after:z-20 hover:-translate-y-0.5 hover:shadow-md',
+                    hasRunOnce ? 'h-156' : 'h-24',
+                    thisCategoryOpened ? 'w-152 -translate-y-0.5 shadow-md' : 'w-24 shadow',
                 )}
+                onClick={() => store_categoryOpened(categoryOpened === cardCategory ? (activePost ? cardCategory : null) : cardCategory)}
             >
-                {/* Hidden checkbox input: */}
-                <input
-                    type='checkbox'
-                    name='nav-card-input'
-                    value={category}
-                    className='peer hidden'
-                    checked={isThisCategoryChecked}
-                    onChange={({ currentTarget }) => {
-                        const typedValue = currentTarget.value as MENUTARGET;
-                        store_isOpened(isOpened === typedValue ? (activePost ? typedValue : null) : typedValue);
-                    }}
-                />
-                <div
-                    className={classNames(
-                        'group/category group pointer-events-auto relative flex h-full cursor-pointer items-end justify-center bg-gradient-to-r from-palette-neutral-200/50 to-palette-neutral-200/50 p-6 shadow transition-[background-image,transform] duration-75',
-                        'hover:-translate-y-px hover:shadow-md',
-                        'peer-checked:-translate-y-0.5 peer-checked:justify-between peer-checked:from-palette-neutral-100 peer-checked:to-palette-neutral-200 peer-checked:shadow-lg',
-                    )}
-                >
+                <div className={classNames('group/category pointer-events-auto relative flex h-full items-end justify-between bg-palette-neutral-200/50 p-6')}>
                     <div
                         className={classNames(
-                            'writing-mode-vert-lr -ml-2 mb-0 rotate-180 select-none whitespace-nowrap text-5xl text-inherit text-palette-primary-100 transition-[margin-bottom,color] delay-[400ms] duration-300 group-hover/category:text-palette-primary-300 group-hover/category:delay-0 peer-checked:group-[]:mb-[25%] peer-checked:group-[]:mr-6 peer-checked:group-[]:text-palette-primary-500',
+                            'writing-mode-vert-lr font-protest-riot -ml-1 rotate-180 select-none whitespace-nowrap text-5xl text-inherit transition-[opacity,margin-bottom] duration-300 group-hover/category:text-palette-primary-300',
+                            hasRunOnce ? 'opacity-100' : 'opacity-0',
+                            componentEntered ? 'mb-[25%] text-palette-primary-300' : 'mb-0 text-palette-primary-100',
                         )}
                     >
-                        {category}
+                        <h1>{cardCategory}</h1>
                     </div>
-                    {isThisCategoryChecked && <PostCardContainer category={category} posts={posts} />}
+
+                    {componentEntered && <PostCardContainer cardCategory={cardCategory} posts={posts} />}
                 </div>
+
                 <div
                     className='absolute bottom-0 left-0 -z-10 size-full bg-cover mask-edges-[30_10_0.2] peer-checked:mask-edges-40'
                     style={{ backgroundImage: `url('${headerCardBg}')` }}
                 />
-            </label>
-        </CSSTransition>
+            </div>
+        </Transition>
     );
 };
 
 const store_activePost = useZustand.getState().methods.store_activePost;
 
 const PostCardContainer: FC<{
-    category: MENUTARGET;
+    cardCategory: MENUTARGET;
     posts: Post[];
-}> = ({ category, posts }) => {
-    const [show, setShow] = useState(false);
-
-    useEffect(() => {
-        setShow(true);
-        return () => setShow(false);
-    }, []);
-
+}> = ({ cardCategory, posts }) => {
     return (
-        <div id={`${category}-post-card-container`} className='relative z-10 size-full overflow-hidden'>
-            <div
-                className={classNames(
-                    'absolute size-full transition-[right,opacity] delay-300 duration-75',
-                    show ? 'right-0 opacity-100' : '-right-full opacity-0',
-                )}
-            >
-                <div className='scroll-gutter h-full -scale-x-100 overflow-y-auto scrollbar-thin'>
-                    {/* Move scrollbar to left side: https://stackoverflow.com/a/45824265 */}
-                    <div className='pointer-events-none flex -scale-x-100 flex-col space-y-3 pl-3'>
-                        {posts.map((post, idx) => (
-                            <PostCard key={post.title + idx} category={category} post={post} />
-                        ))}
-                    </div>
-                </div>
+        <div id={`${cardCategory}-post-card-container`} className='scroll-gutter ml-3 h-full -scale-x-100 overflow-y-auto overflow-x-hidden scrollbar-thin'>
+            {/* Move scrollbar to left side: https://stackoverflow.com/a/45824265 */}
+            <div className='pointer-events-none flex -scale-x-100 flex-col space-y-3 pl-3'>
+                {posts.map((post, idx) => (
+                    <PostCard key={post.title + idx} cardCategory={cardCategory} post={post} delay={100 * idx} />
+                ))}
             </div>
         </div>
     );
 };
 
 const PostCard: FC<{
-    category: MENUTARGET;
+    cardCategory: MENUTARGET;
     post: Post;
-}> = ({ category, post }) => {
+    delay: number;
+}> = ({ cardCategory, post, delay }) => {
     const { title, titleCardBg, subTitle } = post;
-    const [cardRef, entry] = useIntersectionObserver({
+
+    const [intersectionRefCb, entry] = useIntersectionObserver({
         threshold: 0,
         rootMargin: '0px',
     });
 
+    const hasRenderedFullyOnce = useRef(false);
+
+    const cardRefCb = useCallback(
+        (elem: HTMLElement | null) => {
+            intersectionRefCb(elem);
+            if (entry) {
+                hasRenderedFullyOnce.current = true;
+            }
+        },
+        [intersectionRefCb, entry],
+    );
+
     return (
         <div
-            id={`${category}-${title.replace(' ', '_')}-card`}
+            id={`${cardCategory}-${title}-card`}
+            style={!hasRenderedFullyOnce.current ? { transitionDelay: `${delay}ms` } : undefined}
+            /* NOTE Post Card width & height set here: */
             className={classNames(
-                'relative cursor-pointer overflow-clip shadow transition-[transform,opacity] duration-300',
-                entry?.isIntersecting ? 'translate-x-0 opacity-100' : 'translate-x-[80%] opacity-25',
+                'group/this pointer-events-auto relative w-116 translate-x-[80%] cursor-pointer overflow-hidden border-4 border-palette-neutral-50 opacity-25 shadow transition-[transform,opacity,background-color] duration-500',
+                'before:absolute before:size-full before:outline before:outline-2 before:-outline-offset-8 before:outline-transparent before:transition-[outline-color,outline-offset,outline-width] before:delay-100 before:duration-100 hover:before:outline-palette-neutral-50',
+                'hover:border-palette-primary-200',
+                'after:absolute after:bottom-2 after:left-1/2 after:w-[calc(100%-theme(spacing.4))] after:-translate-x-1/2 after:truncate after:bg-transparent after:px-2 after:text-center after:text-sm after:text-palette-primary-900 after:transition-[background-color,opacity,color] after:duration-100 after:content-[attr(data-content-after)] hover:after:bg-palette-neutral-50 hover:after:text-palette-accent-100',
+                entry?.isIntersecting ? '!translate-x-0 !opacity-100' : '',
+                titleCardBg ? 'h-52' : 'h-24',
             )}
-            ref={cardRef}
+            ref={cardRefCb}
+            data-content-after={subTitle ?? 'lol no subtitle here'}
+            onClick={() => store_activePost(post)}
         >
-            <div
-                //  Fixed Height of Post Cards here!
-                className={classNames(
-                    'group/card pointer-events-auto relative h-40 border-4 border-palette-neutral-50 bg-palette-neutral-300/20 p-1 outline outline-8 -outline-offset-2 outline-transparent transition-[background-color,border-color,outline-color,outline-offset,outline-width]',
-                    'hover:bg-transparent hover:outline-4 hover:-outline-offset-8 hover:outline-palette-neutral-50/75',
-                    'after:absolute after:bottom-0 after:truncate after:text-xs after:opacity-0 after:transition-opacity after:delay-300 after:duration-200 hover:after:opacity-100 hover:after:content-[attr(data-after-content)]',
-                )}
-                data-after-content={subTitle}
-                onClick={() => store_activePost(post)}
-            >
-                <div className='absolute right-0 top-0 mr-1 mt-1 px-1 text-palette-neutral-50 before:absolute before:right-0 before:top-0 before:-z-30 before:h-full before:w-full before:bg-palette-neutral-500/75 group-hover/card:text-palette-primary-600 group-hover/card:before:bg-palette-neutral-100/75'>
-                    {title}
-                </div>
+            <div className='relative mx-auto mt-2 w-fit max-w-[calc(100%-(8px*2))] px-1 text-center text-palette-neutral-50 before:absolute before:left-1/2 before:-z-30 before:size-full before:-translate-x-1/2 before:bg-palette-neutral-500/75 before:transition-[background-color] before:delay-100 before:duration-100 group-hover/this:font-semibold group-hover/this:text-palette-accent-500 group-hover/this:before:bg-palette-neutral-50'>
+                <h3>{title}</h3>
+            </div>
+            {titleCardBg && (
                 <div
-                    className='fixed bottom-0 left-0 right-0 top-0 -z-50 h-full w-auto scale-105 transform-gpu bg-cover transition-transform group-hover/card:!scale-100'
+                    className='fixed bottom-0 left-0 right-0 top-0 -z-50 h-full w-auto scale-100 transform-gpu bg-cover transition-transform delay-[3000ms] duration-700 group-hover/this:!scale-110 group-hover/this:delay-0 group-hover/this:duration-[3000ms]'
                     style={{ backgroundImage: `url('${titleCardBg}')` }}
                 />
-            </div>
+            )}
         </div>
     );
 };

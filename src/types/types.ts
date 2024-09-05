@@ -11,13 +11,13 @@ export const menuTargetArray = Object.values(MENUTARGET);
 export type ZustandStore = {
     nav: {
         /** Has a category in menu been opened? */
-        isOpened: MENUTARGET | null;
+        categoryOpened: MENUTARGET | null;
         /** Which, if any, post was chosen? */
         activePost: Post | null;
     };
 
     methods: {
-        store_isOpened: (opened: MENUTARGET | null) => void;
+        store_categoryOpened: (opened: MENUTARGET | null) => void;
         store_activePost: (post: Post | null) => void;
     };
 };
@@ -29,7 +29,7 @@ export type Post_Image = {
 
 export type Post = {
     title: string;
-    titleCardBg: string;
+    titleCardBg?: string;
     subTitle?: string;
     images?: Post_Image[];
     textContent: string[];

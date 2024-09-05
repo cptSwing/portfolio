@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { parallaxEffect } from '../lib/parallaxEffect';
 
 const Background = () => {
     const bgRefCb = useCallback((node: HTMLDivElement | null) => {
@@ -15,7 +16,7 @@ const Background = () => {
     return (
         <div id='background' ref={bgRefCb} className='perspective-1000px pointer-events-none fixed mx-auto size-full'>
             <svg
-                className='parallax-transform stroke-palette-neutral-300 aspect-video h-full fill-none stroke-[0.05] [animation:bg-dash_3s_linear_forwards] [stroke-dasharray:2500] [stroke-dashoffset:2501] [stroke-linecap:round] [stroke-linejoin:round]'
+                className='parallax-rotXY aspect-video h-full fill-none stroke-palette-neutral-300 stroke-[0.05] [animation:bg-dash_3s_linear_forwards] [stroke-dasharray:2500] [stroke-dashoffset:2501] [stroke-linecap:round] [stroke-linejoin:round]'
                 viewBox='-180 -90 360 180'
                 version='1.1'
                 id='bg-svg'
@@ -31,22 +32,3 @@ const Background = () => {
 };
 
 export default Background;
-
-const parallaxEffect = (elem: HTMLDivElement, smoothing: number) => {
-    smoothing /= 100;
-
-    const handleMouseMove = (ev: MouseEvent) => {
-        // calculate transformation values
-        const rotateHoriz = (ev.clientY - window.innerHeight / 2) * smoothing;
-        const rotateVert = ((ev.clientX - window.innerWidth / 2) * -smoothing) / 2;
-
-        // set CSS variables
-        if (elem) {
-            elem.style.setProperty('--parallax-horizontal', `${rotateHoriz}deg`);
-            elem.style.setProperty('--parallax-vertical', `${rotateVert}deg`);
-        }
-    };
-
-    document.documentElement.addEventListener('mousemove', handleMouseMove, false);
-    return () => document.documentElement.removeEventListener('mousemove', handleMouseMove, false);
-};

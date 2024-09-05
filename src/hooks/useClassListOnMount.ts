@@ -1,31 +1,32 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 type Params = {
     elementRef: React.MutableRefObject<HTMLElement | null>;
-    classes: {
-        add: string[];
-        remove: string[];
-        removeAfter: string[];
-    };
+    removeBefore?: string;
+    add: string;
+    removeAfter: string;
 };
 
-export const useClassListOnMount = ({ elementRef, classes }: Params) => {
-    const isFirstMount = useRef<boolean>(true);
+export const useClassListOnMount = ({ elementRef, removeBefore, add, removeAfter }: Params) => {
+    const [hasRunOnce, setHasRunOnce] = useState(false);
 
     useEffect(() => {
-        if (elementRef.current && isFirstMount.current !== null) {
-            if (isFirstMount.current) {
-                elementRef.current.classList.remove(...classes.remove);
-                elementRef.current.classList.add(...classes.add);
-                isFirstMount.current = false;
+        const element = elementRef.current;
+        if (element && !hasRunOnce) {
+            const [removeBeforeArr, addArr, removeAfterArr] = ([removeBefore, add, removeAfter].filter(Boolean) as string[]).map((string) => string.split(' '));
 
-                const listenerCallback = function (this: HTMLElement) {
-                    this.classList.remove(...classes.removeAfter);
-                    this.removeEventListener('transitionend', listenerCallback);
-                };
+            const listenerCallback = function (this: HTMLElement) {
+                this.classList.remove(...removeAfterArr);
+                this.removeEventListener('transitionend', listenerCallback);
+                setHasRunOnce(true);
+            };
 
-                elementRef.current.addEventListener('transitionend', listenerCallback);
-            }
+            element.classList.remove(...removeBeforeArr);
+            element.classList.add(...addArr);
+
+            element.addEventListener('transitionend', listenerCallback);
         }
-    }, [elementRef, classes.remove, classes.add, classes.removeAfter]);
+    }, [elementRef, removeBefore, add, removeAfter, hasRunOnce]);
+
+    return hasRunOnce;
 };
