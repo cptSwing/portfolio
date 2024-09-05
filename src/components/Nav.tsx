@@ -2,7 +2,7 @@ import { useZustand } from '../lib/zustand';
 import { DataBase, Post, MENUTARGET, Post_Image, menuTargetArray } from '../types/types';
 import classNames from '../lib/classNames';
 import { FC, Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useIntersectionObserver } from '@uidotdev/usehooks';
+import { useIntersectionObserver, useIsFirstRender } from '@uidotdev/usehooks';
 import testDb from '../queries/testDb.json';
 import { CSSTransition } from 'react-transition-group';
 import { label } from 'yet-another-react-lightbox';
@@ -50,6 +50,8 @@ const CategoryCard: FC<{
     const activePost = useZustand((state) => state.nav.activePost);
 
     const isThisCategoryChecked = useMemo(() => isOpened === category, [isOpened, category]);
+
+    useIsFirstRender();
 
     const labelRef = useRef<HTMLLabelElement | null>(null);
 
@@ -199,22 +201,18 @@ const PostCard: FC<{
 
 /** Used in Content.tsx */
 export const MenuOpenedPost: FC<{
-    images: Post_Image[] | undefined;
+    hasImages: boolean;
     codeLink: string | undefined;
-    setLightbox: React.Dispatch<React.SetStateAction<boolean>>;
-    setSlide: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ images, codeLink, setLightbox, setSlide }) => {
+    setLightboxTo: React.Dispatch<React.SetStateAction<number | null>>;
+}> = ({ hasImages, codeLink, setLightboxTo }) => {
     return (
         <div className='absolute w-full -translate-y-full pb-[2px] leading-none'>
             <div className='nav-checked-width mx-auto flex h-8 justify-end space-x-1'>
-                {images && (
+                {hasImages && (
                     <button
                         type='button'
                         className='cursor-pointer border-2 border-b-0 border-palette-primary-300 bg-palette-neutral-200 p-1 shadow hover:bg-palette-primary-100/50'
-                        onClick={() => {
-                            setSlide(0);
-                            setLightbox(true);
-                        }}
+                        onClick={() => setLightboxTo(0)}
                     >
                         Gallery
                     </button>

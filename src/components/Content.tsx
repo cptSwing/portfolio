@@ -20,18 +20,16 @@ export default Content;
 const ContentWrapper_Test: FC<{
     post: Post;
 }> = ({ post }) => {
+    const { title, images, textContent, codeLink } = post;
+
     const [topVal, setTopVal] = useState<number>(0);
-    const [lightboxOpen, setLightboxOpen] = useState(false);
-    const [slideIndex, setSlideIndex] = useState(0);
+    const [lightboxTo, setLightboxTo] = useState<number | null>(null);
 
     const contentRefCb = useCallback((node: HTMLElement | null) => {
         if (node) {
             setTopVal(node.getBoundingClientRect().top);
-            // node.classList.toggle('w-screen');
         }
     }, []);
-
-    const { title, images, textContent, codeLink } = post;
 
     const lengthAdjustedTextContent = useMemo(() => {
         return Array.from({ ...textContent, length: Math.max(textContent?.length, images ? images.length : 0) });
@@ -45,7 +43,7 @@ const ContentWrapper_Test: FC<{
                 post ? 'z-10 h-fit w-screen opacity-100' : '-z-10 h-0 w-auto opacity-10',
             )}
         >
-            <MenuOpenedPost images={images} codeLink={codeLink} setLightbox={setLightboxOpen} setSlide={setSlideIndex} />
+            <MenuOpenedPost hasImages={images ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
 
             <div className='absolute flex w-full justify-center overflow-hidden bg-inherit'>
                 <div
@@ -73,10 +71,7 @@ const ContentWrapper_Test: FC<{
                                                 text ? 'w-2/3' : '!mx-0 w-full',
                                                 isIndexEven ? 'float-left mr-6' : 'float-right ml-6',
                                             )}
-                                            onClick={() => {
-                                                setSlideIndex(idx);
-                                                setLightboxOpen(true);
-                                            }}
+                                            onClick={() => setLightboxTo(idx)}
                                         />
 
                                         <div
@@ -100,10 +95,7 @@ const ContentWrapper_Test: FC<{
                                     key={idx}
                                     className='group relative aspect-video w-[calc(25%-theme(spacing.2)+2px)] cursor-pointer bg-cover'
                                     style={{ backgroundImage: `url(${imgUrl})` }}
-                                    onClick={() => {
-                                        setSlideIndex(idx);
-                                        setLightboxOpen(true);
-                                    }}
+                                    onClick={() => setLightboxTo(idx)}
                                 >
                                     <div
                                         className={classNames(
@@ -122,9 +114,9 @@ const ContentWrapper_Test: FC<{
                     })}
 
                     <Lightbox
-                        open={lightboxOpen}
-                        index={slideIndex}
-                        close={() => setLightboxOpen(false)}
+                        open={Number.isInteger(lightboxTo)}
+                        index={lightboxTo ?? 0}
+                        close={() => setLightboxTo(null)}
                         slides={images?.map(({ imgUrl, caption }) => ({ src: imgUrl, title: caption }))}
                         plugins={[Captions]}
                     />
