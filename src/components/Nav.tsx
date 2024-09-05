@@ -1,7 +1,7 @@
 import { useZustand } from '../lib/zustand';
 import { DataBase, Post, MENUTARGET, menuTargetArray } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { useIntersectionObserver } from '@uidotdev/usehooks';
 import testDb from '../queries/testDb.json';
 import { Transition } from 'react-transition-group';
