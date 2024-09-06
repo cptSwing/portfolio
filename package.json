@@ -10,18 +10,16 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@uidotdev/usehooks": "^2.4.1",
         "immer": "^10.1.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "zustand": "^4.5.4",
         "react-remark": "^2.1.0",
+        "transition-hook": "^1.5.2",
         "yet-another-react-lightbox": "^3.21.4",
-        "react-transition-group": "^4.4.5",
-        "@uidotdev/usehooks": "^2.4.1"
+        "zustand": "^4.5.4"
     },
     "devDependencies": {
-        "tailwindcss": "^3.4.4",
-        "vite": "^5.4.3",
         "@heroicons/react": "^2.1.5",
         "@types/react": "^18.3.5",
         "@types/react-dom": "^18.3.0",
@@ -38,7 +36,9 @@
         "prettier": "^3.3.2",
         "prettier-plugin-tailwindcss": "^0.6.5",
         "tailwind-scrollbar": "^3.1.0",
+        "tailwindcss": "^3.4.4",
         "tailwindcss-breakpoints-inspector": "^1.1.0",
-        "typescript": "^5.2.2"
+        "typescript": "^5.2.2",
+        "vite": "^5.4.3"
     }
 }

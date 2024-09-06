@@ -1,12 +1,12 @@
 import { useZustand } from '../lib/zustand';
 import { DataBase, Post, MENUTARGET, menuTargetArray } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, useCallback, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntersectionObserver } from '@uidotdev/usehooks';
 import testDb from '../queries/testDb.json';
-import { CSSTransition } from 'react-transition-group';
-import { useClassListOnMount } from '../hooks/useClassListOnMount';
 import { stripSpaces } from '../lib/stripSpaces';
+import { useDebugButton } from '../hooks/useDebugButton';
+import { useSwitchTransition, useTransition } from 'transition-hook';
 
 const testDbTyped = testDb as DataBase;
 
@@ -25,8 +25,8 @@ const Nav = () => {
 
             {/* Category Cards: */}
             <div className='flex w-full flex-row items-start justify-center space-x-4'>
-                {menuTargetArray.map((menuTarget, idx, arr) => (
-                    <CategoryCard key={menuTarget + idx} cardCategory={menuTarget} cardData={testDbTyped[menuTarget]} numCategories={arr.length} />
+                {menuTargetArray.map((menuTarget, idx) => (
+                    <CategoryCard key={menuTarget + idx} cardCategory={menuTarget} cardData={testDbTyped[menuTarget]} categoryIndex={idx} />
                 ))}
             </div>
         </nav>
@@ -40,82 +40,76 @@ const store_categoryOpened = useZustand.getState().methods.store_categoryOpened;
 const CategoryCard: FC<{
     cardCategory: MENUTARGET;
     cardData: DataBase[MENUTARGET];
-    numCategories: number;
-}> = ({ cardCategory, cardData }) => {
+    categoryIndex: number;
+}> = ({ cardCategory, cardData, categoryIndex }) => {
     const { posts, headerCardBg } = cardData;
     const categoryOpened = useZustand((state) => state.nav.categoryOpened);
+
+    // WARN needed?
     const activePost = useZustand((state) => state.nav.activePost);
 
-    const categoryCardRef = useRef<HTMLDivElement | null>(null);
-    const [componentEntered, setComponentEntered] = useState(false);
+    const [componentMounted, setComponentMounted] = useState(false);
 
-    const hasRunOnce = useClassListOnMount({
-        elementRef: categoryCardRef,
-        /* NOTE Fixed Heights of Category Card here! */
-        removeBefore: 'h-24',
-        add: 'h-156 !transition-[height] !duration-700',
-        removeAfter: '!transition-[height] !duration-700',
-    });
+    useEffect(() => {
+        setTimeout(() => {
+            setComponentMounted(true);
+        }, 1000 * categoryIndex);
+        return () => setComponentMounted(false);
+    }, []);
 
-    const thisCategoryOpened = useMemo(() => hasRunOnce && categoryOpened === cardCategory, [hasRunOnce, categoryOpened, cardCategory]);
+    const thisCategoryOpened = useMemo(() => categoryOpened === cardCategory, [categoryOpened, cardCategory]);
 
-    return (
-        <CSSTransition
-            nodeRef={categoryCardRef}
-            in={thisCategoryOpened}
-            appear={thisCategoryOpened}
-            enter={false}
-            exit={false}
-            mountOnEnter={true}
-            classNames={{
-                appear: stripSpaces(''),
-                appearActive: stripSpaces(''),
-                appearDone: stripSpaces(''),
-                enter: stripSpaces(''),
-                enterActive: stripSpaces(''),
-                enterDone: stripSpaces(''),
-                exit: stripSpaces(''),
-                exitActive: stripSpaces(''),
-                exitDone: stripSpaces(''),
-            }}
-            timeout={{ enter: 300, exit: 150 }}
-            onEntered={() => {
-                setComponentEntered(true);
-            }}
-            onExited={() => {
-                setComponentEntered(false);
-            }}
+    /**
+     * Switches between stages 'leave' (default), 'from', and 'enter' (final stage, after that loops back to 'leave').
+     * shouldMount is false at 'leave', true at enter
+     * changing the element's key prop resets to 'from' after the 'leave' stage. This can be used as an initial point onMount, while the key should be left alone afterwards I guess?
+     */
+    const { stage, shouldMount } = useTransition(thisCategoryOpened, 500);
+
+    return componentMounted ? (
+        <div
+            // key={`${shouldMount}`}
+            /* NOTE Fixed Widths (opened) of Category Card here! */
+            className={classNames(
+                'after:nav-card-corners pointer-events-auto relative size-12 cursor-pointer duration-[5000ms] after:z-20 hover:-translate-y-0.5 hover:shadow-md',
+                stage === 'from' ? 'h-24 w-24 border-8 border-green-500 transition-[width,height]' : '',
+                stage === 'enter' ? 'h-156 w-152 border border-yellow-500 transition-[width,height] !duration-500' : '',
+                stage === 'leave' ? 'h-156 w-24 border border-red-500 transition-[width,height] !duration-500' : '',
+                // 'transition-[width,transform] duration-[400ms]',
+                // hasRunOnce ? 'h-156' : 'h-24',
+                // thisCategoryOpened ? 'w-152 -translate-y-0.5 shadow-md' : 'w-24 shadow',
+            )}
+            onClick={() => store_categoryOpened(categoryOpened === cardCategory ? (activePost ? cardCategory : null) : cardCategory)}
         >
-            <div
-                ref={categoryCardRef}
-                /* NOTE Fixed Widths (opened/closed) of Category Card here! */
-                className={classNames(
-                    'after:nav-card-corners pointer-events-none relative cursor-pointer transition-[width,transform] duration-[400ms] after:z-20 hover:-translate-y-0.5 hover:shadow-md',
-                    hasRunOnce ? 'h-156' : 'h-24',
-                    thisCategoryOpened ? 'w-152 -translate-y-0.5 shadow-md' : 'w-24 shadow',
-                )}
-                onClick={() => store_categoryOpened(categoryOpened === cardCategory ? (activePost ? cardCategory : null) : cardCategory)}
-            >
-                <div className={classNames('group/category pointer-events-auto relative flex h-full items-end justify-between bg-palette-neutral-200/50 p-6')}>
-                    <div
-                        className={classNames(
-                            'writing-mode-vert-lr -ml-1 rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl text-inherit transition-[opacity,margin-bottom] duration-300 group-hover/category:text-palette-primary-300',
-                            hasRunOnce ? 'opacity-100' : 'opacity-0',
-                            componentEntered ? 'mb-[25%] text-palette-primary-300' : 'mb-0 text-palette-primary-100',
-                        )}
-                    >
-                        <h1>{cardCategory}</h1>
-                    </div>
+            <div className='absolute left-1/2 top-0 -translate-x-1/2 text-center text-sm'>
+                <br />
+                Stage: {stage}
+                <br />
+                <br />
+                shouldMount: {`${shouldMount}`}
+            </div>
 
-                    {componentEntered && <PostCardContainer cardCategory={cardCategory} posts={posts} />}
+            <div className={classNames('group/category pointer-events-auto relative flex h-full items-end justify-between bg-palette-neutral-200/50 p-6')}>
+                <div
+                    className={classNames(
+                        'writing-mode-vert-lr -ml-1 rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl text-inherit transition-[opacity,margin-bottom] duration-300 group-hover/category:text-palette-primary-500',
+                        // componentMounted ? 'opacity-100' : 'opacity-0',
+                        // componentEntered ? 'mb-[25%] text-palette-primary-500' : 'mb-0 text-palette-primary-900',
+                    )}
+                >
+                    <h1>{cardCategory}</h1>
                 </div>
 
-                <div
-                    className='absolute bottom-0 left-0 -z-10 size-full bg-cover mask-edges-[30_10_0.2] peer-checked:mask-edges-40'
-                    style={{ backgroundImage: `url('${headerCardBg}')` }}
-                />
+                {/* {componentEntered && <PostCardContainer cardCategory={cardCategory} posts={posts} />} */}
             </div>
-        </CSSTransition>
+
+            <div
+                className='absolute bottom-0 left-0 -z-10 size-full bg-cover mask-edges-[30_10_0.2] peer-checked:mask-edges-40'
+                style={{ backgroundImage: `url('${headerCardBg}')` }}
+            ></div>
+        </div>
+    ) : (
+        <></>
     );
 };
 
@@ -167,9 +161,9 @@ const PostCard: FC<{
             style={!hasRenderedFullyOnce.current ? { transitionDelay: `${delay}ms` } : undefined}
             /* NOTE Post Card width & height set here: */
             className={classNames(
-                'group/this pointer-events-auto relative w-116 translate-x-[80%] cursor-pointer overflow-hidden border-4 border-palette-neutral-50 opacity-25 shadow transition-[transform,opacity,background-color] duration-500',
+                'group/this pointer-events-auto relative w-116 translate-x-[80%] cursor-pointer overflow-hidden border-4 border-palette-primary-200 opacity-25 shadow transition-[transform,opacity,background-color] duration-500',
                 'before:absolute before:size-full before:outline before:outline-2 before:-outline-offset-8 before:outline-transparent before:transition-[outline-color,outline-offset,outline-width] before:delay-100 before:duration-100 hover:before:outline-palette-neutral-50',
-                'hover:border-palette-primary-200',
+                'hover:border-palette-accent-200',
                 'after:absolute after:bottom-2 after:left-1/2 after:w-[calc(100%-theme(spacing.4))] after:-translate-x-1/2 after:truncate after:bg-transparent after:px-2 after:text-center after:text-sm after:text-palette-primary-900 after:transition-[background-color,opacity,color] after:duration-100 after:content-[attr(data-content-after)] hover:after:bg-palette-neutral-50 hover:after:text-palette-accent-100',
                 entry?.isIntersecting ? '!translate-x-0 !opacity-100' : '',
                 titleCardBg ? 'h-52' : 'h-24',
