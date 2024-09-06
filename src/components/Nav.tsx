@@ -4,8 +4,9 @@ import classNames from '../lib/classNames';
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { useIntersectionObserver } from '@uidotdev/usehooks';
 import testDb from '../queries/testDb.json';
-import { Transition } from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
 import { useClassListOnMount } from '../hooks/useClassListOnMount';
+import { stripSpaces } from '../lib/stripSpaces';
 
 const testDbTyped = testDb as DataBase;
 
@@ -59,9 +60,24 @@ const CategoryCard: FC<{
     const thisCategoryOpened = useMemo(() => hasRunOnce && categoryOpened === cardCategory, [hasRunOnce, categoryOpened, cardCategory]);
 
     return (
-        <Transition
+        <CSSTransition
             nodeRef={categoryCardRef}
             in={thisCategoryOpened}
+            appear={thisCategoryOpened}
+            enter={false}
+            exit={false}
+            mountOnEnter={true}
+            classNames={{
+                appear: stripSpaces(''),
+                appearActive: stripSpaces(''),
+                appearDone: stripSpaces(''),
+                enter: stripSpaces(''),
+                enterActive: stripSpaces(''),
+                enterDone: stripSpaces(''),
+                exit: stripSpaces(''),
+                exitActive: stripSpaces(''),
+                exitDone: stripSpaces(''),
+            }}
             timeout={{ enter: 300, exit: 150 }}
             onEntered={() => {
                 setComponentEntered(true);
@@ -83,7 +99,7 @@ const CategoryCard: FC<{
                 <div className={classNames('group/category pointer-events-auto relative flex h-full items-end justify-between bg-palette-neutral-200/50 p-6')}>
                     <div
                         className={classNames(
-                            'writing-mode-vert-lr font-protest-riot -ml-1 rotate-180 select-none whitespace-nowrap text-5xl text-inherit transition-[opacity,margin-bottom] duration-300 group-hover/category:text-palette-primary-300',
+                            'writing-mode-vert-lr -ml-1 rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl text-inherit transition-[opacity,margin-bottom] duration-300 group-hover/category:text-palette-primary-300',
                             hasRunOnce ? 'opacity-100' : 'opacity-0',
                             componentEntered ? 'mb-[25%] text-palette-primary-300' : 'mb-0 text-palette-primary-100',
                         )}
@@ -99,7 +115,7 @@ const CategoryCard: FC<{
                     style={{ backgroundImage: `url('${headerCardBg}')` }}
                 />
             </div>
-        </Transition>
+        </CSSTransition>
     );
 };
 

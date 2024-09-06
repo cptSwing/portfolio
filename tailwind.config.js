@@ -112,9 +112,13 @@ export default {
                 160: '40rem',
             },
             fontFamily: {
-                'barlow': ['"Barlow Semi Condensed"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                'besley': ['Besley', 'ui-serif', 'serif'],
                 'dm-serif': ['"DM Serif Display"', 'ui-serif', 'serif'],
+                'barlow': ['"Barlow Semi Condensed"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                'protest-strike': ['"Protest Strike"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
                 'protest-riot': ['"Protest Riot"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                'protest-revolution': ['"Protest Revolution"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                'caveat': ['Caveat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
             },
             fontSize: {
                 '2xs': '0.666rem',

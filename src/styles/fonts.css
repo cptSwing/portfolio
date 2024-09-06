@@ -1,6 +1,6 @@
 /* barlow-semi-condensed-100 - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: normal;
     font-weight: 100;
@@ -9,7 +9,7 @@
 
 /* barlow-semi-condensed-100italic - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: italic;
     font-weight: 100;
@@ -18,7 +18,7 @@
 
 /* barlow-semi-condensed-200 - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: normal;
     font-weight: 200;
@@ -27,7 +27,7 @@
 
 /* barlow-semi-condensed-200italic - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: italic;
     font-weight: 200;
@@ -36,7 +36,7 @@
 
 /* barlow-semi-condensed-300 - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: normal;
     font-weight: 300;
@@ -45,7 +45,7 @@
 
 /* barlow-semi-condensed-300italic - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: italic;
     font-weight: 300;
@@ -54,7 +54,7 @@
 
 /* barlow-semi-condensed-regular - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: normal;
     font-weight: 400;
@@ -63,7 +63,7 @@
 
 /* barlow-semi-condensed-italic - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: italic;
     font-weight: 400;
@@ -72,7 +72,7 @@
 
 /* barlow-semi-condensed-500 - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: normal;
     font-weight: 500;
@@ -81,7 +81,7 @@
 
 /* barlow-semi-condensed-500italic - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: italic;
     font-weight: 500;
@@ -90,7 +90,7 @@
 
 /* barlow-semi-condensed-600 - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: normal;
     font-weight: 600;
@@ -99,7 +99,7 @@
 
 /* barlow-semi-condensed-600italic - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: italic;
     font-weight: 600;
@@ -108,7 +108,7 @@
 
 /* barlow-semi-condensed-700 - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: normal;
     font-weight: 700;
@@ -117,7 +117,7 @@
 
 /* barlow-semi-condensed-700italic - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: italic;
     font-weight: 700;
@@ -126,7 +126,7 @@
 
 /* barlow-semi-condensed-800 - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: normal;
     font-weight: 800;
@@ -135,7 +135,7 @@
 
 /* barlow-semi-condensed-800italic - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: italic;
     font-weight: 800;
@@ -144,7 +144,7 @@
 
 /* barlow-semi-condensed-900 - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: normal;
     font-weight: 900;
@@ -153,7 +153,7 @@
 
 /* barlow-semi-condensed-900italic - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Barlow Semi Condensed';
     font-style: italic;
     font-weight: 900;
@@ -162,7 +162,7 @@
 
 /* dm-serif-display-regular - latin */
 @font-face {
-    font-display: swap;
+    font-display: block;
     font-family: 'DM Serif Display';
     font-style: normal;
     font-weight: 400;
@@ -171,18 +171,180 @@
 
 /* dm-serif-display-italic - latin */
 @font-face {
-    font-display: swap;
+    font-display: block;
     font-family: 'DM Serif Display';
     font-style: italic;
     font-weight: 400;
     src: url('/fonts/dm-serif-display-v15-latin-italic.woff2') format('woff2');
 }
 
+/* protest-strike-regular - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Protest Strike';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/protest-strike-v2-latin-regular.woff2') format('woff2');
+}
+
 /* protest-riot-regular - latin */
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: block;
     font-family: 'Protest Riot';
     font-style: normal;
     font-weight: 400;
-    src: url('/fonts/protest-riot-v2-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    src: url('/fonts/protest-riot-v2-latin-regular.woff2') format('woff2');
+}
+
+/* protest-revolution-regular - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Protest Revolution';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/protest-revolution-v2-latin-regular.woff2') format('woff2');
+}
+
+/* besley-regular - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/besley-v19-latin-regular.woff2') format('woff2');
+}
+
+/* besley-italic - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: italic;
+    font-weight: 400;
+    src: url('/fonts/besley-v19-latin-italic.woff2') format('woff2');
+}
+
+/* besley-500 - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: normal;
+    font-weight: 500;
+    src: url('/fonts/besley-v19-latin-500.woff2') format('woff2');
+}
+
+/* besley-500italic - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: italic;
+    font-weight: 500;
+    src: url('/fonts/besley-v19-latin-500italic.woff2') format('woff2');
+}
+
+/* besley-600 - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/besley-v19-latin-600.woff2') format('woff2');
+}
+
+/* besley-600italic - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: italic;
+    font-weight: 600;
+    src: url('/fonts/besley-v19-latin-600italic.woff2') format('woff2');
+}
+
+/* besley-700 - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/besley-v19-latin-700.woff2') format('woff2');
+}
+
+/* besley-700italic - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: italic;
+    font-weight: 700;
+    src: url('/fonts/besley-v19-latin-700italic.woff2') format('woff2');
+}
+
+/* besley-800 - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: normal;
+    font-weight: 800;
+    src: url('/fonts/besley-v19-latin-800.woff2') format('woff2');
+}
+
+/* besley-800italic - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: italic;
+    font-weight: 800;
+    src: url('/fonts/besley-v19-latin-800italic.woff2') format('woff2');
+}
+
+/* besley-900 - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: normal;
+    font-weight: 900;
+    src: url('/fonts/besley-v19-latin-900.woff2') format('woff2');
+}
+
+/* besley-900italic - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Besley';
+    font-style: italic;
+    font-weight: 900;
+    src: url('/fonts/besley-v19-latin-900italic.woff2') format('woff2');
+}
+
+/* caveat-regular - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Caveat';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/caveat-v18-latin-regular.woff2') format('woff2');
+}
+
+/* caveat-500 - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Caveat';
+    font-style: normal;
+    font-weight: 500;
+    src: url('/fonts/caveat-v18-latin-500.woff2') format('woff2');
+}
+
+/* caveat-600 - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Caveat';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/caveat-v18-latin-600.woff2') format('woff2');
+}
+
+/* caveat-700 - latin */
+@font-face {
+    font-display: block;
+    font-family: 'Caveat';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/caveat-v18-latin-700.woff2') format('woff2');
 }
