@@ -48,13 +48,14 @@ const CategoryCard: FC<{
     // WARN needed?
     const activePost = useZustand((state) => state.nav.activePost);
 
-    const [componentMounted, setComponentMounted] = useState(false);
+    const [divMounted, setDivMounted] = useState(false);
 
-    useEffect(() => {
-        setTimeout(() => {
-            setComponentMounted(true);
-        }, 1000 * categoryIndex);
-        return () => setComponentMounted(false);
+    const refCb = useCallback((elem: HTMLDivElement | null) => {
+        if (elem) {
+            setTimeout(() => {
+                setDivMounted(true);
+            }, 500 * categoryIndex);
+        }
     }, []);
 
     const thisCategoryOpened = useMemo(() => categoryOpened === cardCategory, [categoryOpened, cardCategory]);
@@ -66,41 +67,35 @@ const CategoryCard: FC<{
      */
     const { stage, shouldMount } = useTransition(thisCategoryOpened, 500);
 
-    return componentMounted ? (
+    return (
         <div
-            // key={`${shouldMount}`}
+            key={`${shouldMount}`}
+            ref={refCb}
             /* NOTE Fixed Widths (opened) of Category Card here! */
             className={classNames(
-                'after:nav-card-corners pointer-events-auto relative size-12 cursor-pointer duration-[5000ms] after:z-20 hover:-translate-y-0.5 hover:shadow-md',
-                stage === 'from' ? 'h-24 w-24 border-8 border-green-500 transition-[width,height]' : '',
-                stage === 'enter' ? 'h-156 w-152 border border-yellow-500 transition-[width,height] !duration-500' : '',
-                stage === 'leave' ? 'h-156 w-24 border border-red-500 transition-[width,height] !duration-500' : '',
+                'after:nav-card-corners pointer-events-auto relative w-24 cursor-pointer transition-[width,height] delay-75 duration-500 after:z-20 hover:-translate-y-0.5 hover:shadow-md',
+                divMounted ? 'h-156' : 'h-24',
+                stage === 'from' && 'border-8 border-green-500',
+                stage === 'enter' && '!w-152 border border-yellow-500',
+                stage === 'leave' && 'border border-red-500 !delay-0',
                 // 'transition-[width,transform] duration-[400ms]',
                 // hasRunOnce ? 'h-156' : 'h-24',
                 // thisCategoryOpened ? 'w-152 -translate-y-0.5 shadow-md' : 'w-24 shadow',
             )}
             onClick={() => store_categoryOpened(categoryOpened === cardCategory ? (activePost ? cardCategory : null) : cardCategory)}
         >
-            <div className='absolute left-1/2 top-0 -translate-x-1/2 text-center text-sm'>
-                <br />
-                Stage: {stage}
-                <br />
-                <br />
-                shouldMount: {`${shouldMount}`}
-            </div>
-
             <div className={classNames('group/category pointer-events-auto relative flex h-full items-end justify-between bg-palette-neutral-200/50 p-6')}>
                 <div
                     className={classNames(
-                        'writing-mode-vert-lr -ml-1 rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl text-inherit transition-[opacity,margin-bottom] duration-300 group-hover/category:text-palette-primary-500',
-                        // componentMounted ? 'opacity-100' : 'opacity-0',
-                        // componentEntered ? 'mb-[25%] text-palette-primary-500' : 'mb-0 text-palette-primary-900',
+                        'writing-mode-vert-lr -ml-1 rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl transition-[opacity,transform] group-hover/category:text-palette-primary-500',
+                        divMounted ? 'opacity-100' : 'opacity-0',
+                        thisCategoryOpened ? '-translate-y-full text-palette-primary-500' : 'translate-y-full text-palette-primary-900',
                     )}
                 >
                     <h1>{cardCategory}</h1>
                 </div>
 
-                {/* {componentEntered && <PostCardContainer cardCategory={cardCategory} posts={posts} />} */}
+                {divMounted && <PostCardContainer cardCategory={cardCategory} posts={posts} />}
             </div>
 
             <div
@@ -108,8 +103,6 @@ const CategoryCard: FC<{
                 style={{ backgroundImage: `url('${headerCardBg}')` }}
             ></div>
         </div>
-    ) : (
-        <></>
     );
 };
 
