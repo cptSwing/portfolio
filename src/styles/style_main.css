@@ -14,15 +14,27 @@
     }
 
     h1 {
-        @apply font-protest-riot text-6xl;
+        @apply block font-protest-riot text-6xl;
     }
 
     h2 {
-        @apply font-dm-serif relative w-full text-3xl font-semibold after:absolute after:left-0 after:top-0 after:-z-10 after:h-full after:w-full after:bg-palette-primary-50 after:px-1;
+        @apply relative z-0 block font-dm-serif text-5xl font-semibold;
     }
 
     h3 {
-        @apply font-barlow relative w-full text-2xl;
+        @apply block font-besley text-2xl;
+    }
+
+    h4 {
+        @apply block font-besley text-xl;
+    }
+
+    h5 {
+        @apply block font-barlow text-lg italic underline underline-offset-2;
+    }
+
+    h6 {
+        @apply block whitespace-nowrap text-xs uppercase;
     }
 }
 
@@ -91,10 +103,11 @@
 
 :root {
     --bg-stroke-max-opacity: 0.666;
+    --bg-color: theme(colors.palette.utility.bg);
 }
 
 #root {
-    @apply font-barlow fixed h-dvh w-dvw overflow-hidden bg-palette-utility-bg text-left text-palette-utility-text scrollbar-track-transparent scrollbar-thumb-gray-800/15;
+    @apply fixed h-dvh w-dvw overflow-hidden bg-[--bg-color] text-left font-barlow text-palette-utility-text transition-[--bg-color] duration-[3s] scrollbar-track-transparent scrollbar-thumb-palette-accent-100/25;
 }
 
 .nav-unchecked-width {

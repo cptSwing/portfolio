@@ -4,9 +4,12 @@ import classNames from '../lib/classNames';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntersectionObserver } from '@uidotdev/usehooks';
 import testDb from '../queries/testDb.json';
-import { stripSpaces } from '../lib/stripSpaces';
-import { useDebugButton } from '../hooks/useDebugButton';
-import { useSwitchTransition, useTransition } from 'transition-hook';
+import { useTransition } from 'transition-hook';
+import resolveConfig from 'tailwindcss/resolveConfig';
+import tailwindConfig from '../../tailwind.config.js';
+
+const tailwindColors = resolveConfig(tailwindConfig).theme.colors;
+console.log('%c[Nav]', 'color: #85b6bd', `tailwindColors :`, tailwindColors);
 
 const testDbTyped = testDb as DataBase;
 
@@ -18,8 +21,8 @@ const Nav = () => {
             {/* Top Bar: */}
             <div
                 className={classNames(
-                    'relative mb-4 flex h-0.5 justify-center bg-palette-primary-300 transition-[width] duration-300',
-                    activePost ? 'w-screen' : 'w-full',
+                    'relative mb-4 flex h-0.5 justify-center transition-[width,background-color] duration-300',
+                    activePost ? 'w-screen bg-palette-primary-50' : 'w-full bg-palette-primary-300',
                 )}
             />
 
@@ -42,7 +45,7 @@ const CategoryCard: FC<{
     cardData: DataBase[MENUTARGET];
     categoryIndex: number;
 }> = ({ cardCategory, cardData, categoryIndex }) => {
-    const { posts, headerCardBg } = cardData;
+    const { posts, categoryCardBackgroundImage, categoryBackgroundColor } = cardData;
     const categoryOpened = useZustand((state) => state.nav.categoryOpened);
 
     // WARN needed?
@@ -53,12 +56,30 @@ const CategoryCard: FC<{
     const refCb = useCallback((elem: HTMLDivElement | null) => {
         if (elem) {
             setTimeout(() => {
+                /* Mount sequentially for staggered dropdown */
                 setDivMounted(true);
             }, 500 * categoryIndex);
         }
     }, []);
 
     const thisCategoryOpened = useMemo(() => categoryOpened === cardCategory, [categoryOpened, cardCategory]);
+
+    /* Change background color, possibly later also parts of header (and turn into a hook then) */
+    useEffect(() => {
+        const docStyle = document.body.style;
+
+        if (categoryOpened) {
+            if (thisCategoryOpened) {
+                if (categoryBackgroundColor) {
+                    docStyle.setProperty('--bg-color', categoryBackgroundColor);
+                } else {
+                    docStyle.setProperty('--bg-color', tailwindColors.palette.utility.bg);
+                }
+            }
+        } else {
+            docStyle.setProperty('--bg-color', tailwindColors.palette.utility.bg);
+        }
+    }, [thisCategoryOpened, categoryBackgroundColor]);
 
     /**
      * Switches between stages 'leave' (default), 'from', and 'enter' (final stage, after that loops back to 'leave').
@@ -73,14 +94,11 @@ const CategoryCard: FC<{
             ref={refCb}
             /* NOTE Fixed Widths (opened) of Category Card here! */
             className={classNames(
-                'after:nav-card-corners pointer-events-auto relative w-24 cursor-pointer transition-[width,height] delay-75 duration-500 after:z-20 hover:-translate-y-0.5 hover:shadow-md',
+                'after:nav-card-corners pointer-events-auto relative w-24 cursor-pointer shadow transition-[width,height] delay-75 duration-500 after:z-20 hover:shadow-md',
                 divMounted ? 'h-156' : 'h-24',
                 stage === 'from' && 'border-8 border-green-500',
-                stage === 'enter' && '!w-152 border border-yellow-500',
+                stage === 'enter' && '!w-152 border border-yellow-500 shadow-md',
                 stage === 'leave' && 'border border-red-500 !delay-0',
-                // 'transition-[width,transform] duration-[400ms]',
-                // hasRunOnce ? 'h-156' : 'h-24',
-                // thisCategoryOpened ? 'w-152 -translate-y-0.5 shadow-md' : 'w-24 shadow',
             )}
             onClick={() => store_categoryOpened(categoryOpened === cardCategory ? (activePost ? cardCategory : null) : cardCategory)}
         >
@@ -95,12 +113,12 @@ const CategoryCard: FC<{
                     <h1>{cardCategory}</h1>
                 </div>
 
-                {divMounted && <PostCardContainer cardCategory={cardCategory} posts={posts} />}
+                {shouldMount && <PostCardContainer cardCategory={cardCategory} posts={posts} />}
             </div>
 
             <div
                 className='absolute bottom-0 left-0 -z-10 size-full bg-cover mask-edges-[30_10_0.2] peer-checked:mask-edges-40'
-                style={{ backgroundImage: `url('${headerCardBg}')` }}
+                style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }}
             ></div>
         </div>
     );
@@ -181,16 +199,16 @@ const PostCard: FC<{
 /** Used in Content.tsx */
 export const MenuOpenedPost: FC<{
     hasImages: boolean;
-    codeLink: string | undefined;
+    codeLink: Post['codeLink'];
     setLightboxTo: React.Dispatch<React.SetStateAction<number | null>>;
 }> = ({ hasImages, codeLink, setLightboxTo }) => {
     return (
         <div className='absolute w-full -translate-y-full pb-[2px] leading-none'>
-            <div className='nav-checked-width mx-auto flex h-8 justify-end space-x-1'>
+            <div className='nav-checked-width mx-auto flex h-6 justify-end space-x-1 text-palette-primary-600'>
                 {hasImages && (
                     <button
                         type='button'
-                        className='cursor-pointer border-2 border-b-0 border-palette-primary-300 bg-palette-neutral-200 p-1 shadow hover:bg-palette-primary-100/50'
+                        className='cursor-pointer bg-palette-primary-50 px-2 py-1 hover:bg-palette-primary-50/50'
                         onClick={() => setLightboxTo(0)}
                     >
                         Gallery
@@ -198,26 +216,24 @@ export const MenuOpenedPost: FC<{
                 )}
 
                 {codeLink && (
-                    <a
-                        className='group block cursor-pointer border-2 border-b-0 bg-palette-neutral-200 p-1 shadow hover:bg-palette-primary-100/50'
-                        href={codeLink}
-                        target='_blank'
-                        rel='noreferrer'
-                    >
-                        Code lbr rbr
-                        <span className='absolute right-0 z-50 mt-2 hidden whitespace-nowrap text-right text-sm group-hover:block'>
-                            Link goes to {codeLink} <br /> bla bla explanatory <br /> new window/tab
-                        </span>
-                    </a>
+                    <button type='button' className='group block cursor-pointer bg-palette-primary-50 px-2 py-1 hover:bg-palette-primary-50/50'>
+                        <a className='' href={codeLink.href} target='_blank' rel='noreferrer'>
+                            {codeLink.alt}
+                            <span className='absolute right-0 z-50 mt-2 hidden whitespace-nowrap text-right text-sm group-hover:block'>
+                                Link goes to {codeLink.alt} <br /> bla bla explanatory <br /> new window/tab
+                            </span>
+                        </a>
+                    </button>
                 )}
 
                 {/* TODO fade out instead of instantly closing */}
-                <div
-                    className='flex aspect-square w-fit cursor-pointer items-center justify-center border-2 border-b-0 border-palette-primary-300 bg-palette-neutral-200 shadow hover:bg-palette-primary-100/50'
+                <button
+                    type='button'
+                    className='aspect-square w-fit cursor-pointer bg-palette-primary-50 hover:bg-palette-primary-100/50'
                     onClick={() => store_activePost(null)}
                 >
                     X
-                </div>
+                </button>
             </div>
         </div>
     );

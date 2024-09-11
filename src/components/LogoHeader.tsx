@@ -12,7 +12,7 @@ const LogoHeader = () => {
             id='logo'
             className={classNames(
                 'mb-1 w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height] duration-300',
-                activePost ? 'ml-0 mr-[100%] mt-4 h-[70px] translate-x-1/2' : 'ml-0 mt-8 h-[100px] translate-x-0',
+                activePost ? 'ml-0 mr-[100%] mt-4 h-[50px] translate-x-1/2' : 'ml-0 mt-8 h-[100px] translate-x-0',
             )}
             onClick={() => {
                 store_categoryOpened(null);
@@ -21,7 +21,7 @@ const LogoHeader = () => {
         >
             <svg height='100%' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
                 <g id='layer1' transform='translate(-77.964769,-127.41715)'>
-                    <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1' className='fill-black hover:fill-slate-800'>
+                    <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1' className='fill-palette-primary-200 hover:fill-palette-primary-100'>
                         <tspan
                             id='tspan1'
                             style={{

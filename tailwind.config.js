@@ -22,10 +22,6 @@ const customPalettes = {
             100: '#F49B8F',
             50: '#F8C1B9', // message background, for example
         },
-        utility: {
-            bg: colors.gray[50],
-            text: colors.gray[950],
-        },
         accent: {
             DEFAULT: '#2AA6B6',
             950: '#012B31',
@@ -39,6 +35,11 @@ const customPalettes = {
             200: '#71DAE8',
             100: '#92E8F4',
             50: '#B7F2FA',
+        },
+        neutral: { ...colors.zinc },
+        utility: {
+            bg: colors.gray[800],
+            text: colors.gray[50],
         },
         critical: { ...colors.orange },
         attention: {
@@ -56,20 +57,19 @@ const customPalettes = {
             950: '#271E01',
         },
         success: { ...colors.emerald },
-        neutral: { ...colors.zinc },
     },
 
     _undefined: {
         primary: {},
+        accent: {},
+        neutral: { ...colors.slate },
         utility: {
             bg: colors.gray[50],
             text: colors.gray[950],
         },
-        accent: {},
         critical: {},
         attention: {},
         success: {},
-        neutral: { ...colors.slate },
     },
 };
 

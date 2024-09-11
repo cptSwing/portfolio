@@ -29,13 +29,17 @@ export type Post_Image = {
 
 export type Post = {
     title: string;
-    titleCardBg?: string;
-    subTitle?: string;
+    textBlocks: { text: string; imageIndex?: number }[];
     images?: Post_Image[];
-    textContent: string[];
-    codeLink?: string;
+    subTitle?: string;
+    titleCardBg?: string;
+    toolsUsed?: string[];
+    codeLink?: {
+        href: string;
+        alt: string;
+    };
 };
 
 export type DataBase = {
-    [key in MENUTARGET]: { posts: Post[]; headerCardBg: string };
+    [key in MENUTARGET]: { posts: Post[]; categoryCardBackgroundImage: string; categoryBackgroundColor?: string };
 };

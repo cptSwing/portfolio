@@ -16,7 +16,7 @@ const Background = () => {
     return (
         <div id='background' ref={bgRefCb} className='perspective-1000px pointer-events-none fixed mx-auto size-full'>
             <svg
-                className='parallax-rotXY aspect-video h-full fill-none stroke-palette-neutral-300 stroke-[0.05] [animation:bg-dash_3s_linear_forwards] [stroke-dasharray:2500] [stroke-dashoffset:2501] [stroke-linecap:round] [stroke-linejoin:round]'
+                className='parallax-rotXY aspect-video h-full fill-none stroke-palette-neutral-700 stroke-[0.05] [animation:bg-dash_3s_linear_forwards] [stroke-dasharray:2500] [stroke-dashoffset:2501] [stroke-linecap:round] [stroke-linejoin:round]'
                 viewBox='-180 -90 360 180'
                 version='1.1'
                 id='bg-svg'
