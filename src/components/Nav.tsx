@@ -7,6 +7,7 @@ import testDb from '../queries/testDb.json';
 import { useTransition } from 'transition-hook';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config.ts';
+import parseDateString from '../lib/parseDateString.ts';
 
 const paletteUtilityBg = resolveConfig(tailwindConfig).theme.colors.palette.utility.bg;
 const testDbTyped = testDb as DataBase;
@@ -145,7 +146,9 @@ const SinglePostCard: FC<{
     post: Post;
     delay: number;
 }> = ({ cardCategory, post, delay }) => {
-    const { title, titleCardBg, subTitle } = post;
+    const { title, titleCardBg, subTitle, date } = post;
+
+    const { year } = parseDateString(date);
 
     const [intersectionRefCb, entry] = useIntersectionObserver({
         threshold: 0,
@@ -181,8 +184,14 @@ const SinglePostCard: FC<{
             data-content-after={subTitle ?? 'lol no subtitle here'}
             onClick={() => store_activePost(post)}
         >
-            <div className='relative mx-auto mt-2 w-fit max-w-[calc(100%-(8px*2))] px-1 text-center text-palette-neutral-50 before:absolute before:left-1/2 before:-z-30 before:size-full before:-translate-x-1/2 before:bg-palette-neutral-500/75 before:transition-[background-color] before:delay-100 before:duration-100 group-hover/this:font-semibold group-hover/this:text-palette-accent-500 group-hover/this:before:bg-palette-neutral-50'>
+            <div className='relative mx-auto mt-2 w-fit max-w-[calc(100%-(8px*2))] px-1 text-center text-palette-neutral-50 before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-palette-neutral-500/75 before:transition-[background-color] before:delay-100 before:duration-100 group-hover/this:text-palette-accent-500 group-hover/this:before:bg-palette-neutral-50'>
                 <h3>{title}</h3>
+            </div>
+
+            <div className='absolute bottom-0 right-0 z-10 h-full w-1/5'>
+                <div className='absolute bottom-0 right-0 origin-bottom translate-x-1/2 translate-y-0 -rotate-45 transform-gpu bg-red-950 px-[100%] pb-[20%] pt-px text-center leading-none duration-500 group-hover/this:translate-x-[200%] group-hover/this:translate-y-[200%]'>
+                    {year}
+                </div>
             </div>
             {titleCardBg && (
                 <div

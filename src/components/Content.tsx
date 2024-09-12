@@ -8,6 +8,7 @@ import Lightbox from 'yet-another-react-lightbox';
 import { Captions } from 'yet-another-react-lightbox/plugins';
 import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
+import parseDateString from '../lib/parseDateString';
 
 const Content = () => {
     return (
@@ -37,6 +38,7 @@ const ContentWrapper_Test: FC<{}> = () => {
     }
 
     const { title, subTitle, toolsUsed, images, textBlocks, codeLink, date } = activePost;
+    const { year, month, day } = parseDateString(date);
 
     return (
         <div
@@ -63,10 +65,14 @@ const ContentWrapper_Test: FC<{}> = () => {
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >
-                    <div className='relative mt-2 flex w-full items-start justify-center'>
+                    <div className='relative mt-2 w-full'>
                         <ToolsUsed tools={toolsUsed} />
                         <h4 className='mx-auto text-center italic'>{subTitle}</h4>
-                        <div>{Date.parse(date)}</div>
+                        <div className='absolute right-0 top-1/2 -translate-y-1/2'>
+                            <span>
+                                {day}.{month}.{year}
+                            </span>
+                        </div>
                     </div>
 
                     {/* Text/Image Blocks */}
@@ -124,28 +130,23 @@ const ContentWrapper_Test: FC<{}> = () => {
 
 const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
     return tools ? (
-        <div className='group select-none'>
+        <div className='group absolute left-0 top-1/2 -translate-y-1/2 select-none'>
             <div className='pb-px text-xs uppercase italic text-neutral-100/75'>Built with</div>
-            <div className='relative'>
-                <div
-                    /* 
-						Using length -1 in --tools-count in order to have last element at full size, for 'stacked' look,
-						and margin-right -10000px to break out of parent element's width					
-					*/
-                    className='absolute mr-[-10000px] grid grid-flow-col grid-cols-[repeat(var(--tools-count),0.25fr)] gap-x-px overflow-x-visible text-neutral-400/50 transition-[grid-template-columns,column-gap] duration-500 group-hover:grid-cols-[repeat(var(--tools-count),1fr)] group-hover:gap-x-0.5 group-hover:text-neutral-400'
-                    style={{ '--tools-count': tools.length - 1 } as CSSProperties}
-                >
-                    {tools?.map((tool, idx) => {
-                        return (
-                            <div
-                                key={tool + idx}
-                                className='overflow-hidden whitespace-nowrap rounded-sm bg-palette-neutral-700 px-1 text-center text-xs leading-tight'
-                            >
-                                {tool}
-                            </div>
-                        );
-                    })}
-                </div>
+            <div
+                /* Using length -1 in variable --tools-count in order to have last element at full size, for 'stacked' look */
+                className='grid grid-flow-col grid-cols-[repeat(var(--tools-count),0.25fr)] gap-x-px text-neutral-400/50 transition-[grid-template-columns,column-gap] duration-500 group-hover:grid-cols-[repeat(var(--tools-count),1fr)] group-hover:gap-x-0.5 group-hover:text-neutral-400'
+                style={{ '--tools-count': tools.length - 1 } as CSSProperties}
+            >
+                {tools?.map((tool, idx) => {
+                    return (
+                        <div
+                            key={tool + idx}
+                            className='overflow-hidden whitespace-nowrap rounded-sm bg-palette-neutral-700 px-1 text-center text-xs leading-tight'
+                        >
+                            {tool}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     ) : null;

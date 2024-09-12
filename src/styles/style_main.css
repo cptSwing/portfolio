@@ -32,10 +32,6 @@
     h5 {
         @apply block font-barlow text-lg italic underline underline-offset-2;
     }
-
-    h6 {
-        @apply block whitespace-nowrap text-xs uppercase;
-    }
 }
 
 @layer components {
