@@ -6,7 +6,7 @@ import { useIntersectionObserver } from '@uidotdev/usehooks';
 import testDb from '../queries/testDb.json';
 import { useTransition } from 'transition-hook';
 import resolveConfig from 'tailwindcss/resolveConfig';
-import tailwindConfig from '../../tailwind.config.js';
+import tailwindConfig from '../../tailwind.config.ts';
 
 const tailwindColors = resolveConfig(tailwindConfig).theme.colors;
 console.log('%c[Nav]', 'color: #85b6bd', `tailwindColors :`, tailwindColors);

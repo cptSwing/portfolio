@@ -1,5 +1,3 @@
-/** @type {import('tailwindcss').Config} */
-
 import colors from 'tailwindcss/colors';
 import plugin from 'tailwindcss/plugin';
 import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
