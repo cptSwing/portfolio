@@ -6,7 +6,7 @@
 
 @layer base {
     a {
-        @apply text-palette-accent-900 before:content-['->_'] after:content-['_<-'] hover:underline;
+        @apply text-palette-accent-300 before:content-['->_'] after:content-['_<-'] hover:underline;
     }
 
     a:visited {

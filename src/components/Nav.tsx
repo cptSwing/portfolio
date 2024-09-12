@@ -111,7 +111,7 @@ const CategoryCard: FC<{
                     <h1>{cardCategory}</h1>
                 </div>
 
-                {shouldMount && <PostCardContainer cardCategory={cardCategory} posts={posts} />}
+                {shouldMount && <PostCards cardCategory={cardCategory} posts={posts} />}
             </div>
 
             <div
@@ -124,7 +124,7 @@ const CategoryCard: FC<{
 
 const store_activePost = useZustand.getState().methods.store_activePost;
 
-const PostCardContainer: FC<{
+const PostCards: FC<{
     cardCategory: MENUTARGET;
     posts: Post[];
 }> = ({ cardCategory, posts }) => {
@@ -133,14 +133,14 @@ const PostCardContainer: FC<{
             {/* Move scrollbar to left side: https://stackoverflow.com/a/45824265 */}
             <div className='pointer-events-none flex -scale-x-100 flex-col space-y-3 pl-3'>
                 {posts.map((post, idx) => (
-                    <PostCard key={post.title + idx} cardCategory={cardCategory} post={post} delay={100 * idx} />
+                    <SinglePostCard key={post.title + idx} cardCategory={cardCategory} post={post} delay={100 * idx} />
                 ))}
             </div>
         </div>
     );
 };
 
-const PostCard: FC<{
+const SinglePostCard: FC<{
     cardCategory: MENUTARGET;
     post: Post;
     delay: number;

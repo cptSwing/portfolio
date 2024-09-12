@@ -50,7 +50,7 @@ const ContentWrapper_Test: FC<{
                 style={{ height: window.innerHeight - topVal - 2 }}
             >
                 <div className='fixed left-1/2 z-10 -translate-x-1/2 -translate-y-[60%]'>
-                    <h2 className='px-5 text-palette-primary-500 before:absolute before:bottom-0 before:left-0 before:-z-10 before:h-3/5 before:w-full before:bg-palette-primary-50'>
+                    <h2 className='px-8 text-palette-primary-500 before:absolute before:bottom-0 before:left-0 before:-z-10 before:h-3/5 before:w-full before:bg-palette-primary-50'>
                         {title}
                     </h2>
                 </div>
@@ -61,39 +61,14 @@ const ContentWrapper_Test: FC<{
                     // onBlur={() => store_activePost(null)} // TODO
                 >
                     <div className='relative mt-2 w-full'>
-                        {toolsUsed && (
-                            <div className='group absolute left-0 top-1/2 my-auto flex -translate-y-1/2 select-none'>
-                                <h6 className='mr-0.5 border border-transparent bg-palette-neutral-700/50 px-1 py-px text-neutral-100/75'>Built using:</h6>
-                                <div className='relative grid grid-flow-col grid-cols-[repeat(4,1.5rem)] transition-[grid-template-columns,column-gap] duration-500 group-hover:grid-cols-[repeat(4,1fr)] group-hover:gap-x-0.5'>
-                                    {toolsUsed?.map((tool, idx) => {
-                                        return (
-                                            <h6
-                                                key={tool + idx}
-                                                className='overflow-hidden rounded-sm border border-black/50 bg-palette-neutral-700 px-1 py-px text-center text-neutral-400/50'
-                                                style={
-                                                    {
-                                                        // marginLeft: `calc(${1 * idx}rem * var(--enable))`,
-                                                        // gridColumnStart: idx + 1,
-                                                    }
-                                                }
-                                            >
-                                                {tool}
-                                            </h6>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
+                        <ToolsUsed tools={toolsUsed} />
                         <h4 className='mx-auto text-center italic'>{subTitle}</h4>
                     </div>
 
                     {/* Text/Image Blocks */}
                     {textBlocks?.map(({ text, imageIndex }, idx) => {
                         let imgUrl, caption;
-                        if (images && typeof imageIndex === 'number') {
-                            imgUrl = images[imageIndex].imgUrl;
-                            caption = images[imageIndex].caption;
-                        }
+                        if (images && typeof imageIndex === 'number') ({ imgUrl, caption } = images[imageIndex]);
 
                         const isIndexEven = idx % 2 === 0;
 
@@ -141,4 +116,30 @@ const ContentWrapper_Test: FC<{
             </div>
         </div>
     );
+};
+
+const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
+    return tools ? (
+        <div className='group absolute left-0 top-1/2 my-auto flex -translate-y-1/2 select-none'>
+            <h6 className='mr-0.5 border border-transparent bg-palette-neutral-700/50 px-1 py-px text-neutral-100/75'>Built using:</h6>
+            <div className='relative grid grid-flow-col grid-cols-[repeat(4,1.5rem)] transition-[grid-template-columns,column-gap] duration-500 group-hover:grid-cols-[repeat(4,1fr)] group-hover:gap-x-0.5'>
+                {tools?.map((tool, idx) => {
+                    return (
+                        <h6
+                            key={tool + idx}
+                            className='overflow-hidden rounded-sm border border-black/50 bg-palette-neutral-700 px-1 py-px text-center text-neutral-400/50'
+                            style={
+                                {
+                                    // marginLeft: `calc(${1 * idx}rem * var(--enable))`,
+                                    // gridColumnStart: idx + 1,
+                                }
+                            }
+                        >
+                            {tool}
+                        </h6>
+                    );
+                })}
+            </div>
+        </div>
+    ) : null;
 };
