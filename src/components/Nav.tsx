@@ -8,9 +8,7 @@ import { useTransition } from 'transition-hook';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config.ts';
 
-const tailwindColors = resolveConfig(tailwindConfig).theme.colors;
-console.log('%c[Nav]', 'color: #85b6bd', `tailwindColors :`, tailwindColors);
-
+const paletteUtilityBg = resolveConfig(tailwindConfig).theme.colors.palette.utility.bg;
 const testDbTyped = testDb as DataBase;
 
 const Nav = () => {
@@ -64,7 +62,7 @@ const CategoryCard: FC<{
 
     const thisCategoryOpened = useMemo(() => categoryOpened === cardCategory, [categoryOpened, cardCategory]);
 
-    /* Change background color, possibly later also parts of header (and turn into a hook then) */
+    /* Change background color, possibly later also parts of header (and turn into a hook then?) */
     useEffect(() => {
         const docStyle = document.body.style;
 
@@ -73,11 +71,11 @@ const CategoryCard: FC<{
                 if (categoryBackgroundColor) {
                     docStyle.setProperty('--bg-color', categoryBackgroundColor);
                 } else {
-                    docStyle.setProperty('--bg-color', tailwindColors.palette.utility.bg);
+                    docStyle.setProperty('--bg-color', paletteUtilityBg);
                 }
             }
         } else {
-            docStyle.setProperty('--bg-color', tailwindColors.palette.utility.bg);
+            docStyle.setProperty('--bg-color', paletteUtilityBg);
         }
     }, [thisCategoryOpened, categoryBackgroundColor]);
 
