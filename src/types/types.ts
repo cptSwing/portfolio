@@ -29,6 +29,7 @@ export type Post_Image = {
 
 export type Post = {
     title: string;
+    date: string;
     textBlocks: { text: string; imageIndex?: number }[];
     images?: Post_Image[];
     subTitle?: string;

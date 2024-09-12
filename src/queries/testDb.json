@@ -1,133 +1,31 @@
 {
-    "News": {
-        "posts": [
-            {
-                "title": "Updates 1",
-                "titleCardBg": "https://picsum.photos/seed/updates1/500?grayscale",
-                "images": [
-                    { "imgUrl": "https://picsum.photos/seed/updates1_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates1_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates1_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates1_4/900/600?grayscale", "caption": "ksdkjsdk" }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            },
-            {
-                "title": "Updates 2",
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            },
-            {
-                "title": "Updates 3",
-                "titleCardBg": "https://picsum.photos/seed/updates3/500?grayscale",
-                "images": [
-                    { "imgUrl": "https://picsum.photos/seed/updates3_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates3_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates3_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates3_4/900/600?grayscale", "caption": "ksdkjsdk" }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            },
-            {
-                "title": "Updates 4",
-                "images": [
-                    { "imgUrl": "https://picsum.photos/seed/updates4_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates4_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates4_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates4_4/900/600?grayscale", "caption": "ksdkjsdk" }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            },
-            {
-                "title": "Updates 5",
-                "images": [
-                    { "imgUrl": "https://picsum.photos/seed/updates5_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates5_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates5_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates5_4/900/600?grayscale", "caption": "ksdkjsdk" }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            }
-        ],
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale"
-    },
     "About": {
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale",
         "posts": [
             {
-                "title": "Resumé",
-                "textBlocks": ["I've done **cool** stuff", "More `cool` stuff", "Even more of the ***cool stuff*** tbh"]
+                "date": "2024-09-12",
+                "textBlocks": ["I've done **cool** stuff", "More `cool` stuff", "Even more of the ***cool stuff*** tbh"],
+                "title": "Resumé"
             },
             {
-                "title": "About Me",
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/about_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/about_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/about_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/about_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -142,24 +40,418 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
+                ],
+                "title": "About Me"
             }
-        ],
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale"
+        ]
+    },
+    "Art": {
+        "categoryBackgroundColor": "rgb(128,200,225)",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
+        "posts": [
+            {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/gruyndw_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/gruyndw_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/gruyndw_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/gruyndw_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Grundwasser",
+                "titleCardBg": "https://picsum.photos/seed/wasser/500?grayscale"
+            },
+            {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/ber_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/ber_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/ber_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/ber_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "BER Tagesspiegel",
+                "titleCardBg": "https://picsum.photos/seed/ber/500?grayscale"
+            },
+            {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "stast 1k",
+                        "imgUrl": "src/assets/images/db/stasi_1.jpg"
+                    },
+                    {
+                        "caption": "2 2 2 2",
+                        "imgUrl": "src/assets/images/db/stasi_2.jpg"
+                    },
+                    {
+                        "caption": "STASI 3",
+                        "imgUrl": "src/assets/images/db/stasi_3.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/db/stasi_4.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/db/stasi_5.jpg"
+                    }
+                ],
+                "textBlocks": ["Stasi first image lalslalsals", "Stasi second image lalslalsals", "Stasi third image lalslalsals"],
+                "title": "Stasi VR",
+                "titleCardBg": "src/assets/images/db/stasi_featured_image.jpg"
+            },
+            {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/db/a100_1.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/db/a100_2.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/db/a100_3.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/db/a100_4.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "A 100",
+                "titleCardBg": "src/assets/images/db/a100_featured_image.jpg"
+            },
+            {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "Civilian Equipment 1",
+                        "imgUrl": "src/assets/images/db/em5_civilian_equipment_01.jpg"
+                    },
+                    {
+                        "caption": "Civilian Equipment 2",
+                        "imgUrl": "src/assets/images/db/em5_civilian_equipment_02.jpg"
+                    },
+                    {
+                        "caption": "Civilian Equipment 3",
+                        "imgUrl": "src/assets/images/db/em5_civilian_equipment_03.jpg"
+                    },
+                    {
+                        "caption": "Engineer Equipment (wireframes)",
+                        "imgUrl": "src/assets/images/db/em5_engineer_equipment_wires.jpg"
+                    },
+                    {
+                        "caption": "Firefighter Equipment",
+                        "imgUrl": "src/assets/images/db/em5_firefighter_equipments_01.jpg"
+                    },
+                    {
+                        "caption": "Hotdog Stand",
+                        "imgUrl": "src/assets/images/db/em5_hotdog_barrel.jpg"
+                    },
+                    {
+                        "caption": "Hotdog Stand (ingame cutscene)",
+                        "imgUrl": "src/assets/images/db/em5_hotdog_ingame.jpg"
+                    },
+                    {
+                        "caption": "Medic Equipment",
+                        "imgUrl": "src/assets/images/db/em5_medic_equipment.jpg"
+                    },
+                    {
+                        "caption": "Medic Equipment (wires)",
+                        "imgUrl": "src/assets/images/db/em5_medic_equipment_wires.jpg"
+                    },
+                    {
+                        "caption": "Police Equipment 1",
+                        "imgUrl": "src/assets/images/db/em5_police_equipment_01.jpg"
+                    },
+                    {
+                        "caption": "Police Equipment 2",
+                        "imgUrl": "src/assets/images/db/em5_police_equipment_02.jpg"
+                    },
+                    {
+                        "caption": "Various city assets",
+                        "imgUrl": "src/assets/images/db/em5_ubahn_flags.jpg"
+                    }
+                ],
+                "subTitle": "Some 3D assets I created while working on strategy game \"Emergency 5\"",
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Emergency 5",
+                "titleCardBg": "https://picsum.photos/seed/art4/500?grayscale"
+            },
+            {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "imgUrl": "src/assets/images/db/usm_3.jpg"
+                    },
+                    {
+                        "imgUrl": "src/assets/images/db/usm_4.jpg"
+                    },
+                    {
+                        "imgUrl": "src/assets/images/db/usm_6.jpg"
+                    },
+                    {
+                        "imgUrl": "src/assets/images/db/usm_7.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "U Stadtmitte (for Lange Nacht d. Wissenschaften)",
+                "titleCardBg": "src/assets/images/db/usm_featured_image.jpg"
+            },
+            {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "Retro-Style Satellite (high poly)",
+                        "imgUrl": "src/assets/images/db/satellite_close.jpg"
+                    },
+                    {
+                        "caption": "Retro-Style Satellite (high poly)",
+                        "imgUrl": "src/assets/images/db/satellite_total.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle",
+                        "imgUrl": "src/assets/images/db/Mosin_001.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle",
+                        "imgUrl": "src/assets/images/db/Mosin_004.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle (wireframes)",
+                        "imgUrl": "src/assets/images/db/Mosin_002_wires.jpg"
+                    },
+                    {
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
+                        "imgUrl": "src/assets/images/db/Stretcher_Low_2_PC.jpg"
+                    },
+                    {
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
+                        "imgUrl": "src/assets/images/db/Stretcher_Low_3_PC.jpg"
+                    },
+                    {
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
+                        "imgUrl": "src/assets/images/db/Stretcher_Low_6_wires_PC.jpg"
+                    },
+                    {
+                        "caption": "T-35 - Pre-WW2 Soviet Tank (high poly)",
+                        "imgUrl": "src/assets/images/db/t35_t35_high1.jpg"
+                    },
+                    {
+                        "caption": "T-35 - Pre-WW2 Soviet Tank (high poly)",
+                        "imgUrl": "src/assets/images/db/t35_t35_high2.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Personal 3D Projects (where WIP's come to die..)",
+                "titleCardBg": "src/assets/images/db/satellite_featured_image.jpg"
+            },
+            {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/db/bbb_plakat.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/db/bbb_vid.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/db/bnf_plakat.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Various 2D Artwork",
+                "titleCardBg": "src/assets/images/db/bbb_bnf_featured_image.jpg"
+            },
+            {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Student Projects",
+                "titleCardBg": "https://picsum.photos/seed/art5/500?grayscale"
+            }
+        ]
     },
     "Code": {
+        "categoryBackgroundColor": "rgb(32,80,48)",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
         "posts": [
             {
-                "title": "Design Your Ring",
-                "subTitle": "Customizable Wedding-Rings in 3D",
-                "toolsUsed": ["react", "react-router", "three.js", "tailwindcss"],
-                "titleCardBg": "https://picsum.photos/seed/dyr/500?grayscale",
+                "codeLink": {
+                    "alt": "Github",
+                    "href": "http://www.github.com"
+                },
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/dyr_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/dyr_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/dyr_3/900/600?grayscale" },
-                    { "imgUrl": "https://picsum.photos/seed/dyr_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/dyr_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/dyr_2/900/600?grayscale"
+                    },
+                    {
+                        "imgUrl": "https://picsum.photos/seed/dyr_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/dyr_4/900/600?grayscale"
+                    }
                 ],
+                "subTitle": "Customizable Wedding-Rings in 3D",
                 "textBlocks": [
                     {
                         "text": "##### Sub-Headline\n Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
@@ -177,16 +469,66 @@
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
                 ],
-                "codeLink": { "href": "http://www.github.com", "alt": "Github" }
+                "title": "Design Your Ring",
+                "titleCardBg": "https://picsum.photos/seed/dyr/500?grayscale",
+                "toolsUsed": ["react", "react-router", "three.js", "tailwindcss"]
             },
             {
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/fader_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/fader_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/fader_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/fader_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
                 "title": "Fader",
-                "titleCardBg": "https://picsum.photos/seed/fader/500?grayscale",
+                "titleCardBg": "https://picsum.photos/seed/fader/500?grayscale"
+            },
+            {
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/fader_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/fader_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/fader_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/fader_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -201,16 +543,29 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
-            },
-            {
+                ],
                 "title": "Scrollmersive",
-                "titleCardBg": "https://picsum.photos/seed/scrollm/500?grayscale",
+                "titleCardBg": "https://picsum.photos/seed/scrollm/500?grayscale"
+            },
+            {
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/scrollm_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/scrollm_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/scrollm_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/scrollm_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/hilux_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/hilux_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/hilux_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/hilux_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -225,16 +580,29 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
-            },
-            {
+                ],
                 "title": "Hilux Configurator",
-                "titleCardBg": "https://picsum.photos/seed/hilux/500?grayscale",
+                "titleCardBg": "https://picsum.photos/seed/hilux/500?grayscale"
+            },
+            {
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/hilux_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/hilux_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/hilux_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/hilux_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/brotherland_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/brotherland_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/brotherland_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/brotherland_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -249,40 +617,29 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
-            },
-            {
+                ],
                 "title": "Brotherland",
-                "titleCardBg": "https://picsum.photos/seed/brother/500?grayscale",
-                "images": [
-                    { "imgUrl": "https://picsum.photos/seed/brotherland_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/brotherland_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/brotherland_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/brotherland_4/900/600?grayscale", "caption": "ksdkjsdk" }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
+                "titleCardBg": "https://picsum.photos/seed/brother/500?grayscale"
             },
             {
-                "title": "Plate Calc",
-                "titleCardBg": "https://picsum.photos/seed/plate/500?grayscale",
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/plate_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/plate_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/plate_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/plate_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -297,22 +654,34 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
+                ],
+                "title": "Plate Calc",
+                "titleCardBg": "https://picsum.photos/seed/plate/500?grayscale"
             }
-        ],
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
-        "categoryBackgroundColor": "rgb(32,80,48)"
+        ]
     },
-    "Art": {
+    "News": {
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
         "posts": [
             {
-                "title": "Grundwasser",
-                "titleCardBg": "https://picsum.photos/seed/wasser/500?grayscale",
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/gruyndw_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/gruyndw_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/gruyndw_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/gruyndw_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -327,16 +696,47 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
+                ],
+                "title": "Updates 1",
+                "titleCardBg": "https://picsum.photos/seed/updates1/500?grayscale"
             },
             {
-                "title": "BER Tagesspiegel",
-                "titleCardBg": "https://picsum.photos/seed/ber/500?grayscale",
+                "date": "2024-09-12",
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Updates 2"
+            },
+            {
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/ber_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/ber_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/ber_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/ber_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates3_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates3_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates3_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates3_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -351,28 +751,29 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
-            },
-            {
-                "title": "Stasi VR",
-                "titleCardBg": "src/assets/images/db/stasi_featured_image.jpg",
-                "images": [
-                    { "imgUrl": "src/assets/images/db/stasi_1.jpg", "caption": "stast 1k" },
-                    { "imgUrl": "src/assets/images/db/stasi_2.jpg", "caption": "2 2 2 2" },
-                    { "imgUrl": "src/assets/images/db/stasi_3.jpg", "caption": "STASI 3" },
-                    { "imgUrl": "src/assets/images/db/stasi_4.jpg", "caption": "ksdkjsdk" },
-                    { "imgUrl": "src/assets/images/db/stasi_5.jpg", "caption": "ksdkjsdk" }
                 ],
-                "textBlocks": ["Stasi first image lalslalsals", "Stasi second image lalslalsals", "Stasi third image lalslalsals"]
+                "title": "Updates 3",
+                "titleCardBg": "https://picsum.photos/seed/updates3/500?grayscale"
             },
             {
-                "title": "A 100",
-                "titleCardBg": "src/assets/images/db/a100_featured_image.jpg",
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "src/assets/images/db/a100_1.jpg", "caption": "ksdkjsdk" },
-                    { "imgUrl": "src/assets/images/db/a100_2.jpg", "caption": "ksdkjsdk" },
-                    { "imgUrl": "src/assets/images/db/a100_3.jpg", "caption": "ksdkjsdk" },
-                    { "imgUrl": "src/assets/images/db/a100_4.jpg", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates4_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates4_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates4_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates4_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -387,25 +788,28 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
+                ],
+                "title": "Updates 4"
             },
             {
-                "title": "Emergency 5",
-                "titleCardBg": "https://picsum.photos/seed/art4/500?grayscale",
-                "subTitle": "Some 3D assets I created while working on strategy game \"Emergency 5\"",
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "src/assets/images/db/em5_civilian_equipment_01.jpg", "caption": "Civilian Equipment 1" },
-                    { "imgUrl": "src/assets/images/db/em5_civilian_equipment_02.jpg", "caption": "Civilian Equipment 2" },
-                    { "imgUrl": "src/assets/images/db/em5_civilian_equipment_03.jpg", "caption": "Civilian Equipment 3" },
-                    { "imgUrl": "src/assets/images/db/em5_engineer_equipment_wires.jpg", "caption": "Engineer Equipment (wireframes)" },
-                    { "imgUrl": "src/assets/images/db/em5_firefighter_equipments_01.jpg", "caption": "Firefighter Equipment" },
-                    { "imgUrl": "src/assets/images/db/em5_hotdog_barrel.jpg", "caption": "Hotdog Stand" },
-                    { "imgUrl": "src/assets/images/db/em5_hotdog_ingame.jpg", "caption": "Hotdog Stand (ingame cutscene)" },
-                    { "imgUrl": "src/assets/images/db/em5_medic_equipment.jpg", "caption": "Medic Equipment" },
-                    { "imgUrl": "src/assets/images/db/em5_medic_equipment_wires.jpg", "caption": "Medic Equipment (wires)" },
-                    { "imgUrl": "src/assets/images/db/em5_police_equipment_01.jpg", "caption": "Police Equipment 1" },
-                    { "imgUrl": "src/assets/images/db/em5_police_equipment_02.jpg", "caption": "Police Equipment 2" },
-                    { "imgUrl": "src/assets/images/db/em5_ubahn_flags.jpg", "caption": "Various city assets" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates5_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates5_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates5_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates5_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -420,128 +824,33 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
-            },
-            {
-                "title": "U Stadtmitte (for Lange Nacht d. Wissenschaften)",
-                "titleCardBg": "src/assets/images/db/usm_featured_image.jpg",
-                "images": [
-                    { "imgUrl": "src/assets/images/db/usm_3.jpg" },
-                    { "imgUrl": "src/assets/images/db/usm_4.jpg" },
-                    { "imgUrl": "src/assets/images/db/usm_6.jpg" },
-                    { "imgUrl": "src/assets/images/db/usm_7.jpg" }
                 ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            },
-            {
-                "title": "Personal 3D Projects (where WIP's come to die..)",
-                "titleCardBg": "src/assets/images/db/satellite_featured_image.jpg",
-                "images": [
-                    { "imgUrl": "src/assets/images/db/satellite_close.jpg", "caption": "Retro-Style Satellite (high poly)" },
-                    { "imgUrl": "src/assets/images/db/satellite_total.jpg", "caption": "Retro-Style Satellite (high poly)" },
-                    { "imgUrl": "src/assets/images/db/Mosin_001.jpg", "caption": "Mosin Nagant WW2 Rifle" },
-                    { "imgUrl": "src/assets/images/db/Mosin_004.jpg", "caption": "Mosin Nagant WW2 Rifle" },
-                    { "imgUrl": "src/assets/images/db/Mosin_002_wires.jpg", "caption": "Mosin Nagant WW2 Rifle (wireframes)" },
-                    { "imgUrl": "src/assets/images/db/Stretcher_Low_2_PC.jpg", "caption": "Incomplete Entry for polycount.com competition \"The Escape\"" },
-                    { "imgUrl": "src/assets/images/db/Stretcher_Low_3_PC.jpg", "caption": "Incomplete Entry for polycount.com competition \"The Escape\"" },
-                    {
-                        "imgUrl": "src/assets/images/db/Stretcher_Low_6_wires_PC.jpg",
-                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\""
-                    },
-
-                    { "imgUrl": "src/assets/images/db/t35_t35_high1.jpg", "caption": "T-35 - Pre-WW2 Soviet Tank (high poly)" },
-                    { "imgUrl": "src/assets/images/db/t35_t35_high2.jpg", "caption": "T-35 - Pre-WW2 Soviet Tank (high poly)" }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            },
-            {
-                "title": "Various 2D Artwork",
-                "titleCardBg": "src/assets/images/db/bbb_bnf_featured_image.jpg",
-                "images": [
-                    { "imgUrl": "src/assets/images/db/bbb_plakat.jpg", "caption": "ksdkjsdk" },
-                    { "imgUrl": "src/assets/images/db/bbb_vid.jpg", "caption": "ksdkjsdk" },
-                    { "imgUrl": "src/assets/images/db/bnf_plakat.jpg", "caption": "ksdkjsdk" }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            },
-
-            {
-                "title": "Student Projects",
-                "titleCardBg": "https://picsum.photos/seed/art5/500?grayscale",
-                "images": [
-                    { "imgUrl": "https://picsum.photos/seed/updates1_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates1_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates1_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/updates1_4/900/600?grayscale", "caption": "ksdkjsdk" }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
+                "title": "Updates 5"
             }
-        ],
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
-        "categoryBackgroundColor": "rgb(128,200,225)"
+        ]
     },
     "Undef": {
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/contact/500?grayscale",
         "posts": [
             {
-                "title": "Contact",
-                "titleCardBg": "https://picsum.photos/seed/contact1/500?grayscale",
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/contact_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/contact_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/contact_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/contact_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/contact_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/contact_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/contact_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/contact_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -556,16 +865,29 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
+                ],
+                "title": "Contact",
+                "titleCardBg": "https://picsum.photos/seed/contact1/500?grayscale"
             },
             {
-                "title": "Impressum",
-                "titleCardBg": "https://picsum.photos/seed/impressum/500?grayscale",
+                "date": "2024-09-12",
                 "images": [
-                    { "imgUrl": "https://picsum.photos/seed/impr_1/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/impr_2/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/impr_3/900/600?grayscale", "caption": "ksdkjsdk" },
-                    { "imgUrl": "https://picsum.photos/seed/impr_4/900/600?grayscale", "caption": "ksdkjsdk" }
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/impr_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/impr_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/impr_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/impr_4/900/600?grayscale"
+                    }
                 ],
                 "textBlocks": [
                     {
@@ -580,9 +902,10 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ]
+                ],
+                "title": "Impressum",
+                "titleCardBg": "https://picsum.photos/seed/impressum/500?grayscale"
             }
-        ],
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/contact/500?grayscale"
+        ]
     }
 }
