@@ -1,7 +1,7 @@
 import { useZustand } from '../lib/zustand';
 import { DataBase, Post, MENUTARGET, menuTargetArray } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntersectionObserver } from '@uidotdev/usehooks';
 import testDb from '../queries/testDb.json';
 import { useTransition } from 'transition-hook';
@@ -14,6 +14,9 @@ const testDbTyped = testDb as DataBase;
 
 const Nav = () => {
     const activePost = useZustand((state) => state.nav.activePost);
+    const categoryOpened = useZustand((state) => state.nav.categoryOpened);
+
+    const gridTemplateColumns = useRef<string[]>(menuTargetArray.map(() => '0.5fr'));
 
     return (
         <nav id='nav-cards-wrapper' className='flex flex-col items-center justify-start'>
@@ -26,10 +29,28 @@ const Nav = () => {
             />
 
             {/* Category Cards: */}
-            <div className='flex w-full flex-row items-start justify-center space-x-4'>
-                {menuTargetArray.map((menuTarget, idx) => (
-                    <CategoryCard key={menuTarget + idx} cardCategory={menuTarget} cardData={testDbTyped[menuTarget]} categoryIndex={idx} />
-                ))}
+            <div
+                className='grid w-full grid-flow-col gap-x-4 transition-[grid-template-columns] duration-1000'
+                // style={{ gridTemplateColumns: `${menuTargetArray.map(() => '0.5fr').join(' ')}` } as CSSProperties}
+                style={{
+                    gridTemplateColumns: `${gridTemplateColumns.current
+                        .map((frWidth, idx) => {
+                            if (categoryOpened) {
+                                if (menuTargetArray.indexOf(categoryOpened) === idx) {
+                                    return '1fr';
+                                } else {
+                                    return '0.25fr';
+                                }
+                            } else {
+                                return frWidth;
+                            }
+                        })
+                        .join(' ')}`,
+                }}
+            >
+                {menuTargetArray.map((menuTarget, idx) => {
+                    return <CategoryCard key={menuTarget + idx} cardCategory={menuTarget} cardData={testDbTyped[menuTarget]} categoryIndex={idx} />;
+                })}
             </div>
         </nav>
     );
@@ -93,10 +114,12 @@ const CategoryCard: FC<{
             ref={refCb}
             /* NOTE Fixed Widths (opened) of Category Card here! */
             className={classNames(
-                'after:nav-card-corners pointer-events-auto relative w-24 cursor-pointer shadow transition-[width,height] delay-75 duration-500 after:z-20 hover:shadow-md',
+                'after:nav-card-corners pointer-events-auto relative cursor-pointer shadow transition-[width,height] delay-75 duration-500 after:z-20 hover:shadow-md',
                 divMounted ? 'h-156' : 'h-24',
                 stage === 'from' && 'border-8 border-green-500',
-                stage === 'enter' && '!w-152 border border-yellow-500 shadow-md',
+                // stage === 'enter' && '!w-152 border border-yellow-500 shadow-md',
+                stage === 'enter' && 'border border-yellow-500 shadow-md',
+
                 stage === 'leave' && 'border border-red-500 !delay-0',
             )}
             onClick={() => store_categoryOpened(categoryOpened === cardCategory ? (activePost ? cardCategory : null) : cardCategory)}
@@ -171,9 +194,9 @@ const SinglePostCard: FC<{
         <div
             id={`${cardCategory}-${title}-card`}
             style={!hasRenderedFullyOnce.current ? { transitionDelay: `${delay}ms` } : undefined}
-            /* NOTE Post Card width & height set here: */
+            /* NOTE Post Card width (w-116) & height set here: */
             className={classNames(
-                'group/this pointer-events-auto relative w-116 translate-x-[80%] cursor-pointer overflow-hidden border-4 border-palette-primary-200 opacity-25 shadow transition-[transform,opacity,background-color] duration-500',
+                'group/this pointer-events-auto relative translate-x-[80%] cursor-pointer overflow-hidden border-4 border-palette-primary-200 opacity-25 shadow transition-[transform,opacity,background-color] duration-500',
                 'before:absolute before:size-full before:outline before:outline-2 before:-outline-offset-8 before:outline-transparent before:transition-[outline-color,outline-offset,outline-width] before:delay-100 before:duration-100 hover:before:outline-palette-neutral-50',
                 'hover:border-palette-accent-200',
                 'after:absolute after:bottom-2 after:left-1/2 after:w-[calc(100%-theme(spacing.4))] after:-translate-x-1/2 after:truncate after:bg-transparent after:px-2 after:text-center after:text-sm after:text-palette-primary-900 after:transition-[background-color,opacity,color] after:duration-100 after:content-[attr(data-content-after)] hover:after:bg-palette-neutral-50 hover:after:text-palette-accent-100',
