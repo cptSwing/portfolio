@@ -12,11 +12,11 @@ import parseDateString from '../lib/parseDateString.ts';
 const paletteUtilityBg = resolveConfig(tailwindConfig).theme.colors.palette.utility.bg;
 const testDbTyped = testDb as DataBase;
 
+const store_categoryOpened = useZustand.getState().methods.store_categoryOpened;
+
 const Nav = () => {
     const activePost = useZustand((state) => state.nav.activePost);
     const categoryOpened = useZustand((state) => state.nav.categoryOpened);
-
-    const gridTemplateColumns = useRef<string[]>(menuTargetArray.map(() => '0.5fr'));
 
     return (
         <nav id='nav-cards-wrapper' className='flex flex-col items-center justify-start'>
@@ -30,35 +30,29 @@ const Nav = () => {
 
             {/* Category Cards: */}
             <div
-                className='grid w-full grid-flow-col gap-x-4 transition-[grid-template-columns] duration-1000'
-                // style={{ gridTemplateColumns: `${menuTargetArray.map(() => '0.5fr').join(' ')}` } as CSSProperties}
+                className={classNames(
+                    'grid gap-x-px transition-[width,grid-template-columns] duration-1000',
+                    categoryOpened ? 'nav-checked-width' : 'nav-unchecked-width',
+                )}
                 style={{
-                    gridTemplateColumns: `${gridTemplateColumns.current
-                        .map((frWidth, idx) => {
+                    gridTemplateColumns: `${menuTargetArray
+                        .map((target) => {
                             if (categoryOpened) {
-                                if (menuTargetArray.indexOf(categoryOpened) === idx) {
-                                    return '1fr';
-                                } else {
-                                    return '0.25fr';
-                                }
-                            } else {
-                                return frWidth;
-                            }
+                                return target === categoryOpened ? '15fr' : '1fr';
+                            } else return '1fr';
                         })
                         .join(' ')}`,
                 }}
             >
-                {menuTargetArray.map((menuTarget, idx) => {
-                    return <CategoryCard key={menuTarget + idx} cardCategory={menuTarget} cardData={testDbTyped[menuTarget]} categoryIndex={idx} />;
-                })}
+                {menuTargetArray.map((menuTarget, idx) => (
+                    <CategoryCard key={menuTarget + idx} cardCategory={menuTarget} cardData={testDbTyped[menuTarget]} categoryIndex={idx} />
+                ))}
             </div>
         </nav>
     );
 };
 
 export default Nav;
-
-const store_categoryOpened = useZustand.getState().methods.store_categoryOpened;
 
 const CategoryCard: FC<{
     cardCategory: MENUTARGET;
@@ -74,22 +68,24 @@ const CategoryCard: FC<{
     const [divMounted, setDivMounted] = useState(false);
 
     const refCb = useCallback((elem: HTMLDivElement | null) => {
+        let timer: number;
         if (elem) {
-            setTimeout(() => {
+            timer = setTimeout(() => {
                 /* Mount sequentially for staggered dropdown */
                 setDivMounted(true);
+                clearTimeout(timer);
             }, 500 * categoryIndex);
         }
     }, []);
 
-    const thisCategoryOpened = useMemo(() => categoryOpened === cardCategory, [categoryOpened, cardCategory]);
+    const thisCategoryOpen = useMemo(() => categoryOpened === cardCategory, [categoryOpened, cardCategory]);
 
     /* Change background color, possibly later also parts of header (and turn into a hook then?) */
     useEffect(() => {
         const docStyle = document.body.style;
 
         if (categoryOpened) {
-            if (thisCategoryOpened) {
+            if (thisCategoryOpen) {
                 if (categoryBackgroundColor) {
                     docStyle.setProperty('--bg-color', categoryBackgroundColor);
                 } else {
@@ -99,49 +95,59 @@ const CategoryCard: FC<{
         } else {
             docStyle.setProperty('--bg-color', paletteUtilityBg);
         }
-    }, [thisCategoryOpened, categoryBackgroundColor]);
+    }, [thisCategoryOpen, categoryBackgroundColor]);
 
     /**
      * Switches between stages 'leave' (default), 'from', and 'enter' (final stage, after that loops back to 'leave').
      * shouldMount is false at 'leave', true at enter
      * changing the element's key prop resets to 'from' after the 'leave' stage. This can be used as an initial point onMount, while the key should be left alone afterwards I guess?
      */
-    const { stage, shouldMount } = useTransition(thisCategoryOpened, 500);
+    const { stage, shouldMount } = useTransition(thisCategoryOpen, 500);
 
     return (
         <div
             key={`${shouldMount}`}
             ref={refCb}
+            // style={{ zIndex: -1 * categoryIndex }}
             /* NOTE Fixed Widths (opened) of Category Card here! */
             className={classNames(
-                'after:nav-card-corners pointer-events-auto relative cursor-pointer shadow transition-[width,height] delay-75 duration-500 after:z-20 hover:shadow-md',
+                'after:nav-card-corners pointer-events-auto relative cursor-pointer overflow-hidden shadow-md transition-[width,height] delay-75 duration-500 after:z-20 after:transition-[--corner-inset] after:duration-1000 hover:shadow-md',
                 divMounted ? 'h-156' : 'h-24',
                 stage === 'from' && 'border-8 border-green-500',
-                // stage === 'enter' && '!w-152 border border-yellow-500 shadow-md',
-                stage === 'enter' && 'border border-yellow-500 shadow-md',
-
+                stage === 'enter' && 'border border-yellow-500 !shadow-lg',
                 stage === 'leave' && 'border border-red-500 !delay-0',
+
+                thisCategoryOpen ? 'after:w-auto' : categoryOpened ? 'after:!left-[calc(var(--corner-inset)*-1)] after:w-full' : 'after:w-auto',
             )}
-            onClick={() => store_categoryOpened(categoryOpened === cardCategory ? (activePost ? cardCategory : null) : cardCategory)}
+            onClick={() => store_categoryOpened(thisCategoryOpen ? null : cardCategory)}
         >
-            <div className={classNames('group/category pointer-events-auto relative flex h-full items-end justify-between bg-palette-neutral-200/50 p-6')}>
-                <div
+            <div
+                className={classNames(
+                    'group/category pointer-events-auto absolute left-0 top-0 flex size-full items-end justify-between gap-x-4 bg-palette-neutral-400 p-6 transition-[padding] duration-1000',
+                    thisCategoryOpen ? 'p-6' : categoryOpened ? 'pl-0' : 'p-6',
+                )}
+            >
+                <h1
                     className={classNames(
-                        'writing-mode-vert-lr -ml-1 rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl transition-[opacity,transform] group-hover/category:text-palette-primary-500',
-                        divMounted ? 'opacity-100' : 'opacity-0',
-                        thisCategoryOpened ? '-translate-y-full text-palette-primary-500' : 'translate-y-full text-palette-primary-900',
+                        'select-none overflow-hidden text-clip whitespace-nowrap font-protest-riot text-5xl transition-[opacity,transform] group-hover/category:text-palette-primary-500',
+                        'writing-mode-vert-lr rotate-180',
+                        thisCategoryOpen ? '-translate-y-full text-palette-primary-500' : 'translate-y-0 text-palette-primary-900',
                     )}
                 >
-                    <h1>{cardCategory}</h1>
-                </div>
+                    {cardCategory}
+                </h1>
 
-                {shouldMount && <PostCards cardCategory={cardCategory} posts={posts} />}
+                {shouldMount && (
+                    <>
+                        {/* Testimonials etc: */}
+                        <div className='h-full flex-1 overflow-hidden border border-green-100/20'>
+                            <div className='size-full bg-cover mask-edges-30' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
+                        </div>
+
+                        <PostCards cardCategory={cardCategory} posts={posts} />
+                    </>
+                )}
             </div>
-
-            <div
-                className='absolute bottom-0 left-0 -z-10 size-full bg-cover mask-edges-[30_10_0.2] peer-checked:mask-edges-40'
-                style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }}
-            ></div>
         </div>
     );
 };
@@ -153,9 +159,8 @@ const PostCards: FC<{
     posts: Post[];
 }> = ({ cardCategory, posts }) => {
     return (
-        <div id={`${cardCategory}-post-card-container`} className='scroll-gutter ml-3 h-full -scale-x-100 overflow-y-auto overflow-x-hidden scrollbar-thin'>
-            {/* Move scrollbar to left side: https://stackoverflow.com/a/45824265 */}
-            <div className='pointer-events-none flex -scale-x-100 flex-col space-y-3 pl-3'>
+        <div id={`${cardCategory}-post-card-container`} className='scroll-gutter h-full w-1/2 -scale-x-100 overflow-y-auto overflow-x-hidden scrollbar-thin'>
+            <div className='pointer-events-none flex -scale-x-100 flex-col space-y-3 pl-2'>
                 {posts.map((post, idx) => (
                     <SinglePostCard key={post.title + idx} cardCategory={cardCategory} post={post} delay={100 * idx} />
                 ))}
@@ -179,6 +184,7 @@ const SinglePostCard: FC<{
     });
 
     const hasRenderedFullyOnce = useRef(false);
+    // const [hasMounted, setHasMounted] = useState(false);
 
     const cardRefCb = useCallback(
         (elem: HTMLElement | null) => {
@@ -190,20 +196,24 @@ const SinglePostCard: FC<{
         [intersectionRefCb, entry],
     );
 
+    // const { stage, shouldMount } = useTransition(hasMounted, 500);
+
     return (
         <div
+            // key={`${shouldMount}`}
             id={`${cardCategory}-${title}-card`}
+            ref={cardRefCb}
             style={!hasRenderedFullyOnce.current ? { transitionDelay: `${delay}ms` } : undefined}
-            /* NOTE Post Card width (w-116) & height set here: */
+            // style={{ transitionDelay: stage === 'leave' ? `${delay}ms` : '0' }}
+            /* NOTE Post Card width & height set here: */
             className={classNames(
-                'group/this pointer-events-auto relative translate-x-[80%] cursor-pointer overflow-hidden border-4 border-palette-primary-200 opacity-25 shadow transition-[transform,opacity,background-color] duration-500',
+                'group/this pointer-events-auto relative w-full min-w-116 translate-x-[80%] cursor-pointer overflow-hidden border-4 border-palette-primary-200 opacity-25 shadow transition-[transform,opacity,background-color] duration-500',
                 'before:absolute before:size-full before:outline before:outline-2 before:-outline-offset-8 before:outline-transparent before:transition-[outline-color,outline-offset,outline-width] before:delay-100 before:duration-100 hover:before:outline-palette-neutral-50',
                 'hover:border-palette-accent-200',
                 'after:absolute after:bottom-2 after:left-1/2 after:w-[calc(100%-theme(spacing.4))] after:-translate-x-1/2 after:truncate after:bg-transparent after:px-2 after:text-center after:text-sm after:text-palette-primary-900 after:transition-[background-color,opacity,color] after:duration-100 after:content-[attr(data-content-after)] hover:after:bg-palette-neutral-50 hover:after:text-palette-accent-100',
                 entry?.isIntersecting ? '!translate-x-0 !opacity-100' : '',
                 titleCardBg ? 'h-52' : 'h-24',
             )}
-            ref={cardRefCb}
             data-content-after={subTitle ?? 'lol no subtitle here'}
             onClick={() => store_activePost(post)}
         >

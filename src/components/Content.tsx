@@ -44,7 +44,7 @@ const ContentWrapper_Test: FC<{}> = () => {
         <div
             ref={contentRefCb}
             className={classNames(
-                'transform-[width,opacity] absolute bg-black/50 drop-shadow-lg duration-500',
+                'transform-[width,opacity] absolute bg-black/50 drop-shadow-lg',
                 activePost ? 'z-10 h-fit w-screen opacity-100' : '-z-10 h-0 w-full opacity-10',
             )}
         >
