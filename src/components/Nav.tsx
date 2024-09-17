@@ -1,13 +1,12 @@
 import { useZustand } from '../lib/zustand';
 import { DataBase, Post, MENUTARGET, menuTargetArray } from '../types/types';
 import classNames from '../lib/classNames';
-import { CSSProperties, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useIntersectionObserver, useIsFirstRender } from '@uidotdev/usehooks';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import testDb from '../queries/testDb.json';
-import { useTransition } from 'transition-hook';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config.ts';
-import parseDateString from '../lib/parseDateString.ts';
+import { PostCards } from './PostCards.tsx';
+import { useDebugButton } from '../hooks/useDebugButton.ts';
 
 const paletteUtilityBg = resolveConfig(tailwindConfig).theme.colors.palette.utility.bg;
 const testDbTyped = testDb as DataBase;
@@ -43,13 +42,7 @@ const Nav = () => {
                     categoryOpened ? 'nav-checked-width gap-x-px' : 'nav-unchecked-width gap-x-1',
                 )}
                 style={{
-                    gridTemplateColumns: `${menuTargetArray
-                        .map((target) => {
-                            if (categoryOpened) {
-                                return target === categoryOpened ? '15fr' : '1fr';
-                            } else return '1fr';
-                        })
-                        .join(' ')}`,
+                    gridTemplateColumns: menuTargetArray.map((target) => (target === categoryOpened ? '15fr' : '1fr')).join(' '),
                 }}
             >
                 {menuTargetArray.map((menuTarget, idx) => (
@@ -92,12 +85,24 @@ const CategoryCard: FC<{
     );
 
     const isThisCategoryOpen = useMemo(() => categoryOpened === cardCategory, [categoryOpened, cardCategory]);
+    const paddingStyle_Memo = useMemo(() => {
+        if (categoryOpened && !isThisCategoryOpen) {
+            if (categoryIndex < openedIndex!) {
+                return { paddingRight: 0 };
+            } else if (categoryIndex > openedIndex!) {
+                return { paddingLeft: 0 };
+            }
+        }
+    }, [isThisCategoryOpen, openedIndex, categoryOpened, categoryIndex]);
+
+    const [bgColorSwitch, setBgColorSwitch] = useState(false);
+    useDebugButton(`Toggle Category BG Color Switch ${cardCategory}`, () => setBgColorSwitch((state) => !state), !!categoryBackgroundColor);
 
     /* Change background color, possibly later also parts of header (and turn into a hook then?) */
     useEffect(() => {
         const docStyle = document.body.style;
 
-        if (categoryOpened) {
+        if (categoryOpened && bgColorSwitch) {
             if (isThisCategoryOpen) {
                 if (categoryBackgroundColor) {
                     docStyle.setProperty('--bg-color', categoryBackgroundColor);
@@ -108,125 +113,48 @@ const CategoryCard: FC<{
         } else {
             docStyle.setProperty('--bg-color', paletteUtilityBg);
         }
-    }, [categoryOpened, isThisCategoryOpen, categoryBackgroundColor]);
+    }, [bgColorSwitch, categoryOpened, isThisCategoryOpen, categoryBackgroundColor]);
 
     return (
         <div
             ref={refCb}
             /* NOTE Fixed Widths (opened) of Category Card here! */
             className={classNames(
-                'group/category pointer-events-auto relative cursor-pointer overflow-hidden shadow-md delay-200 duration-1000 [transition:height_1s,transform_50ms] after:z-20 hover:scale-y-[1.01] hover:shadow-md hover:transition-transform hover:!delay-0 hover:duration-100',
+                'group/category pointer-events-auto relative flex size-full cursor-pointer items-end justify-between gap-x-4 overflow-hidden p-6 delay-200 duration-1000 [transition:height_750ms,transform_50ms] after:z-20 hover:scale-y-[1.01] hover:transition-transform hover:!delay-0 hover:duration-100',
                 divMounted ? 'h-156' : 'h-24',
-                isThisCategoryOpen ? 'after:nav-card-corners z-50 scale-y-[1.01]' : 'scale-y-100',
+                isThisCategoryOpen
+                    ? 'after:nav-card-corners z-50 scale-y-[1.01] bg-palette-primary-300'
+                    : 'scale-y-100 bg-palette-primary-400 saturate-50 hover:bg-palette-primary-300 hover:saturate-100',
+                // 'bg-palette-neutral-400',
             )}
             onClick={() => store_categoryOpened(isThisCategoryOpen ? null : cardCategory)}
+            style={paddingStyle_Memo}
         >
-            <div
-                className={classNames('pointer-events-auto flex size-full items-end justify-between gap-x-4 bg-palette-neutral-400 p-6')}
-                style={(() => {
-                    if (categoryOpened && !isThisCategoryOpen) {
-                        if (categoryIndex < openedIndex!) {
-                            return { paddingRight: 0 };
-                        } else if (categoryIndex > openedIndex!) {
-                            return { paddingLeft: 0 };
-                        }
-                    }
-                })()}
-            >
-                <h1
-                    className={classNames(
-                        'select-none whitespace-nowrap font-protest-riot text-5xl transition-[opacity,transform] duration-300 group-hover/category:text-palette-primary-500',
-                        'writing-mode-vert-lr rotate-180',
-                        isThisCategoryOpen ? '-translate-y-full text-palette-primary-500' : 'translate-y-0 text-palette-primary-900',
-                    )}
-                >
-                    {cardCategory}
-                </h1>
-
-                {isThisCategoryOpen && (
-                    <>
-                        {/* Testimonials etc: */}
-                        <div className='h-full flex-1 overflow-hidden border border-green-100/20'>
-                            <div className='size-full bg-cover mask-edges-30' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
-                        </div>
-
-                        <PostCards posts={posts} />
-                    </>
+            <h1
+                className={classNames(
+                    'select-none whitespace-nowrap font-protest-riot text-5xl drop-shadow-md transition-[opacity,transform] duration-300 group-hover/category:text-palette-neutral-400',
+                    'writing-mode-vert-lr rotate-180',
+                    isThisCategoryOpen ? '-translate-y-full text-palette-neutral-400' : 'translate-y-0 text-palette-accent-700',
                 )}
-            </div>
+            >
+                {cardCategory}
+            </h1>
+
+            {isThisCategoryOpen && (
+                <>
+                    {/* Testimonials etc: */}
+                    <div className='h-full flex-1 overflow-hidden border border-green-100/20'>
+                        <div className='size-full bg-cover mask-edges-30' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
+                    </div>
+
+                    <PostCards posts={posts} />
+                </>
+            )}
         </div>
     );
 };
 
 const store_activePost = useZustand.getState().methods.store_activePost;
-
-const PostCards: FC<{
-    posts: Post[];
-}> = ({ posts }) => {
-    return (
-        <div className='scroll-gutter h-full w-1/2 -scale-x-100 overflow-y-auto overflow-x-hidden scrollbar-thin'>
-            <div className='pointer-events-none flex -scale-x-100 flex-col space-y-3 pl-2'>
-                {posts.map((post, idx) => (
-                    <SinglePostCard key={post.title + idx} post={post} delay={100 * idx} />
-                ))}
-            </div>
-        </div>
-    );
-};
-
-const SinglePostCard: FC<{
-    post: Post;
-    delay: number;
-}> = ({ post, delay }) => {
-    const { title, titleCardBg, subTitle, date } = post;
-    const { year } = parseDateString(date);
-
-    const [intersectionRefCb, entry] = useIntersectionObserver({
-        threshold: 0,
-        rootMargin: '0px',
-    });
-
-    const isFirstRender = useIsFirstRender();
-
-    return (
-        <div
-            // ref={cardRefCb}
-            ref={intersectionRefCb}
-            style={{ transitionDelay: isFirstRender ? `${delay}ms` : '' }}
-            onTransitionEnd={(e) => {
-                console.log('%c[Nav]', 'color: #c24ee8', `onTransitionEnd, isFirstRender, e :`, isFirstRender, e);
-            }}
-            /* NOTE Post Card width & height set here: */
-            className={classNames(
-                'group/this pointer-events-auto relative w-full min-w-116 cursor-pointer overflow-hidden border-4 border-palette-primary-200 shadow transition-[transform,opacity,background-color]',
-                'before:absolute before:size-full before:outline before:outline-2 before:-outline-offset-8 before:outline-transparent before:transition-[outline-color,outline-offset,outline-width] hover:before:outline-palette-neutral-50',
-                'hover:border-palette-accent-200',
-                'after:absolute after:bottom-2 after:left-1/2 after:w-[calc(100%-theme(spacing.4))] after:-translate-x-1/2 after:truncate after:bg-transparent after:px-2 after:text-center after:text-sm after:text-palette-primary-900 after:transition-[background-color,opacity,color] after:content-[attr(data-content-after)] hover:after:bg-palette-neutral-50 hover:after:text-palette-accent-100',
-                // hasMounted ? 'block' : 'hidden',
-                entry?.isIntersecting ? 'translate-x-0 opacity-100' : 'translate-x-[80%] opacity-25',
-                titleCardBg ? 'h-52' : 'h-24',
-            )}
-            data-content-after={subTitle ?? 'lol no subtitle here'}
-            onClick={() => store_activePost(post)}
-        >
-            <div className='relative mx-auto mt-2 w-fit max-w-[calc(100%-(8px*2))] px-1 text-center text-palette-neutral-50 before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-palette-neutral-500/75 before:transition-[background-color] group-hover/this:text-palette-accent-500 group-hover/this:before:bg-palette-neutral-50'>
-                <h3>{title}</h3>
-            </div>
-
-            <div className='absolute bottom-0 right-0 z-10 h-full w-1/5'>
-                <div className='absolute bottom-0 right-0 origin-bottom translate-x-1/2 translate-y-0 -rotate-45 transform-gpu bg-red-950 px-[100%] pb-[20%] pt-px text-center leading-none group-hover/this:translate-x-[200%] group-hover/this:translate-y-[200%]'>
-                    {year}
-                </div>
-            </div>
-            {titleCardBg && (
-                <div
-                    className='fixed bottom-0 left-0 right-0 top-0 -z-50 h-full w-auto scale-100 transform-gpu bg-cover transition-transform delay-[3000ms] duration-700 group-hover/this:!scale-110 group-hover/this:delay-0 group-hover/this:duration-[3000ms]'
-                    style={{ backgroundImage: `url('${titleCardBg}')` }}
-                />
-            )}
-        </div>
-    );
-};
 
 /** Used in Content.tsx */
 export const MenuOpenedPost: FC<{
