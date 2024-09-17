@@ -188,15 +188,14 @@ const SinglePostCard: FC<{
 
     const isFirstRender = useIsFirstRender();
 
-    useEffect(() => {
-        console.log('%c[Nav]', 'color: #b75afb', `isFirstRender, delay :`, isFirstRender, delay);
-    }, [isFirstRender, delay]);
-
     return (
         <div
             // ref={cardRefCb}
             ref={intersectionRefCb}
             style={{ transitionDelay: isFirstRender ? `${delay}ms` : '' }}
+            onTransitionEnd={(e) => {
+                console.log('%c[Nav]', 'color: #c24ee8', `onTransitionEnd, isFirstRender, e :`, isFirstRender, e);
+            }}
             /* NOTE Post Card width & height set here: */
             className={classNames(
                 'group/this pointer-events-auto relative w-full min-w-116 cursor-pointer overflow-hidden border-4 border-palette-primary-200 shadow transition-[transform,opacity,background-color]',
