@@ -4,57 +4,73 @@ import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
 import tailwindScrollbar from 'tailwind-scrollbar';
 
 /* https://www.palettte.app/ */
+
+const bloodOrange = {
+    primary: {
+        DEFAULT: '#CC3723',
+        950: '#3A0801', // dark text, for example
+        900: '#661004',
+        800: '#8A1707',
+        700: '#A6200D',
+        600: '#BA2A17',
+        500: '#CC3723', // base
+        400: '#DA4834',
+        300: '#E65E4B',
+        200: '#EF7767',
+        100: '#F49B8F',
+        50: '#F8C1B9', // message background, for example
+    },
+    accent: {
+        DEFAULT: '#2AA6B6',
+        950: '#012B31',
+        900: '#034851',
+        800: '#08626E',
+        700: '#0F7A88',
+        600: '#1B91A1',
+        500: '#2AA6B6',
+        400: '#3DBACA',
+        300: '#56CBDB',
+        200: '#71DAE8',
+        100: '#92E8F4',
+        50: '#B7F2FA',
+    },
+    neutral: { ...colors.gray },
+    utility: {
+        bg: colors.gray[800],
+        text: colors.gray[50],
+    },
+    critical: { ...colors.orange },
+    attention: {
+        DEFAULT: '#F8C72D',
+        50: '#FEF6DF',
+        100: '#FDF1CB',
+        200: '#FCE7A3',
+        300: '#FBDC7C',
+        400: '#F9D254',
+        500: '#F8C72D',
+        600: '#E5B008',
+        700: '#AF8606',
+        800: '#795D04',
+        900: '#423302',
+        950: '#271E01',
+    },
+    success: { ...colors.emerald },
+};
+
 const customPalettes = {
-    bloodOrange: {
-        primary: {
-            DEFAULT: '#CC3723',
-            950: '#3A0801', // dark text, for example
-            900: '#661004',
-            800: '#8A1707',
-            700: '#A6200D',
-            600: '#BA2A17',
-            500: '#CC3723', // base
-            400: '#DA4834',
-            300: '#E65E4B',
-            200: '#EF7767',
-            100: '#F49B8F',
-            50: '#F8C1B9', // message background, for example
-        },
-        accent: {
-            DEFAULT: '#2AA6B6',
-            950: '#012B31',
-            900: '#034851',
-            800: '#08626E',
-            700: '#0F7A88',
-            600: '#1B91A1',
-            500: '#2AA6B6',
-            400: '#3DBACA',
-            300: '#56CBDB',
-            200: '#71DAE8',
-            100: '#92E8F4',
-            50: '#B7F2FA',
-        },
-        neutral: { ...colors.zinc },
+    bloodOrange: { ...bloodOrange },
+
+    amber: {
+        primary: { ...colors.amber },
+        accent: { ...bloodOrange.primary },
+        neutral: { ...colors.teal },
         utility: {
-            bg: colors.gray[800],
+            bg: colors.neutral[900],
             text: colors.gray[50],
         },
-        critical: { ...colors.orange },
-        attention: {
-            DEFAULT: '#F8C72D',
-            50: '#FEF6DF',
-            100: '#FDF1CB',
-            200: '#FCE7A3',
-            300: '#FBDC7C',
-            400: '#F9D254',
-            500: '#F8C72D',
-            600: '#E5B008',
-            700: '#AF8606',
-            800: '#795D04',
-            900: '#423302',
-            950: '#271E01',
-        },
-        success: { ...colors.emerald },
+        critical: { ...bloodOrange.critical },
+        attention: { ...bloodOrange.attention },
+        success: { ...bloodOrange.success },
     },
 
     _undefined: {
@@ -124,7 +140,8 @@ export default {
             },
             colors: {
                 palette: {
-                    ...customPalettes.bloodOrange,
+                    // ...customPalettes.bloodOrange,
+                    ...customPalettes.amber,
                 },
             },
             boxShadow: {
@@ -140,10 +157,11 @@ export default {
     plugins: [
         tailwindScrollbar,
         tailwindBreakpointsInspector,
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         plugin(({ matchUtilities, theme }) => {
             matchUtilities(
                 {
-                    'mask-edges': (rangeX_rangeY_opacity) => {
+                    'mask-edges': (rangeX_rangeY_opacity: string) => {
                         const [rangeX, rangeY, opacity] = rangeX_rangeY_opacity.split(' ', 3);
                         const rangeXCapped = Math.max(0, Math.min(50, parseInt(rangeX)));
                         const rangeYCapped = Math.max(0, Math.min(50, parseInt(rangeY)));

@@ -21,7 +21,13 @@ const LogoHeader = () => {
         >
             <svg height='100%' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
                 <g id='layer1' transform='translate(-77.964769,-127.41715)'>
-                    <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1' className='fill-palette-primary-200 hover:fill-palette-primary-100'>
+                    <text
+                        xmlSpace='preserve'
+                        x='144.90642'
+                        y='140.45578'
+                        id='text1'
+                        className='fill-palette-accent-400 stroke-palette-neutral-200 hover:fill-palette-accent-100'
+                    >
                         <tspan
                             id='tspan1'
                             style={{
@@ -32,8 +38,7 @@ const LogoHeader = () => {
                                 textAnchor: 'end',
                                 // fill: '#000000',
                                 fillOpacity: 1,
-                                stroke: 'none',
-                                strokeWidth: 0.881,
+                                strokeWidth: 0.2,
                                 strokeDasharray: 'none',
                             }}
                             x='144.90642'
@@ -52,8 +57,7 @@ const LogoHeader = () => {
                                 textAlign: 'end',
                                 textAnchor: 'end',
                                 fillOpacity: 1,
-                                stroke: 'none',
-                                strokeWidth: 0.881,
+                                strokeWidth: 1,
                                 strokeDasharray: 'none',
                             }}
                             x='144.90642'

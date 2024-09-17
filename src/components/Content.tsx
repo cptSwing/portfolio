@@ -55,7 +55,7 @@ const ContentWrapper_Test: FC<{}> = () => {
                 style={{ height: window.innerHeight - topVal - 2 }}
             >
                 <div className='fixed left-1/2 z-10 -translate-x-1/2 -translate-y-[60%]'>
-                    <h2 className='px-8 text-palette-primary-500 before:absolute before:bottom-0 before:left-0 before:-z-10 before:h-3/5 before:w-full before:bg-palette-primary-50'>
+                    <h2 className='px-8 text-palette-neutral-50 before:absolute before:bottom-0 before:left-0 before:-z-10 before:h-3/5 before:w-full before:bg-palette-neutral-400'>
                         {title}
                     </h2>
                 </div>
@@ -131,10 +131,10 @@ const ContentWrapper_Test: FC<{}> = () => {
 const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
     return tools ? (
         <div className='group absolute left-0 top-1/2 -translate-y-1/2 select-none'>
-            <div className='pb-px text-xs uppercase italic text-neutral-100/75'>Built with</div>
+            <div className='pb-px text-xs uppercase italic text-palette-primary-400'>Built with</div>
             <div
                 /* Using length -1 in variable --tools-count in order to have last element at full size, for 'stacked' look */
-                className='grid grid-flow-col grid-cols-[repeat(var(--tools-count),0.25fr)] gap-x-px text-neutral-400/50 transition-[grid-template-columns,column-gap] duration-500 group-hover:grid-cols-[repeat(var(--tools-count),1fr)] group-hover:gap-x-0.5 group-hover:text-neutral-400'
+                className='grid grid-flow-col grid-cols-[repeat(var(--tools-count),0.25fr)] gap-x-px text-palette-primary-100 transition-[grid-template-columns,column-gap] duration-500 group-hover:grid-cols-[repeat(var(--tools-count),1fr)] group-hover:gap-x-0.5 group-hover:text-palette-primary-200'
                 style={{ '--tools-count': tools.length - 1 } as CSSProperties}
             >
                 {tools?.map((tool, idx) => {
