@@ -6,7 +6,7 @@
 
 @layer base {
     a {
-        @apply text-palette-accent-300 before:content-['->_'] after:content-['_<-'] hover:underline;
+        @apply text-theme-accent-300 before:content-['->_'] after:content-['_<-'] hover:underline;
     }
 
     a:visited {
@@ -30,19 +30,19 @@
     }
 
     h5 {
-        @apply relative z-0 -ml-1 inline px-1 pb-0.5 font-barlow text-lg italic leading-none text-palette-accent-600 underline underline-offset-2 after:absolute after:left-0 after:-z-10 after:size-full after:-skew-x-6 after:bg-palette-neutral-50;
+        @apply text-theme-accent-600 after:bg-theme-neutral-50 relative z-0 -ml-1 inline px-1 pb-0.5 font-barlow text-lg italic leading-none underline underline-offset-2 after:absolute after:left-0 after:-z-10 after:size-full after:-skew-x-6;
     }
 }
 
 @layer components {
     /* Adapted from https://css-tip.com/corner-only-border-image/ : */
     .nav-card-corners {
-        @apply [--corner-inset:theme(spacing.2)] [--corner-outline-color:theme(colors.palette.primary.100)] [--corner-size:theme(spacing.2)] [--corner-thickness:theme(spacing[0.5])];
+        @apply [--corner-inset:theme(spacing.2)] [--corner-outline-color:theme(colors.theme.primary.100)] [--corner-size:theme(spacing.2)] [--corner-thickness:theme(spacing[0.5])];
         @apply [mask:conic-gradient(at_var(--corner-size)_var(--corner-size),_theme(colors.transparent)_75%,_theme(colors.black)_0)_0_0_/_calc(100%-var(--corner-size))_calc(100%-var(--corner-size))];
         /* Cut bottom left corner: */
         /* @apply [clip-path:polygon(0_0,_100%_0,_100%_100%,_var(--corner-inset)_100%,_0_var(--corner-inset))]; */
         @apply pointer-events-none absolute bottom-[--corner-inset] left-[--corner-inset] right-[--corner-inset] top-[--corner-inset] outline outline-[length:--corner-thickness] outline-offset-[calc(-1*var(--corner-thickness))] outline-[color:--corner-outline-color];
-        @apply hover:[--corner-outline-color:theme(colors.palette.primary.300)];
+        @apply hover:[--corner-outline-color:theme(colors.theme.primary.300)];
     }
 
     .fake-border-bg {
@@ -99,11 +99,11 @@
 
 :root {
     --bg-stroke-max-opacity: 0.666;
-    --bg-color: theme(colors.palette.utility.bg);
+    --bg-color: theme(colors.theme.bg.base);
 }
 
 #root {
-    @apply fixed h-dvh w-dvw overflow-hidden bg-[--bg-color] text-left font-barlow text-palette-utility-text transition-[--bg-color] duration-[3s] scrollbar-track-transparent scrollbar-thumb-neutral-50;
+    @apply text-theme-text fixed h-dvh w-dvw overflow-hidden bg-[--bg-color] text-left font-barlow transition-[--bg-color] duration-[3s] scrollbar-track-transparent scrollbar-thumb-neutral-50;
 }
 
 .nav-unchecked-width {
@@ -116,6 +116,15 @@
     @apply w-[95dvw] sm:w-[90dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[66.666667dvw];
     /* @apply w-[95%] sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3; */
     /* @apply max-w-[95%] sm:max-w-[90%] md:max-w-[80%] lg:max-w-[75%] xl:max-w-[66.666%]; */
+}
+
+@keyframes streak-down {
+    from {
+        @apply h-0 opacity-0;
+    }
+    to {
+        @apply h-156 opacity-100;
+    }
 }
 
 @keyframes bg-dash {

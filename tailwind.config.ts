@@ -6,85 +6,64 @@ import tailwindScrollbar from 'tailwind-scrollbar';
 /* https://www.palettte.app/ */
 
 const bloodOrange = {
-    primary: {
-        DEFAULT: '#CC3723',
-        950: '#3A0801', // dark text, for example
-        900: '#661004',
-        800: '#8A1707',
-        700: '#A6200D',
-        600: '#BA2A17',
-        500: '#CC3723', // base
-        400: '#DA4834',
-        300: '#E65E4B',
-        200: '#EF7767',
-        100: '#F49B8F',
-        50: '#F8C1B9', // message background, for example
-    },
-    accent: {
-        DEFAULT: '#2AA6B6',
-        950: '#012B31',
-        900: '#034851',
-        800: '#08626E',
-        700: '#0F7A88',
-        600: '#1B91A1',
-        500: '#2AA6B6',
-        400: '#3DBACA',
-        300: '#56CBDB',
-        200: '#71DAE8',
-        100: '#92E8F4',
-        50: '#B7F2FA',
-    },
-    neutral: { ...colors.gray },
-    utility: {
-        bg: colors.gray[800],
-        text: colors.gray[50],
-    },
-    critical: { ...colors.orange },
-    attention: {
-        DEFAULT: '#F8C72D',
-        50: '#FEF6DF',
-        100: '#FDF1CB',
-        200: '#FCE7A3',
-        300: '#FBDC7C',
-        400: '#F9D254',
-        500: '#F8C72D',
-        600: '#E5B008',
-        700: '#AF8606',
-        800: '#795D04',
-        900: '#423302',
-        950: '#271E01',
-    },
-    success: { ...colors.emerald },
+    DEFAULT: '#CC3723',
+    950: '#3A0801', // dark text, for example
+    900: '#661004',
+    800: '#8A1707',
+    700: '#A6200D',
+    600: '#BA2A17',
+    500: '#CC3723', // base
+    400: '#DA4834',
+    300: '#E65E4B',
+    200: '#EF7767',
+    100: '#F49B8F',
+    50: '#F8C1B9', // message background, for example
 };
 
-const customPalettes = {
-    bloodOrange: { ...bloodOrange },
+const vibrantTurquoise = {
+    DEFAULT: '#2AA6B6',
+    950: '#012B31',
+    900: '#034851',
+    800: '#08626E',
+    700: '#0F7A88',
+    600: '#1B91A1',
+    500: '#2AA6B6',
+    400: '#3DBACA',
+    300: '#56CBDB',
+    200: '#71DAE8',
+    100: '#92E8F4',
+    50: '#B7F2FA',
+};
 
-    amber: {
-        primary: { ...colors.amber },
-        accent: { ...bloodOrange.primary },
-        neutral: { ...colors.teal },
-        utility: {
-            bg: colors.neutral[900],
-            text: colors.gray[50],
-        },
-        critical: { ...bloodOrange.critical },
-        attention: { ...bloodOrange.attention },
-        success: { ...bloodOrange.success },
-    },
+const amberish = {
+    DEFAULT: '#FED13F',
+    950: '#564200',
+    900: '#927103',
+    800: '#BD930A',
+    700: '#DBAE17',
+    600: '#F2C32A',
+    500: '#FED13F',
+    400: '#FFD754',
+    300: '#FFDC6A',
+    200: '#FFE386',
+    100: '#FEEAA6',
+    50: '#FDF2CE',
+};
 
-    _undefined: {
-        primary: {},
-        accent: {},
-        neutral: { ...colors.slate },
-        utility: {
-            bg: colors.gray[50],
-            text: colors.gray[950],
-        },
-        critical: {},
-        attention: {},
-        success: {},
+const themePalette = {
+    primary: { ...amberish },
+    secondary: { ...vibrantTurquoise },
+    accent: { ...bloodOrange },
+    text: colors.white,
+    neutral: { ...colors.slate },
+    bg: {
+        lighter: colors.neutral[700],
+        base: colors.neutral[900],
+        darker: colors.neutral[950],
     },
+    critical: { ...colors.rose },
+    attention: { ...colors.orange },
+    success: { ...colors.lime },
 };
 
 export default {
@@ -124,6 +103,8 @@ export default {
                 152: '38rem',
                 156: '39rem',
                 160: '40rem',
+                164: '41rem',
+                168: '42rem',
             },
             fontFamily: {
                 'besley': ['Besley', 'ui-serif', 'serif'],
@@ -139,9 +120,8 @@ export default {
                 '3xs': '0.55rem',
             },
             colors: {
-                palette: {
-                    // ...customPalettes.bloodOrange,
-                    ...customPalettes.amber,
+                theme: {
+                    ...themePalette,
                 },
             },
             boxShadow: {

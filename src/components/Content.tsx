@@ -44,24 +44,24 @@ const ContentWrapper_Test: FC<{}> = () => {
         <div
             ref={contentRefCb}
             className={classNames(
-                'transform-[width,opacity] absolute bg-black/50 drop-shadow-lg',
+                'transform-[width,opacity] bg-theme-bg-base absolute drop-shadow-lg',
                 activePost ? 'z-10 h-fit w-screen opacity-100' : '-z-10 h-0 w-full opacity-10',
             )}
         >
             <MenuOpenedPost hasImages={images ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
 
             <div
-                className='nav-checked-width relative mx-auto flex flex-col overflow-hidden bg-palette-utility-bg'
+                className='nav-checked-width bg-theme-bg-lighter relative mx-auto flex flex-col overflow-hidden'
                 style={{ height: window.innerHeight - topVal - 2 }}
             >
                 <div className='fixed left-1/2 z-10 -translate-x-1/2 -translate-y-[60%]'>
-                    <h2 className='px-8 text-palette-neutral-50 before:absolute before:bottom-0 before:left-0 before:-z-10 before:h-3/5 before:w-full before:bg-palette-neutral-400'>
+                    <h2 className='text-theme-neutral-50 before:bg-theme-secondary-400 px-8 before:absolute before:bottom-0 before:left-0 before:-z-10 before:h-3/5 before:w-full'>
                         {title}
                     </h2>
                 </div>
 
                 <div
-                    className='relative flex flex-col gap-y-6 overflow-y-auto bg-palette-utility-bg px-14 py-6 scrollbar-thin'
+                    className='relative flex flex-col gap-y-6 overflow-y-auto px-14 py-6 scrollbar-thin'
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >
@@ -95,7 +95,7 @@ const ContentWrapper_Test: FC<{}> = () => {
                                         {caption && (
                                             <div
                                                 className={classNames(
-                                                    'absolute bottom-0 left-0 right-0 size-min w-full bg-palette-neutral-300/20 p-1 text-center text-sm text-palette-neutral-100/75 transition-colors peer-hover:bg-palette-neutral-300 peer-hover:text-palette-accent-300',
+                                                    'bg-theme-neutral-300/20 text-theme-neutral-100/75 peer-hover:bg-theme-neutral-300 peer-hover:text-theme-accent-300 absolute bottom-0 left-0 right-0 size-min w-full p-1 text-center text-sm transition-colors',
                                                 )}
                                             >
                                                 {/* [calc(100%-theme(spacing.6))] */}
@@ -131,17 +131,17 @@ const ContentWrapper_Test: FC<{}> = () => {
 const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
     return tools ? (
         <div className='group absolute left-0 top-1/2 -translate-y-1/2 select-none'>
-            <div className='pb-px text-xs uppercase italic text-palette-primary-400'>Built with</div>
+            <div className='text-theme-primary-400 pb-px text-xs uppercase italic'>Built with</div>
             <div
                 /* Using length -1 in variable --tools-count in order to have last element at full size, for 'stacked' look */
-                className='grid grid-flow-col grid-cols-[repeat(var(--tools-count),0.25fr)] gap-x-px text-palette-primary-100 transition-[grid-template-columns,column-gap] duration-500 group-hover:grid-cols-[repeat(var(--tools-count),1fr)] group-hover:gap-x-0.5 group-hover:text-palette-primary-200'
+                className='text-theme-primary-100 group-hover:text-theme-primary-200 grid grid-flow-col grid-cols-[repeat(var(--tools-count),0.25fr)] gap-x-px transition-[grid-template-columns,column-gap] duration-500 group-hover:grid-cols-[repeat(var(--tools-count),1fr)] group-hover:gap-x-0.5'
                 style={{ '--tools-count': tools.length - 1 } as CSSProperties}
             >
                 {tools?.map((tool, idx) => {
                     return (
                         <div
                             key={tool + idx}
-                            className='overflow-hidden whitespace-nowrap rounded-sm bg-palette-neutral-700 px-1 text-center text-xs leading-tight'
+                            className='bg-theme-neutral-700 overflow-hidden whitespace-nowrap rounded-sm px-1 text-center text-xs leading-tight'
                         >
                             {tool}
                         </div>

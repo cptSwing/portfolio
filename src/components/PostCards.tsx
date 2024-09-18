@@ -27,7 +27,7 @@ export const SinglePostCard: FC<{
 }> = ({ post, index }) => {
     const { title, titleCardBg, subTitle, date } = post;
     const { year } = parseDateString(date);
-    const delay_Memo = useMemo(() => 400 * (index + 1), [index]);
+    const delay_Memo = useMemo(() => 500 * (index + 1), [index]);
 
     const [intersectionRefCb, entry] = useIntersectionObserver({
         threshold: 0,
@@ -48,28 +48,29 @@ export const SinglePostCard: FC<{
             style={entry?.isIntersecting ? ({ '--tw-translate-x': 0 } as CSSProperties) : undefined}
             /* NOTE Post Card width & height set here: */
             className={classNames(
-                'group/this pointer-events-auto relative w-full min-w-116 translate-x-full cursor-pointer transition-[transform,background-color]',
-                'before:absolute before:size-full before:outline before:outline-4 before:outline-offset-0 before:outline-palette-neutral-50 before:transition-[outline-color,outline-offset,outline-width] hover:before:-outline-offset-8',
-                'after:absolute after:bottom-1 after:left-1/2 after:w-[calc(100%-theme(spacing.3))] after:-translate-x-1/2 after:truncate after:bg-transparent after:px-2 after:text-center after:text-sm after:text-neutral-50 after:transition-[background-color,opacity,color] after:content-[attr(data-content-after)] hover:after:bg-palette-neutral-50 hover:after:text-palette-neutral-500',
+                'group/this outline-theme-neutral-50 pointer-events-auto relative w-full min-w-116 translate-x-full transform-gpu cursor-pointer outline outline-4 outline-offset-0 drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] hover:-outline-offset-8',
                 titleCardBg ? 'h-52' : 'h-24',
             )}
-            data-content-after={subTitle ?? 'lol no subtitle here'}
             onClick={() => store_activePost(post)}
         >
-            <div className='relative z-10 mx-auto -mt-3 w-fit px-4 pb-1 text-center leading-none text-palette-neutral-50 before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-palette-neutral-500 before:transition-[background-color] group-hover/this:text-palette-accent-500 group-hover/this:before:bg-palette-neutral-50'>
+            <div className='group-hover/this:text-theme-secondary-500 text-theme-neutral-50 before:bg-theme-secondary-400 group-hover/this:before:bg-theme-neutral-50 relative z-10 mx-auto -mt-3 w-fit px-4 pb-1 text-center leading-none transition-[color] duration-200 before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:transition-[background-color] before:duration-200'>
                 <h3>{title}</h3>
             </div>
 
             <div className='absolute bottom-0 top-0 size-full overflow-hidden'>
+                <div className='group-hover/this:bg-theme-neutral-50 group-hover/this:text-theme-neutral-500 absolute bottom-1 left-1/2 h-fit w-[calc(100%-10px)] -translate-x-1/2 transform-gpu truncate bg-transparent px-2 text-center text-sm text-neutral-50 transition-[background-color,opacity,color]'>
+                    {subTitle ?? 'lol no subtitle here'}
+                </div>
+
                 <div className='absolute bottom-0 right-0 -z-10 h-full w-1/5'>
-                    <div className='absolute bottom-0 right-0 origin-bottom translate-x-1/2 translate-y-0 -rotate-45 transform-gpu bg-palette-accent-900 px-[100%] pb-[20%] pt-px text-center leading-none group-hover/this:translate-x-[200%] group-hover/this:translate-y-[200%]'>
+                    <div className='text-theme-accent-700 bg-theme-neutral-100 absolute bottom-0 right-0 origin-bottom translate-x-1/2 translate-y-0 -rotate-45 transform-gpu px-[100%] pb-3 pt-px text-center text-sm font-semibold transition-[transform,opacity] group-hover/this:translate-x-[200%] group-hover/this:translate-y-[200%] group-hover/this:opacity-50'>
                         {year}
                     </div>
                 </div>
 
                 {titleCardBg && (
                     <div
-                        className='absolute bottom-0 left-0 right-0 top-0 -z-50 h-full w-auto origin-top-left scale-100 transform-gpu bg-cover transition-transform delay-[3000ms] duration-700 group-hover/this:!scale-110 group-hover/this:delay-0 group-hover/this:duration-[3000ms]'
+                        className='absolute bottom-0 left-0 right-0 top-0 -z-50 h-full w-auto scale-110 transform-gpu bg-cover transition-transform duration-500 group-hover/this:scale-125 group-hover/this:delay-0 group-hover/this:duration-[2000ms]'
                         style={{ backgroundImage: `url('${titleCardBg}')` }}
                     />
                 )}

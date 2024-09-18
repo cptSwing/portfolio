@@ -288,7 +288,8 @@
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
                 ],
-                "title": "U Stadtmitte (for Lange Nacht d. Wissenschaften)",
+                "title": "U Stadtmitte",
+                "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
                 "titleCardBg": "src/assets/images/db/usm_featured_image.jpg"
             },
             {
@@ -349,7 +350,8 @@
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
                 ],
-                "title": "Personal 3D Projects (where WIP's come to die..)",
+                "title": "Personal 3D Projects",
+                "subTitle": "Where WIP's come to die",
                 "titleCardBg": "src/assets/images/db/satellite_featured_image.jpg"
             },
             {
@@ -382,7 +384,8 @@
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
                 ],
-                "title": "Various 2D Artwork",
+                "title": "Various 2D",
+                "subTitle": "Posters etc",
                 "titleCardBg": "src/assets/images/db/bbb_bnf_featured_image.jpg"
             },
             {
