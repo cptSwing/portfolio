@@ -51,7 +51,7 @@ const ContentWrapper_Test: FC<{}> = () => {
             <MenuOpenedPost hasImages={images ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
 
             <div
-                className='nav-checked-width bg-theme-bg-lighter relative mx-auto flex flex-col overflow-hidden'
+                className='nav-checked-width bg-theme-bg-lighter scrollbar-thumb-theme-primary-400 relative mx-auto flex flex-col overflow-hidden'
                 style={{ height: window.innerHeight - topVal - 2 }}
             >
                 <div className='fixed left-1/2 z-10 -translate-x-1/2 -translate-y-[60%]'>
