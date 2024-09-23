@@ -477,41 +477,63 @@
                 "toolsUsed": ["react", "react-router", "three.js", "tailwindcss"]
             },
             {
-                "date": "2024-09-12",
+                "title": "Mediaverse: Fader360",
+                "subTitle": "Open-source 360° Media Authoring Tool",
+                "titleCardBg": "src/assets/images/fader/mediaverse_fader_logo.jpg",
+                "codeLink": {
+                    "alt": "fader360-frontend (Github)",
+                    "href": "https://github.com/VRagments/fader360-frontend"
+                },
+                "toolsUsed": ["react", "react-three/fiber", "react-three/drei", "leva-gui", "tailwindcss", "3ds Max"],
+                "date": "2023-08-11",
                 "images": [
                     {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/fader_1/900/600?grayscale"
+                        "caption": "Adding assets to Fader360",
+                        "imgUrl": "src/assets/images/fader/fader_add_assets.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/fader_2/900/600?grayscale"
+                        "caption": "Jumping between Scenes via SceneLink",
+                        "imgUrl": "src/assets/images/fader/fader_scenelinks.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/fader_3/900/600?grayscale"
+                        "caption": "Scene Options",
+                        "imgUrl": "src/assets/images/fader/fader_church.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/fader_4/900/600?grayscale"
+                        "caption": "Streaming 360 background video with subtitles",
+                        "imgUrl": "src/assets/images/fader/fader_subtitles.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Museum Backdrop Prototype",
+                        "imgUrl": "src/assets/images/fader/museum.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Newsroom Backdrop Prototype",
+                        "imgUrl": "src/assets/images/fader/newsroom.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
+                        "imgUrl": "src/assets/images/fader/toon.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
+                        "imgUrl": "src/assets/images/fader/toon2.jpg"
                     }
                 ],
                 "textBlocks": [
                     {
                         "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool. By combining various forms of media assets (video, images, text, audio) in a 360 degree environment, users can create their own scenes and link individual chapters together to craft a complete story. \n\nFader360's backend - created by colleagues - took care of asset uploads and linking these to Fader360 projects."
                     },
                     {
                         "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                        "text": "Fader360 was developed as part of EU-funded transnational project [Mediaverse](https://mediaverse-project.eu), a cooperation between various universities all over Europe, as well as Deutsche Welle, among others.\n\nOne example of a DW project using Fader360 can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in Deutsche Welle's blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/)."
                     },
                     {
                         "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                        "text": "During my time at [VRagments](https://vragments.com) I rebuilt VRagments' [old version of fader](http://app.getfader.com) from scratch, using react and react-three-fiber (a wrapper for three.js). After completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further.\n\nWhile the actual rebuild of the frontend - to a stable point in line with the project's scope - took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments, to be used as backdrops for fader stories. These can be seen below."
                     }
-                ],
-                "title": "Fader",
-                "titleCardBg": "https://picsum.photos/seed/fader/500?grayscale"
+                ]
             },
             {
                 "date": "2024-09-12",
