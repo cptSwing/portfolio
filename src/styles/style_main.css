@@ -6,11 +6,11 @@
 
 @layer base {
     a {
-        @apply text-theme-accent-300 before:content-['->_'] after:content-['_<-'] hover:underline;
+        @apply after:a-svg-mask text-theme-primary-50 after:ml-0.5 after:inline-block after:size-3 after:bg-current after:opacity-75 visited:text-theme-primary-900 hover:underline;
     }
 
-    a:visited {
-        @apply brightness-50;
+    .mrkdwn > p {
+        @apply mb-4;
     }
 
     h1 {
@@ -30,7 +30,15 @@
     }
 
     h5 {
-        @apply text-theme-accent-600 after:bg-theme-neutral-50 relative z-0 -ml-1 inline px-1 pb-0.5 font-barlow text-lg italic leading-none underline underline-offset-2 after:absolute after:left-0 after:-z-10 after:size-full after:-skew-x-6;
+        @apply relative z-0 inline px-1 pb-0.5 font-barlow text-lg italic leading-none text-theme-accent-600 underline underline-offset-2;
+    }
+
+    .mrkdwn > h5 {
+        @apply headline-skewed-bg;
+    }
+
+    .headline-skewed-bg {
+        @apply after:absolute after:left-0 after:-z-10 after:size-full after:-skew-x-6 after:bg-theme-neutral-50;
     }
 }
 
@@ -52,6 +60,12 @@
 }
 
 @layer utilities {
+    .a-svg-mask {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 23 23' stroke='currentColor'%3E%3Cpath d='M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25' /%3E%3C/svg%3E%0A");
+        mask-repeat: no-repeat;
+        mask-position: center;
+    }
+
     .writing-mode-vert-lr {
         writing-mode: vertical-lr;
     }
@@ -103,7 +117,7 @@
 }
 
 #root {
-    @apply text-theme-text fixed h-dvh w-dvw overflow-hidden bg-[--bg-color] text-left font-barlow transition-[--bg-color] duration-[3s] scrollbar-track-transparent scrollbar-thumb-neutral-50;
+    @apply fixed h-dvh w-dvw overflow-hidden bg-[--bg-color] text-left font-barlow text-theme-text transition-[--bg-color] duration-[3s] scrollbar-track-transparent scrollbar-thumb-neutral-50;
 }
 
 .nav-unchecked-width {
