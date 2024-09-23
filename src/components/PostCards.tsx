@@ -48,7 +48,7 @@ export const SinglePostCard: FC<{
             style={entry?.isIntersecting ? ({ '--tw-translate-x': 0 } as CSSProperties) : undefined}
             /* NOTE Post Card width & height set here: */
             className={classNames(
-                'group/this outline-theme-neutral-50 pointer-events-auto relative w-full min-w-116 translate-x-full transform-gpu cursor-pointer outline outline-4 outline-offset-0 drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] hover:-outline-offset-8',
+                'group/this outline-theme-neutral-50 pointer-events-auto relative w-full min-w-116 translate-x-full transform-gpu cursor-pointer outline outline-[6px] outline-offset-0 drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] hover:-outline-offset-[12px]',
                 titleCardBg ? 'h-52' : 'h-24',
             )}
             onClick={() => store_activePost(post)}

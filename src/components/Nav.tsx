@@ -26,13 +26,13 @@ const Nav = () => {
     }, [categoryOpened]);
 
     return (
-        <nav id='nav-cards-wrapper' className={classNames('min-h-168 flex flex-col items-center', activePost ? 'justify-between' : 'justify-center')}>
+        <nav id='nav-cards-wrapper' className={classNames('flex min-h-168 flex-col items-center', activePost ? 'justify-between' : 'justify-center')}>
             {/* Top Bar: */}
             <div
                 className={classNames(
                     'h-1 transition-[width,background-color,margin] duration-500',
                     categoryOpened ? 'mb-4' : 'mb-2',
-                    activePost ? 'bg-theme-primary-500 w-screen' : 'bg-theme-secondary-400 w-full',
+                    activePost ? 'w-screen bg-theme-primary-500' : 'w-full bg-theme-secondary-400',
                 )}
             />
 
@@ -62,7 +62,7 @@ const Nav = () => {
                 className={classNames(
                     'h-1 transition-[width,background-color,margin] duration-500',
                     categoryOpened ? 'mt-4' : 'mt-2',
-                    activePost ? 'bg-theme-primary-500 w-screen' : 'bg-theme-secondary-400 w-full',
+                    activePost ? 'w-screen bg-theme-primary-500' : 'w-full bg-theme-secondary-400',
                 )}
             />
         </nav>
@@ -133,18 +133,29 @@ const CategoryCard: FC<{
             ref={refCb}
             /* NOTE Fixed Widths (opened) of Category Card here! */
             className={classNames(
-                'group/category pointer-events-auto relative flex w-full cursor-pointer items-end justify-between gap-x-4 overflow-hidden p-6 transition-[margin,height] duration-500',
-                isThisCategoryOpen ? 'bg-theme-primary-200 z-50 -my-2 h-160' : 'bg-theme-primary-400 hover:bg-theme-primary-300 h-156',
+                'group/category pointer-events-auto relative flex h-156 w-full cursor-pointer items-end justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,height] duration-[50ms,500ms,500ms]',
+                isThisCategoryOpen
+                    ? '-my-2 h-160 bg-theme-primary-300'
+                    : categoryOpened
+                      ? 'bg-theme-primary-600 hover:bg-theme-primary-500'
+                      : 'bg-theme-primary-600 hover:bg-theme-primary-200',
             )}
             onClick={() => store_categoryOpened(isThisCategoryOpen ? null : cardCategory)}
-            style={{ ...paddingStyle_Memo, display: 'none', opacity: 0 }}
+            style={{
+                ...paddingStyle_Memo,
+                // Both removed after initial mount:
+                display: 'none',
+                opacity: 0,
+            }}
         >
             <h1
                 className={classNames(
-                    'writing-mode-vert-lr rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl drop-shadow-lg transition-[transform,color] duration-300',
+                    'writing-mode-vert-lr mx-auto rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl leading-none drop-shadow-lg transition-[transform,color] duration-300',
                     isThisCategoryOpen
-                        ? 'text-theme-accent-400 -translate-y-full'
-                        : 'text-theme-accent-600 group-hover/category:text-theme-accent-500 translate-y-0',
+                        ? 'text-theme-secondary-400'
+                        : categoryOpened
+                          ? 'translate-y-0 text-theme-secondary-700 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0'
+                          : 'translate-y-0 text-theme-secondary-100 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0',
                 )}
             >
                 {cardCategory}
@@ -153,7 +164,7 @@ const CategoryCard: FC<{
             {isThisCategoryOpen && (
                 <>
                     {/* Testimonials etc: */}
-                    <div className='h-full flex-1 overflow-hidden border border-green-100/20'>
+                    <div className='h-full flex-1 overflow-hidden border-l-[6px] border-theme-neutral-50'>
                         <div className='size-full bg-cover mask-edges-30' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
                     </div>
 
@@ -178,7 +189,7 @@ export const MenuOpenedPost: FC<{
                 {hasImages && (
                     <button
                         type='button'
-                        className='bg-theme-primary-500 text-theme-accent-600 hover:text-theme-accent-800 hover:bg-theme-primary-200 border-theme-primary-500 cursor-pointer border-4 border-b-0 px-2 text-sm uppercase leading-none transition-colors duration-200 first:rounded-tl last:rounded-tr'
+                        className='cursor-pointer border-4 border-b-0 border-theme-primary-500 bg-theme-primary-500 px-2 text-sm uppercase leading-none text-theme-accent-600 transition-colors duration-200 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:text-theme-accent-800'
                         onClick={() => setLightboxTo(0)}
                     >
                         Gallery
@@ -188,10 +199,15 @@ export const MenuOpenedPost: FC<{
                 {codeLink && (
                     <button
                         type='button'
-                        className='bg-theme-primary-500 text-theme-accent-600 hover:text-theme-accent-800 hover:bg-theme-primary-200 border-theme-primary-500 group cursor-pointer border-4 border-b-0 px-2 text-sm uppercase leading-none transition-colors duration-200 first:rounded-tl last:rounded-tr'
+                        className='group cursor-pointer border-4 border-b-0 border-theme-primary-500 bg-theme-primary-500 px-2 text-sm uppercase leading-none text-theme-accent-600 transition-colors duration-200 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:text-theme-accent-800'
                     >
-                        <a className='text-[inherit]' href={codeLink.href} target='_blank' rel='noreferrer'>
-                            {codeLink.alt}
+                        <a
+                            className='text-[inherit] before:content-none after:content-none hover:no-underline'
+                            href={codeLink.href}
+                            target='_blank'
+                            rel='noreferrer'
+                        >
+                            View Code
                             <span className='absolute right-0 z-50 mt-2 hidden whitespace-nowrap text-right text-sm group-hover:block'>
                                 Link goes to {codeLink.alt} <br /> bla bla explanatory <br /> new window/tab
                             </span>
@@ -202,7 +218,7 @@ export const MenuOpenedPost: FC<{
                 {/* TODO fade out instead of instantly closing */}
                 <button
                     type='button'
-                    className='bg-theme-primary-500 text-theme-accent-600 hover:text-theme-accent-800 hover:bg-theme-primary-200 border-theme-primary-500 cursor-pointer border-4 border-b-0 px-2 text-sm uppercase leading-none transition-colors duration-200 first:rounded-tl last:rounded-tr'
+                    className='cursor-pointer border-4 border-b-0 border-theme-primary-500 bg-theme-primary-500 px-2 text-sm uppercase leading-none text-theme-accent-600 transition-colors duration-200 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:text-theme-accent-800'
                     onClick={() => store_activePost(null)}
                 >
                     X
