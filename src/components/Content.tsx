@@ -61,14 +61,14 @@ const ContentWrapper_Test: FC<{}> = () => {
                 </div>
 
                 <div
-                    className='relative flex flex-col gap-y-4 overflow-y-auto px-14 py-8 scrollbar-thin'
+                    className='relative flex flex-col overflow-y-auto px-14 py-8 scrollbar-thin'
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >
-                    <div className='mt-4 flex items-start justify-between'>
-                        <h4 className='text-center italic'>{subTitle}</h4>
+                    <div className='mb-6 mt-10 flex items-start justify-between'>
+                        <h4 className='relative z-0 -ml-2 px-2 text-center italic leading-none'>{subTitle}</h4>
                         <div className='flex flex-col items-end justify-start'>
-                            <h5 className='headline-skewed-bg mb-4 w-fit text-[--bg-color] no-underline'>
+                            <h5 className='headline-skewed-bg -mr-0.5 mb-2 w-fit text-[--bg-color] no-underline'>
                                 {day}.{month}.{year}
                             </h5>
                             <div className='mb-0.5 text-xs uppercase italic text-theme-primary-400'>Built with</div>
@@ -76,53 +76,58 @@ const ContentWrapper_Test: FC<{}> = () => {
                         </div>
                     </div>
 
-                    {/* Text/Image Blocks */}
-                    {textBlocks?.map(({ text, imageIndex }, idx) => {
-                        let imgUrl, caption;
-                        if (images && typeof imageIndex === 'number') ({ imgUrl, caption } = images[imageIndex]);
+                    <div className='flex flex-col gap-y-10'>
+                        {/* Text/Image Blocks */}
+                        {textBlocks?.map(({ text, imageIndex }, idx) => {
+                            let imgUrl, caption;
+                            if (images && typeof imageIndex === 'number') ({ imgUrl, caption } = images[imageIndex]);
 
-                        const isIndexEven = idx % 2 === 0;
+                            const isIndexEven = idx % 2 === 0;
 
-                        return (
-                            <div key={`${idx}-${isIndexEven}`} className='my-4 flex items-start justify-between'>
-                                {imgUrl && (
-                                    <div className={classNames('relative basis-3/4', isIndexEven ? 'order-2 ml-8' : 'order-1 mr-8')}>
-                                        <img
-                                            src={imgUrl}
-                                            className={classNames('peer aspect-video w-full cursor-pointer object-cover')}
-                                            onClick={() => setLightboxTo(imageIndex!)}
-                                        />
+                            return (
+                                <div key={`${idx}-${isIndexEven}`} className='flex items-start justify-between'>
+                                    {imgUrl && (
+                                        <div className={classNames('relative basis-3/4', isIndexEven ? 'order-2 ml-8' : 'order-1 mr-8')}>
+                                            <img
+                                                src={imgUrl}
+                                                className={classNames('peer aspect-video w-full cursor-pointer object-cover')}
+                                                onClick={() => setLightboxTo(imageIndex!)}
+                                            />
 
-                                        {caption && (
-                                            <div
-                                                className={classNames(
-                                                    'absolute bottom-0 left-0 right-0 size-min w-full bg-theme-neutral-300/20 p-1 text-center text-sm text-theme-neutral-100/75 transition-colors peer-hover:bg-theme-neutral-300 peer-hover:text-theme-accent-300',
-                                                )}
-                                            >
-                                                {/* [calc(100%-theme(spacing.6))] */}
-                                                {caption}
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-
-                                <p
-                                    className={classNames(
-                                        'mrkdwn text-pretty text-justify text-sm leading-relaxed first-of-type:first-line:uppercase',
-                                        imgUrl ? 'flex-1' : 'mr-auto basis-4/5',
-                                        isIndexEven ? 'order-1' : 'order-2',
+                                            {caption && (
+                                                <div
+                                                    className={classNames(
+                                                        'absolute bottom-0 left-0 right-0 size-min w-full bg-theme-neutral-300/20 p-1 text-center text-sm text-theme-neutral-100/75 transition-colors peer-hover:bg-theme-neutral-300 peer-hover:text-theme-accent-300',
+                                                    )}
+                                                >
+                                                    {/* [calc(100%-theme(spacing.6))] */}
+                                                    {caption}
+                                                </div>
+                                            )}
+                                        </div>
                                     )}
-                                >
-                                    <Remark>{text}</Remark>
-                                </p>
 
-                                <br />
-                            </div>
-                        );
-                    })}
+                                    <p
+                                        className={classNames(
+                                            'mrkdwn -mt-1 text-pretty text-justify text-sm leading-relaxed',
+                                            imgUrl ? 'flex-1' : 'mr-auto basis-4/5',
+                                            isIndexEven ? 'order-1' : 'order-2',
+                                            idx === 0
+                                                ? 'first-letter:float-left first-letter:-mt-1 first-letter:mr-1 first-letter:text-5xl first-line:uppercase'
+                                                : '',
+                                        )}
+                                    >
+                                        <Remark>{text}</Remark>
+                                    </p>
+
+                                    <br />
+                                </div>
+                            );
+                        })}
+                    </div>
 
                     {images && (
-                        <div className='grid grid-cols-4 gap-4'>
+                        <div className='mt-14 grid grid-cols-4 gap-4'>
                             {images.slice(textBlocks.length).map(({ imgUrl }, idx) => (
                                 <img
                                     key={imgUrl + idx}
