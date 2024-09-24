@@ -523,20 +523,24 @@
                 "textBlocks": [
                     {
                         "imageIndex": 0,
-                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool. By combining various forms of media assets (video, images, text, audio) in a 360 degree environment, users can create their own scenes and link individual chapters together to craft a complete story. \n\nFader360's [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads and linking these to Fader360 projects. Communication with the RESTful backend was handled with axios."
+                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu). \n\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
                     },
                     {
                         "imageIndex": 1,
-                        "text": "Fader360 was developed as part of EU-funded transnational project [Mediaverse](https://mediaverse-project.eu), a cooperation between various universities all over Europe, as well as Deutsche Welle, among others.\n\nOne example of a DW project using Fader360 can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in Deutsche Welle's blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/)."
+                        "text": "\n\n*Fader360*'s [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads, linking these to Fader360 projects and newly created empty scenes. Login was handled with a mediaverse account, giving users access to other services within the project's infrastructure. \n\nCommunication with the RESTful backend was handled with axios.\n\n[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js). \n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
                     },
                     {
                         "imageIndex": 2,
-                        "text": "During my time at [VRagments](https://vragments.com) I rebuilt VRagments' [old version of fader](http://app.getfader.com) from scratch, using react and react-three-fiber (a wrapper for three.js). After completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further.\n\nWhile the actual rebuild of the frontend - to a stable point in line with the project's scope - took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments, to be used as backdrops for fader stories. These can be seen below."
+                        "text": "\n\n[Mediaverse](https://mediaverse-project.eu) was a cooperation between various universities all over Europe, as well as broadcasters *Deutsche Welle*, among others.\n\nOne example of a *DW* project using *Fader360* can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in *Deutsche Welle*'s blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/). \n\nWhile the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below."
                     }
                 ]
             },
             {
-                "date": "2024-09-12",
+                "title": "Scrollmersives",
+                "subTitle": "Scroll through various 3D experiences",
+                "titleCardBg": "https://picsum.photos/seed/scrollm/500?grayscale",
+                "date": "2022",
+                "toolsUsed": ["three.js", "3ds Max"],
                 "images": [
                     {
                         "caption": "ksdkjsdk",
@@ -568,11 +572,11 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ],
-                "title": "Scrollmersive",
-                "titleCardBg": "https://picsum.photos/seed/scrollm/500?grayscale"
+                ]
             },
             {
+                "title": "Hilux Configurator",
+                "titleCardBg": "https://picsum.photos/seed/hilux/500?grayscale",
                 "date": "2024-09-12",
                 "images": [
                     {
@@ -605,9 +609,7 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ],
-                "title": "Hilux Configurator",
-                "titleCardBg": "https://picsum.photos/seed/hilux/500?grayscale"
+                ]
             },
             {
                 "date": "2024-09-12",
