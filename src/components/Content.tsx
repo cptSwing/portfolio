@@ -55,6 +55,7 @@ const ContentWrapper_Test = () => {
                 className='nav-checked-width relative mx-auto flex flex-col overflow-hidden bg-[--bg-color] scrollbar-thumb-theme-primary-400 [--bg-color:theme(colors.theme.bg.lighter)]'
                 style={{ height: window.innerHeight - topVal - 2 }}
             >
+                {/* Floating Title: */}
                 <div className='fixed left-1/2 z-10 -translate-x-1/2 -translate-y-[60%]'>
                     <h2 className='before:clip-inset-t-1/3 px-8 leading-tight text-theme-neutral-50 shadow before:absolute before:bottom-0 before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400'>
                         {title}
@@ -62,7 +63,7 @@ const ContentWrapper_Test = () => {
                 </div>
 
                 <div
-                    className='relative flex flex-col overflow-y-auto px-14 py-8 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])]'
+                    className='relative flex flex-col overflow-y-auto px-14 py-8 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.200)]'
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >
@@ -93,7 +94,7 @@ const ContentWrapper_Test = () => {
                                     {imgUrl && (
                                         <div
                                             className={classNames(
-                                                'group relative basis-3/4 cursor-pointer outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-theme-primary-400 transition-[outline-style] hover:outline',
+                                                'group relative basis-3/4 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400',
                                                 isIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
                                             )}
                                             onClick={() => setLightboxTo(imageIndex!)}
@@ -103,7 +104,7 @@ const ContentWrapper_Test = () => {
                                             {caption && (
                                                 <div
                                                     className={classNames(
-                                                        'group-hover:clip-inset-[--image-outline-width] group-hover:clip-inset-t-0 absolute bottom-0 bg-theme-neutral-300/75 px-4 py-1 text-center text-sm text-theme-accent-400 group-hover:w-full group-hover:bg-theme-neutral-300 group-hover:text-theme-accent-300',
+                                                        'clip-inset-[--image-outline-width] clip-inset-t-0 absolute bottom-0 min-w-0 bg-theme-neutral-300/60 px-4 py-1 text-center text-sm text-theme-accent-700 transition-[background-color,min-width] duration-[calc(3*var(--image-transition-duration))] group-hover:min-w-full group-hover:bg-theme-neutral-300',
                                                         isIndexEven ? 'left-0' : 'right-0',
                                                     )}
                                                 >
@@ -197,7 +198,7 @@ const RemainingImages: FC<{
                 <img
                     key={imgUrl + idx}
                     src={imgUrl}
-                    className='size-full cursor-pointer object-cover outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-theme-primary-400 hover:outline'
+                    className='size-full cursor-pointer object-cover outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400'
                     onClick={() => setLightboxTo(idx + textBlocksLength)}
                 />
             ))}
