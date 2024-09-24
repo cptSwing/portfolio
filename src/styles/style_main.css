@@ -47,7 +47,7 @@
     }
 
     .link-in-content {
-        @apply after:a-svg-mask after:ml-0.5 after:inline-block after:size-3 after:bg-current after:opacity-75;
+        @apply after:a-svg-mask after:ml-0.5 after:inline-block after:size-3 after:bg-current;
     }
 
     .headline-bg {
@@ -130,11 +130,11 @@
 
 /* Conditional Classes */
 
-.mrkdwn > p {
+.mrkdwn + p {
     @apply mb-4;
 }
 
-.mrkdwn > a {
+.mrkdwn > p > a {
     @apply link-in-content;
 }
 

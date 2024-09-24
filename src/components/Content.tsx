@@ -56,7 +56,7 @@ const ContentWrapper_Test = () => {
                 style={{ height: window.innerHeight - topVal - 2 }}
             >
                 <div className='fixed left-1/2 z-10 -translate-x-1/2 -translate-y-[60%]'>
-                    <h2 className='px-8 text-theme-neutral-50 before:absolute before:bottom-0 before:left-0 before:-z-10 before:h-3/5 before:w-full before:bg-theme-secondary-400'>
+                    <h2 className='before:clip-inset-t-1/3 px-8 leading-tight text-theme-neutral-50 shadow before:absolute before:bottom-0 before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400'>
                         {title}
                     </h2>
                 </div>
@@ -67,11 +67,14 @@ const ContentWrapper_Test = () => {
                     // onBlur={() => store_activePost(null)} // TODO
                 >
                     {/* (Sub-)Header, date, "Built with" */}
-                    <div className='mb-6 mt-12 flex items-start justify-between'>
-                        <h4 className='relative z-0 -ml-2 px-2 text-center italic leading-none'>{subTitle}</h4>
+                    <div className='relative mb-6 mt-12 flex w-full items-start justify-between'>
+                        <h4 className='absolute left-0 -ml-2 px-2 text-left italic leading-none'>{subTitle}</h4>
+                        <div className='flex-1' />
                         <div className='flex flex-col items-end justify-start'>
                             <h5 className='headline-skewed-bg -mr-0.5 mb-2 w-fit text-[--bg-color] no-underline'>
-                                {day}.{month}.{year}
+                                {day && `${day}.`}
+                                {month && `${month}.`}
+                                {year && `${year}`}
                             </h5>
                             <ToolsUsed tools={toolsUsed} />
                         </div>
@@ -90,19 +93,18 @@ const ContentWrapper_Test = () => {
                                     {imgUrl && (
                                         <div
                                             className={classNames(
-                                                'relative basis-3/4 outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-theme-primary-400 transition-[outline-style] hover:outline',
+                                                'group relative basis-3/4 cursor-pointer outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-theme-primary-400 transition-[outline-style] hover:outline',
                                                 isIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
                                             )}
+                                            onClick={() => setLightboxTo(imageIndex!)}
                                         >
-                                            <img src={imgUrl} className='peer w-full cursor-pointer object-cover' onClick={() => setLightboxTo(imageIndex!)} />
+                                            <img src={imgUrl} className='w-full object-cover' />
 
                                             {caption && (
                                                 <div
                                                     className={classNames(
-                                                        'absolute bottom-0 h-fit w-fit bg-theme-neutral-300/75 px-4 py-1 text-center text-sm text-theme-accent-400 transition-[color,background-color,width] peer-hover:mb-[--image-outline-width] peer-hover:w-[calc(theme(width.full)-(2*var(--image-outline-width)))] peer-hover:bg-theme-neutral-300 peer-hover:pb-0.5 peer-hover:text-theme-accent-300',
-                                                        isIndexEven
-                                                            ? 'left-0 peer-hover:left-[--image-outline-width]'
-                                                            : 'right-0 peer-hover:right-[--image-outline-width]',
+                                                        'group-hover:clip-inset-[--image-outline-width] group-hover:clip-inset-t-0 absolute bottom-0 bg-theme-neutral-300/75 px-4 py-1 text-center text-sm text-theme-accent-400 group-hover:w-full group-hover:bg-theme-neutral-300 group-hover:text-theme-accent-300',
+                                                        isIndexEven ? 'left-0' : 'right-0',
                                                     )}
                                                 >
                                                     {/* [calc(100%-theme(spacing.6))] */}
@@ -147,23 +149,29 @@ const ContentWrapper_Test = () => {
 };
 
 const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
-    return tools ? (
+    const toolsSorted_Memo = useMemo(() => {
+        if (tools) {
+            return [...tools].sort((a, b) => b.length - a.length);
+        } else return null;
+    }, [tools]);
+
+    return toolsSorted_Memo ? (
         <div className='group/menu flex cursor-pointer flex-col items-end justify-start'>
             <div className='my-1 text-xs lowercase italic leading-none text-theme-primary-400'>Built with:</div>
             <div
-                className='grid select-none grid-flow-col grid-cols-[repeat(var(--tools-count),0.2fr)_0.75fr] gap-x-px transition-[grid-template-columns,column-gap] duration-500 group-hover/menu:grid-cols-[repeat(var(--tools-count),1fr)_1fr] group-hover/menu:gap-x-0.5'
+                className='grid select-none grid-flow-col grid-cols-[repeat(var(--tools-count),0.2fr)_1fr] gap-x-px transition-[grid-template-columns,column-gap] duration-500 group-hover/menu:grid-cols-[repeat(var(--tools-count),1fr)_1fr] group-hover/menu:gap-x-0.5'
                 /* Using length -1 in variable --tools-count in order to have last element at full size, for 'stacked' look */
-                style={{ '--tools-count': tools.length - 1 } as CSSProperties}
+                style={{ '--tools-count': toolsSorted_Memo.length - 1 } as CSSProperties}
             >
-                {tools?.map((tool, idx) => {
+                {toolsSorted_Memo.map((tool, idx) => {
                     return (
                         <a
                             key={tool + idx}
-                            className='group/link inline-block overflow-hidden whitespace-nowrap rounded-sm border border-[--border-color] border-r-transparent pl-2 text-center text-xs leading-tight text-[--link-all-text-color] underline-offset-0 transition-[padding] [--border-color:theme(colors.theme.primary.900)] [--link-all-text-color:theme(colors.theme.primary[100])] last:border-r-[--border-color] last:px-2 visited:text-[--link-all-text-color] group-hover/menu:border-r-[--border-color] group-hover/menu:px-2'
+                            className='group/link gridcol inline-block overflow-hidden whitespace-nowrap rounded-sm border border-[--border-color] border-r-transparent pl-2 text-center text-xs leading-tight text-[--link-all-text-color] underline-offset-0 transition-[padding] [--border-color:theme(colors.theme.primary.900)] [--link-all-text-color:theme(colors.theme.primary[100])] last:border-r-[--border-color] last:px-2 visited:text-[--link-all-text-color] group-hover/menu:border-r-[--border-color] group-hover/menu:px-2'
                             href={ToolsUrls[tool]}
                         >
                             {/* Clip contained text for stacked look: */}
-                            <div className='clip-inset-r-px group-hover/menu:clip-inset-none group-last/link:clip-inset-none size-full'>{tool}</div>
+                            <div className='clip-inset-r-0.5 group-hover/menu:clip-inset-0 group-last/link:clip-inset-0 size-full'>{tool}</div>
                         </a>
                     );
                 })}
