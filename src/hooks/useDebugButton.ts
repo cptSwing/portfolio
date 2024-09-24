@@ -19,7 +19,6 @@ export const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) =>
         container.style.setProperty('position', 'fixed');
         container.style.setProperty('top', '0.5rem');
         container.style.setProperty('left', '0.5rem');
-        // container.style.setProperty('margin', '1rem');
         container.style.setProperty('display', 'grid');
         container.style.setProperty('grid-auto-flow', 'column');
         container.style.setProperty('column-gap', '0.333rem');
@@ -34,10 +33,13 @@ export const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) =>
 
         button.style.setProperty('font-size', '0.6rem');
         button.style.setProperty('max-width', '5rem');
-        button.style.setProperty('background-color', 'rgba(0,0,255,0.75)');
+        button.style.setProperty('background-color', 'rgb(0,0,255)');
         button.style.setProperty('color', 'white');
         button.style.setProperty('border-radius', '0.25rem');
         button.style.setProperty('padding', '0.25rem');
+        button.style.setProperty('opacity', '0.5');
+        button.onmouseover = () => button.style.setProperty('opacity', '1');
+        button.onmouseout = () => button.style.setProperty('opacity', '0.5');
 
         return button;
     }, [buttonCallback, label]);
