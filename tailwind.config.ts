@@ -69,30 +69,6 @@ const themePalette = {
 export default {
     content: ['./index.html', './src/**/*.{js,ts,tsx}'],
     theme: {
-        clipInset: {
-            '0': '0',
-            'px': '1px',
-
-            '0.5': 'theme(spacing[0.5])',
-            '1': 'theme(spacing.1)',
-            '2': 'theme(spacing.2)',
-            '4': 'theme(spacing.4)',
-            '6': 'theme(spacing.6)',
-            '8': 'theme(spacing.8)',
-            '10': 'theme(spacing.10)',
-
-            '1/3': '33.333333%',
-            '2/3': '66.666666%',
-
-            '1/4': '25%',
-            '1/2': '50%',
-            '3/4': '75%',
-
-            '1/5': '20%',
-            '2/5': '40%',
-            '3/5': '60%',
-            '4/5': '80%',
-        },
         maskEdges: {
             DEFAULT: '20 20 1',
             0: '20 20 0',
@@ -295,7 +271,7 @@ export default {
                         };
                     },
                 },
-                { values: theme('clipInset') },
+                { values: theme('width') },
             );
         }),
     ],

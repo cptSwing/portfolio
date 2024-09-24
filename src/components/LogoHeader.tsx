@@ -21,15 +21,10 @@ const LogoHeader = () => {
         >
             <svg height='100%' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
                 <g id='layer1' transform='translate(-77.964769,-127.41715)'>
-                    <text
-                        xmlSpace='preserve'
-                        x='144.90642'
-                        y='140.45578'
-                        id='text1'
-                        className='fill-palette-accent-400 stroke-palette-neutral-200 hover:fill-palette-accent-100'
-                    >
+                    <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1' className=''>
                         <tspan
                             id='tspan1'
+                            className='fill-theme-accent-400 stroke-none hover:fill-theme-accent-200'
                             style={{
                                 fontSize: `${16.9333}px`,
                                 lineHeight: 0.7,
@@ -50,6 +45,7 @@ const LogoHeader = () => {
                             Brandenburg
                         </tspan>
                         <tspan
+                            className='fill-theme-accent-700 stroke-none hover:fill-theme-accent-600'
                             style={{
                                 fontSize: `${10.5833}px`,
                                 lineHeight: 0.7,

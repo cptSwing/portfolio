@@ -63,7 +63,7 @@ const ContentWrapper_Test = () => {
                 </div>
 
                 <div
-                    className='relative flex flex-col overflow-y-auto px-14 py-8 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.200)]'
+                    className='relative flex flex-col overflow-y-auto px-14 py-8 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)]'
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >
@@ -117,11 +117,11 @@ const ContentWrapper_Test = () => {
 
                                     <div
                                         className={classNames(
-                                            'mrkdwn -mt-1 text-pretty text-justify text-sm leading-relaxed',
+                                            'mrkdwn text -mt-1 text-pretty text-justify leading-relaxed',
                                             imgUrl ? 'flex-1' : 'mr-auto basis-4/5',
                                             isIndexEven ? 'order-1' : 'order-2',
                                             idx === 0
-                                                ? 'first-letter:float-left first-letter:-mt-1 first-letter:mr-1 first-letter:text-5xl first-line:uppercase'
+                                                ? 'first-letter:float-left first-letter:-ml-1 first-letter:-mt-[0.16rem] first-letter:mr-0.5 first-letter:text-[3.4rem] first-letter:leading-none first-line:uppercase'
                                                 : '',
                                         )}
                                     >
@@ -134,7 +134,7 @@ const ContentWrapper_Test = () => {
                         })}
                     </div>
 
-                    <RemainingImages images={images} textBlocksLength={textBlocks.length} setLightboxTo={setLightboxTo} />
+                    <RemainingImages images={images} textBlocks={textBlocks} setLightboxTo={setLightboxTo} />
                 </div>
 
                 <Lightbox
@@ -183,23 +183,31 @@ const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
 
 const RemainingImages: FC<{
     images: Post_Image[] | undefined;
-    textBlocksLength: number;
+    textBlocks: Post['textBlocks'];
     setLightboxTo: (value: React.SetStateAction<number | null>) => void;
-}> = ({ images, textBlocksLength, setLightboxTo }) => {
+}> = ({ images, textBlocks, setLightboxTo }) => {
     const remaining_Memo = useMemo(() => {
-        if (images && textBlocksLength > 0) {
-            return images.slice(textBlocksLength);
+        if (images) {
+            const usedInBlocks = textBlocks.map(({ imageIndex }) => typeof imageIndex === 'number' && imageIndex);
+
+            return images
+                .map((postImage, idx) => {
+                    if (usedInBlocks.indexOf(idx) < 0) {
+                        return [postImage, idx];
+                    } else return null;
+                })
+                .filter((val) => val !== null) as [Post_Image, number][];
         } else return null;
-    }, [images, textBlocksLength]);
+    }, [images, textBlocks]);
 
     return remaining_Memo ? (
         <div className='mt-14 grid grid-cols-4 gap-4'>
-            {remaining_Memo.map(({ imgUrl }, idx) => (
+            {remaining_Memo.map(([{ imgUrl }, imgIndex]) => (
                 <img
-                    key={imgUrl + idx}
+                    key={imgUrl + imgIndex}
                     src={imgUrl}
                     className='size-full cursor-pointer object-cover outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400'
-                    onClick={() => setLightboxTo(idx + textBlocksLength)}
+                    onClick={() => setLightboxTo(imgIndex)}
                 />
             ))}
         </div>

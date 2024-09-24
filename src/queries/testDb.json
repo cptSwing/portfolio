@@ -1,6 +1,7 @@
 {
     "About": {
         "categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale",
+        "categoryBlurb": "I build websites.\n\n&nbsp;\n\nAnd I build 3D stuff.\n\n&nbsp;\n\nAt times, I combine the two - or do something completely different.",
         "posts": [
             {
                 "date": "2024-09-12",
@@ -45,9 +46,238 @@
             }
         ]
     },
+    "Code": {
+        "categoryBackgroundColor": "rgb(32,80,48)",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
+        "categoryBlurb": "Webdev, App dev, Tech Art",
+        "posts": [
+            {
+                "title": "Design Your Ring",
+                "titleCardBg": "https://picsum.photos/seed/dyr/500?grayscale",
+                "toolsUsed": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
+                "subTitle": "Customizable Wedding-Rings in 3D",
+                "date": "2024-09-12",
+                "codeLink": {
+                    "alt": "Github",
+                    "href": "http://www.github.com"
+                },
+                "images": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/dyr_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/dyr_2/900/600?grayscale"
+                    },
+                    {
+                        "imgUrl": "https://picsum.photos/seed/dyr_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/dyr_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "##### Sub-Headline\n Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    },
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            },
+            {
+                "title": "Mediaverse: Fader360",
+                "subTitle": "Open-source 360° Media Authoring Tool",
+                "titleCardBg": "src/assets/images/fader/mediaverse_fader_logo.jpg",
+                "codeLink": {
+                    "alt": "fader360-frontend (Github)",
+                    "href": "https://github.com/VRagments/fader360-frontend"
+                },
+                "toolsUsed": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
+                "date": "2023-08-11",
+                "images": [
+                    {
+                        "caption": "Adding assets to Fader360",
+                        "imgUrl": "src/assets/images/fader/fader_add_assets.jpg"
+                    },
+                    {
+                        "caption": "Jumping between Scenes via SceneLink",
+                        "imgUrl": "src/assets/images/fader/fader_scenelinks.jpg"
+                    },
+                    {
+                        "caption": "Scene Options",
+                        "imgUrl": "src/assets/images/fader/fader_church.jpg"
+                    },
+                    {
+                        "caption": "Streaming 360 background video with subtitles",
+                        "imgUrl": "src/assets/images/fader/fader_subtitles.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Museum Backdrop Prototype",
+                        "imgUrl": "src/assets/images/fader/museum.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Newsroom Backdrop Prototype",
+                        "imgUrl": "src/assets/images/fader/newsroom.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
+                        "imgUrl": "src/assets/images/fader/toon.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
+                        "imgUrl": "src/assets/images/fader/toon2.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu). \n\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
+                    },
+                    {
+                        "imageIndex": 0,
+                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu). \n\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "*Fader360*'s [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads, linking these to Fader360 projects and newly created empty scenes. Login was handled with a mediaverse account, giving users access to other services within the project's infrastructure. \n\nCommunication with the RESTful backend was handled with axios.\n\n[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js). \n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "[Mediaverse](https://mediaverse-project.eu) was a cooperation between various universities all over Europe, as well as broadcasters *Deutsche Welle*, among others.\n\nOne example of a *DW* project using *Fader360* can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in *Deutsche Welle*'s blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/). \n\nWhile the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below."
+                    }
+                ]
+            },
+            {
+                "title": "Brotherland",
+                "titleCardBg": "https://picsum.photos/seed/brother/500?grayscale",
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/brotherland_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/brotherland_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/brotherland_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/brotherland_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            },
+            {
+                "title": "Scrollmersives",
+                "subTitle": "Scroll through various 3D experiences",
+                "titleCardBg": "https://picsum.photos/seed/scrollm/500?grayscale",
+                "date": "2022",
+                "toolsUsed": ["three.js", "3ds Max"],
+                "images": [
+                    {
+                        "caption": "electric scooter",
+                        "imgUrl": "src/assets/images/scrollmersives/scooter.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "[First Scrollmersive - strangely enough hosted at zdf.de](https://3d.zdf.de/experiences/scooter/)"
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            },
+            {
+                "title": "Side Projects",
+                "titleCardBg": "https://picsum.photos/seed/plate/500?grayscale",
+                "subTitle": "Plates-Calculator, etc etc",
+                "date": "2024-09-12",
+                "images": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "imageIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "imageIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            }
+        ]
+    },
     "Art": {
         "categoryBackgroundColor": "rgb(128,200,225)",
         "categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
+        "categoryBlurb": "3D All-Rounder, origins in Gaming industry",
         "posts": [
             {
                 "date": "2024-09-12",
@@ -87,7 +317,7 @@
                 "titleCardBg": "https://picsum.photos/seed/wasser/500?grayscale"
             },
             {
-                "date": "2024-09-12",
+                "date": "2022-06-22",
                 "images": [
                     {
                         "caption": "ksdkjsdk",
@@ -427,268 +657,9 @@
             }
         ]
     },
-    "Code": {
-        "categoryBackgroundColor": "rgb(32,80,48)",
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
-        "posts": [
-            {
-                "codeLink": {
-                    "alt": "Github",
-                    "href": "http://www.github.com"
-                },
-                "date": "2024-09-12",
-                "images": [
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/dyr_1/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/dyr_2/900/600?grayscale"
-                    },
-                    {
-                        "imgUrl": "https://picsum.photos/seed/dyr_3/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/dyr_4/900/600?grayscale"
-                    }
-                ],
-                "subTitle": "Customizable Wedding-Rings in 3D",
-                "textBlocks": [
-                    {
-                        "text": "##### Sub-Headline\n Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    },
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ],
-                "title": "Design Your Ring",
-                "titleCardBg": "https://picsum.photos/seed/dyr/500?grayscale",
-                "toolsUsed": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"]
-            },
-            {
-                "title": "Mediaverse: Fader360",
-                "subTitle": "Open-source 360° Media Authoring Tool",
-                "titleCardBg": "src/assets/images/fader/mediaverse_fader_logo.jpg",
-                "codeLink": {
-                    "alt": "fader360-frontend (Github)",
-                    "href": "https://github.com/VRagments/fader360-frontend"
-                },
-                "toolsUsed": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
-                "date": "2023-08-11",
-                "images": [
-                    {
-                        "caption": "Adding assets to Fader360",
-                        "imgUrl": "src/assets/images/fader/fader_add_assets.jpg"
-                    },
-                    {
-                        "caption": "Jumping between Scenes via SceneLink",
-                        "imgUrl": "src/assets/images/fader/fader_scenelinks.jpg"
-                    },
-                    {
-                        "caption": "Scene Options",
-                        "imgUrl": "src/assets/images/fader/fader_church.jpg"
-                    },
-                    {
-                        "caption": "Streaming 360 background video with subtitles",
-                        "imgUrl": "src/assets/images/fader/fader_subtitles.jpg"
-                    },
-                    {
-                        "caption": "(3D Model) Museum Backdrop Prototype",
-                        "imgUrl": "src/assets/images/fader/museum.jpg"
-                    },
-                    {
-                        "caption": "(3D Model) Newsroom Backdrop Prototype",
-                        "imgUrl": "src/assets/images/fader/newsroom.jpg"
-                    },
-                    {
-                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
-                        "imgUrl": "src/assets/images/fader/toon.jpg"
-                    },
-                    {
-                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
-                        "imgUrl": "src/assets/images/fader/toon2.jpg"
-                    }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu). \n\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "\n\n*Fader360*'s [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads, linking these to Fader360 projects and newly created empty scenes. Login was handled with a mediaverse account, giving users access to other services within the project's infrastructure. \n\nCommunication with the RESTful backend was handled with axios.\n\n[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js). \n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "\n\n[Mediaverse](https://mediaverse-project.eu) was a cooperation between various universities all over Europe, as well as broadcasters *Deutsche Welle*, among others.\n\nOne example of a *DW* project using *Fader360* can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in *Deutsche Welle*'s blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/). \n\nWhile the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below."
-                    }
-                ]
-            },
-            {
-                "title": "Scrollmersives",
-                "subTitle": "Scroll through various 3D experiences",
-                "titleCardBg": "https://picsum.photos/seed/scrollm/500?grayscale",
-                "date": "2022",
-                "toolsUsed": ["three.js", "3ds Max"],
-                "images": [
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/scrollm_1/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/scrollm_2/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/scrollm_3/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/scrollm_4/900/600?grayscale"
-                    }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            },
-            {
-                "title": "Hilux Configurator",
-                "titleCardBg": "https://picsum.photos/seed/hilux/500?grayscale",
-                "date": "2024-09-12",
-                "images": [
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/hilux_1/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/hilux_2/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/hilux_3/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/hilux_4/900/600?grayscale"
-                    }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            },
-            {
-                "date": "2024-09-12",
-                "images": [
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/brotherland_1/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/brotherland_2/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/brotherland_3/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/brotherland_4/900/600?grayscale"
-                    }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ],
-                "title": "Brotherland",
-                "titleCardBg": "https://picsum.photos/seed/brother/500?grayscale"
-            },
-            {
-                "date": "2024-09-12",
-                "images": [
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/plate_1/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/plate_2/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/plate_3/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/plate_4/900/600?grayscale"
-                    }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ],
-                "title": "Plate Calc",
-                "titleCardBg": "https://picsum.photos/seed/plate/500?grayscale"
-            }
-        ]
-    },
-    "News": {
+    "Updates": {
         "categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
+        "categoryBlurb": "What's been happening lately?",
         "posts": [
             {
                 "date": "2024-09-12",
@@ -853,85 +824,6 @@
                     }
                 ],
                 "title": "Updates 5"
-            }
-        ]
-    },
-    "Undef": {
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/contact/500?grayscale",
-        "posts": [
-            {
-                "date": "2024-09-12",
-                "images": [
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/contact_1/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/contact_2/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/contact_3/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/contact_4/900/600?grayscale"
-                    }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ],
-                "title": "Contact",
-                "titleCardBg": "https://picsum.photos/seed/contact1/500?grayscale"
-            },
-            {
-                "date": "2024-09-12",
-                "images": [
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/impr_1/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/impr_2/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/impr_3/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/impr_4/900/600?grayscale"
-                    }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ],
-                "title": "Impressum",
-                "titleCardBg": "https://picsum.photos/seed/impressum/500?grayscale"
             }
         ]
     }

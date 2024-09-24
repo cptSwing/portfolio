@@ -130,7 +130,7 @@
 
 /* Conditional Classes */
 
-.mrkdwn + p {
+.mrkdwn > p {
     @apply mb-4;
 }
 

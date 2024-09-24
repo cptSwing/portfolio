@@ -1,5 +1,5 @@
 import { useZustand } from '../lib/zustand';
-import { DataBase, Post, MENUTARGET, menuTargetArray } from '../types/types';
+import { DataBase, Post, menuTargetArray } from '../types/types';
 import classNames from '../lib/classNames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import testDb from '../queries/testDb.json';
@@ -7,6 +7,8 @@ import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config.ts';
 import { PostCards } from './PostCards.tsx';
 import { useDebugButton } from '../hooks/useDebugButton.ts';
+import { MENUTARGET } from '../types/enums.ts';
+import { Remark } from 'react-remark';
 
 const themeBgBase = resolveConfig(tailwindConfig).theme.colors.theme.bg.base;
 const testDbTyped = testDb as DataBase;
@@ -30,7 +32,7 @@ const Nav = () => {
             {/* Top Bar: */}
             <div
                 className={classNames(
-                    'h-1 transition-[width,background-color,margin] duration-500',
+                    'h-1 transition-[width,background-color,margin] duration-300',
                     categoryOpened ? 'mb-4' : 'mb-2',
                     activePost ? 'w-screen bg-theme-primary-500' : 'w-full bg-theme-secondary-400',
                 )}
@@ -60,7 +62,7 @@ const Nav = () => {
             {/* Top Bar: */}
             <div
                 className={classNames(
-                    'h-1 transition-[width,background-color,margin] duration-500',
+                    'h-1 transition-[width,background-color,margin] delay-200 duration-200',
                     categoryOpened ? 'mt-4' : 'mt-2',
                     activePost ? 'w-screen bg-theme-primary-500' : 'w-full bg-theme-secondary-400',
                 )}
@@ -77,7 +79,7 @@ const CategoryCard: FC<{
     cardData: DataBase[MENUTARGET];
     categoryIndex: number;
 }> = ({ cardCategory, openedIndex, cardData, categoryIndex }) => {
-    const { posts, categoryCardBackgroundImage, categoryBackgroundColor } = cardData;
+    const { posts, categoryCardBackgroundImage, categoryBackgroundColor, categoryBlurb } = cardData;
     const categoryOpened = useZustand((state) => state.nav.categoryOpened);
 
     const refCb = useCallback(
@@ -150,11 +152,11 @@ const CategoryCard: FC<{
         >
             <h1
                 className={classNames(
-                    'writing-mode-vert-lr mx-auto rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl leading-none drop-shadow-lg transition-[transform,color] duration-300',
+                    'writing-mode-vert-lr mx-auto -mb-1 rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl leading-none drop-shadow-lg transition-[transform,color] duration-300',
                     isThisCategoryOpen
                         ? 'text-theme-secondary-400'
                         : categoryOpened
-                          ? 'translate-y-0 text-theme-secondary-700 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0'
+                          ? 'translate-y-0 scale-90 text-theme-secondary-700 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0'
                           : 'translate-y-0 text-theme-secondary-100 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0',
                 )}
             >
@@ -164,8 +166,11 @@ const CategoryCard: FC<{
             {isThisCategoryOpen && (
                 <>
                     {/* Testimonials etc: */}
-                    <div className='h-full flex-1 overflow-hidden border-l-[6px] border-theme-neutral-50'>
-                        <div className='size-full bg-cover mask-edges-30' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
+                    <div className='relative -my-2 flex h-full flex-1 items-end overflow-hidden border-l-[6px] border-theme-neutral-50 pl-4'>
+                        <div className='mrkdwn select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400'>
+                            <Remark>{categoryBlurb}</Remark>
+                        </div>
+                        <div className='absolute size-full bg-cover mask-edges-30' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
                     </div>
 
                     <PostCards posts={posts} />
