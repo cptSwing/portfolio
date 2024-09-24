@@ -1,7 +1,7 @@
 import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
 import { Post, Post_Image } from '../types/types';
-import { CSSProperties, FC, useCallback, useState } from 'react';
+import { CSSProperties, FC, useCallback, useMemo, useState } from 'react';
 import { MenuOpenedPost } from './Nav';
 import { Remark } from 'react-remark';
 import Lightbox from 'yet-another-react-lightbox';
@@ -23,7 +23,7 @@ const Content = () => {
 
 export default Content;
 
-const ContentWrapper_Test: FC<{}> = () => {
+const ContentWrapper_Test = () => {
     const activePost = useZustand((state) => state.nav.activePost);
     const [topVal, setTopVal] = useState<number>(0);
     const [lightboxTo, setLightboxTo] = useState<number | null>(null);
@@ -90,7 +90,7 @@ const ContentWrapper_Test: FC<{}> = () => {
                                     {imgUrl && (
                                         <div
                                             className={classNames(
-                                                'relative z-10 basis-3/4 outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-theme-primary-400 transition-[outline-style] hover:outline',
+                                                'relative basis-3/4 outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-theme-primary-400 transition-[outline-style] hover:outline',
                                                 isIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
                                             )}
                                         >
@@ -112,7 +112,7 @@ const ContentWrapper_Test: FC<{}> = () => {
                                         </div>
                                     )}
 
-                                    <p
+                                    <div
                                         className={classNames(
                                             'mrkdwn -mt-1 text-pretty text-justify text-sm leading-relaxed',
                                             imgUrl ? 'flex-1' : 'mr-auto basis-4/5',
@@ -123,7 +123,7 @@ const ContentWrapper_Test: FC<{}> = () => {
                                         )}
                                     >
                                         <Remark>{text}</Remark>
-                                    </p>
+                                    </div>
 
                                     <br />
                                 </div>
@@ -177,13 +177,15 @@ const RemainingImages: FC<{
     textBlocksLength: number;
     setLightboxTo: (value: React.SetStateAction<number | null>) => void;
 }> = ({ images, textBlocksLength, setLightboxTo }) => {
-    if (!images || textBlocksLength < 1) {
-        return null;
-    }
+    const remaining_Memo = useMemo(() => {
+        if (images && textBlocksLength > 0) {
+            return images.slice(textBlocksLength);
+        } else return null;
+    }, [images, textBlocksLength]);
 
-    return (
+    return remaining_Memo ? (
         <div className='mt-14 grid grid-cols-4 gap-4'>
-            {images.slice(textBlocksLength).map(({ imgUrl }, idx) => (
+            {remaining_Memo.map(({ imgUrl }, idx) => (
                 <img
                     key={imgUrl + idx}
                     src={imgUrl}
@@ -192,5 +194,5 @@ const RemainingImages: FC<{
                 />
             ))}
         </div>
-    );
+    ) : null;
 };
