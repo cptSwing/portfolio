@@ -70,12 +70,28 @@ export default {
     content: ['./index.html', './src/**/*.{js,ts,tsx}'],
     theme: {
         clipInset: {
-            'none': '0',
-            'r-px': '0 1px 0 0',
-            'r-0.5': '0 theme(spacing[0.5]) 0 0',
-            'r-1': '0 theme(spacing[1]) 0 0',
+            '0': '0',
+            'px': '1px',
 
-            // 'right-px-sm': '0 1px 0 0 round theme(borderRadius.sm)',
+            '0.5': 'theme(spacing[0.5])',
+            '1': 'theme(spacing.1)',
+            '2': 'theme(spacing.2)',
+            '4': 'theme(spacing.4)',
+            '6': 'theme(spacing.6)',
+            '8': 'theme(spacing.8)',
+            '10': 'theme(spacing.10)',
+
+            '1/3': '33.333333%',
+            '2/3': '66.666666%',
+
+            '1/4': '25%',
+            '1/2': '50%',
+            '3/4': '75%',
+
+            '1/5': '20%',
+            '2/5': '40%',
+            '3/5': '60%',
+            '4/5': '80%',
         },
         maskEdges: {
             DEFAULT: '20 20 1',
@@ -168,22 +184,114 @@ export default {
         plugin(({ matchUtilities, theme }) => {
             matchUtilities(
                 {
-                    'clip-inset': (fromTop_fromRight_fromBottom_fromLeft_round: string) => {
-                        let str = fromTop_fromRight_fromBottom_fromLeft_round;
-                        const borderRadiusIndex = str.indexOf('round');
+                    'clip-inset': (insetAll_round: string) => {
+                        let inset = insetAll_round;
+                        const borderRadiusIndex = inset.indexOf('round');
 
                         let borderRadius = '';
                         if (borderRadiusIndex >= 0) {
-                            borderRadius = str.slice(borderRadiusIndex);
-                            str = str.slice(0, borderRadiusIndex);
+                            borderRadius = inset.slice(borderRadiusIndex);
+                            inset = inset.slice(0, borderRadiusIndex);
                         }
 
-                        // Don't really need separate vals I guess??
-                        // const [fromTop, fromRight, fromBottom, fromLeft] = str.split(' ');
+                        return {
+                            '--tw-clip-inset-t': inset,
+                            '--tw-clip-inset-r': inset,
+                            '--tw-clip-inset-b': inset,
+                            '--tw-clip-inset-l': inset,
+                            'clip-path': `inset(var(--tw-clip-inset-t) var(--tw-clip-inset-r) var(--tw-clip-inset-b) var(--tw-clip-inset-l) ${borderRadius});`,
+                        };
+                    },
+                    'clip-inset-t': (insetTop_round: string) => {
+                        let top = insetTop_round;
+                        const borderRadiusIndex = top.indexOf('round');
+
+                        let borderRadius = '';
+                        if (borderRadiusIndex >= 0) {
+                            borderRadius = top.slice(borderRadiusIndex);
+                            top = top.slice(0, borderRadiusIndex);
+                        }
 
                         return {
-                            // 'clip-path': `inset(${fromTop} ${fromRight} ${fromBottom} ${fromLeft} ${borderRadius});`,
-                            'clip-path': `inset(${str + borderRadius});`,
+                            '--tw-clip-inset-t': top,
+                            'clip-path': `inset(var(--tw-clip-inset-t) var(--tw-clip-inset-r, 0) var(--tw-clip-inset-b, 0) var(--tw-clip-inset-l, 0) ${borderRadius});`,
+                        };
+                    },
+                    'clip-inset-r': (insetRight_round: string) => {
+                        let right = insetRight_round;
+                        const borderRadiusIndex = right.indexOf('round');
+
+                        let borderRadius = '';
+                        if (borderRadiusIndex >= 0) {
+                            borderRadius = right.slice(borderRadiusIndex);
+                            right = right.slice(0, borderRadiusIndex);
+                        }
+
+                        return {
+                            '--tw-clip-inset-r': right,
+                            'clip-path': `inset(var(--tw-clip-inset-t, 0) var(--tw-clip-inset-r) var(--tw-clip-inset-b, 0) var(--tw-clip-inset-l, 0) ${borderRadius});`,
+                        };
+                    },
+                    'clip-inset-b': (insetBottom_round: string) => {
+                        let bottom = insetBottom_round;
+                        const borderRadiusIndex = bottom.indexOf('round');
+
+                        let borderRadius = '';
+                        if (borderRadiusIndex >= 0) {
+                            borderRadius = bottom.slice(borderRadiusIndex);
+                            bottom = bottom.slice(0, borderRadiusIndex);
+                        }
+
+                        return {
+                            '--tw-clip-inset-b': bottom,
+                            'clip-path': `inset(var(--tw-clip-inset-t, 0) var(--tw-clip-inset-r, 0) var(--tw-clip-inset-b) var(--tw-clip-inset-l, 0) ${borderRadius});`,
+                        };
+                    },
+                    'clip-inset-l': (insetLeft_round: string) => {
+                        let left = insetLeft_round;
+                        const borderRadiusIndex = left.indexOf('round');
+
+                        let borderRadius = '';
+                        if (borderRadiusIndex >= 0) {
+                            borderRadius = left.slice(borderRadiusIndex);
+                            left = left.slice(0, borderRadiusIndex);
+                        }
+
+                        return {
+                            '--tw-clip-inset-l': left,
+                            'clip-path': `inset(var(--tw-clip-inset-t, 0) var(--tw-clip-inset-r, 0) var(--tw-clip-inset-b, 0) var(--tw-clip-inset-l) ${borderRadius});`,
+                        };
+                    },
+                    'clip-inset-x': (insetHorizontal_round: string) => {
+                        let horizontal = insetHorizontal_round;
+                        const borderRadiusIndex = horizontal.indexOf('round');
+
+                        let borderRadius = '';
+                        if (borderRadiusIndex >= 0) {
+                            borderRadius = horizontal.slice(borderRadiusIndex);
+                            horizontal = horizontal.slice(0, borderRadiusIndex);
+                        }
+
+                        return {
+                            '--tw-clip-inset-r': horizontal,
+                            '--tw-clip-inset-l': horizontal,
+                            'clip-path': `inset(var(--tw-clip-inset-t, 0) var(--tw-clip-inset-r, 0) var(--tw-clip-inset-b, 0) var(--tw-clip-inset-l) ${borderRadius});`,
+                        };
+                    },
+                    'clip-inset-y': (insetVertical_round: string) => {
+                        let vertical = insetVertical_round;
+                        const borderRadiusIndex = vertical.indexOf('round');
+
+                        let borderRadius = '';
+                        if (borderRadiusIndex >= 0) {
+                            borderRadius = vertical.slice(borderRadiusIndex);
+                            vertical = vertical.slice(0, borderRadiusIndex);
+                        }
+
+                        return {
+                            '--tw-clip-inset-t': vertical,
+                            '--tw-clip-inset-b': vertical,
+                            'clip-path': `inset(var(--tw-clip-inset-t, 0) var(--tw-clip-inset-r, 0) var(--tw-clip-inset-b, 0) var(--tw-clip-inset-l) ${borderRadius});`,
                         };
                     },
                 },
