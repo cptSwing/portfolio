@@ -36,7 +36,7 @@ export type Post = {
     images?: Post_Image[];
     subTitle?: string;
     titleCardBg?: string;
-    toolsUsed?: ToolsUrls[];
+    toolsUsed?: (keyof typeof ToolsUrls)[];
     codeLink?: {
         href: string;
         alt: string;
