@@ -1,12 +1,4 @@
-import { ToolsUrls } from './enums';
-
-export enum MENUTARGET {
-    News = 'News',
-    About = 'About',
-    Code = 'Code',
-    Art = 'Art',
-    // Undef = 'Undef',
-}
+import { MENUTARGET, ToolsUrls } from './enums';
 
 export const menuTargetArray = Object.values(MENUTARGET);
 
@@ -44,5 +36,5 @@ export type Post = {
 };
 
 export type DataBase = {
-    [key in MENUTARGET]: { posts: Post[]; categoryCardBackgroundImage: string; categoryBackgroundColor?: string };
+    [key in MENUTARGET]: { posts: Post[]; categoryCardBackgroundImage: string; categoryBlurb: string; categoryBackgroundColor?: string };
 };

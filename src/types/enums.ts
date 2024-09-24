@@ -11,3 +11,10 @@ export enum ToolsUrls {
     '3ds Max' = 'https://www.autodesk.com/products/3ds-max',
     'Substance Designer' = 'https://www.adobe.com/products/substance3d/apps/designer.html',
 }
+
+export enum MENUTARGET {
+    About = 'About',
+    Code = 'Code',
+    Art = 'Art',
+    Updates = 'Updates',
+}
