@@ -69,6 +69,14 @@ const themePalette = {
 export default {
     content: ['./index.html', './src/**/*.{js,ts,tsx}'],
     theme: {
+        clipInset: {
+            'none': '0',
+            'r-px': '0 1px 0 0',
+            'r-0.5': '0 theme(spacing[0.5]) 0 0',
+            'r-1': '0 theme(spacing[1]) 0 0',
+
+            // 'right-px-sm': '0 1px 0 0 round theme(borderRadius.sm)',
+        },
         maskEdges: {
             DEFAULT: '20 20 1',
             0: '20 20 0',
@@ -154,6 +162,32 @@ export default {
                     },
                 },
                 { values: theme('maskEdges') },
+            );
+        }),
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        plugin(({ matchUtilities, theme }) => {
+            matchUtilities(
+                {
+                    'clip-inset': (fromTop_fromRight_fromBottom_fromLeft_round: string) => {
+                        let str = fromTop_fromRight_fromBottom_fromLeft_round;
+                        const borderRadiusIndex = str.indexOf('round');
+
+                        let borderRadius = '';
+                        if (borderRadiusIndex >= 0) {
+                            borderRadius = str.slice(borderRadiusIndex);
+                            str = str.slice(0, borderRadiusIndex);
+                        }
+
+                        // Don't really need separate vals I guess??
+                        // const [fromTop, fromRight, fromBottom, fromLeft] = str.split(' ');
+
+                        return {
+                            // 'clip-path': `inset(${fromTop} ${fromRight} ${fromBottom} ${fromLeft} ${borderRadius});`,
+                            'clip-path': `inset(${str + borderRadius});`,
+                        };
+                    },
+                },
+                { values: theme('clipInset') },
             );
         }),
     ],

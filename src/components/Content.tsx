@@ -1,6 +1,6 @@
 import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
-import { Post } from '../types/types';
+import { Post, Post_Image } from '../types/types';
 import { CSSProperties, FC, useCallback, useState } from 'react';
 import { MenuOpenedPost } from './Nav';
 import { Remark } from 'react-remark';
@@ -9,6 +9,7 @@ import { Captions } from 'yet-another-react-lightbox/plugins';
 import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
 import parseDateString from '../lib/parseDateString';
+import { ToolsUrls } from '../types/enums';
 
 const Content = () => {
     return (
@@ -61,17 +62,17 @@ const ContentWrapper_Test: FC<{}> = () => {
                 </div>
 
                 <div
-                    className='relative flex flex-col overflow-y-auto px-14 py-8 scrollbar-thin'
+                    className='relative flex flex-col overflow-y-auto px-14 py-8 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])]'
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >
-                    <div className='mb-6 mt-10 flex items-start justify-between'>
+                    {/* (Sub-)Header, date, "Built with" */}
+                    <div className='mb-6 mt-12 flex items-start justify-between'>
                         <h4 className='relative z-0 -ml-2 px-2 text-center italic leading-none'>{subTitle}</h4>
                         <div className='flex flex-col items-end justify-start'>
                             <h5 className='headline-skewed-bg -mr-0.5 mb-2 w-fit text-[--bg-color] no-underline'>
                                 {day}.{month}.{year}
                             </h5>
-                            <div className='mb-0.5 text-xs uppercase italic text-theme-primary-400'>Built with</div>
                             <ToolsUsed tools={toolsUsed} />
                         </div>
                     </div>
@@ -87,17 +88,21 @@ const ContentWrapper_Test: FC<{}> = () => {
                             return (
                                 <div key={`${idx}-${isIndexEven}`} className='flex items-start justify-between'>
                                     {imgUrl && (
-                                        <div className={classNames('relative basis-3/4', isIndexEven ? 'order-2 ml-8' : 'order-1 mr-8')}>
-                                            <img
-                                                src={imgUrl}
-                                                className={classNames('peer aspect-video w-full cursor-pointer object-cover')}
-                                                onClick={() => setLightboxTo(imageIndex!)}
-                                            />
+                                        <div
+                                            className={classNames(
+                                                'relative z-10 basis-3/4 outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-theme-primary-400 transition-[outline-style] hover:outline',
+                                                isIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
+                                            )}
+                                        >
+                                            <img src={imgUrl} className='peer w-full cursor-pointer object-cover' onClick={() => setLightboxTo(imageIndex!)} />
 
                                             {caption && (
                                                 <div
                                                     className={classNames(
-                                                        'absolute bottom-0 left-0 right-0 size-min w-full bg-theme-neutral-300/20 p-1 text-center text-sm text-theme-neutral-100/75 transition-colors peer-hover:bg-theme-neutral-300 peer-hover:text-theme-accent-300',
+                                                        'absolute bottom-0 h-fit w-fit bg-theme-neutral-300/75 px-4 py-1 text-center text-sm text-theme-accent-400 transition-[color,background-color,width] peer-hover:mb-[--image-outline-width] peer-hover:w-[calc(theme(width.full)-(2*var(--image-outline-width)))] peer-hover:bg-theme-neutral-300 peer-hover:pb-0.5 peer-hover:text-theme-accent-300',
+                                                        isIndexEven
+                                                            ? 'left-0 peer-hover:left-[--image-outline-width]'
+                                                            : 'right-0 peer-hover:right-[--image-outline-width]',
                                                     )}
                                                 >
                                                     {/* [calc(100%-theme(spacing.6))] */}
@@ -126,18 +131,7 @@ const ContentWrapper_Test: FC<{}> = () => {
                         })}
                     </div>
 
-                    {images && (
-                        <div className='mt-14 grid grid-cols-4 gap-4'>
-                            {images.slice(textBlocks.length).map(({ imgUrl }, idx) => (
-                                <img
-                                    key={imgUrl + idx}
-                                    src={imgUrl}
-                                    className='size-full cursor-pointer object-cover'
-                                    onClick={() => setLightboxTo(idx + textBlocks.length)}
-                                />
-                            ))}
-                        </div>
-                    )}
+                    <RemainingImages images={images} textBlocksLength={textBlocks.length} setLightboxTo={setLightboxTo} />
                 </div>
 
                 <Lightbox
@@ -147,7 +141,6 @@ const ContentWrapper_Test: FC<{}> = () => {
                     slides={images?.map(({ imgUrl, caption }) => ({ src: imgUrl, title: caption }))}
                     plugins={[Captions]}
                 />
-                {/* </div> */}
             </div>
         </div>
     );
@@ -155,23 +148,49 @@ const ContentWrapper_Test: FC<{}> = () => {
 
 const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
     return tools ? (
-        <div className='group select-none self-end'>
+        <div className='group/menu flex cursor-pointer flex-col items-end justify-start'>
+            <div className='my-1 text-xs lowercase italic leading-none text-theme-primary-400'>Built with:</div>
             <div
-                className='grid grid-flow-col grid-cols-[repeat(var(--tools-count),0.2fr)_0.75fr] gap-x-px text-theme-primary-100 transition-[grid-template-columns,column-gap] duration-500 group-hover:grid-cols-[repeat(var(--tools-count),1fr)_1fr] group-hover:gap-x-0.5 group-hover:text-theme-primary-200'
-                /* Using length -1 in variable --tools-count in order to have first element at full size, for 'stacked' look */
+                className='grid select-none grid-flow-col grid-cols-[repeat(var(--tools-count),0.2fr)_0.75fr] gap-x-px transition-[grid-template-columns,column-gap] duration-500 group-hover/menu:grid-cols-[repeat(var(--tools-count),1fr)_1fr] group-hover/menu:gap-x-0.5'
+                /* Using length -1 in variable --tools-count in order to have last element at full size, for 'stacked' look */
                 style={{ '--tools-count': tools.length - 1 } as CSSProperties}
             >
                 {tools?.map((tool, idx) => {
                     return (
-                        <div
+                        <a
                             key={tool + idx}
-                            className='overflow-hidden whitespace-nowrap rounded-sm bg-theme-primary-800 px-1 text-center text-xs leading-tight'
+                            className='group/link inline-block overflow-hidden whitespace-nowrap rounded-sm border border-[--border-color] border-r-transparent pl-2 text-center text-xs leading-tight text-[--link-all-text-color] underline-offset-0 transition-[padding] [--border-color:theme(colors.theme.primary.900)] [--link-all-text-color:theme(colors.theme.primary[100])] last:border-r-[--border-color] last:px-2 visited:text-[--link-all-text-color] group-hover/menu:border-r-[--border-color] group-hover/menu:px-2'
+                            href={ToolsUrls[tool]}
                         >
-                            {tool}
-                        </div>
+                            {/* Clip contained text for stacked look: */}
+                            <div className='clip-inset-r-px group-hover/menu:clip-inset-none group-last/link:clip-inset-none size-full'>{tool}</div>
+                        </a>
                     );
                 })}
             </div>
         </div>
     ) : null;
+};
+
+const RemainingImages: FC<{
+    images: Post_Image[] | undefined;
+    textBlocksLength: number;
+    setLightboxTo: (value: React.SetStateAction<number | null>) => void;
+}> = ({ images, textBlocksLength, setLightboxTo }) => {
+    if (!images || textBlocksLength < 1) {
+        return null;
+    }
+
+    return (
+        <div className='mt-14 grid grid-cols-4 gap-4'>
+            {images.slice(textBlocksLength).map(({ imgUrl }, idx) => (
+                <img
+                    key={imgUrl + idx}
+                    src={imgUrl}
+                    className='size-full cursor-pointer object-cover outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-theme-primary-400 hover:outline'
+                    onClick={() => setLightboxTo(idx + textBlocksLength)}
+                />
+            ))}
+        </div>
+    );
 };

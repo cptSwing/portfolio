@@ -1,3 +1,5 @@
+import { ToolsUrls } from './enums';
+
 export enum MENUTARGET {
     News = 'News',
     About = 'About',
@@ -34,7 +36,7 @@ export type Post = {
     images?: Post_Image[];
     subTitle?: string;
     titleCardBg?: string;
-    toolsUsed?: string[];
+    toolsUsed?: ToolsUrls[];
     codeLink?: {
         href: string;
         alt: string;

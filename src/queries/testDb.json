@@ -474,7 +474,7 @@
                 ],
                 "title": "Design Your Ring",
                 "titleCardBg": "https://picsum.photos/seed/dyr/500?grayscale",
-                "toolsUsed": ["react", "react-router", "three.js", "tailwindcss"]
+                "toolsUsed": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"]
             },
             {
                 "title": "Mediaverse: Fader360",
@@ -484,7 +484,7 @@
                     "alt": "fader360-frontend (Github)",
                     "href": "https://github.com/VRagments/fader360-frontend"
                 },
-                "toolsUsed": ["react", "react-three/fiber", "react-three/drei", "leva-gui", "tailwindcss", "3ds Max"],
+                "toolsUsed": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
                 "date": "2023-08-11",
                 "images": [
                     {
@@ -523,7 +523,7 @@
                 "textBlocks": [
                     {
                         "imageIndex": 0,
-                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool. By combining various forms of media assets (video, images, text, audio) in a 360 degree environment, users can create their own scenes and link individual chapters together to craft a complete story. \n\nFader360's backend - created by colleagues - took care of asset uploads and linking these to Fader360 projects."
+                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool. By combining various forms of media assets (video, images, text, audio) in a 360 degree environment, users can create their own scenes and link individual chapters together to craft a complete story. \n\nFader360's [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads and linking these to Fader360 projects. Communication with the RESTful backend was handled with axios."
                     },
                     {
                         "imageIndex": 1,

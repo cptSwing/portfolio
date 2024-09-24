@@ -12,7 +12,7 @@ const LogoHeader = () => {
             id='logo'
             className={classNames(
                 'mb-1 w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height] duration-300',
-                activePost ? 'ml-0 mr-[100%] mt-4 h-[50px] translate-x-1/2' : 'ml-0 mt-8 h-[100px] translate-x-0',
+                activePost ? 'ml-0 mr-[100%] mt-4 h-20 translate-x-1/2' : 'ml-0 mt-8 h-24 translate-x-0',
             )}
             onClick={() => {
                 store_categoryOpened(null);
