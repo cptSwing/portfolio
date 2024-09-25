@@ -14,7 +14,6 @@
         "immer": "^10.1.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-remark": "^2.1.0",
         "transition-hook": "^1.5.2",
         "yet-another-react-lightbox": "^3.21.5",
         "zustand": "^4.5.4"
@@ -35,6 +34,8 @@
         "postcss": "^8.4.47",
         "prettier": "^3.3.2",
         "prettier-plugin-tailwindcss": "^0.6.5",
+        "react-markdown": "^9.0.1",
+        "remark-breaks": "^4.0.0",
         "tailwind-scrollbar": "^3.1.0",
         "tailwindcss": "^3.4.11",
         "tailwindcss-breakpoints-inspector": "^1.1.0",
