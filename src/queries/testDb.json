@@ -662,41 +662,15 @@
         "categoryBlurb": "What's been happening lately?",
         "posts": [
             {
-                "date": "2024-09-12",
-                "images": [
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/updates1_1/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/updates1_2/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/updates1_3/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/updates1_4/900/600?grayscale"
-                    }
-                ],
+                "title": "TailwindCSS Plugin - clipInset",
+                "subTitle": "Adds TW classes for *clip-path: inset()*",
+                "titleCardBg": "https://picsum.photos/seed/updates1/500?grayscale",
+                "date": "2024-09-25",
                 "textBlocks": [
                     {
-                        "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                        "text": "So I built a little [tailwind](https://tailwindcss.com/) plugin to add css's [clip-path (inset() only, for now)](https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/inset) to the standard classes. \n\nThe initial version is [here](https://github.com/cptSwing/portfolio/blob/7aa41c26ad26be0bfb304b3b8b53bb1ddf5d478e/src/lib/tailwindClipInset.ts) - I've yet to put it through it's paces and haven't actually tried any rounding, but it's currently doing it's job on this here website, for instance :) \n\n Usage is easy: ```clip-inset-2``` or ```clip-inset-1/2``` etc will clip content on all sides according to the same values as used in tailwind's ```w-2``` or ```w-1/2``` respectively (I am using the predefined 'width' values actually). \n\n```clip-inset-t``` and ```-r```, ```-b```, ```-l``` clip the top, right, bottom left sides. ```clip-inset-x``` and ```clip-inset-y``` take care of horizontal and vertical sides."
                     }
-                ],
-                "title": "Updates 1",
-                "titleCardBg": "https://picsum.photos/seed/updates1/500?grayscale"
+                ]
             },
             {
                 "date": "2024-09-12",
