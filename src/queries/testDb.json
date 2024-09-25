@@ -662,9 +662,9 @@
         "categoryBlurb": "What's been happening lately?",
         "posts": [
             {
-                "title": "TailwindCSS Plugin - clipInset",
-                "subTitle": "Adds TW classes for *clip-path: inset()*",
-                "titleCardBg": "https://picsum.photos/seed/updates1/500?grayscale",
+                "title": "Tailwind - clipInset",
+                "subTitle": "Adds TW classes for clip-path: inset()",
+                "titleCardBg": "src/assets/images/updates/code_clipInset.jpg",
                 "date": "2024-09-25",
                 "textBlocks": [
                     {
