@@ -170,7 +170,7 @@ const CategoryCard: FC<{
                         <div className='mrkdwn z-10 select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400'>
                             <Markdown>{categoryBlurb}</Markdown>
                         </div>
-                        <div className='absolute size-full opacity-10 mask-edges-[1rem_1rem_1rem_4rem_0]'>
+                        <div className='mask-edges-24 absolute size-full opacity-10'>
                             <div className='size-full bg-cover' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
                         </div>
                     </div>
