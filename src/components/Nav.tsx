@@ -8,7 +8,7 @@ import tailwindConfig from '../../tailwind.config.ts';
 import { PostCards } from './PostCards.tsx';
 import { useDebugButton } from '../hooks/useDebugButton.ts';
 import { MENUTARGET } from '../types/enums.ts';
-import { Remark } from 'react-remark';
+import Markdown from 'react-markdown';
 
 const themeBgBase = resolveConfig(tailwindConfig).theme.colors.theme.bg.base;
 const testDbTyped = testDb as DataBase;
@@ -166,11 +166,13 @@ const CategoryCard: FC<{
             {isThisCategoryOpen && (
                 <>
                     {/* Testimonials etc: */}
-                    <div className='relative -my-2 flex h-full flex-1 items-end overflow-hidden border-l-[6px] border-theme-neutral-50 pl-4'>
-                        <div className='mrkdwn select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400'>
-                            <Remark>{categoryBlurb}</Remark>
+                    <div className='relative -my-2 flex h-full flex-1 items-end overflow-hidden border-l-[6px] border-theme-neutral-50'>
+                        <div className='mrkdwn z-10 select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400'>
+                            <Markdown>{categoryBlurb}</Markdown>
                         </div>
-                        <div className='absolute size-full bg-cover mask-edges-30' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
+                        <div className='absolute size-full opacity-10 mask-edges-[1rem_1rem_1rem_4rem_0]'>
+                            <div className='size-full bg-cover' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
+                        </div>
                     </div>
 
                     <PostCards posts={posts} />

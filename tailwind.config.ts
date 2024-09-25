@@ -71,20 +71,20 @@ export default {
     content: ['./index.html', './src/**/*.{js,ts,tsx}'],
     theme: {
         maskEdges: {
-            DEFAULT: '20 20 1',
-            0: '20 20 0',
-            10: '20 20 0.1',
-            20: '20 20 0.2',
-            25: '20 20 0.25',
-            30: '20 20 0.3',
-            40: '20 20 0.4',
-            50: '20 20 0.5',
-            60: '20 20 0.6',
-            70: '20 20 0.7',
-            75: '20 20 0.75',
-            80: '20 20 0.8',
-            90: '20 20 0.9',
-            100: '20 20 1',
+            // DEFAULT: '20 20 1',
+            // 0: '20 20 0',
+            // 10: '20 20 0.1',
+            // 20: '20 20 0.2',
+            // 25: '20 20 0.25',
+            // 30: '20 20 0.3',
+            // 40: '20 20 0.4',
+            // 50: '20 20 0.5',
+            // 60: '20 20 0.6',
+            // 70: '20 20 0.7',
+            // 75: '20 20 0.75',
+            // 80: '20 20 0.8',
+            // 90: '20 20 0.9',
+            // 100: '20 20 1',
         },
         extend: {
             spacing: {
@@ -143,15 +143,18 @@ export default {
         plugin(({ matchUtilities, theme }) => {
             matchUtilities(
                 {
-                    'mask-edges': (rangeX_rangeY_opacity: string) => {
-                        const [rangeX, rangeY, opacity] = rangeX_rangeY_opacity.split(' ', 3);
-                        const rangeXCapped = Math.max(0, Math.min(50, parseInt(rangeX)));
-                        const rangeYCapped = Math.max(0, Math.min(50, parseInt(rangeY)));
-                        const opacityCapped = Math.max(0, Math.min(1, parseFloat(opacity)));
-
+                    'mask-edges': (top_right_bottom_left_opacity: string) => {
+                        const [top, right, bottom, left, opacity] = top_right_bottom_left_opacity.split(' ', 5);
                         return {
+                            '--mask-edges-t': top,
+                            '--mask-edges-r': right,
+                            '--mask-edges-b': bottom,
+                            '--mask-edges-l': left,
+                            '--mask-edges-opacity': opacity,
+
                             'mask-composite': 'intersect',
-                            'mask-image': `linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${opacityCapped}) ${rangeXCapped}% ${100 - rangeXCapped}%, rgba(0, 0, 0, 0) 100%), linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${opacityCapped}) ${rangeYCapped}% ${100 - rangeYCapped}%, rgba(0, 0, 0, 0) 100%)`,
+                            'mask-image':
+                                'linear-gradient(to right, rgba(0, 0, 0, var(--mask-edges-opacity, 0)) 0%, rgba(0, 0, 0, 1) var(--mask-edges-l, 0%) calc(100% - var(--mask-edges-r, -100%)), rgba(0, 0, 0, var(--mask-edges-opacity, 0)) 100%), linear-gradient(to top, rgba(0, 0, 0, var(--mask-edges-opacity, 0)) 0%, rgba(0, 0, 0, 1) var(--mask-edges-b, 0%) calc(100% - var(--mask-edges-t, -100%)), rgba(0, 0, 0, var(--mask-edges-opacity, 0)) 100%)',
                         };
                     },
                 },

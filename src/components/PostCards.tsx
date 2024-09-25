@@ -4,6 +4,7 @@ import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { useZustand } from '../lib/zustand';
 import { Post } from '../types/types';
+import Markdown from 'react-markdown';
 
 const store_activePost = useZustand.getState().methods.store_activePost;
 
@@ -60,8 +61,8 @@ export const SinglePostCard: FC<{
 
             <div className='absolute top-0 size-full overflow-hidden'>
                 {/* Subtitle: */}
-                <div className='clip-inset-x-[--card-outline-width] absolute bottom-[--card-outline-width] mx-auto h-fit w-full transform-gpu truncate bg-transparent px-2 text-center text-sm text-neutral-50 transition-[background-color,opacity,color] delay-[---card-hover-delay] duration-[--card-hover-duration] group-hover/this:bg-[--card-outline-color] group-hover/this:text-theme-neutral-500 hover:delay-[calc(75ms+var(---card-hover-delay))]'>
-                    {subTitle ?? 'lol no subtitle here'}
+                <div className='absolute bottom-[--card-outline-width] mx-auto h-fit w-full transform-gpu truncate bg-transparent px-2 text-center text-sm text-neutral-50 transition-[background-color,opacity,color] delay-[---card-hover-delay] duration-[--card-hover-duration] clip-inset-x-[--card-outline-width] group-hover/this:bg-[--card-outline-color] group-hover/this:text-theme-neutral-500 hover:delay-[calc(75ms+var(---card-hover-delay))]'>
+                    <Markdown>{subTitle ?? 'lol no subtitle here'}</Markdown>
                 </div>
 
                 {/* Year Ribbon: */}
@@ -73,8 +74,7 @@ export const SinglePostCard: FC<{
 
                 {/* Image: */}
                 {titleCardBg && (
-                    <div className='group-hover/this:clip-inset-[--card-outline-width] clip-inset-0 absolute -z-10 size-full transition-[clip-path] delay-[---card-hover-delay] duration-[--card-hover-duration]'>
-                        {/* transition-[mask-image] group-hover/this:mask-edges-[2_2_1] */}
+                    <div className='absolute -z-10 size-full transition-[clip-path] delay-[---card-hover-delay] duration-[--card-hover-duration] clip-inset-0 group-hover/this:clip-inset-[--card-outline-width]'>
                         <div
                             className='h-full w-auto scale-110 transform-gpu bg-cover grayscale-[85%] transition-[transform,filter] delay-[---card-hover-delay] duration-[--card-hover-duration] group-hover/this:scale-125 group-hover/this:grayscale-0 group-hover/this:delay-0 group-hover/this:duration-[2000ms,var(--card-hover-duration)]'
                             style={{ backgroundImage: `url('${titleCardBg}')` }}
