@@ -105,7 +105,7 @@ const ContentWrapper_Test = () => {
                                                 <div
                                                     className={classNames(
                                                         'absolute bottom-0 min-w-0 bg-theme-neutral-300/60 px-4 py-1 text-center text-sm text-theme-accent-700 transition-[background-color,min-width] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 group-hover:min-w-full group-hover:bg-theme-neutral-300',
-                                                        isIndexEven ? 'mask-edges-r-2/5 left-0' : 'mask-edges-l-2/5 right-0',
+                                                        isIndexEven ? 'left-0 mask-edges-r-2/5' : 'right-0 mask-edges-l-2/5',
                                                     )}
                                                 >
                                                     {caption}
@@ -158,12 +158,18 @@ const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
 
     return toolsSorted_Memo ? (
         <div className='absolute right-0 mt-8'>
-            <div className='group/menu ml-auto flex max-w-[50%] cursor-pointer flex-col items-end justify-start overflow-hidden transition-[max-width] delay-[calc(2*var(--tools-transition-delay))] duration-[--tools-transition-duration] [--tools-transition-delay:300ms] [--tools-transition-duration:400ms] hover:max-w-full hover:delay-0'>
-                <div className='mb-1 w-full max-w-12 border-b border-b-theme-primary-50 pb-px text-right text-xs lowercase italic leading-none text-theme-primary-50 transition-[max-width] duration-[--tools-transition-duration] group-hover/menu:max-w-full'>
+            <div
+                className={
+                    'group/menu ml-auto flex max-w-[50%] cursor-pointer flex-col items-end justify-start overflow-hidden transition-[max-width] delay-[calc(2*var(--tools-transition-delay))] duration-[--tools-transition-duration] hover:max-w-full hover:delay-0' +
+                    ' ' +
+                    '[--tools-transition-delay:300ms] [--tools-transition-duration:400ms]'
+                }
+            >
+                <div className='mb-1.5 w-full max-w-12 text-nowrap border-b border-b-theme-primary-50 pb-px text-right text-xs lowercase italic leading-none text-theme-primary-50 transition-[max-width] delay-[calc(2*var(--tools-transition-delay))] duration-[--tools-transition-duration] group-hover/menu:max-w-full group-hover/menu:delay-0'>
                     Built with:
                 </div>
                 <div
-                    className='relative grid select-none grid-rows-[1fr_repeat(var(--tools-count),0.5fr)] gap-y-px border-r-2 border-r-theme-primary-50/20 py-0.5 transition-[border-right-color,grid-template-rows,row-gap] delay-[var(--tools-transition-delay),0ms] duration-[--tools-transition-duration] group-hover/menu:grid-rows-[1fr_repeat(var(--tools-count),1fr)] group-hover/menu:gap-y-0.5 group-hover/menu:border-r-transparent group-hover/menu:delay-[var(--tools-transition-delay),calc(2*var(--tools-transition-delay))]'
+                    className='relative z-10 grid select-none grid-rows-[1fr_repeat(var(--tools-count),0.5fr)] gap-y-px transition-[border-right-color,grid-template-rows,row-gap,] delay-[var(--tools-transition-delay),0ms] duration-[--tools-transition-duration] mask-edges-r-[0.25rem_0.25] group-hover/menu:grid-rows-[1fr_repeat(var(--tools-count),1fr)] group-hover/menu:gap-y-0.5 group-hover/menu:border-r-transparent group-hover/menu:delay-[var(--tools-transition-delay),calc(2*var(--tools-transition-delay))] group-hover/menu:mask-edges-r-0'
                     /* Using length -1 in variable --tools-count in order to have last element at full size, for 'stacked' look */
                     style={{ '--tools-count': toolsSorted_Memo.length - 1 } as CSSProperties}
                 >
@@ -171,14 +177,14 @@ const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
                         return (
                             <a
                                 key={tool + idx}
-                                className='group/link inline-block translate-x-[--tools-translate-x] overflow-hidden whitespace-nowrap rounded-sm border border-[--border-color] border-r-transparent border-t-transparent px-2 py-1 text-center text-2xs leading-none text-[--link-all-text-color] transition-[border-right-color,transform,border-top-color,clip-path] delay-[calc(2*var(--tools-transition-delay)),var(--tools-transition-delay),0ms] duration-[--tools-transition-duration] clip-inset-0 clip-inset-t-px [--border-color:theme(colors.theme.secondary.50)] [--link-all-text-color:theme(colors.theme.primary.50)] first:border-t-[--border-color] first:clip-inset-0 visited:text-[--link-all-text-color] group-hover/menu:translate-x-0 group-hover/menu:border-r-[--border-color] group-hover/menu:border-t-[--border-color] group-hover/menu:delay-[var(--tools-transition-delay),var(--tools-transition-delay),calc(2*var(--tools-transition-delay))] hover:bg-theme-secondary-500/50 hover:no-underline'
+                                className='group/link inline-block translate-x-[--tools-translate-x] transform-gpu overflow-hidden whitespace-nowrap rounded-sm border border-[--border-color] border-t-transparent px-2 py-1 text-center text-2xs leading-none text-[--link-all-text-color] transition-[transform,border-top-color,clip-path] delay-[var(--tools-transition-delay),0ms] duration-[--tools-transition-duration] clip-inset-0 clip-inset-t-px [--border-color:theme(colors.theme.secondary.50)] [--link-all-text-color:theme(colors.theme.primary.50)] first:border-t-[--border-color] first:clip-inset-0 visited:text-[--link-all-text-color] group-hover/menu:translate-x-0 group-hover/menu:border-t-[--border-color] group-hover/menu:delay-[var(--tools-transition-delay),calc(2*var(--tools-transition-delay))] hover:bg-theme-secondary-500/50 hover:no-underline'
                                 href={ToolsUrls[tool]}
-                                style={{ '--tools-translate-x': `${idx * 4}px` }}
+                                style={{ '--tools-translate-x': `${idx + 1 * 4}px` } as CSSProperties}
                             >
                                 {/* Clip contained text for stacked look: */}
                                 <div className='-translate-y-full transform-gpu transition-transform duration-[--tools-transition-duration] group-first/link:translate-y-0 group-hover/menu:translate-y-0 group-hover/menu:delay-[calc(2*var(--tools-transition-delay))]'>
                                     {/* Need different transition delays per transform axis, so another child element: */}
-                                    <div className='translate-x-2/3 transform-gpu transition-[transform,clip-path] delay-[calc(2*var(--tools-transition-delay))] duration-[--tools-transition-duration] clip-inset-r-1/3 group-hover/menu:translate-x-0 group-hover/menu:delay-0 group-hover/menu:clip-inset-r-0'>
+                                    <div className='translate-x-2/3 transform-gpu transition-[transform,clip-path] delay-[calc(2*var(--tools-transition-delay))] duration-[--tools-transition-duration] group-hover/menu:translate-x-0 group-hover/menu:delay-0'>
                                         {tool}
                                     </div>
                                 </div>

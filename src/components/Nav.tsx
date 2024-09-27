@@ -9,6 +9,7 @@ import { PostCards } from './PostCards.tsx';
 import { useDebugButton } from '../hooks/useDebugButton.ts';
 import { MENUTARGET } from '../types/enums.ts';
 import Markdown from 'react-markdown';
+import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
 
 const themeBgBase = resolveConfig(tailwindConfig).theme.colors.theme.bg.base;
 const testDbTyped = testDb as DataBase;
@@ -170,7 +171,7 @@ const CategoryCard: FC<{
                         <div className='mrkdwn z-10 select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400'>
                             <Markdown>{categoryBlurb}</Markdown>
                         </div>
-                        <div className='mask-edges-24 absolute size-full opacity-10'>
+                        <div className='absolute size-full opacity-10 mask-edges-24'>
                             <div className='size-full bg-cover' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
                         </div>
                     </div>
@@ -191,44 +192,39 @@ export const MenuOpenedPost: FC<{
     setLightboxTo: React.Dispatch<React.SetStateAction<number | null>>;
 }> = ({ hasImages, codeLink, setLightboxTo }) => {
     return (
-        <div className='absolute w-full -translate-y-full pb-0.5'>
-            <div className='nav-checked-width mx-auto flex h-6 justify-end space-x-1'>
+        <div className='absolute z-50 w-full -translate-y-full pb-0.5'>
+            <div className='nav-checked-width relative mx-auto flex h-6 justify-end space-x-1'>
                 {hasImages && (
                     <button
                         type='button'
-                        className='cursor-pointer border-4 border-b-0 border-theme-primary-500 bg-theme-primary-500 px-2 text-sm uppercase leading-none text-theme-accent-600 transition-colors duration-200 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:text-theme-accent-800'
+                        className='cursor-pointer bg-theme-primary-500 px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Gallery"]'
                         onClick={() => setLightboxTo(0)}
                     >
-                        Gallery
+                        <PhotoIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
                     </button>
                 )}
 
                 {codeLink && (
-                    <button
-                        type='button'
-                        className='group cursor-pointer border-4 border-b-0 border-theme-primary-500 bg-theme-primary-500 px-2 text-sm uppercase leading-none text-theme-accent-600 transition-colors duration-200 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:text-theme-accent-800'
+                    <a
+                        className='group inline-block cursor-pointer bg-theme-primary-500 px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:text-sm before:uppercase before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 after:content-none first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:no-underline hover:before:translate-y-0 hover:before:content-["View_Code"]'
+                        href={codeLink.href}
+                        target='_blank'
+                        rel='noreferrer'
                     >
-                        <a
-                            className='text-[inherit] before:content-none after:content-none hover:no-underline'
-                            href={codeLink.href}
-                            target='_blank'
-                            rel='noreferrer'
-                        >
-                            View Code
-                            <span className='absolute right-0 z-50 mt-2 hidden whitespace-nowrap text-right text-sm group-hover:block'>
-                                Link goes to {codeLink.alt} <br /> bla bla explanatory <br /> new window/tab
-                            </span>
-                        </a>
-                    </button>
+                        <CodeBracketSquareIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
+                        <span className='absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight text-theme-primary-50 transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
+                            Link goes to {codeLink.alt} <br /> bla bla explanatory <br /> new window/tab
+                        </span>
+                    </a>
                 )}
 
                 {/* TODO fade out instead of instantly closing */}
                 <button
                     type='button'
-                    className='cursor-pointer border-4 border-b-0 border-theme-primary-500 bg-theme-primary-500 px-2 text-sm uppercase leading-none text-theme-accent-600 transition-colors duration-200 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:text-theme-accent-800'
+                    className='cursor-pointer bg-theme-primary-500 p-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Close"]'
                     onClick={() => store_activePost(null)}
                 >
-                    X
+                    <XMarkIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
                 </button>
             </div>
         </div>
