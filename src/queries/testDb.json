@@ -160,43 +160,49 @@
             },
             {
                 "title": "Brotherland",
-                "titleCardBg": "https://picsum.photos/seed/brother/500?grayscale",
-                "date": "2024-09-12",
+                "subTitle": "Interviews and portraits of ex \"contract workers\" in post-GDR east Germany",
+                "titleCardBg": "src/assets/images/brotherland/brotherland_small.jpg",
+                "date": "2023-06",
+                "codeLink": {
+                    "alt": "brotherland on github.com",
+                    "href": "https://github.com/cptSwing/brotherland"
+                },
                 "images": [
                     {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/brotherland_1/900/600?grayscale"
+                        "caption": "Start",
+                        "imgUrl": "src/assets/images/brotherland/screen1_desktop.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/brotherland_2/900/600?grayscale"
+                        "caption": "Virtual Exhibit 2",
+                        "imgUrl": "src/assets/images/brotherland/screen2_desktop.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/brotherland_3/900/600?grayscale"
+                        "caption": "Interview Augusto Jone Munjunga",
+                        "imgUrl": "src/assets/images/brotherland/screen3_desktop.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/brotherland_4/900/600?grayscale"
+                        "caption": "Virtual Exhibit 3 (mobile)",
+                        "imgUrl": "src/assets/images/brotherland/screen4_mobile.jpg"
+                    },
+                    {
+                        "caption": "Menu (mobile)",
+                        "imgUrl": "src/assets/images/brotherland/screen5_mobile.jpg"
                     }
                 ],
                 "textBlocks": [
                     {
-                        "text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), an intense photo project by my dear friend [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. The project explores biographies of so-called 'Vertragsarbeiter' after the fall of the GDR, endangered by steadily mounting racism, in both word and - violent - deed.\n\nIt was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
+                        "text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), a photo project by my dear friend [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. The project explores biographies of the so-called ['Vertragsarbeiter'](https://www.politische-bildung-brandenburg.de/ausstellungen/als-arbeitskraft-willkommen) after the fall of the GDR, and their plight amid steadily worsening racism and economic turmoil. \n\nThe project was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
                     },
                     {
                         "imageIndex": 0,
-                        "text": "Since I felt I had some room to experiment with the libraries used, and I felt using react - which I'm used to - might be overkill, I went with a lightweight stack built atop. I am using [parcel](https://parceljs.org/) as bundler, and built a couple of posthtml templates with [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include). The gallery library is the aptly named [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\n[Github Repo](https://github.com/cptSwing/brotherland)"
+                        "text": "The site's ['virtual exhibits'](https://www.brotherland.info/html/virtual-exhibits/ve2.html) are inspired by the actual exhibit's various placards,\nwhile the large archive of [playable interviews](https://www.brotherland.info/html/interviews/intrvw_dhn01.html) and their transcriptions are linked to via QR code at actual exhibitions, and independantly browsable online. Short [biographies](https://www.brotherland.info/html/bio.html) of the interviewees round things off. Since the website is to be used as a companion the the photo exhibit (the aforementioned QR links to audio), it is mobile ready."
                     },
                     {
                         "imageIndex": 1,
-                        "text": "Getting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been harder without [tailwind CSS](https://tailwindcss.com/) and it's many preset classes, in this case I relied heavily on css transforms. "
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                        "text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
                     }
-                ]
+                ],
+                "toolsUsed": ["parcel", "posthtml", "tailwindcss"]
             },
             {
                 "title": "Scrollmersives",
@@ -223,6 +229,9 @@
                     }
                 ],
                 "textBlocks": [
+                    {
+                        "text": "[First Scrollmersive - strangely enough hosted at zdf.de](https://3d.zdf.de/experiences/scooter/)"
+                    },
                     {
                         "imageIndex": 0,
                         "text": "[First Scrollmersive - strangely enough hosted at zdf.de](https://3d.zdf.de/experiences/scooter/)"
@@ -342,7 +351,7 @@
                 "textBlocks": [
                     {
                         "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                        "text": "Sed mattis urna sed semper congue. [Flughafen BER in 3D](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
                     },
                     {
                         "imageIndex": 1,
@@ -353,7 +362,8 @@
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
                 ],
-                "title": "BER Tagesspiegel",
+                "title": "Tagesspiegel: BER Airport",
+                "subTitle": "Interactive fly-through of BER airport - and it's teething problems",
                 "titleCardBg": "https://picsum.photos/seed/ber/500?grayscale"
             },
             {
@@ -526,6 +536,9 @@
                 "titleCardBg": "src/assets/images/db/usm_featured_image.jpg"
             },
             {
+                "title": "Personal 3D Projects",
+                "subTitle": "Where WIP's come to die",
+                "titleCardBg": "src/assets/images/db/satellite_featured_image.jpg",
                 "date": "2024-09-12",
                 "images": [
                     {
@@ -582,10 +595,7 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ],
-                "title": "Personal 3D Projects",
-                "subTitle": "Where WIP's come to die",
-                "titleCardBg": "src/assets/images/db/satellite_featured_image.jpg"
+                ]
             },
             {
                 "date": "2024-09-12",
@@ -622,6 +632,9 @@
                 "titleCardBg": "src/assets/images/db/bbb_bnf_featured_image.jpg"
             },
             {
+                "title": "Student Projects",
+                "subTitle": "Throwback to my first steps as a game artist..",
+                "titleCardBg": "https://picsum.photos/seed/art5/500?grayscale",
                 "date": "2024-09-12",
                 "images": [
                     {
@@ -654,9 +667,7 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ],
-                "title": "Student Projects",
-                "titleCardBg": "https://picsum.photos/seed/art5/500?grayscale"
+                ]
             }
         ]
     },
@@ -671,7 +682,7 @@
                 "date": "2024-09-25",
                 "textBlocks": [
                     {
-                        "text": "So I built a little [tailwind](https://tailwindcss.com/) plugin to add css's [clip-path (inset() only, for now)](https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/inset) to the standard classes. The initial version is [here](https://github.com/cptSwing/portfolio/blob/7aa41c26ad26be0bfb304b3b8b53bb1ddf5d478e/src/lib/tailwindClipInset.ts) - I've yet to put it through it's paces and haven't actually tried any rounding, but it's currently doing it's job on this here website, for instance :) \n\n Usage is easy: ```clip-inset-2``` or ```clip-inset-1/2``` etc will clip content on all sides according to the same values as used in tailwind's ```w-2``` or ```w-1/2``` respectively (I am using the predefined 'width' values actually). \n\n```clip-inset-t``` and ```-r```, ```-b```, ```-l``` clip the top, right, bottom left sides. ```clip-inset-x``` and ```clip-inset-y``` take care of horizontal and vertical sides."
+                        "text": "So I built a little [tailwind](https://tailwindcss.com/) plugin to add css's clip-path [(inset() only, for now)](https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/inset) to the standard classes. The initial version is [here](https://github.com/cptSwing/portfolio/blob/7aa41c26ad26be0bfb304b3b8b53bb1ddf5d478e/src/lib/tailwindClipInset.ts) - I've yet to put it through it's paces and haven't actually tried any rounding, but it's currently doing it's job on this here website, for instance! \n\n Usage is easy: `clip-inset-2`, `clip-inset-1/2` etc will clip content on all sides according to the same values as used in tailwind's `w-2` or `w-1/2` respectively (I am using the predefined 'width' values actually). \n\n`clip-inset-t` and `-r`, `-b`, `-l` clip the top, right, bottom left sides. `clip-inset-x` and `clip-inset-y` take care of horizontal and vertical sides."
                     }
                 ]
             },
