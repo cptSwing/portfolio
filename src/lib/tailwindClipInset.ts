@@ -95,7 +95,7 @@ export default plugin(({ matchUtilities, theme }) => {
                 return {
                     '--tw-clip-inset-r': horizontal,
                     '--tw-clip-inset-l': horizontal,
-                    'clip-path': `inset(var(--tw-clip-inset-t, 0%) var(--tw-clip-inset-r, 0%) var(--tw-clip-inset-b, 0%) var(--tw-clip-inset-l) ${borderRadius});`,
+                    'clip-path': `inset(var(--tw-clip-inset-t, 0%) var(--tw-clip-inset-r) var(--tw-clip-inset-b, 0%) var(--tw-clip-inset-l) ${borderRadius});`,
                 };
             },
             'clip-inset-y': (insetVertical_round: string) => {
@@ -111,7 +111,7 @@ export default plugin(({ matchUtilities, theme }) => {
                 return {
                     '--tw-clip-inset-t': vertical,
                     '--tw-clip-inset-b': vertical,
-                    'clip-path': `inset(var(--tw-clip-inset-t, 0%) var(--tw-clip-inset-r, 0%) var(--tw-clip-inset-b, 0%) var(--tw-clip-inset-l) ${borderRadius});`,
+                    'clip-path': `inset(var(--tw-clip-inset-t) var(--tw-clip-inset-r, 0%) var(--tw-clip-inset-b) var(--tw-clip-inset-l, 0%) ${borderRadius});`,
                 };
             },
         },
