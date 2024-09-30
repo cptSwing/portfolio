@@ -213,7 +213,7 @@ export const MenuOpenedPost: FC<{
                     >
                         <CodeBracketSquareIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
                         <span className='absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight text-theme-primary-50 transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
-                            Link goes to {codeLink.alt} <br /> bla bla explanatory <br /> new window/tab
+                            {codeLink.alt}
                         </span>
                     </a>
                 )}

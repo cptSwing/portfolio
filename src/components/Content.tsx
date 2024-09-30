@@ -57,22 +57,22 @@ const ContentWrapper_Test = () => {
                 style={{ height: window.innerHeight - topVal - 2 }}
             >
                 {/* Floating Title: */}
-                <div className='fixed left-1/2 z-10 -translate-x-1/2 -translate-y-[60%] shadow'>
-                    <h2 className='px-8 leading-tight text-theme-neutral-50 before:absolute before:bottom-0 before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400 before:clip-inset-t-1/3'>
+                <div className='fixed left-1/2 z-10 -translate-x-1/2 -translate-y-[60%]'>
+                    <h2 className='relative px-8 text-theme-neutral-50 drop-shadow-md before:absolute before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400 before:clip-inset-t-1/4'>
                         {title}
                     </h2>
                 </div>
 
                 <div
-                    className='relative flex flex-col overflow-y-auto px-14 py-8 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)]'
+                    className='relative flex flex-col overflow-y-auto p-12 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)]'
                     style={{ height: window.innerHeight - topVal - 2 }}
                     // onBlur={() => store_activePost(null)} // TODO
                 >
                     {/* (Sub-)Header, date, "Built with" */}
-                    <div className='relative mb-8 mt-12 w-full'>
-                        <h4 className='absolute text-left italic leading-none'>{subTitle}</h4>
-                        <div className='float-right flex flex-col items-end justify-start'>
-                            <h5 className='headline-skewed-bg -mr-0.5 w-fit text-[--bg-color] no-underline'>
+                    <div className='flex w-full items-start justify-between py-12'>
+                        <h4 className='leading-none'>{subTitle}</h4>
+                        <div className='relative mt-1 flex flex-col items-end justify-start'>
+                            <h5 className='headline-bg -mr-0.5 w-fit text-[--bg-color] no-underline'>
                                 {day && `${day}.`}
                                 {month && `${month}.`}
                                 {year && `${year}`}
@@ -81,7 +81,7 @@ const ContentWrapper_Test = () => {
                         </div>
                     </div>
 
-                    <div className='flex flex-col gap-y-10'>
+                    <div className='flex flex-col gap-y-16'>
                         {/* Text/Image Blocks */}
                         {textBlocks?.map(({ text, imageIndex }, idx) => {
                             let imgUrl, caption;
@@ -94,7 +94,7 @@ const ContentWrapper_Test = () => {
                                     {imgUrl && (
                                         <div
                                             className={classNames(
-                                                'group relative basis-3/4 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400',
+                                                'group relative basis-2/3 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400',
                                                 isIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
                                             )}
                                             onClick={() => setLightboxTo(imageIndex!)}
@@ -116,15 +116,17 @@ const ContentWrapper_Test = () => {
 
                                     <div
                                         className={classNames(
-                                            'mrkdwn -mt-1 text-pretty text-justify leading-normal',
+                                            '-mt-1 text-pretty text-justify leading-normal',
                                             imgUrl ? 'flex-1' : 'mr-auto basis-4/5',
                                             isIndexEven ? 'order-1' : 'order-2',
                                             idx === 0
-                                                ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-theme-secondary-600 first-line:italic first-line:text-theme-secondary-50'
+                                                ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-theme-secondary-600 first-line:italic'
                                                 : '',
                                         )}
                                     >
-                                        <Markdown remarkPlugins={[remarkBreaks]}>{text}</Markdown>
+                                        <Markdown className='mrkdwn' remarkPlugins={[remarkBreaks]}>
+                                            {text}
+                                        </Markdown>
                                     </div>
 
                                     <br />
@@ -222,7 +224,7 @@ const RemainingImages: FC<{
                 <img
                     key={imgUrl + imgIndex}
                     src={imgUrl}
-                    className='size-full cursor-pointer object-cover outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400'
+                    className='max-h-64 w-full cursor-pointer object-cover outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400'
                     onClick={() => setLightboxTo(imgIndex)}
                 />
             ))}

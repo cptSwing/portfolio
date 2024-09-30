@@ -6,7 +6,7 @@
 
 @layer base {
     a {
-        @apply text-theme-primary-50 visited:text-theme-primary-900 hover:underline;
+        @apply text-theme-secondary-50 visited:text-theme-secondary-200 hover:underline;
     }
 
     h1 {
@@ -46,9 +46,9 @@
         @apply absolute -bottom-[--fake-border-width-side] -left-[--fake-border-width-side] -right-[--fake-border-width-side] -top-[--fake-border-width-side] bg-gradient-to-r from-[--fake-border-color] to-[--fake-border-color];
     }
 
-    .link-in-content {
-        @apply after:a-svg-mask after:ml-0.5 after:inline-block after:size-3 after:bg-current;
-    }
+    /* .link-in-content {
+        @apply after:a-svg-mask after:invisible after:-mr-1 after:mb-1 after:inline-block after:size-2 after:bg-current hover:after:visible;
+    } */
 
     .headline-bg {
         @apply after:absolute after:left-0 after:-z-10 after:size-full after:bg-theme-neutral-50;
@@ -61,7 +61,7 @@
 
 @layer utilities {
     .a-svg-mask {
-        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 23 23' stroke='currentColor'%3E%3Cpath d='M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25' /%3E%3C/svg%3E%0A");
+        mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" /></svg>');
         mask-repeat: no-repeat;
         mask-position: center;
     }
@@ -133,10 +133,10 @@
 .mrkdwn > p {
     @apply mb-6;
 }
-
+/* 
 .mrkdwn > p > a {
     @apply link-in-content;
-}
+} */
 
 .mrkdwn > h5 {
     @apply headline-skewed-bg;

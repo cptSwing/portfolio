@@ -11,8 +11,8 @@ const LogoHeader = () => {
         <header
             id='logo'
             className={classNames(
-                'mb-1 w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height] duration-300',
-                activePost ? 'ml-0 mr-[100%] mt-4 h-20 translate-x-1/2' : 'ml-0 mt-8 h-24 translate-x-0',
+                'mb-1 w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height,color] duration-300',
+                activePost ? 'ml-0 mr-[100%] mt-4 h-20 translate-x-1/2 text-theme-primary-400' : 'ml-0 mt-8 h-24 translate-x-0 text-theme-accent-400',
             )}
             onClick={() => {
                 store_categoryOpened(null);
@@ -24,7 +24,7 @@ const LogoHeader = () => {
                     <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1' className=''>
                         <tspan
                             id='tspan1'
-                            className='fill-theme-accent-400 stroke-none hover:fill-theme-accent-200'
+                            className='fill-current stroke-none'
                             style={{
                                 fontSize: `${16.9333}px`,
                                 lineHeight: 0.7,
@@ -45,7 +45,7 @@ const LogoHeader = () => {
                             Brandenburg
                         </tspan>
                         <tspan
-                            className='fill-theme-accent-700 stroke-none hover:fill-theme-accent-600'
+                            className='fill-current stroke-none'
                             style={{
                                 fontSize: `${10.5833}px`,
                                 lineHeight: 0.7,

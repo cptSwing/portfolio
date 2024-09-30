@@ -325,7 +325,7 @@
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
                 ],
-                "title": "Grundwasser",
+                "title": "Grundwasser in Berlin",
                 "titleCardBg": "https://picsum.photos/seed/wasser/500?grayscale"
             },
             {
@@ -362,12 +362,15 @@
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
                 ],
-                "title": "Tagesspiegel: BER Airport",
+                "title": "BER Airport (Tagespiegel)",
                 "subTitle": "Interactive fly-through of BER airport - and it's teething problems",
                 "titleCardBg": "https://picsum.photos/seed/ber/500?grayscale"
             },
             {
+                "title": "Stasi VR (Dt. Welle)",
+                "titleCardBg": "src/assets/images/db/stasi_featured_image.jpg",
                 "date": "2024-09-12",
+                "textBlocks": ["Stasi first image lalslalsals", "Stasi second image lalslalsals", "Stasi third image lalslalsals"],
                 "images": [
                     {
                         "caption": "stast 1k",
@@ -389,10 +392,7 @@
                         "caption": "ksdkjsdk",
                         "imgUrl": "src/assets/images/db/stasi_5.jpg"
                     }
-                ],
-                "textBlocks": ["Stasi first image lalslalsals", "Stasi second image lalslalsals", "Stasi third image lalslalsals"],
-                "title": "Stasi VR",
-                "titleCardBg": "src/assets/images/db/stasi_featured_image.jpg"
+                ]
             },
             {
                 "date": "2024-09-12",
@@ -428,7 +428,7 @@
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
                 ],
-                "title": "A 100",
+                "title": "A 100 (RBB)",
                 "titleCardBg": "src/assets/images/db/a100_featured_image.jpg"
             },
             {
@@ -531,7 +531,7 @@
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
                 ],
-                "title": "U Stadtmitte",
+                "title": "Tech.Stiftung - U6",
                 "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
                 "titleCardBg": "src/assets/images/db/usm_featured_image.jpg"
             },
