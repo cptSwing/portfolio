@@ -292,7 +292,10 @@
         "categoryBlurb": "3D All-Rounder, origins in Gaming industry",
         "posts": [
             {
-                "date": "2024-09-12",
+                "title": "Groundwater AR App",
+                "subTitle": "Learn about the water cycle & the ground below our feet",
+                "titleCardBg": "https://picsum.photos/seed/wasser/500?grayscale",
+                "date": "2022-11-03",
                 "images": [
                     {
                         "caption": "ksdkjsdk",
@@ -314,7 +317,7 @@
                 "textBlocks": [
                     {
                         "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                        "text": "[Digital Water City](http://www.digital-water.city/) [iOS App](https://apps.apple.com/us/app/grundwasser-sichtbar-machen/id1537443189) ac arcu accumsan [Kompetenzzentrum Wasser](https://kompetenz-wasser.de) et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
                     },
                     {
                         "imageIndex": 1,
@@ -324,12 +327,13 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ],
-                "title": "Grundwasser in Berlin",
-                "titleCardBg": "https://picsum.photos/seed/wasser/500?grayscale"
+                ]
             },
             {
-                "date": "2022-06-22",
+                "title": "BER Airport (Tagespiegel)",
+                "subTitle": "Interactive fly-through of BER airport - and it's teething problems",
+                "titleCardBg": "https://picsum.photos/seed/ber/500?grayscale",
+                "date": "2021-09-18",
                 "images": [
                     {
                         "caption": "ksdkjsdk",
@@ -351,7 +355,7 @@
                 "textBlocks": [
                     {
                         "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Flughafen BER in 3D](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                        "text": "Winner of the [\"Medienpreis Luft- und Raumfahrt\"](https://www.medienpreis-luft-und-raumfahrt.de/preisverleihung-2021/), Hendrik Lehmann and his team at Tagesspiegel also won the [\"Deutsche Reporterpreis\" (Multimedia)](https://x.com/reporterforum/status/1467950400250732549) with this project. [Flughafen BER in 3D](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
                     },
                     {
                         "imageIndex": 1,
@@ -361,10 +365,7 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ],
-                "title": "BER Airport (Tagespiegel)",
-                "subTitle": "Interactive fly-through of BER airport - and it's teething problems",
-                "titleCardBg": "https://picsum.photos/seed/ber/500?grayscale"
+                ]
             },
             {
                 "title": "Stasi VR (Dt. Welle)",
@@ -502,7 +503,10 @@
                 "titleCardBg": "https://picsum.photos/seed/art4/500?grayscale"
             },
             {
-                "date": "2024-09-12",
+                "title": "Stadtmitte in VR",
+                "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
+                "titleCardBg": "src/assets/images/db/usm_featured_image.jpg",
+                "date": "2016-08-17",
                 "images": [
                     {
                         "imgUrl": "src/assets/images/db/usm_3.jpg"
@@ -520,7 +524,7 @@
                 "textBlocks": [
                     {
                         "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                        "text": "Technologiestiftung Berlin. [Github repo](https://github.com/VRagments/StadtmitteVR) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
                     },
                     {
                         "imageIndex": 1,
@@ -530,10 +534,7 @@
                         "imageIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ],
-                "title": "Tech.Stiftung - U6",
-                "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
-                "titleCardBg": "src/assets/images/db/usm_featured_image.jpg"
+                ]
             },
             {
                 "title": "Personal 3D Projects",
