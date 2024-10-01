@@ -368,11 +368,14 @@
                 ]
             },
             {
-                "title": "Stasi VR (Dt. Welle)",
+                "title": "StasiVR (Deutschlandfunk)",
+                "subTitle": "Experiencing Stasi interrogations with VR",
                 "titleCardBg": "src/assets/images/db/stasi_featured_image.jpg",
-                "date": "2024-09-12",
-                "textBlocks": ["Stasi first image lalslalsals", "Stasi second image lalslalsals", "Stasi third image lalslalsals"],
+                "date": "2017",
                 "images": [
+                    {
+                        "imgUrl": "https://www.youtube.com/watch?v=1zk0nEt0ma8"
+                    },
                     {
                         "caption": "stast 1k",
                         "imgUrl": "src/assets/images/db/stasi_1.jpg"
@@ -393,47 +396,101 @@
                         "caption": "ksdkjsdk",
                         "imgUrl": "src/assets/images/db/stasi_5.jpg"
                     }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "StasiVR is another VR app for [Cardboard](https://vr.google.com/cardboard), built by [Vragments](http://www.vragments.com) and myself (3D content) for [Deutschlandfunk Kultur](https://www.deutschlandfunkkultur.de/), working together with Jana Wuttke, a [radio journalist](https://www.deutschlandfunkkultur.de/verhoere-als-virtual-reality-ein-ganz-andere-form-von-100.html). It places the user in an authentically recreated Stasi interrogation room, playing actual recordings of interrogations and at times injecting necessary journalistic context."
+                    },
+                    {
+                        "imageIndex": 5,
+                        "text": "Using dozens of photographs from the Stasi museum in Berlin, as well as results from Jana's research, I faithfully recreated the interrogation room, within the usual constraints one encounters when developing for mobile VR.\n\nEven so, the clear-cut and smaller scope allowed for some effects, such as the still-smoldering cigarette, as well as a post-processing effect to visually separate the two people in the room from the surroundings.\n\nMost of objects seen are uniquely unwrapped - and sparsely textured, for a \"muted\" look.\n\nWe brought everything together in the Unity game engine, which also provided a fairly easy way of deploying to mobile."
+                    },
+                    {
+                        "imageIndex": 0,
+                        "text": "While Deutschlandfunk's blog seems to have been taken offline at some point, the minisite for the project can be still be accessed [here (web archive)](https://web.archive.org/web/20231101111232/http://blogs.deutschlandradiokultur.de/stasiverhoer/).\nSurprisingly, the embedded video on the archive site does still work and gives a good first impression.\n\nEmbedded next to this text is a very short teaser of an unfinished version."
+                    },
+                    {
+                        "text": "Time and budget constraints meant that this project couldn't be developed into a more comprehensive app detailing the Stasi's interrogation methods, but teaching staff apparently still use it to this day.\n\nFor the project this VR app was a part of, Jana Wuttke and her colleague Martin Hartwig were nominated for the [\"Deutscher Radiopreis\"](http://www.deutscher-radiopreis.de/radiopreis/gala_2017/nominierte/Nominiert-in-der-Kategorie-Beste-Innovation,innovation136.html) (2017, \"Best innovation\"), and received the [\"Crossmediapreis\" 2018](https://web.archive.org/web/20221006030907/https://www.bremische-landesmedienanstalt.de/media-news/crossmediapreis-2018-unsere-preistraeger) from radio bremen.\n\n And here's another review by Deutschlandfunk: [Stasi-Verhör zum Nachempfinden](https://www.deutschlandfunk.de/virtual-reality-stasi-verhoer-zum-nachempfinden-100.html)"
+                    }
                 ]
             },
             {
-                "date": "2024-09-12",
+                "title": "A 100 (RBB)",
+                "subTitle": "A 360° & VR experience for rbb|24 news",
+                "titleCardBg": "src/assets/images/db/a100_featured_image.jpg",
+                "date": "2016-06-20",
                 "images": [
                     {
-                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://www.youtube.com/watch?v=x0uHyIeo3Cw"
+                    },
+                    {
+                        "caption": "The \"anchor\" - or hub - where different branches in the story extend from.",
                         "imgUrl": "src/assets/images/db/a100_1.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Geometry visible underneath",
                         "imgUrl": "src/assets/images/db/a100_2.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
                         "imgUrl": "src/assets/images/db/a100_3.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
                         "imgUrl": "src/assets/images/db/a100_4.jpg"
                     }
                 ],
                 "textBlocks": [
                     {
+                        "text": "A mobile VR project about the continuing construction of the A-100 highway in and around Berlin, this time for [Rundfunk Berlin Brandenburg](http://www.rbb-online.de) and [Lorenz Matzat](https://www.datenjournalist.de/), as well as [Vragments](http://www.vragments.com). Funding was also provided by [MIZ Babelsberg](https://www.miz-babelsberg.de/foerderung/allgemeines.html). It combined interviews, videos, and 360- as well as 3d content."
+                    },
+                    {
                         "imageIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                        "text": "While working with the regular restrictions for mobile VR ten years ago, there were additional challenges in displaying the tunnel under the existing 3d model of the city, splicing 2d sketches into 360 panoramic images, to name just a few.\n\nStill, it was a very enjoyable project to be a part of."
                     },
                     {
                         "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                        "text": "The rbb has more information [here](https://www.rbb-online.de/unternehmen/der_rbb/profil/digitale_produkte/360vr/a100-vr.html), the apple [app store link](https://apps.apple.com/us/app/a100-vr/id1134883353?l=de&ls=1) even works.\n\nUsing Unity webplayer (not ultra fast, I'm afraid), the experience can be loaded in your browser as well: [Das A100-Virtual-Reality-Modell für den Browser](https://www.rbb24.de/politik/beitrag/2022/03/a100vr-web.html)"
                     }
-                ],
-                "title": "A 100 (RBB)",
-                "titleCardBg": "src/assets/images/db/a100_featured_image.jpg"
+                ]
             },
             {
-                "date": "2024-09-12",
+                "title": "Stadtmitte in VR",
+                "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
+                "titleCardBg": "src/assets/images/db/usm_featured_image.jpg",
+                "date": "2016",
+                "toolsUsed": ["Unity Engine", "3ds Max", "Substance Designer"],
+                "images": [
+                    {
+                        "imgUrl": "src/assets/images/db/usm_7.jpg"
+                    },
+                    {
+                        "imgUrl": "https://www.youtube.com/watch?v=_FiuSNyn1QM"
+                    },
+                    {
+                        "imgUrl": "src/assets/images/db/usm_3.jpg"
+                    },
+                    {
+                        "imgUrl": "src/assets/images/db/usm_4.jpg"
+                    },
+                    {
+                        "imgUrl": "src/assets/images/db/usm_6.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "[Technologiestiftung Berlin](https://www.technologiestiftung-berlin.de/), [BVG](http://www.bvg.de), [Vragments](http://www.vragments.com) and myself as freelancer built a mobile VR game for [Google Cardboards](https://vr.google.com/cardboard/). It was first presented at [Lange Nacht der Wissenschaften](https://www.technologiestiftung-berlin.de/profil/blog/virtuell-durch-die-lange-nacht)."
+                    },
+                    {
+                        "imageIndex": 0,
+                        "text": "Despite being a smaller project, it had some interesting challenges and restrictions.\n\nI enjoyed being able to build the U-Bahn station \"Stadtmitte\" from BVG's original plans, for instance.\nThe combination of purely mobile platforms and VR imposed some very strict - and fun - limits on texture and geometry budgets. \n\nVR applications render the 3d content twice, from slightly different perspectives, once for each eye. Additionally, framerates seem more important than usual as low or choppy FPS can cause vertigo or motion sickness."
+                    },
+                    {
+                        "imageIndex": 1,
+                        "text": "Lighting and shadows were almost exlusively static/baked, with carefully edited lightmaps to give the best resolution at spots that deserved it.\nMost every surface you see is a tiling texture, with painstakingly adjusted texture atlasses to keep down texture fetches.\nStill, we got away with PBR lighting - and the inclusion of normal mapping in select parts of the map allowed for some local fine detail.\n\n Vragments published the source [here](https://github.com/VRagments/StadtmitteVR), I am afraid it's long gone from any app stores. The App was built with the Unity game engine, and the 3d content using 3d Studio Max."
+                    }
+                ]
+            },
+            {
+                "date": "2014",
                 "images": [
                     {
                         "caption": "Civilian Equipment 1",
@@ -501,40 +558,6 @@
                 ],
                 "title": "Emergency 5",
                 "titleCardBg": "https://picsum.photos/seed/art4/500?grayscale"
-            },
-            {
-                "title": "Stadtmitte in VR",
-                "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
-                "titleCardBg": "src/assets/images/db/usm_featured_image.jpg",
-                "date": "2016-08-17",
-                "images": [
-                    {
-                        "imgUrl": "src/assets/images/db/usm_3.jpg"
-                    },
-                    {
-                        "imgUrl": "src/assets/images/db/usm_4.jpg"
-                    },
-                    {
-                        "imgUrl": "src/assets/images/db/usm_6.jpg"
-                    },
-                    {
-                        "imgUrl": "src/assets/images/db/usm_7.jpg"
-                    }
-                ],
-                "textBlocks": [
-                    {
-                        "imageIndex": 0,
-                        "text": "Technologiestiftung Berlin. [Github repo](https://github.com/VRagments/StadtmitteVR) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "imageIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "imageIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
             },
             {
                 "title": "Personal 3D Projects",
@@ -636,7 +659,7 @@
                 "title": "Student Projects",
                 "subTitle": "Throwback to my first steps as a game artist..",
                 "titleCardBg": "https://picsum.photos/seed/art5/500?grayscale",
-                "date": "2024-09-12",
+                "date": "2012",
                 "images": [
                     {
                         "caption": "ksdkjsdk",

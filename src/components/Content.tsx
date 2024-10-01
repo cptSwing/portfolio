@@ -99,17 +99,30 @@ const ContentWrapper_Test = () => {
                                             )}
                                             onClick={() => setLightboxTo(imageIndex!)}
                                         >
-                                            <img src={imgUrl} className='w-full object-cover' />
-
-                                            {caption && (
-                                                <div
-                                                    className={classNames(
-                                                        'absolute bottom-0 min-w-0 bg-theme-neutral-300/60 px-4 py-1 text-center text-sm text-theme-accent-700 transition-[background-color,min-width] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 group-hover:min-w-full group-hover:bg-theme-neutral-300',
-                                                        isIndexEven ? 'left-0 mask-edges-r-2/5' : 'right-0 mask-edges-l-2/5',
+                                            {imgUrl.includes('youtube.com') ? (
+                                                <iframe
+                                                    width='100%'
+                                                    height='400'
+                                                    // This will break sooner than later
+                                                    src={imgUrl.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')}
+                                                    title='YouTube video player'
+                                                    referrerPolicy='strict-origin-when-cross-origin'
+                                                    allowFullScreen
+                                                ></iframe>
+                                            ) : (
+                                                <>
+                                                    <img src={imgUrl} className='w-full object-cover' />
+                                                    {caption && (
+                                                        <div
+                                                            className={classNames(
+                                                                'absolute bottom-0 min-w-0 bg-theme-neutral-300/60 px-4 py-1 text-center text-sm text-theme-accent-700 transition-[background-color,min-width] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 group-hover:min-w-full group-hover:bg-theme-neutral-300',
+                                                                isIndexEven ? 'left-0 mask-edges-r-2/5' : 'right-0 mask-edges-l-2/5',
+                                                            )}
+                                                        >
+                                                            {caption}
+                                                        </div>
                                                     )}
-                                                >
-                                                    {caption}
-                                                </div>
+                                                </>
                                             )}
                                         </div>
                                     )}
@@ -142,7 +155,7 @@ const ContentWrapper_Test = () => {
                     open={Number.isInteger(lightboxTo)}
                     index={lightboxTo ?? 0}
                     close={() => setLightboxTo(null)}
-                    slides={images?.map(({ imgUrl, caption }) => ({ src: imgUrl, title: caption }))}
+                    slides={images?.filter(({ imgUrl }) => !imgUrl.includes('youtube.com')).map(({ imgUrl, caption }) => ({ src: imgUrl, title: caption }))}
                     plugins={[Captions]}
                 />
             </div>
