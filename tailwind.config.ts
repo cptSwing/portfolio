@@ -1,5 +1,4 @@
 import colors from 'tailwindcss/colors';
-import plugin from 'tailwindcss/plugin';
 import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
 import tailwindScrollbar from 'tailwind-scrollbar';
 import tailwindClipInset from './src/lib/tailwindClipInset';
