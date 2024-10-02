@@ -1,5 +1,5 @@
 import { useIntersectionObserver } from '@uidotdev/usehooks';
-import { CSSProperties, FC, useCallback, useMemo } from 'react';
+import { CSSProperties, FC, useCallback, useMemo, useState } from 'react';
 import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { useZustand } from '../lib/zustand';
@@ -12,7 +12,7 @@ export const PostCards: FC<{
     posts: Post[];
 }> = ({ posts }) => {
     return (
-        <div className='scroll-gutter h-full w-1/2 -scale-x-100 overflow-y-auto overflow-x-hidden scrollbar-thin'>
+        <div className='scroll-gutter h-full basis-1/2 -scale-x-100 overflow-y-scroll scrollbar-thin'>
             <div className='pointer-events-none flex -scale-x-100 flex-col gap-y-6 pb-2 pl-4 pr-2 pt-3'>
                 {posts.map((post, idx) => (
                     <SinglePostCard key={post.title + idx} post={post} index={idx} />
@@ -49,7 +49,7 @@ export const SinglePostCard: FC<{
             style={entry?.isIntersecting ? ({ '--tw-translate-x': 0 } as CSSProperties) : undefined}
             /* NOTE Post Card width & height set here: */
             className={classNames(
-                'group/this pointer-events-auto relative w-full min-w-116 translate-x-full transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--card-outline-color] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[---card-hover-delay] duration-[--card-hover-duration] [---card-hover-delay:100ms] [--card-hover-duration:200ms] [--card-outline-color:theme(colors.theme.neutral.50)] [--card-outline-width:6px] hover:-outline-offset-[calc(2px+var(--card-outline-width))]',
+                'group/this pointer-events-auto relative translate-x-full transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--card-outline-color] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[---card-hover-delay] duration-[--card-hover-duration] [---card-hover-delay:100ms] [--card-hover-duration:200ms] [--card-outline-color:theme(colors.theme.neutral.50)] [--card-outline-width:6px] hover:-outline-offset-[calc(2px+var(--card-outline-width))]',
                 titleCardBg ? 'h-52' : 'h-24',
             )}
             onClick={() => store_activePost(post)}

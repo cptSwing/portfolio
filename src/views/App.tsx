@@ -3,19 +3,22 @@ import LogoHeader from '../components/LogoHeader';
 import Nav from '../components/Nav';
 import SocialsFooter from '../components/SocialsFooter';
 import Background from '../components/Background';
+import BarWrapped from '../components/BarWrapped';
 
 const App = () => {
     return (
         <>
-            {/* Fixed Position, Background: */}
-            <Background />
-
-            <div className='nav-checked-width mx-auto flex flex-col items-center justify-start'>
+            <div className='nav-checked-width relative mx-auto flex h-[98dvh] flex-col items-center justify-start [--header-height:8dvh] [--header-transition-duration:300ms]'>
                 <LogoHeader />
-                <Content />
-                <Nav />
+                <BarWrapped>
+                    <Nav />
+                    <Content />
+                </BarWrapped>
                 <SocialsFooter />
             </div>
+
+            {/* Fixed Position, Background: */}
+            <Background />
         </>
     );
 };

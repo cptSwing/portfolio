@@ -8,9 +8,17 @@ export type ZustandStore = {
         activePost: Post | null;
     };
 
+    layout: {
+        elem: HTMLDivElement | null;
+        distance: {
+            top: number;
+        };
+    };
+
     methods: {
         store_activeCategory: (opened: MENU_CATEGORY | null) => void;
         store_activePost: (post: Post | null) => void;
+        store_distance: (distance: number) => void;
     };
 };
 

@@ -11,15 +11,19 @@ const LogoHeader = () => {
         <header
             id='logo'
             className={classNames(
-                'mb-1 w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height,color] duration-300',
-                activePost ? 'ml-0 mr-[100%] mt-4 h-20 translate-x-1/2 text-theme-primary-400' : 'ml-0 mt-8 h-24 translate-x-0 text-theme-accent-400',
+                'w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height,color] duration-[--header-transition-duration]',
+                activePost ? 'ml-0 mr-[100%] h-[--header-height] translate-x-1/2 text-theme-primary-400' : 'ml-0 h-[10dvh] translate-x-0 text-theme-accent-400',
             )}
+            // onTransitionEnd={({ currentTarget }) => {
+            //     const { height, top } = currentTarget.getBoundingClientRect();
+            //     store_distanceToTop(Math.ceil(height + top));
+            // }}
             onClick={() => {
                 store_activeCategory(null);
                 store_activePost(null);
             }}
         >
-            <svg height='100%' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
+            <svg height='100%' className='pt-4' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
                 <g id='layer1' transform='translate(-77.964769,-127.41715)'>
                     <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1' className=''>
                         <tspan

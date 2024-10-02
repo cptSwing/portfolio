@@ -13,27 +13,9 @@ import parseDateString from '../lib/parseDateString';
 import { ToolsUrls } from '../types/enums';
 
 const Content = () => {
-    return (
-        <>
-            <main className={classNames('relative z-50 -mb-[2px] flex justify-center')}>
-                <ContentWrapper_Test />
-            </main>
-        </>
-    );
-};
-
-export default Content;
-
-const ContentWrapper_Test = () => {
     const activePost = useZustand((state) => state.nav.activePost);
-    const [topVal, setTopVal] = useState<number>(0);
-    const [lightboxTo, setLightboxTo] = useState<number | null>(null);
 
-    const contentMounted_RefCb = useCallback((node: HTMLElement | null) => {
-        if (node) {
-            setTopVal(node.getBoundingClientRect().top);
-        }
-    }, []);
+    const [lightboxTo, setLightboxTo] = useState<number | null>(null);
 
     const { title, subTitle, toolsUsed, showCases, textBlocks, codeLink, date } = activePost ?? {};
 
@@ -63,124 +45,129 @@ const ContentWrapper_Test = () => {
     const date_Memo = useMemo(() => parseDateString(date ?? ''), [date]);
     const { year, month, day } = date_Memo;
 
-    return activePost ? (
-        <div
-            ref={contentMounted_RefCb}
-            className={classNames(
-                'transform-[width,opacity] absolute bg-theme-bg-base drop-shadow-lg',
-                activePost ? 'z-10 h-fit w-screen opacity-100' : '-z-10 h-0 w-full opacity-10',
-            )}
-        >
-            <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
-
+    return (
+        <main className='size-full bg-theme-bg-base'>
+            {/* Floating Title: */}
             <div
-                className='nav-checked-width relative mx-auto flex flex-col overflow-hidden bg-[--bg-color] scrollbar-thumb-theme-primary-400 [--bg-color:theme(colors.theme.bg.lighter)]'
-                style={{ height: window.innerHeight - topVal - 2 }}
+                className={classNames(
+                    'nav-checked-width pointer-events-none fixed bottom-full left-0 right-0 z-20 mx-auto flex items-end justify-center transition-[top]',
+                    activePost ? 'top-[calc(var(--header-height)-var(--top-bottom-bar-height))]' : 'top-0 delay-[--header-transition-duration] duration-0',
+                )}
             >
-                {/* Floating Title: */}
-                <div className='fixed left-1/2 z-10 -translate-x-1/2 -translate-y-[60%]'>
-                    <h2 className='relative px-8 text-theme-neutral-50 drop-shadow-md before:absolute before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400 before:clip-inset-t-1/4'>
-                        {title}
-                    </h2>
-                </div>
-
-                <div
-                    className='relative flex flex-col overflow-y-auto p-12 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)]'
-                    style={{ height: window.innerHeight - topVal - 2 }}
-                    // onBlur={() => store_activePost(null)} // TODO
-                >
-                    {/* (Sub-)Header, date, "Built with" */}
-                    <div className='flex w-full items-start justify-between py-12'>
-                        <h4 className='leading-none'>{subTitle}</h4>
-                        <div className='relative mt-1 flex flex-col items-end justify-start'>
-                            <h5 className='headline-bg -mr-0.5 w-fit text-[--bg-color] no-underline'>
-                                {day && `${day}.`}
-                                {month && `${month}.`}
-                                {year && `${year}`}
-                            </h5>
-                            <ToolsUsed tools={toolsUsed} />
-                        </div>
-                    </div>
-
-                    <div className='flex flex-col gap-y-16'>
-                        {/* Text/Image Blocks */}
-                        {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
-                            const isBlockIndexEven = idx % 2 === 0;
-                            const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
-
-                            return (
-                                <div key={`${idx}-${isBlockIndexEven}`} className='flex items-start justify-between'>
-                                    {showCase && (
-                                        <div
-                                            className={classNames(
-                                                'group relative basis-2/3 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400',
-                                                isBlockIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
-                                            )}
-                                            onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}
-                                        >
-                                            {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
-                                                <iframe
-                                                    width='100%'
-                                                    height='400'
-                                                    src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace(
-                                                        'https://www.youtube.com/watch?v=',
-                                                        'https://www.youtube.com/embed/',
-                                                    )}
-                                                    title='YouTube video player'
-                                                    referrerPolicy='strict-origin-when-cross-origin'
-                                                    allowFullScreen
-                                                ></iframe>
-                                            ) : (
-                                                <img src={(showCase as Post_ShowCase_Image).imgUrl} className='w-full object-cover' />
-                                            )}
-                                            {showCase.caption && (
-                                                <div
-                                                    className={classNames(
-                                                        'absolute bottom-0 min-w-0 bg-theme-neutral-300/60 px-4 py-1 text-center text-sm text-theme-accent-700 transition-[background-color,min-width] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 group-hover:min-w-full group-hover:bg-theme-neutral-300',
-                                                        isBlockIndexEven ? 'left-0 mask-edges-r-2/5' : 'right-0 mask-edges-l-2/5',
-                                                    )}
-                                                >
-                                                    {showCase.caption}
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-
-                                    <div
-                                        className={classNames(
-                                            '-mt-1 text-pretty text-justify leading-normal',
-                                            showCase ? 'flex-1' : 'mr-auto basis-4/5',
-                                            isBlockIndexEven ? 'order-1' : 'order-2',
-                                            idx === 0
-                                                ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-theme-secondary-600 first-line:italic'
-                                                : '',
-                                        )}
-                                    >
-                                        <Markdown className='mrkdwn' remarkPlugins={[remarkBreaks]}>
-                                            {text}
-                                        </Markdown>
-                                    </div>
-
-                                    <br />
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks!} setLightBoxSlide={setLightBoxSlide_Cb} />}
-                </div>
-
-                <Lightbox
-                    open={Number.isInteger(lightboxTo)}
-                    index={lightboxTo ?? 0}
-                    close={() => setLightboxTo(null)}
-                    slides={filteredImages_Memo}
-                    plugins={[Captions]}
+                <h2 className='translate-y-1/2 px-8 text-theme-neutral-50 drop-shadow-md before:absolute before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400 before:clip-inset-t-[30%]'>
+                    {title}
+                </h2>
+                <MenuOpenedPost
+                    classNames={classNames('transition-[right] duration-[--header-transition-duration]', activePost ? 'right-0 ' : 'right-1/2 ')}
+                    hasImages={showCases ? true : false}
+                    codeLink={codeLink}
+                    setLightboxTo={setLightboxTo}
                 />
             </div>
-        </div>
-    ) : null;
+
+            {activePost ? (
+                <div className='nav-checked-width mx-auto flex h-full flex-col bg-[--bg-color] [--bg-color:theme(colors.theme.bg.lighter)]'>
+                    <div
+                        className='scroll-gutter-both relative flex flex-col overflow-y-auto p-12 scrollbar-thin scrollbar-thumb-theme-primary-400 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)]'
+                        // onBlur={() => store_activePost(null)} // TODO
+                    >
+                        {/* (Sub-)Header, date, "Built with" */}
+                        <div className='flex w-full items-start justify-between py-12'>
+                            <h4 className='leading-none'>{subTitle}</h4>
+                            <div className='relative mt-1 flex flex-col items-end justify-start'>
+                                <h5 className='headline-bg -mr-0.5 w-fit text-[--bg-color] no-underline'>
+                                    {day && `${day}.`}
+                                    {month && `${month}.`}
+                                    {year && `${year}`}
+                                </h5>
+                                <ToolsUsed tools={toolsUsed} />
+                            </div>
+                        </div>
+
+                        <div className='flex flex-col gap-y-16'>
+                            {/* Text/Image Blocks */}
+                            {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
+                                const isBlockIndexEven = idx % 2 === 0;
+                                const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
+
+                                return (
+                                    <div key={`${idx}-${isBlockIndexEven}`} className='flex items-start justify-between'>
+                                        {showCase && (
+                                            <div
+                                                className={classNames(
+                                                    'group relative basis-2/3 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400',
+                                                    isBlockIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
+                                                )}
+                                                onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}
+                                            >
+                                                {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
+                                                    <iframe
+                                                        width='100%'
+                                                        height='400'
+                                                        src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace(
+                                                            'https://www.youtube.com/watch?v=',
+                                                            'https://www.youtube.com/embed/',
+                                                        )}
+                                                        title='YouTube video player'
+                                                        referrerPolicy='strict-origin-when-cross-origin'
+                                                        allowFullScreen
+                                                    />
+                                                ) : (
+                                                    <img src={(showCase as Post_ShowCase_Image).imgUrl} className='w-full object-cover' />
+                                                )}
+                                                {showCase.caption && (
+                                                    <div
+                                                        className={classNames(
+                                                            'absolute bottom-0 min-w-0 bg-theme-neutral-300/60 px-4 py-1 text-center text-sm text-theme-accent-700 transition-[background-color,min-width] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 group-hover:min-w-full group-hover:bg-theme-neutral-300',
+                                                            isBlockIndexEven ? 'left-0 mask-edges-r-2/5' : 'right-0 mask-edges-l-2/5',
+                                                        )}
+                                                    >
+                                                        {showCase.caption}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        <div
+                                            className={classNames(
+                                                '-mt-1 text-pretty text-justify leading-normal',
+                                                showCase ? 'flex-1' : 'mr-auto basis-4/5',
+                                                isBlockIndexEven ? 'order-1' : 'order-2',
+                                                idx === 0
+                                                    ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-theme-secondary-600 first-line:italic'
+                                                    : '',
+                                            )}
+                                        >
+                                            <Markdown className='mrkdwn' remarkPlugins={[remarkBreaks]}>
+                                                {text}
+                                            </Markdown>
+                                        </div>
+
+                                        <br />
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks!} setLightBoxSlide={setLightBoxSlide_Cb} />}
+                    </div>
+
+                    <Lightbox
+                        open={Number.isInteger(lightboxTo)}
+                        index={lightboxTo ?? 0}
+                        close={() => setLightboxTo(null)}
+                        slides={filteredImages_Memo}
+                        plugins={[Captions]}
+                    />
+                </div>
+            ) : (
+                <></>
+            )}
+        </main>
+    );
 };
+
+export default Content;
 
 const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
     const toolsSorted_Memo = useMemo(() => {

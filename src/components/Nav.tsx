@@ -19,8 +19,9 @@ const store_activeCategory = useZustand.getState().methods.store_activeCategory;
 const MENU_CATEGORY_values = Object.values(MENU_CATEGORY);
 
 const Nav = () => {
-    const activePost = useZustand((state) => state.nav.activePost);
     const activeCategory = useZustand((state) => state.nav.activeCategory);
+    const activePost = useZustand((state) => state.nav.activePost);
+
     const openedIndex = useMemo(() => {
         if (activeCategory) {
             const index = MENU_CATEGORY_values.indexOf(activeCategory);
@@ -31,45 +32,25 @@ const Nav = () => {
     }, [activeCategory]);
 
     return (
-        <nav id='nav-cards-wrapper' className={classNames('flex min-h-168 flex-col items-center', activePost ? 'justify-between' : 'justify-center')}>
-            {/* Top Bar: */}
-            <div
-                className={classNames(
-                    'h-1 transition-[width,background-color,margin] duration-300',
-                    activeCategory ? 'mb-4' : 'mb-2',
-                    activePost ? 'w-screen bg-theme-primary-500' : 'w-full bg-theme-secondary-400',
-                )}
-            />
-
-            {/* Category Cards: */}
-            <div
-                className={classNames(
-                    'grid transition-[width,grid-template-columns,column-gap] duration-700',
-                    activeCategory ? 'nav-checked-width gap-x-0.5' : 'nav-unchecked-width gap-x-1',
-                )}
-                style={{
-                    gridTemplateColumns: MENU_CATEGORY_values.map((target) => (target === activeCategory ? '15fr' : '1fr')).join(' '),
-                }}
-            >
-                {MENU_CATEGORY_values.map((MENU_CATEGORY, idx) => (
-                    <CategoryCard
-                        key={MENU_CATEGORY + idx}
-                        cardCategory={MENU_CATEGORY}
-                        cardData={testDbTyped[MENU_CATEGORY]}
-                        categoryIndex={idx}
-                        openedIndex={openedIndex}
-                    />
-                ))}
-            </div>
-
-            {/* Top Bar: */}
-            <div
-                className={classNames(
-                    'h-1 transition-[width,background-color,margin] delay-200 duration-200',
-                    activeCategory ? 'mt-4' : 'mt-2',
-                    activePost ? 'w-screen bg-theme-primary-500' : 'w-full bg-theme-secondary-400',
-                )}
-            />
+        <nav
+            className={classNames(
+                'mx-auto grid h-full transition-[width,grid-template-columns,column-gap] duration-700',
+                activeCategory ? 'nav-checked-width gap-x-px' : 'nav-unchecked-width gap-x-1',
+                activePost ? 'absolute left-0 right-0 -z-10' : 'z-0 block',
+            )}
+            style={{
+                gridTemplateColumns: MENU_CATEGORY_values.map((target) => (target === activeCategory ? '15fr' : '1fr')).join(' '),
+            }}
+        >
+            {MENU_CATEGORY_values.map((MENU_CATEGORY, idx) => (
+                <CategoryCard
+                    key={MENU_CATEGORY + idx}
+                    cardCategory={MENU_CATEGORY}
+                    cardData={testDbTyped[MENU_CATEGORY]}
+                    categoryIndex={idx}
+                    openedIndex={openedIndex}
+                />
+            ))}
         </nav>
     );
 };
@@ -138,12 +119,12 @@ const CategoryCard: FC<{
             ref={refCb}
             /* NOTE Fixed Widths (opened) of Category Card here! */
             className={classNames(
-                'group/category pointer-events-auto relative flex h-156 w-full cursor-pointer items-end justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,height] duration-[50ms,500ms,500ms]',
+                'group/category pointer-events-auto relative flex transform-gpu cursor-pointer items-end justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
                 isThisCategoryOpen
-                    ? '-my-2 h-160 bg-theme-primary-300'
+                    ? '!scale-y-100 bg-theme-primary-300'
                     : activeCategory
-                      ? 'bg-theme-primary-600 hover:bg-theme-primary-500'
-                      : 'bg-theme-primary-600 hover:bg-theme-primary-200',
+                      ? 'scale-y-[.99] bg-theme-primary-600 hover:bg-theme-primary-500'
+                      : 'scale-y-100 bg-theme-primary-600 hover:bg-theme-primary-200',
             )}
             onClick={() => store_activeCategory(isThisCategoryOpen ? null : cardCategory)}
             style={{
@@ -166,21 +147,27 @@ const CategoryCard: FC<{
                 {cardCategory}
             </h1>
 
-            {isThisCategoryOpen && (
-                <>
-                    {/* Testimonials etc: */}
-                    <div className='relative -my-2 flex h-full flex-1 items-end overflow-hidden border-l-[6px] border-theme-neutral-50'>
-                        <div className='mrkdwn z-10 select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400'>
-                            <Markdown>{categoryBlurb}</Markdown>
-                        </div>
-                        <div className='absolute size-full opacity-10 mask-edges-24'>
-                            <div className='size-full bg-cover' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
-                        </div>
-                    </div>
+            {/* Testimonials etc: */}
+            <div
+                className={classNames(
+                    'relative -my-2 flex basis-1/2 items-end overflow-hidden border-l-[6px] border-theme-neutral-50 transition-[height] duration-300',
+                    isThisCategoryOpen ? 'h-full' : activeCategory ? 'h-0' : 'h-0 group-hover/category:!h-1/4',
+                )}
+            >
+                <div
+                    className={classNames(
+                        'z-10 select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400 transition-transform duration-300',
+                        isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
+                    )}
+                >
+                    <Markdown className='mrkdwn'>{categoryBlurb}</Markdown>
+                </div>
+                <div className='absolute opacity-10 mask-edges-24'>
+                    <div className='bg-cover' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
+                </div>
+            </div>
 
-                    <PostCards posts={posts} />
-                </>
-            )}
+            {isThisCategoryOpen && <PostCards posts={posts} />}
         </div>
     );
 };
@@ -192,43 +179,42 @@ export const MenuOpenedPost: FC<{
     hasImages: boolean;
     codeLink: Post['codeLink'];
     setLightboxTo: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ hasImages, codeLink, setLightboxTo }) => {
+    classNames?: string;
+}> = ({ hasImages, codeLink, setLightboxTo, classNames }) => {
     return (
-        <div className='absolute z-50 w-full -translate-y-full pb-0.5'>
-            <div className='nav-checked-width relative mx-auto flex h-6 justify-end space-x-1'>
-                {hasImages && (
-                    <button
-                        type='button'
-                        className='cursor-pointer bg-theme-primary-500 px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Gallery"]'
-                        onClick={() => setLightboxTo(0)}
-                    >
-                        <PhotoIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
-                    </button>
-                )}
-
-                {codeLink && (
-                    <a
-                        className='group inline-block cursor-pointer bg-theme-primary-500 px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:text-sm before:uppercase before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 after:content-none first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:no-underline hover:before:translate-y-0 hover:before:content-["View_Code"]'
-                        href={codeLink.href}
-                        target='_blank'
-                        rel='noreferrer'
-                    >
-                        <CodeBracketSquareIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
-                        <span className='absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight text-theme-primary-50 transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
-                            {codeLink.alt}
-                        </span>
-                    </a>
-                )}
-
-                {/* TODO fade out instead of instantly closing */}
+        <div className={`pointer-events-auto absolute flex h-6 justify-end space-x-1 ${classNames}`}>
+            {hasImages && (
                 <button
                     type='button'
-                    className='cursor-pointer bg-theme-primary-500 p-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Close"]'
-                    onClick={() => store_activePost(null)}
+                    className='cursor-pointer bg-theme-primary-500 px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Gallery"]'
+                    onClick={() => setLightboxTo(0)}
                 >
-                    <XMarkIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
+                    <PhotoIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
                 </button>
-            </div>
+            )}
+
+            {codeLink && (
+                <a
+                    className='group inline-block cursor-pointer bg-theme-primary-500 px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:text-sm before:uppercase before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 after:content-none first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:no-underline hover:before:translate-y-0 hover:before:content-["View_Code"]'
+                    href={codeLink.href}
+                    target='_blank'
+                    rel='noreferrer'
+                >
+                    <CodeBracketSquareIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
+                    <span className='absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight text-theme-primary-50 transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
+                        {codeLink.alt}
+                    </span>
+                </a>
+            )}
+
+            {/* TODO fade out instead of instantly closing */}
+            <button
+                type='button'
+                className='cursor-pointer bg-theme-primary-500 p-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Close"]'
+                onClick={() => store_activePost(null)}
+            >
+                <XMarkIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
+            </button>
         </div>
     );
 };
