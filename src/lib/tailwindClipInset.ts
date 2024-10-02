@@ -1,18 +1,23 @@
 import plugin from 'tailwindcss/plugin';
 
+const splitArgsAtRound = (string: string) => {
+    let borderRadius = '',
+        inset = string;
+
+    const borderRadiusIndex = string.indexOf('round');
+    if (borderRadiusIndex >= 0) {
+        borderRadius = string.slice(borderRadiusIndex);
+        inset = string.slice(0, borderRadiusIndex);
+    }
+    return [inset, borderRadius];
+};
+
 // eslint-disable-next-line @typescript-eslint/unbound-method
 export default plugin(({ matchUtilities, theme }) => {
     matchUtilities(
         {
             'clip-inset': (insetAll_round: string) => {
-                let inset = insetAll_round;
-                const borderRadiusIndex = inset.indexOf('round');
-
-                let borderRadius = '';
-                if (borderRadiusIndex >= 0) {
-                    borderRadius = inset.slice(borderRadiusIndex);
-                    inset = inset.slice(0, borderRadiusIndex);
-                }
+                const [inset, borderRadius] = splitArgsAtRound(insetAll_round);
 
                 return {
                     '--tw-clip-inset-t': inset,
@@ -23,14 +28,7 @@ export default plugin(({ matchUtilities, theme }) => {
                 };
             },
             'clip-inset-t': (insetTop_round: string) => {
-                let top = insetTop_round;
-                const borderRadiusIndex = top.indexOf('round');
-
-                let borderRadius = '';
-                if (borderRadiusIndex >= 0) {
-                    borderRadius = top.slice(borderRadiusIndex);
-                    top = top.slice(0, borderRadiusIndex);
-                }
+                const [top, borderRadius] = splitArgsAtRound(insetTop_round);
 
                 return {
                     '--tw-clip-inset-t': top,
@@ -38,14 +36,7 @@ export default plugin(({ matchUtilities, theme }) => {
                 };
             },
             'clip-inset-r': (insetRight_round: string) => {
-                let right = insetRight_round;
-                const borderRadiusIndex = right.indexOf('round');
-
-                let borderRadius = '';
-                if (borderRadiusIndex >= 0) {
-                    borderRadius = right.slice(borderRadiusIndex);
-                    right = right.slice(0, borderRadiusIndex);
-                }
+                const [right, borderRadius] = splitArgsAtRound(insetRight_round);
 
                 return {
                     '--tw-clip-inset-r': right,
@@ -53,14 +44,7 @@ export default plugin(({ matchUtilities, theme }) => {
                 };
             },
             'clip-inset-b': (insetBottom_round: string) => {
-                let bottom = insetBottom_round;
-                const borderRadiusIndex = bottom.indexOf('round');
-
-                let borderRadius = '';
-                if (borderRadiusIndex >= 0) {
-                    borderRadius = bottom.slice(borderRadiusIndex);
-                    bottom = bottom.slice(0, borderRadiusIndex);
-                }
+                const [bottom, borderRadius] = splitArgsAtRound(insetBottom_round);
 
                 return {
                     '--tw-clip-inset-b': bottom,
@@ -68,14 +52,7 @@ export default plugin(({ matchUtilities, theme }) => {
                 };
             },
             'clip-inset-l': (insetLeft_round: string) => {
-                let left = insetLeft_round;
-                const borderRadiusIndex = left.indexOf('round');
-
-                let borderRadius = '';
-                if (borderRadiusIndex >= 0) {
-                    borderRadius = left.slice(borderRadiusIndex);
-                    left = left.slice(0, borderRadiusIndex);
-                }
+                const [left, borderRadius] = splitArgsAtRound(insetLeft_round);
 
                 return {
                     '--tw-clip-inset-l': left,
@@ -83,14 +60,7 @@ export default plugin(({ matchUtilities, theme }) => {
                 };
             },
             'clip-inset-x': (insetHorizontal_round: string) => {
-                let horizontal = insetHorizontal_round;
-                const borderRadiusIndex = horizontal.indexOf('round');
-
-                let borderRadius = '';
-                if (borderRadiusIndex >= 0) {
-                    borderRadius = horizontal.slice(borderRadiusIndex);
-                    horizontal = horizontal.slice(0, borderRadiusIndex);
-                }
+                const [horizontal, borderRadius] = splitArgsAtRound(insetHorizontal_round);
 
                 return {
                     '--tw-clip-inset-r': horizontal,
@@ -99,14 +69,7 @@ export default plugin(({ matchUtilities, theme }) => {
                 };
             },
             'clip-inset-y': (insetVertical_round: string) => {
-                let vertical = insetVertical_round;
-                const borderRadiusIndex = vertical.indexOf('round');
-
-                let borderRadius = '';
-                if (borderRadiusIndex >= 0) {
-                    borderRadius = vertical.slice(borderRadiusIndex);
-                    vertical = vertical.slice(0, borderRadiusIndex);
-                }
+                const [vertical, borderRadius] = splitArgsAtRound(insetVertical_round);
 
                 return {
                     '--tw-clip-inset-t': vertical,
