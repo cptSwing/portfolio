@@ -1,5 +1,5 @@
 import { useIntersectionObserver } from '@uidotdev/usehooks';
-import { CSSProperties, FC, useCallback, useMemo, useState } from 'react';
+import { CSSProperties, FC, useCallback, useMemo } from 'react';
 import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { useZustand } from '../lib/zustand';
