@@ -6,10 +6,10 @@ import Settings from './Settings';
 import ViewCode from './ViewCode';
 import { CSSTransition } from 'react-transition-group';
 import Default from './Default';
-import { MENUTARGET } from '../../types/types';
+import { MENU_CATEGORY } from '../../types/types';
 import { useZustand } from '../../lib/zustand';
 
-const menuContentPairings: Record<MENUTARGET, JSX.Element> = {
+const menuContentPairings: Record<MENU_CATEGORY, JSX.Element> = {
     default: <Default />,
     home: <></>,
     back: <>Back</>,

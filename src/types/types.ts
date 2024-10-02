@@ -1,31 +1,39 @@
-import { MENUTARGET, ToolsUrls } from './enums';
-
-export const menuTargetArray = Object.values(MENUTARGET);
+import { MENU_CATEGORY, ToolsUrls } from './enums';
 
 export type ZustandStore = {
     nav: {
         /** Has a category in menu been opened? */
-        categoryOpened: MENUTARGET | null;
+        activeCategory: MENU_CATEGORY | null;
         /** Which, if any, post was chosen? */
         activePost: Post | null;
     };
 
     methods: {
-        store_categoryOpened: (opened: MENUTARGET | null) => void;
+        store_activeCategory: (opened: MENU_CATEGORY | null) => void;
         store_activePost: (post: Post | null) => void;
     };
 };
 
-export type Post_Image = {
-    imgUrl: string;
+type Post_ShowCase_Base = {
     caption?: string;
 };
+
+export interface Post_ShowCase_Image extends Post_ShowCase_Base {
+    imgUrl: string;
+}
+
+export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
+    youtubeUrl: string;
+}
+
+/* NOTE Easy, if non-generic, method to build a Type that has EITHER key1 OR key2. Mind the "?"" in the key to be excluded in the helper types above. */
+export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
 export type Post = {
     title: string;
     date: string | string[];
-    textBlocks: { text: string; imageIndex?: number }[];
-    images?: Post_Image[];
+    textBlocks: { text: string; useShowCaseIndex?: number }[];
+    showCases?: Post_ShowCase[];
     subTitle?: string;
     titleCardBg?: string;
     toolsUsed?: (keyof typeof ToolsUrls)[];
@@ -36,5 +44,5 @@ export type Post = {
 };
 
 export type DataBase = {
-    [key in MENUTARGET]: { posts: Post[]; categoryCardBackgroundImage: string; categoryBlurb: string; categoryBackgroundColor?: string };
+    [key in MENU_CATEGORY]: { posts: Post[]; categoryCardBackgroundImage: string; categoryBlurb: string; categoryBackgroundColor?: string };
 };

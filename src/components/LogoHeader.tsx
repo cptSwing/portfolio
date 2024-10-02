@@ -2,7 +2,7 @@ import classNames from '../lib/classNames';
 import { useZustand } from '../lib/zustand';
 
 const store_activePost = useZustand.getState().methods.store_activePost;
-const store_categoryOpened = useZustand.getState().methods.store_categoryOpened;
+const store_activeCategory = useZustand.getState().methods.store_activeCategory;
 
 const LogoHeader = () => {
     const activePost = useZustand((state) => state.nav.activePost);
@@ -15,7 +15,7 @@ const LogoHeader = () => {
                 activePost ? 'ml-0 mr-[100%] mt-4 h-20 translate-x-1/2 text-theme-primary-400' : 'ml-0 mt-8 h-24 translate-x-0 text-theme-accent-400',
             )}
             onClick={() => {
-                store_categoryOpened(null);
+                store_activeCategory(null);
                 store_activePost(null);
             }}
         >

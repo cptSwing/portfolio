@@ -12,9 +12,9 @@ export enum ToolsUrls {
     'Substance Designer' = 'https://www.adobe.com/products/substance3d/apps/designer.html',
 }
 
-export enum MENUTARGET {
+export enum MENU_CATEGORY {
     About = 'About',
     Code = 'Code',
-    Art = 'Art',
-    Updates = 'Updates',
+    '3D' = '3D',
+    Log = 'Log',
 }

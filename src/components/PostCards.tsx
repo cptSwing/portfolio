@@ -61,9 +61,11 @@ export const SinglePostCard: FC<{
 
             <div className='absolute top-0 size-full overflow-hidden'>
                 {/* Subtitle: */}
-                <div className='absolute bottom-[--card-outline-width] mx-auto h-fit w-full transform-gpu truncate bg-transparent px-2 text-center text-sm text-neutral-50 transition-[background-color,opacity,color] delay-[---card-hover-delay] duration-[--card-hover-duration] clip-inset-x-[--card-outline-width] group-hover/this:bg-[--card-outline-color] group-hover/this:text-theme-neutral-500 hover:delay-[calc(75ms+var(---card-hover-delay))]'>
-                    <Markdown>{subTitle ?? 'lol no subtitle here'}</Markdown>
-                </div>
+                {subTitle && (
+                    <div className='absolute bottom-[--card-outline-width] mx-auto h-fit w-full transform-gpu truncate bg-transparent px-2 text-center text-sm text-neutral-50 transition-[background-color,opacity,color] delay-[---card-hover-delay] duration-[--card-hover-duration] clip-inset-x-[--card-outline-width] group-hover/this:bg-[--card-outline-color] group-hover/this:text-theme-neutral-500 hover:delay-[calc(75ms+var(---card-hover-delay))]'>
+                        <Markdown>{subTitle}</Markdown>
+                    </div>
+                )}
 
                 {/* Year Ribbon: */}
                 <div className='absolute bottom-0 right-0 z-0 h-full w-1/5'>

@@ -1,6 +1,6 @@
 import { AdjustmentsHorizontalIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, CodeBracketSquareIcon, HomeIcon } from '@heroicons/react/20/solid';
 import { FC } from 'react';
-import { MENUTARGET } from '../../types/types';
+import { MENU_CATEGORY } from '../../types/types';
 import { useZustand } from '../../lib/zustand';
 
 const store_toggleMenuItem = useZustand.getState().methods.store_toggleMenuItem;
@@ -16,50 +16,50 @@ const NavMenu: FC<{
                 <input
                     type='checkbox'
                     className='peer pointer-events-none hidden'
-                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.Home : null)}
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENU_CATEGORY.Home : null)}
                     checked={home}
                 />
-                <HomeIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-pink-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
+                <HomeIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-pink-500 p-0.5 text-white peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black hover:bg-blue-500/25' />
             </label>
 
             <label>
                 <input
                     type='checkbox'
                     className='peer pointer-events-none hidden'
-                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.Back : null)}
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENU_CATEGORY.Back : null)}
                     checked={back}
                 />
-                <ArrowUturnLeftIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-indigo-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
+                <ArrowUturnLeftIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-indigo-500 p-0.5 text-white peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black hover:bg-blue-500/25' />
             </label>
 
             <label>
                 <input
                     type='checkbox'
                     className='peer pointer-events-none hidden'
-                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.Forward : null)}
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENU_CATEGORY.Forward : null)}
                     checked={forward}
                 />
-                <ArrowUturnRightIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-indigo-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
+                <ArrowUturnRightIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-indigo-500 p-0.5 text-white peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black hover:bg-blue-500/25' />
             </label>
 
             <label>
                 <input
                     type='checkbox'
                     className='peer pointer-events-none hidden'
-                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.Settings : null)}
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENU_CATEGORY.Settings : null)}
                     checked={settings}
                 />
-                <AdjustmentsHorizontalIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-fuchsia-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
+                <AdjustmentsHorizontalIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-fuchsia-500 p-0.5 text-white peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black hover:bg-blue-500/25' />
             </label>
 
             <label>
                 <input
                     type='checkbox'
                     className='peer pointer-events-none hidden'
-                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENUTARGET.ViewCode : null)}
+                    onChange={(e) => store_toggleMenuItem(e.target.checked ? MENU_CATEGORY.ViewCode : null)}
                     checked={viewCode}
                 />
-                <CodeBracketSquareIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-fuchsia-500 p-0.5 text-white hover:bg-blue-500/25 peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black' />
+                <CodeBracketSquareIcon className='pointer-events-auto inline-block size-8 cursor-pointer select-none rounded-sm border-fuchsia-500 p-0.5 text-white peer-checked:border-transparent peer-checked:bg-yellow-500/50 peer-checked:text-black hover:bg-blue-500/25' />
             </label>
         </nav>
     );

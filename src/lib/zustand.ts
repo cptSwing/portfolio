@@ -4,12 +4,12 @@ import { ZustandStore } from '../types/types';
 
 export const useZustand = create<ZustandStore>()(
     immer((set) => ({
-        nav: { categoryOpened: null, activePost: null },
+        nav: { activeCategory: null, activePost: null },
 
         methods: {
-            store_categoryOpened: (opened) => {
+            store_activeCategory: (opened) => {
                 set((draftState) => {
-                    draftState.nav.categoryOpened = opened;
+                    draftState.nav.activeCategory = opened;
                 });
             },
 

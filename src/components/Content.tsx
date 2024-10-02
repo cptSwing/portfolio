@@ -1,11 +1,11 @@
 import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
-import { Post, Post_Image } from '../types/types';
+import { Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../types/types';
 import { CSSProperties, FC, useCallback, useMemo, useState } from 'react';
 import { MenuOpenedPost } from './Nav';
 import Markdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
-import Lightbox from 'yet-another-react-lightbox';
+import Lightbox, { SlideImage } from 'yet-another-react-lightbox';
 import { Captions } from 'yet-another-react-lightbox/plugins';
 import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
@@ -29,28 +29,49 @@ const ContentWrapper_Test = () => {
     const [topVal, setTopVal] = useState<number>(0);
     const [lightboxTo, setLightboxTo] = useState<number | null>(null);
 
-    const contentRefCb = useCallback((node: HTMLElement | null) => {
+    const contentMounted_RefCb = useCallback((node: HTMLElement | null) => {
         if (node) {
             setTopVal(node.getBoundingClientRect().top);
         }
     }, []);
 
-    if (!activePost) {
-        return null;
-    }
+    const { title, subTitle, toolsUsed, showCases, textBlocks, codeLink, date } = activePost ?? {};
 
-    const { title, subTitle, toolsUsed, images, textBlocks, codeLink, date } = activePost;
-    const { year, month, day } = parseDateString(date);
+    const filteredImages_Memo = useMemo(
+        () =>
+            showCases &&
+            (showCases
+                .map((showCase, idx) => {
+                    if ('imgUrl' in showCase) {
+                        return {
+                            src: showCase.imgUrl,
+                            title: showCase.caption,
+                            scIndx: idx,
+                        };
+                    }
+                })
+                .filter(Boolean) as (SlideImage & { scIndx: number })[]),
+        [showCases],
+    );
 
-    return (
+    /* NOTE Lightbox uses SlideImage Type (see above), so we need to jump through some hoops to pick correct SlideImage index from Post_ShowCase index */
+    const setLightBoxSlide_Cb = useCallback(
+        (showCaseIndex: number) => filteredImages_Memo && setLightboxTo(filteredImages_Memo.findIndex((slide) => slide.scIndx === showCaseIndex)),
+        [filteredImages_Memo],
+    );
+
+    const date_Memo = useMemo(() => parseDateString(date ?? ''), [date]);
+    const { year, month, day } = date_Memo;
+
+    return activePost ? (
         <div
-            ref={contentRefCb}
+            ref={contentMounted_RefCb}
             className={classNames(
                 'transform-[width,opacity] absolute bg-theme-bg-base drop-shadow-lg',
                 activePost ? 'z-10 h-fit w-screen opacity-100' : '-z-10 h-0 w-full opacity-10',
             )}
         >
-            <MenuOpenedPost hasImages={images ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
+            <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
 
             <div
                 className='nav-checked-width relative mx-auto flex flex-col overflow-hidden bg-[--bg-color] scrollbar-thumb-theme-primary-400 [--bg-color:theme(colors.theme.bg.lighter)]'
@@ -83,46 +104,44 @@ const ContentWrapper_Test = () => {
 
                     <div className='flex flex-col gap-y-16'>
                         {/* Text/Image Blocks */}
-                        {textBlocks?.map(({ text, imageIndex }, idx) => {
-                            let imgUrl, caption;
-                            if (images && typeof imageIndex === 'number') ({ imgUrl, caption } = images[imageIndex]);
-
-                            const isIndexEven = idx % 2 === 0;
+                        {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
+                            const isBlockIndexEven = idx % 2 === 0;
+                            const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
 
                             return (
-                                <div key={`${idx}-${isIndexEven}`} className='flex items-start justify-between'>
-                                    {imgUrl && (
+                                <div key={`${idx}-${isBlockIndexEven}`} className='flex items-start justify-between'>
+                                    {showCase && (
                                         <div
                                             className={classNames(
                                                 'group relative basis-2/3 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400',
-                                                isIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
+                                                isBlockIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
                                             )}
-                                            onClick={() => setLightboxTo(imageIndex!)}
+                                            onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}
                                         >
-                                            {imgUrl.includes('youtube.com') ? (
+                                            {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
                                                 <iframe
                                                     width='100%'
                                                     height='400'
-                                                    // This will break sooner than later
-                                                    src={imgUrl.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')}
+                                                    src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace(
+                                                        'https://www.youtube.com/watch?v=',
+                                                        'https://www.youtube.com/embed/',
+                                                    )}
                                                     title='YouTube video player'
                                                     referrerPolicy='strict-origin-when-cross-origin'
                                                     allowFullScreen
                                                 ></iframe>
                                             ) : (
-                                                <>
-                                                    <img src={imgUrl} className='w-full object-cover' />
-                                                    {caption && (
-                                                        <div
-                                                            className={classNames(
-                                                                'absolute bottom-0 min-w-0 bg-theme-neutral-300/60 px-4 py-1 text-center text-sm text-theme-accent-700 transition-[background-color,min-width] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 group-hover:min-w-full group-hover:bg-theme-neutral-300',
-                                                                isIndexEven ? 'left-0 mask-edges-r-2/5' : 'right-0 mask-edges-l-2/5',
-                                                            )}
-                                                        >
-                                                            {caption}
-                                                        </div>
+                                                <img src={(showCase as Post_ShowCase_Image).imgUrl} className='w-full object-cover' />
+                                            )}
+                                            {showCase.caption && (
+                                                <div
+                                                    className={classNames(
+                                                        'absolute bottom-0 min-w-0 bg-theme-neutral-300/60 px-4 py-1 text-center text-sm text-theme-accent-700 transition-[background-color,min-width] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 group-hover:min-w-full group-hover:bg-theme-neutral-300',
+                                                        isBlockIndexEven ? 'left-0 mask-edges-r-2/5' : 'right-0 mask-edges-l-2/5',
                                                     )}
-                                                </>
+                                                >
+                                                    {showCase.caption}
+                                                </div>
                                             )}
                                         </div>
                                     )}
@@ -130,8 +149,8 @@ const ContentWrapper_Test = () => {
                                     <div
                                         className={classNames(
                                             '-mt-1 text-pretty text-justify leading-normal',
-                                            imgUrl ? 'flex-1' : 'mr-auto basis-4/5',
-                                            isIndexEven ? 'order-1' : 'order-2',
+                                            showCase ? 'flex-1' : 'mr-auto basis-4/5',
+                                            isBlockIndexEven ? 'order-1' : 'order-2',
                                             idx === 0
                                                 ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-theme-secondary-600 first-line:italic'
                                                 : '',
@@ -148,19 +167,19 @@ const ContentWrapper_Test = () => {
                         })}
                     </div>
 
-                    <RemainingImages images={images} textBlocks={textBlocks} setLightboxTo={setLightboxTo} />
+                    {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks!} setLightBoxSlide={setLightBoxSlide_Cb} />}
                 </div>
 
                 <Lightbox
                     open={Number.isInteger(lightboxTo)}
                     index={lightboxTo ?? 0}
                     close={() => setLightboxTo(null)}
-                    slides={images?.filter(({ imgUrl }) => !imgUrl.includes('youtube.com')).map(({ imgUrl, caption }) => ({ src: imgUrl, title: caption }))}
+                    slides={filteredImages_Memo}
                     plugins={[Captions]}
                 />
             </div>
         </div>
-    );
+    ) : null;
 };
 
 const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
@@ -213,34 +232,32 @@ const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
 };
 
 const RemainingImages: FC<{
-    images: Post_Image[] | undefined;
+    showCases: Post_ShowCase[];
     textBlocks: Post['textBlocks'];
-    setLightboxTo: (value: React.SetStateAction<number | null>) => void;
-}> = ({ images, textBlocks, setLightboxTo }) => {
-    const remaining_Memo = useMemo(() => {
-        if (images) {
-            const usedInBlocks = textBlocks.map(({ imageIndex }) => typeof imageIndex === 'number' && imageIndex);
+    setLightBoxSlide: (showCaseIndex: number) => void;
+}> = ({ showCases, textBlocks, setLightBoxSlide }) => {
+    const remaining_Memo = useMemo(
+        () =>
+            showCases.map((showCase, idx) =>
+                !textBlocks.find((textBlock) => idx === textBlock.useShowCaseIndex) ? ([showCase, idx] as [Post_ShowCase_Image, number]) : undefined,
+            ),
+        [showCases, textBlocks],
+    );
 
-            return images
-                .map((postImage, idx) => {
-                    if (usedInBlocks.indexOf(idx) < 0) {
-                        return [postImage, idx];
-                    } else return null;
-                })
-                .filter((val) => val !== null) as [Post_Image, number][];
-        } else return null;
-    }, [images, textBlocks]);
-
-    return remaining_Memo ? (
+    return (
         <div className='mt-14 grid grid-cols-4 gap-4'>
-            {remaining_Memo.map(([{ imgUrl }, imgIndex]) => (
-                <img
-                    key={imgUrl + imgIndex}
-                    src={imgUrl}
-                    className='max-h-64 w-full cursor-pointer object-cover outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400'
-                    onClick={() => setLightboxTo(imgIndex)}
-                />
-            ))}
+            {remaining_Memo.map((remain) => {
+                const [imageShowCase, imageIndex] = remain || [];
+
+                return imageShowCase && typeof imageIndex === 'number' ? (
+                    <img
+                        key={imageShowCase.imgUrl + imageIndex}
+                        src={imageShowCase.imgUrl}
+                        className='max-h-64 w-full cursor-pointer object-cover outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400'
+                        onClick={() => setLightBoxSlide(imageIndex)}
+                    />
+                ) : null;
+            })}
         </div>
-    ) : null;
+    );
 };

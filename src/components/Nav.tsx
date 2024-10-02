@@ -1,5 +1,5 @@
 import { useZustand } from '../lib/zustand';
-import { DataBase, Post, menuTargetArray } from '../types/types';
+import { DataBase, Post } from '../types/types';
 import classNames from '../lib/classNames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import testDb from '../queries/testDb.json';
@@ -7,26 +7,28 @@ import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config.ts';
 import { PostCards } from './PostCards.tsx';
 import { useDebugButton } from '../hooks/useDebugButton.ts';
-import { MENUTARGET } from '../types/enums.ts';
+import { MENU_CATEGORY } from '../types/enums.ts';
 import Markdown from 'react-markdown';
 import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
 
 const themeBgBase = resolveConfig(tailwindConfig).theme.colors.theme.bg.base;
 const testDbTyped = testDb as DataBase;
 
-const store_categoryOpened = useZustand.getState().methods.store_categoryOpened;
+const store_activeCategory = useZustand.getState().methods.store_activeCategory;
+
+const MENU_CATEGORY_values = Object.values(MENU_CATEGORY);
 
 const Nav = () => {
     const activePost = useZustand((state) => state.nav.activePost);
-    const categoryOpened = useZustand((state) => state.nav.categoryOpened);
+    const activeCategory = useZustand((state) => state.nav.activeCategory);
     const openedIndex = useMemo(() => {
-        if (categoryOpened) {
-            const index = menuTargetArray.indexOf(categoryOpened);
+        if (activeCategory) {
+            const index = MENU_CATEGORY_values.indexOf(activeCategory);
             return index >= 0 ? index : null;
         } else {
             return null;
         }
-    }, [categoryOpened]);
+    }, [activeCategory]);
 
     return (
         <nav id='nav-cards-wrapper' className={classNames('flex min-h-168 flex-col items-center', activePost ? 'justify-between' : 'justify-center')}>
@@ -34,7 +36,7 @@ const Nav = () => {
             <div
                 className={classNames(
                     'h-1 transition-[width,background-color,margin] duration-300',
-                    categoryOpened ? 'mb-4' : 'mb-2',
+                    activeCategory ? 'mb-4' : 'mb-2',
                     activePost ? 'w-screen bg-theme-primary-500' : 'w-full bg-theme-secondary-400',
                 )}
             />
@@ -43,17 +45,17 @@ const Nav = () => {
             <div
                 className={classNames(
                     'grid transition-[width,grid-template-columns,column-gap] duration-700',
-                    categoryOpened ? 'nav-checked-width gap-x-0.5' : 'nav-unchecked-width gap-x-1',
+                    activeCategory ? 'nav-checked-width gap-x-0.5' : 'nav-unchecked-width gap-x-1',
                 )}
                 style={{
-                    gridTemplateColumns: menuTargetArray.map((target) => (target === categoryOpened ? '15fr' : '1fr')).join(' '),
+                    gridTemplateColumns: MENU_CATEGORY_values.map((target) => (target === activeCategory ? '15fr' : '1fr')).join(' '),
                 }}
             >
-                {menuTargetArray.map((menuTarget, idx) => (
+                {MENU_CATEGORY_values.map((MENU_CATEGORY, idx) => (
                     <CategoryCard
-                        key={menuTarget + idx}
-                        cardCategory={menuTarget}
-                        cardData={testDbTyped[menuTarget]}
+                        key={MENU_CATEGORY + idx}
+                        cardCategory={MENU_CATEGORY}
+                        cardData={testDbTyped[MENU_CATEGORY]}
                         categoryIndex={idx}
                         openedIndex={openedIndex}
                     />
@@ -64,7 +66,7 @@ const Nav = () => {
             <div
                 className={classNames(
                     'h-1 transition-[width,background-color,margin] delay-200 duration-200',
-                    categoryOpened ? 'mt-4' : 'mt-2',
+                    activeCategory ? 'mt-4' : 'mt-2',
                     activePost ? 'w-screen bg-theme-primary-500' : 'w-full bg-theme-secondary-400',
                 )}
             />
@@ -75,13 +77,13 @@ const Nav = () => {
 export default Nav;
 
 const CategoryCard: FC<{
-    cardCategory: MENUTARGET;
+    cardCategory: MENU_CATEGORY;
     openedIndex: number | null;
-    cardData: DataBase[MENUTARGET];
+    cardData: DataBase[MENU_CATEGORY];
     categoryIndex: number;
 }> = ({ cardCategory, openedIndex, cardData, categoryIndex }) => {
     const { posts, categoryCardBackgroundImage, categoryBackgroundColor, categoryBlurb } = cardData;
-    const categoryOpened = useZustand((state) => state.nav.categoryOpened);
+    const activeCategory = useZustand((state) => state.nav.activeCategory);
 
     const refCb = useCallback(
         (elem: HTMLDivElement | null) => {
@@ -100,16 +102,16 @@ const CategoryCard: FC<{
         [categoryIndex],
     );
 
-    const isThisCategoryOpen = useMemo(() => categoryOpened === cardCategory, [categoryOpened, cardCategory]);
+    const isThisCategoryOpen = useMemo(() => activeCategory === cardCategory, [activeCategory, cardCategory]);
     const paddingStyle_Memo = useMemo(() => {
-        if (categoryOpened && !isThisCategoryOpen) {
+        if (activeCategory && !isThisCategoryOpen) {
             if (categoryIndex < openedIndex!) {
                 return { paddingRight: 0 };
             } else if (categoryIndex > openedIndex!) {
                 return { paddingLeft: 0 };
             }
         }
-    }, [isThisCategoryOpen, openedIndex, categoryOpened, categoryIndex]);
+    }, [isThisCategoryOpen, openedIndex, activeCategory, categoryIndex]);
 
     const [bgColorSwitch, setBgColorSwitch] = useState(false);
     useDebugButton(`Toggle Category BG Color Switch ${cardCategory}`, () => setBgColorSwitch((state) => !state), !!categoryBackgroundColor);
@@ -118,7 +120,7 @@ const CategoryCard: FC<{
     useEffect(() => {
         const docStyle = document.body.style;
 
-        if (categoryOpened && bgColorSwitch) {
+        if (activeCategory && bgColorSwitch) {
             if (isThisCategoryOpen) {
                 if (categoryBackgroundColor) {
                     docStyle.setProperty('--bg-color', categoryBackgroundColor);
@@ -129,7 +131,7 @@ const CategoryCard: FC<{
         } else {
             docStyle.setProperty('--bg-color', themeBgBase);
         }
-    }, [bgColorSwitch, categoryOpened, isThisCategoryOpen, categoryBackgroundColor]);
+    }, [bgColorSwitch, activeCategory, isThisCategoryOpen, categoryBackgroundColor]);
 
     return (
         <div
@@ -139,11 +141,11 @@ const CategoryCard: FC<{
                 'group/category pointer-events-auto relative flex h-156 w-full cursor-pointer items-end justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,height] duration-[50ms,500ms,500ms]',
                 isThisCategoryOpen
                     ? '-my-2 h-160 bg-theme-primary-300'
-                    : categoryOpened
+                    : activeCategory
                       ? 'bg-theme-primary-600 hover:bg-theme-primary-500'
                       : 'bg-theme-primary-600 hover:bg-theme-primary-200',
             )}
-            onClick={() => store_categoryOpened(isThisCategoryOpen ? null : cardCategory)}
+            onClick={() => store_activeCategory(isThisCategoryOpen ? null : cardCategory)}
             style={{
                 ...paddingStyle_Memo,
                 // Both removed after initial mount:
@@ -156,7 +158,7 @@ const CategoryCard: FC<{
                     'writing-mode-vert-lr mx-auto -mb-1 rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl leading-none drop-shadow-lg transition-[transform,color] duration-300',
                     isThisCategoryOpen
                         ? 'text-theme-secondary-400'
-                        : categoryOpened
+                        : activeCategory
                           ? 'translate-y-0 scale-90 text-theme-secondary-700 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0'
                           : 'translate-y-0 text-theme-secondary-100 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0',
                 )}
