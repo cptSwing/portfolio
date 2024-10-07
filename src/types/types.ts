@@ -1,24 +1,8 @@
 import { MENU_CATEGORY, ToolsUrls } from './enums';
 
 export type ZustandStore = {
-    nav: {
-        /** Has a category in menu been opened? */
-        activeCategory: MENU_CATEGORY | null;
-        /** Which, if any, post was chosen? */
-        activePost: Post | null;
-    };
-
-    layout: {
-        elem: HTMLDivElement | null;
-        distance: {
-            top: number;
-        };
-    };
-
     methods: {
-        store_activeCategory: (opened: MENU_CATEGORY | null) => void;
-        store_activePost: (post: Post | null) => void;
-        store_distance: (distance: number) => void;
+        [key: string]: unknown;
     };
 };
 
@@ -38,6 +22,7 @@ export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
 export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
 export type Post = {
+    id: number;
     title: string;
     date: string | string[];
     textBlocks: { text: string; useShowCaseIndex?: number }[];
@@ -52,5 +37,12 @@ export type Post = {
 };
 
 export type DataBase = {
-    [key in MENU_CATEGORY]: { posts: Post[]; categoryCardBackgroundImage: string; categoryBlurb: string; categoryBackgroundColor?: string };
+    [key in MENU_CATEGORY]: {
+        id: number;
+        categoryTitle: MENU_CATEGORY;
+        posts: Post[];
+        categoryCardBackgroundImage: string;
+        categoryBlurb: string;
+        categoryBackgroundColor?: string;
+    };
 };

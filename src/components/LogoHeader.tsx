@@ -1,33 +1,21 @@
+import { useParams } from 'react-router-dom';
 import classNames from '../lib/classNames';
-import { useZustand } from '../lib/zustand';
-
-const store_activePost = useZustand.getState().methods.store_activePost;
-const store_activeCategory = useZustand.getState().methods.store_activeCategory;
 
 const LogoHeader = () => {
-    const activePost = useZustand((state) => state.nav.activePost);
+    const { postId } = useParams();
 
     return (
         <header
             id='logo'
             className={classNames(
                 'w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height,color] duration-[--header-transition-duration]',
-                activePost
-                    ? 'ml-0 mr-[100%] h-[--header-height] translate-x-1/2 text-theme-primary-400'
-                    : 'ml-0 h-[12dvh] translate-x-0 py-2 text-theme-accent-400',
+                postId ? 'ml-0 mr-[100%] min-h-20 translate-x-1/2 text-theme-primary-400' : 'ml-0 min-h-28 translate-x-0 py-2 text-theme-accent-400',
             )}
-            // onTransitionEnd={({ currentTarget }) => {
-            //     const { height, top } = currentTarget.getBoundingClientRect();
-            //     store_distanceToTop(Math.ceil(height + top));
-            // }}
-            onClick={() => {
-                store_activeCategory(null);
-                store_activePost(null);
-            }}
+            onClick={() => {}}
         >
-            <svg height='100%' className='' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
+            <svg height='100%' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
                 <g id='layer1' transform='translate(-77.964769,-127.41715)'>
-                    <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1' className=''>
+                    <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1'>
                         <tspan
                             id='tspan1'
                             className='fill-current stroke-none'

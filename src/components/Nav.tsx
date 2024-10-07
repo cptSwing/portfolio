@@ -1,4 +1,3 @@
-import { useZustand } from '../lib/zustand';
 import { DataBase, Post } from '../types/types';
 import classNames from '../lib/classNames';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
@@ -10,46 +9,28 @@ import { useDebugButton } from '../hooks/useDebugButton.ts';
 import { MENU_CATEGORY } from '../types/enums.ts';
 import Markdown from 'react-markdown';
 import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const themeBgBase = resolveConfig(tailwindConfig).theme.colors.theme.bg.base;
 const testDbTyped = testDb as DataBase;
-
-const store_activeCategory = useZustand.getState().methods.store_activeCategory;
-
-const MENU_CATEGORY_values = Object.values(MENU_CATEGORY);
+const categoriesArray = Object.values(testDbTyped);
 
 const Nav = () => {
-    const activeCategory = useZustand((state) => state.nav.activeCategory);
-    const activePost = useZustand((state) => state.nav.activePost);
-
-    const openedIndex = useMemo(() => {
-        if (activeCategory) {
-            const index = MENU_CATEGORY_values.indexOf(activeCategory);
-            return index >= 0 ? index : null;
-        } else {
-            return null;
-        }
-    }, [activeCategory]);
+    const { catId, postId } = useParams();
 
     return (
         <nav
             className={classNames(
                 'mx-auto grid h-full transition-[width,grid-template-columns,column-gap] duration-700',
-                activeCategory ? 'nav-checked-width gap-x-px' : 'nav-unchecked-width gap-x-1',
-                activePost ? 'absolute left-0 right-0 -z-10' : 'z-0 block',
+                catId ? 'nav-checked-width gap-x-px' : 'nav-unchecked-width gap-x-1',
+                postId ? 'absolute left-0 right-0 -z-10' : 'z-0 block',
             )}
             style={{
-                gridTemplateColumns: MENU_CATEGORY_values.map((target) => (target === activeCategory ? '15fr' : '1fr')).join(' '),
+                gridTemplateColumns: categoriesArray.map(({ id }) => (id.toString() === catId ? '15fr' : '1fr')).join(' '),
             }}
         >
-            {MENU_CATEGORY_values.map((MENU_CATEGORY, idx) => (
-                <CategoryCard
-                    key={MENU_CATEGORY + idx}
-                    cardCategory={MENU_CATEGORY}
-                    cardData={testDbTyped[MENU_CATEGORY]}
-                    categoryIndex={idx}
-                    openedIndex={openedIndex}
-                />
+            {categoriesArray.map((cardData) => (
+                <CategoryCard key={cardData.categoryTitle} cardData={cardData} />
             ))}
         </nav>
     );
@@ -58,13 +39,12 @@ const Nav = () => {
 export default Nav;
 
 const CategoryCard: FC<{
-    cardCategory: MENU_CATEGORY;
-    openedIndex: number | null;
     cardData: DataBase[MENU_CATEGORY];
-    categoryIndex: number;
-}> = ({ cardCategory, openedIndex, cardData, categoryIndex }) => {
-    const { posts, categoryCardBackgroundImage, categoryBackgroundColor, categoryBlurb } = cardData;
-    const activeCategory = useZustand((state) => state.nav.activeCategory);
+}> = ({ cardData }) => {
+    const { id, categoryTitle, posts, categoryCardBackgroundImage, categoryBackgroundColor, categoryBlurb } = cardData;
+
+    const navigate = useNavigate();
+    const { catId } = useParams();
 
     const refCb = useCallback(
         (elem: HTMLDivElement | null) => {
@@ -72,36 +52,38 @@ const CategoryCard: FC<{
                 setTimeout(() => {
                     /* Mount sequentially for staggered dropdown */
                     elem.style.removeProperty('display');
-                    elem.style.setProperty('animation', '2s 1s forwards streak-down');
+                    elem.style.setProperty('animation', '1s 1s forwards streak-down');
                     elem.addEventListener('animationend', () => {
                         elem.style.removeProperty('animation');
                         elem.style.removeProperty('opacity');
                     });
-                }, 500 * categoryIndex);
+                }, 500 * id);
             }
         },
-        [categoryIndex],
+        [id],
     );
 
-    const isThisCategoryOpen = useMemo(() => activeCategory === cardCategory, [activeCategory, cardCategory]);
+    const isThisCategoryOpen = useMemo(() => (catId ? parseInt(catId) === id : false), [catId, id]);
+
     const paddingStyle_Memo = useMemo(() => {
-        if (activeCategory && !isThisCategoryOpen) {
-            if (categoryIndex < openedIndex!) {
+        if (catId && !isThisCategoryOpen) {
+            const openedIndex = catId ? parseInt(catId) : null;
+            if (id < openedIndex!) {
                 return { paddingRight: 0 };
-            } else if (categoryIndex > openedIndex!) {
+            } else if (id > openedIndex!) {
                 return { paddingLeft: 0 };
             }
         }
-    }, [isThisCategoryOpen, openedIndex, activeCategory, categoryIndex]);
+    }, [isThisCategoryOpen, catId, id]);
 
     const [bgColorSwitch, setBgColorSwitch] = useState(false);
-    useDebugButton(`Toggle Category BG Color Switch ${cardCategory}`, () => setBgColorSwitch((state) => !state), !!categoryBackgroundColor);
+    useDebugButton(`Toggle Category BG Color Switch ${categoryTitle}`, () => setBgColorSwitch((state) => !state), !!categoryBackgroundColor);
 
     /* Change background color, possibly later also parts of header (and turn into a hook then?) */
     useEffect(() => {
         const docStyle = document.body.style;
 
-        if (activeCategory && bgColorSwitch) {
+        if (catId && bgColorSwitch) {
             if (isThisCategoryOpen) {
                 if (categoryBackgroundColor) {
                     docStyle.setProperty('--bg-color', categoryBackgroundColor);
@@ -112,7 +94,7 @@ const CategoryCard: FC<{
         } else {
             docStyle.setProperty('--bg-color', themeBgBase);
         }
-    }, [bgColorSwitch, activeCategory, isThisCategoryOpen, categoryBackgroundColor]);
+    }, [bgColorSwitch, catId, isThisCategoryOpen, categoryBackgroundColor]);
 
     return (
         <div
@@ -122,11 +104,13 @@ const CategoryCard: FC<{
                 'group/category pointer-events-auto relative flex transform-gpu cursor-pointer items-end justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
                 isThisCategoryOpen
                     ? '!scale-y-100 bg-theme-primary-300'
-                    : activeCategory
+                    : catId
                       ? 'scale-y-[.99] bg-theme-primary-600 hover:bg-theme-primary-500'
                       : 'scale-y-100 bg-theme-primary-600 hover:bg-theme-primary-200',
             )}
-            onClick={() => store_activeCategory(isThisCategoryOpen ? null : cardCategory)}
+            onClick={() => {
+                navigate(catId === id.toString() ? '/' : `/${id}`);
+            }}
             style={{
                 ...paddingStyle_Memo,
                 // Both removed after initial mount:
@@ -136,22 +120,22 @@ const CategoryCard: FC<{
         >
             <h1
                 className={classNames(
-                    'writing-mode-vert-lr mx-auto -mb-1 rotate-180 transform-gpu select-none whitespace-nowrap font-protest-riot text-5xl leading-none drop-shadow-lg transition-[transform,color] duration-300',
+                    'writing-mode-vert-lr mx-auto -mb-1 min-h-full rotate-180 transform-gpu select-none whitespace-nowrap font-protest-riot text-5xl leading-none drop-shadow-lg transition-[transform,color] duration-300',
                     isThisCategoryOpen
                         ? 'text-theme-secondary-400'
-                        : activeCategory
+                        : catId
                           ? 'translate-y-0 scale-90 text-theme-secondary-700 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0'
                           : 'translate-y-0 text-theme-secondary-100 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0',
                 )}
             >
-                {cardCategory}
+                {categoryTitle}
             </h1>
 
             {/* Testimonials etc: */}
             <div
                 className={classNames(
                     'relative -my-2 flex basis-1/2 items-end overflow-hidden border-l-[6px] border-theme-neutral-50 transition-[height] duration-300',
-                    isThisCategoryOpen ? 'h-full' : activeCategory ? 'h-0' : 'h-0 group-hover/category:!h-1/4',
+                    isThisCategoryOpen ? 'h-full' : catId ? 'h-0' : 'h-0 group-hover/category:!h-1/4',
                 )}
             >
                 <div
@@ -172,8 +156,6 @@ const CategoryCard: FC<{
     );
 };
 
-const store_activePost = useZustand.getState().methods.store_activePost;
-
 /** Used in Content.tsx */
 export const MenuOpenedPost: FC<{
     hasImages: boolean;
@@ -181,8 +163,10 @@ export const MenuOpenedPost: FC<{
     setLightboxTo: React.Dispatch<React.SetStateAction<number | null>>;
     classNames?: string;
 }> = ({ hasImages, codeLink, setLightboxTo, classNames }) => {
+    const navigate = useNavigate();
+
     return (
-        <div className={`pointer-events-auto absolute flex h-6 justify-end space-x-1 ${classNames}`}>
+        <div className={`pointer-events-auto ml-auto flex h-6 justify-end space-x-1 ${classNames}`}>
             {hasImages && (
                 <button
                     type='button'
@@ -211,7 +195,9 @@ export const MenuOpenedPost: FC<{
             <button
                 type='button'
                 className='cursor-pointer bg-theme-primary-500 p-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Close"]'
-                onClick={() => store_activePost(null)}
+                onClick={() => {
+                    navigate(-1);
+                }}
             >
                 <XMarkIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
             </button>

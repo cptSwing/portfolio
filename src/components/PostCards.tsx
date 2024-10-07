@@ -2,18 +2,22 @@ import { useIntersectionObserver } from '@uidotdev/usehooks';
 import { CSSProperties, FC, useCallback, useMemo } from 'react';
 import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
-import { useZustand } from '../lib/zustand';
 import { Post } from '../types/types';
 import Markdown from 'react-markdown';
-
-const store_activePost = useZustand.getState().methods.store_activePost;
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const PostCards: FC<{
     posts: Post[];
 }> = ({ posts }) => {
     return (
         <div className='scroll-gutter h-full basis-1/2 -scale-x-100 overflow-y-scroll scrollbar-thin'>
-            <div className='pointer-events-none flex -scale-x-100 flex-col gap-y-6 pb-2 pl-4 pr-2 pt-3'>
+            <div
+                className='pointer-events-none flex -scale-x-100 flex-col gap-y-6 pb-2 pl-4 pr-2 pt-3'
+                onClick={(e) => {
+                    /* Needed for children's navigate() calls in an onClick to work: */
+                    e.stopPropagation();
+                }}
+            >
                 {posts.map((post, idx) => (
                     <SinglePostCard key={post.title + idx} post={post} index={idx} />
                 ))}
@@ -26,8 +30,13 @@ export const SinglePostCard: FC<{
     post: Post;
     index: number;
 }> = ({ post, index }) => {
-    const { title, titleCardBg, subTitle, date } = post;
+    const { id, title, titleCardBg, subTitle, date } = post;
+
     const { year } = parseDateString(date);
+
+    const navigate = useNavigate();
+    const { catId } = useParams();
+
     const delay_Memo = useMemo(() => 300 * (index + 1), [index]);
 
     const [intersectionRefCb, entry] = useIntersectionObserver({
@@ -52,7 +61,14 @@ export const SinglePostCard: FC<{
                 'group/this pointer-events-auto relative translate-x-full transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--card-outline-color] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[---card-hover-delay] duration-[--card-hover-duration] [---card-hover-delay:100ms] [--card-hover-duration:200ms] [--card-outline-color:theme(colors.theme.neutral.50)] [--card-outline-width:6px] hover:-outline-offset-[calc(2px+var(--card-outline-width))]',
                 titleCardBg ? 'h-52' : 'h-24',
             )}
-            onClick={() => store_activePost(post)}
+            onClick={() => {
+                console.log('%c[PostCards]', 'color: #18f10c', `catId, id :`, catId, id);
+
+                // navigate('/2');
+                navigate(`${id}`);
+                // store_distanceToTop('4rem');
+                // navigate(`${id}`);
+            }}
         >
             {/* Title: */}
             <div className='relative z-10 mx-auto -mt-3 w-fit px-4 pb-1 text-center leading-none text-[--card-outline-color] shadow transition-colors delay-[---card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-theme-secondary-400 before:transition-[background-color] before:delay-[---card-hover-delay] before:duration-[--card-hover-duration] group-hover/this:text-theme-secondary-400 group-hover/this:before:bg-[--card-outline-color]'>

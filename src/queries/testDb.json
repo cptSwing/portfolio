@@ -1,7 +1,7 @@
 {
     "Code": {
         "id": 0,
-
+        "categoryTitle": "Code",
         "categoryBackgroundColor": "rgb(32,80,48)",
         "categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
         "categoryBlurb": "Webdev, App dev, Tech Art",
@@ -249,6 +249,7 @@
     },
     "3D": {
         "id": 1,
+        "categoryTitle": "3D",
         "categoryBackgroundColor": "rgb(128,200,225)",
         "categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
         "categoryBlurb": "3D All-Rounder, origins in Gaming industry",
@@ -668,6 +669,7 @@
     },
     "About": {
         "id": 2,
+        "categoryTitle": "About",
         "categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale",
         "categoryBlurb": "I build websites.\n\n&nbsp;\n\nI build 3D stuff.\n\n&nbsp;\n\nAnd sometimes,\n\nI combine the two.",
         "posts": [
@@ -718,6 +720,7 @@
     },
     "Log": {
         "id": 3,
+        "categoryTitle": "Log",
         "categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
         "categoryBlurb": "What's been happening lately?",
         "posts": [

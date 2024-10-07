@@ -1,6 +1,5 @@
-import { useZustand } from '../lib/zustand';
 import classNames from '../lib/classNames';
-import { Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../types/types';
+import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../types/types';
 import { CSSProperties, FC, useCallback, useMemo, useState } from 'react';
 import { MenuOpenedPost } from './Nav';
 import Markdown from 'react-markdown';
@@ -11,13 +10,21 @@ import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
 import parseDateString from '../lib/parseDateString';
 import { ToolsUrls } from '../types/enums';
+import { useParams } from 'react-router-dom';
+import testDb from '../queries/testDb.json';
+
+const testDbTyped = testDb as DataBase;
 
 const Content = () => {
-    const activePost = useZustand((state) => state.nav.activePost);
+    const { catId, postId } = useParams();
 
-    const [lightboxTo, setLightboxTo] = useState<number | null>(null);
-
-    const { title, subTitle, toolsUsed, showCases, textBlocks, codeLink, date } = activePost ?? {};
+    const activePost_Memo = useMemo(() => {
+        const activeCat = Object.values(testDbTyped).find((category) => category.id.toString() === catId);
+        if (activeCat) {
+            return activeCat.posts.find((post) => post.id.toString() === postId);
+        }
+    }, [catId, postId]);
+    const { title, subTitle, toolsUsed, showCases, textBlocks, codeLink, date } = activePost_Memo ?? {};
 
     const filteredImages_Memo = useMemo(
         () =>
@@ -26,7 +33,7 @@ const Content = () => {
                 .map((showCase, idx) => {
                     if ('imgUrl' in showCase) {
                         return {
-                            src: showCase.imgUrl,
+                            src: `/${showCase.imgUrl}`,
                             title: showCase.caption,
                             scIndx: idx,
                         };
@@ -36,43 +43,35 @@ const Content = () => {
         [showCases],
     );
 
+    const date_Memo = useMemo(() => parseDateString(date ?? ''), [date]);
+    const { year, month, day } = date_Memo;
+
+    const [lightboxTo, setLightboxTo] = useState<number | null>(null);
+
     /* NOTE Lightbox uses SlideImage Type (see above), so we need to jump through some hoops to pick correct SlideImage index from Post_ShowCase index */
     const setLightBoxSlide_Cb = useCallback(
         (showCaseIndex: number) => filteredImages_Memo && setLightboxTo(filteredImages_Memo.findIndex((slide) => slide.scIndx === showCaseIndex)),
         [filteredImages_Memo],
     );
 
-    const date_Memo = useMemo(() => parseDateString(date ?? ''), [date]);
-    const { year, month, day } = date_Memo;
-
     return (
         <main className='size-full bg-theme-bg-base'>
-            {/* Floating Title: */}
-            <div
-                className={classNames(
-                    'nav-checked-width pointer-events-none fixed bottom-full left-0 right-0 z-20 mx-auto flex items-end justify-center transition-[top]',
-                    activePost ? 'top-[calc(var(--header-height)-var(--top-bottom-bar-height))]' : 'top-0 delay-[--header-transition-duration] duration-0',
-                )}
-            >
-                <h2 className='translate-y-1/2 px-8 text-theme-neutral-50 drop-shadow-md before:absolute before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400 before:clip-inset-t-[30%]'>
-                    {title}
-                </h2>
-                <MenuOpenedPost
-                    classNames={classNames('transition-[right] duration-[--header-transition-duration]', activePost ? 'right-0 ' : 'right-1/2 ')}
-                    hasImages={showCases ? true : false}
-                    codeLink={codeLink}
-                    setLightboxTo={setLightboxTo}
-                />
-            </div>
+            <div className='nav-checked-width relative mx-auto flex h-full flex-col bg-[--bg-color] [--bg-color:theme(colors.theme.bg.lighter)]'>
+                {/* Floating Title: */}
+                <div className='nav-checked-width pointer-events-none absolute bottom-[calc(100%+theme(spacing.1))] z-10 mx-auto flex items-end justify-center'>
+                    <h2 className='absolute translate-y-1/2 px-8 text-theme-neutral-50 drop-shadow-md before:absolute before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400 before:clip-inset-t-[30%]'>
+                        {title}
+                    </h2>
+                    <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
+                </div>
 
-            {activePost ? (
-                <div className='nav-checked-width mx-auto flex h-full flex-col bg-[--bg-color] [--bg-color:theme(colors.theme.bg.lighter)]'>
+                {textBlocks ? (
                     <div
-                        className='scroll-gutter-both relative flex flex-col overflow-y-auto p-12 scrollbar-thin scrollbar-thumb-theme-primary-400 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)]'
+                        className='scroll-gutter-both relative flex flex-col overflow-y-auto px-20 py-12 scrollbar-thin scrollbar-thumb-theme-primary-400 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)]'
                         // onBlur={() => store_activePost(null)} // TODO
                     >
                         {/* (Sub-)Header, date, "Built with" */}
-                        <div className='flex w-full items-start justify-between py-12'>
+                        <div className='flex w-full items-start justify-between py-8'>
                             <h4 className='leading-none'>{subTitle}</h4>
                             <div className='relative mt-1 flex flex-col items-end justify-start'>
                                 <h5 className='headline-bg -mr-0.5 w-fit text-[--bg-color] no-underline'>
@@ -95,8 +94,8 @@ const Content = () => {
                                         {showCase && (
                                             <div
                                                 className={classNames(
-                                                    'group relative basis-2/3 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400',
-                                                    isBlockIndexEven ? 'order-2 ml-8' : 'order-1 mr-8',
+                                                    'group relative h-full basis-3/5 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75',
+                                                    isBlockIndexEven ? 'order-2 ml-12' : 'order-1 mr-12',
                                                 )}
                                                 onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}
                                             >
@@ -113,15 +112,10 @@ const Content = () => {
                                                         allowFullScreen
                                                     />
                                                 ) : (
-                                                    <img src={(showCase as Post_ShowCase_Image).imgUrl} className='w-full object-cover' />
+                                                    <img src={`/${(showCase as Post_ShowCase_Image).imgUrl}`} className='h-full object-cover' />
                                                 )}
                                                 {showCase.caption && (
-                                                    <div
-                                                        className={classNames(
-                                                            'absolute bottom-0 min-w-0 bg-theme-neutral-300/60 px-4 py-1 text-center text-sm text-theme-accent-700 transition-[background-color,min-width] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 group-hover:min-w-full group-hover:bg-theme-neutral-300',
-                                                            isBlockIndexEven ? 'left-0 mask-edges-r-2/5' : 'right-0 mask-edges-l-2/5',
-                                                        )}
-                                                    >
+                                                    <div className='absolute bottom-0 max-h-0 w-full bg-theme-neutral-500/60 px-4 pb-0 pt-2 text-center text-sm text-theme-neutral-50 transition-[background-color,max-height,padding] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 mask-edges-x-2/5 group-hover:max-h-full group-hover:bg-theme-neutral-500 group-hover:py-2'>
                                                         {showCase.caption}
                                                     </div>
                                                 )}
@@ -134,7 +128,7 @@ const Content = () => {
                                                 showCase ? 'flex-1' : 'mr-auto basis-4/5',
                                                 isBlockIndexEven ? 'order-1' : 'order-2',
                                                 idx === 0
-                                                    ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-theme-secondary-600 first-line:italic'
+                                                    ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-theme-secondary-400 first-line:italic'
                                                     : '',
                                             )}
                                         >
@@ -149,20 +143,20 @@ const Content = () => {
                             })}
                         </div>
 
-                        {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks!} setLightBoxSlide={setLightBoxSlide_Cb} />}
-                    </div>
+                        {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
 
-                    <Lightbox
-                        open={Number.isInteger(lightboxTo)}
-                        index={lightboxTo ?? 0}
-                        close={() => setLightboxTo(null)}
-                        slides={filteredImages_Memo}
-                        plugins={[Captions]}
-                    />
-                </div>
-            ) : (
-                <></>
-            )}
+                        <Lightbox
+                            open={Number.isInteger(lightboxTo)}
+                            index={lightboxTo ?? 0}
+                            close={() => setLightboxTo(null)}
+                            slides={filteredImages_Memo}
+                            plugins={[Captions]}
+                        />
+                    </div>
+                ) : (
+                    <></>
+                )}
+            </div>
         </main>
     );
 };
@@ -232,15 +226,15 @@ const RemainingImages: FC<{
     );
 
     return (
-        <div className='mt-14 grid grid-cols-4 gap-4'>
+        <div className='mt-20 grid grid-cols-4 gap-4'>
             {remaining_Memo.map((remain) => {
                 const [imageShowCase, imageIndex] = remain || [];
 
                 return imageShowCase && typeof imageIndex === 'number' ? (
                     <img
                         key={imageShowCase.imgUrl + imageIndex}
-                        src={imageShowCase.imgUrl}
-                        className='max-h-64 w-full cursor-pointer object-cover outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-600 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-primary-400'
+                        src={`/${imageShowCase.imgUrl}`}
+                        className='max-h-64 w-full cursor-pointer object-cover outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75'
                         onClick={() => setLightBoxSlide(imageIndex)}
                     />
                 ) : null;
