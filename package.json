@@ -14,7 +14,7 @@
         "immer": "^10.1.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "transition-hook": "^1.5.2",
+        "react-router": "^6.26.2",
         "yet-another-react-lightbox": "^3.21.5",
         "zustand": "^4.5.4"
     },
