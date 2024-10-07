@@ -149,12 +149,12 @@
 /* Anim Keyframes */
 
 @keyframes streak-down {
-    /* from {
+    from {
         @apply h-0 opacity-0;
     }
     to {
         @apply h-full opacity-100;
-    } */
+    }
 }
 
 @keyframes bg-dash {

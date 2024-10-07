@@ -8,7 +8,7 @@ import BarWrapped from '../components/BarWrapped';
 const App = () => {
     return (
         <>
-            <div className='nav-checked-width relative mx-auto flex h-[98dvh] flex-col items-center justify-start [--header-height:8dvh] [--header-transition-duration:300ms]'>
+            <div className='nav-checked-width relative mx-auto flex h-[98dvh] flex-col items-center justify-start [--header-height:10dvh] [--header-transition-duration:300ms]'>
                 <LogoHeader />
                 <BarWrapped>
                     <Nav />

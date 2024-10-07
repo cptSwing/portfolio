@@ -21,9 +21,9 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
             {/* Top Bar: */}
             <div
                 className={classNames(
-                    'h-[--top-bottom-bar-height] bg-theme-primary-500 transition-[width,background-color] duration-300',
+                    'h-[--top-bottom-bar-height] transition-[width,background-color] duration-300',
                     activeCategory ? 'nav-checked-width' : 'nav-unchecked-width',
-                    activePost ? '!w-full' : '',
+                    activePost ? '!w-full bg-theme-primary-500' : 'bg-theme-secondary-300',
                 )}
                 onChange={(e) => {
                     console.log('%c[BarWrapped]', 'color: #7071ff', `e :`, e);
@@ -35,9 +35,9 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
             {/* Bottom Bar: */}
             <div
                 className={classNames(
-                    'h-[--top-bottom-bar-height] bg-theme-primary-500 transition-[width,background-color] delay-200 duration-200',
+                    'h-[--top-bottom-bar-height] bg-theme-primary-500 transition-[width,background-color] delay-200 duration-500',
                     activeCategory ? 'nav-checked-width' : 'nav-unchecked-width',
-                    activePost ? '!w-full' : '',
+                    activePost ? '!w-full bg-theme-primary-500' : 'bg-theme-secondary-300',
                 )}
             />
         </div>

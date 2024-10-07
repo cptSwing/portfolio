@@ -13,8 +13,8 @@ export enum ToolsUrls {
 }
 
 export enum MENU_CATEGORY {
-    About = 'About',
     Code = 'Code',
     '3D' = '3D',
+    About = 'About',
     Log = 'Log',
 }

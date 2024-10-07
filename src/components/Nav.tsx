@@ -136,7 +136,7 @@ const CategoryCard: FC<{
         >
             <h1
                 className={classNames(
-                    'writing-mode-vert-lr mx-auto -mb-1 rotate-180 select-none whitespace-nowrap font-protest-riot text-5xl leading-none drop-shadow-lg transition-[transform,color] duration-300',
+                    'writing-mode-vert-lr mx-auto -mb-1 rotate-180 transform-gpu select-none whitespace-nowrap font-protest-riot text-5xl leading-none drop-shadow-lg transition-[transform,color] duration-300',
                     isThisCategoryOpen
                         ? 'text-theme-secondary-400'
                         : activeCategory
