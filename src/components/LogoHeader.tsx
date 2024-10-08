@@ -1,8 +1,9 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import classNames from '../lib/classNames';
 
 const LogoHeader = () => {
     const { postId } = useParams();
+    const navigate = useNavigate();
 
     return (
         <header
@@ -11,7 +12,9 @@ const LogoHeader = () => {
                 'w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height,color] duration-[--header-transition-duration]',
                 postId ? 'ml-0 mr-[100%] min-h-20 translate-x-1/2 text-theme-primary-400' : 'ml-0 min-h-28 translate-x-0 py-2 text-theme-accent-400',
             )}
-            onClick={() => {}}
+            onClick={() => {
+                navigate('/');
+            }}
         >
             <svg height='100%' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
                 <g id='layer1' transform='translate(-77.964769,-127.41715)'>
