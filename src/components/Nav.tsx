@@ -1,6 +1,6 @@
 import { DataBase, Post } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import testDb from '../queries/testDb.json';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config.ts';
@@ -10,6 +10,7 @@ import { MENU_CATEGORY } from '../types/enums.ts';
 import Markdown from 'react-markdown';
 import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
 import { useNavigate, useParams } from 'react-router-dom';
+import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 
 const themeBgBase = resolveConfig(tailwindConfig).theme.colors.theme.bg.base;
 const testDbTyped = testDb as DataBase;
@@ -21,7 +22,7 @@ const Nav = () => {
     return (
         <nav
             className={classNames(
-                'mx-auto grid h-full transition-[width,grid-template-columns,column-gap] duration-700',
+                'mx-auto grid h-full transition-[width,grid-template-columns,column-gap] duration-500',
                 catId ? 'nav-checked-width gap-x-px' : 'nav-unchecked-width gap-x-1',
                 postId ? 'absolute left-0 right-0 -z-10' : 'z-0 block',
             )}
@@ -45,23 +46,18 @@ const CategoryCard: FC<{
 
     const navigate = useNavigate();
     const { catId } = useParams();
+    const isIndexEven = id % 2 === 0;
 
-    const refCb = useCallback(
-        (elem: HTMLDivElement | null) => {
-            if (elem) {
-                setTimeout(() => {
-                    /* Mount sequentially for staggered dropdown */
-                    elem.style.removeProperty('display');
-                    elem.style.setProperty('animation', '1s 1s forwards streak-down');
-                    elem.addEventListener('animationend', () => {
-                        elem.style.removeProperty('animation');
-                        elem.style.removeProperty('opacity');
-                    });
-                }, 500 * id);
-            }
+    const [refCallback] = useAnimationOnMount({
+        animationProps: {
+            animationName: isIndexEven ? 'streak-down' : 'streak-up',
+            animationDuration: 300,
+            animationDelay: 100 * id,
+            animationFillMode: 'backwards',
         },
-        [id],
-    );
+        startDelay: 400,
+        hiddenAtStart: true,
+    });
 
     const isThisCategoryOpen = useMemo(() => (catId ? parseInt(catId) === id : false), [catId, id]);
 
@@ -98,34 +94,31 @@ const CategoryCard: FC<{
 
     return (
         <div
-            ref={refCb}
+            ref={refCallback}
             /* NOTE Fixed Widths (opened) of Category Card here! */
             className={classNames(
-                'group/category pointer-events-auto relative flex transform-gpu cursor-pointer items-end justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
+                'group/category pointer-events-auto relative flex h-full transform-gpu cursor-pointer items-center justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
                 isThisCategoryOpen
-                    ? '!scale-y-100 bg-theme-primary-300'
+                    ? 'bg-theme-primary-300'
                     : catId
                       ? 'scale-y-[.99] bg-theme-primary-600 hover:bg-theme-primary-500'
-                      : 'scale-y-100 bg-theme-primary-600 hover:bg-theme-primary-200',
+                      : 'bg-theme-primary-600 hover:bg-theme-primary-200',
             )}
             onClick={() => {
                 navigate(catId === id.toString() ? '/' : `/${id}`);
             }}
             style={{
                 ...paddingStyle_Memo,
-                // Both removed after initial mount:
-                display: 'none',
-                opacity: 0,
             }}
         >
             <h1
                 className={classNames(
-                    'writing-mode-vert-lr mx-auto -mb-1 min-h-full rotate-180 transform-gpu select-none whitespace-nowrap font-protest-riot text-5xl leading-none drop-shadow-lg transition-[transform,color] duration-300',
+                    'writing-mode-vert-lr mx-auto -mb-0.5 -mr-1 min-h-0 rotate-180 transform-gpu select-none whitespace-nowrap font-protest-riot text-5xl leading-none transition-[transform,color,min-height] duration-300',
                     isThisCategoryOpen
-                        ? 'text-theme-secondary-400'
+                        ? '!mr-0 !min-h-full text-theme-secondary-400'
                         : catId
-                          ? 'translate-y-0 scale-90 text-theme-secondary-700 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0'
-                          : 'translate-y-0 text-theme-secondary-100 group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0',
+                          ? 'scale-90 text-theme-secondary-700 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0'
+                          : 'text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!drop-shadow-none group-hover/category:!duration-0',
                 )}
             >
                 {categoryTitle}
@@ -134,8 +127,12 @@ const CategoryCard: FC<{
             {/* Testimonials etc: */}
             <div
                 className={classNames(
-                    'relative -my-2 flex basis-1/2 items-end overflow-hidden border-l-[6px] border-theme-neutral-50 transition-[height] duration-300',
-                    isThisCategoryOpen ? 'h-full' : catId ? 'h-0' : 'h-0 group-hover/category:!h-1/4',
+                    'relative flex w-0 items-end overflow-hidden border-theme-neutral-50 transition-[height,border-color] duration-300',
+                    isThisCategoryOpen
+                        ? 'h-full basis-1/2 border-l-[6px]'
+                        : catId
+                          ? 'h-0'
+                          : 'h-0 border-l-4 border-theme-secondary-600/0 group-hover/category:!h-1/4 group-hover/category:border-theme-secondary-600',
                 )}
             >
                 <div
