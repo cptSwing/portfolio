@@ -11,6 +11,7 @@ const SocialsFooter = () => {
                 <div className='cursor-pointer rounded-full bg-gray-600 px-2 py-1 transition-colors hover:text-white'>Email</div>
                 <div className='cursor-pointer rounded-full bg-gray-600 px-2 py-1 transition-colors hover:text-white'>TurboSquid</div>
                 <div className='cursor-pointer rounded-full bg-gray-600 px-2 py-1 transition-colors hover:text-white'>CGTrader</div>
+                <div className='cursor-pointer rounded-full bg-gray-600 px-2 py-1 transition-colors hover:text-white'>Imprint</div>
             </nav>
         </footer>
     ) : null;
