@@ -95,11 +95,10 @@ const CategoryCard: FC<{
     return (
         <div
             ref={refCallback}
-            /* NOTE Fixed Widths (opened) of Category Card here! */
             className={classNames(
                 'group/category pointer-events-auto relative flex h-full transform-gpu cursor-pointer items-center justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
                 isThisCategoryOpen
-                    ? 'bg-theme-primary-300'
+                    ? 'bg-theme-primary-300 [background-image:url("/svg/diagonal_lines.svg")]'
                     : catId
                       ? 'scale-y-[.99] bg-theme-primary-600 hover:bg-theme-primary-500'
                       : 'bg-theme-primary-600 hover:bg-theme-primary-200',
@@ -118,7 +117,7 @@ const CategoryCard: FC<{
                         ? '!mr-0 !min-h-full text-theme-secondary-400'
                         : catId
                           ? 'scale-90 text-theme-secondary-700 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0'
-                          : 'text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!drop-shadow-none group-hover/category:!duration-0',
+                          : 'text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
                 )}
             >
                 {categoryTitle}
@@ -127,12 +126,12 @@ const CategoryCard: FC<{
             {/* Testimonials etc: */}
             <div
                 className={classNames(
-                    'relative flex w-0 items-end overflow-hidden border-theme-neutral-50 transition-[height,border-color] duration-300',
+                    'relative mr-8 flex w-0 items-end overflow-hidden border-theme-neutral-50 bg-theme-primary-300 outline outline-8 outline-theme-primary-300 transition-[height,border-color] duration-500',
                     isThisCategoryOpen
                         ? 'h-full basis-1/2 border-l-[6px]'
                         : catId
                           ? 'h-0'
-                          : 'h-0 border-l-4 border-theme-secondary-600/0 group-hover/category:!h-1/4 group-hover/category:border-theme-secondary-600',
+                          : 'h-0 border-l-4 border-theme-secondary-600/0 group-hover/category:!h-1/4 group-hover/category:border-theme-secondary-600 group-hover/category:!duration-100',
                 )}
             >
                 <div
