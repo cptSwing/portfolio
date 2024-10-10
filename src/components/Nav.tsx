@@ -13,6 +13,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 
 const themeBgBase = resolveConfig(tailwindConfig).theme.colors.theme.bg.base;
+const shadow = resolveConfig(tailwindConfig).theme.boxShadow;
+console.log('%c[Nav]', 'color: #ea5d98', `shadow :`, shadow);
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
 
@@ -97,6 +99,7 @@ const CategoryCard: FC<{
             ref={refCallback}
             className={classNames(
                 'group/category pointer-events-auto relative flex h-full transform-gpu cursor-pointer items-center justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
+                '[--outline-width:8px]',
                 isThisCategoryOpen
                     ? 'bg-theme-primary-300 [background-image:url("/svg/diagonal_lines.svg")]'
                     : catId
@@ -110,41 +113,64 @@ const CategoryCard: FC<{
                 ...paddingStyle_Memo,
             }}
         >
-            <h1
-                className={classNames(
-                    'writing-mode-vert-lr mx-auto -mb-0.5 -mr-1 min-h-0 rotate-180 transform-gpu select-none whitespace-nowrap font-protest-riot text-5xl leading-none transition-[transform,color,min-height] duration-300',
-                    isThisCategoryOpen
-                        ? '!mr-0 !min-h-full text-theme-secondary-400'
-                        : catId
-                          ? 'scale-90 text-theme-secondary-700 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!duration-0'
-                          : 'text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
-                )}
-            >
-                {categoryTitle}
-            </h1>
+            <div className='relative flex h-full flex-col items-start justify-start'>
+                <div className={classNames('transition-[flex]', isThisCategoryOpen ? 'flex-1' : 'flex-none')} />
+                <div
+                    className={classNames(
+                        'relative m-auto outline-[length:--outline-width] outline-theme-primary-300 transition-[box-shadow,outline-width]',
+                        'before:absolute before:-z-10 before:shadow-theme-primary-950 before:outline-[length:--outline-width] before:outline-theme-primary-300 before:transition-[width,height] before:delay-300',
+                        'after:absolute after:-left-[--outline-width] after:-top-[--outline-width] after:z-10 after:shadow-theme-primary-100 after:transition-[width,height]',
+                        isThisCategoryOpen
+                            ? // Cast shadow with slightly wider element so there is no visible break between this and sibling element's shadows
+                              'after:shadow-top-rim-lg before:shadow-with-top-lg outline before:h-full before:w-[calc(100%+(4*var(--outline-width)))] before:outline after:h-full after:w-[calc(100%+(2*var(--outline-width)))]'
+                            : 'before:size-0 after:size-0',
+                    )}
+                >
+                    {/* Cover siblings box-shadow: */}
+                    {isThisCategoryOpen && (
+                        <div className='absolute z-10 size-full bg-theme-primary-300 outline outline-[length:--outline-width] outline-theme-primary-300' />
+                    )}
+                    <h1
+                        className={classNames(
+                            'writing-mode-vert-lr relative z-20 rotate-180 transform-gpu select-none whitespace-nowrap font-protest-riot text-5xl leading-none transition-[transform,color] duration-300',
+                            isThisCategoryOpen
+                                ? 'text-theme-secondary-400'
+                                : catId
+                                  ? 'scale-90 text-theme-secondary-700 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!duration-75'
+                                  : 'text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
+                        )}
+                    >
+                        {categoryTitle}
+                    </h1>
+                </div>
+            </div>
 
             {/* Testimonials etc: */}
             <div
                 className={classNames(
-                    'relative mr-8 flex w-0 items-end overflow-hidden border-theme-neutral-50 bg-theme-primary-300 outline outline-8 outline-theme-primary-300 transition-[height,border-color] duration-500',
+                    '[--scrollbar-width:6px]',
+                    'relative mr-6 flex h-full min-w-96 basis-1/2 items-end border-theme-neutral-50 bg-theme-primary-300 shadow-theme-primary-950 outline-[length:--outline-width] outline-theme-primary-300 transition-[height,border-color] duration-500',
+                    'after:absolute after:-left-[calc(var(--outline-width)+var(--scrollbar-width))] after:-top-[--outline-width] after:z-50 after:size-0 after:shadow-theme-primary-100 after:transition-[width,height]',
                     isThisCategoryOpen
-                        ? 'h-full basis-1/2 border-l-[6px]'
+                        ? 'shadow-with-top-lg after:shadow-top-rim-lg border-l-[length:--scrollbar-width] outline after:!h-full after:!w-[calc(100%+(2*var(--outline-width)+var(--scrollbar-width)))]'
                         : catId
-                          ? 'h-0'
-                          : 'h-0 border-l-4 border-theme-secondary-600/0 group-hover/category:!h-1/4 group-hover/category:border-theme-secondary-600 group-hover/category:!duration-100',
+                          ? 'h-0 clip-inset-y-1/2'
+                          : 'border-l-4 border-theme-secondary-600/0 clip-inset-y-1/2 group-hover/category:border-theme-secondary-600 group-hover/category:!duration-100 group-hover/category:clip-inset-y-2/5',
                 )}
             >
                 <div
                     className={classNames(
-                        'z-10 select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400 transition-transform duration-300',
+                        'z-10 select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400 transition-transform duration-300 *:overflow-x-clip',
                         isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
                     )}
                 >
                     <Markdown className='mrkdwn'>{categoryBlurb}</Markdown>
                 </div>
-                <div className='absolute opacity-10 mask-edges-24'>
-                    <div className='bg-cover' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
-                </div>
+
+                {/* Background image */}
+                {/* <div className='absolute size-full opacity-15 mask-edges-16'>
+                    <div className='h-full bg-cover' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
+                </div> */}
             </div>
 
             {isThisCategoryOpen && <PostCards posts={posts} />}

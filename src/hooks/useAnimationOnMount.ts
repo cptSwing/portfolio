@@ -24,32 +24,26 @@ type UseAnimationOnMountProps = {
     };
     startDelay?: number;
     hiddenAtStart?: boolean;
-    origin?: string;
 };
 const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
     const {
         animationProps: { animationName, animationDuration, animationDelay, animationFillMode },
         startDelay = 0,
         hiddenAtStart = false,
-        origin = '',
     } = props;
 
     const ref = useRef<HTMLElement | null>(null);
     const [hasEnded, setHasEnded] = useState<string | false>(false);
 
-    const animate_Cb = useCallback(
-        (element: HTMLElement, animProps: AnimationProperties) => {
-            setCssProperties(element, animProps);
+    const animate_Cb = useCallback((element: HTMLElement, animProps: AnimationProperties) => {
+        setCssProperties(element, animProps);
 
-            element.addEventListener('animationend', () => {
-                console.log('%c[useAnimationOnMount]', 'color: #b7fa74', `${origin}, element.style :`, JSON.parse(JSON.stringify(element.style)));
-                const animName = element.style.animationName;
-                setHasEnded(animName);
-                removeCssProperties(element, animProps);
-            });
-        },
-        [origin],
-    );
+        element.addEventListener('animationend', () => {
+            const animName = element.style.animationName;
+            setHasEnded(animName);
+            removeCssProperties(element, animProps);
+        });
+    }, []);
 
     const refCallback = useCallback(
         (elem: HTMLElement | null) => {

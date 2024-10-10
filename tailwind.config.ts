@@ -110,6 +110,9 @@ export default {
                 },
             },
             boxShadow: {
+                'top-rim-lg': 'inset 0px 10px 4px -10px rgb(0 0 0 / 0.1)',
+                'with-top-lg': '0px -1px 10px -1px rgb(0 0 0 / 0.1), 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+                'with-top-xl': '0px -3px 14px -4px rgb(0 0 0 / 0.1), 0px 20px 25px -5px rgb(0 0 0 / 0.1), 0px 8px 10px -6px rgb(0 0 0 / 0.1)',
                 'inner-sm-border': 'inset 0 0 1.5rem 1.5rem var(--tw-shadow-color)',
                 'inner-sm': 'inset 0 0 2rem 0.5rem var(--tw-shadow-color)',
                 'inner-md': 'inset 0 0 4rem 1rem var(--tw-shadow-color)',

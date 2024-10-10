@@ -114,6 +114,13 @@
     .z-top {
         z-index: 5000;
     }
+
+    .text-stroke-outer:before {
+        content: attr(data-title);
+        position: absolute;
+        -webkit-text-stroke: 16px theme(colors.theme.primary.300);
+        z-index: -1;
+    }
 }
 
 :root {
