@@ -42,6 +42,7 @@ export type DataBase = {
         categoryTitle: MENU_CATEGORY;
         posts: Post[];
         categoryCardBackgroundImage: string;
+        categoryBackgroundSvg: 'code' | '3D' | 'about' | 'log';
         categoryBlurb: string;
         categoryBackgroundColor?: string;
     };
