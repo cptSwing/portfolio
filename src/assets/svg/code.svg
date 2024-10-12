@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+	<style>
+		tspan {
+			stroke: none;
+			white-space: break-spaces;
+		}
+	</style>
+
+	<defs>
+		<pattern id="pattern_code" patternUnits="userSpaceOnUse" width="100%" height="50%" patternTransform="">
+			<text>
+				<tspan x="0" dy="0">const {</tspan>
+				<tspan x="0" dy="1.2rem">    animationProps: { animationName, animationDuration, animationDelay, animationFillMode },</tspan>
+				<tspan x="0" dy="1.2rem">    startDelay = 0,</tspan>
+				<tspan x="0" dy="1.2rem">    hiddenAtStart = false,</tspan>
+				<tspan x="0" dy="1.2rem">} = props;</tspan>
+				<tspan x="0" dy="1.2rem" visibility="hidden">.</tspan>
+				<tspan x="0" dy="1.2rem">const ref = useRef			&lt;HTMLElement | null&gt;(null);</tspan>
+				<tspan x="0" dy="1.2rem">const [hasEnded, setHasEnded] = useState&lt;string | false&gt;(false);</tspan>
+				<tspan x="0" dy="1.2rem" visibility="hidden">.</tspan>
+				<tspan x="0" dy="1.2rem">const animate_Cb = useCallback((element: HTMLElement, animProps: AnimationProperties) =&gt; {</tspan>
+				<tspan x="0" dy="1.2rem">    setCssProperties(element, animProps);</tspan>
+				<tspan x="0" dy="1.2rem" visibility="hidden">.</tspan>
+				<tspan x="0" dy="1.2rem">    element.addEventListener('animationend', () =&gt; {</tspan>
+				<tspan x="0" dy="1.2rem">        const animName = element.style.animationName;</tspan>
+				<tspan x="0" dy="1.2rem">        setHasEnded(animName);</tspan>
+				<tspan x="0" dy="1.2rem">        removeCssProperties(element, animProps);</tspan>
+				<tspan x="0" dy="1.2rem">    });</tspan>
+				<tspan x="0" dy="1.2rem">}, []);</tspan>
+
+
+			</text>
+		</pattern>
+	</defs>
+	<rect width="100%" height="100%" fill="url(#pattern_code)" />
+</svg>
