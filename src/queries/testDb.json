@@ -9,29 +9,42 @@
             {
                 "id": 0,
                 "title": "Design Your Ring",
-                "titleCardBg": "https://picsum.photos/seed/dyr/500?grayscale",
+                "titleCardBg": "src/assets/images/hd_dyr/hd_dyr_card.jpg",
                 "toolsUsed": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
                 "subTitle": "Customizable Wedding-Rings in 3D",
                 "date": "2024-09-12",
-                "codeLink": {
-                    "alt": "Github",
-                    "href": "http://www.github.com"
-                },
                 "showCases": [
                     {
                         "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/dyr_1/900/600?grayscale"
+                        "imgUrl": "src/assets/images/hd_dyr/1.jpg"
                     },
                     {
                         "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/dyr_2/900/600?grayscale"
-                    },
-                    {
-                        "imgUrl": "https://picsum.photos/seed/dyr_3/900/600?grayscale"
+                        "imgUrl": "src/assets/images/hd_dyr/2.jpg"
                     },
                     {
                         "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/dyr_4/900/600?grayscale"
+                        "imgUrl": "src/assets/images/hd_dyr/3.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/hd_dyr/4.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/hd_dyr/5.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/hd_dyr/6.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/hd_dyr/7.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "src/assets/images/hd_dyr/8.jpg"
                     }
                 ],
                 "textBlocks": [
