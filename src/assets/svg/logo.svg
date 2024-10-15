@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="66.569122mm"
-   height="27.368679mm"
-   viewBox="0 0 66.569122 27.368679"
+   width="111.34843"
+   height="78.112495"
+   viewBox="0 0 111.34843 78.112495"
    version="1.1"
    id="svg1"
    xmlns="http://www.w3.org/2000/svg"
@@ -13,22 +13,46 @@
      id="defs1" />
   <g
      id="layer1"
-     transform="translate(-77.964769,-127.41715)">
+     transform="translate(-0.272199,-1.616127)">
     <text
        xml:space="preserve"
-       style="font-size:16.9333px;line-height:0.7;fill:none;stroke:#000000;stroke-width:0.881;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.3;stroke-dasharray:none"
-       x="144.90642"
-       y="140.45578"
+       style="font-size:18.5493px;line-height:0.7;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-position:sub;text-align:end;letter-spacing:-1px;text-anchor:end;fill:#ff0000;stroke-width:1.54411;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.3"
+       x="89.427574"
+       y="47.154945"
        id="text1"><tspan
          id="tspan1"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.9333px;line-height:0.7;font-family:'Built Titling';-inkscape-font-specification:'Built Titling, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.881;stroke-dasharray:none"
-         x="144.90642"
-         y="140.45578"><tspan
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.9333px;line-height:0.7;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-position:sub;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
-   id="tspan3">j</tspan>Brandenburg</tspan><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:0.7;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.881;stroke-dasharray:none"
-         x="144.90642"
-         y="152.89964"
-         id="tspan2">this is a logo</tspan></text>
+         x="88.427582"
+         y="47.154945"
+         style="letter-spacing:-1px;fill:#ff0000;stroke-width:1.54411">Brandenburg</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:11.4531px;line-height:0.7;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-position:sub;text-align:end;letter-spacing:-0.756319px;text-anchor:end;fill:#008000;stroke-width:0.953399;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.3"
+       x="17.179356"
+       y="47.061783"
+       id="text2"><tspan
+         id="tspan2"
+         x="16.423037"
+         y="47.061783"
+         style="letter-spacing:-0.756319px;fill:#008000;stroke-width:0.953399">jens</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;line-height:0.7;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-position:sub;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;word-spacing:0.02px;text-anchor:end;fill:#000000;stroke-width:3.32976;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.3"
+       x="111.99563"
+       y="34.522377"
+       id="text3"><tspan
+         id="tspan3"
+         x="111.99563"
+         y="34.522377"
+         dy="-10"
+         style="word-spacing:0.02px">webdev</tspan><tspan
+         x="111.99563"
+         y="56.922379"
+         id="tspan4"
+         style="word-spacing:0.02px"
+         dy="-5">&amp;</tspan><tspan
+         x="111.99563"
+         y="79.322372"
+         id="tspan5"
+         style="word-spacing:0.02px">3d</tspan></text>
   </g>
 </svg>

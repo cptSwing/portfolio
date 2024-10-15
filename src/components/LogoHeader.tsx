@@ -9,56 +9,56 @@ const LogoHeader = () => {
         <header
             id='logo'
             className={classNames(
-                'w-fit transform-gpu cursor-pointer select-none transition-[margin,transform,height,color] duration-[--header-transition-duration]',
+                'nav-unchecked-width transform-gpu cursor-pointer select-none transition-[margin,transform,height,color] duration-[--header-transition-duration]',
                 postId ? 'ml-0 mr-[100%] min-h-20 translate-x-1/2 text-theme-primary-400' : 'ml-0 min-h-28 translate-x-0 py-2 text-theme-accent-400',
             )}
             onClick={() => {
                 navigate('/');
             }}
         >
-            <svg height='100%' viewBox='-36 0 103 25' version='1.1' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
-                <g id='layer1' transform='translate(-77.964769,-127.41715)'>
-                    <text xmlSpace='preserve' x='144.90642' y='140.45578' id='text1'>
+            <svg
+                viewBox='0 0 91 23'
+                version='1.1'
+                className='nav-unchecked-width h-fit'
+                preserveAspectRatio='xMaxYMid'
+                id='logo-svg'
+                xmlns='http://www.w3.org/2000/svg'
+            >
+                <g x='0' y='0'>
+                    <text
+                        xmlSpace='preserve'
+                        dx='90.5'
+                        dy='0'
+                        className=''
+                        // style='font-size:18.5493px;line-height:0.7;font-family:Calibri;font-variant-position:sub;text-align:end;letter-spacing:-1px;text-anchor:end;fill:#ff0000;stroke-width:1.54411;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.3'
+                        style={{ textAnchor: 'end', textAlign: 'end', dominantBaseline: 'hanging' }}
+                    >
                         <tspan
-                            id='tspan1'
-                            className='fill-current stroke-none'
-                            style={{
-                                fontSize: `${16.9333}px`,
-                                lineHeight: 0.7,
-                                fontFamily: 'Arial',
-                                textAlign: 'end',
-                                textAnchor: 'end',
-                                // fill: '#000000',
-                                fillOpacity: 1,
-                                strokeWidth: 0.2,
-                                strokeDasharray: 'none',
-                            }}
-                            x='144.90642'
-                            y='140.45578'
+                            // style='letter-spacing:-1px;fill:#ff0000;stroke-width:1.54411'
+                            className='fill-theme-neutral-800 font-barlow text-3xs font-extrabold uppercase'
                         >
-                            <tspan style={{ fontSize: `${16.9333}px`, lineHeight: 0.7, fontFamily: 'Calibri', fontVariantPosition: 'sub' }} id='tspan3'>
-                                j
-                            </tspan>
                             Brandenburg
                         </tspan>
                         <tspan
-                            className='fill-current stroke-none'
-                            style={{
-                                fontSize: `${10.5833}px`,
-                                lineHeight: 0.7,
-                                fontFamily: 'Times New Roman',
-                                textAlign: 'end',
-                                textAnchor: 'end',
-                                fillOpacity: 1,
-                                strokeWidth: 1,
-                                strokeDasharray: 'none',
-                            }}
-                            x='144.90642'
-                            y='150'
-                            id='tspan2'
+                            dx='-57.5'
+                            dy='1.8'
+                            className='fill-theme-primary-300/25 font-caveat lowercase tracking-tighter [font-size:0.45rem]'
+
+                            /* style='letter-spacing:-0.756319px;fill:#008000;stroke-width:0.953399' */
                         >
-                            this is a logo
+                            jens
                         </tspan>
+                    </text>
+
+                    <text
+                        xmlSpace='preserve'
+                        // style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;line-height:0.7;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-position:sub;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;word-spacing:0.02px;text-anchor:end;fill:#000000;stroke-width:3.32976;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.3"
+                        dx='87.75'
+                        dy='3'
+                        className='fill-theme-secondary-300 text-end font-caveat text-xl tracking-tight [text-anchor:end]'
+                        style={{ dominantBaseline: 'hanging' }}
+                    >
+                        _webdev &amp; 3d
                     </text>
                 </g>
             </svg>

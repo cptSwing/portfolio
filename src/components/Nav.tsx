@@ -99,13 +99,13 @@ const CategoryCard: FC<{
         <div
             ref={refCallback}
             className={classNames(
-                'group/category color-red-500 pointer-events-auto relative flex h-full transform-gpu cursor-pointer items-center justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
+                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer items-center justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
                 '[--outline-width:8px]',
                 isThisCategoryOpen
                     ? 'bg-theme-primary-300'
                     : catId
-                      ? 'scale-y-[.99] bg-theme-primary-600 hover:bg-theme-primary-500'
-                      : 'bg-theme-primary-600 hover:bg-theme-primary-200',
+                      ? 'scale-y-[.99] bg-theme-primary-600 hover:bg-theme-primary-400'
+                      : 'bg-theme-primary-400 hover:bg-theme-primary-200',
             )}
             onClick={() => {
                 navigate(catId === id.toString() ? '/' : `/${id}`);
@@ -114,16 +114,15 @@ const CategoryCard: FC<{
                 ...paddingStyle_Memo,
             }}
         >
-            <div className='relative flex h-full flex-col items-start justify-start'>
+            <div className='relative flex h-full flex-col items-center justify-start'>
                 <div className={classNames('transition-[flex]', isThisCategoryOpen ? 'flex-1' : 'flex-none')} />
                 <div
                     className={classNames(
                         'relative m-auto outline-[length:--outline-width] outline-theme-primary-300 transition-[box-shadow,outline-width]',
                         'before:absolute before:-z-10 before:shadow-theme-primary-950 before:outline-[length:--outline-width] before:outline-theme-primary-300 before:transition-[width,height] before:delay-300',
-                        'after:absolute after:-left-[--outline-width] after:-top-[--outline-width] after:z-10 after:shadow-theme-primary-100 after:transition-[width,height]',
                         isThisCategoryOpen
                             ? // Cast shadow with slightly wider element so there is no visible break between this and sibling element's shadows
-                              'outline before:h-full before:w-[calc(100%+(4*var(--outline-width)))] before:shadow-lg before:outline after:h-full after:w-[calc(100%+(2*var(--outline-width)))] after:shadow-top-rim-lg'
+                              'outline before:h-full before:w-[calc(100%+(4*var(--outline-width)))] before:shadow-lg before:outline'
                             : 'before:size-0 after:size-0',
                     )}
                 >
@@ -133,12 +132,12 @@ const CategoryCard: FC<{
                     )}
                     <h1
                         className={classNames(
-                            'writing-mode-vert-lr relative z-20 rotate-180 transform-gpu select-none whitespace-nowrap font-protest-riot text-5xl leading-none transition-[transform,color] duration-300',
+                            'writing-mode-vert-lr relative z-20 translate-x-0 rotate-180 transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-300',
                             isThisCategoryOpen
                                 ? 'text-theme-secondary-400'
                                 : catId
                                   ? 'scale-90 text-theme-secondary-700 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!duration-75'
-                                  : 'text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
+                                  : '!translate-x-2 text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
                         )}
                     >
                         {categoryTitle}
@@ -150,10 +149,9 @@ const CategoryCard: FC<{
             <div
                 className={classNames(
                     '[--scrollbar-width:6px]',
-                    'relative mr-6 flex h-full min-w-96 basis-1/2 items-end border-theme-neutral-50 bg-theme-primary-300 shadow-theme-primary-950 outline-[length:--outline-width] outline-theme-primary-300 transition-[height,border-color] duration-500',
-                    'after:absolute after:-left-[calc(var(--outline-width)+var(--scrollbar-width))] after:-top-[--outline-width] after:z-50 after:size-0 after:shadow-theme-primary-100 after:transition-[width,height]',
+                    'relative flex h-full min-w-96 basis-1/2 items-end border-theme-neutral-50 shadow-theme-primary-950 outline-[length:--outline-width] outline-theme-primary-300 transition-[height,border-color] duration-500',
                     isThisCategoryOpen
-                        ? 'border-l-[length:--scrollbar-width] shadow-lg outline after:!h-full after:!w-[calc(100%+(2*var(--outline-width)+var(--scrollbar-width)))] after:shadow-top-rim-lg'
+                        ? 'mr-6 border-l-[length:--scrollbar-width] bg-theme-primary-300 shadow-lg outline'
                         : catId
                           ? 'h-0 clip-inset-y-1/2'
                           : 'border-l-4 border-theme-secondary-600/0 clip-inset-y-1/2 group-hover/category:border-theme-secondary-600 group-hover/category:!duration-100 group-hover/category:clip-inset-y-2/5',
@@ -161,7 +159,7 @@ const CategoryCard: FC<{
             >
                 <div
                     className={classNames(
-                        'z-10 select-none text-pretty px-4 font-besley text-4xl italic text-theme-accent-400 transition-transform duration-300 *:overflow-x-clip',
+                        'z-10 select-none overflow-x-clip text-pretty px-4 font-besley text-4xl text-theme-accent-400 transition-transform duration-300',
                         isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
                     )}
                 >
@@ -176,7 +174,12 @@ const CategoryCard: FC<{
 
             {isThisCategoryOpen && <PostCards posts={posts} />}
 
-            <div className='absolute left-0 -z-10 aspect-square h-full fill-theme-accent-200 stroke-theme-accent-400 object-cover text-2xl opacity-30 mask-edges-4'>
+            <div
+                className={classNames(
+                    'absolute left-0 -z-10 aspect-square h-full fill-theme-accent-200 stroke-theme-accent-400 object-cover text-2xl mask-edges-4',
+                    isThisCategoryOpen ? 'opacity-20' : 'opacity-5 group-hover/category:opacity-10',
+                )}
+            >
                 <BackgroundSvg />
             </div>
         </div>

@@ -7,26 +7,26 @@
 	</style>
 
 	<defs>
-		<pattern id="pattern_code" patternUnits="userSpaceOnUse" width="100%" height="50%" patternTransform="">
+		<pattern id="pattern_code" patternUnits="userSpaceOnUse" width="120%" height="60%" patternTransform="translate(10 0)">
 			<text>
 				<tspan x="0" dy="0">const {</tspan>
-				<tspan x="0" dy="1.2rem">    animationProps: { animationName, animationDuration, animationDelay, animationFillMode },</tspan>
-				<tspan x="0" dy="1.2rem">    startDelay = 0,</tspan>
-				<tspan x="0" dy="1.2rem">    hiddenAtStart = false,</tspan>
-				<tspan x="0" dy="1.2rem">} = props;</tspan>
-				<tspan x="0" dy="1.2rem" visibility="hidden">.</tspan>
-				<tspan x="0" dy="1.2rem">const ref = useRef			&lt;HTMLElement | null&gt;(null);</tspan>
-				<tspan x="0" dy="1.2rem">const [hasEnded, setHasEnded] = useState&lt;string | false&gt;(false);</tspan>
-				<tspan x="0" dy="1.2rem" visibility="hidden">.</tspan>
-				<tspan x="0" dy="1.2rem">const animate_Cb = useCallback((element: HTMLElement, animProps: AnimationProperties) =&gt; {</tspan>
-				<tspan x="0" dy="1.2rem">    setCssProperties(element, animProps);</tspan>
-				<tspan x="0" dy="1.2rem" visibility="hidden">.</tspan>
-				<tspan x="0" dy="1.2rem">    element.addEventListener('animationend', () =&gt; {</tspan>
-				<tspan x="0" dy="1.2rem">        const animName = element.style.animationName;</tspan>
-				<tspan x="0" dy="1.2rem">        setHasEnded(animName);</tspan>
-				<tspan x="0" dy="1.2rem">        removeCssProperties(element, animProps);</tspan>
-				<tspan x="0" dy="1.2rem">    });</tspan>
-				<tspan x="0" dy="1.2rem">}, []);</tspan>
+				<tspan x="0" dy="1.4rem">    animationProps: { animationName, animationDuration, animationDelay, animationFillMode },</tspan>
+				<tspan x="0" dy="1.4rem">    startDelay = 0,</tspan>
+				<tspan x="0" dy="1.4rem">    hiddenAtStart = false,</tspan>
+				<tspan x="0" dy="1.4rem">} = props;</tspan>
+				<tspan x="0" dy="1.4rem" visibility="hidden">.</tspan>
+				<tspan x="0" dy="1.4rem">const ref = useRef			&lt;HTMLElement | null&gt;(null);</tspan>
+				<tspan x="0" dy="1.4rem">const [hasEnded, setHasEnded] = useState&lt;string | false&gt;(false);</tspan>
+				<tspan x="0" dy="1.4rem" visibility="hidden">.</tspan>
+				<tspan x="0" dy="1.4rem">const animate_Cb = useCallback((element: HTMLElement, animProps: AnimationProperties) =&gt; {</tspan>
+				<tspan x="0" dy="1.4rem">    setCssProperties(element, animProps);</tspan>
+				<tspan x="0" dy="1.4rem" visibility="hidden">.</tspan>
+				<tspan x="0" dy="1.4rem">    element.addEventListener('animationend', () =&gt; {</tspan>
+				<tspan x="0" dy="1.4rem">        const animName = element.style.animationName;</tspan>
+				<tspan x="0" dy="1.4rem">        setHasEnded(animName);</tspan>
+				<tspan x="0" dy="1.4rem">        removeCssProperties(element, animProps);</tspan>
+				<tspan x="0" dy="1.4rem">    });</tspan>
+				<tspan x="0" dy="1.4rem">}, []);</tspan>
 
 
 			</text>
