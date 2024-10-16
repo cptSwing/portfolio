@@ -5,15 +5,11 @@ import LinkedInLogo from '../assets/svg/logo_linkedin.svg?react';
 
 const Socials = () => {
     const { postId } = useParams();
-    // const [isOpen, setIsOpen] = useState(false);
 
     return !postId ? (
         <nav className='absolute bottom-full right-0 mb-0.5 flex translate-y-full flex-col items-center justify-center transition-[transform,clip-path] delay-[--delay] clip-inset-b-full [--delay:150ms] group-hover/bar-parent:translate-y-1/2 group-hover/bar-parent:clip-inset-b-1/2 hover:!translate-y-0 hover:!delay-0 hover:!clip-inset-b-0'>
             <div className='group relative flex h-10 select-none flex-row-reverse items-center gap-x-0 overflow-hidden rounded-t-md bg-theme-secondary-400 px-0.5 transition-[column-gap] delay-[--delay] hover:gap-x-1.5'>
-                <IdentificationIcon
-                    className='aspect-square h-full cursor-pointer stroke-theme-primary-400 transition-colors group-hover:stroke-theme-neutral-600'
-                    // onClick={() => setIsOpen((state) => !state)}
-                />
+                <IdentificationIcon className='aspect-square h-full cursor-pointer stroke-theme-primary-400 transition-colors group-hover:stroke-theme-neutral-600' />
 
                 <Link
                     className='h-auto w-0 cursor-pointer rounded-md bg-theme-neutral-600 p-0 transition-[colors,width,padding] delay-[--delay] group-hover:w-8 group-hover:p-1'
