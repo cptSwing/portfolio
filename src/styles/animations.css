@@ -1,22 +1,22 @@
 @keyframes streak-down {
     from {
         @apply opacity-0;
-        transform: translateY(-100%);
+        transform: translateX(-200%);
     }
     to {
         @apply opacity-100;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
 
 @keyframes streak-up {
     from {
         @apply opacity-0;
-        transform: translateY(100%);
+        transform: translateX(200%);
     }
     to {
         @apply opacity-100;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
 

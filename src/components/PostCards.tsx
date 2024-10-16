@@ -11,19 +11,17 @@ export const PostCards: FC<{
     posts: Post[];
 }> = ({ posts }) => {
     return (
-        <div className='h-full basis-1/2 overflow-hidden bg-theme-primary-300 shadow-lg shadow-theme-primary-950 outline outline-[length:--outline-width] outline-theme-primary-300'>
-            <div className='scroll-gutter h-full -scale-x-100 overflow-y-scroll scrollbar-thin'>
-                <div
-                    className='pointer-events-none flex -scale-x-100 flex-col gap-y-6 pb-2 pl-4 pr-2 pt-3'
-                    onClick={(e) => {
-                        /* Needed for children's navigate() calls in an onClick to work: */
-                        e.stopPropagation();
-                    }}
-                >
-                    {posts.map((post, idx) => (
-                        <SinglePostCard key={post.title + idx} post={post} index={idx} />
-                    ))}
-                </div>
+        <div className='scroll-gutter h-full overflow-x-hidden overflow-y-scroll p-2 pt-4 scrollbar-thin'>
+            <div
+                className='pointer-events-none flex flex-col gap-y-6'
+                onClick={(e) => {
+                    /* Needed for children's navigate() calls in an onClick to work: */
+                    e.stopPropagation();
+                }}
+            >
+                {posts.map((post, idx) => (
+                    <SinglePostCard key={post.title + idx} post={post} index={idx} />
+                ))}
             </div>
         </div>
     );

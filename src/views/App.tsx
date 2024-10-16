@@ -9,7 +9,7 @@ import BarWrapped from '../components/BarWrapped';
 const App = () => {
     return (
         <BrowserRouter>
-            <div className='nav-checked-width relative mx-auto flex h-[98dvh] flex-col items-center justify-start [--header-transition-duration:300ms]'>
+            <div className='nav-checked-width relative mx-auto flex flex-col items-center justify-start [--header-transition-duration:300ms]'>
                 <Routes>
                     <Route element={<RouteOutlet />}>
                         <Route path='/:catId?' element={<NavOutlet />}>

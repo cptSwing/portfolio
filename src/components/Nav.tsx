@@ -23,12 +23,12 @@ const Nav = () => {
     return (
         <nav
             className={classNames(
-                'mx-auto grid h-full transition-[width,grid-template-columns,column-gap] duration-500',
-                catId ? 'nav-checked-width gap-x-px' : 'nav-unchecked-width gap-x-1',
+                'mx-auto grid transition-[width,height,grid-template-rows,row-gap] duration-500',
+                catId ? 'nav-checked-width h-[80dvh] gap-y-px' : 'nav-unchecked-width h-[50dvh] gap-y-1',
                 postId ? 'absolute left-0 right-0 -z-10' : 'z-0 block',
             )}
             style={{
-                gridTemplateColumns: categoriesArray.map(({ id }) => (id.toString() === catId ? '15fr' : '1fr')).join(' '),
+                gridTemplateRows: categoriesArray.map(({ id }) => (id.toString() === catId ? '14fr' : '1fr')).join(' '),
             }}
         >
             {categoriesArray.map((cardData) => (
@@ -68,9 +68,9 @@ const CategoryCard: FC<{
         if (catId && !isThisCategoryOpen) {
             const openedIndex = catId ? parseInt(catId) : null;
             if (id < openedIndex!) {
-                return { paddingRight: 0 };
+                return { '--tw-translate-y': '1rem' } as unknown as CSSTransition;
             } else if (id > openedIndex!) {
-                return { paddingLeft: 0 };
+                return { '--tw-translate-y': '-2rem' } as unknown as CSSTransition;
             }
         }
     }, [isThisCategoryOpen, catId, id]);
@@ -99,85 +99,89 @@ const CategoryCard: FC<{
         <div
             ref={refCallback}
             className={classNames(
-                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer items-center justify-between gap-x-4 overflow-hidden p-6 transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
-                '[--outline-width:8px]',
+                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-hidden transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
+                '[--color-active-bg:theme(colors.theme.primary.100)] [--color-inactive-bg:theme(colors.theme.primary.600)] [--color-main:theme(colors.theme.primary.300)] [--outline-width:8px]',
                 isThisCategoryOpen
-                    ? 'bg-theme-primary-300'
+                    ? 'bg-[--color-active-bg] p-4'
                     : catId
-                      ? 'scale-y-[.99] bg-theme-primary-600 hover:bg-theme-primary-400'
-                      : 'bg-theme-primary-400 hover:bg-theme-primary-200',
+                      ? 'scale-x-[.99] bg-[--color-inactive-bg] hover:bg-[--color-main]'
+                      : 'bg-[--color-main] hover:bg-[--color-active-bg]',
             )}
             onClick={() => {
                 navigate(catId === id.toString() ? '/' : `/${id}`);
             }}
-            style={{
-                ...paddingStyle_Memo,
-            }}
         >
-            <div className='relative flex h-full flex-col items-center justify-start'>
-                <div className={classNames('transition-[flex]', isThisCategoryOpen ? 'flex-1' : 'flex-none')} />
+            <div
+                className={classNames(
+                    '[--category-padding:theme(spacing.2)]',
+                    'relative flex flex-col items-start justify-start overflow-hidden shadow-theme-primary-950',
+                    isThisCategoryOpen ? 'size-full drop-shadow-lg' : '',
+                )}
+            >
+                {/* Tab: */}
                 <div
                     className={classNames(
-                        'relative m-auto outline-[length:--outline-width] outline-theme-primary-300 transition-[box-shadow,outline-width]',
-                        'before:absolute before:-z-10 before:shadow-theme-primary-950 before:outline-[length:--outline-width] before:outline-theme-primary-300 before:transition-[width,height] before:delay-300',
+                        'px-[calc(var(--category-padding)*2)] py-[--category-padding] transition-[margin-left,transform]',
                         isThisCategoryOpen
-                            ? // Cast shadow with slightly wider element so there is no visible break between this and sibling element's shadows
-                              'outline before:h-full before:w-[calc(100%+(4*var(--outline-width)))] before:shadow-lg before:outline'
-                            : 'before:size-0 after:size-0',
+                            ? 'ml-0 translate-x-0 bg-[--color-main]'
+                            : catId
+                              ? 'ml-[50%] -translate-x-1/2'
+                              : 'group-hover/category:bg-[--color-main] group-hover/category:drop-shadow-lg',
                     )}
+                    style={{
+                        ...paddingStyle_Memo,
+                    }}
                 >
-                    {/* Cover siblings box-shadow: */}
-                    {isThisCategoryOpen && (
-                        <div className='absolute z-10 size-full bg-theme-primary-300 outline outline-[length:--outline-width] outline-theme-primary-300' />
-                    )}
                     <h1
                         className={classNames(
-                            'writing-mode-vert-lr relative z-20 translate-x-0 rotate-180 transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-300',
+                            'relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-300',
                             isThisCategoryOpen
                                 ? 'text-theme-secondary-400'
                                 : catId
                                   ? 'scale-90 text-theme-secondary-700 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!duration-75'
-                                  : '!translate-x-2 text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
+                                  : 'text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:underline group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
                         )}
                     >
                         {categoryTitle}
                     </h1>
                 </div>
-            </div>
 
-            {/* Testimonials etc: */}
-            <div
-                className={classNames(
-                    '[--scrollbar-width:6px]',
-                    'relative flex h-full min-w-96 basis-1/2 items-end border-theme-neutral-50 shadow-theme-primary-950 outline-[length:--outline-width] outline-theme-primary-300 transition-[height,border-color] duration-500',
-                    isThisCategoryOpen
-                        ? 'mr-6 border-l-[length:--scrollbar-width] bg-theme-primary-300 shadow-lg outline'
-                        : catId
-                          ? 'h-0 clip-inset-y-1/2'
-                          : 'border-l-4 border-theme-secondary-600/0 clip-inset-y-1/2 group-hover/category:border-theme-secondary-600 group-hover/category:!duration-100 group-hover/category:clip-inset-y-2/5',
+                {/* Testimonials &  etc: */}
+                {isThisCategoryOpen && (
+                    <div className='-mt-[--category-padding] flex size-full items-start justify-between overflow-hidden bg-[--color-main] px-[calc(var(--category-padding)*2)] py-[--category-padding]'>
+                        <div
+                            className={classNames(
+                                '[--scrollbar-width:6px]',
+                                'relative flex min-w-[25%] basis-1/4 items-end border-theme-neutral-50 bg-[--color-main] pt-[--category-padding] transition-[height,border-color] duration-500',
+                                isThisCategoryOpen
+                                    ? 'bg-[--color-main]'
+                                    : catId
+                                      ? 'h-0 clip-inset-y-1/2'
+                                      : 'border-l-4 border-theme-secondary-600/0 clip-inset-y-1/2 group-hover/category:border-theme-secondary-600 group-hover/category:!duration-100 group-hover/category:clip-inset-y-2/5',
+                            )}
+                        >
+                            <div
+                                className={classNames(
+                                    'relative z-10 select-none text-pretty font-besley text-xl text-theme-accent-400 transition-transform duration-300',
+                                    isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
+                                )}
+                            >
+                                <Markdown className='mrkdwn'>{categoryBlurb}</Markdown>
+                            </div>
+                        </div>
+
+                        <div className='h-full flex-1 overflow-x-hidden'>
+                            <PostCards posts={posts} />
+                        </div>
+                    </div>
                 )}
-            >
-                <div
-                    className={classNames(
-                        'z-10 select-none overflow-x-clip text-pretty px-4 font-besley text-4xl text-theme-accent-400 transition-transform duration-300',
-                        isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
-                    )}
-                >
-                    <Markdown className='mrkdwn'>{categoryBlurb}</Markdown>
-                </div>
-
-                {/* Background image */}
-                {/* <div className='absolute size-full opacity-15 mask-edges-16'>
-                    <div className='h-full bg-cover' style={{ backgroundImage: `url('${categoryCardBackgroundImage}')` }} />
-                </div> */}
             </div>
 
-            {isThisCategoryOpen && <PostCards posts={posts} />}
-
+            {/* Background Svg: */}
             <div
                 className={classNames(
-                    'absolute left-0 -z-10 aspect-square h-full fill-theme-accent-200 stroke-theme-accent-400 object-cover text-2xl mask-edges-4',
-                    isThisCategoryOpen ? 'opacity-20' : 'opacity-5 group-hover/category:opacity-10',
+                    'absolute left-0 top-0 -z-10 aspect-square w-full fill-theme-accent-200 stroke-theme-accent-400 object-cover text-2xl mask-edges-12',
+                    isThisCategoryOpen ? 'opacity-20' : 'opacity-10 group-hover/category:opacity-15',
                 )}
             >
                 <BackgroundSvg />
