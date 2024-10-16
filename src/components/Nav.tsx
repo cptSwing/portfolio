@@ -13,7 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import GetBackgroundSvg from './GetBackgroundSvg.tsx';
 
-const themeBgBase = resolveConfig(tailwindConfig).theme.colors.theme.bg.base;
+const themeBgDarker = resolveConfig(tailwindConfig).theme.colors.theme.bg.darker;
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
 
@@ -68,9 +68,9 @@ const CategoryCard: FC<{
         if (catId && !isThisCategoryOpen) {
             const openedIndex = catId ? parseInt(catId) : null;
             if (id < openedIndex!) {
-                return { '--tw-translate-y': '1rem' } as unknown as CSSTransition;
+                return { '--tw-translate-y': '0.5rem' } as unknown as CSSTransition;
             } else if (id > openedIndex!) {
-                return { '--tw-translate-y': '-2rem' } as unknown as CSSTransition;
+                return { '--tw-translate-y': '-1.5rem' } as unknown as CSSTransition;
             }
         }
     }, [isThisCategoryOpen, catId, id]);
@@ -87,11 +87,11 @@ const CategoryCard: FC<{
                 if (categoryBackgroundColor) {
                     docStyle.setProperty('--bg-color', categoryBackgroundColor);
                 } else {
-                    docStyle.setProperty('--bg-color', themeBgBase);
+                    docStyle.setProperty('--bg-color', themeBgDarker);
                 }
             }
         } else {
-            docStyle.setProperty('--bg-color', themeBgBase);
+            docStyle.setProperty('--bg-color', themeBgDarker);
         }
     }, [bgColorSwitch, catId, isThisCategoryOpen, categoryBackgroundColor]);
 
@@ -99,13 +99,13 @@ const CategoryCard: FC<{
         <div
             ref={refCallback}
             className={classNames(
-                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-hidden transition-[background-color,margin,transform] duration-[50ms,500ms,500ms]',
-                '[--color-active-bg:theme(colors.theme.primary.100)] [--color-inactive-bg:theme(colors.theme.primary.600)] [--color-main:theme(colors.theme.primary.300)] [--outline-width:8px]',
+                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color,margin,width,transform] duration-[50ms,500ms,500ms]',
+                '[--color-active-bg:theme(colors.theme.primary.100)] [--color-inactive-bg:theme(colors.theme.primary.600)] [--color-main:theme(colors.theme.primary.300)] [--open-offset:theme(spacing.1)]',
                 isThisCategoryOpen
-                    ? 'bg-[--color-active-bg] p-4'
+                    ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] rounded-sm bg-[--color-active-bg] p-4'
                     : catId
-                      ? 'scale-x-[.99] bg-[--color-inactive-bg] hover:bg-[--color-main]'
-                      : 'bg-[--color-main] hover:bg-[--color-active-bg]',
+                      ? 'w-[--checked-width] bg-[--color-inactive-bg] hover:bg-[--color-main]'
+                      : 'w-[--unchecked-width] bg-[--color-main] hover:bg-[--color-active-bg]',
             )}
             onClick={() => {
                 navigate(catId === id.toString() ? '/' : `/${id}`);

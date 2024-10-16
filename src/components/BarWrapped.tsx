@@ -49,7 +49,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 <Socials />
             </div>
 
-            <div ref={contentRefCallback} className={classNames('relative size-full', postId ? 'my-0 overflow-y-visible' : 'my-1 overflow-hidden')}>
+            <div ref={contentRefCallback} className={classNames('relative size-full', postId ? 'my-0 overflow-y-visible' : 'my-1')}>
                 {children}
             </div>
 
