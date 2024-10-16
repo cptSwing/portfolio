@@ -1,7 +1,6 @@
 import Content from '../components/Content';
 import LogoHeader from '../components/LogoHeader';
 import Nav from '../components/Nav';
-import SocialsFooter from '../components/SocialsFooter';
 import Background from '../components/Background';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import BarWrapped from '../components/BarWrapped';
@@ -32,7 +31,6 @@ const RouteOutlet = () => {
             <BarWrapped>
                 <Outlet />
             </BarWrapped>
-            <SocialsFooter />
         </>
     );
 };

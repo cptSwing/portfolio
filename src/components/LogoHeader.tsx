@@ -16,7 +16,7 @@ const LogoHeader = () => {
                 navigate('/');
             }}
         >
-            <svg viewBox='0 0 91 23' version='1.1' className='-ml-1 h-full w-fit' preserveAspectRatio='none' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
+            <svg viewBox='0 0 91 23' version='1.1' className='h-full w-fit' preserveAspectRatio='none' id='logo-svg' xmlns='http://www.w3.org/2000/svg'>
                 <g x='0' y='0'>
                     <text
                         xmlSpace='preserve'
