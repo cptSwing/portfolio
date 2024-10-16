@@ -56,9 +56,9 @@ const Content = () => {
 
     return (
         <main className='h-[90dvh] w-full bg-theme-bg-base'>
-            <div className='post-width relative mx-auto flex h-full flex-col bg-[--bg-color] [--bg-color:theme(colors.theme.bg.lighter)]'>
+            <div className='relative mx-auto flex h-full w-[--post-width] flex-col bg-[--bg-color] [--bg-color:theme(colors.theme.bg.lighter)]'>
                 {/* Floating Title: */}
-                <div className='post-width pointer-events-none absolute bottom-[calc(100%+theme(spacing.1))] z-10 mx-auto flex items-end justify-center'>
+                <div className='pointer-events-none absolute bottom-[calc(100%+theme(spacing.1))] z-10 mx-auto flex w-[--post-width] items-end justify-center'>
                     <h2 className='absolute translate-y-1/2 px-8 text-theme-neutral-50 drop-shadow-md before:absolute before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400 before:clip-inset-t-[30%]'>
                         {title}
                     </h2>

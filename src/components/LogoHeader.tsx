@@ -10,7 +10,9 @@ const LogoHeader = () => {
             id='logo'
             className={classNames(
                 'transform-gpu cursor-pointer select-none pt-1 transition-[margin,height,color] duration-[--header-transition-duration]',
-                postId ? 'ml-0 mr-[100%] h-16 translate-x-1/2 text-theme-primary-400' : 'mx-auto h-32 translate-x-0 py-2 text-theme-accent-400',
+                postId
+                    ? 'ml-[calc(theme(width.screen)-var(--post-width))] mr-[100%] h-16 translate-x-3/4 text-theme-primary-400'
+                    : 'mx-auto h-32 translate-x-0 py-2 text-theme-accent-400',
             )}
             onClick={() => {
                 navigate('/');

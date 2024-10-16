@@ -38,10 +38,11 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
         >
             {/* Top Bar: */}
             <div
+                id='top-bar'
                 ref={barsRefCallback}
                 className={classNames(
                     'relative min-h-[--bar-height] transition-[width,background-color] duration-300',
-                    catId ? 'nav-checked-width' : 'nav-unchecked-width',
+                    catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
                     postId ? '!w-full bg-theme-primary-500' : 'bg-theme-secondary-300',
                 )}
             >
@@ -54,10 +55,11 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
 
             {/* Bottom Bar: */}
             <div
+                id='bottom-bar'
                 ref={barsRefCallback}
                 className={classNames(
                     'min-h-[--bar-height] bg-theme-primary-500 transition-[width,background-color] delay-200 duration-500',
-                    catId ? 'nav-checked-width' : 'nav-unchecked-width',
+                    catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
                     postId ? '!w-full bg-theme-primary-500' : 'bg-theme-secondary-300',
                 )}
             />

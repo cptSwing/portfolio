@@ -24,7 +24,7 @@ const Nav = () => {
         <nav
             className={classNames(
                 'mx-auto grid transition-[width,height,grid-template-rows,row-gap] duration-500',
-                catId ? 'nav-checked-width h-[80dvh] gap-y-px' : 'nav-unchecked-width h-[50dvh] gap-y-1',
+                catId ? 'h-[80dvh] w-[--checked-width] gap-y-px' : 'h-[50dvh] w-[--unchecked-width] gap-y-1',
                 postId ? 'absolute left-0 right-0 -z-10' : 'z-0 block',
             )}
             style={{

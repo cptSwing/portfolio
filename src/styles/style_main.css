@@ -129,24 +129,24 @@
 
 :root {
     --bg-stroke-max-opacity: 0.666;
-    --bg-color: theme(colors.theme.bg.base);
+    --bg-color: theme(colors.theme.bg.darker);
 }
 
 #root {
     @apply fixed h-dvh w-dvw overflow-hidden bg-[--bg-color] text-left font-barlow text-theme-text transition-[--bg-color] duration-[3s] scrollbar-track-transparent scrollbar-thumb-neutral-50;
 }
-
+/* 
 .nav-unchecked-width {
     @apply w-[75dvw] sm:w-[66.666667dvw] md:w-[50dvw] lg:w-[33.333333dvw] xl:w-[25dvw];
 }
 
 .nav-checked-width {
     @apply w-[95dvw] sm:w-[90dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[45dvw];
-}
-
+} */
+/* 
 .post-width {
     @apply w-[95dvw] sm:w-[90dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[66.666666dvw];
-}
+} */
 
 /* Conditional Classes */
 
