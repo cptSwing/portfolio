@@ -20,6 +20,8 @@ const categoriesArray = Object.values(testDbTyped);
 const Nav = () => {
     const { catId, postId } = useParams();
 
+    // useEffect(() => updateMouseXY(), []);
+
     return (
         <nav
             className={classNames(
@@ -45,7 +47,7 @@ const CategoryCard: FC<{
 }> = ({ cardData }) => {
     const { id, categoryTitle, posts, categoryBackgroundColor, categoryBlurb } = cardData;
 
-    const BackgroundSvg = GetBackgroundSvg(categoryTitle);
+    const [BackgroundSvg] = useMemo(() => GetBackgroundSvg(categoryTitle), [categoryTitle]);
 
     const navigate = useNavigate();
     const { catId } = useParams();
@@ -100,12 +102,12 @@ const CategoryCard: FC<{
             ref={refCallback}
             className={classNames(
                 'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color,margin,width,transform] duration-[50ms,500ms,500ms]',
-                '[--color-active-bg:theme(colors.theme.primary.100)] [--color-inactive-bg:theme(colors.theme.primary.600)] [--color-main:theme(colors.theme.primary.300)] [--open-offset:theme(spacing.1)]',
+                '[--color-primary-active-cat-bg:theme(colors.theme.primary.300)] [--color-primary-content-bg:theme(colors.theme.primary.50)] [--color-primary-inactive-cat-bg:theme(colors.theme.primary.600)] [--color-secondary-active-cat:theme(colors.theme.secondary.400)] [--color-secondary-inactive-cat:theme(colors.theme.secondary.600)] [--open-offset:theme(spacing.1)]',
                 isThisCategoryOpen
-                    ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] rounded-sm bg-[--color-active-bg] p-4'
+                    ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] rounded-sm bg-[--color-primary-active-cat-bg] p-4'
                     : catId
-                      ? 'w-[--checked-width] bg-[--color-inactive-bg] hover:bg-[--color-main]'
-                      : 'w-[--unchecked-width] bg-[--color-main] hover:bg-[--color-active-bg]',
+                      ? 'w-[--checked-width] bg-[--color-primary-inactive-cat-bg] hover:bg-[--color-primary-active-cat-bg]'
+                      : 'w-[--unchecked-width] bg-[--color-primary-active-cat-bg] hover:bg-[--color-primary-active-cat-bg]',
             )}
             onClick={() => {
                 navigate(catId === id.toString() ? '/' : `/${id}`);
@@ -123,10 +125,10 @@ const CategoryCard: FC<{
                     className={classNames(
                         'px-[calc(var(--category-padding)*2)] py-[--category-padding] transition-[margin-left,transform]',
                         isThisCategoryOpen
-                            ? 'ml-0 translate-x-0 bg-[--color-main]'
+                            ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
-                              : 'group-hover/category:bg-[--color-main] group-hover/category:drop-shadow-lg',
+                              : 'after:absolute after:left-0 after:top-0 after:h-full after:w-full after:outline after:outline-offset-[-6px] after:outline-[--color-bars-no-post] after:transition-[clip-path] after:duration-500 after:clip-inset-x-full group-hover/category:bg-[--color-primary-content-bg] group-hover/category:drop-shadow-lg group-hover/category:after:clip-inset-x-0',
                     )}
                     style={{
                         ...paddingStyle_Memo,
@@ -136,10 +138,10 @@ const CategoryCard: FC<{
                         className={classNames(
                             'relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-300',
                             isThisCategoryOpen
-                                ? 'text-theme-secondary-400'
+                                ? 'text-[--color-secondary-active-cat]'
                                 : catId
-                                  ? 'scale-90 text-theme-secondary-700 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:!duration-75'
-                                  : 'text-theme-secondary-100 drop-shadow-lg group-hover/category:text-theme-secondary-400 group-hover/category:underline group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
+                                  ? 'scale-90 text-[--color-secondary-inactive-cat] drop-shadow-lg group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75'
+                                  : 'text-[--color-bars-no-post] drop-shadow-lg group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
                         )}
                     >
                         {categoryTitle}
@@ -148,13 +150,13 @@ const CategoryCard: FC<{
 
                 {/* Testimonials &  etc: */}
                 {isThisCategoryOpen && (
-                    <div className='-mt-[--category-padding] flex size-full items-start justify-between overflow-hidden bg-[--color-main] px-[calc(var(--category-padding)*2)] py-[--category-padding]'>
+                    <div className='-mt-[--category-padding] flex size-full items-start justify-between overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:theme(colors.theme.accent.400)]'>
                         <div
                             className={classNames(
                                 '[--scrollbar-width:6px]',
-                                'relative flex min-w-[25%] basis-1/4 items-end border-theme-neutral-50 bg-[--color-main] pt-[--category-padding] transition-[height,border-color] duration-500',
+                                'relative flex min-w-[25%] basis-1/4 items-end border-theme-neutral-50 bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height,border-color] duration-500',
                                 isThisCategoryOpen
-                                    ? 'bg-[--color-main]'
+                                    ? 'bg-[--color-primary-content-bg]'
                                     : catId
                                       ? 'h-0 clip-inset-y-1/2'
                                       : 'border-l-4 border-theme-secondary-600/0 clip-inset-y-1/2 group-hover/category:border-theme-secondary-600 group-hover/category:!duration-100 group-hover/category:clip-inset-y-2/5',
@@ -162,7 +164,7 @@ const CategoryCard: FC<{
                         >
                             <div
                                 className={classNames(
-                                    'relative z-10 select-none text-pretty font-besley text-xl text-theme-accent-400 transition-transform duration-300',
+                                    'relative z-10 select-none text-pretty font-besley text-xl text-[--color-text-testimonial] transition-transform duration-300',
                                     isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
                                 )}
                             >
@@ -178,13 +180,14 @@ const CategoryCard: FC<{
             </div>
 
             {/* Background Svg: */}
-            <div
-                className={classNames(
-                    'absolute left-0 top-0 -z-10 aspect-square w-full fill-theme-accent-200 stroke-theme-accent-400 object-cover text-2xl mask-edges-12',
-                    isThisCategoryOpen ? 'opacity-20' : 'opacity-10 group-hover/category:opacity-15',
-                )}
-            >
-                <BackgroundSvg />
+            <div className='absolute left-0 top-0 -z-10 size-full object-cover mask-edges-10'>
+                <BackgroundSvg
+                    className={classNames(
+                        isThisCategoryOpen
+                            ? 'fill-theme-accent-200 stroke-theme-accent-400 opacity-15'
+                            : 'fill-theme-neutral-300 stroke-theme-neutral-400 opacity-15 group-hover/category:fill-theme-accent-200 group-hover/category:stroke-theme-accent-400 group-hover/category:opacity-30',
+                    )}
+                />
             </div>
         </div>
     );
@@ -238,3 +241,13 @@ export const MenuOpenedPost: FC<{
         </div>
     );
 };
+
+// const updateMouseXY = () => {
+//     document.documentElement.addEventListener('pointermove', (pos) => {
+//         const x = (pos.clientX / window.innerWidth) * 100;
+//         const y = (pos.clientY / window.innerHeight) * 100;
+
+//         document.documentElement.style.setProperty('--mouse-x', x + '%');
+//         document.documentElement.style.setProperty('--mouse-y', y + '%');
+//     });
+// };

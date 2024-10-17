@@ -16,11 +16,11 @@ const Socials = () => {
         >
             <div
                 className={classNames(
-                    'group relative flex h-8 select-none items-center gap-x-0 overflow-hidden bg-theme-secondary-400 px-0.5 transition-[column-gap] delay-[--delay] hover:gap-x-1.5',
+                    'group relative flex h-8 select-none items-center gap-x-0 overflow-hidden bg-[--color-bars-no-post] px-0.5 transition-[column-gap] delay-[--delay] hover:gap-x-1.5',
                     postId ? 'flex-row rounded-tl-md' : 'flex-row-reverse rounded-tr-md',
                 )}
             >
-                <IdentificationIcon className='aspect-square h-full cursor-pointer stroke-theme-primary-400 transition-colors group-hover:stroke-theme-neutral-600' />
+                <IdentificationIcon className='aspect-square h-full cursor-pointer stroke-[--color-bars-post] transition-colors group-hover:stroke-theme-neutral-600' />
 
                 <Link
                     className='aspect-square w-0 cursor-pointer rounded-sm bg-theme-neutral-600 p-0 transition-[colors,width,padding] delay-[--delay] group-hover:w-[1.75rem] group-hover:p-1'

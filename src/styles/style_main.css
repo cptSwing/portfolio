@@ -6,6 +6,13 @@
 @tailwind utilities;
 
 @layer base {
+    :root {
+        --bg-stroke-max-opacity: 0.666;
+        --bg-color: theme(colors.theme.bg.darker);
+        --mouse-x: 50%;
+        --mouse-y: 50%;
+    }
+
     a {
         @apply text-theme-secondary-50 visited:text-theme-secondary-200 hover:underline;
     }
@@ -127,14 +134,10 @@
     }
 }
 
-:root {
-    --bg-stroke-max-opacity: 0.666;
-    --bg-color: theme(colors.theme.bg.darker);
-}
-
 #root {
     @apply fixed h-dvh w-dvw overflow-hidden bg-[--bg-color] text-left font-barlow text-theme-text transition-[--bg-color] duration-[3s] scrollbar-track-transparent scrollbar-thumb-neutral-50;
 }
+
 /* 
 .nav-unchecked-width {
     @apply w-[75dvw] sm:w-[66.666667dvw] md:w-[50dvw] lg:w-[33.333333dvw] xl:w-[25dvw];

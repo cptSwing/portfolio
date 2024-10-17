@@ -32,7 +32,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <div
             className={classNames(
-                'group/bar-parent flex flex-col items-center justify-center transition-[width] duration-300 [--bar-height:theme(spacing.1)]',
+                'group/bar-parent flex flex-col items-center justify-center transition-[width] duration-300 [--bar-height:theme(spacing.1)] [--color-bars-no-post:theme(colors.theme.secondary.300)] [--color-bars-post:theme(colors.theme.primary.500)]',
                 postId ? 'h-[90%] w-screen' : 'h-4/5 w-fit',
             )}
         >
@@ -43,7 +43,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 className={classNames(
                     'relative min-h-[--bar-height] transition-[width,background-color] duration-300',
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-theme-primary-500' : 'bg-theme-secondary-300',
+                    postId ? '!w-full bg-[--color-bars-post]' : 'bg-[--color-bars-no-post]',
                 )}
             >
                 <Socials />
@@ -58,9 +58,9 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 id='bottom-bar'
                 ref={barsRefCallback}
                 className={classNames(
-                    'min-h-[--bar-height] bg-theme-primary-500 transition-[width,background-color] delay-200 duration-500',
+                    'min-h-[--bar-height] transition-[width,background-color] delay-100 duration-500',
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-theme-primary-500' : 'bg-theme-secondary-300',
+                    postId ? '!w-full bg-[--color-bars-post]' : 'bg-[--color-bars-no-post]',
                 )}
             />
         </div>
