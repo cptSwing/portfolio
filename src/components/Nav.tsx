@@ -102,7 +102,7 @@ const CategoryCard: FC<{
             ref={refCallback}
             className={classNames(
                 'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color,margin,width,transform] duration-[50ms,500ms,500ms]',
-                '[--color-primary-active-cat-bg:theme(colors.theme.primary.300)] [--color-primary-content-bg:theme(colors.theme.primary.50)] [--color-primary-inactive-cat-bg:theme(colors.theme.primary.600)] [--color-secondary-active-cat:theme(colors.theme.secondary.400)] [--color-secondary-inactive-cat:theme(colors.theme.secondary.600)] [--open-offset:theme(spacing.1)]',
+                '[--open-offset:theme(spacing.1)]',
                 isThisCategoryOpen
                     ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] rounded-sm bg-[--color-primary-active-cat-bg] p-4'
                     : catId

@@ -9,8 +9,6 @@
     :root {
         --bg-stroke-max-opacity: 0.666;
         --bg-color: theme(colors.theme.bg.darker);
-        --mouse-x: 50%;
-        --mouse-y: 50%;
     }
 
     a {
@@ -129,7 +127,8 @@
     .text-stroke-outer:before {
         content: attr(data-title);
         position: absolute;
-        -webkit-text-stroke: 16px theme(colors.theme.primary.300);
+        -webkit-text-stroke-width: 16px;
+        -webkit-text-stroke-color: theme(colors.theme.primary.300);
         z-index: -1;
     }
 }

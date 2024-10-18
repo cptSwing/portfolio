@@ -4,11 +4,21 @@ import Nav from '../components/Nav';
 import Background from '../components/Background';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import BarWrapped from '../components/BarWrapped';
+import classNames from '../lib/classNames';
 
 const App = () => {
     return (
         <BrowserRouter>
-            <div className='relative mx-auto flex flex-col items-center justify-start [--checked-width:95dvw] [--header-transition-duration:300ms] [--post-width:95dvw] [--unchecked-width:75dvw] sm:[--checked-width:90dvw] sm:[--post-width:90dvw] sm:[--unchecked-width:66.666667dvw] md:[--checked-width:80dvw] md:[--post-width:80dvw] md:[--unchecked-width:50dvw] lg:[--checked-width:75dvw] lg:[--post-width:75dvw] lg:[--unchecked-width:33.333333dvw] xl:[--checked-width:45dvw] xl:[--post-width:66.666666dvw] xl:[--unchecked-width:25dvw]'>
+            <div
+                className={classNames(
+                    'relative mx-auto flex flex-col items-center justify-start',
+                    '[--header-transition-duration:300ms]',
+                    '[--unchecked-width:75dvw] sm:[--unchecked-width:66.666667dvw] md:[--unchecked-width:50dvw] lg:[--unchecked-width:33.333333dvw] xl:[--unchecked-width:25dvw]',
+                    '[--checked-width:95dvw] sm:[--checked-width:90dvw] md:[--checked-width:80dvw] lg:[--checked-width:75dvw] xl:[--checked-width:45dvw]',
+                    '[--post-width:95dvw] sm:[--post-width:90dvw] md:[--post-width:80dvw] lg:[--post-width:75dvw] xl:[--post-width:66.666666dvw]',
+                    '[--color-primary-active-cat-bg:theme(colors.theme.primary.300)] [--color-primary-content-bg:theme(colors.theme.primary.50)] [--color-primary-inactive-cat-bg:theme(colors.theme.primary.600)] [--color-secondary-active-cat:theme(colors.theme.secondary.400)] [--color-secondary-inactive-cat:theme(colors.theme.secondary.600)]',
+                )}
+            >
                 <Routes>
                     <Route element={<RouteOutlet />}>
                         <Route path='/:catId?' element={<NavOutlet />}>

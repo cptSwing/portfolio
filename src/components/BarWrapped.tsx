@@ -32,8 +32,8 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <div
             className={classNames(
-                'group/bar-parent flex flex-col items-center justify-center transition-[width] duration-300 [--bar-height:theme(spacing.1)] [--color-bars-no-post:theme(colors.theme.secondary.300)] [--color-bars-post:theme(colors.theme.primary.500)]',
-                postId ? 'h-[90%] w-screen' : 'h-4/5 w-fit',
+                'group/bar-parent flex flex-col items-center justify-center transition-[width] duration-300 [--bar-height:theme(spacing.[1.5])] [--color-bars-no-post:theme(colors.theme.secondary.400)] [--color-bars-post:theme(colors.theme.primary.500)]',
+                postId ? 'h-[90%] w-screen' : 'w-fit',
             )}
         >
             {/* Top Bar: */}
@@ -43,7 +43,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 className={classNames(
                     'relative min-h-[--bar-height] transition-[width,background-color] duration-300',
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-[--color-bars-post]' : 'bg-[--color-bars-no-post]',
+                    postId ? '!w-full bg-[--color-primary-active-cat-bg]' : 'bg-[--color-secondary-active-cat]',
                 )}
             >
                 <Socials />
@@ -60,7 +60,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 className={classNames(
                     'min-h-[--bar-height] transition-[width,background-color] delay-100 duration-500',
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-[--color-bars-post]' : 'bg-[--color-bars-no-post]',
+                    postId ? '!w-full bg-[--color-primary-active-cat-bg]' : 'bg-[--color-secondary-active-cat]',
                 )}
             />
         </div>
