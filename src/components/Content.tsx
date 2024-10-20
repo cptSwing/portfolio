@@ -94,7 +94,7 @@ const Content = () => {
                                         {showCase && (
                                             <div
                                                 className={classNames(
-                                                    'group relative h-full basis-3/5 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75',
+                                                    'group relative h-full basis-1/2 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75',
                                                     isBlockIndexEven ? 'order-2 ml-12' : 'order-1 mr-12',
                                                 )}
                                                 onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}

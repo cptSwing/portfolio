@@ -125,7 +125,7 @@
     }
 
     .text-stroke-outer:before {
-        content: attr(data-title);
+        content: '';
         position: absolute;
         -webkit-text-stroke-width: 16px;
         -webkit-text-stroke-color: theme(colors.theme.primary.300);
