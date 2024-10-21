@@ -9,6 +9,8 @@
     :root {
         --bg-stroke-max-opacity: 0.666;
         --bg-color: theme(colors.theme.bg.darker);
+
+        @apply bg-[--bg-color];
     }
 
     a {
@@ -20,11 +22,11 @@
     }
 
     h2 {
-        @apply relative z-0 block font-dm-serif text-5xl font-semibold;
+        @apply relative z-0 block font-dm-serif text-2xl font-semibold sm:text-5xl;
     }
 
     h3 {
-        @apply block font-besley text-2xl;
+        @apply block font-besley text-xl sm:text-2xl;
     }
 
     h4 {
@@ -134,7 +136,7 @@
 }
 
 #root {
-    @apply fixed h-dvh w-dvw overflow-hidden bg-[--bg-color] text-left font-barlow text-theme-text scrollbar-track-transparent scrollbar-thumb-neutral-50;
+    @apply overflow-hidden text-left font-barlow text-theme-text scrollbar-track-transparent scrollbar-thumb-neutral-50;
 }
 
 /* 
@@ -153,7 +155,7 @@
 /* Conditional Classes */
 
 .mrkdwn > p {
-    @apply mb-6 last:mb-0;
+    @apply mb-4 last:mb-0 sm:mb-6;
 }
 /* 
 .mrkdwn > p > a {

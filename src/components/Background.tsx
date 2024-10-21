@@ -16,12 +16,12 @@ const Background = () => {
 
     const [bgOff, setBgOff] = useState(true);
 
-    useDebugButton('Toggle Bg', () => setBgOff((state) => !state));
+    // useDebugButton('Toggle Bg', () => setBgOff((state) => !state));
 
     return !bgOff ? (
         <div id='background' ref={bgRefCb} className='perspective-1000px pointer-events-none fixed mx-auto size-full'>
             <svg
-                className='parallax-rotXY aspect-video h-full fill-none stroke-palette-neutral-700 stroke-[0.05] [animation:bg-dash_3s_linear_forwards] [stroke-dasharray:2500] [stroke-dashoffset:2501] [stroke-linecap:round] [stroke-linejoin:round]'
+                className='parallax-rotXY stroke-palette-neutral-700 aspect-video h-full fill-none stroke-[0.05] [animation:bg-dash_3s_linear_forwards] [stroke-dasharray:2500] [stroke-dashoffset:2501] [stroke-linecap:round] [stroke-linejoin:round]'
                 viewBox='-180 -90 360 180'
                 version='1.1'
                 id='bg-svg'

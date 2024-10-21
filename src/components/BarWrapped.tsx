@@ -31,7 +31,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <div
             className={classNames(
-                'flex flex-col items-center justify-center transition-[width] duration-300 [--bar-height:theme(spacing.[1.5])]',
+                'flex flex-col items-center justify-center transition-[width] duration-300 [--bar-height:theme(spacing.2)] sm:[--bar-height:theme(spacing.[1.5])]',
                 postId ? 'h-[90%] w-screen' : 'w-fit',
             )}
         >
@@ -40,7 +40,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 id='top-bar'
                 ref={barsRefCallback}
                 className={classNames(
-                    'relative min-h-[--bar-height] transition-[width,background-color] duration-300',
+                    'relative -z-10 min-h-[--bar-height] transition-[width,background-color] duration-300',
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
                     postId ? '!w-full bg-[--color-primary-active-cat-bg]' : 'bg-[--color-secondary-active-cat]',
                 )}

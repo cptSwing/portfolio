@@ -26,10 +26,10 @@ const LogoHeader = () => {
             id='logo'
             ref={refCallback}
             className={classNames(
-                'relative z-10 -mb-px mt-2 flex transform-gpu cursor-pointer select-none flex-col items-end justify-end transition-[margin,width,height,color,transform] duration-[--header-transition-duration]',
+                'relative -mb-px mt-2 flex cursor-pointer select-none flex-col items-end justify-end transition-[margin,width,height,color] duration-[--header-transition-duration]',
                 catId
                     ? postId
-                        ? '!z-0 !mb-0 !h-16 w-[--post-width] !flex-row !justify-start'
+                        ? '!z-0 !mb-0 !h-10 w-[--post-width] !flex-row !justify-start sm:!h-16'
                         : 'w-[--checked-width]'
                     : 'w-[--unchecked-width] !cursor-default',
             )}
@@ -41,10 +41,10 @@ const LogoHeader = () => {
 
             <span
                 className={classNames(
-                    'text-stroke-outer relative font-protest-strike text-theme-accent-300 [font-size:4rem]',
-                    'before:transition-[-webkit-text-stroke-color,-webkit-text-stroke-width] before:content-[attr(data-title)]',
+                    'text-stroke-outer relative z-10 font-protest-strike text-theme-accent-300 [font-size:4rem]',
+                    'before:transition-[-webkit-text-stroke-color,-webkit-text-stroke-width,opacity] before:content-[attr(data-title)]',
                     postId
-                        ? 'before: whitespace-nowrap text-left leading-none text-transparent [-webkit-text-stroke-width:2px] before:left-0 before:whitespace-nowrap before:[-webkit-text-stroke-color:--color-bars-post] before:[-webkit-text-stroke-width:1px]'
+                        ? 'text-left leading-none text-transparent [-webkit-text-stroke-width:2px] before:left-0 before:whitespace-nowrap before:opacity-0 before:[-webkit-text-stroke-color:--color-bars-post] before:[-webkit-text-stroke-width:1px] sm:before:opacity-25'
                         : 'whitespace-pre-wrap text-right leading-[0.85] before:right-0 before:whitespace-pre-wrap before:[-webkit-text-stroke-color:--bg-color] before:[-webkit-text-stroke-width:6px]',
                 )}
                 data-title={postId ? logoText : logoTextNewLine}

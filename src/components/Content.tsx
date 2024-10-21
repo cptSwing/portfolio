@@ -58,8 +58,8 @@ const Content = () => {
         <main className='h-[90dvh] w-full bg-theme-bg-base'>
             <div className='relative mx-auto flex h-full w-[--post-width] flex-col bg-[--bg-color] [--bg-color:theme(colors.theme.bg.lighter)]'>
                 {/* Floating Title: */}
-                <div className='pointer-events-none absolute bottom-[calc(100%+theme(spacing.1))] z-10 mx-auto flex w-[--post-width] items-end justify-center'>
-                    <h2 className='absolute translate-y-1/2 px-8 text-theme-neutral-50 drop-shadow-md before:absolute before:left-0 before:-z-10 before:size-full before:bg-theme-secondary-400 before:clip-inset-t-[30%]'>
+                <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-[--post-width] items-end justify-center text-center'>
+                    <h2 className='absolute translate-y-[calc(100%+(var(--bar-height)/2))] px-4 before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary-400 before:clip-inset-t-0 sm:translate-y-1/2 sm:px-8 sm:text-theme-neutral-50 sm:drop-shadow-md sm:before:w-full sm:before:clip-inset-t-[30%]'>
                         {title}
                     </h2>
                     <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
@@ -67,11 +67,11 @@ const Content = () => {
 
                 {textBlocks ? (
                     <div
-                        className='scroll-gutter-both relative flex flex-col overflow-y-auto px-20 py-12 scrollbar-thin scrollbar-thumb-theme-primary-400 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)]'
+                        className='scroll-gutter-both relative flex flex-col overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-theme-primary-400 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:px-6 sm:py-6 xl:px-20 xl:py-12'
                         // onBlur={() => store_activePost(null)} // TODO
                     >
                         {/* (Sub-)Header, date, "Built with" */}
-                        <div className='flex w-full items-start justify-between py-8'>
+                        <div className='flex w-full items-start justify-between pb-2 pt-8 sm:py-8'>
                             <h4 className='leading-none'>{subTitle}</h4>
                             <div className='relative mt-1 flex flex-col items-end justify-start'>
                                 <h5 className='headline-bg -mr-0.5 w-fit text-[--bg-color] no-underline'>
@@ -83,26 +83,27 @@ const Content = () => {
                             </div>
                         </div>
 
-                        <div className='flex flex-col gap-y-16'>
+                        <div className='flex flex-col gap-y-8 sm:gap-y-16'>
                             {/* Text/Image Blocks */}
                             {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
                                 const isBlockIndexEven = idx % 2 === 0;
                                 const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
 
                                 return (
-                                    <div key={`${idx}-${isBlockIndexEven}`} className='flex items-start justify-between'>
+                                    <div
+                                        key={`${idx}-${isBlockIndexEven}`}
+                                        className='flex flex-col items-stretch justify-start sm:flex-row sm:items-start sm:justify-between'
+                                    >
                                         {showCase && (
                                             <div
                                                 className={classNames(
-                                                    'group relative h-full basis-1/2 cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75',
-                                                    isBlockIndexEven ? 'order-2 ml-12' : 'order-1 mr-12',
+                                                    'group relative w-full cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75 sm:h-full sm:w-auto sm:basis-2/5',
+                                                    isBlockIndexEven ? 'mt-4 sm:order-2 sm:ml-12 sm:mt-0' : 'mb-4 sm:order-1 sm:mb-0 sm:mr-12',
                                                 )}
                                                 onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}
                                             >
                                                 {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
                                                     <iframe
-                                                        width='100%'
-                                                        height='400'
                                                         src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace(
                                                             'https://www.youtube.com/watch?v=',
                                                             'https://www.youtube.com/embed/',
@@ -110,12 +111,13 @@ const Content = () => {
                                                         title='YouTube video player'
                                                         referrerPolicy='strict-origin-when-cross-origin'
                                                         allowFullScreen
+                                                        className='h-auto w-full sm:min-h-72'
                                                     />
                                                 ) : (
                                                     <img src={`/${(showCase as Post_ShowCase_Image).imgUrl}`} className='h-full object-cover' />
                                                 )}
                                                 {showCase.caption && (
-                                                    <div className='absolute bottom-0 max-h-0 w-full bg-theme-neutral-500/60 px-4 pb-0 pt-2 text-center text-sm text-theme-neutral-50 transition-[background-color,max-height,padding] duration-[--image-transition-duration] clip-inset-[--image-outline-width] clip-inset-t-0 mask-edges-x-2/5 group-hover:max-h-full group-hover:bg-theme-neutral-500 group-hover:py-2'>
+                                                    <div className='absolute bottom-0 max-h-full w-full bg-theme-neutral-500/60 px-4 text-center text-sm text-theme-neutral-50 transition-[background-color,max-height,padding] duration-[--image-transition-duration] mask-edges-x-2/5 group-hover:bg-theme-neutral-500 group-hover:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:clip-inset-[--image-outline-width] sm:clip-inset-t-0 sm:group-hover:max-h-full'>
                                                         {showCase.caption}
                                                     </div>
                                                 )}
@@ -124,8 +126,8 @@ const Content = () => {
 
                                         <div
                                             className={classNames(
-                                                '-mt-1 text-pretty text-justify leading-normal',
-                                                showCase ? 'flex-1' : 'mr-auto basis-4/5',
+                                                '-mt-1 text-pretty text-justify leading-tight sm:leading-normal',
+                                                showCase ? 'flex-1' : 'mr-auto sm:basis-4/5',
                                                 isBlockIndexEven ? 'order-1' : 'order-2',
                                                 idx === 0
                                                     ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-theme-secondary-400 first-line:italic'
@@ -226,7 +228,7 @@ const RemainingImages: FC<{
     );
 
     return (
-        <div className='mt-20 grid grid-cols-4 gap-4'>
+        <div className='mt-10 grid grid-cols-2 gap-2 sm:mt-20 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 2xl:grid-cols-5'>
             {remaining_Memo.map((remain) => {
                 const [imageShowCase, imageIndex] = remain || [];
 

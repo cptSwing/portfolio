@@ -78,7 +78,7 @@ const CategoryCard: FC<{
     }, [isThisCategoryOpen, catId, id]);
 
     const [bgColorSwitch, setBgColorSwitch] = useState(false);
-    useDebugButton(`Toggle Category BG Color Switch ${categoryTitle}`, () => setBgColorSwitch((state) => !state), !!categoryBackgroundColor);
+    // useDebugButton(`Toggle Category BG Color Switch ${categoryTitle}`, () => setBgColorSwitch((state) => !state), !!categoryBackgroundColor);
 
     /* Change background color, possibly later also parts of header (and turn into a hook then?) */
     useEffect(() => {
@@ -104,7 +104,7 @@ const CategoryCard: FC<{
                 'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color,margin,width,transform] duration-[50ms,500ms,500ms]',
                 '[--open-offset:theme(spacing.1)]',
                 isThisCategoryOpen
-                    ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] rounded-sm bg-[--color-primary-active-cat-bg] p-4'
+                    ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] rounded-sm bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
                     : catId
                       ? 'w-[--checked-width] bg-[--color-primary-inactive-cat-bg] hover:bg-[--color-primary-active-cat-bg]'
                       : 'w-[--unchecked-width] bg-[--color-primary-active-cat-bg] hover:bg-[--color-primary-active-cat-bg]',
@@ -115,7 +115,7 @@ const CategoryCard: FC<{
         >
             <div
                 className={classNames(
-                    '[--category-padding:theme(spacing.2)]',
+                    '[--category-padding:theme(spacing.[1.5])] sm:[--category-padding:theme(spacing.2)]',
                     'relative flex flex-col items-start justify-start overflow-hidden shadow-theme-primary-950',
                     isThisCategoryOpen ? 'size-full drop-shadow-lg' : '',
                 )}
@@ -129,7 +129,7 @@ const CategoryCard: FC<{
                             ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
-                              : 'bg-transparent after:absolute after:left-0 after:top-0 after:h-full after:w-full after:outline after:outline-offset-[-6px] after:outline-[--color-bars-no-post] after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-x-full group-hover/category:bg-[--color-primary-content-bg] group-hover/category:drop-shadow-lg group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-hover/category:duration-[var(--tab-anim-delay),150ms] group-hover/category:after:clip-inset-x-0',
+                              : 'bg-transparent after:absolute after:left-0 after:top-0 after:h-full after:w-full after:outline after:outline-offset-[-6px] after:outline-[--color-bars-no-post] after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-x-full group-hover/category:bg-[--color-primary-content-bg] group-hover/category:duration-[var(--tab-anim-delay),150ms] group-hover/category:after:clip-inset-x-0 sm:group-hover/category:drop-shadow-lg sm:group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms]',
                     )}
                     style={{
                         ...paddingStyle_Memo,
@@ -139,7 +139,7 @@ const CategoryCard: FC<{
                         className={classNames(
                             'relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-300',
                             isThisCategoryOpen
-                                ? 'text-[--color-secondary-active-cat]'
+                                ? 'text-4xl text-[--color-secondary-active-cat] sm:text-5xl'
                                 : catId
                                   ? 'scale-90 text-[--color-secondary-inactive-cat] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75'
                                   : 'text-[--color-bars-no-post] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
@@ -151,21 +151,20 @@ const CategoryCard: FC<{
 
                 {/* Testimonials &  etc: */}
                 {isThisCategoryOpen && (
-                    <div className='-mt-[--category-padding] flex size-full items-start justify-between overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:theme(colors.theme.accent.400)]'>
+                    <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:theme(colors.theme.accent.400)] sm:flex-row sm:items-start sm:justify-between'>
                         <div
                             className={classNames(
-                                '[--scrollbar-width:6px]',
-                                'relative flex min-w-[25%] basis-1/4 items-end border-theme-neutral-50 bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height,border-color] duration-500',
+                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/4 sm:self-auto',
                                 isThisCategoryOpen
                                     ? 'bg-[--color-primary-content-bg]'
                                     : catId
                                       ? 'h-0 clip-inset-y-1/2'
-                                      : 'border-l-4 border-theme-secondary-600/0 clip-inset-y-1/2 group-hover/category:border-theme-secondary-600 group-hover/category:!duration-100 group-hover/category:clip-inset-y-2/5',
+                                      : 'clip-inset-y-1/2 group-hover/category:!duration-100 group-hover/category:clip-inset-y-2/5',
                             )}
                         >
                             <div
                                 className={classNames(
-                                    'relative z-10 select-none text-pretty font-besley text-xl text-[--color-text-testimonial] transition-transform duration-300',
+                                    'relative z-10 select-none text-pretty font-besley text-lg text-[--color-text-testimonial] transition-transform duration-300 sm:text-xl',
                                     isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
                                 )}
                             >
@@ -173,7 +172,7 @@ const CategoryCard: FC<{
                             </div>
                         </div>
 
-                        <div className='h-full flex-1 overflow-x-hidden'>
+                        <div className='mt-2 h-full w-full flex-1 overflow-x-hidden sm:mt-0 sm:w-auto'>
                             <PostCards posts={posts} />
                         </div>
                     </div>
@@ -204,11 +203,13 @@ export const MenuOpenedPost: FC<{
     const navigate = useNavigate();
 
     return (
-        <div className={`pointer-events-auto ml-auto flex h-6 justify-end space-x-1 ${classNames}`}>
+        <div
+            className={`pointer-events-auto ml-auto flex h-8 items-center justify-end rounded-tl bg-[--color-primary-active-cat-bg] sm:h-6 sm:rounded-tr ${classNames}`}
+        >
             {hasImages && (
                 <button
                     type='button'
-                    className='cursor-pointer bg-theme-primary-500 px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Gallery"]'
+                    className='h-full cursor-pointer bg-[--color-primary-active-cat-bg] px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Gallery"] sm:last:rounded-tr'
                     onClick={() => setLightboxTo(0)}
                 >
                     <PhotoIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
@@ -216,23 +217,27 @@ export const MenuOpenedPost: FC<{
             )}
 
             {codeLink && (
-                <a
-                    className='group inline-block cursor-pointer bg-theme-primary-500 px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:text-sm before:uppercase before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 after:content-none first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:no-underline hover:before:translate-y-0 hover:before:content-["View_Code"]'
-                    href={codeLink.href}
-                    target='_blank'
-                    rel='noreferrer'
-                >
-                    <CodeBracketSquareIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
-                    <span className='absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight text-theme-primary-50 transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
-                        {codeLink.alt}
-                    </span>
-                </a>
+                <>
+                    <div className='h-3/5 w-0.5 bg-[theme(colors.theme.primary.600)]' />
+                    <a
+                        className='group inline-block h-full cursor-pointer bg-[--color-primary-active-cat-bg] px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:text-sm before:uppercase before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 after:content-none first:rounded-tl hover:bg-theme-primary-200 hover:no-underline hover:before:translate-y-0 hover:before:content-["View_Code"] sm:last:rounded-tr'
+                        href={codeLink.href}
+                        target='_blank'
+                        rel='noreferrer'
+                    >
+                        <CodeBracketSquareIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
+                        <span className='absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight text-theme-primary-50 transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
+                            {codeLink.alt}
+                        </span>
+                    </a>
+                </>
             )}
 
             {/* TODO fade out instead of instantly closing */}
+            <div className='h-3/5 w-0.5 bg-[theme(colors.theme.primary.600)]' />
             <button
                 type='button'
-                className='cursor-pointer bg-theme-primary-500 p-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl last:rounded-tr hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Close"]'
+                className='h-full cursor-pointer bg-[--color-primary-active-cat-bg] p-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Close"] sm:last:rounded-tr'
                 onClick={() => {
                     navigate(-1);
                 }}

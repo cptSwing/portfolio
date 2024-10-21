@@ -73,19 +73,19 @@ export const SinglePostCard: FC<{
             /* NOTE Post Card height set here: */
             className={classNames(
                 'group/this pointer-events-auto relative translate-x-full transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] [--card-outline-width:6px] [--card-text-color:theme(colors.theme.neutral.100)] hover:-outline-offset-[calc(2px+var(--card-outline-width))]',
-                titleCardBg ? 'h-52' : 'h-24',
+                titleCardBg ? 'h-44 sm:h-52' : 'h-24',
             )}
             onClick={() => navigate(id.toString())}
         >
             {/* Title: */}
-            <div className='relative z-10 mx-auto -mt-3 w-fit px-4 pb-1 text-center leading-none text-[--card-text-color] shadow transition-colors delay-[--card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-[--color-secondary-active-cat] before:transition-[background-color] before:delay-[--card-hover-delay] before:duration-[--card-hover-duration]'>
+            <div className='relative z-10 mx-auto -mt-3 w-fit px-2 pb-1 text-center leading-none text-[--card-text-color] shadow transition-colors delay-[--card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-[--color-secondary-active-cat] before:transition-[background-color] before:delay-[--card-hover-delay] before:duration-[--card-hover-duration] sm:px-4'>
                 <h3>{title}</h3>
             </div>
 
             <div className='absolute top-0 size-full overflow-hidden'>
                 {/* Subtitle: */}
                 {subTitle && (
-                    <div className='absolute bottom-[--card-outline-width] mx-auto h-fit w-full transform-gpu truncate px-2 text-center text-sm text-[--color-text-testimonial] transition-[background-color,opacity,color] delay-[--card-hover-delay] duration-[--card-hover-duration] clip-inset-x-[--card-outline-width] group-hover/this:bg-[--color-secondary-inactive-cat] group-hover/this:text-[--card-text-color] hover:delay-[calc(75ms+var(--card-hover-delay))]'>
+                    <div className='absolute bottom-0 left-1/2 z-10 mx-auto h-fit -translate-x-1/2 transform-gpu truncate bg-[--color-secondary-inactive-cat] px-2 text-center text-xs text-[--card-text-color] opacity-90 transition-[background-color,opacity,color] delay-[--card-hover-delay] duration-[--card-hover-duration] group-hover/this:text-[--card-text-color] hover:delay-[calc(75ms+var(--card-hover-delay))] sm:bottom-[--card-outline-width] sm:left-0 sm:w-full sm:translate-x-0 sm:bg-transparent sm:text-sm sm:text-[--color-text-testimonial] sm:opacity-100 sm:clip-inset-x-[--card-outline-width] sm:group-hover/this:bg-[--color-secondary-inactive-cat]'>
                         <Markdown>{subTitle}</Markdown>
                     </div>
                 )}

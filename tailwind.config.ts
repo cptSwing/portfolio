@@ -68,6 +68,9 @@ const themePalette = {
 };
 
 export default {
+    future: {
+        hoverOnlyWhenSupported: true,
+    },
     content: ['./index.html', './src/**/*.{js,ts,tsx}'],
     theme: {
         extend: {
