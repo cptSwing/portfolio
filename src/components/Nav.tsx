@@ -55,7 +55,7 @@ const CategoryCard: FC<{
 
     const [refCallback] = useAnimationOnMount({
         animationProps: {
-            animationName: isIndexEven ? 'streak-down' : 'streak-up',
+            animationName: isIndexEven ? 'streak-to-right' : 'streak-to-left',
             animationDuration: 300,
             animationDelay: 100 * id,
             animationFillMode: 'backwards',
@@ -123,12 +123,13 @@ const CategoryCard: FC<{
                 {/* Tab: */}
                 <div
                     className={classNames(
-                        'px-[calc(var(--category-padding)*2)] py-[--category-padding] transition-[margin-left,transform]',
+                        '[--tab-anim-delay:300ms]',
+                        'px-[calc(var(--category-padding)*2)] py-[--category-padding] transition-[filter,background-color,margin-left,transform]',
                         isThisCategoryOpen
                             ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
-                              : 'after:absolute after:left-0 after:top-0 after:h-full after:w-full after:outline after:outline-offset-[-6px] after:outline-[--color-bars-no-post] after:transition-[clip-path] after:duration-500 after:clip-inset-x-full group-hover/category:bg-[--color-primary-content-bg] group-hover/category:drop-shadow-lg group-hover/category:after:clip-inset-x-0',
+                              : 'bg-transparent after:absolute after:left-0 after:top-0 after:h-full after:w-full after:outline after:outline-offset-[-6px] after:outline-[--color-bars-no-post] after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-x-full group-hover/category:bg-[--color-primary-content-bg] group-hover/category:drop-shadow-lg group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-hover/category:duration-[var(--tab-anim-delay),150ms] group-hover/category:after:clip-inset-x-0',
                     )}
                     style={{
                         ...paddingStyle_Memo,
@@ -140,8 +141,8 @@ const CategoryCard: FC<{
                             isThisCategoryOpen
                                 ? 'text-[--color-secondary-active-cat]'
                                 : catId
-                                  ? 'scale-90 text-[--color-secondary-inactive-cat] drop-shadow-lg group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75'
-                                  : 'text-[--color-bars-no-post] drop-shadow-lg group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
+                                  ? 'scale-90 text-[--color-secondary-inactive-cat] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75'
+                                  : 'text-[--color-bars-no-post] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
                         )}
                     >
                         {categoryTitle}
@@ -184,7 +185,7 @@ const CategoryCard: FC<{
                 <BackgroundSvg
                     className={classNames(
                         isThisCategoryOpen
-                            ? 'fill-theme-accent-200 stroke-theme-accent-400 opacity-15'
+                            ? 'fill-theme-accent-200 stroke-theme-accent-400 opacity-30'
                             : 'fill-theme-neutral-300 stroke-theme-neutral-400 opacity-15 group-hover/category:fill-theme-accent-200 group-hover/category:stroke-theme-accent-400 group-hover/category:opacity-30',
                     )}
                 />

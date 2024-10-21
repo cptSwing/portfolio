@@ -63,7 +63,6 @@ export const SinglePostCard: FC<{
     return (
         <div
             ref={refCbWrapper}
-            // style={entry?.isIntersecting ? ({ '--tw-translate-x': 0 } as CSSProperties) : undefined}
             style={
                 {
                     '--card-hover-duration': `${animDurationMs}ms`,

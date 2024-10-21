@@ -1,31 +1,33 @@
-@keyframes streak-down {
+@keyframes streak-to-right {
     from {
-        @apply opacity-0;
+        @apply z-20 opacity-0;
         transform: translateX(-200%);
     }
     to {
-        @apply opacity-100;
+        @apply z-0 opacity-100;
         transform: translateX(0);
     }
 }
 
-@keyframes streak-up {
+@keyframes streak-to-left {
     from {
-        @apply opacity-0;
+        @apply z-20 opacity-0;
         transform: translateX(200%);
     }
     to {
-        @apply opacity-100;
+        @apply z-0 opacity-100;
         transform: translateX(0);
     }
 }
 
-@keyframes enter-from-right {
+@keyframes text-upwards {
     from {
-        transform: translateX(100%);
+        @apply origin-top opacity-0;
+        transform: translateY(150%);
     }
     to {
-        transform: translateX(0);
+        @apply scale-y-100 opacity-100;
+        transform: translateY(0%);
     }
 }
 

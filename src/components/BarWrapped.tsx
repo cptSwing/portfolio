@@ -2,7 +2,6 @@ import { FC } from 'react';
 import classNames from '../lib/classNames';
 import { useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
-import Socials from './Socials';
 
 const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     const { catId, postId } = useParams();
@@ -32,7 +31,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <div
             className={classNames(
-                'group/bar-parent flex flex-col items-center justify-center transition-[width] duration-300 [--bar-height:theme(spacing.[1.5])] [--color-bars-no-post:theme(colors.theme.secondary.400)] [--color-bars-post:theme(colors.theme.primary.500)]',
+                'flex flex-col items-center justify-center transition-[width] duration-300 [--bar-height:theme(spacing.[1.5])]',
                 postId ? 'h-[90%] w-screen' : 'w-fit',
             )}
         >
@@ -45,11 +44,9 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
                     postId ? '!w-full bg-[--color-primary-active-cat-bg]' : 'bg-[--color-secondary-active-cat]',
                 )}
-            >
-                <Socials />
-            </div>
+            />
 
-            <div ref={contentRefCallback} className={classNames('relative size-full', postId ? 'my-0 overflow-y-visible' : 'my-1')}>
+            <div ref={contentRefCallback} className={classNames('relative z-20 size-full', postId ? 'my-0 overflow-y-visible' : 'my-1')}>
                 {children}
             </div>
 
