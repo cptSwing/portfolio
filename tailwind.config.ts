@@ -55,16 +55,11 @@ const themePalette = {
     primary: { ...amberish },
     secondary: { ...vibrantTurquoise },
     accent: { ...bloodOrange },
-    text: colors.white,
-    neutral: { ...colors.slate },
     bg: {
         lighter: colors.neutral[700],
         base: colors.neutral[900],
         darker: colors.neutral[950],
     },
-    critical: { ...colors.rose },
-    attention: { ...colors.orange },
-    success: { ...colors.lime },
 };
 
 export default {
@@ -107,11 +102,11 @@ export default {
                 '2xs': '0.666rem',
                 '3xs': '0.55rem',
             },
-            colors: {
-                theme: {
-                    ...themePalette,
-                },
-            },
+            // colors: {
+            //     theme: {
+            //         ...themePalette,
+            //     },
+            // },
             boxShadow: {
                 'top-rim-lg': 'inset 0px 10px 4px -10px rgb(0 0 0 / 0.1)',
                 'with-top-lg': '0px -1px 10px -1px rgb(0 0 0 / 0.1), 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',

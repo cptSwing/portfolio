@@ -59,7 +59,7 @@ const Content = () => {
             <div className='relative mx-auto flex h-full w-[--post-width] flex-col bg-[--bg-color] [--bg-color:theme(colors.theme.bg.lighter)]'>
                 {/* Floating Title: */}
                 <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-[--post-width] items-end justify-center text-center'>
-                    <h2 className='absolute translate-y-[calc(100%+(var(--bar-height)/2))] px-4 drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary-400 before:clip-inset-t-0 sm:translate-y-1/2 sm:px-8 sm:text-theme-neutral-50 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-t-[30%]'>
+                    <h2 className='absolute translate-y-[calc(100%+(var(--bar-height)/2))] px-4 drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary-400 before:clip-inset-t-0 sm:translate-y-1/2 sm:px-8 sm:text-neutral-50 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-t-[30%]'>
                         {title}
                     </h2>
                     <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
@@ -97,7 +97,7 @@ const Content = () => {
                                         {showCase && (
                                             <div
                                                 className={classNames(
-                                                    'group relative w-full cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 drop-shadow-md transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75 sm:h-full sm:w-auto sm:basis-2/5',
+                                                    'group relative w-full cursor-pointer drop-shadow-md sm:h-full sm:w-auto sm:basis-2/5',
                                                     isBlockIndexEven ? 'mt-4 sm:order-2 sm:ml-12 sm:mt-0' : 'mb-4 sm:order-1 sm:mb-0 sm:mr-12',
                                                 )}
                                                 onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}
@@ -117,7 +117,7 @@ const Content = () => {
                                                     <img src={`/${(showCase as Post_ShowCase_Image).imgUrl}`} className='h-full object-cover' />
                                                 )}
                                                 {showCase.caption && (
-                                                    <div className='absolute bottom-0 max-h-full w-full bg-theme-neutral-500/60 px-4 text-center text-sm text-theme-neutral-50 transition-[background-color,max-height,padding] duration-[--image-transition-duration] mask-edges-x-2/5 group-hover:bg-theme-neutral-500 group-hover:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:clip-inset-[--image-outline-width] sm:clip-inset-t-0 sm:group-hover:max-h-full'>
+                                                    <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] duration-[--image-transition-duration] mask-edges-x-2/5 group-hover:bg-neutral-500 group-hover:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:clip-inset-[--image-outline-width] sm:clip-inset-t-0 sm:group-hover:max-h-full'>
                                                         {showCase.caption}
                                                     </div>
                                                 )}
@@ -194,7 +194,7 @@ const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
                         return (
                             <a
                                 key={tool + idx}
-                                className='group/link inline-block translate-x-[--tools-translate-x] transform-gpu overflow-hidden whitespace-nowrap rounded-sm border border-[--border-color] border-t-transparent px-2 py-1 text-center text-2xs leading-none text-[--link-all-text-color] transition-[transform,border-top-color,clip-path] delay-[var(--tools-transition-delay),0ms] duration-[--tools-transition-duration] clip-inset-0 clip-inset-t-px [--border-color:theme(colors.theme.secondary.50)] [--link-all-text-color:theme(colors.theme.primary.50)] first:border-t-[--border-color] first:clip-inset-0 visited:text-[--link-all-text-color] group-hover/menu:translate-x-0 group-hover/menu:border-t-[--border-color] group-hover/menu:delay-[var(--tools-transition-delay),calc(2*var(--tools-transition-delay))] hover:bg-theme-secondary-500/50 hover:no-underline'
+                                className='group/link inline-block translate-x-[--tools-translate-x] transform-gpu overflow-hidden whitespace-nowrap rounded-sm border border-[--border-color] border-t-transparent px-2 py-1 text-center text-2xs leading-none text-[--link-all-text-color] transition-[transform,border-top-color,clip-path] delay-[var(--tools-transition-delay),0ms] duration-[--tools-transition-duration] clip-inset-0 clip-inset-t-px [--border-color:theme(colors.theme.secondary.50)] [--link-all-text-color:theme(colors.theme.primary.50)] first:border-t-[--border-color] first:clip-inset-0 visited:text-[--link-all-text-color] group-hover/menu:translate-x-0 group-hover/menu:border-t-[--border-color] group-hover/menu:delay-[var(--tools-transition-delay),calc(2*var(--tools-transition-delay))] hover:bg-[--theme-secondary-500] hover:no-underline'
                                 href={ToolsUrls[tool]}
                                 style={{ '--tools-translate-x': `${idx + 1 * 4}px` } as CSSProperties}
                             >
@@ -236,7 +236,7 @@ const RemainingImages: FC<{
                     <img
                         key={imageShowCase.imgUrl + imageIndex}
                         src={`/${imageShowCase.imgUrl}`}
-                        className='max-h-64 w-full cursor-pointer object-cover outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75'
+                        className='max-h-64 w-full cursor-pointer border border-transparent object-cover drop-shadow-sm hover:border-[--color-bars-no-post]'
                         onClick={() => setLightBoxSlide(imageIndex)}
                     />
                 ) : null;

@@ -125,7 +125,7 @@ const CategoryCard: FC<{
 
                 {/* Testimonials &  etc: */}
                 {isThisCategoryOpen && (
-                    <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:theme(colors.theme.accent.400)] sm:flex-row sm:items-start sm:justify-between'>
+                    <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:--theme-accent-400] sm:flex-row sm:items-start sm:justify-between'>
                         <div
                             className={classNames(
                                 'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/4 sm:self-auto lg:basis-1/3 2xl:basis-2/5',
@@ -158,8 +158,8 @@ const CategoryCard: FC<{
                 <BackgroundSvg
                     className={classNames(
                         isThisCategoryOpen
-                            ? 'fill-theme-accent-200 stroke-theme-accent-400 opacity-30'
-                            : 'fill-theme-neutral-300 stroke-theme-neutral-400 opacity-15 group-hover/category:fill-theme-accent-200 group-hover/category:stroke-theme-accent-400 group-hover/category:opacity-30',
+                            ? 'fill-[--theme-accent-200] stroke-[--theme-accent-400] opacity-30'
+                            : 'fill-neutral-300 stroke-neutral-400 opacity-15 group-hover/category:fill-[--theme-accent-200] group-hover/category:stroke-[--theme-accent-400] group-hover/category:opacity-30',
                     )}
                 />
             </div>
@@ -181,7 +181,7 @@ export const MenuOpenedPost: FC<{
             {hasImages && (
                 <button
                     type='button'
-                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Gallery"] sm:last:rounded-tr'
+                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Gallery"] sm:last:rounded-tr'
                     onClick={() => setLightboxTo(0)}
                 >
                     <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-theme-accent-800' />
@@ -192,7 +192,7 @@ export const MenuOpenedPost: FC<{
                 <>
                     <div className='h-3/5 w-0.5 bg-[theme(colors.theme.primary.600)]' />
                     <a
-                        className='group inline-block h-full cursor-pointer px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:text-sm before:uppercase before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 after:content-none first:rounded-tl hover:before:translate-y-0 hover:before:content-["View_Code"] sm:last:rounded-tr'
+                        className='group inline-block h-full cursor-pointer px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none first:rounded-tl hover:before:translate-y-0 hover:before:content-["View_Code"] sm:last:rounded-tr'
                         href={codeLink.href}
                         target='_blank'
                         rel='noreferrer'
@@ -209,7 +209,7 @@ export const MenuOpenedPost: FC<{
             <div className='h-3/5 w-0.5 bg-[theme(colors.theme.primary.600)]' />
             <button
                 type='button'
-                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Close"] sm:last:rounded-tr'
+                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Close"] sm:last:rounded-tr'
                 onClick={() => {
                     navigate(-1);
                 }}

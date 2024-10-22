@@ -2,10 +2,11 @@ import { CSSProperties, useCallback, useRef, useState } from 'react';
 
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config.ts';
+import { removeCssProperties, setCssProperties } from '../lib/cssProperties.ts';
 
 const themeTransitionTiming = resolveConfig(tailwindConfig).theme.transitionTimingFunction;
 
-type AnimationProperties = Record<string, string | number | null>;
+export type AnimationProperties = Record<string, string | number | null>;
 const animationProperties: AnimationProperties = {
     'animation-duration': 2000,
     'animation-timing-function': themeTransitionTiming['DEFAULT'],
@@ -81,16 +82,3 @@ const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
 };
 
 export default useAnimationOnMount;
-
-const setCssProperties = (element: HTMLElement, styleProperties: AnimationProperties) => {
-    for (const property in styleProperties) {
-        const value = typeof styleProperties[property] === 'number' ? styleProperties[property].toString() + 'ms' : styleProperties[property];
-        element.style.setProperty(property, value);
-    }
-};
-
-const removeCssProperties = (element: HTMLElement, styleProperties: AnimationProperties) => {
-    for (const property in styleProperties) {
-        element.style.removeProperty(property);
-    }
-};

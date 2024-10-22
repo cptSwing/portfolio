@@ -7,14 +7,12 @@
 
 @layer base {
     :root {
-        --bg-stroke-max-opacity: 0.666;
-        --bg-color: theme(colors.theme.bg.darker);
-
+        @apply [--bg-color:--theme-bg-base] [--color-bars-no-post:--theme-secondary-400] [--color-bars-post:--theme-primary-500] [--color-primary-active-cat-bg:--theme-primary-300] [--color-primary-content-bg:--theme-primary-50] [--color-primary-inactive-cat-bg:--theme-primary-600] [--color-secondary-active-cat:--theme-secondary-400] [--color-secondary-inactive-cat:--theme-secondary-600];
         @apply bg-[--bg-color];
     }
 
     a {
-        @apply text-theme-secondary-50 visited:text-theme-secondary-200 hover:underline;
+        @apply text-[--theme-secondary-50] visited:text-[--theme-secondary-200] hover:underline;
     }
 
     h1 {
@@ -34,7 +32,7 @@
     }
 
     h5 {
-        @apply relative z-0 inline px-1 pb-0.5 font-barlow italic leading-none text-theme-accent-600 underline underline-offset-2;
+        @apply relative z-0 inline px-1 pb-0.5 font-barlow italic leading-none text-[--theme-secondary-600] underline underline-offset-2;
     }
 }
 
@@ -59,11 +57,11 @@
     } */
 
     .headline-bg {
-        @apply after:absolute after:left-0 after:-z-10 after:size-full after:bg-theme-neutral-50;
+        @apply after:absolute after:left-0 after:-z-10 after:size-full after:bg-neutral-50;
     }
 
     .headline-skewed-bg {
-        @apply after:absolute after:left-0 after:-z-10 after:size-full after:-skew-x-6 after:bg-theme-neutral-50;
+        @apply after:absolute after:left-0 after:-z-10 after:size-full after:-skew-x-6 after:bg-neutral-50;
     }
 
     .rotate-text {
@@ -136,7 +134,7 @@
 }
 
 #root {
-    @apply overflow-hidden text-left font-barlow text-theme-text scrollbar-track-transparent scrollbar-thumb-neutral-50;
+    @apply overflow-hidden text-left font-barlow text-white scrollbar-track-transparent scrollbar-thumb-neutral-50;
 }
 
 /* 

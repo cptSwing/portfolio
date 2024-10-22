@@ -33,20 +33,22 @@ const LogoHeader = () => {
                     : 'w-[--unchecked-width] !cursor-default',
             )}
         >
-            <Socials />
+            <>
+                <Socials />
+            </>
 
-            <span
+            <div
                 className={classNames(
                     'text-stroke-outer relative z-10 font-protest-strike text-theme-accent-300 [font-size:4rem]',
                     'before:transition-[-webkit-text-stroke-color,-webkit-text-stroke-width,opacity] before:content-[attr(data-title)]',
                     postId
-                        ? 'whitespace-nowrap text-left leading-none text-transparent [-webkit-text-stroke-width:2px] before:left-0 before:whitespace-nowrap before:opacity-0 before:[-webkit-text-stroke-color:--color-bars-post] before:[-webkit-text-stroke-width:1px] sm:before:opacity-20'
-                        : 'whitespace-pre text-right leading-[0.85] before:right-0 before:whitespace-pre before:[-webkit-text-stroke-color:--bg-color] before:[-webkit-text-stroke-width:6px]',
+                        ? 'whitespace-nowrap text-left leading-none text-transparent opacity-25 [-webkit-text-stroke-color:--color-bars-post] [-webkit-text-stroke-width:1px] before:!content-[]'
+                        : 'whitespace-pre text-right leading-[0.85] text-[--theme-accent-300] before:absolute before:right-0 before:-z-10 before:whitespace-pre before:[-webkit-text-stroke-color:--bg-color] before:[-webkit-text-stroke-width:6px]',
                 )}
                 data-title={postId ? logoText : logoTextNewLine}
             >
                 {postId ? logoText : logoTextNewLine}
-            </span>
+            </div>
         </header>
     );
 };

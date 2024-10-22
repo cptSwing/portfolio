@@ -1,8 +1,11 @@
 import { MENU_CATEGORY, ToolsUrls } from './enums';
 
 export type ZustandStore = {
+    values: {
+        themeIndex: number;
+    };
     methods: {
-        [key: string]: unknown;
+        store_cycleTheme: () => void;
     };
 };
 
