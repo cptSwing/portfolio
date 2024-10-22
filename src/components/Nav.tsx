@@ -1,11 +1,8 @@
 import { DataBase, Post } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import testDb from '../queries/testDb.json';
-import resolveConfig from 'tailwindcss/resolveConfig';
-import tailwindConfig from '../../tailwind.config.ts';
 import { PostCards } from './PostCards.tsx';
-import { useDebugButton } from '../hooks/useDebugButton.ts';
 import { MENU_CATEGORY } from '../types/enums.ts';
 import Markdown from 'react-markdown';
 import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
@@ -13,14 +10,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import GetBackgroundSvg from './GetBackgroundSvg.tsx';
 
-const themeBgDarker = resolveConfig(tailwindConfig).theme.colors.theme.bg.darker;
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
 
 const Nav = () => {
     const { catId, postId } = useParams();
-
-    // useEffect(() => updateMouseXY(), []);
 
     return (
         <nav
@@ -45,7 +39,7 @@ export default Nav;
 const CategoryCard: FC<{
     cardData: DataBase[MENU_CATEGORY];
 }> = ({ cardData }) => {
-    const { id, categoryTitle, posts, categoryBackgroundColor, categoryBlurb } = cardData;
+    const { id, categoryTitle, posts, categoryBlurb } = cardData;
 
     const [BackgroundSvg] = useMemo(() => GetBackgroundSvg(categoryTitle), [categoryTitle]);
 
@@ -77,26 +71,6 @@ const CategoryCard: FC<{
         }
     }, [isThisCategoryOpen, catId, id]);
 
-    const [bgColorSwitch, setBgColorSwitch] = useState(false);
-    // useDebugButton(`Toggle Category BG Color Switch ${categoryTitle}`, () => setBgColorSwitch((state) => !state), !!categoryBackgroundColor);
-
-    /* Change background color, possibly later also parts of header (and turn into a hook then?) */
-    useEffect(() => {
-        const docStyle = document.body.style;
-
-        if (catId && bgColorSwitch) {
-            if (isThisCategoryOpen) {
-                if (categoryBackgroundColor) {
-                    docStyle.setProperty('--bg-color', categoryBackgroundColor);
-                } else {
-                    docStyle.setProperty('--bg-color', themeBgDarker);
-                }
-            }
-        } else {
-            docStyle.setProperty('--bg-color', themeBgDarker);
-        }
-    }, [bgColorSwitch, catId, isThisCategoryOpen, categoryBackgroundColor]);
-
     return (
         <div
             ref={refCallback}
@@ -104,7 +78,7 @@ const CategoryCard: FC<{
                 'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color,margin,width,transform] duration-[50ms,500ms,500ms]',
                 '[--open-offset:theme(spacing.1)]',
                 isThisCategoryOpen
-                    ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] rounded-sm bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
+                    ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
                     : catId
                       ? 'w-[--checked-width] bg-[--color-primary-inactive-cat-bg] hover:bg-[--color-primary-active-cat-bg]'
                       : 'w-[--unchecked-width] bg-[--color-primary-active-cat-bg] hover:bg-[--color-primary-active-cat-bg]',
@@ -154,7 +128,7 @@ const CategoryCard: FC<{
                     <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:theme(colors.theme.accent.400)] sm:flex-row sm:items-start sm:justify-between'>
                         <div
                             className={classNames(
-                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/4 sm:self-auto',
+                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/4 sm:self-auto lg:basis-1/3 2xl:basis-2/5',
                                 isThisCategoryOpen
                                     ? 'bg-[--color-primary-content-bg]'
                                     : catId
@@ -203,16 +177,14 @@ export const MenuOpenedPost: FC<{
     const navigate = useNavigate();
 
     return (
-        <div
-            className={`pointer-events-auto ml-auto flex h-8 items-center justify-end rounded-tl bg-[--color-primary-active-cat-bg] sm:h-6 sm:rounded-tr ${classNames}`}
-        >
+        <div className={`pointer-events-auto ml-auto flex h-8 items-center justify-end rounded-tl bg-[--color-bars-post] sm:h-6 sm:rounded-tr ${classNames}`}>
             {hasImages && (
                 <button
                     type='button'
-                    className='h-full cursor-pointer bg-[--color-primary-active-cat-bg] px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Gallery"] sm:last:rounded-tr'
+                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Gallery"] sm:last:rounded-tr'
                     onClick={() => setLightboxTo(0)}
                 >
-                    <PhotoIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
+                    <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-theme-accent-800' />
                 </button>
             )}
 
@@ -220,12 +192,12 @@ export const MenuOpenedPost: FC<{
                 <>
                     <div className='h-3/5 w-0.5 bg-[theme(colors.theme.primary.600)]' />
                     <a
-                        className='group inline-block h-full cursor-pointer bg-[--color-primary-active-cat-bg] px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:text-sm before:uppercase before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 after:content-none first:rounded-tl hover:bg-theme-primary-200 hover:no-underline hover:before:translate-y-0 hover:before:content-["View_Code"] sm:last:rounded-tr'
+                        className='group inline-block h-full cursor-pointer px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:text-sm before:uppercase before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 after:content-none first:rounded-tl hover:before:translate-y-0 hover:before:content-["View_Code"] sm:last:rounded-tr'
                         href={codeLink.href}
                         target='_blank'
                         rel='noreferrer'
                     >
-                        <CodeBracketSquareIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
+                        <CodeBracketSquareIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-theme-accent-800' />
                         <span className='absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight text-theme-primary-50 transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
                             {codeLink.alt}
                         </span>
@@ -237,23 +209,13 @@ export const MenuOpenedPost: FC<{
             <div className='h-3/5 w-0.5 bg-[theme(colors.theme.primary.600)]' />
             <button
                 type='button'
-                className='h-full cursor-pointer bg-[--color-primary-active-cat-bg] p-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl hover:bg-theme-primary-200 hover:before:translate-y-0 hover:before:content-["Close"] sm:last:rounded-tr'
+                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-1 before:leading-none before:text-theme-secondary-50 before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Close"] sm:last:rounded-tr'
                 onClick={() => {
                     navigate(-1);
                 }}
             >
-                <XMarkIcon className='aspect-square h-full stroke-theme-accent-600 hover:stroke-theme-accent-800' />
+                <XMarkIcon className='aspect-square h-full stroke-theme-accent-400 hover:stroke-theme-accent-800' />
             </button>
         </div>
     );
 };
-
-// const updateMouseXY = () => {
-//     document.documentElement.addEventListener('pointermove', (pos) => {
-//         const x = (pos.clientX / window.innerWidth) * 100;
-//         const y = (pos.clientY / window.innerHeight) * 100;
-
-//         document.documentElement.style.setProperty('--mouse-x', x + '%');
-//         document.documentElement.style.setProperty('--mouse-y', y + '%');
-//     });
-// };

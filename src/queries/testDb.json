@@ -684,7 +684,7 @@
         "id": 2,
         "categoryTitle": "About",
         "categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale",
-        "categoryBlurb": "I build websites.\n\n&nbsp;\n\nI build 3D stuff.\n\n&nbsp;\n\nAnd sometimes,\n\nI combine the two.",
+        "categoryBlurb": "I build websites.\nI build 3D stuff.\n\nSometimes I combine the two.",
         "posts": [
             {
                 "id": 14,

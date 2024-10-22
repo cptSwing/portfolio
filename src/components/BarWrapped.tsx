@@ -42,7 +42,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 className={classNames(
                     'relative -z-10 min-h-[--bar-height] transition-[width,background-color] duration-300',
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-[--color-primary-active-cat-bg]' : 'bg-[--color-secondary-active-cat]',
+                    postId ? '!w-full bg-[--color-bars-post]' : 'bg-[--color-bars-no-post]',
                 )}
             />
 
@@ -57,7 +57,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 className={classNames(
                     'min-h-[--bar-height] transition-[width,background-color] delay-100 duration-500',
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-[--color-primary-active-cat-bg]' : 'bg-[--color-secondary-active-cat]',
+                    postId ? '!w-full bg-[--color-bars-post]' : 'bg-[--color-bars-no-post]',
                 )}
             />
         </div>

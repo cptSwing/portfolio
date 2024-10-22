@@ -55,11 +55,11 @@ const Content = () => {
     );
 
     return (
-        <main className='h-[90dvh] w-full bg-theme-bg-base'>
+        <main className='z-0 h-[90dvh] w-full bg-theme-bg-base'>
             <div className='relative mx-auto flex h-full w-[--post-width] flex-col bg-[--bg-color] [--bg-color:theme(colors.theme.bg.lighter)]'>
                 {/* Floating Title: */}
                 <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-[--post-width] items-end justify-center text-center'>
-                    <h2 className='absolute translate-y-[calc(100%+(var(--bar-height)/2))] px-4 before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary-400 before:clip-inset-t-0 sm:translate-y-1/2 sm:px-8 sm:text-theme-neutral-50 sm:drop-shadow-md sm:before:w-full sm:before:clip-inset-t-[30%]'>
+                    <h2 className='absolute translate-y-[calc(100%+(var(--bar-height)/2))] px-4 drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary-400 before:clip-inset-t-0 sm:translate-y-1/2 sm:px-8 sm:text-theme-neutral-50 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-t-[30%]'>
                         {title}
                     </h2>
                     <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
@@ -97,7 +97,7 @@ const Content = () => {
                                         {showCase && (
                                             <div
                                                 className={classNames(
-                                                    'group relative w-full cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75 sm:h-full sm:w-auto sm:basis-2/5',
+                                                    'group relative w-full cursor-pointer outline outline-[length:--image-outline-width] -outline-offset-[--image-outline-width] outline-neutral-500/75 drop-shadow-md transition-[outline-color] duration-[--image-transition-duration] hover:outline-theme-secondary-200/75 sm:h-full sm:w-auto sm:basis-2/5',
                                                     isBlockIndexEven ? 'mt-4 sm:order-2 sm:ml-12 sm:mt-0' : 'mb-4 sm:order-1 sm:mb-0 sm:mr-12',
                                                 )}
                                                 onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}
