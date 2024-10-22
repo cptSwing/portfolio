@@ -14,7 +14,7 @@ const Settings = () => {
 
     return (
         <div className='size-full rounded-full bg-[--color-bars-no-post] p-px' onClick={() => store_cycleTheme()}>
-            <Cog8ToothIcon />
+            <Cog8ToothIcon className='stroke-neutral-700 hover:stroke-[--color-bars-post]' />
         </div>
     );
 };

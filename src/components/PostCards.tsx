@@ -72,7 +72,7 @@ export const SinglePostCard: FC<{
             }
             /* NOTE Post Card height set here: */
             className={classNames(
-                'group/this pointer-events-auto relative translate-x-full transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] [--card-outline-width:6px] [--card-text-color:theme(colors.theme.neutral.100)] hover:-outline-offset-[calc(2px+var(--card-outline-width))]',
+                'group/this pointer-events-auto relative translate-x-full transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] [--card-outline-width:6px] [--card-text-color:--theme-primary-50] hover:-outline-offset-[calc(2px+var(--card-outline-width))]',
                 titleCardBg ? 'h-44 sm:h-52' : 'h-24',
             )}
             onClick={() => navigate(id.toString())}

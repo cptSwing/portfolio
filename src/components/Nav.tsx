@@ -111,13 +111,14 @@ const CategoryCard: FC<{
                 >
                     <h1
                         className={classNames(
-                            'relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-300',
+                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-300 before:size-full before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-950] before:[-webkit-text-stroke-width:6px]',
                             isThisCategoryOpen
                                 ? 'text-4xl text-[--color-secondary-active-cat] sm:text-5xl'
                                 : catId
                                   ? 'scale-90 text-[--color-secondary-inactive-cat] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75'
                                   : 'text-[--color-bars-no-post] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
                         )}
+                        data-title={categoryTitle}
                     >
                         {categoryTitle}
                     </h1>
@@ -184,20 +185,20 @@ export const MenuOpenedPost: FC<{
                     className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Gallery"] sm:last:rounded-tr'
                     onClick={() => setLightboxTo(0)}
                 >
-                    <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-theme-accent-800' />
+                    <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800]' />
                 </button>
             )}
 
             {codeLink && (
                 <>
-                    <div className='h-3/5 w-0.5 bg-[theme(colors.theme.primary.600)]' />
+                    <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />
                     <a
                         className='group inline-block h-full cursor-pointer px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none first:rounded-tl hover:before:translate-y-0 hover:before:content-["View_Code"] sm:last:rounded-tr'
                         href={codeLink.href}
                         target='_blank'
                         rel='noreferrer'
                     >
-                        <CodeBracketSquareIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-theme-accent-800' />
+                        <CodeBracketSquareIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800]' />
                         <span className='absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight text-theme-primary-50 transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
                             {codeLink.alt}
                         </span>
@@ -206,7 +207,7 @@ export const MenuOpenedPost: FC<{
             )}
 
             {/* TODO fade out instead of instantly closing */}
-            <div className='h-3/5 w-0.5 bg-[theme(colors.theme.primary.600)]' />
+            <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />
             <button
                 type='button'
                 className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Close"] sm:last:rounded-tr'
@@ -214,7 +215,7 @@ export const MenuOpenedPost: FC<{
                     navigate(-1);
                 }}
             >
-                <XMarkIcon className='aspect-square h-full stroke-theme-accent-400 hover:stroke-theme-accent-800' />
+                <XMarkIcon className='aspect-square h-full stroke-red-600 hover:stroke-[--theme-accent-800]' />
             </button>
         </div>
     );

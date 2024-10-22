@@ -55,11 +55,11 @@ const Content = () => {
     );
 
     return (
-        <main className='z-0 h-[90dvh] w-full bg-theme-bg-base'>
-            <div className='relative mx-auto flex h-full w-[--post-width] flex-col bg-[--bg-color] [--bg-color:theme(colors.theme.bg.lighter)]'>
+        <main className='z-0 h-[90dvh] w-full'>
+            <div className='relative mx-auto flex h-full w-[--post-width] flex-col bg-[--theme-bg-lighter]'>
                 {/* Floating Title: */}
                 <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-[--post-width] items-end justify-center text-center'>
-                    <h2 className='absolute translate-y-[calc(100%+(var(--bar-height)/2))] px-4 drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary-400 before:clip-inset-t-0 sm:translate-y-1/2 sm:px-8 sm:text-neutral-50 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-t-[30%]'>
+                    <h2 className='absolute translate-y-[calc(100%+(var(--bar-height)/2))] px-4 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-t-0 sm:translate-y-1/2 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-t-[30%]'>
                         {title}
                     </h2>
                     <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
@@ -67,7 +67,7 @@ const Content = () => {
 
                 {textBlocks ? (
                     <div
-                        className='scroll-gutter-both relative flex flex-col overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-theme-primary-400 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:px-6 sm:py-6 xl:px-20 xl:py-12'
+                        className='scroll-gutter-both relative flex flex-col overflow-y-auto px-4 py-6 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] [--scrollbar-thumb:--color-bars-post] sm:px-6 sm:py-6 xl:px-20 xl:py-12'
                         // onBlur={() => store_activePost(null)} // TODO
                     >
                         {/* (Sub-)Header, date, "Built with" */}
@@ -117,7 +117,7 @@ const Content = () => {
                                                     <img src={`/${(showCase as Post_ShowCase_Image).imgUrl}`} className='h-full object-cover' />
                                                 )}
                                                 {showCase.caption && (
-                                                    <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] duration-[--image-transition-duration] mask-edges-x-2/5 group-hover:bg-neutral-500 group-hover:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:clip-inset-[--image-outline-width] sm:clip-inset-t-0 sm:group-hover:max-h-full'>
+                                                    <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] mask-edges-x-2/5 group-hover:bg-neutral-500 group-hover:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:group-hover:max-h-full'>
                                                         {showCase.caption}
                                                     </div>
                                                 )}
@@ -130,7 +130,7 @@ const Content = () => {
                                                 showCase ? 'flex-1' : 'mr-auto sm:basis-4/5',
                                                 isBlockIndexEven ? 'order-1' : 'order-2',
                                                 idx === 0
-                                                    ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-theme-secondary-400 first-line:italic'
+                                                    ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-[--theme-secondary-400] first-line:italic'
                                                     : '',
                                             )}
                                         >

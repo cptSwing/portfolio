@@ -42,7 +42,7 @@ const Socials = () => {
             <div
                 className={classNames(
                     '[--delay:150ms]',
-                    'group relative mb-1 flex h-auto w-10 transform-gpu select-none flex-col items-center justify-start gap-0 overflow-hidden rounded-full bg-transparent p-1 outline outline-[--color-bars-post] transition-[transform,column-gap,opacity]',
+                    'group relative mb-1 flex h-auto w-10 transform-gpu select-none flex-col items-center justify-start gap-0 overflow-hidden rounded-full bg-transparent p-1 outline outline-[--color-bars-post] transition-[clip-path,transform,column-gap,opacity]',
                     'sm:h-10 sm:w-auto sm:translate-y-full sm:flex-row sm:items-center sm:bg-[--color-bars-no-post] sm:opacity-0 sm:outline-0 sm:clip-inset-b-full',
                     'hover:gap-x-1.5 hover:!delay-0 sm:group-hover/app:translate-y-1/3 sm:group-hover/app:opacity-100 sm:group-hover/app:clip-inset-b-1/3 sm:hover:!translate-y-0 sm:hover:!clip-inset-b-0',
                     openMobileMenu
@@ -59,7 +59,7 @@ const Socials = () => {
             >
                 <UserIcon
                     className={classNames(
-                        'z-0 aspect-square w-auto cursor-pointer stroke-[--color-bars-post] transition-colors sm:h-full sm:group-hover:stroke-neutral-700 sm:hover:!stroke-[--color-bars-post]',
+                        'z-0 aspect-square w-auto cursor-pointer stroke-[--color-bars-post] transition-colors sm:h-full sm:group-hover:stroke-neutral-700 sm:hover:!stroke-[--theme-primary-400]',
                         openMobileMenu ? '!block !size-12 !p-1' : '',
                     )}
                 />
@@ -73,7 +73,7 @@ const Socials = () => {
 
                 <Link
                     className={classNames(
-                        'hidden aspect-square w-0 cursor-pointer rounded-sm bg-neutral-600 p-0 transition-[colors,width,padding] delay-[--delay] group-hover:w-[1.75rem] group-hover:p-1 sm:block sm:hover:!bg-[--color-bars-post]',
+                        'hidden aspect-square w-0 cursor-pointer rounded-sm bg-neutral-600 p-0 transition-[colors,width,padding] delay-[--delay] group-hover:w-[1.75rem] group-hover:p-1 sm:block sm:hover:!bg-[--theme-primary-400]',
                         openMobileMenu ? '!block !size-12 !p-2' : '',
                     )}
                     to='https://linkedin.com/cptSwing'
@@ -83,7 +83,7 @@ const Socials = () => {
 
                 <Link
                     className={classNames(
-                        'hidden aspect-square w-0 cursor-pointer rounded-sm bg-neutral-600 p-0 transition-[colors,width,padding] delay-[--delay] group-hover:w-[1.75rem] group-hover:p-1 sm:block sm:hover:!bg-[--color-bars-post]',
+                        'hidden aspect-square w-0 cursor-pointer rounded-sm bg-neutral-600 p-0 transition-[colors,width,padding] delay-[--delay] group-hover:w-[1.75rem] group-hover:p-1 sm:block sm:hover:!bg-[--theme-primary-400]',
                         openMobileMenu ? '!block !size-12 !p-2' : '',
                     )}
                     to='https://github.com/cptSwing'
@@ -93,7 +93,7 @@ const Socials = () => {
 
                 <Link
                     className={classNames(
-                        'hidden aspect-square w-0 cursor-pointer rounded-sm bg-neutral-600 p-0 transition-[colors,width,padding] delay-[--delay] group-hover:w-[1.75rem] group-hover:p-1 sm:block sm:hover:!bg-[--color-bars-post]',
+                        'hidden aspect-square w-0 cursor-pointer rounded-sm bg-neutral-600 p-0 transition-[colors,width,padding] delay-[--delay] group-hover:w-[1.75rem] group-hover:p-1 sm:block sm:hover:!bg-[--theme-primary-400]',
                         openMobileMenu ? '!block !size-12 !p-2' : '',
                     )}
                     to='mailto:jens@jbrandenburg.de'
@@ -102,7 +102,7 @@ const Socials = () => {
                 </Link>
 
                 <div className='peer hidden aspect-square w-0 cursor-pointer p-0 transition-[colors,width,padding] delay-[calc(var(--delay)/2)] group-hover:w-6 group-hover:delay-500 sm:block'>
-                    <ChevronDoubleRightIcon className='aspect-square h-full stroke-neutral-600 stroke-[length:2px] sm:hover:!stroke-[--color-bars-post]' />
+                    <ChevronDoubleRightIcon className='aspect-square h-full stroke-neutral-600 stroke-[length:2px] sm:hover:!stroke-[--theme-primary-400]' />
                 </div>
 
                 <div
@@ -112,28 +112,28 @@ const Socials = () => {
                         openMobileMenu ? '!flex' : '',
                     )}
                 >
-                    {openMobileMenu && <div className='mb-1 mt-4 text-white'>3D Portals:</div>}
+                    {openMobileMenu && <div className='mb-1 mt-4 text-[--theme-text]'>3D Portals:</div>}
                     <Link
                         to='https://www.cgtrader.com'
-                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:ml-1 sm:px-1 sm:hover:text-[--color-bars-post]'
+                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:ml-1 sm:px-1 sm:hover:text-[--theme-primary-400]'
                     >
                         CGTrader
                     </Link>
                     <Link
                         to='https://www.turbosquid.com'
-                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:px-1 sm:hover:text-[--color-bars-post]'
+                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:px-1 sm:hover:text-[--theme-primary-400]'
                     >
                         TurboSquid
                     </Link>
                     <Link
                         to='https://www.printables.com'
-                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:px-1 sm:hover:text-[--color-bars-post]'
+                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:px-1 sm:hover:text-[--theme-primary-400]'
                     >
                         Printables
                     </Link>
                     <Link
                         to='https://www.thingiverse.com'
-                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:px-1 sm:hover:text-[--color-bars-post]'
+                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:px-1 sm:hover:text-[--theme-primary-400]'
                     >
                         Thingiverse
                     </Link>
@@ -142,10 +142,9 @@ const Socials = () => {
 
             <div
                 className={classNames(
-                    '[--delay:150ms]',
-                    'group relative mb-1 flex aspect-square h-auto w-8 transform-gpu select-none flex-col items-center justify-start gap-0 overflow-hidden rounded-full bg-transparent p-1 outline outline-[--color-bars-post] transition-[transform,column-gap,opacity]',
+                    'group relative mb-1 flex aspect-square h-auto w-8 transform-gpu select-none flex-col items-center justify-start gap-0 overflow-hidden rounded-full bg-transparent p-1 outline outline-[--theme-primary-400] transition-[clip-path,transform,column-gap,opacity]',
                     'sm:h-8 sm:w-auto sm:translate-y-full sm:flex-row sm:items-center sm:bg-[--color-bars-no-post] sm:opacity-0 sm:outline-0 sm:clip-inset-b-full',
-                    'hover:gap-x-1.5 hover:!delay-0 sm:group-hover/app:translate-y-1/3 sm:group-hover/app:opacity-100 sm:group-hover/app:clip-inset-b-1/3 sm:hover:!translate-y-0 sm:hover:!clip-inset-b-0',
+                    'hover:gap-x-1.5 hover:!delay-0 sm:group-hover/app:translate-y-1/3 sm:group-hover/app:opacity-100 sm:group-hover/app:delay-75 sm:group-hover/app:clip-inset-b-1/3 sm:hover:!translate-y-0 sm:hover:!clip-inset-b-0',
                     openMobileMenu
                         ? '!w-auto !items-start gap-y-2 !rounded-none opacity-100 outline-0'
                         : postId

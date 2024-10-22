@@ -7,7 +7,7 @@
 
 @layer base {
     :root {
-        @apply [--bg-color:--theme-bg-base] [--color-bars-no-post:--theme-secondary-400] [--color-bars-post:--theme-primary-500] [--color-primary-active-cat-bg:--theme-primary-300] [--color-primary-content-bg:--theme-primary-50] [--color-primary-inactive-cat-bg:--theme-primary-600] [--color-secondary-active-cat:--theme-secondary-400] [--color-secondary-inactive-cat:--theme-secondary-600];
+        @apply [--bg-color:--theme-bg-base] [--color-bars-no-post:--theme-secondary-400] [--color-bars-post:--theme-primary-500] [--color-primary-active-cat-bg:--theme-primary-300] [--color-primary-content-bg:--theme-primary-100] [--color-primary-inactive-cat-bg:--theme-primary-600] [--color-secondary-active-cat:--theme-secondary-400] [--color-secondary-inactive-cat:--theme-secondary-600];
         @apply bg-[--bg-color];
     }
 
@@ -127,14 +127,17 @@
     .text-stroke-outer:before {
         content: '';
         position: absolute;
+        display: block;
+        left: 0;
+        top: 0;
         -webkit-text-stroke-width: 16px;
-        -webkit-text-stroke-color: theme(colors.theme.primary.300);
+        -webkit-text-stroke-color: theme(colors.red.300);
         z-index: -1;
     }
 }
 
 #root {
-    @apply overflow-hidden text-left font-barlow text-white scrollbar-track-transparent scrollbar-thumb-neutral-50;
+    @apply overflow-hidden text-left font-barlow text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50;
 }
 
 /* 
