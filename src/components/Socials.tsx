@@ -19,7 +19,7 @@ const Socials = () => {
         <nav
             ref={clickRef}
             className={classNames(
-                'pointer-events-auto absolute left-0 top-0 z-50 flex w-full cursor-pointer items-end justify-start gap-1 pl-0.5 pt-2 sm:bottom-0 sm:top-auto sm:p-0',
+                'pointer-events-none absolute left-0 top-0 z-50 flex w-full items-end justify-start gap-1 pl-0.5 pt-2 sm:bottom-0 sm:top-auto sm:p-0',
                 openMobileMenu ? '!fixed h-screen !w-fit flex-col !items-start bg-gray-500/95' : postId ? 'bottom-0 top-auto !w-fit pt-0' : '',
             )}
             onClick={() => {
@@ -42,11 +42,11 @@ const Socials = () => {
             <div
                 className={classNames(
                     '[--delay:150ms]',
-                    'group relative mb-1 flex h-auto w-10 transform-gpu select-none flex-col items-center justify-start gap-0 overflow-hidden rounded-full bg-transparent p-1 outline outline-[--color-bars-post] transition-[clip-path,transform,column-gap,opacity]',
+                    'group pointer-events-auto relative mb-1 flex h-10 w-10 transform-gpu cursor-pointer select-none flex-col items-center justify-start gap-0 overflow-hidden rounded-full bg-transparent p-1 outline outline-[--color-bars-post] transition-[clip-path,transform,column-gap,opacity]',
                     'sm:h-10 sm:w-auto sm:translate-y-full sm:flex-row sm:items-center sm:bg-[--color-bars-no-post] sm:opacity-0 sm:outline-0 sm:clip-inset-b-full',
                     'hover:gap-x-1.5 hover:!delay-0 sm:group-hover/app:translate-y-1/3 sm:group-hover/app:opacity-100 sm:group-hover/app:clip-inset-b-1/3 sm:hover:!translate-y-0 sm:hover:!clip-inset-b-0',
                     openMobileMenu
-                        ? '!w-auto !items-start gap-y-2 !rounded-none opacity-100 outline-0'
+                        ? '!h-auto !w-auto !items-start gap-y-2 !rounded-none opacity-100 outline-0'
                         : postId
                           ? '!-mb-0.5 !rounded-none !rounded-tr-md opacity-100 outline-2 sm:!mb-0.5 sm:!rounded-full'
                           : 'opacity-50 outline-2',
@@ -64,7 +64,7 @@ const Socials = () => {
                     )}
                 />
                 {!openMobileMenu && (
-                    <div className='-z-10 -mt-[100%] flex h-6 w-full flex-col items-center justify-between px-px py-1 opacity-50 sm:hidden'>
+                    <div className='-z-10 -mt-[100%] flex size-full flex-col items-center justify-between px-px py-2 opacity-50 sm:hidden'>
                         <div className='h-0.5 w-full bg-[--color-bars-no-post]' />
                         <div className='h-0.5 w-full bg-[--color-bars-no-post]' />
                         <div className='h-0.5 w-full bg-[--color-bars-no-post]' />
@@ -142,14 +142,10 @@ const Socials = () => {
 
             <div
                 className={classNames(
-                    'group relative mb-1 flex aspect-square h-auto w-8 transform-gpu select-none flex-col items-center justify-start gap-0 overflow-hidden rounded-full bg-transparent p-1 outline outline-[--theme-primary-400] transition-[clip-path,transform,column-gap,opacity]',
+                    'group pointer-events-auto relative mb-1 hidden aspect-square h-auto transform-gpu cursor-pointer select-none flex-col items-center justify-start gap-0 overflow-hidden rounded-full bg-transparent p-1 outline outline-[--theme-primary-400] transition-[clip-path,transform,column-gap,opacity] sm:flex',
                     'sm:h-8 sm:w-auto sm:translate-y-full sm:flex-row sm:items-center sm:bg-[--color-bars-no-post] sm:opacity-0 sm:outline-0 sm:clip-inset-b-full',
                     'hover:gap-x-1.5 hover:!delay-0 sm:group-hover/app:translate-y-1/3 sm:group-hover/app:opacity-100 sm:group-hover/app:delay-75 sm:group-hover/app:clip-inset-b-1/3 sm:hover:!translate-y-0 sm:hover:!clip-inset-b-0',
-                    openMobileMenu
-                        ? '!w-auto !items-start gap-y-2 !rounded-none opacity-100 outline-0'
-                        : postId
-                          ? '!-mb-0.5 !rounded-none !rounded-tr-md opacity-100 outline-2 sm:!mb-0.5 sm:!rounded-full'
-                          : 'opacity-50 outline-2',
+                    openMobileMenu ? '!flex w-12 !items-start gap-y-2 opacity-100 outline-0' : '',
                 )}
             >
                 <Settings />
