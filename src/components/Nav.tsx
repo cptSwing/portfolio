@@ -90,33 +90,34 @@ const CategoryCard: FC<{
             <div
                 className={classNames(
                     '[--category-padding:theme(spacing.[1.5])] sm:[--category-padding:theme(spacing.2)]',
-                    'relative flex flex-col items-start justify-start overflow-hidden shadow-theme-primary-950',
+                    'shadow-theme-primary-950 relative flex flex-col items-start justify-start overflow-hidden',
                     isThisCategoryOpen ? 'size-full drop-shadow-lg' : '',
                 )}
             >
                 {/* Tab: */}
                 <div
                     className={classNames(
-                        '[--tab-anim-delay:300ms]',
+                        '[--tab-anim-delay:200ms]',
                         'px-[calc(var(--category-padding)*2)] py-[--category-padding] transition-[filter,background-color,margin-left,transform]',
                         isThisCategoryOpen
                             ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
-                              : 'bg-transparent after:absolute after:left-0 after:top-0 after:h-full after:w-full after:outline after:outline-offset-[-6px] after:outline-[--color-bars-no-post] after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-x-full group-hover/category:bg-[--color-primary-content-bg] group-hover/category:duration-[var(--tab-anim-delay),150ms] group-hover/category:after:clip-inset-x-0 sm:group-hover/category:drop-shadow-lg sm:group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms]',
+                              : 'bg-transparent before:absolute before:left-1/2 before:top-0 before:-z-10 before:-mt-1 before:h-full before:w-full before:-translate-x-1/2 before:bg-[--color-secondary-active-cat] before:opacity-0 before:transition-[clip-path] before:clip-inset-t-[calc(100%-theme(spacing.1))] before:clip-inset-x-px after:absolute after:left-0 after:top-0 after:size-full after:drop-shadow-lg after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-t-[110%] group-hover/category:drop-shadow-lg group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-hover/category:duration-[var(--tab-anim-delay),150ms] group-hover/category:before:opacity-100 group-hover/category:before:clip-inset-px group-hover/category:after:bg-[--color-primary-content-bg] group-hover/category:after:clip-inset-t-[-10%]',
                     )}
+                    // before:absolute before:size-full before:bg-[--color-primary-content-bg]
                     style={{
                         ...paddingStyle_Memo,
                     }}
                 >
                     <h1
                         className={classNames(
-                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-300 before:size-full before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-950] before:[-webkit-text-stroke-width:6px]',
+                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-[--tab-anim-delay] before:size-full before:transition-[-webkit-text-stroke-color] before:duration-[--tab-anim-delay] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-900] before:[-webkit-text-stroke-width:6px]',
                             isThisCategoryOpen
                                 ? 'text-4xl text-[--color-secondary-active-cat] sm:text-5xl'
                                 : catId
-                                  ? 'scale-90 text-[--color-secondary-inactive-cat] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75'
-                                  : 'text-[--color-bars-no-post] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!drop-shadow-none group-hover/category:!duration-75',
+                                  ? 'scale-90 text-[--color-secondary-inactive-cat] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75 group-hover/category:before:[-webkit-text-stroke-color:--theme-secondary-900]'
+                                  : 'text-[--color-secondary-active-cat] group-hover/category:!duration-75 group-hover/category:before:[-webkit-text-stroke-color:--theme-secondary-800]',
                         )}
                         data-title={categoryTitle}
                     >
@@ -159,8 +160,8 @@ const CategoryCard: FC<{
                 <BackgroundSvg
                     className={classNames(
                         isThisCategoryOpen
-                            ? 'fill-[--theme-accent-200] stroke-[--theme-accent-400] opacity-30'
-                            : 'fill-neutral-300 stroke-neutral-400 opacity-15 group-hover/category:fill-[--theme-accent-200] group-hover/category:stroke-[--theme-accent-400] group-hover/category:opacity-30',
+                            ? 'fill-[--theme-accent-200] stroke-[--theme-accent-400] opacity-20'
+                            : 'fill-neutral-300 stroke-neutral-400 opacity-15 group-hover/category:fill-[--theme-accent-200] group-hover/category:stroke-[--theme-accent-400]',
                     )}
                 />
             </div>
@@ -199,7 +200,7 @@ export const MenuOpenedPost: FC<{
                         rel='noreferrer'
                     >
                         <CodeBracketSquareIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800]' />
-                        <span className='absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight text-theme-primary-50 transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
+                        <span className='text-theme-primary-50 absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
                             {codeLink.alt}
                         </span>
                     </a>
