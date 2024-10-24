@@ -25,12 +25,8 @@ const LogoHeader = () => {
             id='logo'
             ref={refCallback}
             className={classNames(
-                'pointer-events-none relative -mb-px mt-2 flex select-none flex-col items-end justify-end transition-[margin,width,height,color] duration-[--header-transition-duration]',
-                catId
-                    ? postId
-                        ? '!mb-0 !h-8 w-[--post-width] !flex-row !justify-start sm:!h-16'
-                        : 'w-[--checked-width]'
-                    : 'w-[--unchecked-width] !cursor-default',
+                'pointer-events-none relative -mb-px mt-2 flex h-[--header-height] select-none flex-col items-end justify-end transition-[margin,width,height,color] duration-[--header-transition-duration]',
+                catId ? (postId ? '!mb-0 w-[--post-width] !flex-row !justify-start' : 'w-[--checked-width]') : 'w-[--unchecked-width] !cursor-default',
             )}
         >
             <>
@@ -39,7 +35,7 @@ const LogoHeader = () => {
 
             <div
                 className={classNames(
-                    'text-stroke-outer relative z-10 font-protest-strike text-theme-accent-300 [font-size:4rem]',
+                    'text-stroke-outer text-theme-accent-300 relative z-10 font-protest-strike [font-size:4rem]',
                     'before:transition-[-webkit-text-stroke-color,-webkit-text-stroke-width,opacity] before:content-[attr(data-title)]',
                     postId
                         ? 'whitespace-nowrap text-left leading-none text-transparent opacity-25 [-webkit-text-stroke-color:--color-bars-post] [-webkit-text-stroke-width:1px] before:!content-[]'

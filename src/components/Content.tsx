@@ -55,7 +55,7 @@ const Content = () => {
     );
 
     return (
-        <main className='z-0 h-[90dvh] w-full'>
+        <main className='z-0 h-[calc(95vh-var(--header-height))] w-full'>
             <div className='relative mx-auto flex h-full w-[--post-width] flex-col bg-[--theme-bg-lighter]'>
                 {/* Floating Title: */}
                 <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-[--post-width] items-end justify-center text-center'>
@@ -67,7 +67,7 @@ const Content = () => {
 
                 {textBlocks ? (
                     <div
-                        className='scroll-gutter-both relative flex flex-col overflow-y-auto px-4 py-6 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] [--scrollbar-thumb:--color-bars-post] sm:px-6 sm:py-6 xl:px-20 xl:py-12'
+                        className='scroll-gutter-both relative flex flex-col overflow-y-auto px-4 py-6 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] [--scrollbar-thumb:--color-bars-post] sm:px-6 sm:py-6 xl:px-16 xl:py-12'
                         // onBlur={() => store_activePost(null)} // TODO
                     >
                         {/* (Sub-)Header, date, "Built with" */}
@@ -182,7 +182,7 @@ const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
                     '[--tools-transition-delay:300ms] [--tools-transition-duration:400ms]'
                 }
             >
-                <div className='mb-1.5 w-full max-w-12 text-nowrap border-b border-b-theme-primary-50 pb-px text-right text-xs lowercase italic leading-none text-theme-primary-50 transition-[max-width] delay-[calc(2*var(--tools-transition-delay))] duration-[--tools-transition-duration] group-hover/menu:max-w-full group-hover/menu:delay-0'>
+                <div className='border-b-theme-primary-50 text-theme-primary-50 mb-1.5 w-full max-w-12 text-nowrap border-b pb-px text-right text-xs lowercase italic leading-none transition-[max-width] delay-[calc(2*var(--tools-transition-delay))] duration-[--tools-transition-duration] group-hover/menu:max-w-full group-hover/menu:delay-0'>
                     Built with:
                 </div>
                 <div
@@ -194,7 +194,7 @@ const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
                         return (
                             <a
                                 key={tool + idx}
-                                className='group/link inline-block translate-x-[--tools-translate-x] transform-gpu overflow-hidden whitespace-nowrap rounded-sm border border-[--border-color] border-t-transparent px-2 py-1 text-center text-2xs leading-none text-[--link-all-text-color] transition-[transform,border-top-color,clip-path] delay-[var(--tools-transition-delay),0ms] duration-[--tools-transition-duration] clip-inset-0 clip-inset-t-px [--border-color:theme(colors.theme.secondary.50)] [--link-all-text-color:theme(colors.theme.primary.50)] first:border-t-[--border-color] first:clip-inset-0 visited:text-[--link-all-text-color] group-hover/menu:translate-x-0 group-hover/menu:border-t-[--border-color] group-hover/menu:delay-[var(--tools-transition-delay),calc(2*var(--tools-transition-delay))] hover:bg-[--theme-secondary-500] hover:no-underline'
+                                className='group/link [--border-color:--theme-secondary-50)] inline-block translate-x-[--tools-translate-x] transform-gpu overflow-hidden whitespace-nowrap rounded-sm border border-[--border-color] border-t-transparent px-2 py-1 text-center text-2xs leading-none text-[--link-all-text-color] transition-[transform,border-top-color,clip-path] delay-[var(--tools-transition-delay),0ms] duration-[--tools-transition-duration] clip-inset-0 clip-inset-t-px [--link-all-text-color:theme(colors.theme.primary.50)] first:border-t-[--border-color] first:clip-inset-0 visited:text-[--link-all-text-color] group-hover/menu:translate-x-0 group-hover/menu:border-t-[--border-color] group-hover/menu:delay-[var(--tools-transition-delay),calc(2*var(--tools-transition-delay))] hover:bg-[--theme-secondary-500] hover:no-underline'
                                 href={ToolsUrls[tool]}
                                 style={{ '--tools-translate-x': `${idx + 1 * 4}px` } as CSSProperties}
                             >

@@ -48,7 +48,7 @@ export const SinglePostCard: FC<{
             animationDelay: animDelayMs * index,
             animationFillMode: 'backwards',
         },
-        startDelay: 500,
+        startDelay: animDelayMs * index,
         hiddenAtStart: true,
     });
 

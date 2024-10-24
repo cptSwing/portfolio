@@ -137,7 +137,7 @@
 }
 
 #root {
-    @apply overflow-hidden text-left font-barlow text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50;
+    @apply w-full overflow-hidden text-left font-barlow text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50;
 }
 
 /* 

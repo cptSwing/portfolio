@@ -20,7 +20,7 @@ const Nav = () => {
         <nav
             className={classNames(
                 'mx-auto grid transition-[width,height,grid-template-rows,row-gap] duration-500',
-                catId ? 'h-[80dvh] w-[--checked-width] gap-y-px' : 'h-[50dvh] w-[--unchecked-width] gap-y-1',
+                catId ? 'h-[80vh] min-h-96 w-[--checked-width] gap-y-px' : 'h-[50vh] min-h-96 w-[--unchecked-width] gap-y-1',
                 postId ? 'absolute left-0 right-0 -z-10' : 'z-0 block',
             )}
             style={{
@@ -103,9 +103,10 @@ const CategoryCard: FC<{
                             ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
-                              : 'bg-transparent before:absolute before:left-1/2 before:top-0 before:-z-10 before:-mt-1 before:h-full before:w-full before:-translate-x-1/2 before:bg-[--theme-accent-800] before:opacity-0 before:transition-[clip-path] before:clip-inset-t-[calc(100%-theme(spacing.1))] before:clip-inset-x-px after:absolute after:left-0 after:top-0 after:size-full after:drop-shadow-lg after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-t-[110%] group-hover/category:drop-shadow-lg group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-hover/category:duration-[var(--tab-anim-delay),150ms] group-hover/category:before:opacity-50 group-hover/category:before:clip-inset-px group-hover/category:after:bg-[--color-primary-content-bg] group-hover/category:after:clip-inset-t-[-10%]',
+                              : 'bg-transparent group-hover/category:drop-shadow-lg group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-hover/category:duration-[var(--tab-anim-delay),150ms]' +
+                                ' before:absolute before:left-1/2 before:top-0 before:-z-10 before:size-full before:-translate-x-1/2 before:bg-[--theme-accent-800] before:opacity-0 before:transition-[clip-path] before:clip-inset-t-[calc(100%-theme(spacing.1))] before:clip-inset-x-px group-hover/category:before:opacity-50 group-hover/category:before:clip-inset-px' +
+                                ' after:absolute after:left-0 after:top-0 after:size-full after:drop-shadow-lg after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-t-[110%] group-hover/category:after:bg-[--color-primary-content-bg] group-hover/category:after:clip-inset-t-[-10%]',
                     )}
-                    // before:absolute before:size-full before:bg-[--color-primary-content-bg]
                     style={{
                         ...paddingStyle_Memo,
                     }}
