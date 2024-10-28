@@ -264,7 +264,7 @@
         "categoryTitle": "3D",
         "categoryBackgroundColor": "rgb(128,200,225)",
         "categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
-        "categoryBlurb": "Game Art on display -\nModels, Shaders, Particles, Post-Processing, Mobile",
+        "categoryBlurb": "Game Art on display - 3D Models, Shaders, Particles, Mobile optimization, Post-Processing",
         "posts": [
             {
                 "id": 5,
@@ -758,7 +758,7 @@
         "id": 3,
         "categoryTitle": "Log",
         "categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
-        "categoryBlurb": "What's been happening lately?",
+        "categoryBlurb": "Any news?",
         "posts": [
             {
                 "id": 15,

@@ -164,7 +164,7 @@ const CategoryCard: FC<{
             </div>
 
             {/* Background Svg: */}
-            <div className='absolute left-0 top-0 -z-10 size-full object-cover mask-edges-10'>
+            <div className='absolute left-0 top-0 -z-10 size-full object-cover mask-edges-8'>
                 <BackgroundSvg
                     className={classNames(
                         isThisCategoryOpen
