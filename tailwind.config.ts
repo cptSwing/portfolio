@@ -1,66 +1,7 @@
-import colors from 'tailwindcss/colors';
 import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
 import tailwindScrollbar from 'tailwind-scrollbar';
 import tailwindClipInset from './src/lib/tailwindClipInset';
 import tailwindMaskEdges from './src/lib/tailwindMaskEdges';
-
-/* https://www.palettte.app/ */
-
-const bloodOrange = {
-    DEFAULT: '#CC3723',
-    950: '#3A0801', // dark text, for example
-    900: '#661004',
-    800: '#8A1707',
-    700: '#A6200D',
-    600: '#BA2A17',
-    500: '#CC3723', // base
-    400: '#DA4834',
-    300: '#E65E4B',
-    200: '#EF7767',
-    100: '#F49B8F',
-    50: '#F8C1B9', // message background, for example
-};
-
-const vibrantTurquoise = {
-    DEFAULT: '#2AA6B6',
-    950: '#012B31',
-    900: '#034851',
-    800: '#08626E',
-    700: '#0F7A88',
-    600: '#1B91A1',
-    500: '#2AA6B6',
-    400: '#3DBACA',
-    300: '#56CBDB',
-    200: '#71DAE8',
-    100: '#92E8F4',
-    50: '#B7F2FA',
-};
-
-const amberish = {
-    DEFAULT: '#FED13F',
-    950: '#564200',
-    900: '#927103',
-    800: '#BD930A',
-    700: '#DBAE17',
-    600: '#F2C32A',
-    500: '#FED13F',
-    400: '#FFD754',
-    300: '#FFDC6A',
-    200: '#FFE386',
-    100: '#FEEAA6',
-    50: '#FDF2CE',
-};
-
-const themePalette = {
-    primary: { ...amberish },
-    secondary: { ...vibrantTurquoise },
-    accent: { ...bloodOrange },
-    bg: {
-        lighter: colors.neutral[700],
-        base: colors.neutral[900],
-        darker: colors.neutral[950],
-    },
-};
 
 export default {
     future: {
@@ -120,5 +61,13 @@ export default {
             },
         },
     },
-    plugins: [tailwindScrollbar, tailwindBreakpointsInspector, tailwindClipInset, tailwindMaskEdges],
+    plugins: [
+        tailwindScrollbar,
+        tailwindBreakpointsInspector,
+        tailwindClipInset,
+        tailwindMaskEdges,
+        // plugin(function ({ addVariant }) {
+        //     addVariant('hover', ['@media (hover: hover) { &:hover }', '@media (hover: none) { &:active }']);
+        // }),
+    ],
 };

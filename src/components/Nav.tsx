@@ -19,8 +19,10 @@ const Nav = () => {
     return (
         <nav
             className={classNames(
-                'mx-auto grid transition-[width,height,grid-template-rows,row-gap] duration-500',
-                catId ? 'h-[80vh] min-h-96 w-[--checked-width] gap-y-px' : 'h-[50vh] min-h-96 w-[--unchecked-width] gap-y-1',
+                'mx-auto grid transition-[width,height,grid-template-rows,row-gap] duration-500 clip-inset-x-[-5%] clip-inset-y-0',
+                catId
+                    ? 'h-[calc(96vh-var(--header-height)-var(--bar-height))] min-h-96 w-[--checked-width] gap-y-px sm:h-[80vh]'
+                    : 'h-[50vh] min-h-96 w-[--unchecked-width] gap-y-1',
                 postId ? 'absolute left-0 right-0 -z-10' : 'z-0 block',
             )}
             style={{
@@ -103,9 +105,9 @@ const CategoryCard: FC<{
                             ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
-                              : 'bg-transparent group-hover/category:drop-shadow-lg group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-hover/category:duration-[var(--tab-anim-delay),150ms]' +
-                                ' before:absolute before:left-1/2 before:top-0 before:-z-10 before:size-full before:-translate-x-1/2 before:bg-[--theme-accent-800] before:opacity-0 before:transition-[clip-path] before:clip-inset-t-[calc(100%-theme(spacing.1))] before:clip-inset-x-px group-hover/category:before:opacity-50 group-hover/category:before:clip-inset-px' +
-                                ' after:absolute after:left-0 after:top-0 after:size-full after:drop-shadow-lg after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-t-[110%] group-hover/category:after:bg-[--color-primary-content-bg] group-hover/category:after:clip-inset-t-[-10%]',
+                              : 'bg-transparent group-hover/category:drop-shadow-lg group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-hover/category:duration-[var(--tab-anim-delay),150ms] group-active/category:drop-shadow-lg group-active/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-active/category:duration-[var(--tab-anim-delay),150ms]' +
+                                ' before:absolute before:left-1/2 before:top-0 before:-z-10 before:size-full before:-translate-x-1/2 before:bg-[--theme-accent-800] before:opacity-0 before:transition-[clip-path] before:clip-inset-t-[calc(100%-theme(spacing.1))] before:clip-inset-x-px group-hover/category:before:opacity-50 group-hover/category:before:clip-inset-px group-active/category:before:opacity-50 group-active/category:before:clip-inset-px' +
+                                ' after:absolute after:left-0 after:top-0 after:size-full after:drop-shadow-lg after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-t-[110%] group-hover/category:after:bg-[--color-primary-content-bg] group-hover/category:after:clip-inset-t-[-10%] group-active/category:after:bg-[--color-primary-content-bg] group-active/category:after:clip-inset-t-[-10%]',
                     )}
                     style={{
                         ...paddingStyle_Memo,
@@ -113,12 +115,12 @@ const CategoryCard: FC<{
                 >
                     <h1
                         className={classNames(
-                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-5xl leading-none transition-[transform,color] duration-[--tab-anim-delay] before:size-full before:transition-[-webkit-text-stroke-color] before:duration-[--tab-anim-delay] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-900] before:[-webkit-text-stroke-width:6px]',
+                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-4xl leading-none transition-[transform,color] duration-[--tab-anim-delay] before:size-full before:transition-[-webkit-text-stroke-color] before:duration-[--tab-anim-delay] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-900] before:[-webkit-text-stroke-width:5px] sm:text-5xl sm:before:[-webkit-text-stroke-width:6px]',
                             isThisCategoryOpen
                                 ? 'text-4xl text-[--color-secondary-active-cat] sm:text-5xl'
                                 : catId
-                                  ? 'scale-90 text-[--color-secondary-inactive-cat] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75 group-hover/category:before:[-webkit-text-stroke-color:--theme-secondary-900]'
-                                  : 'text-[--color-secondary-active-cat] group-hover/category:!duration-75 group-hover/category:before:[-webkit-text-stroke-color:--theme-secondary-800]',
+                                  ? 'scale-90 text-[--color-secondary-inactive-cat] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75 group-hover/category:before:[-webkit-text-stroke-color:--theme-secondary-900] group-active/category:text-[--color-secondary-active-cat] group-active/category:!duration-75 group-active/category:before:[-webkit-text-stroke-color:--theme-secondary-900]'
+                                  : 'text-[--color-secondary-active-cat] group-hover/category:!duration-75 group-hover/category:before:[-webkit-text-stroke-color:--theme-secondary-800] group-active/category:!duration-75 group-active/category:before:[-webkit-text-stroke-color:--theme-secondary-800]',
                         )}
                         data-title={categoryTitle}
                     >
@@ -184,10 +186,10 @@ export const MenuOpenedPost: FC<{
             {hasImages && (
                 <button
                     type='button'
-                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Gallery"] sm:last:rounded-tr'
+                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Gallery"] active:before:translate-y-0 active:before:content-["Gallery"] sm:last:rounded-tr'
                     onClick={() => setLightboxTo(0)}
                 >
-                    <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800]' />
+                    <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
                 </button>
             )}
 
@@ -200,7 +202,7 @@ export const MenuOpenedPost: FC<{
                         target='_blank'
                         rel='noreferrer'
                     >
-                        <CodeBracketSquareIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800]' />
+                        <CodeBracketSquareIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
                         <span className='text-theme-primary-50 absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
                             {codeLink.alt}
                         </span>

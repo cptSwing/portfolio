@@ -35,11 +35,11 @@ const LogoHeader = () => {
 
             <div
                 className={classNames(
-                    'text-stroke-outer text-theme-accent-300 relative z-10 font-protest-strike [font-size:4rem]',
+                    'text-stroke-outer text-theme-accent-300 relative z-10 font-protest-strike sm:[font-size:4rem]',
                     'before:transition-[-webkit-text-stroke-color,-webkit-text-stroke-width,opacity] before:content-[attr(data-title)]',
                     postId
-                        ? 'whitespace-nowrap text-left leading-none text-transparent opacity-25 [-webkit-text-stroke-color:--color-bars-post] [-webkit-text-stroke-width:1px] before:!content-[]'
-                        : 'whitespace-pre text-right leading-[0.85] text-[--theme-accent-300] before:absolute before:right-0 before:-z-10 before:whitespace-pre before:[-webkit-text-stroke-color:--bg-color] before:[-webkit-text-stroke-width:6px]',
+                        ? 'hidden whitespace-nowrap text-left leading-none text-transparent opacity-25 [-webkit-text-stroke-color:--color-bars-post] [-webkit-text-stroke-width:1px] before:!content-[] sm:block'
+                        : 'whitespace-pre text-right leading-[0.85] text-[--theme-accent-300] [font-size:3rem] before:absolute before:right-0 before:-z-10 before:whitespace-pre before:[-webkit-text-stroke-color:--bg-color] before:[-webkit-text-stroke-width:5px]',
                 )}
                 data-title={postId ? logoText : logoTextNewLine}
             >

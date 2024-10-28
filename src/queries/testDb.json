@@ -1,938 +1,908 @@
 {
-	"Code": {
-		"id": 0,
-		"categoryTitle": "Code",
-		"categoryBackgroundColor": "rgb(32,80,48)",
-		"categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
-		"categoryBlurb": "Webdev, App dev, Tech Art",
-		"posts": [
-			{
-				"id": 0,
-				"title": "Design Your Ring",
-				"titleCardBg": "images/hd_dyr/hd_dyr_card.jpg",
-				"toolsUsed": [
-					"react",
-					"react-router",
-					"react-three-fiber",
-					"react-three-drei",
-					"react-postprocessing",
-					"three-bvh-csg",
-					"tailwindcss"
-				],
-				"subTitle": "Customizable Wedding-Rings in 3D",
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/hd_dyr/1.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/hd_dyr/2.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/hd_dyr/3.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/hd_dyr/4.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/hd_dyr/5.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/hd_dyr/6.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/hd_dyr/7.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/hd_dyr/8.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "Sub-Headline Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			},
-			{
-				"id": 1,
-				"title": "Mediaverse: Fader360",
-				"subTitle": "Open-source 360° Media Authoring Tool",
-				"titleCardBg": "images/fader/mediaverse_fader_logo.jpg",
-				"codeLink": {
-					"alt": "fader360-frontend (Github)",
-					"href": "https://github.com/VRagments/fader360-frontend"
-				},
-				"toolsUsed": [
-					"react",
-					"react-three-fiber",
-					"react-three-drei",
-					"leva-gui",
-					"tailwindcss",
-					"3ds Max"
-				],
-				"date": "2023-08-11",
-				"showCases": [
-					{
-						"caption": "Adding assets to Fader360",
-						"imgUrl": "images/fader/fader_add_assets.jpg"
-					},
-					{
-						"caption": "Jumping between Scenes via SceneLink",
-						"imgUrl": "images/fader/fader_scenelinks.jpg"
-					},
-					{
-						"caption": "Scene Options",
-						"imgUrl": "images/fader/fader_church.jpg"
-					},
-					{
-						"caption": "Streaming 360 background video with subtitles",
-						"imgUrl": "images/fader/fader_subtitles.jpg"
-					},
-					{
-						"caption": "(3D Model) Museum Backdrop Prototype",
-						"imgUrl": "images/fader/museum.jpg"
-					},
-					{
-						"caption": "(3D Model) Newsroom Backdrop Prototype",
-						"imgUrl": "images/fader/newsroom.jpg"
-					},
-					{
-						"caption": "(3D Model) Toony Farmland Backdrop Prototype",
-						"imgUrl": "images/fader/toon.jpg"
-					},
-					{
-						"caption": "(3D Model) Toony Farmland Backdrop Prototype",
-						"imgUrl": "images/fader/toon2.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu).\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu). \n\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "*Fader360*'s [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads, linking these to Fader360 projects and newly created empty scenes. Login was handled with a mediaverse account, giving users access to other services within the project's infrastructure. \n\nCommunication with the RESTful backend was handled with axios.\n\n[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js). \n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "[Mediaverse](https://mediaverse-project.eu) was a cooperation between various universities all over Europe, as well as broadcasters *Deutsche Welle*, among others.\n\nOne example of a *DW* project using *Fader360* can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in *Deutsche Welle*'s blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/). \n\nWhile the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below."
-					}
-				]
-			},
-			{
-				"id": 2,
-				"title": "Brotherland",
-				"subTitle": "Interviews and portraits of ex \"contract workers\" in post-GDR east Germany",
-				"titleCardBg": "images/brotherland/brotherland_small.jpg",
-				"date": "2023-06",
-				"codeLink": {
-					"alt": "brotherland on github.com",
-					"href": "https://github.com/cptSwing/brotherland"
-				},
-				"showCases": [
-					{
-						"caption": "Start",
-						"imgUrl": "images/brotherland/screen1_desktop.jpg"
-					},
-					{
-						"caption": "Virtual Exhibit 2",
-						"imgUrl": "images/brotherland/screen2_desktop.jpg"
-					},
-					{
-						"caption": "Interview Augusto Jone Munjunga",
-						"imgUrl": "images/brotherland/screen3_desktop.jpg"
-					},
-					{
-						"caption": "Virtual Exhibit 3 (mobile)",
-						"imgUrl": "images/brotherland/screen4_mobile.jpg"
-					},
-					{
-						"caption": "Menu (mobile)",
-						"imgUrl": "images/brotherland/screen5_mobile.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), a photo project by my dear friend [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. The project explores biographies of the so-called ['Vertragsarbeiter'](https://www.politische-bildung-brandenburg.de/ausstellungen/als-arbeitskraft-willkommen) after the fall of the GDR, and their plight amid steadily worsening racism and economic turmoil. \n\nThe project was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "The site's ['virtual exhibits'](https://www.brotherland.info/html/virtual-exhibits/ve2.html) are inspired by the actual exhibit's various placards,\nwhile the large archive of [playable interviews](https://www.brotherland.info/html/interviews/intrvw_dhn01.html) and their transcriptions are linked to via QR code at actual exhibitions, and independantly browsable online. Short [biographies](https://www.brotherland.info/html/bio.html) of the interviewees round things off. Since the website is to be used as a companion the the photo exhibit (the aforementioned QR links to audio), it is mobile ready."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
-					}
-				],
-				"toolsUsed": [
-					"parcel",
-					"posthtml",
-					"tailwindcss"
-				]
-			},
-			{
-				"id": 3,
-				"title": "Scrollmersives",
-				"subTitle": "Scroll through various 3D experiences",
-				"titleCardBg": "https://picsum.photos/seed/scrollm/500?grayscale",
-				"date": "2022",
-				"toolsUsed": [
-					"three.js",
-					"3ds Max"
-				],
-				"showCases": [
-					{
-						"caption": "electric scooter",
-						"imgUrl": "images/scrollmersives/scooter.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/scrollm_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/scrollm_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/scrollm_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "[First Scrollmersive - strangely enough hosted at zdf.de](https://3d.zdf.de/experiences/scooter/)"
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "[First Scrollmersive - strangely enough hosted at zdf.de](https://3d.zdf.de/experiences/scooter/)"
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			},
-			{
-				"id": 4,
-				"title": "Side Projects",
-				"titleCardBg": "https://picsum.photos/seed/plate/500?grayscale",
-				"subTitle": "Plates-Calculator, etc etc",
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/plate_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/plate_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/plate_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/plate_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			}
-		]
-	},
-	"3D": {
-		"id": 1,
-		"categoryTitle": "3D",
-		"categoryBackgroundColor": "rgb(128,200,225)",
-		"categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
-		"categoryBlurb": "3D All-Rounder, origins in Gaming industry",
-		"posts": [
-			{
-				"id": 5,
-				"title": "Groundwater AR App",
-				"subTitle": "Learn about the water cycle & the ground below our feet",
-				"titleCardBg": "https://picsum.photos/seed/wasser/500?grayscale",
-				"date": "2022-11-03",
-				"showCases": [
-					{
-						"youtubeUrl": "https://www.youtube.com/embed/4FmyfmdA9nk?start=30&end=62&autoplay=1"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/dwc/berlin_1.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/dwc/closeup_1.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/dwc/closeup_2.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/dwc/water_particles.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/dwc/water_particles_2.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/dwc/well_1.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/dwc/layers.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/dwc/diorama.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/dwc/diorama_round.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "[Digital Water City](http://www.digital-water.city/) [iOS App](https://apps.apple.com/us/app/grundwasser-sichtbar-machen/id1537443189) ac arcu accumsan [Kompetenzzentrum Wasser](https://kompetenz-wasser.de) et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			},
-			{
-				"id": 6,
-				"title": "BER Airport (Tagespiegel)",
-				"subTitle": "Interactive fly-through of BER airport - and it's teething problems",
-				"titleCardBg": "https://picsum.photos/seed/ber/500?grayscale",
-				"date": "2021-09-18",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/ber_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/ber_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/ber_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/ber_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Winner of the [\"Medienpreis Luft- und Raumfahrt\"](https://www.medienpreis-luft-und-raumfahrt.de/preisverleihung-2021/), Hendrik Lehmann and his team at Tagesspiegel also won the [\"Deutsche Reporterpreis\" (Multimedia)](https://x.com/reporterforum/status/1467950400250732549) with this project. [Flughafen BER in 3D](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			},
-			{
-				"id": 7,
-				"title": "StasiVR (Deutschlandfunk)",
-				"subTitle": "Experiencing Stasi interrogations with VR",
-				"titleCardBg": "images/db/stasi_featured_image.jpg",
-				"date": "2017",
-				"showCases": [
-					{
-						"youtubeUrl": "https://www.youtube.com/watch?v=1zk0nEt0ma8"
-					},
-					{
-						"caption": "stast 1k",
-						"imgUrl": "images/db/stasi_1.jpg"
-					},
-					{
-						"caption": "2 2 2 2",
-						"imgUrl": "images/db/stasi_2.jpg"
-					},
-					{
-						"caption": "STASI 3",
-						"imgUrl": "images/db/stasi_3.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/db/stasi_4.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/db/stasi_5.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "StasiVR is another VR app for [Cardboard](https://vr.google.com/cardboard), built by [Vragments](http://www.vragments.com) and myself (3D content) for [Deutschlandfunk Kultur](https://www.deutschlandfunkkultur.de/), working together with Jana Wuttke, a [radio journalist](https://www.deutschlandfunkkultur.de/verhoere-als-virtual-reality-ein-ganz-andere-form-von-100.html). It places the user in an authentically recreated Stasi interrogation room, playing actual recordings of interrogations and at times injecting necessary journalistic context."
-					},
-					{
-						"useShowCaseIndex": 5,
-						"text": "Using dozens of photographs from the Stasi museum in Berlin, as well as results from Jana's research, I faithfully recreated the interrogation room, within the usual constraints one encounters when developing for mobile VR.\n\nEven so, the clear-cut and smaller scope allowed for some effects, such as the still-smoldering cigarette, as well as a post-processing effect to visually separate the two people in the room from the surroundings.\n\nMost of objects seen are uniquely unwrapped - and sparsely textured, for a \"muted\" look.\n\nWe brought everything together in the Unity game engine, which also provided a fairly easy way of deploying to mobile."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "While Deutschlandfunk's blog seems to have been taken offline at some point, the minisite for the project can be still be accessed [here (web archive)](https://web.archive.org/web/20231101111232/http://blogs.deutschlandradiokultur.de/stasiverhoer/).\nSurprisingly, the embedded video on the archive site does still work and gives a good first impression.\n\nEmbedded next to this text is a very short teaser of an unfinished version."
-					},
-					{
-						"text": "Time and budget constraints meant that this project couldn't be developed into a more comprehensive app detailing the Stasi's interrogation methods, but teaching staff apparently still use it to this day.\n\nFor the project this VR app was a part of, Jana Wuttke and her colleague Martin Hartwig were nominated for the [\"Deutscher Radiopreis\"](http://www.deutscher-radiopreis.de/radiopreis/gala_2017/nominierte/Nominiert-in-der-Kategorie-Beste-Innovation,innovation136.html) (2017, \"Best innovation\"), and received the [\"Crossmediapreis\" 2018](https://web.archive.org/web/20221006030907/https://www.bremische-landesmedienanstalt.de/media-news/crossmediapreis-2018-unsere-preistraeger) from radio bremen.\n\n And here's another review by Deutschlandfunk: [Stasi-Verhör zum Nachempfinden](https://www.deutschlandfunk.de/virtual-reality-stasi-verhoer-zum-nachempfinden-100.html)"
-					}
-				]
-			},
-			{
-				"id": 8,
-				"title": "A 100 (RBB)",
-				"subTitle": "A 360° & VR experience for rbb|24 news",
-				"titleCardBg": "images/db/a100_featured_image.jpg",
-				"date": "2016-06-20",
-				"showCases": [
-					{
-						"youtubeUrl": "https://www.youtube.com/watch?v=x0uHyIeo3Cw"
-					},
-					{
-						"caption": "The \"anchor\" - or hub - where different branches in the story extend from.",
-						"imgUrl": "images/db/a100_1.jpg"
-					},
-					{
-						"caption": "Geometry visible underneath",
-						"imgUrl": "images/db/a100_2.jpg"
-					},
-					{
-						"imgUrl": "images/db/a100_3.jpg"
-					},
-					{
-						"imgUrl": "images/db/a100_4.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "A mobile VR project about the continuing construction of the A-100 highway in and around Berlin, this time for [Rundfunk Berlin Brandenburg](http://www.rbb-online.de) and [Lorenz Matzat](https://www.datenjournalist.de/), as well as [Vragments](http://www.vragments.com). Funding was also provided by [MIZ Babelsberg](https://www.miz-babelsberg.de/foerderung/allgemeines.html). It combined interviews, videos, and 360- as well as 3d content."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "While working with the regular restrictions for mobile VR ten years ago, there were additional challenges in displaying the tunnel under the existing 3d model of the city, splicing 2d sketches into 360 panoramic images, to name just a few.\n\nStill, it was a very enjoyable project to be a part of."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "The rbb has more information [here](https://www.rbb-online.de/unternehmen/der_rbb/profil/digitale_produkte/360vr/a100-vr.html), the apple [app store link](https://apps.apple.com/us/app/a100-vr/id1134883353?l=de&ls=1) even works.\n\nUsing Unity webplayer (not ultra fast, I'm afraid), the experience can be loaded in your browser as well: [Das A100-Virtual-Reality-Modell für den Browser](https://www.rbb24.de/politik/beitrag/2022/03/a100vr-web.html)"
-					}
-				]
-			},
-			{
-				"id": 9,
-				"title": "U Stadtmitte (VR)",
-				"subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
-				"titleCardBg": "images/db/usm_featured_image.jpg",
-				"date": "2016",
-				"toolsUsed": [
-					"Unity Engine",
-					"3ds Max",
-					"Substance Designer"
-				],
-				"codeLink": "https://github.com/VRagments/StadtmitteVR",
-				"showCases": [
-					{
-						"imgUrl": "images/db/usm_7.jpg"
-					},
-					{
-						"youtubeUrl": "https://www.youtube.com/watch?v=_FiuSNyn1QM"
-					},
-					{
-						"imgUrl": "images/db/usm_3.jpg"
-					},
-					{
-						"imgUrl": "images/db/usm_4.jpg"
-					},
-					{
-						"imgUrl": "images/db/usm_6.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "[Technologiestiftung Berlin](https://www.technologiestiftung-berlin.de/), [BVG](http://www.bvg.de), [Vragments](http://www.vragments.com) and myself as freelancer built a mobile VR game for [Google Cardboards](https://vr.google.com/cardboard/). It was first presented at [Lange Nacht der Wissenschaften](https://www.technologiestiftung-berlin.de/profil/blog/virtuell-durch-die-lange-nacht)."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "Despite being a smaller project, it had some interesting challenges and restrictions.\n\nI enjoyed being able to build the U-Bahn station \"Stadtmitte\" from BVG's original plans, for instance.\nThe combination of purely mobile platforms and VR imposed some very strict - and fun - limits on texture and geometry budgets. \n\nVR applications render the 3d content twice, from slightly different perspectives, once for each eye. Additionally, framerates seem more important than usual as low or choppy FPS can cause vertigo or motion sickness."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Lighting and shadows were almost exlusively static/baked, with carefully edited lightmaps to give the best resolution at spots that deserved it.\nMost every surface you see is a tiling texture, with painstakingly adjusted texture atlasses to keep down texture fetches.\nStill, we got away with PBR lighting - and the inclusion of normal mapping in select parts of the map allowed for some local fine detail.\n\n Vragments published the source [here](https://github.com/VRagments/StadtmitteVR), I am afraid it's long gone from any app stores. The App was built with the Unity game engine, and the 3d content using 3d Studio Max."
-					}
-				]
-			},
-			{
-				"id": 10,
-				"date": "2014",
-				"showCases": [
-					{
-						"caption": "Civilian Equipment 1",
-						"imgUrl": "images/db/em5_civilian_equipment_01.jpg"
-					},
-					{
-						"caption": "Civilian Equipment 2",
-						"imgUrl": "images/db/em5_civilian_equipment_02.jpg"
-					},
-					{
-						"caption": "Civilian Equipment 3",
-						"imgUrl": "images/db/em5_civilian_equipment_03.jpg"
-					},
-					{
-						"caption": "Engineer Equipment (wireframes)",
-						"imgUrl": "images/db/em5_engineer_equipment_wires.jpg"
-					},
-					{
-						"caption": "Firefighter Equipment",
-						"imgUrl": "images/db/em5_firefighter_equipments_01.jpg"
-					},
-					{
-						"caption": "Hotdog Stand",
-						"imgUrl": "images/db/em5_hotdog_barrel.jpg"
-					},
-					{
-						"caption": "Hotdog Stand (ingame cutscene)",
-						"imgUrl": "images/db/em5_hotdog_ingame.jpg"
-					},
-					{
-						"caption": "Medic Equipment",
-						"imgUrl": "images/db/em5_medic_equipment.jpg"
-					},
-					{
-						"caption": "Medic Equipment (wires)",
-						"imgUrl": "images/db/em5_medic_equipment_wires.jpg"
-					},
-					{
-						"caption": "Police Equipment 1",
-						"imgUrl": "images/db/em5_police_equipment_01.jpg"
-					},
-					{
-						"caption": "Police Equipment 2",
-						"imgUrl": "images/db/em5_police_equipment_02.jpg"
-					},
-					{
-						"caption": "Various city assets",
-						"imgUrl": "images/db/em5_ubahn_flags.jpg"
-					}
-				],
-				"subTitle": "Some 3D assets I created while working on strategy game \"Emergency 5\"",
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Emergency 5",
-				"titleCardBg": "https://picsum.photos/seed/art4/500?grayscale"
-			},
-			{
-				"id": 11,
-				"title": "Personal 3D Projects",
-				"subTitle": "Where WIP's come to die",
-				"titleCardBg": "images/db/satellite_featured_image.jpg",
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "Retro-Style Satellite (high poly)",
-						"imgUrl": "images/db/satellite_close.jpg"
-					},
-					{
-						"caption": "Retro-Style Satellite (high poly)",
-						"imgUrl": "images/db/satellite_total.jpg"
-					},
-					{
-						"caption": "Mosin Nagant WW2 Rifle",
-						"imgUrl": "images/db/Mosin_001.jpg"
-					},
-					{
-						"caption": "Mosin Nagant WW2 Rifle",
-						"imgUrl": "images/db/Mosin_004.jpg"
-					},
-					{
-						"caption": "Mosin Nagant WW2 Rifle (wireframes)",
-						"imgUrl": "images/db/Mosin_002_wires.jpg"
-					},
-					{
-						"caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
-						"imgUrl": "images/db/Stretcher_Low_2_PC.jpg"
-					},
-					{
-						"caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
-						"imgUrl": "images/db/Stretcher_Low_3_PC.jpg"
-					},
-					{
-						"caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
-						"imgUrl": "images/db/Stretcher_Low_6_wires_PC.jpg"
-					},
-					{
-						"caption": "T-35 - Pre-WW2 Soviet Tank (high poly)",
-						"imgUrl": "images/db/t35_t35_high1.jpg"
-					},
-					{
-						"caption": "T-35 - Pre-WW2 Soviet Tank (high poly)",
-						"imgUrl": "images/db/t35_t35_high2.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			},
-			{
-				"id": 12,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/db/bbb_plakat.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/db/bbb_vid.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "images/db/bnf_plakat.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Various 2D",
-				"subTitle": "Posters etc",
-				"titleCardBg": "images/db/bbb_bnf_featured_image.jpg"
-			},
-			{
-				"id": 13,
-				"title": "Student Projects",
-				"subTitle": "Throwback to my first steps as a game artist..",
-				"titleCardBg": "https://picsum.photos/seed/art5/500?grayscale",
-				"date": "2012",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates1_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates1_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates1_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates1_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			}
-		]
-	},
-	"About": {
-		"id": 2,
-		"categoryTitle": "About",
-		"categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale",
-		"categoryBlurb": "I build websites.\nI build 3D stuff.\n\nSometimes I combine the two.",
-		"posts": [
-			{
-				"id": 14,
-				"date": "2024-09-12",
-				"textBlocks": [
-					"I've done **cool** stuff",
-					"More `cool` stuff",
-					"Even more of the ***cool stuff*** tbh"
-				],
-				"title": "Resumé"
-			},
-			{
-				"id": 15,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/about_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/about_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/about_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/about_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Bla Bla about me"
-			}
-		]
-	},
-	"Log": {
-		"id": 3,
-		"categoryTitle": "Log",
-		"categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
-		"categoryBlurb": "What's been happening lately?",
-		"posts": [
-			{
-				"id": 15,
-				"title": "Tailwind - clipInset",
-				"subTitle": "Adds TW classes for clip-path: inset()",
-				"titleCardBg": "images/updates/code_clipInset.jpg",
-				"date": "2024-09-25",
-				"textBlocks": [
-					{
-						"text": "So I built a little [tailwind](https://tailwindcss.com/) plugin to add css's clip-path [(inset() only, for now)](https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/inset) to the standard classes. The initial version is [here](https://github.com/cptSwing/portfolio/blob/7aa41c26ad26be0bfb304b3b8b53bb1ddf5d478e/src/lib/tailwindClipInset.ts) - I've yet to put it through it's paces and haven't actually tried any rounding, but it's currently doing it's job on this here website, for instance! \n\n Usage is easy: `clip-inset-2`, `clip-inset-1/2` etc will clip content on all sides according to the same values as used in tailwind's `w-2` or `w-1/2` respectively (I am using the predefined 'width' values actually). \n\n`clip-inset-t` and `-r`, `-b`, `-l` clip the top, right, bottom left sides. `clip-inset-x` and `clip-inset-y` take care of horizontal and vertical sides."
-					}
-				]
-			},
-			{
-				"id": 16,
-				"date": "2024-09-12",
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Updates 2"
-			},
-			{
-				"id": 16,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates3_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates3_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates3_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates3_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Updates 3",
-				"titleCardBg": "https://picsum.photos/seed/updates3/500?grayscale"
-			},
-			{
-				"id": 17,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates4_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates4_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates4_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates4_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Updates 4"
-			},
-			{
-				"id": 18,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates5_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates5_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates5_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates5_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Updates 5"
-			}
-		]
-	}
+    "Code": {
+        "id": 0,
+        "categoryTitle": "Code",
+        "categoryBackgroundColor": "rgb(32,80,48)",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
+        "categoryBlurb": "Webdev, App dev, Tech Art",
+        "posts": [
+            {
+                "id": 0,
+                "title": "Design Your Ring",
+                "titleCardBg": "images/hd_dyr/hd_dyr_card.jpg",
+                "toolsUsed": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
+                "subTitle": "Customizable Wedding-Rings in 3D",
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/hd_dyr/1.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/hd_dyr/2.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/hd_dyr/3.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/hd_dyr/4.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/hd_dyr/5.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/hd_dyr/6.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/hd_dyr/7.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/hd_dyr/8.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "Sub-Headline Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            },
+            {
+                "id": 1,
+                "title": "Mediaverse: Fader360",
+                "subTitle": "Open-source 360° Media Authoring Tool",
+                "titleCardBg": "images/fader/mediaverse_fader_logo.jpg",
+                "codeLink": {
+                    "alt": "fader360-frontend (Github)",
+                    "href": "https://github.com/VRagments/fader360-frontend"
+                },
+                "toolsUsed": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
+                "date": "2023-08-11",
+                "showCases": [
+                    {
+                        "caption": "Adding assets to Fader360",
+                        "imgUrl": "images/fader/fader_add_assets.jpg"
+                    },
+                    {
+                        "caption": "Jumping between Scenes via SceneLink",
+                        "imgUrl": "images/fader/fader_scenelinks.jpg"
+                    },
+                    {
+                        "caption": "Scene Options",
+                        "imgUrl": "images/fader/fader_church.jpg"
+                    },
+                    {
+                        "caption": "Streaming 360 background video with subtitles",
+                        "imgUrl": "images/fader/fader_subtitles.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Museum Backdrop Prototype",
+                        "imgUrl": "images/fader/museum.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Newsroom Backdrop Prototype",
+                        "imgUrl": "images/fader/newsroom.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
+                        "imgUrl": "images/fader/toon.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
+                        "imgUrl": "images/fader/toon2.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu).\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu). \n\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "*Fader360*'s [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads, linking these to Fader360 projects and newly created empty scenes. Login was handled with a mediaverse account, giving users access to other services within the project's infrastructure. \n\nCommunication with the RESTful backend was handled with axios.\n\n[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js). \n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "[Mediaverse](https://mediaverse-project.eu) was a cooperation between various universities all over Europe, as well as broadcasters *Deutsche Welle*, among others.\n\nOne example of a *DW* project using *Fader360* can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in *Deutsche Welle*'s blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/). \n\nWhile the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below."
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "title": "Brotherland",
+                "subTitle": "Interviews and portraits of ex \"contract workers\" in post-GDR east Germany",
+                "titleCardBg": "images/brotherland/brotherland_small.jpg",
+                "date": "2023-06",
+                "codeLink": {
+                    "alt": "brotherland on github.com",
+                    "href": "https://github.com/cptSwing/brotherland"
+                },
+                "showCases": [
+                    {
+                        "caption": "Start",
+                        "imgUrl": "images/brotherland/screen1_desktop.jpg"
+                    },
+                    {
+                        "caption": "Virtual Exhibit 2",
+                        "imgUrl": "images/brotherland/screen2_desktop.jpg"
+                    },
+                    {
+                        "caption": "Interview Augusto Jone Munjunga",
+                        "imgUrl": "images/brotherland/screen3_desktop.jpg"
+                    },
+                    {
+                        "caption": "Virtual Exhibit 3 (mobile)",
+                        "imgUrl": "images/brotherland/screen4_mobile.jpg"
+                    },
+                    {
+                        "caption": "Menu (mobile)",
+                        "imgUrl": "images/brotherland/screen5_mobile.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), a photo project by my dear friend [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. The project explores biographies of the so-called ['Vertragsarbeiter'](https://www.politische-bildung-brandenburg.de/ausstellungen/als-arbeitskraft-willkommen) after the fall of the GDR, and their plight amid steadily worsening racism and economic turmoil. \n\nThe project was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "The site's ['virtual exhibits'](https://www.brotherland.info/html/virtual-exhibits/ve2.html) are inspired by the actual exhibit's various placards,\nwhile the large archive of [playable interviews](https://www.brotherland.info/html/interviews/intrvw_dhn01.html) and their transcriptions are linked to via QR code at actual exhibitions, and independantly browsable online. Short [biographies](https://www.brotherland.info/html/bio.html) of the interviewees round things off. Since the website is to be used as a companion the the photo exhibit (the aforementioned QR links to audio), it is mobile ready."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
+                    }
+                ],
+                "toolsUsed": ["parcel", "posthtml", "tailwindcss"]
+            },
+            {
+                "id": 3,
+                "title": "Scrollmersives",
+                "subTitle": "Scroll through various 3D experiences",
+                "titleCardBg": "https://picsum.photos/seed/scrollm/500?grayscale",
+                "date": "2022",
+                "toolsUsed": ["three.js", "3ds Max"],
+                "showCases": [
+                    {
+                        "caption": "electric scooter",
+                        "imgUrl": "images/scrollmersives/scooter.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/scrollm_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "[First Scrollmersive - strangely enough hosted at zdf.de](https://3d.zdf.de/experiences/scooter/)"
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "[First Scrollmersive - strangely enough hosted at zdf.de](https://3d.zdf.de/experiences/scooter/)"
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "title": "Side Projects",
+                "titleCardBg": "https://picsum.photos/seed/plate/500?grayscale",
+                "subTitle": "Plates-Calculator, etc etc",
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/plate_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            }
+        ]
+    },
+    "3D": {
+        "id": 1,
+        "categoryTitle": "3D",
+        "categoryBackgroundColor": "rgb(128,200,225)",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
+        "categoryBlurb": "3D All-Rounder, origins in Gaming industry",
+        "posts": [
+            {
+                "id": 5,
+                "title": "Groundwater AR App",
+                "subTitle": "Learn about the water cycle & the ground below our feet",
+                "titleCardBg": "https://picsum.photos/seed/wasser/500?grayscale",
+                "date": "2022-11-03",
+                "showCases": [
+                    {
+                        "youtubeUrl": "https://www.youtube.com/embed/4FmyfmdA9nk?start=30&end=62&autoplay=1"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/dwc/berlin_1.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/dwc/closeup_1.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/dwc/closeup_2.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/dwc/water_particles.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/dwc/water_particles_2.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/dwc/well_1.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/dwc/layers.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/dwc/diorama.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/dwc/diorama_round.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "[Digital Water City](http://www.digital-water.city/) [iOS App](https://apps.apple.com/us/app/grundwasser-sichtbar-machen/id1537443189) ac arcu accumsan [Kompetenzzentrum Wasser](https://kompetenz-wasser.de) et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "title": "BER Airport (Tagespiegel)",
+                "subTitle": "Interactive fly-through of BER airport - and it's teething problems",
+                "titleCardBg": "https://picsum.photos/seed/ber/500?grayscale",
+                "date": "2021-09-18",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/ber_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/ber_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/ber_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/ber_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Winner of the [\"Medienpreis Luft- und Raumfahrt\"](https://www.medienpreis-luft-und-raumfahrt.de/preisverleihung-2021/), Hendrik Lehmann and his team at Tagesspiegel also won the [\"Deutsche Reporterpreis\" (Multimedia)](https://x.com/reporterforum/status/1467950400250732549) with this project. [Flughafen BER in 3D](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "title": "StasiVR (Deutschlandfunk)",
+                "subTitle": "Experiencing Stasi interrogations with VR",
+                "titleCardBg": "images/db/stasi_featured_image.jpg",
+                "date": "2017",
+                "showCases": [
+                    {
+                        "youtubeUrl": "https://www.youtube.com/watch?v=1zk0nEt0ma8"
+                    },
+                    {
+                        "caption": "stast 1k",
+                        "imgUrl": "images/db/stasi_1.jpg"
+                    },
+                    {
+                        "caption": "2 2 2 2",
+                        "imgUrl": "images/db/stasi_2.jpg"
+                    },
+                    {
+                        "caption": "STASI 3",
+                        "imgUrl": "images/db/stasi_3.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/db/stasi_4.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/db/stasi_5.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "StasiVR is another VR app for [Cardboard](https://vr.google.com/cardboard), built by [Vragments](http://www.vragments.com) and myself (3D content) for [Deutschlandfunk Kultur](https://www.deutschlandfunkkultur.de/), working together with Jana Wuttke, a [radio journalist](https://www.deutschlandfunkkultur.de/verhoere-als-virtual-reality-ein-ganz-andere-form-von-100.html). It places the user in an authentically recreated Stasi interrogation room, playing actual recordings of interrogations and at times injecting necessary journalistic context."
+                    },
+                    {
+                        "useShowCaseIndex": 5,
+                        "text": "Using dozens of photographs from the Stasi museum in Berlin, as well as results from Jana's research, I faithfully recreated the interrogation room, within the usual constraints one encounters when developing for mobile VR.\n\nEven so, the clear-cut and smaller scope allowed for some effects, such as the still-smoldering cigarette, as well as a post-processing effect to visually separate the two people in the room from the surroundings.\n\nMost of objects seen are uniquely unwrapped - and sparsely textured, for a \"muted\" look.\n\nWe brought everything together in the Unity game engine, which also provided a fairly easy way of deploying to mobile."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "While Deutschlandfunk's blog seems to have been taken offline at some point, the minisite for the project can be still be accessed [here (web archive)](https://web.archive.org/web/20231101111232/http://blogs.deutschlandradiokultur.de/stasiverhoer/).\nSurprisingly, the embedded video on the archive site does still work and gives a good first impression.\n\nEmbedded next to this text is a very short teaser of an unfinished version."
+                    },
+                    {
+                        "text": "Time and budget constraints meant that this project couldn't be developed into a more comprehensive app detailing the Stasi's interrogation methods, but teaching staff apparently still use it to this day.\n\nFor the project this VR app was a part of, Jana Wuttke and her colleague Martin Hartwig were nominated for the [\"Deutscher Radiopreis\"](http://www.deutscher-radiopreis.de/radiopreis/gala_2017/nominierte/Nominiert-in-der-Kategorie-Beste-Innovation,innovation136.html) (2017, \"Best innovation\"), and received the [\"Crossmediapreis\" 2018](https://web.archive.org/web/20221006030907/https://www.bremische-landesmedienanstalt.de/media-news/crossmediapreis-2018-unsere-preistraeger) from radio bremen.\n\n And here's another review by Deutschlandfunk: [Stasi-Verhör zum Nachempfinden](https://www.deutschlandfunk.de/virtual-reality-stasi-verhoer-zum-nachempfinden-100.html)"
+                    }
+                ]
+            },
+            {
+                "id": 8,
+                "title": "A 100 (RBB)",
+                "subTitle": "A 360° & VR experience for rbb|24 news",
+                "titleCardBg": "images/db/a100_featured_image.jpg",
+                "date": "2016-06-20",
+                "showCases": [
+                    {
+                        "youtubeUrl": "https://www.youtube.com/watch?v=x0uHyIeo3Cw"
+                    },
+                    {
+                        "caption": "The \"anchor\" - or hub - where different branches in the story extend from.",
+                        "imgUrl": "images/db/a100_1.jpg"
+                    },
+                    {
+                        "caption": "Geometry visible underneath",
+                        "imgUrl": "images/db/a100_2.jpg"
+                    },
+                    {
+                        "imgUrl": "images/db/a100_3.jpg"
+                    },
+                    {
+                        "imgUrl": "images/db/a100_4.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "A mobile VR project about the continuing construction of the A-100 highway in and around Berlin, this time for [Rundfunk Berlin Brandenburg](http://www.rbb-online.de) and [Lorenz Matzat](https://www.datenjournalist.de/), as well as [Vragments](http://www.vragments.com). Funding was also provided by [MIZ Babelsberg](https://www.miz-babelsberg.de/foerderung/allgemeines.html). It combined interviews, videos, and 360- as well as 3d content."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "While working with the regular restrictions for mobile VR ten years ago, there were additional challenges in displaying the tunnel under the existing 3d model of the city, splicing 2d sketches into 360 panoramic images, to name just a few.\n\nStill, it was a very enjoyable project to be a part of."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "The rbb has more information [here](https://www.rbb-online.de/unternehmen/der_rbb/profil/digitale_produkte/360vr/a100-vr.html), the apple [app store link](https://apps.apple.com/us/app/a100-vr/id1134883353?l=de&ls=1) even works.\n\nUsing Unity webplayer (not ultra fast, I'm afraid), the experience can be loaded in your browser as well: [Das A100-Virtual-Reality-Modell für den Browser](https://www.rbb24.de/politik/beitrag/2022/03/a100vr-web.html)"
+                    }
+                ]
+            },
+            {
+                "id": 9,
+                "title": "U Stadtmitte (VR)",
+                "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
+                "titleCardBg": "images/db/usm_featured_image.jpg",
+                "date": "2016",
+                "toolsUsed": ["Unity Engine", "3ds Max", "Substance Designer"],
+                "codeLink": { "href": "https://github.com/VRagments/StadtmitteVR" },
+                "showCases": [
+                    {
+                        "imgUrl": "images/db/usm_7.jpg"
+                    },
+                    {
+                        "youtubeUrl": "https://www.youtube.com/watch?v=_FiuSNyn1QM"
+                    },
+                    {
+                        "imgUrl": "images/db/usm_3.jpg"
+                    },
+                    {
+                        "imgUrl": "images/db/usm_4.jpg"
+                    },
+                    {
+                        "imgUrl": "images/db/usm_6.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "[Technologiestiftung Berlin](https://www.technologiestiftung-berlin.de/), [BVG](http://www.bvg.de), [Vragments](http://www.vragments.com) and myself as freelancer built a mobile VR game for [Google Cardboards](https://vr.google.com/cardboard/). It was first presented at [Lange Nacht der Wissenschaften](https://www.technologiestiftung-berlin.de/profil/blog/virtuell-durch-die-lange-nacht)."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Despite being a smaller project, it had some interesting challenges and restrictions.\n\nI enjoyed being able to build the U-Bahn station \"Stadtmitte\" from BVG's original plans, for instance.\nThe combination of purely mobile platforms and VR imposed some very strict - and fun - limits on texture and geometry budgets. \n\nVR applications render the 3d content twice, from slightly different perspectives, once for each eye. Additionally, framerates seem more important than usual as low or choppy FPS can cause vertigo or motion sickness."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Lighting and shadows were almost exlusively static/baked, with carefully edited lightmaps to give the best resolution at spots that deserved it.\nMost every surface you see is a tiling texture, with painstakingly adjusted texture atlasses to keep down texture fetches.\nStill, we got away with PBR lighting - and the inclusion of normal mapping in select parts of the map allowed for some local fine detail.\n\n Vragments published the source [here](https://github.com/VRagments/StadtmitteVR), I am afraid it's long gone from any app stores. The App was built with the Unity game engine, and the 3d content using 3d Studio Max."
+                    }
+                ]
+            },
+            {
+                "id": 10,
+                "date": "2014",
+                "showCases": [
+                    {
+                        "caption": "Civilian Equipment 1",
+                        "imgUrl": "images/db/em5_civilian_equipment_01.jpg"
+                    },
+                    {
+                        "caption": "Civilian Equipment 2",
+                        "imgUrl": "images/db/em5_civilian_equipment_02.jpg"
+                    },
+                    {
+                        "caption": "Civilian Equipment 3",
+                        "imgUrl": "images/db/em5_civilian_equipment_03.jpg"
+                    },
+                    {
+                        "caption": "Engineer Equipment (wireframes)",
+                        "imgUrl": "images/db/em5_engineer_equipment_wires.jpg"
+                    },
+                    {
+                        "caption": "Firefighter Equipment",
+                        "imgUrl": "images/db/em5_firefighter_equipments_01.jpg"
+                    },
+                    {
+                        "caption": "Hotdog Stand",
+                        "imgUrl": "images/db/em5_hotdog_barrel.jpg"
+                    },
+                    {
+                        "caption": "Hotdog Stand (ingame cutscene)",
+                        "imgUrl": "images/db/em5_hotdog_ingame.jpg"
+                    },
+                    {
+                        "caption": "Medic Equipment",
+                        "imgUrl": "images/db/em5_medic_equipment.jpg"
+                    },
+                    {
+                        "caption": "Medic Equipment (wires)",
+                        "imgUrl": "images/db/em5_medic_equipment_wires.jpg"
+                    },
+                    {
+                        "caption": "Police Equipment 1",
+                        "imgUrl": "images/db/em5_police_equipment_01.jpg"
+                    },
+                    {
+                        "caption": "Police Equipment 2",
+                        "imgUrl": "images/db/em5_police_equipment_02.jpg"
+                    },
+                    {
+                        "caption": "Various city assets",
+                        "imgUrl": "images/db/em5_ubahn_flags.jpg"
+                    }
+                ],
+                "subTitle": "Some 3D assets I created while working on strategy game \"Emergency 5\"",
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Emergency 5",
+                "titleCardBg": "https://picsum.photos/seed/art4/500?grayscale"
+            },
+            {
+                "id": 11,
+                "title": "Personal 3D Projects",
+                "subTitle": "Where WIP's come to die",
+                "titleCardBg": "images/db/satellite_featured_image.jpg",
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "Retro-Style Satellite (high poly)",
+                        "imgUrl": "images/db/satellite_close.jpg"
+                    },
+                    {
+                        "caption": "Retro-Style Satellite (high poly)",
+                        "imgUrl": "images/db/satellite_total.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle",
+                        "imgUrl": "images/db/Mosin_001.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle",
+                        "imgUrl": "images/db/Mosin_004.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle (wireframes)",
+                        "imgUrl": "images/db/Mosin_002_wires.jpg"
+                    },
+                    {
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
+                        "imgUrl": "images/db/Stretcher_Low_2_PC.jpg"
+                    },
+                    {
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
+                        "imgUrl": "images/db/Stretcher_Low_3_PC.jpg"
+                    },
+                    {
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
+                        "imgUrl": "images/db/Stretcher_Low_6_wires_PC.jpg"
+                    },
+                    {
+                        "caption": "T-35 - Pre-WW2 Soviet Tank (high poly)",
+                        "imgUrl": "images/db/t35_t35_high1.jpg"
+                    },
+                    {
+                        "caption": "T-35 - Pre-WW2 Soviet Tank (high poly)",
+                        "imgUrl": "images/db/t35_t35_high2.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            },
+            {
+                "id": 12,
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/db/bbb_plakat.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/db/bbb_vid.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "images/db/bnf_plakat.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Various 2D",
+                "subTitle": "Posters etc",
+                "titleCardBg": "images/db/bbb_bnf_featured_image.jpg"
+            },
+            {
+                "id": 13,
+                "title": "Student Projects",
+                "subTitle": "Throwback to my first steps as a game artist..",
+                "titleCardBg": "https://picsum.photos/seed/art5/500?grayscale",
+                "date": "2012",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates1_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ]
+            }
+        ]
+    },
+    "About": {
+        "id": 2,
+        "categoryTitle": "About",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale",
+        "categoryBlurb": "I build websites.\nI build 3D stuff.\n\nSometimes I combine the two.",
+        "posts": [
+            {
+                "id": 14,
+                "date": "2024-09-12",
+                "textBlocks": ["I've done **cool** stuff", "More `cool` stuff", "Even more of the ***cool stuff*** tbh"],
+                "title": "Resumé"
+            },
+            {
+                "id": 15,
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Bla Bla about me"
+            }
+        ]
+    },
+    "Log": {
+        "id": 3,
+        "categoryTitle": "Log",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
+        "categoryBlurb": "What's been happening lately?",
+        "posts": [
+            {
+                "id": 15,
+                "title": "Tailwind - clipInset",
+                "subTitle": "Adds TW classes for clip-path: inset()",
+                "titleCardBg": "images/updates/code_clipInset.jpg",
+                "date": "2024-09-25",
+                "textBlocks": [
+                    {
+                        "text": "So I built a little [tailwind](https://tailwindcss.com/) plugin to add css's clip-path [(inset() only, for now)](https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/inset) to the standard classes. The initial version is [here](https://github.com/cptSwing/portfolio/blob/7aa41c26ad26be0bfb304b3b8b53bb1ddf5d478e/src/lib/tailwindClipInset.ts) - I've yet to put it through it's paces and haven't actually tried any rounding, but it's currently doing it's job on this here website, for instance! \n\n Usage is easy: `clip-inset-2`, `clip-inset-1/2` etc will clip content on all sides according to the same values as used in tailwind's `w-2` or `w-1/2` respectively (I am using the predefined 'width' values actually). \n\n`clip-inset-t` and `-r`, `-b`, `-l` clip the top, right, bottom left sides. `clip-inset-x` and `clip-inset-y` take care of horizontal and vertical sides."
+                    }
+                ]
+            },
+            {
+                "id": 16,
+                "date": "2024-09-12",
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Updates 2"
+            },
+            {
+                "id": 16,
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates3_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates3_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates3_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates3_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Updates 3",
+                "titleCardBg": "https://picsum.photos/seed/updates3/500?grayscale"
+            },
+            {
+                "id": 17,
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates4_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates4_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates4_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates4_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Updates 4"
+            },
+            {
+                "id": 18,
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates5_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates5_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates5_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/updates5_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Updates 5"
+            }
+        ]
+    }
 }

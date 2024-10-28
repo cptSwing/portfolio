@@ -13,8 +13,8 @@ const Settings = () => {
     }, [themeIndex]);
 
     return (
-        <div className='size-full rounded-full bg-[--color-bars-no-post] p-px' onClick={() => store_cycleTheme()}>
-            <PaintBrushIcon className='stroke-neutral-700 hover:stroke-[--color-bars-post]' />
+        <div className='group/brush size-full rounded-full bg-[--color-bars-no-post] p-1 sm:mt-auto sm:p-px' onClick={() => store_cycleTheme()}>
+            <PaintBrushIcon className='stroke-neutral-700 group-hover/brush:stroke-[--color-bars-post] group-active/brush:stroke-[--color-bars-post]' />
         </div>
     );
 };

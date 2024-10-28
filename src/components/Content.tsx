@@ -55,7 +55,7 @@ const Content = () => {
     );
 
     return (
-        <main className='z-0 h-[calc(95vh-var(--header-height))] w-full'>
+        <main className='z-0 h-[calc(96vh-var(--header-height)-var(--bar-height))] w-full'>
             <div className='relative mx-auto flex h-full w-[--post-width] flex-col bg-[--theme-bg-lighter]'>
                 {/* Floating Title: */}
                 <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-[--post-width] items-end justify-center text-center'>
