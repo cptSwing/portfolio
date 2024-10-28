@@ -15,35 +15,35 @@
                 "date": "2024-09-12",
                 "showCases": [
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Ring profile selection",
                         "imgUrl": "images/hd_dyr/1.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Edit size",
                         "imgUrl": "images/hd_dyr/2.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Switch materials",
                         "imgUrl": "images/hd_dyr/3.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Change normal map & roughness values",
                         "imgUrl": "images/hd_dyr/4.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Diamonds..",
                         "imgUrl": "images/hd_dyr/5.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "..of varying cut and carat",
                         "imgUrl": "images/hd_dyr/6.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Debug menu",
                         "imgUrl": "images/hd_dyr/7.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Debugging size calculations",
                         "imgUrl": "images/hd_dyr/8.jpg"
                     }
                 ],
@@ -277,39 +277,39 @@
                         "youtubeUrl": "https://www.youtube.com/embed/4FmyfmdA9nk?start=30&end=62&autoplay=1"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "View of Berlin's geology",
                         "imgUrl": "images/dwc/berlin_1.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Groundwater flow with an activated well",
                         "imgUrl": "images/dwc/closeup_1.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Flow particles converging",
                         "imgUrl": "images/dwc/closeup_2.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Particles in Unity Editor",
                         "imgUrl": "images/dwc/water_particles.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "A 3D Texture drives the particles",
                         "imgUrl": "images/dwc/water_particles_2.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Animation of active well",
                         "imgUrl": "images/dwc/well_1.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Terrain layers",
                         "imgUrl": "images/dwc/layers.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Look-Dev 1",
                         "imgUrl": "images/dwc/diorama.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Look-Dev 2",
                         "imgUrl": "images/dwc/diorama_round.jpg"
                     }
                 ],
