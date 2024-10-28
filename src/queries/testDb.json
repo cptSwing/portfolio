@@ -264,7 +264,7 @@
         "categoryTitle": "3D",
         "categoryBackgroundColor": "rgb(128,200,225)",
         "categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
-        "categoryBlurb": "3D All-Rounder, origins in Gaming industry",
+        "categoryBlurb": "Game Art on display -\nModels, Shaders, Particles, Post-Processing, Mobile",
         "posts": [
             {
                 "id": 5,
@@ -651,7 +651,7 @@
                     },
                     {
                         "useShowCaseIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                        "text": "[Mauris tortor nisi](https://www.facebook.com/buendnisfuerbedingungslosesbleiberecht/videos/der-sv-babelsberg-03-ist-ein-besonderer-verein-am-o-platz-hatten-wir-die-gelegen/425080967654114/), volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
                     },
                     {
                         "useShowCaseIndex": 2,

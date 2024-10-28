@@ -11,7 +11,7 @@ export const PostCards: FC<{
     posts: Post[];
 }> = ({ posts }) => {
     return (
-        <div className='scroll-gutter h-full overflow-x-hidden overflow-y-scroll p-2 pr-4 pt-4 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat]'>
+        <div className='scroll-gutter h-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:p-2 sm:pr-4 sm:pt-4'>
             <div
                 className='pointer-events-none flex flex-col gap-y-6'
                 onClick={(e) => {

@@ -9,6 +9,8 @@ import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24
 import { useNavigate, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import GetBackgroundSvg from './GetBackgroundSvg.tsx';
+import { useBreakpoint } from '../hooks/useBreakPoint.ts';
+import remarkBreaks from 'remark-breaks';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
@@ -62,16 +64,17 @@ const CategoryCard: FC<{
 
     const isThisCategoryOpen = useMemo(() => (catId ? parseInt(catId) === id : false), [catId, id]);
 
+    const isDesktop = useBreakpoint('sm');
     const paddingStyle_Memo = useMemo(() => {
         if (catId && !isThisCategoryOpen) {
             const openedIndex = catId ? parseInt(catId) : null;
             if (id < openedIndex!) {
-                return { '--tw-translate-y': '0.5rem' } as unknown as CSSTransition;
+                return { '--tw-translate-y': isDesktop ? '0.75rem' : '1rem' } as unknown as CSSTransition;
             } else if (id > openedIndex!) {
-                return { '--tw-translate-y': '-1.5rem' } as unknown as CSSTransition;
+                return { '--tw-translate-y': isDesktop ? '-2rem' : '-1.25rem' } as unknown as CSSTransition;
             }
         }
-    }, [isThisCategoryOpen, catId, id]);
+    }, [isThisCategoryOpen, catId, id, isDesktop]);
 
     return (
         <div
@@ -133,7 +136,7 @@ const CategoryCard: FC<{
                     <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:--theme-accent-400] sm:flex-row sm:items-start sm:justify-between'>
                         <div
                             className={classNames(
-                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/4 sm:self-auto lg:basis-1/3 2xl:basis-2/5',
+                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/4 sm:self-end lg:basis-1/3 2xl:basis-2/5',
                                 isThisCategoryOpen
                                     ? 'bg-[--color-primary-content-bg]'
                                     : catId
@@ -143,11 +146,13 @@ const CategoryCard: FC<{
                         >
                             <div
                                 className={classNames(
-                                    'relative z-10 select-none text-pretty font-besley text-lg text-[--color-text-testimonial] transition-transform duration-300 sm:text-xl',
+                                    'relative z-10 select-none text-pretty font-besley text-base text-[--color-text-testimonial] transition-transform duration-300 sm:text-2xl',
                                     isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
                                 )}
                             >
-                                <Markdown className='mrkdwn'>{categoryBlurb}</Markdown>
+                                <Markdown className='mrkdwn' remarkPlugins={[remarkBreaks]}>
+                                    {categoryBlurb}
+                                </Markdown>
                             </div>
                         </div>
 

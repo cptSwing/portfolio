@@ -92,13 +92,17 @@ const Content = () => {
                                 return (
                                     <div
                                         key={`${idx}-${isBlockIndexEven}`}
-                                        className='flex flex-col items-stretch justify-start sm:flex-row sm:items-start sm:justify-between'
+                                        className='flex h-fit flex-col items-stretch justify-start sm:flex-row sm:items-start sm:justify-between'
                                     >
                                         {showCase && (
                                             <div
                                                 className={classNames(
-                                                    'group relative w-full cursor-pointer drop-shadow-md sm:h-full sm:w-auto sm:basis-2/5',
-                                                    isBlockIndexEven ? 'mt-4 sm:order-2 sm:ml-12 sm:mt-0' : 'mb-4 sm:order-1 sm:mb-0 sm:mr-12',
+                                                    'group relative max-h-48 min-h-[--min-height] w-full cursor-pointer overflow-hidden drop-shadow-md [--min-height:theme(spacing.48)] sm:max-h-64 sm:w-auto sm:basis-2/5 sm:[--min-height:theme(spacing.56)]',
+                                                    isBlockIndexEven
+                                                        ? idx === 0
+                                                            ? 'mt-4 sm:order-2 sm:ml-12 sm:mt-4'
+                                                            : 'mt-4 sm:order-2 sm:ml-12 sm:mt-0'
+                                                        : 'mb-4 sm:order-1 sm:mb-0 sm:mr-12',
                                                 )}
                                                 onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}
                                             >
@@ -111,10 +115,10 @@ const Content = () => {
                                                         title='YouTube video player'
                                                         referrerPolicy='strict-origin-when-cross-origin'
                                                         allowFullScreen
-                                                        className='h-auto w-full sm:min-h-72'
+                                                        className='size-full min-h-[--min-height]'
                                                     />
                                                 ) : (
-                                                    <img src={`/${(showCase as Post_ShowCase_Image).imgUrl}`} className='h-full object-cover' />
+                                                    <img src={`/${(showCase as Post_ShowCase_Image).imgUrl}`} className='size-full object-cover' />
                                                 )}
                                                 {showCase.caption && (
                                                     <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] mask-edges-x-2/5 group-hover:bg-neutral-500 group-hover:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:group-hover:max-h-full'>
