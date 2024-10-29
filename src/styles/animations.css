@@ -49,6 +49,18 @@
     }
 }
 
+@keyframes expand-corners {
+    from {
+        clip-path: inset(var(--outside-clip-y) var(--outside-clip-x) var(--outside-clip-y) var(--outside-clip-x));
+    }
+    80% {
+        clip-path: inset(var(--clip-final) var(--outside-clip-x) var(--clip-final) var(--outside-clip-x));
+    }
+    to {
+        clip-path: inset(var(--clip-final));
+    }
+}
+
 @keyframes bg-dash {
     to {
         stroke-dashoffset: 0;

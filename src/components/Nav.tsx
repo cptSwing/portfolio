@@ -164,12 +164,23 @@ const CategoryCard: FC<{
             </div>
 
             {/* Background Svg: */}
-            <div className='absolute left-0 top-0 -z-10 size-full object-cover mask-edges-8'>
+            <div
+                className={classNames(
+                    '[--clip-final:theme(spacing.2)] [--outside-clip-x:35%] [--outside-clip-y:25%] [--reveal-duration:200ms]',
+                    'absolute -z-10 size-full object-cover',
+                    'clip-inset-x-[--outside-clip-x] clip-inset-y-[--outside-clip-y]',
+                    'after:transition-[right,left,top,bottom] after:duration-0 after:[--corner-inset-x:--outside-clip-x] after:[--corner-inset-y:--outside-clip-y] after:[--corner-outline-color:--theme-secondary-400]',
+                    isThisCategoryOpen
+                        ? 'after:nav-card-corners !clip-inset-[--clip-final] after:![--corner-inset-x:--clip-final] after:![--corner-inset-y:--clip-final] after:![--corner-outline-color:--theme-accent-200]'
+                        : catId
+                          ? '*:hidden'
+                          : 'after:nav-card-corners [--second-anim-duration:calc(var(--reveal-duration)/4)] group-hover/category:animate-[calc(var(--reveal-duration)+var(--second-anim-duration))_linear_both_expand-corners] after:group-hover/category:delay-[var(--reveal-duration),var(--reveal-duration),0s,0s] after:group-hover/category:duration-[var(--second-anim-duration),var(--second-anim-duration),var(--reveal-duration),var(--reveal-duration)] after:group-hover/category:ease-linear after:group-hover/category:[--corner-inset-x:--clip-final] after:group-hover/category:[--corner-inset-y:--clip-final] after:group-hover/category:[--corner-outline-color:--theme-accent-200] group-active/category:animate-[calc(var(--reveal-duration)+var(--second-anim-duration))_linear_both_expand-corners] after:group-active/category:delay-[var(--reveal-duration),var(--reveal-duration),0s,0s] after:group-active/category:duration-[--reveal-duration] after:group-active/category:[--corner-inset-x:--clip-final] after:group-active/category:[--corner-inset-y:--clip-final] after:group-active/category:[--corner-outline-color:--theme-accent-200]',
+                )}
+            >
                 <BackgroundSvg
                     className={classNames(
-                        isThisCategoryOpen
-                            ? 'fill-[--theme-accent-200] stroke-[--theme-accent-400] opacity-20'
-                            : 'fill-neutral-300 stroke-neutral-400 opacity-15 group-hover/category:fill-[--theme-accent-200] group-hover/category:stroke-[--theme-accent-400]',
+                        'fill-[--color-primary-content-bg] stroke-[--color-primary-content-bg] opacity-50 transition-opacity duration-[--reveal-duration] [--opacity-final:0.9]',
+                        isThisCategoryOpen ? 'opacity-[--opacity-final]' : 'group-hover/category:opacity-[--opacity-final]',
                     )}
                 />
             </div>
