@@ -81,7 +81,7 @@ const CategoryCard: FC<{
             ref={refCallback}
             className={classNames(
                 'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color,margin,width,transform] duration-[50ms,500ms,500ms]',
-                '[--open-offset:theme(spacing.1)]',
+                '[--open-offset:theme(spacing.1)] [--tab-anim-delay:200ms]',
                 isThisCategoryOpen
                     ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
                     : catId
@@ -102,15 +102,13 @@ const CategoryCard: FC<{
                 {/* Tab: */}
                 <div
                     className={classNames(
-                        '[--tab-anim-delay:200ms]',
-                        'px-[calc(var(--category-padding)*2)] py-[--category-padding] transition-[filter,background-color,margin-left,transform]',
+                        'relative px-[calc(var(--category-padding)*2)] py-[--category-padding] transition-[margin-left,transform] [--swipe-delay:75ms]',
                         isThisCategoryOpen
                             ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
-                              : 'bg-transparent group-hover/category:drop-shadow-lg group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-hover/category:duration-[var(--tab-anim-delay),150ms] group-active/category:drop-shadow-lg group-active/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0ms] group-active/category:duration-[var(--tab-anim-delay),150ms]' +
-                                ' before:absolute before:left-1/2 before:top-0 before:-z-10 before:size-full before:-translate-x-1/2 before:bg-[--theme-accent-800] before:opacity-0 before:transition-[clip-path] before:clip-inset-t-[calc(100%-theme(spacing.1))] before:clip-inset-x-px group-hover/category:before:opacity-50 group-hover/category:before:clip-inset-px group-active/category:before:opacity-50 group-active/category:before:clip-inset-px' +
-                                ' after:absolute after:left-0 after:top-0 after:size-full after:drop-shadow-lg after:transition-[clip-path] after:duration-[--tab-anim-delay] after:clip-inset-t-[110%] group-hover/category:after:bg-[--color-primary-content-bg] group-hover/category:after:clip-inset-t-[-10%] group-active/category:after:bg-[--color-primary-content-bg] group-active/category:after:clip-inset-t-[-10%]',
+                              : 'before:absolute before:bottom-0 before:left-0 before:h-1 before:w-full before:border-t-0 before:border-t-[--theme-accent-200] before:transition-[height,border-top-color] before:delay-[0s,var(--swipe-delay)] before:duration-75 before:group-hover/category:h-full before:group-hover/category:border-t-4 before:group-hover/category:border-t-transparent before:group-hover/category:duration-[--tab-anim-delay]' +
+                                ' after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0 after:w-full after:bg-[--color-primary-content-bg] after:drop-shadow-lg after:transition-[height] after:delay-[--swipe-delay] after:duration-75 after:group-hover/category:h-full after:group-hover/category:duration-[--tab-anim-delay] after:group-active/category:h-full',
                     )}
                     style={{
                         ...paddingStyle_Memo,
@@ -166,21 +164,21 @@ const CategoryCard: FC<{
             {/* Background Svg: */}
             <div
                 className={classNames(
-                    '[--clip-final:theme(spacing.2)] [--outside-clip-x:35%] [--outside-clip-y:25%] [--reveal-duration:200ms]',
+                    '[--clip-final:theme(spacing.2)] [--outside-clip-x:35%] [--outside-clip-y:25%]',
                     'absolute -z-10 size-full object-cover',
                     'clip-inset-x-[--outside-clip-x] clip-inset-y-[--outside-clip-y]',
-                    'after:transition-[right,left,top,bottom] after:duration-0 after:[--corner-inset-x:--outside-clip-x] after:[--corner-inset-y:--outside-clip-y] after:[--corner-outline-color:--theme-secondary-400]',
+                    'after:transition-[right,left,top,bottom] after:duration-0 after:[--corner-inset-x:--outside-clip-x] after:[--corner-inset-y:--outside-clip-y] after:[--corner-outline-color:--theme-secondary-400] after:[transition-timing-function:ease-in-out]',
                     isThisCategoryOpen
                         ? 'after:nav-card-corners !clip-inset-[--clip-final] after:![--corner-inset-x:--clip-final] after:![--corner-inset-y:--clip-final] after:![--corner-outline-color:--theme-accent-200]'
                         : catId
                           ? '*:hidden'
-                          : 'after:nav-card-corners [--second-anim-duration:calc(var(--reveal-duration)/4)] group-hover/category:animate-[calc(var(--reveal-duration)+var(--second-anim-duration))_linear_both_expand-corners] after:group-hover/category:delay-[var(--reveal-duration),var(--reveal-duration),0s,0s] after:group-hover/category:duration-[var(--second-anim-duration),var(--second-anim-duration),var(--reveal-duration),var(--reveal-duration)] after:group-hover/category:ease-linear after:group-hover/category:[--corner-inset-x:--clip-final] after:group-hover/category:[--corner-inset-y:--clip-final] after:group-hover/category:[--corner-outline-color:--theme-accent-200] group-active/category:animate-[calc(var(--reveal-duration)+var(--second-anim-duration))_linear_both_expand-corners] after:group-active/category:delay-[var(--reveal-duration),var(--reveal-duration),0s,0s] after:group-active/category:duration-[--reveal-duration] after:group-active/category:[--corner-inset-x:--clip-final] after:group-active/category:[--corner-inset-y:--clip-final] after:group-active/category:[--corner-outline-color:--theme-accent-200]',
+                          : 'after:nav-card-corners [--second-anim-duration:calc(var(--tab-anim-delay)*2)] group-hover/category:animate-[calc(var(--tab-anim-delay)+var(--second-anim-duration))_ease-in-out_both_expand-corners] after:group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0s,0s] after:group-hover/category:duration-[var(--second-anim-duration),var(--second-anim-duration),var(--tab-anim-delay),var(--tab-anim-delay)] after:group-hover/category:[--corner-inset-x:--clip-final] after:group-hover/category:[--corner-inset-y:--clip-final] after:group-hover/category:[--corner-outline-color:--theme-accent-200] group-active/category:animate-[calc(var(--tab-anim-delay)+var(--second-anim-duration))_ease-in-out_both_expand-corners] after:group-active/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0s,0s] after:group-active/category:duration-[--tab-anim-delay] after:group-active/category:[--corner-inset-x:--clip-final] after:group-active/category:[--corner-inset-y:--clip-final] after:group-active/category:[--corner-outline-color:--theme-accent-200]',
                 )}
             >
                 <BackgroundSvg
                     className={classNames(
-                        'fill-[--color-primary-content-bg] stroke-[--color-primary-content-bg] opacity-50 transition-opacity duration-[--reveal-duration] [--opacity-final:0.9]',
-                        isThisCategoryOpen ? 'opacity-[--opacity-final]' : 'group-hover/category:opacity-[--opacity-final]',
+                        'fill-[--color-primary-content-bg] stroke-[--color-primary-content-bg] transition-opacity duration-[--tab-anim-delay]',
+                        isThisCategoryOpen ? 'opacity-80' : 'opacity-100',
                     )}
                 />
             </div>

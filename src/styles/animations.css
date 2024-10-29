@@ -53,7 +53,7 @@
     from {
         clip-path: inset(var(--outside-clip-y) var(--outside-clip-x) var(--outside-clip-y) var(--outside-clip-x));
     }
-    80% {
+    25% {
         clip-path: inset(var(--clip-final) var(--outside-clip-x) var(--clip-final) var(--outside-clip-x));
     }
     to {
