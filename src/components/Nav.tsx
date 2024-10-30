@@ -80,12 +80,10 @@ const CategoryCard: FC<{
         <div
             ref={refCallback}
             className={classNames(
-                '[--open-offset:theme(spacing.1)] [--tab-anim-delay:200ms]',
-                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color,margin,width,transform] duration-[200ms,50ms,50ms,500ms]',
+                '[--tab-anim-delay:200ms]',
+                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color] duration-200',
                 isThisCategoryOpen
-                    ? postId
-                        ? 'bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
-                        : '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
+                    ? 'bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
                     : catId
                       ? 'bg-[--color-primary-inactive-cat-bg] hover:bg-[--color-primary-active-cat-bg]'
                       : 'bg-[--color-primary-active-cat-bg] hover:bg-[--color-primary-active-cat-bg]',
@@ -109,8 +107,8 @@ const CategoryCard: FC<{
                             ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
-                              : 'before:absolute before:bottom-0 before:left-0 before:h-1 before:w-full before:border-t-0 before:border-t-[--theme-accent-200] before:transition-[height,border-top-color] before:delay-[0s,var(--swipe-delay)] before:duration-75 before:group-hover/category:h-full before:group-hover/category:border-t-4 before:group-hover/category:border-t-transparent before:group-hover/category:duration-[--tab-anim-delay]' +
-                                ' after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0 after:w-full after:bg-[--color-primary-content-bg] after:drop-shadow-lg after:transition-[height] after:delay-[--swipe-delay] after:duration-75 after:group-hover/category:h-full after:group-hover/category:duration-[--tab-anim-delay] after:group-active/category:h-full',
+                              : 'before:absolute before:bottom-0 before:left-0 before:h-1 before:w-full before:border-t-0 before:border-t-[--theme-accent-200] before:transition-[height,border-top-color] before:delay-[0s,var(--swipe-delay)] before:duration-75 group-hover/category:before:h-full group-hover/category:before:border-t-4 group-hover/category:before:border-t-transparent group-hover/category:before:duration-[--tab-anim-delay] group-active/category:before:transition-none' +
+                                ' after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0 after:w-full after:bg-[--color-primary-content-bg] after:drop-shadow-lg after:transition-[height] after:delay-[--swipe-delay] after:duration-75 group-hover/category:after:h-full group-hover/category:after:duration-[--tab-anim-delay] group-active/category:after:h-full group-active/category:after:transition-none',
                     )}
                     style={{
                         ...paddingStyle_Memo,
@@ -136,7 +134,7 @@ const CategoryCard: FC<{
                     <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:--theme-accent-400] sm:flex-row sm:items-start sm:justify-between'>
                         <div
                             className={classNames(
-                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/3 sm:self-end',
+                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/3',
                                 isThisCategoryOpen
                                     ? 'bg-[--color-primary-content-bg]'
                                     : catId
