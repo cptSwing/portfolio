@@ -25,8 +25,8 @@ const LogoHeader = () => {
             id='logo'
             ref={refCallback}
             className={classNames(
-                'pointer-events-none relative -mb-px mt-2 flex h-[--header-height] select-none flex-col items-end justify-end transition-[margin,width,height,color] duration-[--header-transition-duration]',
-                catId ? (postId ? '!mb-0 w-[--post-width] !flex-row !justify-start' : 'w-[--checked-width]') : 'w-[--unchecked-width] !cursor-default',
+                'pointer-events-none relative mt-2 flex h-[--header-height] select-none flex-col items-end justify-end transition-[margin,width,height,color] duration-[--header-transition-duration]',
+                catId ? (postId ? 'w-[--post-width] !flex-row !justify-start' : 'w-[--checked-width]') : 'w-[--unchecked-width] !cursor-default',
             )}
         >
             <>
@@ -39,11 +39,11 @@ const LogoHeader = () => {
                     'before:transition-[-webkit-text-stroke-color,-webkit-text-stroke-width,opacity] before:content-[attr(data-title)]',
                     postId
                         ? 'hidden whitespace-nowrap text-left leading-none text-transparent opacity-25 [-webkit-text-stroke-color:--color-bars-post] [-webkit-text-stroke-width:1px] before:!content-[] sm:block'
-                        : 'whitespace-pre text-right leading-[0.85] text-[--theme-accent-300] [font-size:3rem] before:absolute before:right-0 before:-z-10 before:whitespace-pre before:[-webkit-text-stroke-color:--bg-color] before:[-webkit-text-stroke-width:5px]',
+                        : 'whitespace-pre text-right leading-[0.875] text-[--theme-accent-300] [font-size:3rem] before:absolute before:right-0 before:-z-10 before:whitespace-pre before:[-webkit-text-stroke-color:--bg-color] before:[-webkit-text-stroke-width:5px]',
                 )}
-                data-title={postId ? logoText : logoTextNewLine}
+                data-title={postId ? '' : logoTextNewLine}
             >
-                {postId ? logoText : logoTextNewLine}
+                {postId ? '' : logoTextNewLine}
             </div>
         </header>
     );

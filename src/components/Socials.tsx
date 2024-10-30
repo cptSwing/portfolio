@@ -30,7 +30,7 @@ const Socials = () => {
             {/* Name */}
             <div
                 className={classNames(
-                    'absolute -mb-0.5 hidden whitespace-nowrap text-nowrap font-caveat text-xl tracking-tight text-[--color-secondary-active-cat] transition-[opacity,transform] sm:block sm:translate-y-0 sm:group-hover/app:translate-y-full sm:group-hover/app:opacity-0 sm:hover:translate-y-full',
+                    'absolute -mb-1 hidden whitespace-nowrap text-nowrap font-caveat text-xl tracking-tight text-[--color-secondary-active-cat] transition-[opacity,transform] sm:block sm:translate-y-0 sm:group-hover/app:translate-y-full sm:group-hover/app:opacity-0 sm:hover:translate-y-full',
                     openMobileMenu ? 'right-0 !mt-2 -mr-1 !block origin-top-right transition-none [transform:rotate(90deg)_translate(100%,0)]' : '',
                 )}
             >
@@ -42,7 +42,7 @@ const Socials = () => {
                 className={classNames(
                     '[--delay:150ms]',
                     'group pointer-events-auto relative mb-1 flex h-8 w-8 transform-gpu cursor-pointer select-none flex-col items-center justify-start gap-0 overflow-hidden rounded-full bg-transparent p-1 outline outline-[--color-bars-post] transition-[clip-path,transform,column-gap,opacity]',
-                    'sm:h-10 sm:w-auto sm:translate-y-full sm:flex-row sm:items-center sm:bg-[--color-bars-no-post] sm:opacity-0 sm:outline-0 sm:clip-inset-b-full',
+                    'sm:h-8 sm:w-auto sm:translate-y-full sm:flex-row sm:items-center sm:bg-[--color-bars-no-post] sm:opacity-0 sm:outline-0 sm:clip-inset-b-full',
                     'sm:group-hover/app:translate-y-1/3 sm:group-hover/app:opacity-100 sm:group-hover/app:clip-inset-b-1/3 sm:group-hover/app:clip-inset-t-[calc(theme(spacing.1)*-1)] sm:hover:!translate-y-0 sm:hover:gap-x-1.5 sm:hover:!delay-0 sm:hover:!clip-inset-b-0',
                     openMobileMenu
                         ? '!h-screen !w-auto !items-start gap-y-2 !rounded-none opacity-100 outline-0'
@@ -142,7 +142,7 @@ const Socials = () => {
             <div
                 className={classNames(
                     'group pointer-events-auto relative mb-1 hidden aspect-square h-auto transform-gpu cursor-pointer select-none self-center rounded-full bg-transparent p-1 outline outline-[--theme-primary-400] transition-[clip-path,transform,column-gap,opacity] sm:flex sm:self-auto',
-                    'sm:h-8 sm:w-auto sm:translate-y-full sm:flex-row sm:items-center sm:bg-[--color-bars-no-post] sm:opacity-0 sm:outline-0 sm:clip-inset-b-full',
+                    'sm:h-[1.75rem] sm:w-auto sm:translate-y-full sm:flex-row sm:items-center sm:bg-[--color-bars-no-post] sm:opacity-0 sm:outline-0 sm:clip-inset-b-full',
                     'sm:group-hover/app:translate-y-1/3 sm:group-hover/app:opacity-100 sm:group-hover/app:delay-75 sm:group-hover/app:clip-inset-b-1/3 sm:hover:!translate-y-0 sm:hover:gap-x-1.5 sm:hover:!delay-0 sm:hover:!clip-inset-b-0',
                     openMobileMenu ? 'mb-2 mt-[100%] !flex w-12 !items-start opacity-100 outline-0' : postId ? '!mb-0.5' : '',
                 )}

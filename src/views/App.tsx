@@ -40,7 +40,7 @@ const RouteOutlet = () => {
             className={classNames(
                 'group/app relative mx-auto flex w-fit flex-col items-center justify-start',
                 postId
-                    ? '[--header-height:theme(spacing.8)] sm:[--header-height:theme(spacing.16)]'
+                    ? '[--header-height:theme(spacing.8)] sm:[--header-height:theme(spacing.10)]'
                     : '[--header-height:theme(spacing.20)] sm:[--header-height:theme(spacing.28)]',
                 '[--header-transition-duration:300ms]',
                 '[--unchecked-width:80vw] sm:[--unchecked-width:66.666667vw] md:[--unchecked-width:55vw] lg:[--unchecked-width:42.5vw] xl:[--unchecked-width:35vw]',

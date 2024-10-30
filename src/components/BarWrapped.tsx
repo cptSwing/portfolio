@@ -31,7 +31,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <div
             className={classNames(
-                'flex flex-col items-center justify-center transition-[width] duration-300 sm:[--bar-height:theme(spacing.[1.5])]',
+                'flex flex-col items-center justify-center transition-[width] duration-300 sm:[--bar-height:3px]',
                 postId ? 'w-screen [--bar-height:theme(spacing.2)]' : 'w-fit [--bar-height:theme(spacing.1)]',
             )}
         >
@@ -42,11 +42,11 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 className={classNames(
                     'relative -z-10 min-h-[--bar-height] transition-[width,height,background-color] duration-300',
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-[--color-bars-post]' : 'bg-[--color-bars-no-post]',
+                    postId ? '!w-full bg-[--color-bars-post] sm:mask-edges-x-20' : 'bg-[--color-bars-no-post]',
                 )}
             />
 
-            <div ref={contentRefCallback} className={classNames('relative z-20 size-full', postId ? 'my-0 overflow-y-visible' : 'my-1')}>
+            <div ref={contentRefCallback} className={classNames('relative z-20 size-full', postId ? 'my-0 overflow-y-visible' : 'my-1.5')}>
                 {children}
             </div>
 
@@ -57,7 +57,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 className={classNames(
                     'min-h-[--bar-height] transition-[width,background-color] delay-100 duration-500',
                     catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-[--color-bars-post]' : 'bg-[--color-bars-no-post]',
+                    postId ? '!w-full bg-[--color-bars-post] sm:mask-edges-x-20' : 'bg-[--color-bars-no-post]',
                 )}
             />
         </div>

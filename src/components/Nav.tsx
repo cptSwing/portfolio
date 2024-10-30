@@ -21,7 +21,7 @@ const Nav = () => {
     return (
         <nav
             className={classNames(
-                'mx-auto grid transition-[width,height,grid-template-rows,row-gap] duration-500 clip-inset-x-[-5%] clip-inset-y-0',
+                'mx-auto grid transition-[width,height,grid-template-rows,row-gap] duration-500',
                 catId
                     ? 'h-[calc(96vh-var(--header-height)-var(--bar-height))] min-h-96 w-[--checked-width] gap-y-px sm:h-[80vh]'
                     : 'h-[50vh] min-h-96 w-[--unchecked-width] gap-y-1',
@@ -48,7 +48,7 @@ const CategoryCard: FC<{
     const [BackgroundSvg] = useMemo(() => GetBackgroundSvg(categoryTitle), [categoryTitle]);
 
     const navigate = useNavigate();
-    const { catId } = useParams();
+    const { catId, postId } = useParams();
     const isIndexEven = id % 2 === 0;
 
     const [refCallback] = useAnimationOnMount({
@@ -80,13 +80,15 @@ const CategoryCard: FC<{
         <div
             ref={refCallback}
             className={classNames(
-                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color,margin,width,transform] duration-[50ms,500ms,500ms]',
                 '[--open-offset:theme(spacing.1)] [--tab-anim-delay:200ms]',
+                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color,margin,width,transform] duration-[200ms,50ms,50ms,500ms]',
                 isThisCategoryOpen
-                    ? '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
+                    ? postId
+                        ? 'bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
+                        : '-ml-[--open-offset] !w-[calc(var(--checked-width)+(2*var(--open-offset)))] bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
                     : catId
-                      ? 'w-[--checked-width] bg-[--color-primary-inactive-cat-bg] hover:bg-[--color-primary-active-cat-bg]'
-                      : 'w-[--unchecked-width] bg-[--color-primary-active-cat-bg] hover:bg-[--color-primary-active-cat-bg]',
+                      ? 'bg-[--color-primary-inactive-cat-bg] hover:bg-[--color-primary-active-cat-bg]'
+                      : 'bg-[--color-primary-active-cat-bg] hover:bg-[--color-primary-active-cat-bg]',
             )}
             onClick={() => {
                 navigate(catId === id.toString() ? '/' : `/${id}`);
@@ -116,7 +118,7 @@ const CategoryCard: FC<{
                 >
                     <h1
                         className={classNames(
-                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-4xl leading-none transition-[transform,color] duration-[--tab-anim-delay] before:size-full before:transition-[-webkit-text-stroke-color] before:duration-[--tab-anim-delay] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-900] before:[-webkit-text-stroke-width:5px] sm:text-5xl sm:before:[-webkit-text-stroke-width:6px]',
+                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-4xl leading-none transition-[transform,color] duration-[--tab-anim-delay] before:size-full before:transition-[-webkit-text-stroke-color] before:duration-[--tab-anim-delay] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-900] before:[-webkit-text-stroke-width:5px] sm:text-5xl sm:before:[-webkit-text-stroke-width:4px]',
                             isThisCategoryOpen
                                 ? 'text-4xl text-[--color-secondary-active-cat] sm:text-5xl'
                                 : catId
@@ -134,7 +136,7 @@ const CategoryCard: FC<{
                     <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:--theme-accent-400] sm:flex-row sm:items-start sm:justify-between'>
                         <div
                             className={classNames(
-                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/4 sm:self-end lg:basis-1/3 2xl:basis-2/5',
+                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/3 sm:self-end',
                                 isThisCategoryOpen
                                     ? 'bg-[--color-primary-content-bg]'
                                     : catId
@@ -196,11 +198,13 @@ export const MenuOpenedPost: FC<{
     const navigate = useNavigate();
 
     return (
-        <div className={`pointer-events-auto ml-auto flex h-8 items-center justify-end rounded-tl bg-[--color-bars-post] sm:h-6 sm:rounded-tr ${classNames}`}>
+        <div
+            className={`pointer-events-auto ml-auto flex h-8 items-center justify-end rounded-tl bg-[--color-bars-post] sm:h-[1.25rem] sm:rounded-tl-sm sm:rounded-tr-sm ${classNames}`}
+        >
             {hasImages && (
                 <button
                     type='button'
-                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Gallery"] active:before:translate-y-0 active:before:content-["Gallery"] sm:last:rounded-tr'
+                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Gallery"] active:before:translate-y-0 active:before:transition-none active:before:content-["Gallery"] sm:px-1.5 sm:pb-px sm:before:pt-1'
                     onClick={() => setLightboxTo(0)}
                 >
                     <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
@@ -211,15 +215,15 @@ export const MenuOpenedPost: FC<{
                 <>
                     <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />
                     <a
-                        className='group inline-block h-full cursor-pointer px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none first:rounded-tl hover:before:translate-y-0 hover:before:content-["View_Code"] sm:last:rounded-tr'
+                        className='group inline-block h-full animate-ping cursor-pointer px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none hover:animate-none hover:before:translate-y-0 hover:before:content-["View_Code"] sm:px-1.5 sm:pb-px sm:before:pt-1'
                         href={codeLink.href}
                         target='_blank'
                         rel='noreferrer'
                     >
                         <CodeBracketSquareIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
-                        <span className='text-theme-primary-50 absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
+                        {/* <span className='text-theme-primary-50 absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
                             {codeLink.alt}
-                        </span>
+                        </span> */}
                     </a>
                 </>
             )}
@@ -228,7 +232,7 @@ export const MenuOpenedPost: FC<{
             <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />
             <button
                 type='button'
-                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 first:rounded-tl hover:before:translate-y-0 hover:before:content-["Close"] sm:last:rounded-tr'
+                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:px-1.5 sm:pb-px sm:before:pt-1'
                 onClick={() => {
                     navigate(-1);
                 }}
