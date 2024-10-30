@@ -48,7 +48,7 @@ export default plugin(({ matchUtilities, theme }) => {
 
                 return {
                     '--tw-clip-inset-b': bottom,
-                    'clip-path': `inset(var(--tw-clip-inset-t, 0%) var(--tw-clip-inset-r, 0%) var(--tw-clip-inset-b) var(--tw-clip-inset-l, 0%) ${borderRadius});`,
+                    'clip-path': `inset(var(--tw-clip-inset-t, 0%) var(--tw-clip-inset-r, 0%) var(--tw-clip-inset-b) var(--tw-clip-inset-l, 0%) ${borderRadius}) !important;`,
                 };
             },
             'clip-inset-l': (insetLeft_round: string) => {

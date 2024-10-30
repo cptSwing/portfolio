@@ -20,7 +20,7 @@
     }
 
     h2 {
-        @apply relative z-0 block font-dm-serif text-2xl font-semibold sm:text-5xl;
+        @apply relative z-0 block font-dm-serif font-semibold [font-size:1.75rem] [line-height:2.125rem] sm:text-5xl;
     }
 
     h3 {

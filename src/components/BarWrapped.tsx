@@ -31,8 +31,8 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <div
             className={classNames(
-                'flex flex-col items-center justify-center transition-[width] duration-300 sm:[--bar-height:3px]',
-                postId ? 'w-screen [--bar-height:theme(spacing.2)]' : 'w-fit [--bar-height:theme(spacing.1)]',
+                'flex flex-col items-center justify-center transition-[width] duration-300 [--bar-height:theme(spacing.1)] sm:[--bar-height:3px]',
+                postId ? 'w-screen' : 'w-fit',
             )}
         >
             {/* Top Bar: */}

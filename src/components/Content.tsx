@@ -10,21 +10,32 @@ import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
 import parseDateString from '../lib/parseDateString';
 import { ToolsUrls } from '../types/enums';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import testDb from '../queries/testDb.json';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 const testDbTyped = testDb as DataBase;
 
 const Content = () => {
     const { catId, postId } = useParams();
+    const navigate = useNavigate();
 
-    const activePost_Memo = useMemo(() => {
+    const activeData_Memo = useMemo(() => {
         const activeCat = Object.values(testDbTyped).find((category) => category.id.toString() === catId);
-        if (activeCat) {
-            return activeCat.posts.find((post) => post.id.toString() === postId);
-        }
+        let activePost: Post | undefined = undefined;
+        const allPostIds = activeCat!.posts.map((post) => {
+            if (post.id.toString() === postId) {
+                activePost = post;
+            }
+
+            return post.id;
+        });
+
+        return [activePost, allPostIds] as [Post | undefined, number[]];
     }, [catId, postId]);
-    const { title, subTitle, toolsUsed, showCases, textBlocks, codeLink, date } = activePost_Memo ?? {};
+
+    const [activePost_Memo, postIds_Memo] = activeData_Memo;
+    const { title, subTitle, toolsUsed, showCases, textBlocks, codeLink, date, id } = activePost_Memo ?? {};
 
     const filteredImages_Memo = useMemo(
         () =>
@@ -55,14 +66,38 @@ const Content = () => {
     );
 
     return (
-        <main className='z-0 h-[calc(96vh-var(--header-height)-var(--bar-height))] w-full'>
-            <div className='relative mx-auto flex h-full w-[--post-width] flex-col bg-[--theme-bg-lighter]'>
+        <main className='z-0 h-[--content-height] w-full [--content-height:calc(98vh-((var(--header-height)*2)+(var(--bar-height)*2)))] sm:[--content-height:calc(100vh-(var(--header-height)*2))]'>
+            <div className='relative mx-auto flex h-full w-[--post-width] min-w-[--post-width] flex-col bg-[--theme-bg-lighter]'>
                 {/* Floating Title: */}
                 <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-[--post-width] items-end justify-center text-center'>
-                    <h2 className='absolute translate-y-[calc(100%+(var(--bar-height)/2))] px-4 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-t-0 sm:translate-y-1/2 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-t-[30%]'>
+                    <h2 className='absolute translate-y-[calc(50%+var(--bar-height))] transform-gpu select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
                         {title}
                     </h2>
                     <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
+                    <div
+                        className='group/left pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height)+(var(--bar-height)*4))] -translate-x-full cursor-pointer sm:bottom-1/2 sm:left-[calc((100%-var(--post-width))/2)] sm:right-auto sm:top-1/2 sm:translate-y-0'
+                        onClick={() => {
+                            if (typeof id === 'number') {
+                                const currentIndex = postIds_Memo.findIndex((val) => val === id);
+                                const previousInArray = postIds_Memo[currentIndex - 1 >= 0 ? currentIndex - 1 : postIds_Memo.length - 1];
+                                navigate(`../${previousInArray}`);
+                            }
+                        }}
+                    >
+                        <ChevronLeftIcon className='h-[--header-height] stroke-[--color-bars-no-post] opacity-50 group-hover/left:opacity-100 group-active/left:opacity-100 sm:h-16 sm:scale-x-75' />
+                    </div>
+                    <div
+                        className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height)+(var(--bar-height)*4))] translate-x-full cursor-pointer sm:bottom-1/2 sm:left-auto sm:right-[calc((100%-var(--post-width))/2)] sm:top-1/2 sm:translate-y-0'
+                        onClick={() => {
+                            if (typeof id === 'number') {
+                                const currentIndex = postIds_Memo.findIndex((val) => val === id);
+                                const nextInArray = postIds_Memo[currentIndex + 1 < postIds_Memo.length ? currentIndex + 1 : 0];
+                                navigate(`../${nextInArray}`);
+                            }
+                        }}
+                    >
+                        <ChevronRightIcon className='h-[--header-height] stroke-[--color-bars-no-post] opacity-50 group-hover/right:opacity-100 group-active/right:opacity-100 sm:h-16 sm:scale-x-75' />
+                    </div>
                 </div>
 
                 {textBlocks ? (

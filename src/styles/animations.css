@@ -50,14 +50,38 @@
 }
 
 @keyframes expand-corners {
-    from {
+    0% {
         clip-path: inset(var(--outside-clip-y) var(--outside-clip-x) var(--outside-clip-y) var(--outside-clip-x));
     }
     25% {
         clip-path: inset(var(--clip-final) var(--outside-clip-x) var(--clip-final) var(--outside-clip-x));
     }
-    to {
+    100% {
         clip-path: inset(var(--clip-final));
+    }
+}
+
+@keyframes shrink-corners {
+    0% {
+        clip-path: inset(var(--clip-final));
+    }
+    75% {
+        clip-path: inset(var(--clip-final) var(--outside-clip-x) var(--clip-final) var(--outside-clip-x));
+    }
+    100% {
+        clip-path: inset(var(--outside-clip-y) var(--outside-clip-x) var(--outside-clip-y) var(--outside-clip-x));
+    }
+}
+
+@keyframes outer-ring {
+    0%,
+    100% {
+        transform: scale3d(1, 1, 1);
+    }
+
+    50% {
+        transform: scale3d(1.2, 1.05, 1);
+        filter: brightness(1.5);
     }
 }
 

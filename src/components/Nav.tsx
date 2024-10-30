@@ -21,11 +21,13 @@ const Nav = () => {
     return (
         <nav
             className={classNames(
-                'mx-auto grid transition-[width,height,grid-template-rows,row-gap] duration-500',
-                catId
-                    ? 'h-[calc(96vh-var(--header-height)-var(--bar-height))] min-h-96 w-[--checked-width] gap-y-px sm:h-[80vh]'
-                    : 'h-[50vh] min-h-96 w-[--unchecked-width] gap-y-1',
-                postId ? 'absolute left-0 right-0 -z-10' : 'z-0 block',
+                'z-0 mx-auto grid h-[calc(98vh-((var(--header-height)*2)+(var(--bar-height)*2)))] max-w-[--checked-width] transition-[width,height,grid-template-rows,row-gap] duration-500',
+
+                postId
+                    ? 'absolute left-0 right-0 -z-10'
+                    : catId
+                      ? 'min-h-96 w-[--checked-width] gap-y-px sm:h-[80vh]'
+                      : '!h-[50vh] min-h-96 w-[--unchecked-width] !max-w-[--unchecked-width] gap-y-1',
             )}
             style={{
                 gridTemplateRows: categoriesArray.map(({ id }) => (id.toString() === catId ? '14fr' : '1fr')).join(' '),
@@ -48,7 +50,7 @@ const CategoryCard: FC<{
     const [BackgroundSvg] = useMemo(() => GetBackgroundSvg(categoryTitle), [categoryTitle]);
 
     const navigate = useNavigate();
-    const { catId, postId } = useParams();
+    const { catId } = useParams();
     const isIndexEven = id % 2 === 0;
 
     const [refCallback] = useAnimationOnMount({
@@ -57,6 +59,7 @@ const CategoryCard: FC<{
             animationDuration: 300,
             animationDelay: 100 * id,
             animationFillMode: 'backwards',
+            animationIterationCount: 1,
         },
         startDelay: 400,
         hiddenAtStart: true,
@@ -107,8 +110,8 @@ const CategoryCard: FC<{
                             ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
-                              : 'before:absolute before:bottom-0 before:left-0 before:h-1 before:w-full before:border-t-0 before:border-t-[--theme-accent-200] before:transition-[height,border-top-color] before:delay-[0s,var(--swipe-delay)] before:duration-75 group-hover/category:before:h-full group-hover/category:before:border-t-4 group-hover/category:before:border-t-transparent group-hover/category:before:duration-[--tab-anim-delay] group-active/category:before:transition-none' +
-                                ' after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0 after:w-full after:bg-[--color-primary-content-bg] after:drop-shadow-lg after:transition-[height] after:delay-[--swipe-delay] after:duration-75 group-hover/category:after:h-full group-hover/category:after:duration-[--tab-anim-delay] group-active/category:after:h-full group-active/category:after:transition-none',
+                              : 'before:absolute before:bottom-0 before:left-0 before:h-0 before:w-full before:border-t-0 before:border-t-[--theme-accent-200] before:transition-[height,border-top-color,border-top-width] before:delay-[--swipe-delay] before:duration-[--swipe-delay] group-hover/category:before:h-full group-hover/category:before:border-t-[3px] group-hover/category:before:border-t-transparent group-hover/category:before:delay-[0s,calc(var(--tab-anim-delay)/2),0s] group-hover/category:before:duration-[var(--tab-anim-delay),calc(var(--tab-anim-delay)/2),var(--swipe-delay)] group-active/category:before:transition-none' +
+                                ' after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0 after:w-full after:bg-[--color-primary-content-bg] after:drop-shadow-lg after:transition-[height] after:delay-[--swipe-delay] after:duration-100 group-hover/category:after:h-full group-hover/category:after:duration-[--tab-anim-delay] group-active/category:after:h-full group-active/category:after:transition-none',
                     )}
                     style={{
                         ...paddingStyle_Memo,
@@ -164,15 +167,14 @@ const CategoryCard: FC<{
             {/* Background Svg: */}
             <div
                 className={classNames(
-                    '[--clip-final:theme(spacing.2)] [--outside-clip-x:35%] [--outside-clip-y:25%]',
+                    '[--clip-final:theme(spacing.1)] [--outside-clip-x:25%] [--outside-clip-y:20%] [--second-anim-duration:calc(var(--tab-anim-delay)*2)] sm:[--clip-final:theme(spacing.2)] sm:[--outside-clip-x:35%] sm:[--outside-clip-y:25%]',
                     'absolute -z-10 size-full object-cover',
-                    'clip-inset-x-[--outside-clip-x] clip-inset-y-[--outside-clip-y]',
-                    'after:transition-[right,left,top,bottom] after:duration-0 after:[--corner-inset-x:--outside-clip-x] after:[--corner-inset-y:--outside-clip-y] after:[--corner-outline-color:--theme-secondary-400] after:[transition-timing-function:ease-in-out]',
+                    'after:transition-[right,left,top,bottom] after:[--corner-inset-x:--outside-clip-x] after:[--corner-inset-y:--outside-clip-y] after:[--corner-outline-color:--theme-secondary-400] after:[transition-timing-function:ease-in-out]',
                     isThisCategoryOpen
-                        ? 'after:nav-card-corners !clip-inset-[--clip-final] after:![--corner-inset-x:--clip-final] after:![--corner-inset-y:--clip-final] after:![--corner-outline-color:--theme-accent-200]'
+                        ? 'after:nav-card-corners clip-inset-[--clip-final] after:![--corner-inset-x:--clip-final] after:![--corner-inset-y:--clip-final] after:![--corner-outline-color:--theme-accent-200]'
                         : catId
                           ? '*:hidden'
-                          : 'after:nav-card-corners [--second-anim-duration:calc(var(--tab-anim-delay)*2)] group-hover/category:animate-[calc(var(--tab-anim-delay)+var(--second-anim-duration))_ease-in-out_both_expand-corners] after:group-hover/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0s,0s] after:group-hover/category:duration-[var(--second-anim-duration),var(--second-anim-duration),var(--tab-anim-delay),var(--tab-anim-delay)] after:group-hover/category:[--corner-inset-x:--clip-final] after:group-hover/category:[--corner-inset-y:--clip-final] after:group-hover/category:[--corner-outline-color:--theme-accent-200] group-active/category:animate-[calc(var(--tab-anim-delay)+var(--second-anim-duration))_ease-in-out_both_expand-corners] after:group-active/category:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0s,0s] after:group-active/category:duration-[--tab-anim-delay] after:group-active/category:[--corner-inset-x:--clip-final] after:group-active/category:[--corner-inset-y:--clip-final] after:group-active/category:[--corner-outline-color:--theme-accent-200]',
+                          : 'after:nav-card-corners animate-[calc((var(--tab-anim-delay)+var(--second-anim-duration))/2)_ease-in-out_0s_1_normal_forwards_running_shrink-corners] after:delay-[0s,0s,var(--tab-anim-delay),var(--tab-anim-delay)] after:duration-[var(--tab-anim-delay),var(--tab-anim-delay),calc(var(--tab-anim-delay)/2),calc(var(--tab-anim-delay)/2)] group-hover/category:animate-[calc(var(--tab-anim-delay)+var(--second-anim-duration))_ease-in-out_0s_1_normal_forwards_running_expand-corners] group-hover/category:after:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0s,0s] group-hover/category:after:duration-[var(--second-anim-duration),var(--second-anim-duration),var(--tab-anim-delay),var(--tab-anim-delay)] group-hover/category:after:[--corner-inset-x:--clip-final] group-hover/category:after:[--corner-inset-y:--clip-final] group-hover/category:after:[--corner-outline-color:--theme-accent-200] group-active/category:animate-[calc(var(--tab-anim-delay)+var(--second-anim-duration))_ease-in-out_0s_1_normal_forwards_running_expand-corners] group-active/category:after:delay-[var(--tab-anim-delay),var(--tab-anim-delay),0s,0s] group-active/category:after:duration-[--tab-anim-delay] group-active/category:after:[--corner-inset-x:--clip-final] group-active/category:after:[--corner-inset-y:--clip-final] group-active/category:after:[--corner-outline-color:--theme-accent-200]',
                 )}
             >
                 <BackgroundSvg
@@ -195,14 +197,26 @@ export const MenuOpenedPost: FC<{
 }> = ({ hasImages, codeLink, setLightboxTo, classNames }) => {
     const navigate = useNavigate();
 
+    const [codeRefCb] = useAnimationOnMount({
+        animationProps: {
+            animationName: 'outer-ring',
+            animationDuration: 850,
+            animationDelay: 0,
+            animationFillMode: 'forwards',
+            animationIterationCount: 3,
+        },
+        startDelay: 0,
+        hiddenAtStart: false,
+    });
+
     return (
         <div
-            className={`pointer-events-auto ml-auto flex h-8 items-center justify-end rounded-tl bg-[--color-bars-post] sm:h-[1.25rem] sm:rounded-tl-sm sm:rounded-tr-sm ${classNames}`}
+            className={`pointer-events-auto mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-[1.25rem] sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post] ${classNames}`}
         >
             {hasImages && (
                 <button
                     type='button'
-                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Gallery"] active:before:translate-y-0 active:before:transition-none active:before:content-["Gallery"] sm:px-1.5 sm:pb-px sm:before:pt-1'
+                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Gallery"] active:before:translate-y-0 active:before:transition-none active:before:content-["Gallery"] sm:px-1.5 sm:pb-px sm:before:block sm:before:pt-1'
                     onClick={() => setLightboxTo(0)}
                 >
                     <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
@@ -213,12 +227,17 @@ export const MenuOpenedPost: FC<{
                 <>
                     <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />
                     <a
-                        className='group inline-block h-full animate-ping cursor-pointer px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none hover:animate-none hover:before:translate-y-0 hover:before:content-["View_Code"] sm:px-1.5 sm:pb-px sm:before:pt-1'
+                        className='group inline-block h-full cursor-pointer px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:text-nowrap before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none hover:before:translate-y-0 hover:before:content-["View_Code"] sm:px-1.5 sm:pb-px sm:before:block sm:before:pt-1'
                         href={codeLink.href}
                         target='_blank'
                         rel='noreferrer'
                     >
-                        <CodeBracketSquareIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
+                        <CodeBracketSquareIcon
+                            key={codeLink.href}
+                            // @ts-expect-error ...
+                            ref={codeRefCb}
+                            className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]'
+                        />
                         {/* <span className='text-theme-primary-50 absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
                             {codeLink.alt}
                         </span> */}
@@ -230,12 +249,12 @@ export const MenuOpenedPost: FC<{
             <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />
             <button
                 type='button'
-                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:px-1.5 sm:pb-px sm:before:pt-1'
+                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:px-1.5 sm:pb-px sm:before:block sm:before:pt-1'
                 onClick={() => {
-                    navigate(-1);
+                    navigate('../');
                 }}
             >
-                <XMarkIcon className='aspect-square h-full stroke-red-600 hover:stroke-[--theme-accent-800]' />
+                <XMarkIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
             </button>
         </div>
     );

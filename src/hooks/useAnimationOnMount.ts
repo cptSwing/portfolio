@@ -22,13 +22,14 @@ type UseAnimationOnMountProps = {
         animationDuration: number;
         animationDelay: number;
         animationFillMode: CSSProperties['animationFillMode'];
+        animationIterationCount: CSSProperties['animationIterationCount'];
     };
     startDelay?: number;
     hiddenAtStart?: boolean;
 };
 const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
     const {
-        animationProps: { animationName, animationDuration, animationDelay, animationFillMode },
+        animationProps: { animationName, animationDuration, animationDelay, animationFillMode, animationIterationCount },
         startDelay = 0,
         hiddenAtStart = false,
     } = props;
@@ -61,6 +62,7 @@ const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
                             'animation-delay': animationDelay,
                             'animation-duration': animationDuration,
                             'animation-fill-mode': animationFillMode as string,
+                            'animation-iteration-count': animationIterationCount?.toString() as string | number,
                         });
                     }, startDelay);
                 } else {
@@ -71,11 +73,14 @@ const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
                         'animation-delay': animationDelay,
                         'animation-duration': animationDuration,
                         'animation-fill-mode': animationFillMode as string,
+                        'animation-iteration-count': animationIterationCount?.toString() as string | number,
                     });
                 }
+            } else {
+                ref.current = null;
             }
         },
-        [animationName, animationDuration, animationDelay, animationFillMode, hiddenAtStart, startDelay, animate_Cb],
+        [animationName, animationDuration, animationDelay, animationFillMode, hiddenAtStart, startDelay, animationIterationCount, animate_Cb],
     );
 
     return [refCallback, hasEnded] as [(elem: HTMLElement | null) => void, boolean];
