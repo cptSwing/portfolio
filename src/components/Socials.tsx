@@ -19,7 +19,7 @@ const Socials = () => {
         <nav
             ref={clickRef}
             className={classNames(
-                'absolute left-0 top-0 z-50 flex w-full items-end justify-start gap-1 pl-0.5 pt-2 sm:bottom-0 sm:top-auto sm:p-0',
+                'absolute left-0 top-0 z-50 flex w-full items-end justify-start gap-1 pl-0.5 pt-2 transition-colors duration-0 sm:bottom-0 sm:top-auto sm:p-0',
                 openMobileMenu
                     ? 'pointer-events-auto !fixed h-screen !w-fit flex-col !items-start bg-gray-500/95'
                     : postId
@@ -45,9 +45,9 @@ const Socials = () => {
                     'sm:h-8 sm:w-auto sm:translate-y-full sm:flex-row sm:items-center sm:bg-[--color-bars-no-post] sm:opacity-0 sm:outline-0 sm:clip-inset-b-full',
                     'sm:group-hover/app:translate-y-1/3 sm:group-hover/app:opacity-100 sm:group-hover/app:clip-inset-[-5%] sm:group-hover/app:clip-inset-b-1/3 sm:hover:!translate-y-0 sm:hover:gap-x-1.5 sm:hover:drop-shadow-lg sm:hover:!delay-0 sm:hover:!clip-inset-b-[-5%]',
                     openMobileMenu
-                        ? '!h-screen !w-auto !items-start gap-y-0.5 !rounded-none !opacity-100 outline-0'
+                        ? 'h-full !w-auto !items-start gap-y-0.5 !rounded-none !opacity-100 outline-0'
                         : postId
-                          ? '!mb-3 !ml-1 !h-6 !w-6 outline-2 sm:!mb-0.5 sm:!ml-0 sm:!h-8 sm:!w-auto sm:opacity-100'
+                          ? '!mb-3 !ml-1.5 !h-6 !w-6 outline-2 sm:!mb-0.5 sm:!ml-0 sm:!h-8 sm:!w-auto sm:opacity-100'
                           : '',
                 )}
                 onClick={() => {

@@ -61,13 +61,5 @@ export default {
             },
         },
     },
-    plugins: [
-        tailwindScrollbar,
-        tailwindBreakpointsInspector,
-        tailwindClipInset,
-        tailwindMaskEdges,
-        // plugin(function ({ addVariant }) {
-        //     addVariant('hover', ['@media (hover: hover) { &:hover }', '@media (hover: none) { &:active }']);
-        // }),
-    ],
+    plugins: [tailwindScrollbar, tailwindBreakpointsInspector, tailwindClipInset, tailwindMaskEdges],
 };
