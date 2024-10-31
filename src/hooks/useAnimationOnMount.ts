@@ -8,7 +8,7 @@ const themeTransitionTiming = resolveConfig(tailwindConfig).theme.transitionTimi
 
 export type AnimationProperties = Record<string, string | number | null>;
 const animationProperties: AnimationProperties = {
-    'animation-duration': 2000,
+    'animation-duration': '2000ms',
     'animation-timing-function': themeTransitionTiming['DEFAULT'],
     'animation-delay': 0,
     'animation-iteration-count': 1,
@@ -25,12 +25,14 @@ type UseAnimationOnMountProps = {
         animationIterationCount: CSSProperties['animationIterationCount'];
     };
     startDelay?: number;
+    displayAtStart?: boolean;
     hiddenAtStart?: boolean;
 };
 const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
     const {
         animationProps: { animationName, animationDuration, animationDelay, animationFillMode, animationIterationCount },
         startDelay = 0,
+        displayAtStart = true,
         hiddenAtStart = false,
     } = props;
 
@@ -51,27 +53,30 @@ const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
         (elem: HTMLElement | null) => {
             if (elem) {
                 ref.current = elem;
-                if (hiddenAtStart) elem.style.setProperty('display', 'none');
+                if (hiddenAtStart) elem.style.setProperty('visibility', 'hidden');
+                if (!displayAtStart) elem.style.setProperty('display', 'none');
 
                 if (startDelay) {
                     setTimeout(() => {
-                        elem.style.removeProperty('display');
+                        if (hiddenAtStart) elem.style.removeProperty('visibility');
+                        if (!displayAtStart) elem.style.removeProperty('display');
                         animate_Cb(elem, {
                             ...animationProperties,
                             'animation-name': animationName,
                             'animation-delay': animationDelay,
-                            'animation-duration': animationDuration,
+                            'animation-duration': `${animationDuration}ms`,
                             'animation-fill-mode': animationFillMode as string,
                             'animation-iteration-count': animationIterationCount?.toString() as string | number,
                         });
                     }, startDelay);
                 } else {
-                    elem.style.removeProperty('display');
+                    if (hiddenAtStart) elem.style.removeProperty('visibility');
+                    if (!displayAtStart) elem.style.removeProperty('display');
                     animate_Cb(elem, {
                         ...animationProperties,
                         'animation-name': animationName,
                         'animation-delay': animationDelay,
-                        'animation-duration': animationDuration,
+                        'animation-duration': `${animationDuration}ms`,
                         'animation-fill-mode': animationFillMode as string,
                         'animation-iteration-count': animationIterationCount?.toString() as string | number,
                     });
@@ -80,7 +85,7 @@ const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
                 ref.current = null;
             }
         },
-        [animationName, animationDuration, animationDelay, animationFillMode, hiddenAtStart, startDelay, animationIterationCount, animate_Cb],
+        [animationName, animationDuration, animationDelay, animationFillMode, hiddenAtStart, displayAtStart, startDelay, animationIterationCount, animate_Cb],
     );
 
     return [refCallback, hasEnded] as [(elem: HTMLElement | null) => void, boolean];

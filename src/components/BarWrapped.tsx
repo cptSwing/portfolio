@@ -2,6 +2,7 @@ import { FC } from 'react';
 import classNames from '../lib/classNames';
 import { useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
+import { bars_heightenDuration, bars_widenDuration } from '../lib/animationValues';
 
 const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     const { catId, postId } = useParams();
@@ -9,23 +10,25 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     const [barsRefCallback] = useAnimationOnMount({
         animationProps: {
             animationName: 'width-to-full',
-            animationDuration: 100,
+            animationDuration: bars_widenDuration,
             animationDelay: 0,
-            animationFillMode: 'none',
+            animationFillMode: 'forwards',
+            animationIterationCount: 1,
         },
         startDelay: 0,
-        hiddenAtStart: false,
+        displayAtStart: false,
     });
 
     const [contentRefCallback] = useAnimationOnMount({
         animationProps: {
             animationName: 'height-to-full',
-            animationDuration: 300,
+            animationDuration: bars_heightenDuration,
             animationDelay: 0,
-            animationFillMode: 'backwards',
+            animationFillMode: 'forwards',
+            animationIterationCount: 1,
         },
-        startDelay: 100,
-        hiddenAtStart: true,
+        startDelay: bars_widenDuration / 1.5,
+        displayAtStart: false,
     });
 
     return (
@@ -40,13 +43,23 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 id='top-bar'
                 ref={barsRefCallback}
                 className={classNames(
-                    'relative -z-10 min-h-[--bar-height] transition-[width,height,background-color] duration-300',
-                    catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-[--color-bars-post] sm:mask-edges-x-20' : 'bg-[--color-bars-no-post]',
+                    'h-[--bar-height] w-[--bar-width] transition-[width,height,background-color] duration-300',
+                    catId ? '[--bar-width:--checked-width]' : '[--bar-width:--unchecked-width]',
+                    postId ? 'bg-[--color-bars-post] [--bar-width:100%] sm:mask-edges-x-20' : 'bg-[--color-bars-no-post]',
                 )}
             />
 
-            <div ref={contentRefCallback} className={classNames('relative z-20 size-full', postId ? 'my-0 overflow-y-visible' : 'my-1.5')}>
+            <div
+                ref={contentRefCallback}
+                className={classNames(
+                    'relative z-20 my-1.5 transition-[height,width] [--content-height:calc(98vh-((var(--header-height)*2)+(var(--bar-height)*2)))] sm:[--content-height:calc(100vh-((var(--header-height)*2)+(var(--bar-height)*2)))]',
+                    postId
+                        ? '!my-0 h-[--content-height] w-[--post-width] overflow-y-visible'
+                        : catId
+                          ? 'h-[80vh] max-h-[48rem] w-[--checked-width]'
+                          : 'h-[50vh] max-h-[28rem] w-[--unchecked-width]',
+                )}
+            >
                 {children}
             </div>
 
@@ -55,9 +68,9 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                 id='bottom-bar'
                 ref={barsRefCallback}
                 className={classNames(
-                    'min-h-[--bar-height] transition-[width,background-color] delay-100 duration-500',
-                    catId ? 'w-[--checked-width]' : 'w-[--unchecked-width]',
-                    postId ? '!w-full bg-[--color-bars-post] sm:mask-edges-x-20' : 'bg-[--color-bars-no-post]',
+                    'h-[--bar-height] w-[--bar-width] transition-[width,background-color] delay-100 duration-500',
+                    catId ? '[--bar-width:--checked-width]' : '[--bar-width:--unchecked-width]',
+                    postId ? 'bg-[--color-bars-post] [--bar-width:100%] sm:mask-edges-x-20' : 'bg-[--color-bars-no-post]',
                 )}
             />
         </div>

@@ -11,6 +11,7 @@ import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import GetBackgroundSvg from './GetBackgroundSvg.tsx';
 import { useBreakpoint } from '../hooks/useBreakPoint.ts';
 import remarkBreaks from 'remark-breaks';
+import { bars_totalDuration } from '../lib/animationValues.ts';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
@@ -21,13 +22,9 @@ const Nav = () => {
     return (
         <nav
             className={classNames(
-                'z-0 mx-auto grid h-[calc(98vh-((var(--header-height)*2)+(var(--bar-height)*2)))] max-w-[--checked-width] transition-[width,height,grid-template-rows,row-gap] duration-500',
+                'z-0 mx-auto grid size-full transition-[grid-template-rows,row-gap] duration-500',
 
-                postId
-                    ? 'absolute left-0 right-0 -z-10'
-                    : catId
-                      ? 'min-h-96 w-[--checked-width] gap-y-px sm:h-[80vh]'
-                      : '!h-[50vh] min-h-96 w-[--unchecked-width] !max-w-[--unchecked-width] gap-y-1',
+                postId ? 'absolute left-0 right-0 -z-10' : catId ? 'gap-y-px' : 'gap-y-1',
             )}
             style={{
                 gridTemplateRows: categoriesArray.map(({ id }) => (id.toString() === catId ? '14fr' : '1fr')).join(' '),
@@ -61,8 +58,8 @@ const CategoryCard: FC<{
             animationFillMode: 'backwards',
             animationIterationCount: 1,
         },
-        startDelay: 400,
-        hiddenAtStart: true,
+        startDelay: bars_totalDuration / 2,
+        displayAtStart: false,
     });
 
     const isThisCategoryOpen = useMemo(() => (catId ? parseInt(catId) === id : false), [catId, id]);
@@ -72,9 +69,9 @@ const CategoryCard: FC<{
         if (catId && !isThisCategoryOpen) {
             const openedIndex = catId ? parseInt(catId) : null;
             if (id < openedIndex!) {
-                return { '--tw-translate-y': isDesktop ? '0.75rem' : '1rem' } as unknown as CSSTransition;
+                return { '--tw-translate-y': isDesktop ? '0.75rem' : '0.666rem' } as unknown as CSSTransition;
             } else if (id > openedIndex!) {
-                return { '--tw-translate-y': isDesktop ? '-2rem' : '-1.25rem' } as unknown as CSSTransition;
+                return { '--tw-translate-y': isDesktop ? '-2rem' : '-1.5rem' } as unknown as CSSTransition;
             }
         }
     }, [isThisCategoryOpen, catId, id, isDesktop]);

@@ -1,7 +1,6 @@
 import Content from '../components/Content';
 import LogoHeader from '../components/LogoHeader';
 import Nav from '../components/Nav';
-import Background from '../components/Background';
 import { BrowserRouter, Outlet, Route, Routes, useParams } from 'react-router-dom';
 import BarWrapped from '../components/BarWrapped';
 import classNames from '../lib/classNames';
@@ -16,9 +15,6 @@ const App = () => {
                     </Route>
                 </Route>
             </Routes>
-
-            {/* Fixed Position, Background: */}
-            <Background />
         </BrowserRouter>
     );
 };

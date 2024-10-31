@@ -66,10 +66,10 @@ const Content = () => {
     );
 
     return (
-        <main className='z-0 h-[--content-height] w-full [--content-height:calc(98vh-((var(--header-height)*2)+(var(--bar-height)*2)))] sm:[--content-height:calc(100vh-(var(--header-height)*2))]'>
+        <main className='z-0 size-full'>
             <div className='relative mx-auto flex h-full w-[--post-width] min-w-[--post-width] flex-col bg-[--theme-bg-lighter]'>
                 {/* Floating Title: */}
-                <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-[--post-width] items-end justify-center text-center'>
+                <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-full items-end justify-center text-center'>
                     <h2 className='absolute translate-y-[calc(50%+var(--bar-height))] transform-gpu select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
                         {title}
                     </h2>

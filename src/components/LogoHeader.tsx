@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 import classNames from '../lib/classNames';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
 import Socials from './Socials';
+import { bars_totalDuration } from '../lib/animationValues';
 
-const logoText = 'webdev & 3d things';
-const logoTextNewLine = 'webdev\n& 3d things';
+const logoText = 'webdev\n& 3d things';
 
 const LogoHeader = () => {
     const { catId, postId } = useParams();
@@ -13,11 +13,12 @@ const LogoHeader = () => {
         animationProps: {
             animationName: 'text-upwards',
             animationDuration: 250,
-            animationDelay: 1000,
-            animationFillMode: 'backwards',
+            animationDelay: 0,
+            animationFillMode: 'forwards',
+            animationIterationCount: 1,
         },
-        startDelay: 0,
-        hiddenAtStart: false,
+        startDelay: bars_totalDuration,
+        hiddenAtStart: true,
     });
 
     return (
@@ -25,7 +26,7 @@ const LogoHeader = () => {
             id='logo'
             ref={refCallback}
             className={classNames(
-                'pointer-events-none relative mt-2 flex h-[--header-height] select-none flex-col items-end justify-end transition-[margin,width,height,color] duration-[--header-transition-duration]',
+                'min-h-[--header-height]bars_totalDuration pointer-events-none relative mt-2 flex h-[--header-height] select-none flex-col items-end justify-end transition-[margin,width,height,color] duration-[--header-transition-duration]',
                 catId ? (postId ? 'w-[--post-width] !flex-row !justify-start' : 'w-[--checked-width]') : 'w-[--unchecked-width] !cursor-default',
             )}
         >
@@ -41,9 +42,9 @@ const LogoHeader = () => {
                         ? 'hidden whitespace-nowrap text-left leading-none text-transparent opacity-25 [-webkit-text-stroke-color:--color-bars-post] [-webkit-text-stroke-width:1px] before:!content-[] sm:block'
                         : 'whitespace-pre text-right leading-[0.875] text-[--theme-accent-300] [font-size:3rem] before:absolute before:right-0 before:-z-10 before:whitespace-pre before:[-webkit-text-stroke-color:--bg-color] before:[-webkit-text-stroke-width:5px]',
                 )}
-                data-title={postId ? '' : logoTextNewLine}
+                data-title={postId ? '' : logoText}
             >
-                {postId ? '' : logoTextNewLine}
+                {postId ? '' : logoText}
             </div>
         </header>
     );
