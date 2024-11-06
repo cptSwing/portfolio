@@ -96,6 +96,7 @@ const CategoryCard: FC<{
                 className={classNames(
                     '[--category-padding:theme(spacing.[1.5])] sm:[--category-padding:theme(spacing.2)]',
                     'shadow-theme-primary-950 relative flex flex-col items-start justify-start overflow-hidden',
+                    // 'after:absolute after:bottom-0 after:h-[--category-padding] after:w-full after:bg-[--color-primary-content-bg]',
                     isThisCategoryOpen ? 'size-full drop-shadow-lg' : '',
                 )}
             >
@@ -129,12 +130,14 @@ const CategoryCard: FC<{
                     </h1>
                 </div>
 
-                {/* Testimonials &  etc: */}
+                {/* Testimonials & PostCards etc: */}
                 {isThisCategoryOpen && (
-                    <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*2)] py-[--category-padding] [--color-text-testimonial:--theme-accent-400] sm:flex-row sm:items-start sm:justify-between'>
+                    <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-y-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*1)] py-[--category-padding] [--color-text-testimonial:--theme-accent-400] [--text-width:33.3333%] sm:flex-row sm:items-start sm:justify-between'>
                         <div
                             className={classNames(
-                                'relative flex min-w-[25%] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:basis-1/3',
+                                'absolute flex items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500',
+                                // 'min-w-[25%] sm:basis-1/3',
+                                'w-[--text-width]',
                                 isThisCategoryOpen
                                     ? 'bg-[--color-primary-content-bg]'
                                     : catId
@@ -144,7 +147,7 @@ const CategoryCard: FC<{
                         >
                             <div
                                 className={classNames(
-                                    'relative z-10 select-none text-pretty font-besley text-base text-[--color-text-testimonial] transition-transform duration-300 sm:text-2xl',
+                                    'relative z-10 select-none text-pretty bg-[--color-primary-content-bg] font-besley text-base text-[--color-text-testimonial] transition-transform duration-300 sm:text-2xl',
                                     isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
                                 )}
                             >
@@ -154,7 +157,7 @@ const CategoryCard: FC<{
                             </div>
                         </div>
 
-                        <div className='mt-2 h-full w-full flex-1 overflow-x-hidden sm:mt-0 sm:w-auto'>
+                        <div className='mt-2 h-full w-full flex-1 sm:mt-0 sm:w-auto'>
                             <PostCards posts={posts} />
                         </div>
                     </div>
