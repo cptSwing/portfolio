@@ -1,26 +1,31 @@
-import { useIntersectionObserver } from '@uidotdev/usehooks';
-import { CSSProperties, FC, useCallback } from 'react';
+import { CSSProperties, FC, useCallback, useRef } from 'react';
 import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { Post } from '../types/types';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
+import { useCustomIntersectionObserver } from '../hooks/useCustomIntersectionObserver';
 
 export const PostCards: FC<{
     posts: Post[];
 }> = ({ posts }) => {
+    const parentRef = useRef<HTMLDivElement | null>(null);
+
     return (
-        <div className='scroll-gutter h-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:p-2 sm:pr-4 sm:pt-4'>
+        <div
+            ref={parentRef}
+            className='scroll-gutter h-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:w-full sm:p-2 sm:pr-4 sm:pt-4'
+        >
             <div
-                className='pointer-events-none flex flex-col gap-y-6'
+                className='pointer-events-none flex flex-col gap-y-6 sm:ml-auto sm:mr-0 sm:w-[calc(100%-var(--text-width))]'
                 onClick={(e) => {
                     /* Needed for children's navigate() calls in an onClick to work: */
                     e.stopPropagation();
                 }}
             >
                 {posts.map((post, idx) => (
-                    <SinglePostCard key={post.title + idx} post={post} index={idx} />
+                    <SinglePostCard key={post.title + idx} post={post} index={idx} parentRef={parentRef} />
                 ))}
             </div>
         </div>
@@ -30,23 +35,28 @@ export const PostCards: FC<{
 export const SinglePostCard: FC<{
     post: Post;
     index: number;
-}> = ({ post, index }) => {
+    parentRef: React.MutableRefObject<HTMLDivElement | null>;
+}> = ({ post, index, parentRef }) => {
     const { id, title, titleCardBg, subTitle, date } = post;
     const { year } = parseDateString(date);
     const navigate = useNavigate();
 
-    const [intersectionRefCb, entry] = useIntersectionObserver({
+    const [intersectionRefCb, entry, hasIntersected] = useCustomIntersectionObserver({
         threshold: 0,
+        root: parentRef.current,
+        // rootMargin: '0px 0px -210px 0px',
+        rootMargin: '200% 0% -104px 0%',
     });
 
     const animDurationMs = 200,
         animDelayMs = 100;
     const [mountAnimRefCallback] = useAnimationOnMount({
         animationProps: {
-            animationName: 'enter-from-right',
+            animationName: 'enter-from-left',
             animationDuration: animDurationMs,
             animationDelay: animDelayMs * index,
             animationFillMode: 'backwards',
+            animationIterationCount: 1,
         },
         startDelay: animDelayMs * index,
         hiddenAtStart: true,
@@ -67,13 +77,19 @@ export const SinglePostCard: FC<{
                 {
                     '--card-hover-duration': '100ms',
                     '--card-hover-delay': '50ms',
-                    '--tw-translate-x': entry?.isIntersecting ? 0 : '100%',
+                    // '--tw-translate-x': entry?.isIntersecting ? 0 : '-100%',
+                    // '--tw-translate-x': hasIntersected ? 0 : '-100%',
                 } as CSSProperties
             }
             /* NOTE Post Card height set here: */
             className={classNames(
-                'group/this pointer-events-auto relative translate-x-full transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] [--card-outline-width:6px] [--card-text-color:--theme-primary-50] hover:-outline-offset-[--card-outline-width] active:-outline-offset-[--card-outline-width]',
+                '[--card-outline-width:6px] [--card-text-color:--theme-primary-50]',
+                'group/this pointer-events-auto relative ml-auto mr-0 origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] sm:w-full',
+                'hover:-outline-offset-[--card-outline-width] active:-outline-offset-[--card-outline-width]',
                 titleCardBg ? 'h-44 sm:h-52' : 'h-24',
+                entry?.isIntersecting ? 'translate-x-0 translate-y-0' : '-translate-x-[105%]',
+                // hasIntersected ? (entry?.isIntersecting ? '!translate-x-0' : '!-translate-x-full !outline-green-600') : 'mb-[100%] !outline-red-600',
+                // entry?.isIntersecting ? 'translate-x-0 !outline-green-600' : '-translate-x-full !outline-red-600',
             )}
             onClick={() => navigate(id.toString())}
         >

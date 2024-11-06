@@ -20,6 +20,15 @@
     }
 }
 
+@keyframes enter-from-left {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0%);
+    }
+}
+
 @keyframes text-upwards {
     from {
         @apply origin-top opacity-0;
