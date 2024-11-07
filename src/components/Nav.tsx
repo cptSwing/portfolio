@@ -1,6 +1,6 @@
 import { DataBase, Post } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useRef } from 'react';
 import testDb from '../queries/testDb.json';
 import { PostCards } from './PostCards.tsx';
 import { MENU_CATEGORY } from '../types/enums.ts';
@@ -49,6 +49,8 @@ const CategoryCard: FC<{
     const navigate = useNavigate();
     const { catId } = useParams();
     const isIndexEven = id % 2 === 0;
+
+    const postCardParentRef = useRef<HTMLDivElement | null>(null);
 
     const [refCallback] = useAnimationOnMount({
         animationProps: {
@@ -135,9 +137,9 @@ const CategoryCard: FC<{
                     <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-y-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*1)] py-[--category-padding] [--color-text-testimonial:--theme-accent-400] [--text-width:33.3333%] sm:flex-row sm:items-start sm:justify-between'>
                         <div
                             className={classNames(
-                                'absolute flex items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500',
+                                'absolute flex items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:w-[--text-width]',
                                 // 'min-w-[25%] sm:basis-1/3',
-                                'w-[--text-width]',
+                                '',
                                 isThisCategoryOpen
                                     ? 'bg-[--color-primary-content-bg]'
                                     : catId
@@ -157,8 +159,11 @@ const CategoryCard: FC<{
                             </div>
                         </div>
 
-                        <div className='mt-2 h-full w-full flex-1 sm:mt-0 sm:w-auto'>
-                            <PostCards posts={posts} />
+                        <div
+                            ref={postCardParentRef}
+                            className='scroll-gutter mt-2 h-full w-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:mt-0 sm:w-full sm:p-2 sm:pr-4 sm:pt-4'
+                        >
+                            <PostCards posts={posts} parentRef={postCardParentRef} />
                         </div>
                     </div>
                 )}
