@@ -16,14 +16,23 @@ export const useCustomIntersectionObserver = (observerOptions: IntersectionObser
             setHasIntersected(true);
         }
 
-        // return () => setHasIntersected(false);
+        return () => setHasIntersected(false);
     }, [entry?.isIntersecting]);
 
-    return [ref, entry, hasIntersected] as [
+    const [hasFinishedIntersecting, setHasFinishedIntersecting] = useState(false);
+
+    useEffect(() => {
+        if (entry?.intersectionRatio && entry?.intersectionRatio >= 1) {
+            setHasFinishedIntersecting(true);
+        }
+        return () => setHasFinishedIntersecting(false);
+    }, [entry?.intersectionRatio]);
+
+    return [ref, entry, { hasIntersected, hasFinishedIntersecting }] as [
         (
             instance: Element | null,
         ) => void | React.DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof React.DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES],
         IntersectionObserverEntry | null,
-        boolean,
+        { hasIntersected: boolean; hasFinishedIntersecting: boolean },
     ];
 };
