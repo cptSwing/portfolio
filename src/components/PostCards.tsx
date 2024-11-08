@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { Post } from '../types/types';
@@ -6,6 +6,7 @@ import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
 import { useIntersectionObserver, useMeasure } from '@uidotdev/usehooks';
+import { useCustomIntersectionObserver } from '../hooks/useCustomIntersectionObserver';
 
 export const PostCards: FC<{
     posts: Post[];
@@ -27,6 +28,17 @@ export const PostCards: FC<{
     );
 };
 
+/**
+ * states:
+ *
+ * name 				| desc					| how?
+ * -----------------------------------------------------------------------------------------------------------
+ * waiting				| off-view				| !intersecting, left: parent.left (-width), parent.bottom 0
+ * start 				| start pos 			| intersecting, left: parent.left 0, "
+ * Moving				| end pos 				| intersecting, left: parent.left 100% - width, "
+ * Finished				| back 2 regular flow	| hasIntersected (set when outside of observer window), top: parent.top + (height * index)
+ */
+
 export const SinglePostCard: FC<{
     post: Post;
     index: number;
@@ -36,11 +48,36 @@ export const SinglePostCard: FC<{
     const { year } = parseDateString(date);
     const navigate = useNavigate();
 
-    const [intersectionRefCb, entry] = useIntersectionObserver({
+    const thisRef = useRef<HTMLDivElement | null>(null);
+    const noLongerIntersecting = useRef(false);
+
+    const [parentBoundingRect, setParentBoundingRect] = useState(parentRef.current?.getBoundingClientRect());
+
+    useEffect(() => {
+        if (parentRef.current) {
+            setParentBoundingRect(parentRef.current?.getBoundingClientRect());
+        }
+    }, [parentRef]);
+
+    const rootMarginMemo = useMemo(() => {
+        return `${(parentBoundingRect?.height ?? 512) - (thisRef.current?.getBoundingClientRect().height ?? 0)}px 0% 0px 0px`;
+    }, [parentBoundingRect]);
+
+    console.log(
+        '%c[PostCards]',
+        'color: #e779d9',
+        `rootMargin, parentBoundingRect?.height, thisRef.current?.getBoundingClientRect().height :`,
+        rootMarginMemo,
+        parentBoundingRect?.height,
+        thisRef.current?.getBoundingClientRect().height,
+    );
+
+    const [intersectionRefCb, entry, { hasFinishedIntersecting }] = useCustomIntersectionObserver({
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
         root: parentRef.current,
-        rootMargin: '200% 0% 0px 0px',
+        rootMargin: rootMarginMemo,
     });
+    const { isIntersecting, intersectionRatio } = entry ?? {};
 
     const animDurationMs = 200,
         animDelayMs = 100;
@@ -60,29 +97,47 @@ export const SinglePostCard: FC<{
         (elem: HTMLDivElement | null) => {
             // mountAnimRefCallback(elem);
             intersectionRefCb(elem);
+            thisRef.current = elem;
         },
         [mountAnimRefCallback, intersectionRefCb],
     );
 
+    const positionStyle_Memo = useMemo(() => {
+        const style = {
+            height: titleCardBg ? 'var(--card-height)' : 'var(--card-height-no-image)',
+        };
+
+        let postCardPositionState = PostCardPositionState['Waiting'];
+
+        if (isIntersecting && intersectionRatio === 0) {
+            postCardPositionState = PostCardPositionState['Start'];
+        } else if (isIntersecting && (intersectionRatio ?? 0) > 0) {
+            postCardPositionState = PostCardPositionState['Moving'];
+        } else if (hasFinishedIntersecting) {
+            postCardPositionState = PostCardPositionState['Finished'];
+        }
+
+        switch (postCardPositionState) {
+            case PostCardPositionState['Start']:
+                return { ...style, left: 0, bottom: 0 };
+            case PostCardPositionState['Moving']:
+                return { ...style, left: '50%', bottom: 0 };
+            case PostCardPositionState['Finished']:
+                return { ...style, left: '100%', bottom: 'auto', top: `calc(${style.height} * ${index})` };
+            // 'Waiting'
+            default:
+                return { ...style, left: '-100%', bottom: 0 };
+        }
+    }, [isIntersecting, hasFinishedIntersecting, titleCardBg, intersectionRatio, index]);
+
     return (
-        <div
-            ref={refCbWrapper}
-            style={{
-                top: entry?.isIntersecting
-                    ? `calc((var(--card-height) * ${index}) + (2 * var(--card-outline-width)) + 1.5rem)`
-                    : `${parentRef.current?.getBoundingClientRect().top}px`,
-                l,
-            }}
-            className={classNames('absolute w-full', titleCardBg ? 'h-[--card-height]' : 'h-[--card-height-no-image]')}
-        >
+        <div ref={refCbWrapper} style={positionStyle_Memo} className='absolute w-full'>
             <div
                 /* NOTE Post Card height set here: */
                 className={classNames(
                     '[--card-hover-delay:50ms] [--card-hover-duration:100ms] [--card-text-color:--theme-primary-50]',
                     'group/this pointer-events-auto relative ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration]',
                     'hover:-outline-offset-[--card-outline-width] active:-outline-offset-[--card-outline-width]',
-
-                    // animHasEnded ? (entry?.isIntersecting ? 'translate-x-0' : '-translate-x-[105%]') : '',
                 )}
                 onClick={() => navigate(id.toString())}
             >
@@ -120,3 +175,10 @@ export const SinglePostCard: FC<{
         </div>
     );
 };
+
+enum PostCardPositionState {
+    'Waiting',
+    'Start',
+    'Moving',
+    'Finished',
+}

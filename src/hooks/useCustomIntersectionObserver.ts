@@ -22,12 +22,16 @@ export const useCustomIntersectionObserver = (observerOptions: IntersectionObser
     const [hasFinishedIntersecting, setHasFinishedIntersecting] = useState(false);
 
     useEffect(() => {
-        if (entry?.intersectionRatio && entry?.intersectionRatio >= 1) {
+        if ((entry?.intersectionRatio ?? 0) >= 1) {
             setHasFinishedIntersecting(true);
         }
         return () => setHasFinishedIntersecting(false);
     }, [entry?.intersectionRatio]);
 
+    console.log('%c[useCustomIntersectionObserver]', 'color: #9ff163', `ref, entry, { hasIntersected, hasFinishedIntersecting } :`, ref, entry, {
+        hasIntersected,
+        hasFinishedIntersecting,
+    });
     return [ref, entry, { hasIntersected, hasFinishedIntersecting }] as [
         (
             instance: Element | null,
