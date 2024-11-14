@@ -15,7 +15,7 @@ export const PostCards: FC<{
     return (
         <div
             style={{ height: `calc(${posts.length} * var(--card-height))` }}
-            className='pointer-events-none relative [--card-height-no-image:theme(spacing.24)] [--card-height:theme(spacing.44)] [--card-outline-width:6px] sm:ml-auto sm:mr-0 sm:w-[calc(100%-var(--text-width))] sm:[--card-height:theme(spacing.52)]'
+            className='pointer-events-none [--card-height-no-image:theme(spacing.24)] [--card-height:theme(spacing.44)] [--card-outline-width:6px] sm:ml-auto sm:mr-0 sm:w-[calc(100%-var(--text-width))] sm:[--card-height:theme(spacing.52)]'
             onClick={(e) => {
                 /* Needed for children's navigate() calls in an onClick to work: */
                 e.stopPropagation();
@@ -56,6 +56,7 @@ export const SinglePostCard: FC<{
     useEffect(() => {
         if (parentRef.current) {
             setParentBoundingRect(parentRef.current?.getBoundingClientRect());
+            console.log('%c[PostCards]', 'color: #35552e', `parentBoundingRect :`, parentBoundingRect);
         }
     }, [parentRef]);
 
@@ -63,21 +64,16 @@ export const SinglePostCard: FC<{
         return `${(parentBoundingRect?.height ?? 512) - (thisRef.current?.getBoundingClientRect().height ?? 0)}px 0% 0px 0px`;
     }, [parentBoundingRect]);
 
-    console.log(
-        '%c[PostCards]',
-        'color: #e779d9',
-        `rootMargin, parentBoundingRect?.height, thisRef.current?.getBoundingClientRect().height :`,
-        rootMarginMemo,
-        parentBoundingRect?.height,
-        thisRef.current?.getBoundingClientRect().height,
-    );
-
     const [intersectionRefCb, entry, { hasFinishedIntersecting }] = useCustomIntersectionObserver({
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
         root: parentRef.current,
         rootMargin: rootMarginMemo,
     });
     const { isIntersecting, intersectionRatio } = entry ?? {};
+
+    useEffect(() => {
+        console.log('%c[PostCards]', 'color: #45981b', `intersectionRatio :`, intersectionRatio);
+    }, [intersectionRatio]);
 
     const animDurationMs = 200,
         animDelayMs = 100;
@@ -107,15 +103,15 @@ export const SinglePostCard: FC<{
             height: titleCardBg ? 'var(--card-height)' : 'var(--card-height-no-image)',
         };
 
-        let postCardPositionState = PostCardPositionState['Waiting'];
+        const postCardPositionState = PostCardPositionState['Waiting'];
 
-        if (isIntersecting && intersectionRatio === 0) {
-            postCardPositionState = PostCardPositionState['Start'];
-        } else if (isIntersecting && (intersectionRatio ?? 0) > 0) {
-            postCardPositionState = PostCardPositionState['Moving'];
-        } else if (hasFinishedIntersecting) {
-            postCardPositionState = PostCardPositionState['Finished'];
-        }
+        // if (isIntersecting && intersectionRatio === 0) {
+        //     postCardPositionState = PostCardPositionState['Start'];
+        // } else if (isIntersecting && (intersectionRatio ?? 0) > 0) {
+        //     postCardPositionState = PostCardPositionState['Moving'];
+        // } else if (hasFinishedIntersecting) {
+        //     postCardPositionState = PostCardPositionState['Finished'];
+        // }
 
         switch (postCardPositionState) {
             case PostCardPositionState['Start']:
@@ -128,7 +124,7 @@ export const SinglePostCard: FC<{
             default:
                 return { ...style, left: '-100%', bottom: 0 };
         }
-    }, [isIntersecting, hasFinishedIntersecting, titleCardBg, intersectionRatio, index]);
+    }, [isIntersecting, hasFinishedIntersecting, titleCardBg, index /* intersectionRatio */]);
 
     return (
         <div ref={refCbWrapper} style={positionStyle_Memo} className='absolute w-full'>
