@@ -1,43 +1,35 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useRef, useState } from 'react';
 import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { Post } from '../types/types';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
-import { useIntersectionObserver, useMeasure } from '@uidotdev/usehooks';
-import { useCustomIntersectionObserver } from '../hooks/useCustomIntersectionObserver';
+import convertRemToPixels from '../lib/convertRemToPixels';
+import useScrollPosition from '../hooks/useScrollPosition';
 
 export const PostCards: FC<{
     posts: Post[];
     parentRef: React.MutableRefObject<HTMLDivElement | null>;
 }> = ({ posts, parentRef }) => {
     return (
-        <div
-            style={{ height: `calc(${posts.length} * var(--card-height))` }}
-            className='pointer-events-none [--card-height-no-image:theme(spacing.24)] [--card-height:theme(spacing.44)] [--card-outline-width:6px] sm:ml-auto sm:mr-0 sm:w-[calc(100%-var(--text-width))] sm:[--card-height:theme(spacing.52)]'
-            onClick={(e) => {
-                /* Needed for children's navigate() calls in an onClick to work: */
-                e.stopPropagation();
-            }}
-        >
-            {posts.map((post, idx) => (
-                <SinglePostCard key={post.title + idx} post={post} index={idx} parentRef={parentRef} />
-            ))}
+        <div className='scroll-gutter mt-2 size-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:mt-0 sm:p-2 sm:pr-4 sm:pt-4'>
+            {/* Wrapping div for scrolling */}
+            <div
+                style={{ height: `calc(var(--card-height) * ${posts.length})` }}
+                className='pointer-events-none [--card-height-no-image:theme(spacing.24)] [--card-height:theme(spacing.44)] [--card-outline-width:6px] [--card-width:calc(100%-(var(--text-width)-(var(--card-outline-width)*2)))] sm:ml-auto sm:mr-0 sm:w-[--card-width] sm:[--card-height:theme(spacing.52)]'
+                onClick={(e) => {
+                    /* Needed for children's navigate() calls in an onClick to work: */
+                    e.stopPropagation();
+                }}
+            >
+                {posts.map((post, idx) => (
+                    <SinglePostCard key={post.title + idx} post={post} index={idx} parentRef={parentRef} />
+                ))}
+            </div>
         </div>
     );
 };
-
-/**
- * states:
- *
- * name 				| desc					| how?
- * -----------------------------------------------------------------------------------------------------------
- * waiting				| off-view				| !intersecting, left: parent.left (-width), parent.bottom 0
- * start 				| start pos 			| intersecting, left: parent.left 0, "
- * Moving				| end pos 				| intersecting, left: parent.left 100% - width, "
- * Finished				| back 2 regular flow	| hasIntersected (set when outside of observer window), top: parent.top + (height * index)
- */
 
 export const SinglePostCard: FC<{
     post: Post;
@@ -49,37 +41,16 @@ export const SinglePostCard: FC<{
     const navigate = useNavigate();
 
     const thisRef = useRef<HTMLDivElement | null>(null);
-    const noLongerIntersecting = useRef(false);
 
-    const [parentBoundingRect, setParentBoundingRect] = useState(parentRef.current?.getBoundingClientRect());
+    const [cardHeight, setCardHeight] = useState(0);
 
-    useEffect(() => {
-        if (parentRef.current) {
-            setParentBoundingRect(parentRef.current?.getBoundingClientRect());
-            console.log('%c[PostCards]', 'color: #35552e', `parentBoundingRect :`, parentBoundingRect);
-        }
-    }, [parentRef]);
-
-    const rootMarginMemo = useMemo(() => {
-        return `${(parentBoundingRect?.height ?? 512) - (thisRef.current?.getBoundingClientRect().height ?? 0)}px 0% 0px 0px`;
-    }, [parentBoundingRect]);
-
-    const [intersectionRefCb, entry, { hasFinishedIntersecting }] = useCustomIntersectionObserver({
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-        root: parentRef.current,
-        rootMargin: rootMarginMemo,
-    });
-    const { isIntersecting, intersectionRatio } = entry ?? {};
-
-    useEffect(() => {
-        console.log('%c[PostCards]', 'color: #45981b', `intersectionRatio :`, intersectionRatio);
-    }, [intersectionRatio]);
+    const style = useScrollPosition(index, cardHeight, parentRef);
 
     const animDurationMs = 200,
         animDelayMs = 100;
     const [mountAnimRefCallback, animHasEnded] = useAnimationOnMount({
         animationProps: {
-            animationName: 'enter-from-right',
+            animationName: 'enter-from-left',
             animationDuration: animDurationMs,
             animationDelay: animDelayMs * index,
             animationFillMode: 'backwards',
@@ -91,43 +62,21 @@ export const SinglePostCard: FC<{
 
     const refCbWrapper = useCallback(
         (elem: HTMLDivElement | null) => {
-            // mountAnimRefCallback(elem);
-            intersectionRefCb(elem);
-            thisRef.current = elem;
+            mountAnimRefCallback(elem);
+            if (elem) {
+                thisRef.current = elem;
+                setCardHeight(convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-height')));
+            }
         },
-        [mountAnimRefCallback, intersectionRefCb],
+        [mountAnimRefCallback],
     );
 
-    const positionStyle_Memo = useMemo(() => {
-        const style = {
-            height: titleCardBg ? 'var(--card-height)' : 'var(--card-height-no-image)',
-        };
-
-        const postCardPositionState = PostCardPositionState['Waiting'];
-
-        // if (isIntersecting && intersectionRatio === 0) {
-        //     postCardPositionState = PostCardPositionState['Start'];
-        // } else if (isIntersecting && (intersectionRatio ?? 0) > 0) {
-        //     postCardPositionState = PostCardPositionState['Moving'];
-        // } else if (hasFinishedIntersecting) {
-        //     postCardPositionState = PostCardPositionState['Finished'];
-        // }
-
-        switch (postCardPositionState) {
-            case PostCardPositionState['Start']:
-                return { ...style, left: 0, bottom: 0 };
-            case PostCardPositionState['Moving']:
-                return { ...style, left: '50%', bottom: 0 };
-            case PostCardPositionState['Finished']:
-                return { ...style, left: '100%', bottom: 'auto', top: `calc(${style.height} * ${index})` };
-            // 'Waiting'
-            default:
-                return { ...style, left: '-100%', bottom: 0 };
-        }
-    }, [isIntersecting, hasFinishedIntersecting, titleCardBg, index /* intersectionRatio */]);
-
     return (
-        <div ref={refCbWrapper} style={positionStyle_Memo} className='absolute w-full'>
+        <div
+            ref={refCbWrapper}
+            style={style}
+            className={classNames('absolute w-[--card-width] transition-[top,bottom,left]', titleCardBg ? 'h-[--card-height]' : 'h-[--card-height-no-image]')}
+        >
             <div
                 /* NOTE Post Card height set here: */
                 className={classNames(
@@ -171,10 +120,3 @@ export const SinglePostCard: FC<{
         </div>
     );
 };
-
-enum PostCardPositionState {
-    'Waiting',
-    'Start',
-    'Moving',
-    'Finished',
-}

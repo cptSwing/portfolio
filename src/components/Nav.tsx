@@ -159,10 +159,7 @@ const CategoryCard: FC<{
                             </div>
                         </div>
 
-                        <div
-                            ref={postCardParentRef}
-                            className='scroll-gutter mt-2 h-full w-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:mt-0 sm:w-full sm:p-2 sm:pr-4 sm:pt-4'
-                        >
+                        <div ref={postCardParentRef} className='relative size-full'>
                             <PostCards posts={posts} parentRef={postCardParentRef} />
                         </div>
                     </div>
