@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { Post } from '../types/types';
@@ -7,24 +7,52 @@ import { useNavigate } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
 import convertRemToPixels from '../lib/convertRemToPixels';
 import useScrollPosition from '../hooks/useScrollPosition';
+import { useScroll } from 'react-use';
 
 export const PostCards: FC<{
     posts: Post[];
-    parentRef: React.MutableRefObject<HTMLDivElement | null>;
-}> = ({ posts, parentRef }) => {
+    postCardsParentHeight: number;
+}> = ({ posts, postCardsParentHeight }) => {
+    const parentRef = useRef<HTMLDivElement | null>(null);
+    const { y: scrollY } = useScroll(parentRef);
+    const [heightValues, setHeightValues] = useState({ parentHeight: 0, postCardsParentHeight });
+
+    useEffect(() => {
+        setHeightValues((state) => ({ ...state, postCardsParentHeight }));
+    }, [postCardsParentHeight]);
+
+    const ref_Cb = useCallback(
+        (elem: HTMLDivElement | null) => {
+            if (elem) {
+                setHeightValues({
+                    postCardsParentHeight,
+                    parentHeight: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-height')) * posts.length,
+                });
+                parentRef.current = elem;
+            }
+        },
+        [posts.length, postCardsParentHeight],
+    );
+
     return (
-        <div className='scroll-gutter mt-2 size-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:mt-0 sm:p-2 sm:pr-4 sm:pt-4'>
+        <div
+            ref={ref_Cb}
+            className={
+                '[--card-height-no-image:theme(spacing.24)] [--card-height:theme(spacing.44)] [--card-outline-width:6px] [--card-width:calc(100%-(var(--text-width)-(var(--card-outline-width)*2)))] sm:[--card-height:theme(spacing.52)]' +
+                ' scroll-gutter mt-2 size-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:mt-0 sm:p-2 sm:pr-4 sm:pt-4'
+            }
+        >
             {/* Wrapping div for scrolling */}
             <div
-                style={{ height: `calc(var(--card-height) * ${posts.length})` }}
-                className='pointer-events-none [--card-height-no-image:theme(spacing.24)] [--card-height:theme(spacing.44)] [--card-outline-width:6px] [--card-width:calc(100%-(var(--text-width)-(var(--card-outline-width)*2)))] sm:ml-auto sm:mr-0 sm:w-[--card-width] sm:[--card-height:theme(spacing.52)]'
+                style={{ height: `${heightValues.parentHeight}px` }}
+                className='pointer-events-none sm:ml-auto sm:mr-0 sm:w-[--card-width]'
                 onClick={(e) => {
                     /* Needed for children's navigate() calls in an onClick to work: */
                     e.stopPropagation();
                 }}
             >
                 {posts.map((post, idx) => (
-                    <SinglePostCard key={post.title + idx} post={post} index={idx} parentRef={parentRef} />
+                    <SinglePostCard key={post.title + idx} post={post} index={idx} heightValues={heightValues} parentScroll={scrollY} />
                 ))}
             </div>
         </div>
@@ -34,9 +62,14 @@ export const PostCards: FC<{
 export const SinglePostCard: FC<{
     post: Post;
     index: number;
-    parentRef: React.MutableRefObject<HTMLDivElement | null>;
-}> = ({ post, index, parentRef }) => {
+    heightValues: {
+        parentHeight: number;
+        postCardsParentHeight: number;
+    };
+    parentScroll: number;
+}> = ({ post, index, heightValues, parentScroll }) => {
     const { id, title, titleCardBg, subTitle, date } = post;
+    const { parentHeight, postCardsParentHeight } = heightValues;
     const { year } = parseDateString(date);
     const navigate = useNavigate();
 
@@ -44,7 +77,7 @@ export const SinglePostCard: FC<{
 
     const [cardHeight, setCardHeight] = useState(0);
 
-    const style = useScrollPosition(index, cardHeight, parentRef);
+    const style = useScrollPosition(index, cardHeight, parentHeight, postCardsParentHeight, parentScroll);
 
     const animDurationMs = 200,
         animDelayMs = 100;
@@ -62,10 +95,10 @@ export const SinglePostCard: FC<{
 
     const refCbWrapper = useCallback(
         (elem: HTMLDivElement | null) => {
-            mountAnimRefCallback(elem);
+            // mountAnimRefCallback(elem);
             if (elem) {
+                setCardHeight(elem.getBoundingClientRect().height);
                 thisRef.current = elem;
-                setCardHeight(convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-height')));
             }
         },
         [mountAnimRefCallback],

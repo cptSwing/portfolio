@@ -12,6 +12,7 @@ import GetBackgroundSvg from './GetBackgroundSvg.tsx';
 import { useBreakpoint } from '../hooks/useBreakPoint.ts';
 import remarkBreaks from 'remark-breaks';
 import { bars_totalDuration } from '../lib/animationValues.ts';
+import { useMeasure } from 'react-use';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
@@ -50,8 +51,6 @@ const CategoryCard: FC<{
     const { catId } = useParams();
     const isIndexEven = id % 2 === 0;
 
-    const postCardParentRef = useRef<HTMLDivElement | null>(null);
-
     const [refCallback] = useAnimationOnMount({
         animationProps: {
             animationName: isIndexEven ? 'streak-to-right' : 'streak-to-left',
@@ -77,6 +76,8 @@ const CategoryCard: FC<{
             }
         }
     }, [isThisCategoryOpen, catId, id, isDesktop]);
+
+    const [postCardsParentRef_Cb, { height: postCardsParentHeight }] = useMeasure();
 
     return (
         <div
@@ -159,8 +160,8 @@ const CategoryCard: FC<{
                             </div>
                         </div>
 
-                        <div ref={postCardParentRef} className='relative size-full'>
-                            <PostCards posts={posts} parentRef={postCardParentRef} />
+                        <div ref={postCardsParentRef_Cb} className='relative size-full'>
+                            <PostCards posts={posts} postCardsParentHeight={postCardsParentHeight} />
                         </div>
                     </div>
                 )}

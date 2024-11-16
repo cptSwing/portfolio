@@ -12,51 +12,59 @@ import { useScroll } from 'react-use';
  * Finished				| back 2 regular flow	| hasIntersected (set when outside of observer window), top: parent.top + (height * index)
  */
 
-const useScrollPosition = (cardNumber: number, cardHeight_Pixel: number, containerRef: React.MutableRefObject<HTMLDivElement | null>) => {
-    const { y } = useScroll(containerRef);
-    const [containerHeight, setContainerHeight] = useState(0);
-
-    useEffect(() => {
-        if (containerRef.current && !containerHeight) {
-            setContainerHeight(containerRef.current?.getBoundingClientRect().height);
-        }
-    });
-
+const useScrollPosition = (
+    cardNumber: number,
+    cardHeight_Pixel: number,
+    containerHeight_Pixel: number,
+    postCardsParentHeight: number,
+    containerScrollTop: number,
+) => {
     const style = useMemo(() => {
-        const distanceToTopWithOwnHeight_Memo = cardHeight_Pixel * (cardNumber + 1);
-        const top_Memo = containerHeight - cardHeight_Pixel;
+        const distanceToTopWithOwnHeight = cardHeight_Pixel * (cardNumber + 1);
+        // const top = containerHeight_Pixel - cardHeight_Pixel;
+        const top = postCardsParentHeight - cardHeight_Pixel;
 
-        if (typeof top_Memo === 'number' && typeof containerHeight === 'number') {
+        console.log(
+            '%c[useScrollPosition]',
+            'color: #f301e5',
+            `cardNumber, cardHeight_Pixel, containerHeight_Pixel, postCardsParentHeight :`,
+            cardNumber,
+            cardHeight_Pixel,
+            containerHeight_Pixel,
+            postCardsParentHeight,
+        );
+
+        if (typeof top === 'number' && typeof containerHeight_Pixel === 'number') {
             let positionState = PostCardPositionState.WAITING;
             let styleProperties: CSSProperties;
 
-            if (cardHeight_Pixel * distanceToTopWithOwnHeight_Memo < containerHeight - cardHeight_Pixel) {
+            if (cardHeight_Pixel * distanceToTopWithOwnHeight < containerHeight_Pixel - cardHeight_Pixel) {
                 positionState = PostCardPositionState.FINISHED;
-            } else if (cardHeight_Pixel * distanceToTopWithOwnHeight_Memo < containerHeight - 10) {
+            } else if (cardHeight_Pixel * distanceToTopWithOwnHeight < containerHeight_Pixel - 10) {
                 positionState = PostCardPositionState.MOVETO;
-            } else if (cardHeight_Pixel * distanceToTopWithOwnHeight_Memo < containerHeight) {
+            } else if (cardHeight_Pixel * distanceToTopWithOwnHeight < containerHeight_Pixel) {
                 positionState = PostCardPositionState.START;
             }
 
             switch (positionState) {
                 case PostCardPositionState.START:
-                    styleProperties = { left: 0, top: top_Memo };
+                    styleProperties = { left: 0, top: top };
                     break;
                 case PostCardPositionState.MOVETO:
-                    styleProperties = { left: 'calc(100% - var(--card-width))', top: top_Memo };
+                    styleProperties = { left: 'calc(100% - var(--card-width))', top: top };
                     break;
                 case PostCardPositionState.FINISHED:
-                    styleProperties = { left: 'calc(100% - var(--card-width))', bottom: 'auto', top: distanceToTopWithOwnHeight_Memo };
+                    styleProperties = { left: 'calc(100% - var(--card-width))', bottom: 'auto', top: distanceToTopWithOwnHeight };
                     break;
 
                 // WAITING
                 default:
-                    styleProperties = { left: 'calc(var(--card-width) * -1)', top: top_Memo };
+                    styleProperties = { left: 'calc(var(--card-width) * -1)', top: top };
                     break;
             }
             return styleProperties;
         }
-    }, [cardHeight_Pixel, cardNumber, containerHeight]);
+    }, [cardHeight_Pixel, cardNumber, containerHeight_Pixel, postCardsParentHeight]);
 
     return style;
 };
