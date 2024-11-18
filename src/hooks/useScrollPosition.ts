@@ -22,16 +22,18 @@ const useScrollPosition = (
     const style = useMemo(() => {
         const distanceToTopWithOwnHeight = cardHeight_Pixel * (cardNumber + 1);
         // const top = containerHeight_Pixel - cardHeight_Pixel;
-        const top = postCardsParentHeight - cardHeight_Pixel;
+        // const top = postCardsParentHeight - cardHeight_Pixel + containerScrollTop;
+        const top = postCardsParentHeight - cardHeight_Pixel * cardNumber - containerScrollTop;
 
         console.log(
             '%c[useScrollPosition]',
             'color: #f301e5',
-            `cardNumber, cardHeight_Pixel, containerHeight_Pixel, postCardsParentHeight :`,
+            `cardNumber, cardHeight_Pixel, containerHeight_Pixel, postCardsParentHeight, containerScrollTop :`,
             cardNumber,
             cardHeight_Pixel,
             containerHeight_Pixel,
             postCardsParentHeight,
+            containerScrollTop,
         );
 
         if (typeof top === 'number' && typeof containerHeight_Pixel === 'number') {
@@ -48,10 +50,10 @@ const useScrollPosition = (
 
             switch (positionState) {
                 case PostCardPositionState.START:
-                    styleProperties = { left: 0, top: top };
+                    styleProperties = { left: 0, top };
                     break;
                 case PostCardPositionState.MOVETO:
-                    styleProperties = { left: 'calc(100% - var(--card-width))', top: top };
+                    styleProperties = { left: 'calc(100% - var(--card-width))', top };
                     break;
                 case PostCardPositionState.FINISHED:
                     styleProperties = { left: 'calc(100% - var(--card-width))', bottom: 'auto', top: distanceToTopWithOwnHeight };
@@ -59,12 +61,12 @@ const useScrollPosition = (
 
                 // WAITING
                 default:
-                    styleProperties = { left: 'calc(var(--card-width) * -1)', top: top };
+                    styleProperties = { left: 'calc(var(--card-width) * -1)', top };
                     break;
             }
             return styleProperties;
         }
-    }, [cardHeight_Pixel, cardNumber, containerHeight_Pixel, postCardsParentHeight]);
+    }, [cardHeight_Pixel, cardNumber, containerHeight_Pixel, postCardsParentHeight, containerScrollTop]);
 
     return style;
 };
