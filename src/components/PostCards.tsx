@@ -78,7 +78,7 @@ export const SinglePostCard: FC<{
 
     const [cardHeight, setCardHeight] = useState(0);
 
-    const style = useScrollPosition(index, cardHeight, parentHeight, postCardsParentHeight, parentScroll);
+    const [style, state] = useScrollPosition(index, cardHeight, parentHeight, postCardsParentHeight, parentScroll);
 
     const animDurationMs = 200,
         animDelayMs = 100;
@@ -98,7 +98,7 @@ export const SinglePostCard: FC<{
         (elem: HTMLDivElement | null) => {
             // mountAnimRefCallback(elem);
             if (elem) {
-                setCardHeight(elem.getBoundingClientRect().height);
+                setCardHeight(elem.getBoundingClientRect().height + 12);
                 thisRef.current = elem;
             }
         },
@@ -109,7 +109,10 @@ export const SinglePostCard: FC<{
         <div
             ref={refCbWrapper}
             style={style}
-            className={classNames('absolute w-[--card-width] transition-[left]', titleCardBg ? 'h-[--card-height]' : 'h-[--card-height-no-image]')}
+            className={classNames(
+                'absolute w-[--card-width] transition-[left] duration-1000',
+                titleCardBg ? 'h-[--card-height]' : 'h-[--card-height-no-image]',
+            )}
         >
             <div
                 /* NOTE Post Card height set here: */
@@ -122,7 +125,9 @@ export const SinglePostCard: FC<{
             >
                 {/* Title: */}
                 <div className='relative z-10 mx-auto -mt-3 w-fit select-none px-2 pb-1 text-center leading-none text-[--card-text-color] shadow transition-colors delay-[--card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-[--color-secondary-active-cat] before:transition-[background-color] before:delay-[--card-hover-delay] before:duration-[--card-hover-duration] sm:px-4'>
-                    <h3>{title}</h3>
+                    <h3>
+                        {title} ({state.toString()})
+                    </h3>
                 </div>
 
                 <div className='absolute top-0 size-full overflow-hidden'>
