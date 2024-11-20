@@ -11,11 +11,12 @@ import { useScroll } from 'react-use';
 
 export const PostCards: FC<{
     posts: Post[];
+    postCardsParentWidth: number;
     postCardsParentHeight: number;
-}> = ({ posts, postCardsParentHeight }) => {
+}> = ({ posts, postCardsParentWidth, postCardsParentHeight }) => {
     const parentRef = useRef<HTMLDivElement | null>(null);
     const { y: scrollY } = useScroll(parentRef);
-    const [heightValues, setHeightValues] = useState({ parentHeight: 0, postCardsParentHeight });
+    const [heightValues, setHeightValues] = useState({ parentHeight: 0, postCardsParentWidth, postCardsParentHeight });
 
     useEffect(() => {
         setHeightValues((state) => ({ ...state, postCardsParentHeight }));
@@ -25,13 +26,14 @@ export const PostCards: FC<{
         (elem: HTMLDivElement | null) => {
             if (elem) {
                 setHeightValues({
+                    postCardsParentWidth,
                     postCardsParentHeight,
-                    parentHeight: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-height')) * posts.length,
+                    parentHeight: (convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-height')) + 12) * posts.length,
                 });
                 parentRef.current = elem;
             }
         },
-        [posts.length, postCardsParentHeight],
+        [posts.length, postCardsParentWidth, postCardsParentHeight],
     );
 
     return (
@@ -53,7 +55,7 @@ export const PostCards: FC<{
                 }}
             >
                 {posts.map((post, idx) => (
-                    <SinglePostCard key={post.title + idx} post={post} index={idx} heightValues={heightValues} parentScroll={scrollY} />
+                    <SinglePostCard key={post.title + idx} post={post} index={idx} heightValues={heightValues} parentScroll={Math.round(scrollY)} />
                 ))}
             </div>
         </div>
@@ -65,20 +67,17 @@ export const SinglePostCard: FC<{
     index: number;
     heightValues: {
         parentHeight: number;
+        postCardsParentWidth: number;
         postCardsParentHeight: number;
     };
     parentScroll: number;
 }> = ({ post, index, heightValues, parentScroll }) => {
     const { id, title, titleCardBg, subTitle, date } = post;
-    const { parentHeight, postCardsParentHeight } = heightValues;
+    const { parentHeight, postCardsParentWidth, postCardsParentHeight } = heightValues;
     const { year } = parseDateString(date);
     const navigate = useNavigate();
 
-    const thisRef = useRef<HTMLDivElement | null>(null);
-
-    const [cardHeight, setCardHeight] = useState(0);
-
-    const [style, state] = useScrollPosition(index, cardHeight, parentHeight, postCardsParentHeight, parentScroll);
+    // const thisRef = useRef<HTMLDivElement | null>(null);
 
     const animDurationMs = 200,
         animDelayMs = 100;
@@ -94,12 +93,27 @@ export const SinglePostCard: FC<{
         hiddenAtStart: false,
     });
 
+    const [cardWidth, setCardWidth] = useState(0);
+    const [cardHeight, setCardHeight] = useState(0);
+
+    const [style, state] = useScrollPosition(
+        index,
+        Math.round(cardWidth),
+        Math.round(cardHeight),
+        Math.round(postCardsParentWidth),
+        Math.round(postCardsParentHeight),
+        Math.round(parentScroll),
+        Math.round(parentHeight),
+    );
+
     const refCbWrapper = useCallback(
         (elem: HTMLDivElement | null) => {
             // mountAnimRefCallback(elem);
             if (elem) {
                 setCardHeight(elem.getBoundingClientRect().height + 12);
-                thisRef.current = elem;
+                setCardWidth(elem.getBoundingClientRect().width + 24);
+
+                // thisRef.current = elem;
             }
         },
         [mountAnimRefCallback],
@@ -109,10 +123,7 @@ export const SinglePostCard: FC<{
         <div
             ref={refCbWrapper}
             style={style}
-            className={classNames(
-                'absolute w-[--card-width] transition-[left] duration-1000',
-                titleCardBg ? 'h-[--card-height]' : 'h-[--card-height-no-image]',
-            )}
+            className={classNames('absolute w-[--card-width]', titleCardBg ? 'h-[--card-height]' : 'h-[--card-height-no-image]')}
         >
             <div
                 /* NOTE Post Card height set here: */
@@ -126,7 +137,7 @@ export const SinglePostCard: FC<{
                 {/* Title: */}
                 <div className='relative z-10 mx-auto -mt-3 w-fit select-none px-2 pb-1 text-center leading-none text-[--card-text-color] shadow transition-colors delay-[--card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-[--color-secondary-active-cat] before:transition-[background-color] before:delay-[--card-hover-delay] before:duration-[--card-hover-duration] sm:px-4'>
                     <h3>
-                        {title} ({state.toString()})
+                        {index} {title} ({state.toString()})
                     </h3>
                 </div>
 

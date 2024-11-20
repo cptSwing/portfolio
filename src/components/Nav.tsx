@@ -77,7 +77,7 @@ const CategoryCard: FC<{
         }
     }, [isThisCategoryOpen, catId, id, isDesktop]);
 
-    const [postCardsParentRef_Cb, { height: postCardsParentHeight }] = useMeasure();
+    const [postCardsParentRef_Cb, { width: postCardsParentWidth, height: postCardsParentHeight }] = useMeasure<HTMLDivElement>();
 
     return (
         <div
@@ -161,7 +161,7 @@ const CategoryCard: FC<{
                         </div>
 
                         <div ref={postCardsParentRef_Cb} className='relative size-full'>
-                            <PostCards posts={posts} postCardsParentHeight={postCardsParentHeight} />
+                            <PostCards posts={posts} postCardsParentWidth={postCardsParentWidth} postCardsParentHeight={postCardsParentHeight} />
                         </div>
                     </div>
                 )}
