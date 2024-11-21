@@ -14,51 +14,42 @@ const paddingValue = 0;
 
 const useScrollPosition = (
     cardNumber: number,
-    cardWidth_Pixel: number,
-    cardHeight_Pixel: number,
+    cardWidth: number,
+    cardHeight: number,
     postCardsParentWidth: number,
     postCardsParentHeight: number,
-    containerScrollTop: number,
-    containerHeight_Pixel: number,
+    scrollContainerTop: number,
+    scrollContainerHeight: number,
 ) => {
-    const positionTopStart = useMemo(() => cardHeight_Pixel * cardNumber, [cardHeight_Pixel, cardNumber]);
-    const positionTopEnd = useMemo(() => positionTopStart + cardHeight_Pixel, [positionTopStart, cardHeight_Pixel]);
-    const leftOffscreen = useMemo(() => -1000, [cardWidth_Pixel]);
-    const leftEnd = useMemo(() => postCardsParentWidth - cardWidth_Pixel, [postCardsParentWidth, cardWidth_Pixel]);
-    const leftStart = useMemo(() => postCardsParentWidth - cardWidth_Pixel * 2, [cardWidth_Pixel]);
-    const topWaiting = useMemo(() => postCardsParentHeight - cardHeight_Pixel, [postCardsParentHeight, cardHeight_Pixel]);
+    const positionTopStart = useMemo(() => cardHeight * cardNumber, [cardHeight, cardNumber]);
+    const positionTopEnd = useMemo(() => positionTopStart + cardHeight, [positionTopStart, cardHeight]);
+    const leftOffscreen = useMemo(() => -cardWidth, [cardWidth]);
+    const leftEnd = useMemo(() => postCardsParentWidth - cardWidth, [postCardsParentWidth, cardWidth]);
+    const leftStart = useMemo(() => postCardsParentWidth - cardWidth * 2, [postCardsParentWidth, cardWidth]);
+    const topWaiting = useMemo(() => postCardsParentHeight - cardHeight, [postCardsParentHeight, cardHeight]);
 
     const isMoving = useRef(false);
 
     const styleState = useMemo(() => {
-        const thisOffsetTop = positionTopStart - containerScrollTop;
+        const thisOffsetTop = positionTopStart - scrollContainerTop;
 
         let topProgressPercentage = 0;
         let leftProgress = 0;
 
         let positionState;
-
-        if (thisOffsetTop > postCardsParentHeight - cardHeight_Pixel && thisOffsetTop < postCardsParentHeight) {
+        if (thisOffsetTop < postCardsParentHeight - cardHeight) {
+            positionState = PostCardPositionState.FINISHED;
+        } else if (thisOffsetTop < scrollContainerTop) {
             positionState = PostCardPositionState.MOVETO;
 
             isMoving.current = true;
 
-            topProgressPercentage = Math.round(percentageFromValue(positionTopStart, positionTopEnd, containerScrollTop));
+            topProgressPercentage = Math.round(percentageFromValue(positionTopStart, positionTopEnd, scrollContainerTop));
             leftProgress = Math.round(valueFromPercentage(leftStart, leftEnd, topProgressPercentage));
-
-            console.log(
-                '%c[useScrollPosition]',
-                'color: #78fe1f',
-                `${cardNumber} (${positionState}) --> topProgressPercentage, leftProgress :`,
-                topProgressPercentage,
-                leftProgress,
-            );
 
             if (topProgressPercentage >= 100) {
                 isMoving.current = false;
             }
-        } else if (thisOffsetTop < postCardsParentHeight - cardHeight_Pixel) {
-            positionState = PostCardPositionState.FINISHED;
         } else {
             positionState = PostCardPositionState.WAITING;
         }
@@ -70,15 +61,43 @@ const useScrollPosition = (
                 styleProperties = { left: leftOffscreen + 'px', top: topWaiting };
                 break;
             case PostCardPositionState.MOVETO:
-                styleProperties = { left: leftProgress + 'px', top: topWaiting };
+                styleProperties = { left: leftStart + 'px', top: topWaiting };
                 break;
             case PostCardPositionState.FINISHED:
                 styleProperties = { left: leftEnd + 'px', top: thisOffsetTop };
                 break;
         }
 
+        if (cardNumber === 3) {
+            console.log(
+                '%c[useScrollPosition]',
+                'color: #39539d',
+                `${cardNumber} (${positionState}) --> positionTopStart: ${positionTopStart}, positionTopEnd: ${positionTopEnd}, scrollContainerTop:`,
+                scrollContainerTop,
+            );
+
+            console.log(
+                '%c[useScrollPosition]',
+                'color: #aa589a',
+                `${cardNumber} (${positionState}) --> postCardsParentHeight: ${postCardsParentHeight}, scrollContainerHeight ${scrollContainerHeight}, thisOffsetTop :`,
+                thisOffsetTop,
+            );
+        }
+
         return [styleProperties, positionState];
-    }, [cardNumber, positionTopStart, topWaiting, positionTopEnd, containerScrollTop, postCardsParentHeight, cardHeight_Pixel, leftStart, leftEnd]);
+    }, [
+        cardNumber,
+        cardHeight,
+        positionTopStart,
+        topWaiting,
+        positionTopEnd,
+        leftOffscreen,
+        scrollContainerTop,
+        scrollContainerHeight,
+        postCardsParentHeight,
+        leftStart,
+        leftEnd,
+    ]);
 
     return styleState as [CSSProperties, PostCardPositionState];
 };
@@ -87,6 +106,8 @@ export default useScrollPosition;
 
 const percentageFromValue = (rangeMin: number, rangeMax: number, value: number) => ((value - rangeMin) / (rangeMax - rangeMin)) * 100;
 const valueFromPercentage = (rangeMin: number, rangeMax: number, percentage: number) => ((rangeMax - rangeMin) / 100) * percentage + rangeMin;
+
+console.log('%c[useScrollPosition]', 'color: #d86f53', `percentageFromValue() :`, percentageFromValue(100, 300, 150));
 
 enum PostCardPositionState {
     WAITING = 'Waiting',

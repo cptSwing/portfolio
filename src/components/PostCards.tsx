@@ -41,7 +41,7 @@ export const PostCards: FC<{
             ref={ref_Cb}
             className={
                 // 'relative' +
-                '[--card-height-no-image:theme(spacing.24)] [--card-height:theme(spacing.44)] [--card-outline-width:6px] [--card-width:calc(100%-(var(--text-width)-(var(--card-outline-width)*2)))] sm:[--card-height:theme(spacing.52)]' +
+                '[--card-height:theme(spacing.44)] [--card-outline-width:6px] [--card-width:calc(100%-(var(--text-width)-(var(--card-outline-width)*2)))] sm:[--card-height:theme(spacing.52)]' +
                 ' scroll-gutter mt-2 size-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:mt-0 sm:p-2 sm:pr-4 sm:pt-4'
             }
         >
@@ -120,11 +120,7 @@ export const SinglePostCard: FC<{
     );
 
     return (
-        <div
-            ref={refCbWrapper}
-            style={style}
-            className={classNames('absolute w-[--card-width]', titleCardBg ? 'h-[--card-height]' : 'h-[--card-height-no-image]')}
-        >
+        <div ref={refCbWrapper} style={style} className={classNames('absolute h-[--card-height] w-[--card-width]')}>
             <div
                 /* NOTE Post Card height set here: */
                 className={classNames(
