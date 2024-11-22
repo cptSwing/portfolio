@@ -4,8 +4,8 @@ function convertRemToPixels(remParam: string) {
     let returnRem = remParam;
     if (remParam.includes('rem')) returnRem = remParam.replace('rem', '');
     const remNum = parseFloat(returnRem);
-
-    return remNum * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const adjusted = remNum * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    return adjusted;
 }
 
 export default convertRemToPixels;

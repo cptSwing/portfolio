@@ -16,46 +16,62 @@ export const PostCards: FC<{
 }> = ({ posts, postCardsParentWidth, postCardsParentHeight }) => {
     const parentRef = useRef<HTMLDivElement | null>(null);
     const { y: scrollY } = useScroll(parentRef);
-    const [heightValues, setHeightValues] = useState({ parentHeight: 0, postCardsParentWidth, postCardsParentHeight });
-
-    useEffect(() => {
-        setHeightValues((state) => ({ ...state, postCardsParentHeight }));
-    }, [postCardsParentHeight]);
+    const [dimensions, setDimensions] = useState({
+        postCardsParentWidth,
+        postCardsParentHeight,
+        cardWidth: 0,
+        cardHeight: 0,
+        cardOutline: 0,
+        spacingY: 0,
+        paddingTop: 0,
+        paddingRight: 0,
+    });
+    const [scrollWrapperHeight, setScrollWrapperHeight] = useState(0);
 
     const ref_Cb = useCallback(
         (elem: HTMLDivElement | null) => {
             if (elem) {
-                setHeightValues({
+                setDimensions({
                     postCardsParentWidth,
                     postCardsParentHeight,
-                    parentHeight: (convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-height')) + 12) * posts.length,
+                    cardWidth: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--postcard-width')),
+                    cardHeight: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-height')),
+                    cardOutline: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-outline-width')),
+                    spacingY: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--spacing-y')),
+                    paddingTop: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--padding-top')),
+                    paddingRight: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--padding-right')),
                 });
-                parentRef.current = elem;
             }
+
+            parentRef.current = elem;
         },
-        [posts.length, postCardsParentWidth, postCardsParentHeight],
+        [postCardsParentWidth, postCardsParentHeight],
     );
+
+    useEffect(() => {
+        setScrollWrapperHeight(
+            (dimensions.cardHeight + dimensions.spacingY + dimensions.cardOutline * 2) * posts.length + dimensions.spacingY + dimensions.cardOutline,
+        );
+    }, [dimensions.cardHeight, dimensions.cardOutline, dimensions.paddingRight, dimensions.spacingY, posts.length]);
 
     return (
         <div
             ref={ref_Cb}
-            className={
-                // 'relative' +
-                '[--card-height:theme(spacing.44)] [--card-outline-width:6px] [--card-width:calc(100%-(var(--text-width)-(var(--card-outline-width)*2)))] sm:[--card-height:theme(spacing.52)]' +
-                ' scroll-gutter mt-2 size-full overflow-x-hidden overflow-y-scroll pb-3 pl-2 pr-4 pt-3 scrollbar-thin [--scrollbar-thumb:--color-secondary-active-cat] sm:mt-0 sm:p-2 sm:pr-4 sm:pt-4'
-            }
+            /* NOTE Post Card height set here: */
+            className='scroll-gutter size-full overflow-x-hidden overflow-y-scroll scrollbar-thin [--card-height:theme(spacing.44)] [--card-outline-width:theme(spacing.2)] [--padding-right:theme(spacing.4)] [--padding-top:theme(spacing.3)] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.3)] sm:[--card-height:theme(spacing.52)] sm:[--padding-right:theme(spacing.4)] sm:[--padding-top:theme(spacing.4)]'
+            // mt-2 pb-3 pl-2 sm:mt-0 sm:p-2
         >
             {/* Wrapping div for scrolling */}
             <div
-                style={{ height: `${heightValues.parentHeight}px` }}
-                className='pointer-events-none sm:ml-auto sm:mr-0 sm:w-[--card-width]'
+                style={{ height: scrollWrapperHeight }}
+                className='pointer-events-none w-[--postcard-width] sm:ml-auto sm:mr-0'
                 onClick={(e) => {
                     /* Needed for children's navigate() calls in an onClick to work: */
                     e.stopPropagation();
                 }}
             >
                 {posts.map((post, idx) => (
-                    <SinglePostCard key={post.title + idx} post={post} index={idx} heightValues={heightValues} parentScroll={Math.round(scrollY)} />
+                    <SinglePostCard key={post.title + idx} post={post} index={idx} dimensions={dimensions} parentScroll={Math.round(scrollY)} />
                 ))}
             </div>
         </div>
@@ -65,23 +81,26 @@ export const PostCards: FC<{
 export const SinglePostCard: FC<{
     post: Post;
     index: number;
-    heightValues: {
-        parentHeight: number;
+    dimensions: {
         postCardsParentWidth: number;
         postCardsParentHeight: number;
+        cardWidth: number;
+        cardHeight: number;
+        cardOutline: number;
+        spacingY: number;
+        paddingTop: number;
+        paddingRight: number;
     };
     parentScroll: number;
-}> = ({ post, index, heightValues, parentScroll }) => {
+}> = ({ post, index, dimensions, parentScroll }) => {
     const { id, title, titleCardBg, subTitle, date } = post;
-    const { parentHeight, postCardsParentWidth, postCardsParentHeight } = heightValues;
+    const { postCardsParentWidth, postCardsParentHeight, cardWidth, cardHeight, cardOutline, spacingY, paddingTop, paddingRight } = dimensions;
     const { year } = parseDateString(date);
     const navigate = useNavigate();
 
-    // const thisRef = useRef<HTMLDivElement | null>(null);
-
     const animDurationMs = 200,
         animDelayMs = 100;
-    const [mountAnimRefCallback, animHasEnded] = useAnimationOnMount({
+    const [mountAnimRefCallback /* animHasEnded */] = useAnimationOnMount({
         animationProps: {
             animationName: 'enter-from-left',
             animationDuration: animDurationMs,
@@ -93,36 +112,23 @@ export const SinglePostCard: FC<{
         hiddenAtStart: false,
     });
 
-    const [cardWidth, setCardWidth] = useState(0);
-    const [cardHeight, setCardHeight] = useState(0);
-
-    const [style, state] = useScrollPosition(
+    const style = useScrollPosition(
         index,
-        Math.round(cardWidth),
-        Math.round(cardHeight),
-        Math.round(postCardsParentWidth),
-        Math.round(postCardsParentHeight),
-        Math.round(parentScroll),
-        Math.round(parentHeight),
-    );
-
-    const refCbWrapper = useCallback(
-        (elem: HTMLDivElement | null) => {
-            // mountAnimRefCallback(elem);
-            if (elem) {
-                setCardHeight(elem.getBoundingClientRect().height + 12);
-                setCardWidth(elem.getBoundingClientRect().width + 24);
-
-                // thisRef.current = elem;
-            }
-        },
-        [mountAnimRefCallback],
+        cardWidth,
+        cardHeight,
+        cardOutline,
+        spacingY,
+        paddingTop,
+        paddingRight,
+        postCardsParentWidth,
+        postCardsParentHeight,
+        parentScroll,
     );
 
     return (
-        <div ref={refCbWrapper} style={style} className={classNames('absolute h-[--card-height] w-[--card-width]')}>
+        <div ref={mountAnimRefCallback} style={style} className='absolute'>
             <div
-                /* NOTE Post Card height set here: */
+                style={{ height: cardHeight, width: cardWidth }}
                 className={classNames(
                     '[--card-hover-delay:50ms] [--card-hover-duration:100ms] [--card-text-color:--theme-primary-50]',
                     'group/this pointer-events-auto relative ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration]',
@@ -132,9 +138,7 @@ export const SinglePostCard: FC<{
             >
                 {/* Title: */}
                 <div className='relative z-10 mx-auto -mt-3 w-fit select-none px-2 pb-1 text-center leading-none text-[--card-text-color] shadow transition-colors delay-[--card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-[--color-secondary-active-cat] before:transition-[background-color] before:delay-[--card-hover-delay] before:duration-[--card-hover-duration] sm:px-4'>
-                    <h3>
-                        {index} {title} ({state.toString()})
-                    </h3>
+                    <h3>{title}</h3>
                 </div>
 
                 <div className='absolute top-0 size-full overflow-hidden'>

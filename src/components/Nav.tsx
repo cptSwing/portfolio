@@ -1,6 +1,6 @@
 import { DataBase, Post } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, useMemo, useRef } from 'react';
+import { FC, useMemo } from 'react';
 import testDb from '../queries/testDb.json';
 import { PostCards } from './PostCards.tsx';
 import { MENU_CATEGORY } from '../types/enums.ts';
@@ -135,10 +135,10 @@ const CategoryCard: FC<{
 
                 {/* Testimonials & PostCards etc: */}
                 {isThisCategoryOpen && (
-                    <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-y-hidden bg-[--color-primary-content-bg] px-[calc(var(--category-padding)*1)] py-[--category-padding] [--color-text-testimonial:--theme-accent-400] [--text-width:33.3333%] sm:flex-row sm:items-start sm:justify-between'>
+                    <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-y-hidden bg-[--color-primary-content-bg] p-[--category-padding] [--color-text-testimonial:--theme-accent-400] [--postcard-width:theme(spacing.96)] sm:flex-row sm:items-start sm:justify-between'>
                         <div
                             className={classNames(
-                                'absolute flex items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500 sm:w-[--text-width]',
+                                'absolute flex w-[calc(100%-var(--postcard-width))] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500',
                                 // 'min-w-[25%] sm:basis-1/3',
                                 '',
                                 isThisCategoryOpen
