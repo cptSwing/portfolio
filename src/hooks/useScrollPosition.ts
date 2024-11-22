@@ -23,11 +23,11 @@ const useScrollPosition = (
     postCardsParentHeight: number,
     scrollContainerTop: number,
 ) => {
-    const totalCardHeight = useMemo(() => cardHeight + spacingY + cardOutline * 2, [cardHeight, cardOutline, spacingY]);
-    const positionTopStart = useMemo(() => cardOutline + paddingTop + totalCardHeight * cardNumber, [totalCardHeight, cardNumber, cardOutline, paddingTop]);
-    const leftOffscreen = useMemo(() => -(cardWidth + paddingRight + cardOutline * 2), [cardWidth, paddingRight, cardOutline]);
+    const totalCardHeight = useMemo(() => cardHeight + spacingY + cardOutline, [cardHeight, cardOutline, spacingY]);
+    const positionTopStart = useMemo(() => paddingTop + (cardOutline + totalCardHeight * cardNumber), [paddingTop, cardOutline, totalCardHeight, cardNumber]);
+    const leftOffscreen = useMemo(() => -(cardWidth + paddingRight + cardOutline), [cardWidth, paddingRight, cardOutline]);
     const leftEnd = useMemo(() => postCardsParentWidth - cardWidth - cardOutline - paddingRight, [postCardsParentWidth, cardOutline, cardWidth, paddingRight]);
-    const topWaiting = useMemo(() => postCardsParentHeight - totalCardHeight, [postCardsParentHeight, totalCardHeight]);
+    const topWaiting = useMemo(() => postCardsParentHeight - (totalCardHeight - paddingTop), [postCardsParentHeight, paddingTop, totalCardHeight]);
 
     const thisOffsetTop = useMemo(() => positionTopStart - scrollContainerTop, [positionTopStart, scrollContainerTop]);
 

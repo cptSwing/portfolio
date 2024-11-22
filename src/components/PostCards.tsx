@@ -49,16 +49,14 @@ export const PostCards: FC<{
     );
 
     useEffect(() => {
-        setScrollWrapperHeight(
-            (dimensions.cardHeight + dimensions.spacingY + dimensions.cardOutline * 2) * posts.length + dimensions.spacingY + dimensions.cardOutline,
-        );
+        setScrollWrapperHeight((dimensions.cardHeight + dimensions.spacingY + dimensions.cardOutline) * posts.length + dimensions.cardOutline);
     }, [dimensions.cardHeight, dimensions.cardOutline, dimensions.paddingRight, dimensions.spacingY, posts.length]);
 
     return (
         <div
             ref={ref_Cb}
             /* NOTE Post Card height set here: */
-            className='scroll-gutter size-full overflow-x-hidden overflow-y-scroll scrollbar-thin [--card-height:theme(spacing.44)] [--card-outline-width:theme(spacing.2)] [--padding-right:theme(spacing.4)] [--padding-top:theme(spacing.3)] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.3)] sm:[--card-height:theme(spacing.52)] sm:[--padding-right:theme(spacing.4)] sm:[--padding-top:theme(spacing.4)]'
+            className='scroll-gutter size-full overflow-x-hidden overflow-y-scroll scrollbar-thin [--card-height:theme(spacing.44)] [--card-outline-width:theme(spacing.2)] [--padding-right:theme(spacing.4)] [--padding-top:theme(spacing.4)] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.3)] sm:[--card-height:theme(spacing.52)] sm:[--padding-right:theme(spacing.4)] sm:[--padding-top:theme(spacing.4)]'
             // mt-2 pb-3 pl-2 sm:mt-0 sm:p-2
         >
             {/* Wrapping div for scrolling */}
