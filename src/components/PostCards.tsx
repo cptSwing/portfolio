@@ -111,7 +111,7 @@ export const SinglePostCard: FC<{
                 className={
                     '[--card-hover-delay:50ms] [--card-hover-duration:100ms] [--card-text-color:--theme-primary-50]' +
                     ' ' +
-                    'group/this ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] -outline-offset-[--card-outline-width] outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] hover:outline-[length:--card-outline-width] hover:outline-offset-0 active:outline-offset-0'
+                    'group/this ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] -outline-offset-[--card-outline-width] outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] sm:hover:outline-[length:--card-outline-width] sm:hover:outline-offset-0 sm:active:outline-offset-0'
                 }
             >
                 {/* Title: */}
@@ -135,14 +135,12 @@ export const SinglePostCard: FC<{
                     </div>
 
                     {/* Image: */}
-                    {titleCardBg && (
-                        <div className='absolute -z-10 size-full transition-[clip-path] delay-[--card-hover-delay] duration-[--card-hover-duration] clip-inset-0 group-active/this:clip-inset-[--card-outline-width]'>
-                            <div
-                                className='h-full w-auto scale-105 transform-gpu bg-cover grayscale-[75%] transition-[filter] delay-[--card-hover-delay] duration-[--card-hover-duration] group-hover/this:grayscale-0 group-hover/this:delay-0 group-hover/this:duration-[--card-hover-duration] group-active/this:grayscale-0 group-active/this:delay-0 group-active/this:duration-[--card-hover-duration]'
-                                style={{ backgroundImage: `url('${titleCardBg}')` }}
-                            />
-                        </div>
-                    )}
+                    <div className='absolute -z-10 size-full transition-[clip-path] delay-[--card-hover-delay] duration-[--card-hover-duration] clip-inset-0 group-active/this:clip-inset-[--card-outline-width]'>
+                        <div
+                            className='h-full w-auto scale-105 transform-gpu bg-cover grayscale-[75%] transition-[filter] delay-[--card-hover-delay] duration-[--card-hover-duration] group-hover/this:grayscale-0 group-hover/this:delay-0 group-hover/this:duration-[--card-hover-duration] group-active/this:grayscale-0 group-active/this:delay-0 group-active/this:duration-[--card-hover-duration]'
+                            style={titleCardBg ? { backgroundImage: `url('${titleCardBg}')` } : { backgroundColor: 'lightgray', opacity: 0.666666 }}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

@@ -44,7 +44,7 @@ const Content = () => {
                 .map((showCase, idx) => {
                     if ('imgUrl' in showCase) {
                         return {
-                            src: `/${showCase.imgUrl}`,
+                            src: `${showCase.imgUrl}`,
                             title: showCase.caption,
                             scIndx: idx,
                         };
@@ -70,7 +70,7 @@ const Content = () => {
             <div className='relative mx-auto flex h-full w-[--post-width] min-w-[--post-width] flex-col bg-[--theme-bg-lighter]'>
                 {/* Floating Title: */}
                 <div className='pointer-events-none absolute bottom-[calc(100%+var(--bar-height))] z-10 mx-auto flex w-full items-end justify-center text-center'>
-                    <h2 className='absolute translate-y-[calc(50%+var(--bar-height))] transform-gpu select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
+                    <h2 className='absolute translate-y-[calc(50%+(var(--bar-height)/2))] transform-gpu select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
                         {title}
                     </h2>
                     <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
@@ -169,7 +169,7 @@ const Content = () => {
                                                 showCase ? 'flex-1' : 'mr-auto sm:basis-4/5',
                                                 isBlockIndexEven ? 'order-1' : 'order-2',
                                                 idx === 0
-                                                    ? 'first-letter:-ml-0.5 first-letter:pr-px first-letter:align-text-bottom first-letter:text-[2rem] first-letter:italic first-letter:leading-[2rem] first-letter:text-[--theme-secondary-400] first-line:italic'
+                                                    ? 'first-letter:-ml-0.5 first-letter:align-text-bottom first-letter:text-[2rem] first-letter:leading-[2rem] first-letter:text-[--theme-secondary-400]'
                                                     : '',
                                             )}
                                         >

@@ -101,7 +101,13 @@ const CategoryCard: FC<{
                       : 'bg-[--color-primary-active-cat-bg] hover:bg-[--color-primary-active-cat-bg]',
             )}
             onClick={() => {
-                navigate(catId === id.toString() ? '/' : `/${id}`);
+                if (catId === id.toString()) {
+                    navigate('/');
+                } else if (!isDesktop) {
+                    setTimeout(() => navigate(`/${id}`), 200);
+                } else {
+                    navigate(`/${id}`);
+                }
             }}
         >
             <div
@@ -175,7 +181,7 @@ const CategoryCard: FC<{
 
                         <div
                             ref={ref_Cb}
-                            className='scroll-gutter inset-0 size-full overflow-x-hidden overflow-y-scroll scrollbar-thin clip-inset-[0px] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.1)] sm:clip-inset-[1px] sm:[--spacing-y:theme(spacing.3)]'
+                            className='scroll-gutter inset-0 size-full overflow-x-hidden overflow-y-scroll scrollbar-thin clip-inset-[0px] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing[1.5])] sm:clip-inset-[1px] sm:[--spacing-y:theme(spacing.3)]'
                         >
                             <PostCards posts={posts} parentRef={parentRef} />
                         </div>
@@ -259,7 +265,7 @@ export const MenuOpenedPost: FC<{
             )}
 
             {/* TODO fade out instead of instantly closing */}
-            <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />
+            {(hasImages || codeLink) && <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />}
             <button
                 type='button'
                 className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:px-1.5 sm:pb-0 sm:before:block sm:before:pt-2'
