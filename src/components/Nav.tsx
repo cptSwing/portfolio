@@ -1,6 +1,6 @@
 import { DataBase, Post } from '../types/types';
 import classNames from '../lib/classNames';
-import { FC, useMemo } from 'react';
+import { CSSProperties, FC, useMemo } from 'react';
 import testDb from '../queries/testDb.json';
 import { PostCards } from './PostCards.tsx';
 import { MENU_CATEGORY } from '../types/enums.ts';
@@ -84,7 +84,7 @@ const CategoryCard: FC<{
             ref={refCallback}
             className={classNames(
                 '[--tab-anim-delay:200ms]',
-                'group/category color-red-500 pointer-events-auto relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color] duration-200',
+                'group/category color-red-500 relative flex size-full transform-gpu cursor-pointer flex-col items-center justify-center overflow-y-hidden transition-[background-color] duration-200',
                 isThisCategoryOpen
                     ? 'bg-[--color-primary-active-cat-bg] p-2 sm:p-4'
                     : catId
@@ -97,7 +97,7 @@ const CategoryCard: FC<{
         >
             <div
                 className={classNames(
-                    '[--category-padding:theme(spacing.[1.5])] sm:[--category-padding:theme(spacing.2)]',
+                    '[--category-padding:theme(spacing.[1.5])] [--category-title-font-size:theme(fontSize.4xl)] sm:[--category-padding:theme(spacing.2)] sm:[--category-title-font-size:theme(fontSize.5xl)]',
                     'shadow-theme-primary-950 relative flex flex-col items-start justify-start overflow-hidden',
                     // 'after:absolute after:bottom-0 after:h-[--category-padding] after:w-full after:bg-[--color-primary-content-bg]',
                     isThisCategoryOpen ? 'size-full drop-shadow-lg' : '',
@@ -108,7 +108,7 @@ const CategoryCard: FC<{
                     className={classNames(
                         'relative px-[calc(var(--category-padding)*2)] py-[--category-padding] transition-[margin-left,transform] [--swipe-delay:75ms]',
                         isThisCategoryOpen
-                            ? 'ml-0 translate-x-0 bg-[--color-primary-content-bg]'
+                            ? '!absolute left-0 top-0 z-10 ml-0 translate-x-0 bg-[--color-primary-content-bg]'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
                               : 'before:absolute before:bottom-0 before:left-0 before:h-0 before:w-full before:border-t-0 before:border-t-[--theme-accent-200] before:transition-[height,border-top-color,border-top-width] before:delay-[--swipe-delay] before:duration-[--swipe-delay] group-hover/category:before:h-full group-hover/category:before:border-t-[3px] group-hover/category:before:border-t-transparent group-hover/category:before:delay-[0s,calc(var(--tab-anim-delay)/2),0s] group-hover/category:before:duration-[var(--tab-anim-delay),calc(var(--tab-anim-delay)/2),var(--swipe-delay)] group-active/category:before:transition-none' +
@@ -120,9 +120,9 @@ const CategoryCard: FC<{
                 >
                     <h1
                         className={classNames(
-                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-4xl leading-none transition-[transform,color] duration-[--tab-anim-delay] before:size-full before:transition-[-webkit-text-stroke-color] before:duration-[--tab-anim-delay] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-900] before:[-webkit-text-stroke-width:5px] sm:text-5xl sm:before:[-webkit-text-stroke-width:4px]',
+                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-[length:--category-title-font-size] leading-none transition-[transform,color] duration-[--tab-anim-delay] before:size-full before:transition-[-webkit-text-stroke-color] before:duration-[--tab-anim-delay] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-900] before:[-webkit-text-stroke-width:5px] sm:before:[-webkit-text-stroke-width:4px]',
                             isThisCategoryOpen
-                                ? 'text-4xl text-[--color-secondary-active-cat] sm:text-5xl'
+                                ? 'text-4xl text-[--color-secondary-active-cat]'
                                 : catId
                                   ? 'scale-90 text-[--color-secondary-inactive-cat] group-hover/category:text-[--color-secondary-active-cat] group-hover/category:!duration-75 group-hover/category:before:[-webkit-text-stroke-color:--theme-secondary-900] group-active/category:text-[--color-secondary-active-cat] group-active/category:!duration-75 group-active/category:before:[-webkit-text-stroke-color:--theme-secondary-900]'
                                   : 'text-[--color-secondary-active-cat] group-hover/category:!duration-75 group-hover/category:before:[-webkit-text-stroke-color:--theme-secondary-800] group-active/category:!duration-75 group-active/category:before:[-webkit-text-stroke-color:--theme-secondary-800]',
@@ -135,32 +135,35 @@ const CategoryCard: FC<{
 
                 {/* Testimonials & PostCards etc: */}
                 {isThisCategoryOpen && (
-                    <div className='-mt-[--category-padding] flex size-full flex-col items-center justify-start overflow-y-hidden bg-[--color-primary-content-bg] p-[--category-padding] [--color-text-testimonial:--theme-accent-400] [--postcard-width:theme(spacing.96)] sm:flex-row sm:items-start sm:justify-between'>
-                        <div
-                            className={classNames(
-                                'absolute flex w-[calc(100%-var(--postcard-width))] items-end self-start bg-[--color-primary-content-bg] pt-[--category-padding] transition-[height] duration-500',
-                                // 'min-w-[25%] sm:basis-1/3',
-                                '',
-                                isThisCategoryOpen
-                                    ? 'bg-[--color-primary-content-bg]'
-                                    : catId
-                                      ? 'h-0 clip-inset-y-1/2'
-                                      : 'clip-inset-y-1/2 group-hover/category:!duration-100 group-hover/category:clip-inset-y-2/5',
-                            )}
-                        >
+                    <div
+                        style={
+                            {
+                                '--testimonial-height': `calc(${postCardsParentHeight}px - (var(--card-height) + (2 * var(--card-outline-width)) + (2 * var(--category-padding))))`,
+                            } as CSSProperties
+                        }
+                        className={
+                            '[--card-height:theme(spacing.44)] [--card-outline-width:theme(spacing.1)] [--color-text-testimonial:--theme-accent-400] [--padding-right:theme(spacing.4)] [--postcard-width:theme(spacing.128)] sm:[--card-height:theme(spacing.52)] sm:[--padding-right:theme(spacing.4)]' +
+                            ' ' +
+                            'flex size-full flex-col items-center justify-start overflow-y-hidden bg-[--color-primary-content-bg] p-[--category-padding] sm:flex-row sm:items-start sm:justify-between'
+                        }
+                    >
+                        <div className='absolute flex h-[--testimonial-height] w-[calc(100%-(var(--postcard-width)+var(--padding-right)+(2*var(--card-outline-width))+(3*var(--category-padding))))] flex-col items-stretch justify-start bg-[--color-primary-active-cat-bg] p-[--category-padding] pt-[calc(var(--category-title-font-size)+2*var(--category-padding))]'>
                             <div
                                 className={classNames(
-                                    'relative z-10 select-none text-pretty bg-[--color-primary-content-bg] font-besley text-base text-[--color-text-testimonial] transition-transform duration-300 sm:text-2xl',
+                                    'relative select-none transition-transform',
                                     isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
                                 )}
                             >
-                                <Markdown className='mrkdwn' remarkPlugins={[remarkBreaks]}>
+                                <Markdown
+                                    className='mrkdwn text-pretty font-besley text-base text-[--color-text-testimonial] sm:text-2xl'
+                                    remarkPlugins={[remarkBreaks]}
+                                >
                                     {categoryBlurb}
                                 </Markdown>
                             </div>
                         </div>
 
-                        <div ref={postCardsParentRef_Cb} className='relative size-full'>
+                        <div ref={postCardsParentRef_Cb} className='relative size-full clip-inset-[1px]'>
                             <PostCards posts={posts} postCardsParentWidth={postCardsParentWidth} postCardsParentHeight={postCardsParentHeight} />
                         </div>
                     </div>
@@ -212,7 +215,7 @@ export const MenuOpenedPost: FC<{
     });
 
     return (
-        <div className='pointer-events-auto mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-[1.25rem] sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
+        <div className='mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-[1.25rem] sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
             {hasImages && (
                 <button
                     type='button'
@@ -238,9 +241,6 @@ export const MenuOpenedPost: FC<{
                             ref={codeRefCb}
                             className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]'
                         />
-                        {/* <span className='text-theme-primary-50 absolute right-4 top-full z-50 mt-2 -translate-y-full cursor-default whitespace-nowrap text-right text-sm leading-tight transition-[transform,clip-path] delay-200 duration-500 clip-inset-t-full group-hover:translate-y-0 group-hover:clip-inset-t-0'>
-                            {codeLink.alt}
-                        </span> */}
                     </a>
                 </>
             )}

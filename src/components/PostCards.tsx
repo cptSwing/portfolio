@@ -31,15 +31,16 @@ export const PostCards: FC<{
     const ref_Cb = useCallback(
         (elem: HTMLDivElement | null) => {
             if (elem) {
+                const compStyle = getComputedStyle(elem);
                 setDimensions({
                     postCardsParentWidth,
                     postCardsParentHeight,
-                    cardWidth: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--postcard-width')),
-                    cardHeight: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-height')),
-                    cardOutline: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--card-outline-width')),
-                    spacingY: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--spacing-y')),
-                    paddingTop: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--padding-top')),
-                    paddingRight: convertRemToPixels(getComputedStyle(elem).getPropertyValue('--padding-right')),
+                    cardWidth: convertRemToPixels(compStyle.getPropertyValue('--postcard-width')),
+                    cardHeight: convertRemToPixels(compStyle.getPropertyValue('--card-height')),
+                    cardOutline: convertRemToPixels(compStyle.getPropertyValue('--card-outline-width')),
+                    spacingY: convertRemToPixels(compStyle.getPropertyValue('--spacing-y')),
+                    paddingTop: convertRemToPixels(compStyle.getPropertyValue('--padding-top')),
+                    paddingRight: convertRemToPixels(compStyle.getPropertyValue('--padding-right')),
                 });
             }
 
@@ -56,13 +57,12 @@ export const PostCards: FC<{
         <div
             ref={ref_Cb}
             /* NOTE Post Card height set here: */
-            className='scroll-gutter size-full overflow-x-hidden overflow-y-scroll scrollbar-thin [--card-height:theme(spacing.44)] [--card-outline-width:theme(spacing.2)] [--padding-right:theme(spacing.4)] [--padding-top:theme(spacing.4)] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.3)] sm:[--card-height:theme(spacing.52)] sm:[--padding-right:theme(spacing.4)] sm:[--padding-top:theme(spacing.4)]'
-            // mt-2 pb-3 pl-2 sm:mt-0 sm:p-2
+            className='scroll-gutter size-full overflow-x-hidden overflow-y-scroll scrollbar-thin [--padding-top:theme(spacing.4)] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.3)] sm:[--padding-top:theme(spacing.4)]'
         >
             {/* Wrapping div for scrolling */}
             <div
                 style={{ height: scrollWrapperHeight }}
-                className='pointer-events-none w-[--postcard-width] sm:ml-auto sm:mr-0'
+                className='w-[--postcard-width] sm:ml-auto sm:mr-0'
                 onClick={(e) => {
                     /* Needed for children's navigate() calls in an onClick to work: */
                     e.stopPropagation();
@@ -96,19 +96,7 @@ export const SinglePostCard: FC<{
     const { year } = parseDateString(date);
     const navigate = useNavigate();
 
-    const animDurationMs = 200,
-        animDelayMs = 100;
-    const [mountAnimRefCallback /* animHasEnded */] = useAnimationOnMount({
-        animationProps: {
-            animationName: 'enter-from-left',
-            animationDuration: animDurationMs,
-            animationDelay: animDelayMs * index,
-            animationFillMode: 'backwards',
-            animationIterationCount: 1,
-        },
-        startDelay: animDelayMs * index,
-        hiddenAtStart: false,
-    });
+    const [timer, setTimer] = useState<number>();
 
     const style = useScrollPosition(
         index,
@@ -124,15 +112,26 @@ export const SinglePostCard: FC<{
     );
 
     return (
-        <div ref={mountAnimRefCallback} style={style} className='absolute'>
+        <div style={style} className='absolute'>
             <div
                 style={{ height: cardHeight, width: cardWidth }}
-                className={classNames(
-                    '[--card-hover-delay:50ms] [--card-hover-duration:100ms] [--card-text-color:--theme-primary-50]',
-                    'group/this pointer-events-auto relative ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration]',
-                    'hover:-outline-offset-[--card-outline-width] active:-outline-offset-[--card-outline-width]',
-                )}
+                className={
+                    '[--card-hover-delay:50ms] [--card-hover-duration:100ms] [--card-text-color:--theme-primary-50]' +
+                    ' ' +
+                    'group/this pointer-events-auto relative ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] hover:-outline-offset-[--card-outline-width] active:-outline-offset-[--card-outline-width]'
+                }
                 onClick={() => navigate(id.toString())}
+                onScroll={({ currentTarget }) => {
+                    console.log('%c[PostCards]', 'color: #dfc2be', `scroll :`);
+                    clearTimeout(timer);
+                    currentTarget.style.setProperty('pointer-events', 'none');
+
+                    setTimer(
+                        setTimeout(function () {
+                            currentTarget.style.setProperty('pointer-events', 'auto');
+                        }, 100),
+                    );
+                }}
             >
                 {/* Title: */}
                 <div className='relative z-10 mx-auto -mt-3 w-fit select-none px-2 pb-1 text-center leading-none text-[--card-text-color] shadow transition-colors delay-[--card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-[--color-secondary-active-cat] before:transition-[background-color] before:delay-[--card-hover-delay] before:duration-[--card-hover-duration] sm:px-4'>
