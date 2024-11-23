@@ -1,7 +1,6 @@
 import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
 import tailwindScrollbar from 'tailwind-scrollbar';
-import tailwindClipInset from './src/lib/tailwindClipInset';
-import tailwindMaskEdges from './src/lib/tailwindMaskEdges';
+import { tailwindClipInset, tailwindMaskEdges } from 'tailwind-css-plugins/meta';
 
 export default {
     future: {
@@ -43,11 +42,6 @@ export default {
                 '2xs': '0.666rem',
                 '3xs': '0.55rem',
             },
-            // colors: {
-            //     theme: {
-            //         ...themePalette,
-            //     },
-            // },
             boxShadow: {
                 'top-rim-lg': 'inset 0px 10px 4px -10px rgb(0 0 0 / 0.1)',
                 'with-top-lg': '0px -1px 10px -1px rgb(0 0 0 / 0.1), 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
