@@ -228,11 +228,11 @@ export const MenuOpenedPost: FC<{
     });
 
     return (
-        <div className='pointer-events-auto mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-[1.25rem] sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
+        <div className='pointer-events-auto mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-6 sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
             {hasImages && (
                 <button
                     type='button'
-                    className='h-full cursor-pointer px-2 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Gallery"] active:before:translate-y-0 active:before:transition-none active:before:content-["Gallery"] sm:px-1 sm:pb-px sm:before:block sm:before:pt-1'
+                    className='h-full cursor-pointer px-1.5 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Gallery"] active:before:translate-y-0 active:before:transition-none active:before:content-["Gallery"] sm:px-2 sm:pb-0 sm:before:block sm:before:pt-2'
                     onClick={() => setLightboxTo(0)}
                 >
                     <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
@@ -243,7 +243,7 @@ export const MenuOpenedPost: FC<{
                 <>
                     <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />
                     <a
-                        className='group inline-block h-full cursor-pointer px-2 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:text-nowrap before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none hover:before:translate-y-0 hover:before:content-["View_Code"] sm:px-1 sm:pb-px sm:before:block sm:before:pt-1'
+                        className='group inline-block h-full cursor-pointer px-1.5 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:text-nowrap before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none hover:before:translate-y-0 hover:before:content-["View_Code"] sm:px-2 sm:pb-0 sm:before:block sm:before:pt-2'
                         href={codeLink.href}
                         target='_blank'
                         rel='noreferrer'
@@ -262,7 +262,7 @@ export const MenuOpenedPost: FC<{
             <div className='h-3/5 w-0.5 bg-[--theme-primary-600]' />
             <button
                 type='button'
-                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:px-1 sm:pb-px sm:before:block sm:before:pt-1'
+                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:px-1.5 sm:pb-0 sm:before:block sm:before:pt-2'
                 onClick={() => {
                     navigate('../');
                 }}

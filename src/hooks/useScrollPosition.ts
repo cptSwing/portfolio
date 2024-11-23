@@ -31,10 +31,9 @@ const useScrollPosition = (
 
     const thisOffsetTop = useMemo(() => positionTopStart - scrollContainerTop, [positionTopStart, scrollContainerTop]);
 
-    const [positionState, rightProgress] = useMemo(() => {
+    const [positionState, topProgressPercentage] = useMemo(() => {
         // How far this card is from postCardsParent.top
         let topProgressPercentage = 0;
-        let rightProgress = 0;
 
         let positionState = PostCardPositionState.WAITING;
         if (thisOffsetTop < topWaiting) {
@@ -45,34 +44,32 @@ const useScrollPosition = (
             positionState = PostCardPositionState.MOVETO;
 
             topProgressPercentage = percentageFromValue(postCardsParentHeight, topWaiting, thisOffsetTop);
-
-            rightProgress = valueFromPercentage(rightOffScreen, paddingRight + cardOutline, topProgressPercentage);
         }
 
-        return [positionState, rightProgress];
-    }, [rightOffScreen, thisOffsetTop, topWaiting, paddingRight, cardOutline, postCardsParentHeight]);
+        return [positionState, topProgressPercentage];
+    }, [thisOffsetTop, topWaiting, postCardsParentHeight]);
 
     const waitingStyle_Memo = useMemo(
         () => ({
             right: rightOffScreen,
             bottom: outlineByFour,
             position: 'absolute',
-            pointerEvents: 'none',
-            opacity: 0.65,
+            // pointerEvents: 'none',
+            opacity: 0.2,
             filter: 'blur(2px) brightness(.85)',
         }),
         [rightOffScreen, outlineByFour],
     );
     const moveToStyle_Memo = useMemo(
         () => ({
-            right: rightProgress,
+            right: valueFromPercentage(rightOffScreen, paddingRight + cardOutline, topProgressPercentage),
             bottom: outlineByFour,
             position: 'absolute',
-            pointerEvents: 'none',
-            opacity: 0.65,
+            // pointerEvents: 'none',
+            opacity: Math.max(0.2, Math.min(topProgressPercentage / 100, 0.75)),
             filter: 'blur(2px) brightness(.85)',
         }),
-        [rightProgress, outlineByFour],
+        [topProgressPercentage, rightOffScreen, paddingRight, cardOutline, outlineByFour],
     );
     const finishedStyle_Memo = useMemo(
         () => ({ paddingTop: (cardNumber === 0 ? 0 : spacingY) + outlineByFour, paddingRight: cardOutline * 2 }),

@@ -75,7 +75,7 @@ const Content = () => {
                     </h2>
                     <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
                     <div
-                        className='group/left pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height)+(var(--bar-height)*4))] -translate-x-full cursor-pointer sm:bottom-1/2 sm:left-[calc((100%-var(--post-width))/2)] sm:right-auto sm:top-1/2 sm:translate-y-0'
+                        className='group/left pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] -translate-x-full translate-y-1/2 cursor-pointer active:-translate-x-[105%] sm:bottom-1/2 sm:left-[calc((100%-var(--post-width))/2)] sm:right-auto sm:top-1/2 sm:translate-y-0'
                         onClick={() => {
                             if (typeof id === 'number') {
                                 const currentIndex = postIds_Memo.findIndex((val) => val === id);
@@ -87,7 +87,7 @@ const Content = () => {
                         <ChevronLeftIcon className='h-[--header-height] stroke-[--color-bars-no-post] opacity-50 group-hover/left:opacity-100 group-active/left:opacity-100 sm:h-16 sm:scale-x-75' />
                     </div>
                     <div
-                        className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height)+(var(--bar-height)*4))] translate-x-full cursor-pointer sm:bottom-1/2 sm:left-auto sm:right-[calc((100%-var(--post-width))/2)] sm:top-1/2 sm:translate-y-0'
+                        className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] translate-x-full translate-y-1/2 cursor-pointer active:translate-x-[105%] sm:bottom-1/2 sm:left-auto sm:right-[calc((100%-var(--post-width))/2)] sm:top-1/2 sm:translate-y-0'
                         onClick={() => {
                             if (typeof id === 'number') {
                                 const currentIndex = postIds_Memo.findIndex((val) => val === id);

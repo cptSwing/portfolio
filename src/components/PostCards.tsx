@@ -115,14 +115,14 @@ export const SinglePostCard: FC<{
                 }
             >
                 {/* Title: */}
-                <div className='relative z-10 mx-auto -mt-3 w-fit select-none px-2 pb-1 text-center leading-none text-[--card-text-color] shadow transition-colors delay-[--card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-[--color-secondary-active-cat] before:transition-[background-color] before:delay-[--card-hover-delay] before:duration-[--card-hover-duration] sm:px-4'>
-                    <h3>{title}</h3>
+                <div className='relative z-10 mx-auto -mt-3 w-fit select-none px-2 pb-1 text-center leading-none text-[--card-text-color] transition-colors delay-[--card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:-translate-y-0.5 before:bg-[--color-secondary-active-cat] before:shadow before:transition-[background-color] before:delay-[--card-hover-delay] before:duration-[--card-hover-duration] sm:px-4 sm:before:-translate-y-1'>
+                    <h3 className='-translate-y-px sm:-translate-y-1'>{title}</h3>
                 </div>
 
                 <div className='absolute top-0 size-full overflow-hidden'>
                     {/* Subtitle: */}
                     {subTitle && (
-                        <div className='absolute bottom-0 left-1/2 z-10 mx-auto h-fit -translate-x-1/2 transform-gpu select-none truncate bg-[--color-secondary-inactive-cat] px-2 text-center text-xs text-[--card-text-color] opacity-90 transition-[background-color,opacity,color] delay-[--card-hover-delay] duration-[--card-hover-duration] group-hover/this:text-[--card-text-color] group-active/this:text-[--card-text-color] hover:delay-[calc(75ms+var(--card-hover-delay))] active:delay-[calc(75ms+var(--card-hover-delay))] sm:left-0 sm:w-full sm:translate-x-0 sm:bg-transparent sm:py-[--card-outline-width] sm:text-sm sm:text-[--color-text-testimonial] sm:opacity-100 sm:group-hover/this:bg-[--color-secondary-inactive-cat]'>
+                        <div className='absolute bottom-0 left-1/2 z-10 mx-auto h-fit -translate-x-1/2 transform-gpu select-none truncate bg-[--color-secondary-inactive-cat] px-2 pb-0.5 text-center text-xs text-[--card-text-color] opacity-90 transition-[background-color,opacity,color] delay-[--card-hover-delay] duration-[--card-hover-duration] group-hover/this:text-[--card-text-color] group-active/this:text-[--card-text-color] hover:delay-[calc(75ms+var(--card-hover-delay))] active:delay-[calc(75ms+var(--card-hover-delay))] sm:left-0 sm:w-full sm:translate-x-0 sm:bg-transparent sm:py-[--card-outline-width] sm:text-sm sm:text-[--color-text-testimonial] sm:opacity-100 sm:group-hover/this:bg-[--color-secondary-inactive-cat]'>
                             <Markdown>{subTitle}</Markdown>
                         </div>
                     )}
@@ -136,7 +136,7 @@ export const SinglePostCard: FC<{
 
                     {/* Image: */}
                     {titleCardBg && (
-                        <div className='absolute -z-10 size-full transition-[clip-path] delay-[--card-hover-delay] duration-[--card-hover-duration] clip-inset-0 group-hover/this:clip-inset-[--card-outline-width] group-active/this:clip-inset-[--card-outline-width]'>
+                        <div className='absolute -z-10 size-full transition-[clip-path] delay-[--card-hover-delay] duration-[--card-hover-duration] clip-inset-0 group-active/this:clip-inset-[--card-outline-width]'>
                             <div
                                 className='h-full w-auto scale-105 transform-gpu bg-cover grayscale-[75%] transition-[filter] delay-[--card-hover-delay] duration-[--card-hover-duration] group-hover/this:grayscale-0 group-hover/this:delay-0 group-hover/this:duration-[--card-hover-duration] group-active/this:grayscale-0 group-active/this:delay-0 group-active/this:duration-[--card-hover-duration]'
                                 style={{ backgroundImage: `url('${titleCardBg}')` }}
