@@ -1,26 +1,27 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import parseDateString from '../lib/parseDateString';
 import { Post } from '../types/types';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import convertRemToPixels from '../lib/convertRemToPixels';
 import useScrollPosition from '../hooks/useScrollPosition';
-import { useScroll, useThrottle } from 'react-use';
+import { useMeasure, useScroll, useThrottle } from 'react-use';
 
 export const PostCards: FC<{
     posts: Post[];
     parentRef: React.MutableRefObject<HTMLDivElement | null>;
-    postCardsParentWidth: number;
-    postCardsParentHeight: number;
-}> = ({ posts, parentRef, postCardsParentWidth, postCardsParentHeight }) => {
-    // const parentRef = useRef<HTMLDivElement | null>(null);
+}> = ({ posts, parentRef }) => {
     const { y: scrollY } = useScroll(parentRef);
-    // useThrottle(scrollY, 1000);
+    useThrottle(scrollY, 1000);
+
+    const [postCardsParentRef_Cb, { width: parentWidth, height: parentHeight }] = useMeasure<HTMLDivElement>();
+    useEffect(() => {
+        if (parentRef.current) postCardsParentRef_Cb(parentRef.current);
+    }, [postCardsParentRef_Cb, parentRef]);
 
     const [dimensions, setDimensions] = useState({
-        postCardsParentWidth,
-        postCardsParentHeight,
-        cardWidth: 0,
+        postCardsParentWidth: parentWidth,
+        postCardsParentHeight: parentHeight,
         cardHeight: 0,
         cardOutline: 0,
         spacingY: 0,
@@ -33,9 +34,8 @@ export const PostCards: FC<{
             if (elem) {
                 const compStyle = getComputedStyle(elem);
                 setDimensions({
-                    postCardsParentWidth,
-                    postCardsParentHeight,
-                    cardWidth: convertRemToPixels(compStyle.getPropertyValue('--postcard-width')),
+                    postCardsParentWidth: parentWidth,
+                    postCardsParentHeight: parentHeight,
                     cardHeight: convertRemToPixels(compStyle.getPropertyValue('--card-height')),
                     cardOutline: convertRemToPixels(compStyle.getPropertyValue('--card-outline-width')),
                     spacingY: convertRemToPixels(compStyle.getPropertyValue('--spacing-y')),
@@ -43,19 +43,21 @@ export const PostCards: FC<{
                     paddingRight: convertRemToPixels(compStyle.getPropertyValue('--padding-right')),
                 });
             }
-
-            // parentRef.current = elem;
         },
-        [postCardsParentWidth, postCardsParentHeight],
+        [parentWidth, parentHeight],
     );
 
     const [scrollWrapperHeight, setScrollWrapperHeight] = useState(0);
     useEffect(() => {
-        setScrollWrapperHeight((dimensions.cardHeight + dimensions.spacingY + dimensions.cardOutline) * posts.length + dimensions.cardOutline);
-    }, [dimensions.cardHeight, dimensions.cardOutline, dimensions.paddingRight, dimensions.spacingY, posts.length]);
+        setScrollWrapperHeight((dimensions.cardHeight + dimensions.spacingY + dimensions.cardOutline) * posts.length + 2 * dimensions.cardOutline);
+    }, [dimensions.cardHeight, dimensions.cardOutline, dimensions.spacingY, posts.length]);
+
+    useEffect(() => {
+        console.log('%c[PostCards]', 'color: #cb572b', `dimensions.paddingTop :`, dimensions.paddingTop);
+    }, [dimensions.paddingTop]);
 
     return (
-        <div ref={ref_Cb} style={{ height: scrollWrapperHeight }} className=''>
+        <div ref={ref_Cb} style={{ height: scrollWrapperHeight }} className='mt-[--padding-top] sm:mt-auto'>
             {posts.map((post, idx) => (
                 <SinglePostCard key={post.title + idx} post={post} index={idx} dimensions={dimensions} parentScroll={Math.round(scrollY)} />
             ))}
@@ -69,7 +71,6 @@ export const SinglePostCard: FC<{
     dimensions: {
         postCardsParentWidth: number;
         postCardsParentHeight: number;
-        cardWidth: number;
         cardHeight: number;
         cardOutline: number;
         spacingY: number;
@@ -79,7 +80,7 @@ export const SinglePostCard: FC<{
     parentScroll: number;
 }> = ({ post, index, dimensions, parentScroll }) => {
     const { id, title, titleCardBg, subTitle, date } = post;
-    const { postCardsParentWidth, postCardsParentHeight, cardWidth, cardHeight, cardOutline, spacingY, paddingTop, paddingRight } = dimensions;
+    const { postCardsParentWidth, postCardsParentHeight, cardHeight, cardOutline, spacingY, paddingTop, paddingRight } = dimensions;
     const { year } = parseDateString(date);
     const navigate = useNavigate();
 
@@ -96,18 +97,22 @@ export const SinglePostCard: FC<{
     );
 
     return (
-        <div style={style} className='static'>
+        <div
+            style={style}
+            className='static -z-10 mx-auto w-[--postcard-width] transition-[opacity,filter] sm:ml-auto sm:mr-0'
+            onClick={(e) => {
+                navigate(id.toString());
+                // e.preventDefault();
+                e.stopPropagation();
+            }}
+        >
             <div
-                style={{ height: cardHeight, width: cardWidth }}
+                style={{ height: cardHeight }}
                 className={
                     '[--card-hover-delay:50ms] [--card-hover-duration:100ms] [--card-text-color:--theme-primary-50]' +
                     ' ' +
-                    'group/this ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] hover:-outline-offset-[--card-outline-width] active:-outline-offset-[--card-outline-width]'
+                    'group/this ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] -outline-offset-[--card-outline-width] outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] hover:outline-[length:--card-outline-width] hover:outline-offset-0 active:outline-offset-0'
                 }
-                onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(id.toString());
-                }}
             >
                 {/* Title: */}
                 <div className='relative z-10 mx-auto -mt-3 w-fit select-none px-2 pb-1 text-center leading-none text-[--card-text-color] shadow transition-colors delay-[--card-hover-delay] duration-[--card-hover-duration] before:absolute before:-z-30 before:size-full before:-translate-x-1/2 before:bg-[--color-secondary-active-cat] before:transition-[background-color] before:delay-[--card-hover-delay] before:duration-[--card-hover-duration] sm:px-4'>
@@ -117,7 +122,7 @@ export const SinglePostCard: FC<{
                 <div className='absolute top-0 size-full overflow-hidden'>
                     {/* Subtitle: */}
                     {subTitle && (
-                        <div className='absolute bottom-0 left-1/2 z-10 mx-auto h-fit -translate-x-1/2 transform-gpu select-none truncate bg-[--color-secondary-inactive-cat] px-2 text-center text-xs text-[--card-text-color] opacity-90 transition-[background-color,opacity,color] delay-[--card-hover-delay] duration-[--card-hover-duration] group-hover/this:text-[--card-text-color] group-active/this:text-[--card-text-color] hover:delay-[calc(75ms+var(--card-hover-delay))] active:delay-[calc(75ms+var(--card-hover-delay))] sm:bottom-[--card-outline-width] sm:left-0 sm:w-full sm:translate-x-0 sm:bg-transparent sm:text-sm sm:text-[--color-text-testimonial] sm:opacity-100 sm:clip-inset-x-[--card-outline-width] sm:group-hover/this:bg-[--color-secondary-inactive-cat]'>
+                        <div className='absolute bottom-0 left-1/2 z-10 mx-auto h-fit -translate-x-1/2 transform-gpu select-none truncate bg-[--color-secondary-inactive-cat] px-2 text-center text-xs text-[--card-text-color] opacity-90 transition-[background-color,opacity,color] delay-[--card-hover-delay] duration-[--card-hover-duration] group-hover/this:text-[--card-text-color] group-active/this:text-[--card-text-color] hover:delay-[calc(75ms+var(--card-hover-delay))] active:delay-[calc(75ms+var(--card-hover-delay))] sm:left-0 sm:w-full sm:translate-x-0 sm:bg-transparent sm:py-[--card-outline-width] sm:text-sm sm:text-[--color-text-testimonial] sm:opacity-100 sm:group-hover/this:bg-[--color-secondary-inactive-cat]'>
                             <Markdown>{subTitle}</Markdown>
                         </div>
                     )}

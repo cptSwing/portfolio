@@ -56,7 +56,7 @@ const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
                     postId
                         ? '!my-0 h-[--content-height] w-[--post-width] overflow-y-visible'
                         : catId
-                          ? 'h-[80vh] max-h-[48rem] w-[--checked-width]'
+                          ? 'h-[80vh] max-h-[56rem] w-[--checked-width]'
                           : 'h-[50vh] max-h-[28rem] w-[--unchecked-width]',
                 )}
             >

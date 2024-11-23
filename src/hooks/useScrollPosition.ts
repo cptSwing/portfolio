@@ -53,11 +53,25 @@ const useScrollPosition = (
     }, [rightOffScreen, thisOffsetTop, topWaiting, paddingRight, cardOutline, postCardsParentHeight]);
 
     const waitingStyle_Memo = useMemo(
-        () => ({ right: rightOffScreen, bottom: outlineByFour, position: 'absolute', pointerEvents: 'none' }),
+        () => ({
+            right: rightOffScreen,
+            bottom: outlineByFour,
+            position: 'absolute',
+            pointerEvents: 'none',
+            opacity: 0.65,
+            filter: 'blur(2px) brightness(.85)',
+        }),
         [rightOffScreen, outlineByFour],
     );
     const moveToStyle_Memo = useMemo(
-        () => ({ right: rightProgress, bottom: outlineByFour, position: 'absolute', pointerEvents: 'none' }),
+        () => ({
+            right: rightProgress,
+            bottom: outlineByFour,
+            position: 'absolute',
+            pointerEvents: 'none',
+            opacity: 0.65,
+            filter: 'blur(2px) brightness(.85)',
+        }),
         [rightProgress, outlineByFour],
     );
     const finishedStyle_Memo = useMemo(

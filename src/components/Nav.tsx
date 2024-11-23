@@ -12,7 +12,7 @@ import GetBackgroundSvg from './GetBackgroundSvg.tsx';
 import { useBreakpoint } from '../hooks/useBreakPoint.ts';
 import remarkBreaks from 'remark-breaks';
 import { bars_totalDuration } from '../lib/animationValues.ts';
-import { useMeasure, useScroll } from 'react-use';
+import { useMeasure } from 'react-use';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
@@ -78,7 +78,7 @@ const CategoryCard: FC<{
     }, [isThisCategoryOpen, catId, id, isDesktop]);
 
     const parentRef = useRef<HTMLDivElement | null>(null);
-    const [postCardsParentRef_Cb, { width: postCardsParentWidth, height: postCardsParentHeight }] = useMeasure<HTMLDivElement>();
+    const [postCardsParentRef_Cb, { height: postCardsParentHeight }] = useMeasure<HTMLDivElement>();
 
     const ref_Cb = useCallback(
         (elem: HTMLDivElement | null) => {
@@ -116,7 +116,7 @@ const CategoryCard: FC<{
                     className={classNames(
                         'relative px-[calc(var(--category-padding)*2)] py-[--category-padding] transition-[margin-left,transform] [--swipe-delay:75ms]',
                         isThisCategoryOpen
-                            ? '!absolute left-0 top-0 z-10 ml-0 translate-x-0 bg-[--color-primary-content-bg]'
+                            ? '!absolute left-0 top-auto z-50 ml-0 translate-x-0 bg-[--color-primary-content-bg] sm:top-0'
                             : catId
                               ? 'ml-[50%] -translate-x-1/2'
                               : 'before:absolute before:bottom-0 before:left-0 before:h-0 before:w-full before:border-t-0 before:border-t-[--theme-accent-200] before:transition-[height,border-top-color,border-top-width] before:delay-[--swipe-delay] before:duration-[--swipe-delay] group-hover/category:before:h-full group-hover/category:before:border-t-[3px] group-hover/category:before:border-t-transparent group-hover/category:before:delay-[0s,calc(var(--tab-anim-delay)/2),0s] group-hover/category:before:duration-[var(--tab-anim-delay),calc(var(--tab-anim-delay)/2),var(--swipe-delay)] group-active/category:before:transition-none' +
@@ -150,20 +150,22 @@ const CategoryCard: FC<{
                             } as CSSProperties
                         }
                         className={
-                            '[--card-height:theme(spacing.44)] [--card-outline-width:theme(spacing.1)] [--color-text-testimonial:--theme-accent-400] [--padding-right:theme(spacing.2)] [--postcard-width:theme(spacing.84)] sm:[--card-height:theme(spacing.52)] sm:[--padding-right:theme(spacing.4)] sm:[--postcard-width:theme(spacing.128)]' +
+                            '[--card-height:theme(spacing.44)] [--card-outline-width:theme(spacing.1)] [--color-text-testimonial:--theme-accent-400] [--padding-right:theme(spacing.2)] [--padding-top:2.5rem] [--postcard-width:100%] sm:[--card-height:theme(spacing.52)] sm:[--padding-right:theme(spacing.4)] sm:[--padding-top:theme(spacing.4)] sm:[--postcard-width:60%]' +
                             ' ' +
                             'flex size-full flex-col items-center justify-start overflow-y-hidden bg-[--color-primary-content-bg] p-[--category-padding] sm:flex-row sm:items-start sm:justify-between'
                         }
                     >
-                        <div className='absolute flex h-[--testimonial-height] w-[calc(100%-(var(--postcard-width)+var(--padding-right)+(2*var(--card-outline-width))+(3*var(--category-padding))))] flex-col items-stretch justify-start bg-[--color-primary-active-cat-bg] p-[--category-padding] pt-[calc(var(--category-title-font-size)+2*var(--category-padding))]'>
+                        <div className='absolute top-0 z-20 flex h-[calc(var(--category-title-font-size)+2*var(--category-padding))] w-full flex-col items-stretch justify-start bg-[--color-primary-content-bg] p-[--category-padding] sm:top-auto sm:z-auto sm:h-[--testimonial-height] sm:w-[calc(100%-(var(--postcard-width)+var(--padding-right)+(2*var(--card-outline-width))+(3*var(--category-padding))))] sm:bg-[--color-primary-active-cat-bg] sm:pt-[calc(var(--category-title-font-size)+2*var(--category-padding))]'>
                             <div
                                 className={classNames(
                                     'relative select-none transition-transform',
-                                    isThisCategoryOpen ? 'translate-x-0 delay-500 duration-300' : '-translate-x-[200%] delay-0 duration-0',
+                                    isThisCategoryOpen
+                                        ? 'ml-auto mr-0 h-full w-3/5 translate-x-0 overflow-y-auto delay-500 duration-300 scrollbar-thin [--scrollbar-thumb:theme(colors.gray.300)50] sm:mr-auto sm:h-auto sm:w-auto sm:overflow-y-hidden'
+                                        : '-translate-x-[200%] delay-0 duration-0',
                                 )}
                             >
                                 <Markdown
-                                    className='mrkdwn text-pretty font-besley text-base text-[--color-text-testimonial] sm:text-2xl'
+                                    className='mrkdwn text-pretty font-besley text-xs text-[--color-text-testimonial] sm:text-2xl'
                                     remarkPlugins={[remarkBreaks]}
                                 >
                                     {categoryBlurb}
@@ -173,14 +175,9 @@ const CategoryCard: FC<{
 
                         <div
                             ref={ref_Cb}
-                            className='scroll-gutter inset-0 size-full overflow-x-hidden overflow-y-scroll scrollbar-thin clip-inset-[1px] [--padding-top:theme(spacing.4)] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.3)] sm:[--padding-top:theme(spacing.4)]'
+                            className='scroll-gutter inset-0 size-full overflow-x-hidden overflow-y-scroll scrollbar-thin clip-inset-[0px] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.1)] sm:clip-inset-[1px] sm:[--spacing-y:theme(spacing.3)]'
                         >
-                            <PostCards
-                                posts={posts}
-                                parentRef={parentRef}
-                                postCardsParentWidth={postCardsParentWidth}
-                                postCardsParentHeight={postCardsParentHeight}
-                            />
+                            <PostCards posts={posts} parentRef={parentRef} />
                         </div>
                     </div>
                 )}
