@@ -153,7 +153,7 @@ const Content = () => {
                                                         className='size-full min-h-[--min-height]'
                                                     />
                                                 ) : (
-                                                    <img src={`/${(showCase as Post_ShowCase_Image).imgUrl}`} className='size-full object-cover' />
+                                                    <img src={(showCase as Post_ShowCase_Image).imgUrl} className='size-full object-cover' />
                                                 )}
                                                 {showCase.caption && (
                                                     <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] mask-edges-x-2/5 group-hover:bg-neutral-500 group-hover:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:group-hover:max-h-full'>
@@ -274,7 +274,7 @@ const RemainingImages: FC<{
                 return imageShowCase && typeof imageIndex === 'number' ? (
                     <img
                         key={imageShowCase.imgUrl + imageIndex}
-                        src={`/${imageShowCase.imgUrl}`}
+                        src={imageShowCase.imgUrl}
                         className='max-h-64 w-full cursor-pointer border border-transparent object-cover drop-shadow-sm hover:border-[--color-bars-no-post]'
                         onClick={() => setLightBoxSlide(imageIndex)}
                     />

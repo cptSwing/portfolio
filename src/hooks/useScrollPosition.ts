@@ -5,7 +5,7 @@ import { CSSProperties, useMemo } from 'react';
  *
  * name 				| desc					| how?
  * -----------------------------------------------------------------------------------------------------------
- * waiting				| off-view				| !intersecting, left: parent.left (-width), parent.bottom 0
+ * waiting				| off-view				| !intersecting, left: parent.left (-width), parent.outlineByFour 0
  * start 				| start pos 			| intersecting, left: parent.left 0, "
  * Moving				| end pos 				| intersecting, left: parent.left 100% - width, "
  * Finished				| back 2 regular flow	| hasIntersected (set when outside of observer window), top: parent.top + (height * index)
@@ -13,7 +13,6 @@ import { CSSProperties, useMemo } from 'react';
 
 const useScrollPosition = (
     cardNumber: number,
-    cardWidth: number,
     cardHeight: number,
     cardOutline: number,
     spacingY: number,
@@ -25,16 +24,17 @@ const useScrollPosition = (
 ) => {
     const totalCardHeight = useMemo(() => cardHeight + spacingY + cardOutline, [cardHeight, cardOutline, spacingY]);
     const positionTopStart = useMemo(() => paddingTop + (cardOutline + totalCardHeight * cardNumber), [paddingTop, cardOutline, totalCardHeight, cardNumber]);
-    const leftOffscreen = useMemo(() => -(cardWidth + paddingRight + cardOutline), [cardWidth, paddingRight, cardOutline]);
-    const leftEnd = useMemo(() => postCardsParentWidth - cardWidth - cardOutline - paddingRight, [postCardsParentWidth, cardOutline, cardWidth, paddingRight]);
     const topWaiting = useMemo(() => postCardsParentHeight - (totalCardHeight - paddingTop), [postCardsParentHeight, paddingTop, totalCardHeight]);
+
+    const outlineByFour = useMemo(() => cardOutline * 4, [cardOutline]);
+    const rightOffScreen = useMemo(() => postCardsParentWidth + paddingRight + outlineByFour, [postCardsParentWidth, paddingRight, outlineByFour]);
 
     const thisOffsetTop = useMemo(() => positionTopStart - scrollContainerTop, [positionTopStart, scrollContainerTop]);
 
-    const [positionState, leftProgress] = useMemo(() => {
+    const [positionState, rightProgress] = useMemo(() => {
         // How far this card is from postCardsParent.top
         let topProgressPercentage = 0;
-        let leftProgress = 0;
+        let rightProgress = 0;
 
         let positionState = PostCardPositionState.WAITING;
         if (thisOffsetTop < topWaiting) {
@@ -43,16 +43,27 @@ const useScrollPosition = (
         } else if (thisOffsetTop < postCardsParentHeight) {
             // ^ this card sits at postCardsParent.bottom
             positionState = PostCardPositionState.MOVETO;
-            topProgressPercentage = Math.round(percentageFromValue(postCardsParentHeight, topWaiting, thisOffsetTop));
-            leftProgress = Math.round(valueFromPercentage(leftOffscreen, leftEnd, topProgressPercentage));
+
+            topProgressPercentage = percentageFromValue(postCardsParentHeight, topWaiting, thisOffsetTop);
+
+            rightProgress = valueFromPercentage(rightOffScreen, paddingRight + cardOutline, topProgressPercentage);
         }
 
-        return [positionState, leftProgress];
-    }, [thisOffsetTop, topWaiting, postCardsParentHeight, leftOffscreen, leftEnd]);
+        return [positionState, rightProgress];
+    }, [rightOffScreen, thisOffsetTop, topWaiting, paddingRight, cardOutline, postCardsParentHeight]);
 
-    const waitingStyle_Memo = useMemo(() => ({ left: leftOffscreen, top: topWaiting }), [leftOffscreen, topWaiting]);
-    const moveToStyle_Memo = useMemo(() => ({ left: leftProgress, top: topWaiting }), [leftProgress, topWaiting]);
-    const finishedStyle_Memo = useMemo(() => ({ left: leftEnd, top: thisOffsetTop }), [leftEnd, thisOffsetTop]);
+    const waitingStyle_Memo = useMemo(
+        () => ({ right: rightOffScreen, bottom: outlineByFour, position: 'absolute', pointerEvents: 'none' }),
+        [rightOffScreen, outlineByFour],
+    );
+    const moveToStyle_Memo = useMemo(
+        () => ({ right: rightProgress, bottom: outlineByFour, position: 'absolute', pointerEvents: 'none' }),
+        [rightProgress, outlineByFour],
+    );
+    const finishedStyle_Memo = useMemo(
+        () => ({ paddingTop: (cardNumber === 0 ? 0 : spacingY) + outlineByFour, paddingRight: cardOutline * 2 }),
+        [cardNumber, cardOutline, outlineByFour, spacingY],
+    );
 
     const styles = useMemo(() => {
         switch (positionState) {

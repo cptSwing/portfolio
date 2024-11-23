@@ -1,6 +1,6 @@
 import { DataBase, Post } from '../types/types';
 import classNames from '../lib/classNames';
-import { CSSProperties, FC, useMemo } from 'react';
+import { CSSProperties, FC, useCallback, useMemo, useRef } from 'react';
 import testDb from '../queries/testDb.json';
 import { PostCards } from './PostCards.tsx';
 import { MENU_CATEGORY } from '../types/enums.ts';
@@ -12,7 +12,7 @@ import GetBackgroundSvg from './GetBackgroundSvg.tsx';
 import { useBreakpoint } from '../hooks/useBreakPoint.ts';
 import remarkBreaks from 'remark-breaks';
 import { bars_totalDuration } from '../lib/animationValues.ts';
-import { useMeasure } from 'react-use';
+import { useMeasure, useScroll } from 'react-use';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
@@ -77,7 +77,16 @@ const CategoryCard: FC<{
         }
     }, [isThisCategoryOpen, catId, id, isDesktop]);
 
+    const parentRef = useRef<HTMLDivElement | null>(null);
     const [postCardsParentRef_Cb, { width: postCardsParentWidth, height: postCardsParentHeight }] = useMeasure<HTMLDivElement>();
+
+    const ref_Cb = useCallback(
+        (elem: HTMLDivElement | null) => {
+            if (elem) postCardsParentRef_Cb(elem);
+            parentRef.current = elem;
+        },
+        [postCardsParentRef_Cb],
+    );
 
     return (
         <div
@@ -99,7 +108,6 @@ const CategoryCard: FC<{
                 className={classNames(
                     '[--category-padding:theme(spacing.[1.5])] [--category-title-font-size:theme(fontSize.4xl)] sm:[--category-padding:theme(spacing.2)] sm:[--category-title-font-size:theme(fontSize.5xl)]',
                     'shadow-theme-primary-950 relative flex flex-col items-start justify-start overflow-hidden',
-                    // 'after:absolute after:bottom-0 after:h-[--category-padding] after:w-full after:bg-[--color-primary-content-bg]',
                     isThisCategoryOpen ? 'size-full drop-shadow-lg' : '',
                 )}
             >
@@ -142,7 +150,7 @@ const CategoryCard: FC<{
                             } as CSSProperties
                         }
                         className={
-                            '[--card-height:theme(spacing.44)] [--card-outline-width:theme(spacing.1)] [--color-text-testimonial:--theme-accent-400] [--padding-right:theme(spacing.4)] [--postcard-width:theme(spacing.128)] sm:[--card-height:theme(spacing.52)] sm:[--padding-right:theme(spacing.4)]' +
+                            '[--card-height:theme(spacing.44)] [--card-outline-width:theme(spacing.1)] [--color-text-testimonial:--theme-accent-400] [--padding-right:theme(spacing.2)] [--postcard-width:theme(spacing.84)] sm:[--card-height:theme(spacing.52)] sm:[--padding-right:theme(spacing.4)] sm:[--postcard-width:theme(spacing.128)]' +
                             ' ' +
                             'flex size-full flex-col items-center justify-start overflow-y-hidden bg-[--color-primary-content-bg] p-[--category-padding] sm:flex-row sm:items-start sm:justify-between'
                         }
@@ -163,8 +171,16 @@ const CategoryCard: FC<{
                             </div>
                         </div>
 
-                        <div ref={postCardsParentRef_Cb} className='relative size-full clip-inset-[1px]'>
-                            <PostCards posts={posts} postCardsParentWidth={postCardsParentWidth} postCardsParentHeight={postCardsParentHeight} />
+                        <div
+                            ref={ref_Cb}
+                            className='scroll-gutter inset-0 size-full overflow-x-hidden overflow-y-scroll scrollbar-thin clip-inset-[1px] [--padding-top:theme(spacing.4)] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.3)] sm:[--padding-top:theme(spacing.4)]'
+                        >
+                            <PostCards
+                                posts={posts}
+                                parentRef={parentRef}
+                                postCardsParentWidth={postCardsParentWidth}
+                                postCardsParentHeight={postCardsParentHeight}
+                            />
                         </div>
                     </div>
                 )}
@@ -215,7 +231,7 @@ export const MenuOpenedPost: FC<{
     });
 
     return (
-        <div className='mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-[1.25rem] sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
+        <div className='pointer-events-auto mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-[1.25rem] sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
             {hasImages && (
                 <button
                     type='button'

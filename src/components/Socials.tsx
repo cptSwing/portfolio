@@ -5,6 +5,7 @@ import LinkedInLogo from '../assets/svg/logo_linkedin.svg?react';
 import classNames from '../lib/classNames';
 import { useBreakpoint } from '../hooks/useBreakPoint';
 import { useState } from 'react';
+// TODO replace with useClickAway ?
 import useOutsideClick from '../hooks/useOutsideClick';
 import Settings from './Settings';
 

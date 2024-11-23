@@ -5,15 +5,18 @@ import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import convertRemToPixels from '../lib/convertRemToPixels';
 import useScrollPosition from '../hooks/useScrollPosition';
-import { useScroll } from 'react-use';
+import { useScroll, useThrottle } from 'react-use';
 
 export const PostCards: FC<{
     posts: Post[];
+    parentRef: React.MutableRefObject<HTMLDivElement | null>;
     postCardsParentWidth: number;
     postCardsParentHeight: number;
-}> = ({ posts, postCardsParentWidth, postCardsParentHeight }) => {
-    const parentRef = useRef<HTMLDivElement | null>(null);
+}> = ({ posts, parentRef, postCardsParentWidth, postCardsParentHeight }) => {
+    // const parentRef = useRef<HTMLDivElement | null>(null);
     const { y: scrollY } = useScroll(parentRef);
+    // useThrottle(scrollY, 1000);
+
     const [dimensions, setDimensions] = useState({
         postCardsParentWidth,
         postCardsParentHeight,
@@ -24,7 +27,6 @@ export const PostCards: FC<{
         paddingTop: 0,
         paddingRight: 0,
     });
-    const [scrollWrapperHeight, setScrollWrapperHeight] = useState(0);
 
     const ref_Cb = useCallback(
         (elem: HTMLDivElement | null) => {
@@ -42,34 +44,21 @@ export const PostCards: FC<{
                 });
             }
 
-            parentRef.current = elem;
+            // parentRef.current = elem;
         },
         [postCardsParentWidth, postCardsParentHeight],
     );
 
+    const [scrollWrapperHeight, setScrollWrapperHeight] = useState(0);
     useEffect(() => {
         setScrollWrapperHeight((dimensions.cardHeight + dimensions.spacingY + dimensions.cardOutline) * posts.length + dimensions.cardOutline);
     }, [dimensions.cardHeight, dimensions.cardOutline, dimensions.paddingRight, dimensions.spacingY, posts.length]);
 
     return (
-        <div
-            ref={ref_Cb}
-            /* NOTE Post Card height set here: */
-            className='scroll-gutter size-full overflow-x-hidden overflow-y-scroll scrollbar-thin [--padding-top:theme(spacing.4)] [--scrollbar-thumb:--color-secondary-active-cat] [--spacing-y:theme(spacing.3)] sm:[--padding-top:theme(spacing.4)]'
-        >
-            {/* Wrapping div for scrolling */}
-            <div
-                style={{ height: scrollWrapperHeight }}
-                className='w-[--postcard-width] sm:ml-auto sm:mr-0'
-                onClick={(e) => {
-                    /* Needed for children's navigate() calls in an onClick to work: */
-                    e.stopPropagation();
-                }}
-            >
-                {posts.map((post, idx) => (
-                    <SinglePostCard key={post.title + idx} post={post} index={idx} dimensions={dimensions} parentScroll={Math.round(scrollY)} />
-                ))}
-            </div>
+        <div ref={ref_Cb} style={{ height: scrollWrapperHeight }} className=''>
+            {posts.map((post, idx) => (
+                <SinglePostCard key={post.title + idx} post={post} index={idx} dimensions={dimensions} parentScroll={Math.round(scrollY)} />
+            ))}
         </div>
     );
 };
@@ -94,11 +83,8 @@ export const SinglePostCard: FC<{
     const { year } = parseDateString(date);
     const navigate = useNavigate();
 
-    const [timer, setTimer] = useState<number>();
-
     const style = useScrollPosition(
         index,
-        cardWidth,
         cardHeight,
         cardOutline,
         spacingY,
@@ -110,25 +96,17 @@ export const SinglePostCard: FC<{
     );
 
     return (
-        <div style={style} className='absolute'>
+        <div style={style} className='static'>
             <div
                 style={{ height: cardHeight, width: cardWidth }}
                 className={
                     '[--card-hover-delay:50ms] [--card-hover-duration:100ms] [--card-text-color:--theme-primary-50]' +
                     ' ' +
-                    'group/this pointer-events-auto relative ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] hover:-outline-offset-[--card-outline-width] active:-outline-offset-[--card-outline-width]'
+                    'group/this ml-auto mr-0 h-full origin-left transform-gpu cursor-pointer outline outline-[length:--card-outline-width] outline-offset-0 outline-[--color-secondary-inactive-cat] drop-shadow-lg transition-[transform,outline-color,outline-offset,outline-width] delay-[--card-hover-delay] duration-[--card-hover-duration] hover:-outline-offset-[--card-outline-width] active:-outline-offset-[--card-outline-width]'
                 }
-                onClick={() => navigate(id.toString())}
-                onScroll={({ currentTarget }) => {
-                    console.log('%c[PostCards]', 'color: #dfc2be', `scroll :`);
-                    clearTimeout(timer);
-                    currentTarget.style.setProperty('pointer-events', 'none');
-
-                    setTimer(
-                        setTimeout(function () {
-                            currentTarget.style.setProperty('pointer-events', 'auto');
-                        }, 100),
-                    );
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(id.toString());
                 }}
             >
                 {/* Title: */}
