@@ -35,7 +35,7 @@ const Content = () => {
     }, [catId, postId]);
 
     const [activePost_Memo, postIds_Memo] = activeData_Memo;
-    const { title, subTitle, toolsUsed, showCases, textBlocks, codeLink, date, id } = activePost_Memo ?? {};
+    const { title, subTitle, /* toolsUsed, */ showCases, textBlocks, codeLink, date, id } = activePost_Memo ?? {};
 
     const filteredImages_Memo = useMemo(
         () =>
@@ -101,10 +101,7 @@ const Content = () => {
                 </div>
 
                 {textBlocks ? (
-                    <div
-                        className='scroll-gutter-both relative flex flex-col overflow-y-auto px-4 py-6 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] [--scrollbar-thumb:--color-bars-post] sm:px-6 sm:py-6 xl:px-16 xl:py-12'
-                        // onBlur={() => store_activePost(null)} // TODO
-                    >
+                    <div className='scroll-gutter-both relative flex flex-col overflow-y-auto px-4 py-6 scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] [--scrollbar-thumb:--color-bars-post] sm:px-6 sm:py-6 xl:px-16 xl:py-12'>
                         {/* (Sub-)Header, date, "Built with" */}
                         <div className='flex w-full items-start justify-between pb-2 pt-8 sm:py-8'>
                             <h4 className='leading-none'>{subTitle}</h4>
@@ -114,7 +111,7 @@ const Content = () => {
                                     {month && `${month}.`}
                                     {year && `${year}`}
                                 </h5>
-                                <ToolsUsed tools={toolsUsed} />
+                                {/* <ToolsUsed tools={toolsUsed} /> */}
                             </div>
                         </div>
 
@@ -165,11 +162,11 @@ const Content = () => {
 
                                         <div
                                             className={classNames(
-                                                '-mt-1 text-pretty text-justify leading-tight sm:leading-normal',
+                                                '-mt-1 text-pretty text-justify leading-tight tracking-wide sm:leading-normal',
                                                 showCase ? 'flex-1' : 'mr-auto sm:basis-4/5',
                                                 isBlockIndexEven ? 'order-1' : 'order-2',
                                                 idx === 0
-                                                    ? 'first-letter:-ml-0.5 first-letter:align-text-bottom first-letter:text-[2rem] first-letter:leading-[2rem] first-letter:text-[--theme-secondary-400]'
+                                                    ? 'first-letter:-ml-0.5 first-letter:align-text-bottom first-letter:text-[2rem] first-letter:leading-[1.84rem] first-letter:text-[--theme-secondary-400]'
                                                     : '',
                                             )}
                                         >
