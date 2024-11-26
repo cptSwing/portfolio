@@ -127,19 +127,19 @@
 				],
 				"textBlocks": [
 					{
-						"text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu).\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
+						"text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu).\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\n[Mediaverse](https://mediaverse-project.eu) was a cooperation between various universities all over Europe, as well as broadcasters *Deutsche Welle*, among others.\n\nOne example of a *DW* project using *Fader360* can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in *Deutsche Welle*'s blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/)."
 					},
 					{
 						"useShowCaseIndex": 0,
-						"text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu). \n\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
+						"text": "[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js).\n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
 					},
 					{
 						"useShowCaseIndex": 1,
-						"text": "*Fader360*'s [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads, linking these to Fader360 projects and newly created empty scenes. Login was handled with a mediaverse account, giving users access to other services within the project's infrastructure. \n\nCommunication with the RESTful backend was handled with axios.\n\n[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js). \n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
+						"text": "To display subtitles for the 360 background videos, the *srt* files provided were parsed and handled as *vtt* files .\n\n *Fader360*'s [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads, linking these to Fader360 projects and newly created empty scenes. Login was handled with a mediaverse account, giving users access to other services within the project's infrastructure. \n\nCommunication with the RESTful backend was handled with axios."
 					},
 					{
 						"useShowCaseIndex": 2,
-						"text": "[Mediaverse](https://mediaverse-project.eu) was a cooperation between various universities all over Europe, as well as broadcasters *Deutsche Welle*, among others.\n\nOne example of a *DW* project using *Fader360* can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in *Deutsche Welle*'s blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/). \n\nWhile the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below."
+						"text": "While the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below.\n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
 					}
 				]
 			},
@@ -177,7 +177,7 @@
 				],
 				"textBlocks": [
 					{
-						"text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), a photo project by my dear friend [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. The project explores biographies of the so-called ['Vertragsarbeiter'](https://www.politische-bildung-brandenburg.de/ausstellungen/als-arbeitskraft-willkommen) after the fall of the GDR, and their plight amid steadily worsening racism and economic turmoil. \n\nThe project was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
+						"text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), a photo project by [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. The project explores biographies of the so-called ['Vertragsarbeiter'](https://www.politische-bildung-brandenburg.de/ausstellungen/als-arbeitskraft-willkommen) after the fall of the GDR, and their plight amid steadily worsening racism and economic turmoil. \n\nThe project was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
 					},
 					{
 						"useShowCaseIndex": 0,
@@ -206,37 +206,45 @@
 				],
 				"showCases": [
 					{
-						"caption": "electric scooter",
+						"caption": "electric scooter, early proof of concept",
 						"imgUrl": "/images/scrollmersives/scooter.jpg"
 					},
 					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/scrollm_2/900/600?grayscale"
+						"caption": "Deutsche Welle - Uighur Sham Trials",
+						"imgUrl": "/images/scrollmersives/dw_sham_trials.jpg"
 					},
 					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/scrollm_3/900/600?grayscale"
+						"caption": "Erstwhile Website for scrollmersive.com",
+						"imgUrl": "/images/scrollmersives/scrollmersive_website.jpg"
 					},
 					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/scrollm_4/900/600?grayscale"
+						"caption": "Stöbich Fire Protection Services",
+						"imgUrl": "/images/scrollmersives/stoebich.jpg"
+					},
+					{
+						"caption": "Tagesspiegel BER",
+						"imgUrl": "/images/ber/ber_security.jpg"
 					}
 				],
 				"textBlocks": [
 					{
-						"text": "[First Scrollmersive - strangely enough hosted at zdf.de](https://3d.zdf.de/experiences/scooter/)"
+						"text": "[Scrollmersive](https://www.scrollmersive.com/) - developed by Vragments - tells stories via scroll-driven animations of 3d objects. These could be as simple as a rotating 3d mesh, or as complex as the camera following a path through a full 3d scene. While scrolling, animations in the 3d environment can be triggered, as well as further information presented via html cards."
 					},
 					{
 						"useShowCaseIndex": 0,
-						"text": "[First Scrollmersive - strangely enough hosted at zdf.de](https://3d.zdf.de/experiences/scooter/)"
+						"text": "I handled a lot of the coding work on the very first [iterations of Scrollmersive](https://3d.zdf.de/experiences/scooter/) - amusingly, this version is still hosted at zdf.de as they were testing the product early on - as well as this 3d model of an electric scooter. The prototype was put together using vanilla [threeJS](https://www.threejs.org), leveraging the CSS2DRenderer for in-scene information-cards. There was a brief foray into using [babylonJS](https://www.babylonjs.com/) instead, but familiarity with threeJS won out in the end."
 					},
 					{
 						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+						"text": "Later, I would transition more towards building the 3d content as projects came in.\n[Deutsche Welle](https://www.dw.com) commissioned Vragments to build [this 3d experience about Uyghur labor camps](https://www.scrollmersive.com/experiences/dw-uighur-sham-trials/) in China, here we worked closely with DW journalists and used provided satellite images and photos to recreate the scenery (due to small budget and little time as 'greybox' models only).\n\nLOTS of 3d work in very little time was done for the award-winning Vragments-[Tagesspiegel](https://www.tagesspiegel.de/) cooperation [\"Der BER im 3D-Modell\"](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/). Do check out the post I wrote about that particular project [here!](/1/6)"
 					},
 					{
 						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+						"text": "While never really widely used commercially since Vragments pivoted away from Scrollmersive, among other advertising content, I also created this [version of an advertising SPA](https://www.scrollmersive.com/) featuring an animated flightpath of a paper airplane down the page, moving to the front of some elements, and behind other elements during it's flight. The site was built using vanilla javascript and *threeJs*, as well as *tailwindcss*."
+					},
+					{
+						"useShowCaseIndex": 3,
+						"text": "More recently, we were able to reuse a lot of the airport-related 3d content from the aforementioned Tagesspiegel application to showcase [Stöbich Fire Protection Solutions](https://som-stoebich.vrgmnts.net/), where I would do some more actual coding - setting up further animation triggers and shaders for highlighting (hidden) meshes and working on an automatic timeline with chapters and varying animation speeds - but also creating some simple animations in 3D Studio Max. I was moved off of this project after a while though, so the final version seen in the above link was completed by others."
 					}
 				]
 			},
@@ -248,34 +256,29 @@
 				"date": "2024-09-12",
 				"showCases": [
 					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/plate_1/900/600?grayscale"
+						"caption": "plateCalc mobile",
+						"imgUrl": "/images/projects/platecalc_mob.jpg"
 					},
 					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/plate_2/900/600?grayscale"
+						"caption": "shooty bang-bang, developed in one rookie-week",
+						"imgUrl": "/images/projects/shooter_menu.jpg"
 					},
 					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/plate_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/plate_4/900/600?grayscale"
+						"caption": "plateCalc desktop",
+						"imgUrl": "/images/projects/platecalc_desktop.jpg"
 					}
 				],
 				"textBlocks": [
 					{
+						"text": "While I've written macroscripts - or the occasional shader code - for apps such as 3DS Max or Substance Designer ever since I started using them in earnest (and maybe I'll unearth some of the more useful snippets sometime in the near future), this post will feature some of my more recent side projects."
+					},
+					{
 						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+						"text": "Plate-Calculator: I was lazy, and since my gym app does not have this functionality, I built it myself.\n\nBasically, it tells me how many weight plates of X kilograms to load on each side of a barbell (or a dumbbell, or..) in order to hit a target weight. I'll be the first to admit that it's not much to look at, but it is what it is, and it's saved me quite some time. The option of deploying it as a PWA is not quite done yet, but I'm getting annoyed enough with having to run it via vite, so that feature should be forthcoming soon ;-)\n\nFeel free to [clone the repo!](https://github.com/cptSwing/plateCalc)"
 					},
 					{
 						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+						"text": "On one hand I was too embarrassed to actually look at this project's code, on the other hand I was quite fond of the oldschool pixellated look of it's menus. This was my final project at SPICED full-stack bootcamp, completed in a week at the end of the program (early 2019). It was also my first encounter with threeJS, so it holds a special place in my heart. Pro forma, it even uses express in the background!\nI spent a good two or three vanity-days working on the fighter models in 3DS MAX before I actually got started on code, which in turn led to a couple of nights with less-than-optimal sleep phases, but alas.\n\nCode can be viewed here https://github.com/cptSwing/spiced-shooter, but I'd rather you don't look at it - I haven't since."
 					}
 				]
 			}
