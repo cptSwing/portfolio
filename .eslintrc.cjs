@@ -8,7 +8,7 @@ module.exports = {
             jsx: true,
         },
     },
-    plugins: ['@typescript-eslint', 'react', 'react-hooks', 'react-refresh'],
+    plugins: ['prettier', '@typescript-eslint', 'react', 'react-hooks', 'react-refresh'],
     ignorePatterns: ['dist', '.eslintrc.cjs'],
     extends: [
         'eslint:recommended',
@@ -17,9 +17,18 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
         'plugin:react/jsx-runtime',
+        'plugin:prettier/recommended',
     ],
     rules: {
-        '@typescript-eslint/no-unused-vars': 'warn',
+        'object-shorthand': ['warn'],
+        'prettier/prettier': 'error',
+        '@typescript-eslint/no-unused-vars': [
+            'warn',
+            {
+                argsIgnorePattern: '^_',
+                varsIgnorePattern: '^_ignored',
+            },
+        ],
         'react-hooks/rules-of-hooks': 'warn',
         'react-hooks/exhaustive-deps': 'warn',
         'react-refresh/only-export-components': ['warn', { allowConstantExport: false }],
