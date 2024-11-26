@@ -201,6 +201,7 @@ const Content = () => {
 
 export default Content;
 
+// @ts-ignore
 const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
     const toolsSorted_Memo = useMemo(() => {
         if (tools) {
