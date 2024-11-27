@@ -5,14 +5,17 @@ import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import convertRemToPixels from '../lib/convertRemToPixels';
 import useScrollPosition from '../hooks/useScrollPosition';
-import { useMeasure, useScroll, useThrottle } from 'react-use';
+import { useMeasure } from 'react-use';
+import useThrottledVerticalScroll from '../hooks/useThrottledVerticalScroll';
 
 export const PostCards: FC<{
     posts: Post[];
     parentRef: React.MutableRefObject<HTMLDivElement | null>;
 }> = ({ posts, parentRef }) => {
-    const { y: scrollY } = useScroll(parentRef);
-    useThrottle(scrollY, 1000);
+    const scrollY = useThrottledVerticalScroll(parentRef, 50);
+    useEffect(() => {
+        console.log('%c[PostCards]', 'color: #833e61', `scrollY :`, scrollY);
+    }, [scrollY]);
 
     const [postCardsParentRef_Cb, { width: parentWidth, height: parentHeight }] = useMeasure<HTMLDivElement>();
     useEffect(() => {
@@ -51,10 +54,6 @@ export const PostCards: FC<{
     useEffect(() => {
         setScrollWrapperHeight((dimensions.cardHeight + dimensions.spacingY + dimensions.cardOutline) * posts.length + 2 * dimensions.cardOutline);
     }, [dimensions.cardHeight, dimensions.cardOutline, dimensions.spacingY, posts.length]);
-
-    useEffect(() => {
-        console.log('%c[PostCards]', 'color: #cb572b', `dimensions.paddingTop :`, dimensions.paddingTop);
-    }, [dimensions.paddingTop]);
 
     return (
         <div ref={ref_Cb} style={{ height: scrollWrapperHeight }} className='mt-[--padding-top] sm:mt-auto'>
@@ -99,10 +98,9 @@ export const SinglePostCard: FC<{
     return (
         <div
             style={style}
-            className='static -z-10 mx-auto w-[--postcard-width] transition-[opacity,filter] sm:ml-auto sm:mr-0'
+            className='-z-10 mx-auto w-[--postcard-width] sm:ml-auto sm:mr-0'
             onClick={(e) => {
                 navigate(id.toString());
-                // e.preventDefault();
                 e.stopPropagation();
             }}
         >
