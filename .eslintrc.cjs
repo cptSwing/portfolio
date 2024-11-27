@@ -20,7 +20,8 @@ module.exports = {
         'plugin:prettier/recommended',
     ],
     rules: {
-        'object-shorthand': ['warn'],
+        'object-shorthand': 'warn',
+        'no-console': 'warn',
         'prettier/prettier': 'error',
         '@typescript-eslint/no-unused-vars': [
             'warn',
