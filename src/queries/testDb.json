@@ -70,6 +70,76 @@
 					{
 						"useShowCaseIndex": 2,
 						"text": "Another challenge was displaying diamonds on the ring. Visually, achieving a satisfying look for a diamond - a special type of surface whose interaction with light is costly to even *approximate* in realtime 3d applications - was a challenge. In the end, I went with a custom implementation of [react-drei](https://github.com/pmndrs/drei)'s [MeshRefractionMaterial](https://drei.docs.pmnd.rs/shaders/mesh-refraction-material), and coupled this with a hand-ported version of the 'Kawase light-streak' post-processing effect (example seen [here](https://github.com/XJINE/Unity_StarGlow)). Images of rings with gems can be seen in the gallery.\nFor a realistic look though, diamonds would need to be 'physically' inset into the ring. For this step, we decided to use boolean operations, cutting channels or individual settings into the ring - thankfully, [three-bvh-csg](https://github.com/gkjohnson/three-bvh-csg) was making great strides, and I was able to build atop this library's boolean results. Said results would have to be worked on, merging geometry groups and juggling materials.\n\nI am still working on this project regularly, and new challenges keep cropping up :)\nI'll gladly provide further access on demand, the current state of the project is not yet publicly viewable, unfortunately."
+					},
+					{
+						"text": "I am still working on this project regularly, and new challenges keep cropping up :)\nI'll gladly provide further access on demand, the current state of the project is not yet publicly viewable, unfortunately."
+					}
+				]
+			},
+			{
+				"id": 1,
+				"title": "This site",
+				"titleCardBg": "/images/hd_dyr/hd_dyr_card.jpg",
+				"toolsUsed": [
+					"react",
+					"react-router",
+					"react-three-fiber",
+					"react-three-drei",
+					"react-postprocessing",
+					"three-bvh-csg",
+					"tailwindcss"
+				],
+				"subTitle": "Customizable Wedding-Rings in 3D",
+				"date": "2024-09-12",
+				"showCases": [
+					{
+						"caption": "Ring profile selection",
+						"imgUrl": "/images/hd_dyr/1.jpg"
+					},
+					{
+						"caption": "Edit size",
+						"imgUrl": "/images/hd_dyr/2.jpg"
+					},
+					{
+						"caption": "Switch materials",
+						"imgUrl": "/images/hd_dyr/3.jpg"
+					},
+					{
+						"caption": "Change normal map & roughness values",
+						"imgUrl": "/images/hd_dyr/4.jpg"
+					},
+					{
+						"caption": "Diamonds..",
+						"imgUrl": "/images/hd_dyr/5.jpg"
+					},
+					{
+						"caption": "..of varying cut and carat",
+						"imgUrl": "/images/hd_dyr/6.jpg"
+					},
+					{
+						"caption": "Debug menu",
+						"imgUrl": "/images/hd_dyr/7.jpg"
+					},
+					{
+						"caption": "Debugging size calculations",
+						"imgUrl": "/images/hd_dyr/8.jpg"
+					}
+				],
+				"textBlocks": [
+					{
+						"text": "Likely both the most challenging, and the most interesting coding project I have worked on to date: A configurator for wedding rings - unlikely as that might sound. This project, a complete re-imagining of [Henrich & Denzel](https://www.henrich-denzel.com/)'s old ['Design Your Ring'](https://www.design-your-ring.com/) configurator, posed many, many interesting challenges in the 3D space - and equally many iteration cycles. We choose to realize the project - which also included a shop front with order forms etc - using ***react***, ***react-three-fiber*** (a ***three.js*** wrapper), as well as adjacent libraries.\nIn parallel, Vragments is developing a new Product Management System for Henrich & Denzel, and interaction between the ring-configurator and the PMS via API took on an increasingly large role."
+					},
+					{
+						"useShowCaseIndex": 0,
+						"text": "Initially, our interpretation of the project's scope was limited to loading pre-modeled meshes (as *gltf* files, or more specifically: compressed *glb* files). These would ostensibly be scaled in width and diameter and look okay, within certain limits.\nLater on, the limits of scaling such meshes became apparent, and we had to return to the drawing board. While the capability to load individual rings as *GLTF* would be kept for certain rings, we would now create ring meshes on the fly, extruding 2d splines - loaded from DXF files - along a circular curve or along a provided curve of different shape. For this, I needed to dust off an older library allowing parsing of the *DXF* files which our client exported, and also, for instance, was tasked with modifying **three.js**'s *ExtrudeGeometry* class to allow for completely closed meshes.\nA customer could now initially choose a ring's width and circumference, and the mesh displayed on-screen would be created precisely according the input values, and limited by constraints set in the backend."
+					},
+					{
+						"useShowCaseIndex": 1,
+						"text": "In order to realize all capabilities the client asked for, we had to implement more precise extrusion of said ring profiles, allowing for several colors/alloys on one single ring mesh - splitting the extrusion profiles according to segmentation values coming from the backend.\n\nObviously material management was an important part of achieving the desired look. Over the course of the project, I extended three.js' standard materials with a custom TriPlanar shader which allows us to display a wide range of surfaces on a ring without pre-made UV coordinates (a ring's surface can be brushed, or hammered, or any number of further techniques).\n\nUsing [Substance Designer](https://www.adobe.com/products/substance3d/apps/designer.html), I also created the necessary normal and roughness maps for the various surface looks."
+					},
+					{
+						"useShowCaseIndex": 2,
+						"text": "Another challenge was displaying diamonds on the ring. Visually, achieving a satisfying look for a diamond - a special type of surface whose interaction with light is costly to even *approximate* in realtime 3d applications - was a challenge. In the end, I went with a custom implementation of [react-drei](https://github.com/pmndrs/drei)'s [MeshRefractionMaterial](https://drei.docs.pmnd.rs/shaders/mesh-refraction-material), and coupled this with a hand-ported version of the 'Kawase light-streak' post-processing effect (example seen [here](https://github.com/XJINE/Unity_StarGlow)). Images of rings with gems can be seen in the gallery.\nFor a realistic look though, diamonds would need to be 'physically' inset into the ring. For this step, we decided to use boolean operations, cutting channels or individual settings into the ring - thankfully, [three-bvh-csg](https://github.com/gkjohnson/three-bvh-csg) was making great strides, and I was able to build atop this library's boolean results. Said results would have to be worked on, merging geometry groups and juggling materials.\n\nI am still working on this project regularly, and new challenges keep cropping up :)\nI'll gladly provide further access on demand, the current state of the project is not yet publicly viewable, unfortunately."
 					}
 				]
 			},
