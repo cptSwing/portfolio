@@ -69,7 +69,7 @@ const Socials = () => {
                         'hidden aspect-square w-0 cursor-pointer rounded-sm p-0 transition-[colors,width,padding] delay-[--delay] active:*:fill-[--theme-primary-400] sm:block sm:group-hover:w-[1.75rem] sm:group-hover:p-1 sm:hover:*:fill-[--theme-primary-400]',
                         openMobileMenu ? '!block !size-12 !p-2' : '',
                     )}
-                    to='https://linkedin.com/cptSwing'
+                    to='www.linkedin.com/in/jensbrandenburg'
                 >
                     <LinkedInLogo className='h-fit w-full max-w-20 fill-neutral-50' />
                 </Link>
