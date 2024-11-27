@@ -90,6 +90,7 @@ const Content = () => {
                         className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] translate-x-full translate-y-1/2 cursor-pointer active:translate-x-[105%] sm:bottom-1/2 sm:left-auto sm:right-[calc((100%-var(--post-width))/2)] sm:top-1/2 sm:translate-y-0'
                         onClick={() => {
                             if (typeof id === 'number') {
+                                console.log('%c[Content]', 'color: #f5eef6', `id :`, id);
                                 const currentIndex = postIds_Memo.findIndex((val) => val === id);
                                 const nextInArray = postIds_Memo[currentIndex + 1 < postIds_Memo.length ? currentIndex + 1 : 0];
                                 navigate(`../${nextInArray}`);
@@ -201,8 +202,7 @@ const Content = () => {
 
 export default Content;
 
-// @ts-ignore
-const ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
+const _ignored_ToolsUsed: FC<{ tools: Post['toolsUsed'] }> = ({ tools }) => {
     const toolsSorted_Memo = useMemo(() => {
         if (tools) {
             return [...tools];
