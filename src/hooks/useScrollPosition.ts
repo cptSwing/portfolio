@@ -51,10 +51,10 @@ const useScrollPosition = (
 
     const waitingStyle_Memo = useMemo(
         () => ({
+            transitionProperty: 'none',
             right: rightOffScreen,
             bottom: outlineByFour,
             position: 'absolute',
-            // pointerEvents: 'none',
             opacity: 0.2,
             filter: 'blur(2px) brightness(.85)',
         }),
@@ -62,17 +62,25 @@ const useScrollPosition = (
     );
     const moveToStyle_Memo = useMemo(
         () => ({
+            transitionProperty: 'right',
+            transitionDuration: '50ms',
+            transitionTimingFunction: 'linear',
+            transitionDelay: 0,
             right: valueFromPercentage(rightOffScreen, paddingRight + cardOutline, topProgressPercentage),
             bottom: outlineByFour,
             position: 'absolute',
-            // pointerEvents: 'none',
             opacity: Math.max(0.2, Math.min(topProgressPercentage / 100, 0.75)),
             filter: 'blur(2px) brightness(.85)',
         }),
         [topProgressPercentage, rightOffScreen, paddingRight, cardOutline, outlineByFour],
     );
     const finishedStyle_Memo = useMemo(
-        () => ({ paddingTop: (cardNumber === 0 ? 0 : spacingY) + outlineByFour, paddingRight: cardOutline * 2 }),
+        () => ({
+            transitionProperty: 'none',
+            position: 'static',
+            paddingTop: (cardNumber === 0 ? 0 : spacingY) + outlineByFour,
+            paddingRight: cardOutline * 2,
+        }),
         [cardNumber, cardOutline, outlineByFour, spacingY],
     );
 
