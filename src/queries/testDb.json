@@ -1,1010 +1,1001 @@
 {
-	"Code": {
-		"id": 0,
-		"categoryTitle": "Code",
-		"categoryBackgroundColor": "rgb(32,80,48)",
-		"categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
-		"categoryBlurb": "Webdev, App dev, Tech Art",
-		"posts": [
-			{
-				"id": 0,
-				"title": "Design Your Ring",
-				"titleCardBg": "/images/hd_dyr/hd_dyr_card.jpg",
-				"toolsUsed": [
-					"react",
-					"react-router",
-					"react-three-fiber",
-					"react-three-drei",
-					"react-postprocessing",
-					"three-bvh-csg",
-					"tailwindcss"
-				],
-				"subTitle": "Customizable Wedding-Rings in 3D",
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "Ring profile selection",
-						"imgUrl": "/images/hd_dyr/1.jpg"
-					},
-					{
-						"caption": "Edit size",
-						"imgUrl": "/images/hd_dyr/2.jpg"
-					},
-					{
-						"caption": "Switch materials",
-						"imgUrl": "/images/hd_dyr/3.jpg"
-					},
-					{
-						"caption": "Change normal map & roughness values",
-						"imgUrl": "/images/hd_dyr/4.jpg"
-					},
-					{
-						"caption": "Diamonds..",
-						"imgUrl": "/images/hd_dyr/5.jpg"
-					},
-					{
-						"caption": "..of varying cut and carat",
-						"imgUrl": "/images/hd_dyr/6.jpg"
-					},
-					{
-						"caption": "Debug menu",
-						"imgUrl": "/images/hd_dyr/7.jpg"
-					},
-					{
-						"caption": "Debugging size calculations",
-						"imgUrl": "/images/hd_dyr/8.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "Likely both the most challenging, and the most interesting coding project I have worked on to date: A configurator for wedding rings - unlikely as that might sound. This project, a complete re-imagining of [Henrich & Denzel](https://www.henrich-denzel.com/)'s old ['Design Your Ring'](https://www.design-your-ring.com/) configurator, posed many, many interesting challenges in the 3D space - and equally many iteration cycles. We choose to realize the project - which also included a shop front with order forms etc - using ***react***, ***react-three-fiber*** (a ***three.js*** wrapper), as well as adjacent libraries.\nIn parallel, Vragments is developing a new Product Management System for Henrich & Denzel, and interaction between the ring-configurator and the PMS via API took on an increasingly large role."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "Initially, our interpretation of the project's scope was limited to loading pre-modeled meshes (as *gltf* files, or more specifically: compressed *glb* files). These would ostensibly be scaled in width and diameter and look okay, within certain limits.\nLater on, the limits of scaling such meshes became apparent, and we had to return to the drawing board. While the capability to load individual rings as *GLTF* would be kept for certain rings, we would now create ring meshes on the fly, extruding 2d splines - loaded from DXF files - along a circular curve or along a provided curve of different shape. For this, I needed to dust off an older library allowing parsing of the *DXF* files which our client exported, and also, for instance, was tasked with modifying **three.js**'s *ExtrudeGeometry* class to allow for completely closed meshes.\nA customer could now initially choose a ring's width and circumference, and the mesh displayed on-screen would be created precisely according the input values, and limited by constraints set in the backend."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "In order to realize all capabilities the client asked for, we had to implement more precise extrusion of said ring profiles, allowing for several colors/alloys on one single ring mesh - splitting the extrusion profiles according to segmentation values coming from the backend.\n\nObviously material management was an important part of achieving the desired look. Over the course of the project, I extended three.js' standard materials with a custom TriPlanar shader which allows us to display a wide range of surfaces on a ring without pre-made UV coordinates (a ring's surface can be brushed, or hammered, or any number of further techniques).\n\nUsing [Substance Designer](https://www.adobe.com/products/substance3d/apps/designer.html), I also created the necessary normal and roughness maps for the various surface looks."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Another challenge was displaying diamonds on the ring. Visually, achieving a satisfying look for a diamond - a special type of surface whose interaction with light is costly to even *approximate* in realtime 3d applications - was a challenge. In the end, I went with a custom implementation of [react-drei](https://github.com/pmndrs/drei)'s [MeshRefractionMaterial](https://drei.docs.pmnd.rs/shaders/mesh-refraction-material), and coupled this with a hand-ported version of the 'Kawase light-streak' post-processing effect (example seen [here](https://github.com/XJINE/Unity_StarGlow)). Images of rings with gems can be seen in the gallery.\nFor a realistic look though, diamonds would need to be 'physically' inset into the ring. For this step, we decided to use boolean operations, cutting channels or individual settings into the ring - thankfully, [three-bvh-csg](https://github.com/gkjohnson/three-bvh-csg) was making great strides, and I was able to build atop this library's boolean results. Said results would have to be worked on, merging geometry groups and juggling materials.\n\nI am still working on this project regularly, and new challenges keep cropping up :)\nI'll gladly provide further access on demand, the current state of the project is not yet publicly viewable, unfortunately."
-					},
-					{
-						"text": "I am still working on this project regularly, and new challenges keep cropping up :)\nI'll gladly provide further access on demand, the current state of the project is not yet publicly viewable, unfortunately."
-					}
-				]
-			},
-			{
-				"id": 1,
-				"title": "This site!",
-				"titleCardBg": "/images/hd_dyr/hd_dyr_card.jpg",
-				"toolsUsed": [
-					"react",
-					"react-router",
-					"react-three-fiber",
-					"react-three-drei",
-					"react-postprocessing",
-					"three-bvh-csg",
-					"tailwindcss"
-				],
-				"subTitle": "Customizable Wedding-Rings in 3D",
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "Ring profile selection",
-						"imgUrl": "/images/hd_dyr/1.jpg"
-					},
-					{
-						"caption": "Edit size",
-						"imgUrl": "/images/hd_dyr/2.jpg"
-					},
-					{
-						"caption": "Switch materials",
-						"imgUrl": "/images/hd_dyr/3.jpg"
-					},
-					{
-						"caption": "Change normal map & roughness values",
-						"imgUrl": "/images/hd_dyr/4.jpg"
-					},
-					{
-						"caption": "Diamonds..",
-						"imgUrl": "/images/hd_dyr/5.jpg"
-					},
-					{
-						"caption": "..of varying cut and carat",
-						"imgUrl": "/images/hd_dyr/6.jpg"
-					},
-					{
-						"caption": "Debug menu",
-						"imgUrl": "/images/hd_dyr/7.jpg"
-					},
-					{
-						"caption": "Debugging size calculations",
-						"imgUrl": "/images/hd_dyr/8.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "Likely both the most challenging, and the most interesting coding project I have worked on to date: A configurator for wedding rings - unlikely as that might sound. This project, a complete re-imagining of [Henrich & Denzel](https://www.henrich-denzel.com/)'s old ['Design Your Ring'](https://www.design-your-ring.com/) configurator, posed many, many interesting challenges in the 3D space - and equally many iteration cycles. We choose to realize the project - which also included a shop front with order forms etc - using ***react***, ***react-three-fiber*** (a ***three.js*** wrapper), as well as adjacent libraries.\nIn parallel, Vragments is developing a new Product Management System for Henrich & Denzel, and interaction between the ring-configurator and the PMS via API took on an increasingly large role."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "Initially, our interpretation of the project's scope was limited to loading pre-modeled meshes (as *gltf* files, or more specifically: compressed *glb* files). These would ostensibly be scaled in width and diameter and look okay, within certain limits.\nLater on, the limits of scaling such meshes became apparent, and we had to return to the drawing board. While the capability to load individual rings as *GLTF* would be kept for certain rings, we would now create ring meshes on the fly, extruding 2d splines - loaded from DXF files - along a circular curve or along a provided curve of different shape. For this, I needed to dust off an older library allowing parsing of the *DXF* files which our client exported, and also, for instance, was tasked with modifying **three.js**'s *ExtrudeGeometry* class to allow for completely closed meshes.\nA customer could now initially choose a ring's width and circumference, and the mesh displayed on-screen would be created precisely according the input values, and limited by constraints set in the backend."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "In order to realize all capabilities the client asked for, we had to implement more precise extrusion of said ring profiles, allowing for several colors/alloys on one single ring mesh - splitting the extrusion profiles according to segmentation values coming from the backend.\n\nObviously material management was an important part of achieving the desired look. Over the course of the project, I extended three.js' standard materials with a custom TriPlanar shader which allows us to display a wide range of surfaces on a ring without pre-made UV coordinates (a ring's surface can be brushed, or hammered, or any number of further techniques).\n\nUsing [Substance Designer](https://www.adobe.com/products/substance3d/apps/designer.html), I also created the necessary normal and roughness maps for the various surface looks."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Another challenge was displaying diamonds on the ring. Visually, achieving a satisfying look for a diamond - a special type of surface whose interaction with light is costly to even *approximate* in realtime 3d applications - was a challenge. In the end, I went with a custom implementation of [react-drei](https://github.com/pmndrs/drei)'s [MeshRefractionMaterial](https://drei.docs.pmnd.rs/shaders/mesh-refraction-material), and coupled this with a hand-ported version of the 'Kawase light-streak' post-processing effect (example seen [here](https://github.com/XJINE/Unity_StarGlow)). Images of rings with gems can be seen in the gallery.\nFor a realistic look though, diamonds would need to be 'physically' inset into the ring. For this step, we decided to use boolean operations, cutting channels or individual settings into the ring - thankfully, [three-bvh-csg](https://github.com/gkjohnson/three-bvh-csg) was making great strides, and I was able to build atop this library's boolean results. Said results would have to be worked on, merging geometry groups and juggling materials.\n\nI am still working on this project regularly, and new challenges keep cropping up :)\nI'll gladly provide further access on demand, the current state of the project is not yet publicly viewable, unfortunately."
-					}
-				]
-			},
-			{
-				"id": 2,
-				"title": "Mediaverse: Fader360",
-				"subTitle": "Open-source 360° Media Authoring Tool",
-				"titleCardBg": "/images/fader/mediaverse_fader_logo.jpg",
-				"codeLink": {
-					"alt": "fader360-frontend (Github)",
-					"href": "https://github.com/VRagments/fader360-frontend"
-				},
-				"toolsUsed": [
-					"react",
-					"react-three-fiber",
-					"react-three-drei",
-					"leva-gui",
-					"tailwindcss",
-					"3ds Max"
-				],
-				"date": "2023-08-11",
-				"showCases": [
-					{
-						"caption": "Adding assets to Fader360",
-						"imgUrl": "/images/fader/fader_add_assets.jpg"
-					},
-					{
-						"caption": "Jumping between Scenes via SceneLink",
-						"imgUrl": "/images/fader/fader_scenelinks.jpg"
-					},
-					{
-						"caption": "Scene Options",
-						"imgUrl": "/images/fader/fader_church.jpg"
-					},
-					{
-						"caption": "Streaming 360 background video with subtitles",
-						"imgUrl": "/images/fader/fader_subtitles.jpg"
-					},
-					{
-						"caption": "(3D Model) Museum Backdrop Prototype",
-						"imgUrl": "/images/fader/museum.jpg"
-					},
-					{
-						"caption": "(3D Model) Newsroom Backdrop Prototype",
-						"imgUrl": "/images/fader/newsroom.jpg"
-					},
-					{
-						"caption": "(3D Model) Toony Farmland Backdrop Prototype",
-						"imgUrl": "/images/fader/toon.jpg"
-					},
-					{
-						"caption": "(3D Model) Toony Farmland Backdrop Prototype",
-						"imgUrl": "/images/fader/toon2.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu).\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\n[Mediaverse](https://mediaverse-project.eu) was a cooperation between various universities all over Europe, as well as broadcasters *Deutsche Welle*, among others.\n\nOne example of a *DW* project using *Fader360* can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in *Deutsche Welle*'s blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/)."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js).\n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "To display subtitles for the 360 background videos, the *srt* files provided were parsed and handled as *vtt* files .\n\n *Fader360*'s [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads, linking these to Fader360 projects and newly created empty scenes. Login was handled with a mediaverse account, giving users access to other services within the project's infrastructure. \n\nCommunication with the RESTful backend was handled with axios."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "While the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below.\n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
-					}
-				]
-			},
-			{
-				"id": 3,
-				"title": "Brotherland",
-				"subTitle": "Interviews and portraits of ex \"contract workers\" in post-GDR east Germany",
-				"titleCardBg": "/images/brotherland/brotherland_small.jpg",
-				"date": "2023-06",
-				"codeLink": {
-					"alt": "brotherland on github.com",
-					"href": "https://github.com/cptSwing/brotherland"
-				},
-				"showCases": [
-					{
-						"caption": "Start",
-						"imgUrl": "/images/brotherland/screen1_desktop.jpg"
-					},
-					{
-						"caption": "Virtual Exhibit 2",
-						"imgUrl": "/images/brotherland/screen2_desktop.jpg"
-					},
-					{
-						"caption": "Interview Augusto Jone Munjunga",
-						"imgUrl": "/images/brotherland/screen3_desktop.jpg"
-					},
-					{
-						"caption": "Virtual Exhibit 3 (mobile)",
-						"imgUrl": "/images/brotherland/screen4_mobile.jpg"
-					},
-					{
-						"caption": "Menu (mobile)",
-						"imgUrl": "/images/brotherland/screen5_mobile.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), a photo project by [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. The project explores biographies of the so-called ['Vertragsarbeiter'](https://www.politische-bildung-brandenburg.de/ausstellungen/als-arbeitskraft-willkommen) after the fall of the GDR, and their plight amid steadily worsening racism and economic turmoil. \n\nThe project was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "The site's ['virtual exhibits'](https://www.brotherland.info/html/virtual-exhibits/ve2.html) are inspired by the actual exhibit's various placards,\nwhile the large archive of [playable interviews](https://www.brotherland.info/html/interviews/intrvw_dhn01.html) and their transcriptions are linked to via QR code at actual exhibitions, and independantly browsable online. Short [biographies](https://www.brotherland.info/html/bio.html) of the interviewees round things off. Since the website is to be used as a companion the the photo exhibit (the aforementioned QR links to audio), it is mobile ready."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
-					}
-				],
-				"toolsUsed": [
-					"parcel",
-					"posthtml",
-					"tailwindcss"
-				]
-			},
-			{
-				"id": 4,
-				"title": "Scrollmersives",
-				"subTitle": "Scroll through various 3D experiences",
-				"titleCardBg": "https://picsum.photos/seed/scrollm/500?grayscale",
-				"date": "2022",
-				"toolsUsed": [
-					"three.js",
-					"3ds Max"
-				],
-				"showCases": [
-					{
-						"caption": "electric scooter, early proof of concept",
-						"imgUrl": "/images/scrollmersives/scooter.jpg"
-					},
-					{
-						"caption": "Deutsche Welle - Uighur Sham Trials",
-						"imgUrl": "/images/scrollmersives/dw_sham_trials.jpg"
-					},
-					{
-						"caption": "Erstwhile Website for scrollmersive.com",
-						"imgUrl": "/images/scrollmersives/scrollmersive_website.jpg"
-					},
-					{
-						"caption": "Stöbich Fire Protection Services",
-						"imgUrl": "/images/scrollmersives/stoebich.jpg"
-					},
-					{
-						"caption": "Tagesspiegel BER",
-						"imgUrl": "/images/ber/ber_security.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "[Scrollmersive](https://www.scrollmersive.com/) - developed by Vragments - tells stories via scroll-driven animations of 3d objects. These could be as simple as a rotating 3d mesh, or as complex as the camera following a path through a full 3d scene. While scrolling, animations in the 3d environment can be triggered, as well as further information presented via html cards."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "I handled a lot of the coding work on the very first [iterations of Scrollmersive](https://3d.zdf.de/experiences/scooter/) - amusingly, this version is still hosted at zdf.de as they were testing the product early on - as well as this 3d model of an electric scooter. The prototype was put together using vanilla [threeJS](https://www.threejs.org), leveraging the CSS2DRenderer for in-scene information-cards. There was a brief foray into using [babylonJS](https://www.babylonjs.com/) instead, but familiarity with threeJS won out in the end."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Later, I would transition more towards building the 3d content as projects came in.\n[Deutsche Welle](https://www.dw.com) commissioned Vragments to build [this 3d experience about Uyghur labor camps](https://www.scrollmersive.com/experiences/dw-uighur-sham-trials/) in China, here we worked closely with DW journalists and used provided satellite images and photos to recreate the scenery (due to small budget and little time as 'greybox' models only).\n\nLOTS of 3d work in very little time was done for the award-winning Vragments-[Tagesspiegel](https://www.tagesspiegel.de/) cooperation [\"Der BER im 3D-Modell\"](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/). Do check out the post I wrote about that particular project [here!](/1/6)"
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "While never really widely used commercially since Vragments pivoted away from Scrollmersive, among other advertising content, I also created this [version of an advertising SPA](https://www.scrollmersive.com/) featuring an animated flightpath of a paper airplane down the page, moving to the front of some elements, and behind other elements during it's flight. The site was built using vanilla javascript and *threeJs*, as well as *tailwindcss*."
-					},
-					{
-						"useShowCaseIndex": 3,
-						"text": "More recently, we were able to reuse a lot of the airport-related 3d content from the aforementioned Tagesspiegel application to showcase [Stöbich Fire Protection Solutions](https://som-stoebich.vrgmnts.net/), where I would do some more actual coding - setting up further animation triggers and shaders for highlighting (hidden) meshes and working on an automatic timeline with chapters and varying animation speeds - but also creating some simple animations in 3D Studio Max. I was moved off of this project after a while though, so the final version seen in the above link was completed by others."
-					}
-				]
-			},
-			{
-				"id": 5,
-				"title": "Side Projects",
-				"titleCardBg": "https://picsum.photos/seed/plate/500?grayscale",
-				"subTitle": "Plates-Calculator, etc etc",
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "plateCalc mobile",
-						"imgUrl": "/images/projects/platecalc_mob.jpg"
-					},
-					{
-						"caption": "shooty bang-bang, developed in one rookie-week",
-						"imgUrl": "/images/projects/shooter_menu.jpg"
-					},
-					{
-						"caption": "plateCalc desktop",
-						"imgUrl": "/images/projects/platecalc_desktop.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "While I've written macroscripts - or the occasional shader code - for apps such as 3DS Max or Substance Designer ever since I started using them in earnest (and maybe I'll unearth some of the more useful snippets sometime in the near future), this post will feature some of my more recent side projects."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "Plate-Calculator: I was lazy, and since my gym app does not have this functionality, I built it myself.\n\nBasically, it tells me how many weight plates of X kilograms to load on each side of a barbell (or a dumbbell, or..) in order to hit a target weight. I'll be the first to admit that it's not much to look at, but it is what it is, and it's saved me quite some time. The option of deploying it as a PWA is not quite done yet, but I'm getting annoyed enough with having to run it via vite, so that feature should be forthcoming soon ;-)\n\nFeel free to [clone the repo!](https://github.com/cptSwing/plateCalc)"
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "On one hand I was too embarrassed to actually look at this project's code, on the other hand I was quite fond of the oldschool pixellated look of it's menus - This was my final project at SPICED full-stack bootcamp, completed in a week at the end of the program (early 2019). It was also my first encounter with threeJS, so it holds a special place in my heart. Pro forma, it even uses express in the background!\nI spent a good two or three vanity-days working on the fighter models in 3DS MAX before I actually got started on code, which in turn led to a couple of nights with less-than-optimal sleep phases, but alas.\n\nCode can be [viewed here](https://github.com/cptSwing/spiced-shooter) - I haven't touched it ever since, though."
-					}
-				]
-			}
-		]
-	},
-	"3D": {
-		"id": 1,
-		"categoryTitle": "3D",
-		"categoryBackgroundColor": "rgb(128,200,225)",
-		"categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
-		"categoryBlurb": "Game Art on display - 3D Models, Shaders, Particles, Mobile optimization, Post-Processing",
-		"posts": [
-			{
-				"id": 5,
-				"title": "Groundwater AR App",
-				"subTitle": "Learn about the water cycle & the ground below our feet",
-				"titleCardBg": "https://picsum.photos/seed/wasser/500?grayscale",
-				"date": "2022-11-03",
-				"showCases": [
-					{
-						"youtubeUrl": "https://www.youtube.com/embed/4FmyfmdA9nk?start=30&end=62&autoplay=1&mute=1"
-					},
-					{
-						"caption": "View of Berlin's geology",
-						"imgUrl": "/images/dwc/berlin_1.jpg"
-					},
-					{
-						"caption": "Groundwater flow with an activated well",
-						"imgUrl": "/images/dwc/closeup_1.jpg"
-					},
-					{
-						"caption": "Flow particles converging",
-						"imgUrl": "/images/dwc/closeup_2.jpg"
-					},
-					{
-						"caption": "Particles in Unity Editor",
-						"imgUrl": "/images/dwc/water_particles.jpg"
-					},
-					{
-						"caption": "A 3D Texture drives the particles",
-						"imgUrl": "/images/dwc/water_particles_2.jpg"
-					},
-					{
-						"caption": "Animation of active well",
-						"imgUrl": "/images/dwc/well_1.jpg"
-					},
-					{
-						"caption": "Terrain layers",
-						"imgUrl": "/images/dwc/layers.jpg"
-					},
-					{
-						"caption": "Look-Dev 1",
-						"imgUrl": "/images/dwc/diorama.jpg"
-					},
-					{
-						"caption": "Look-Dev 2",
-						"imgUrl": "/images/dwc/diorama_round.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "As part of EU-funded project [Digital Water City](http://www.digital-water.city/), Vragments worked with [Berliner Wasserbetriebe](https://www.bwb.de/) on a prototype of an app for [managing wells](https://www.digital-water.city/solution/mobile-application-for-asset-management-of-drinking-water-wells/), where I provided a few UI mockups. More importantly, again working with BWB, as well as [Kompetenzzentrum Wasser](https://kompetenz-wasser.de) and [Ecologic](https://www.ecologic.eu/de/16524), we built an [educational AR app](https://www.digital-water.city/solution/augmented-reality-ar-mobile-application-for-groundwater-visualization/) to inform about groundwater and the water table in Berlin."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "After a certain period of prototyping, we decided on an AR experience built in [Unity](https://unity.com/products/unity-engine), split into two segments: At first, the user'd be able to place a model of Berlin's geological layers via AR and step through these, as well as learn about the geology's history and groundwater's underground currents. Then, several scenarios could be activated, where slices of terrain - usually centered around water purification plants or groundwater wells - could be placed via AR, and concepts such as filtration of water at Wannsee lake and such were presented in narrated animations.\n\nThe youtube video by BWB gives some insight, the iOS app can be [downloaded here](https://apps.apple.com/us/app/grundwasser-sichtbar-machen/id1537443189)."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "In this project I was responsible for anything graphics related. I developed shaders in Unity, created animation timelines, cooked up a complicated render pipeline in order to be able to meld on-screen meshes and postprocessing effects with the video stream coming in from the devices' camera.\nI also spent an insane amount of time in 3D Studio Max, editing the very heavy and hard to work with models of Berlin's geology, simplifying them for perfomance reasons, and turning non solid layers into fully watertight (ha!) meshes, ironing out a lot of bugs along the way. Back in Unity, I worked on particle effects for water currents, and tied these together with the cartooney models we had decided on for the more detailed scenerios."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "In conclusion, a rewarding project. Not much in the way of coding, but I got to touch nearly all other aspects of developing a realtime application or game.\nApparently it is still in use with educators at BWB, which is nice to know - check out the gallery for more information."
-					}
-				]
-			},
-			{
-				"id": 6,
-				"title": "BER Airport (Tagespiegel)",
-				"subTitle": "Interactive fly-through of BER airport - and its teething problems",
-				"titleCardBg": "https://picsum.photos/seed/ber/500?grayscale",
-				"date": "2021-09-18",
-				"showCases": [
-					{
-						"caption": "\"Entrauchungsanlage\"",
-						"imgUrl": "/images/ber/ber_entrauchung.jpg"
-					},
-					{
-						"caption": "\"Check-In\"",
-						"imgUrl": "/images/ber/ber_checkin.jpg"
-					},
-					{
-						"caption": "\"A-380\"",
-						"imgUrl": "/images/ber/ber_a380.jpg"
-					},
-					{
-						"caption": "\"Security\"",
-						"imgUrl": "/images/ber/ber_security.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "Winner of the [\"Medienpreis Luft-](https://www.medienpreis-luft-und-raumfahrt.de/preisverleihung-2021/) [und Raumfahrt\"](https://www.tagesspiegel.de/gesellschaft/medien/der-ber-im-3d-modell-tagesspiegel-gewinnt-medienpreis-luft-und-raumfahrt-2021-5126083.html), as well as the [\"Deutsche Reporterpreis - Multimedia\"](https://x.com/reporterforum/status/1467950400250732549) (the latter by Hendrik Lehmann and his team at Tagesspiegel specifically, to be fair)."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "Winner of the [\"Medienpreis Luft-](https://www.medienpreis-luft-und-raumfahrt.de/preisverleihung-2021/) [und Raumfahrt\"](https://www.tagesspiegel.de/gesellschaft/medien/der-ber-im-3d-modell-tagesspiegel-gewinnt-medienpreis-luft-und-raumfahrt-2021-5126083.html), this was a fun project to work on. Hendrik Lehmann and his team at Tagesspiegel also won the [\"Deutsche Reporterpreis\" (Multimedia)](https://x.com/reporterforum/status/1467950400250732549) with this project. [Flughafen BER in 3D](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/)"
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			},
-			{
-				"id": 7,
-				"title": "StasiVR (Deutschlandfunk)",
-				"subTitle": "Experiencing Stasi interrogations with VR",
-				"titleCardBg": "/images/db/stasi_featured_image.jpg",
-				"date": "2017",
-				"showCases": [
-					{
-						"youtubeUrl": "https://www.youtube.com/watch?v=1zk0nEt0ma8"
-					},
-					{
-						"caption": "stast 1k",
-						"imgUrl": "/images/db/stasi_1.jpg"
-					},
-					{
-						"caption": "2 2 2 2",
-						"imgUrl": "/images/db/stasi_2.jpg"
-					},
-					{
-						"caption": "STASI 3",
-						"imgUrl": "/images/db/stasi_3.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "/images/db/stasi_4.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "/images/db/stasi_5.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "StasiVR is another VR app for [Cardboard](https://vr.google.com/cardboard), built by [Vragments](http://www.vragments.com) and myself (3D content) for [Deutschlandfunk Kultur](https://www.deutschlandfunkkultur.de/), working together with Jana Wuttke, a [radio journalist](https://www.deutschlandfunkkultur.de/verhoere-als-virtual-reality-ein-ganz-andere-form-von-100.html). It places the user in an authentically recreated Stasi interrogation room, playing actual recordings of interrogations and at times injecting necessary journalistic context."
-					},
-					{
-						"useShowCaseIndex": 5,
-						"text": "Using dozens of photographs from the Stasi museum in Berlin, as well as results from Jana's research, I faithfully recreated the interrogation room, within the usual constraints one encounters when developing for mobile VR.\n\nEven so, the clear-cut and smaller scope allowed for some effects, such as the still-smoldering cigarette, as well as a post-processing effect to visually separate the two people in the room from the surroundings.\n\nMost of objects seen are uniquely unwrapped - and sparsely textured, for a \"muted\" look.\n\nWe brought everything together in the Unity game engine, which also provided a fairly easy way of deploying to mobile."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "While Deutschlandfunk's blog seems to have been taken offline at some point, the minisite for the project can be still be accessed [here (web archive)](https://web.archive.org/web/20231101111232/http://blogs.deutschlandradiokultur.de/stasiverhoer/).\nSurprisingly, the embedded video on the archive site does still work and gives a good first impression.\n\nEmbedded next to this text is a very short teaser of an unfinished version."
-					},
-					{
-						"text": "Time and budget constraints meant that this project couldn't be developed into a more comprehensive app detailing the Stasi's interrogation methods, but teaching staff apparently still use it to this day.\n\nFor the project this VR app was a part of, Jana Wuttke and her colleague Martin Hartwig were nominated for the [\"Deutscher Radiopreis\"](http://www.deutscher-radiopreis.de/radiopreis/gala_2017/nominierte/Nominiert-in-der-Kategorie-Beste-Innovation,innovation136.html) (2017, \"Best innovation\"), and received the [\"Crossmediapreis\" 2018](https://web.archive.org/web/20221006030907/https://www.bremische-landesmedienanstalt.de/media-news/crossmediapreis-2018-unsere-preistraeger) from radio bremen.\n\n And here's another review by Deutschlandfunk: [Stasi-Verhör zum Nachempfinden](https://www.deutschlandfunk.de/virtual-reality-stasi-verhoer-zum-nachempfinden-100.html)"
-					}
-				]
-			},
-			{
-				"id": 8,
-				"title": "A 100 (RBB)",
-				"subTitle": "A 360° & VR experience for rbb|24 news",
-				"titleCardBg": "/images/db/a100_featured_image.jpg",
-				"date": "2016-06-20",
-				"showCases": [
-					{
-						"youtubeUrl": "https://www.youtube.com/watch?v=x0uHyIeo3Cw"
-					},
-					{
-						"caption": "The \"anchor\" - or hub - where different branches in the story extend from.",
-						"imgUrl": "/images/db/a100_1.jpg"
-					},
-					{
-						"caption": "Geometry visible underneath",
-						"imgUrl": "/images/db/a100_2.jpg"
-					},
-					{
-						"imgUrl": "/images/db/a100_3.jpg"
-					},
-					{
-						"imgUrl": "/images/db/a100_4.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "A mobile VR project about the continuing construction of the A-100 highway in and around Berlin, this time for [Rundfunk Berlin Brandenburg](http://www.rbb-online.de) and [Lorenz Matzat](https://www.datenjournalist.de/), as well as [Vragments](http://www.vragments.com). Funding was also provided by [MIZ Babelsberg](https://www.miz-babelsberg.de/foerderung/allgemeines.html). It combined interviews, videos, and 360- as well as 3d content."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "While working with the regular restrictions for mobile VR ten years ago, there were additional challenges in displaying the tunnel under the existing 3d model of the city, splicing 2d sketches into 360 panoramic images, to name just a few.\n\nStill, it was a very enjoyable project to be a part of."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "The rbb has more information [here](https://www.rbb-online.de/unternehmen/der_rbb/profil/digitale_produkte/360vr/a100-vr.html), the apple [app store link](https://apps.apple.com/us/app/a100-vr/id1134883353?l=de&ls=1) even works.\n\nUsing Unity webplayer (not ultra fast, I'm afraid), the experience can be loaded in your browser as well: [Das A100-Virtual-Reality-Modell für den Browser](https://www.rbb24.de/politik/beitrag/2022/03/a100vr-web.html)"
-					}
-				]
-			},
-			{
-				"id": 9,
-				"title": "U Stadtmitte (VR)",
-				"subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
-				"titleCardBg": "/images/db/usm_featured_image.jpg",
-				"date": "2016",
-				"toolsUsed": [
-					"Unity Engine",
-					"3ds Max",
-					"Substance Designer"
-				],
-				"codeLink": {
-					"href": "https://github.com/VRagments/StadtmitteVR"
-				},
-				"showCases": [
-					{
-						"imgUrl": "/images/db/usm_7.jpg"
-					},
-					{
-						"youtubeUrl": "https://www.youtube.com/watch?v=_FiuSNyn1QM"
-					},
-					{
-						"imgUrl": "/images/db/usm_3.jpg"
-					},
-					{
-						"imgUrl": "/images/db/usm_4.jpg"
-					},
-					{
-						"imgUrl": "/images/db/usm_6.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"text": "[Technologiestiftung Berlin](https://www.technologiestiftung-berlin.de/), [BVG](http://www.bvg.de), [Vragments](http://www.vragments.com) and myself as freelancer built a mobile VR game for [Google Cardboards](https://vr.google.com/cardboard/). It was first presented at [Lange Nacht der Wissenschaften](https://www.technologiestiftung-berlin.de/profil/blog/virtuell-durch-die-lange-nacht)."
-					},
-					{
-						"useShowCaseIndex": 0,
-						"text": "Despite being a smaller project, it had some interesting challenges and restrictions.\n\nI enjoyed being able to build the U-Bahn station \"Stadtmitte\" from BVG's original plans, for instance.\nThe combination of purely mobile platforms and VR imposed some very strict - and fun - limits on texture and geometry budgets. \n\nVR applications render the 3d content twice, from slightly different perspectives, once for each eye. Additionally, framerates seem more important than usual as low or choppy FPS can cause vertigo or motion sickness."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Lighting and shadows were almost exlusively static/baked, with carefully edited lightmaps to give the best resolution at spots that deserved it.\nMost every surface you see is a tiling texture, with painstakingly adjusted texture atlasses to keep down texture fetches.\nStill, we got away with PBR lighting - and the inclusion of normal mapping in select parts of the map allowed for some local fine detail.\n\n Vragments published the source [here](https://github.com/VRagments/StadtmitteVR), I am afraid it's long gone from any app stores. The App was built with the Unity game engine, and the 3d content using 3d Studio Max."
-					}
-				]
-			},
-			{
-				"id": 10,
-				"date": "2014",
-				"showCases": [
-					{
-						"caption": "Civilian Equipment 1",
-						"imgUrl": "/images/db/em5_civilian_equipment_01.jpg"
-					},
-					{
-						"caption": "Civilian Equipment 2",
-						"imgUrl": "/images/db/em5_civilian_equipment_02.jpg"
-					},
-					{
-						"caption": "Civilian Equipment 3",
-						"imgUrl": "/images/db/em5_civilian_equipment_03.jpg"
-					},
-					{
-						"caption": "Engineer Equipment (wireframes)",
-						"imgUrl": "/images/db/em5_engineer_equipment_wires.jpg"
-					},
-					{
-						"caption": "Firefighter Equipment",
-						"imgUrl": "/images/db/em5_firefighter_equipments_01.jpg"
-					},
-					{
-						"caption": "Hotdog Stand",
-						"imgUrl": "/images/db/em5_hotdog_barrel.jpg"
-					},
-					{
-						"caption": "Hotdog Stand (ingame cutscene)",
-						"imgUrl": "/images/db/em5_hotdog_ingame.jpg"
-					},
-					{
-						"caption": "Medic Equipment",
-						"imgUrl": "/images/db/em5_medic_equipment.jpg"
-					},
-					{
-						"caption": "Medic Equipment (wires)",
-						"imgUrl": "/images/db/em5_medic_equipment_wires.jpg"
-					},
-					{
-						"caption": "Police Equipment 1",
-						"imgUrl": "/images/db/em5_police_equipment_01.jpg"
-					},
-					{
-						"caption": "Police Equipment 2",
-						"imgUrl": "/images/db/em5_police_equipment_02.jpg"
-					},
-					{
-						"caption": "Various city assets",
-						"imgUrl": "/images/db/em5_ubahn_flags.jpg"
-					}
-				],
-				"subTitle": "Some 3D assets I created while working on strategy game \"Emergency 5\"",
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Emergency 5",
-				"titleCardBg": "https://picsum.photos/seed/art4/500?grayscale"
-			},
-			{
-				"id": 11,
-				"title": "Personal 3D Projects",
-				"subTitle": "Where WIP's come to die",
-				"titleCardBg": "/images/db/satellite_featured_image.jpg",
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "Retro-Style Satellite (high poly)",
-						"imgUrl": "/images/db/satellite_close.jpg"
-					},
-					{
-						"caption": "Retro-Style Satellite (high poly)",
-						"imgUrl": "/images/db/satellite_total.jpg"
-					},
-					{
-						"caption": "Mosin Nagant WW2 Rifle",
-						"imgUrl": "/images/db/Mosin_001.jpg"
-					},
-					{
-						"caption": "Mosin Nagant WW2 Rifle",
-						"imgUrl": "/images/db/Mosin_004.jpg"
-					},
-					{
-						"caption": "Mosin Nagant WW2 Rifle (wireframes)",
-						"imgUrl": "/images/db/Mosin_002_wires.jpg"
-					},
-					{
-						"caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
-						"imgUrl": "/images/db/Stretcher_Low_2_PC.jpg"
-					},
-					{
-						"caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
-						"imgUrl": "/images/db/Stretcher_Low_3_PC.jpg"
-					},
-					{
-						"caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
-						"imgUrl": "/images/db/Stretcher_Low_6_wires_PC.jpg"
-					},
-					{
-						"caption": "T-35 - Pre-WW2 Soviet Tank (high poly)",
-						"imgUrl": "/images/db/t35_t35_high1.jpg"
-					},
-					{
-						"caption": "T-35 - Pre-WW2 Soviet Tank (high poly)",
-						"imgUrl": "/images/db/t35_t35_high2.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			},
-			{
-				"id": 12,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "/images/db/bbb_plakat.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "/images/db/bbb_vid.jpg"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "/images/db/bnf_plakat.jpg"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "[Mauris tortor nisi](https://www.facebook.com/buendnisfuerbedingungslosesbleiberecht/videos/der-sv-babelsberg-03-ist-ein-besonderer-verein-am-o-platz-hatten-wir-die-gelegen/425080967654114/), volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Various 2D",
-				"subTitle": "Posters etc",
-				"titleCardBg": "/images/db/bbb_bnf_featured_image.jpg"
-			},
-			{
-				"id": 13,
-				"title": "Student Projects",
-				"subTitle": "Throwback to my first steps as a game artist..",
-				"titleCardBg": "https://picsum.photos/seed/art5/500?grayscale",
-				"date": "2012",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates1_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates1_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates1_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates1_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				]
-			}
-		]
-	},
-	"About": {
-		"id": 2,
-		"categoryTitle": "About",
-		"categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale",
-		"categoryBlurb": "I build websites.\nI build 3D stuff.\n\nSometimes I combine the two.",
-		"posts": [
-			{
-				"id": 14,
-				"date": "2024-09-12",
-				"textBlocks": [
-					"I've done **cool** stuff",
-					"More `cool` stuff",
-					"Even more of the ***cool stuff*** tbh"
-				],
-				"title": "Resumé"
-			},
-			{
-				"id": 15,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/about_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/about_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/about_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/about_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Bla Bla about me"
-			}
-		]
-	},
-	"Log": {
-		"id": 3,
-		"categoryTitle": "Log",
-		"categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
-		"categoryBlurb": "Any news?",
-		"posts": [
-			{
-				"id": 15,
-				"title": "Tailwind - clipInset",
-				"subTitle": "Adds TW classes for clip-path: inset()",
-				"titleCardBg": "/images/updates/code_clipInset.jpg",
-				"date": "2024-09-25",
-				"textBlocks": [
-					{
-						"text": "So I built a little [tailwind](https://tailwindcss.com/) plugin to add css's clip-path [(inset() only, for now)](https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/inset) to the standard classes. The initial version is [here](https://github.com/cptSwing/tailwind-css-plugins/blob/main/twClipInset.ts) - I've yet to put it through it's paces and haven't actually tried any rounding, but it's currently doing it's job on this here website, for instance! \n\n Usage is easy: `clip-inset-2`, `clip-inset-1/2` etc will clip content on all sides according to the same values as used in tailwind's `w-2` or `w-1/2` respectively (I am using the predefined 'width' values actually). \n\n`clip-inset-t` and `-r`, `-b`, `-l` clip the top, right, bottom left sides. `clip-inset-x` and `clip-inset-y` take care of horizontal and vertical sides."
-					}
-				]
-			},
-			{
-				"id": 16,
-				"date": "2023-06-14",
-				"textBlocks": [
-					{
-						"text": "Admittedly, this started out as a way to duck beneath Vragment's build pipeline (eslint, rather) yelling at me about console.log's left in the code - but it has matured somewhat since then.\n\nCalls to the DevConsole will be ignored if a production build is triggered, and in dev mode it can dump more thorough stacktraces, filter away some of the faff, has an option for deepcloning objects so they appear in the log as they do at runtime (slows things down, of course), and colors console output as well as tagging it with the filename it was called from (in VSCode).\n\n[Check it out here](https://gist.github.com/cptSwing/0b63288955b30efda603f019ccf00c2c) . Some things will likely break outside of a specific environment - I had to adjust how webpack outputs sourcemaps, for instance - so obviously YMMV."
-					}
-				],
-				"title": "DevConsole Gist"
-			},
-			{
-				"id": 16,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates3_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates3_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates3_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates3_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Updates 3",
-				"titleCardBg": "https://picsum.photos/seed/updates3/500?grayscale"
-			},
-			{
-				"id": 17,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates4_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates4_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates4_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates4_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Updates 4"
-			},
-			{
-				"id": 18,
-				"date": "2024-09-12",
-				"showCases": [
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates5_1/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates5_2/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates5_3/900/600?grayscale"
-					},
-					{
-						"caption": "ksdkjsdk",
-						"imgUrl": "https://picsum.photos/seed/updates5_4/900/600?grayscale"
-					}
-				],
-				"textBlocks": [
-					{
-						"useShowCaseIndex": 0,
-						"text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-					},
-					{
-						"useShowCaseIndex": 1,
-						"text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-					},
-					{
-						"useShowCaseIndex": 2,
-						"text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-					}
-				],
-				"title": "Updates 5"
-			}
-		]
-	}
+    "Code": {
+        "id": 0,
+        "categoryTitle": "Code",
+        "categoryBackgroundColor": "rgb(32,80,48)",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
+        "categoryBlurb": "A frontend Javascript & React dev with a slant towards 3d content..",
+        "posts": [
+            {
+                "id": 0,
+                "title": "Design Your Ring",
+                "titleCardBg": "/images/hd_dyr/hd_dyr_card.jpg",
+                "toolsUsed": [
+                    "react",
+                    "react-router",
+                    "react-three-fiber",
+                    "react-three-drei",
+                    "react-postprocessing",
+                    "three-bvh-csg",
+                    "tailwindcss"
+                ],
+                "subTitle": "Customizable Wedding-Rings in 3D",
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "Ring profile selection",
+                        "imgUrl": "/images/hd_dyr/1.jpg"
+                    },
+                    {
+                        "caption": "Edit size",
+                        "imgUrl": "/images/hd_dyr/2.jpg"
+                    },
+                    {
+                        "caption": "Switch materials",
+                        "imgUrl": "/images/hd_dyr/3.jpg"
+                    },
+                    {
+                        "caption": "Change normal map & roughness values",
+                        "imgUrl": "/images/hd_dyr/4.jpg"
+                    },
+                    {
+                        "caption": "Diamonds..",
+                        "imgUrl": "/images/hd_dyr/5.jpg"
+                    },
+                    {
+                        "caption": "..of varying cut and carat",
+                        "imgUrl": "/images/hd_dyr/6.jpg"
+                    },
+                    {
+                        "caption": "Debug menu",
+                        "imgUrl": "/images/hd_dyr/7.jpg"
+                    },
+                    {
+                        "caption": "Debugging size calculations",
+                        "imgUrl": "/images/hd_dyr/8.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "Likely both the most challenging, and the most interesting coding project I have worked on to date: A configurator for wedding rings - unlikely as that might sound. This project, a complete re-imagining of [Henrich & Denzel](https://www.henrich-denzel.com/)'s old ['Design Your Ring'](https://www.design-your-ring.com/) configurator, posed many, many interesting challenges in the 3D space - and equally many iteration cycles. We choose to realize the project - which also included a shop front with order forms etc - using ***react***, ***react-three-fiber*** (a ***three.js*** wrapper), as well as adjacent libraries.\nIn parallel, Vragments is developing a new Product Management System for Henrich & Denzel, and interaction between the ring-configurator and the PMS via API took on an increasingly large role."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Initially, our interpretation of the project's scope was limited to loading pre-modeled meshes (as *gltf* files, or more specifically: compressed *glb* files). These would ostensibly be scaled in width and diameter and look okay, within certain limits.\nLater on, the limits of scaling such meshes became apparent, and we had to return to the drawing board. While the capability to load individual rings as *GLTF* would be kept for certain rings, we would now create ring meshes on the fly, extruding 2d splines - loaded from DXF files - along a circular curve or along a provided curve of different shape."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "For this, I needed to dust off an older library allowing parsing of the *DXF* files which our client exported, and also, for instance, was tasked with modifying **three.js**'s *ExtrudeGeometry* class to allow for completely closed meshes.\nA customer could now initially choose a ring's width and circumference, and the mesh displayed on-screen would be created precisely according the input values, and limited by constraints set in the backend.\nIn order to realize all capabilities the client asked for, we had to implement more precise extrusion of said ring profiles, allowing for several colors/alloys on one single ring mesh - splitting the extrusion profiles according to segmentation values coming from the backend."
+                    },
+                    {
+                        "useShowCaseIndex": 3,
+                        "text": "\n\nObviously material management was an important part of achieving the desired look. Over the course of the project, I extended three.js' standard materials with a custom TriPlanar shader which allows us to display a wide range of surfaces on a ring without pre-made UV coordinates (a ring's surface can be brushed, or hammered, or any number of further techniques).\n\nUsing [Substance Designer](https://www.adobe.com/products/substance3d/apps/designer.html), I also created the necessary normal and roughness maps for the various surface looks."
+                    },
+                    {
+                        "useShowCaseIndex": 4,
+                        "text": "Another challenge was displaying diamonds on the ring. Visually, achieving a satisfying look for a diamond - a special type of surface whose interaction with light is costly to even *approximate* in realtime 3d applications - was a challenge. In the end, I went with a custom implementation of [react-drei](https://github.com/pmndrs/drei)'s [MeshRefractionMaterial](https://drei.docs.pmnd.rs/shaders/mesh-refraction-material), and coupled this with a hand-ported version of the 'Kawase light-streak' post-processing effect (example seen [here](https://github.com/XJINE/Unity_StarGlow))."
+                    },
+                    {
+                        "useShowCaseIndex": 5,
+                        "text": "For a realistic look though, diamonds would need to be 'physically' inset into the ring. For this step, we decided to use boolean operations, cutting channels or individual settings into the ring - thankfully, [three-bvh-csg](https://github.com/gkjohnson/three-bvh-csg) was making great strides, and I was able to build atop this library's boolean results. Said results would have to be worked on, merging geometry groups and juggling materials."
+                    },
+                    {
+                        "text": "I am still working on this project regularly, and new challenges keep cropping up :)\nI'll gladly provide further access on demand, the current state of the project is not yet publicly viewable, unfortunately."
+                    }
+                ]
+            },
+            {
+                "id": 1,
+                "title": "This site!",
+                "titleCardBg": "/images/portfolio/portfolio_featured.jpg",
+                "toolsUsed": [
+                    "react",
+                    "react-router",
+                    "react-three-fiber",
+                    "react-three-drei",
+                    "react-postprocessing",
+                    "three-bvh-csg",
+                    "tailwindcss"
+                ],
+                "subTitle": "Rebuilt Portfolio from Scratch",
+                "date": "2024-07-30",
+                "codeLink": {
+                    "alt": "This website @ Github",
+                    "href": "https://github.com/cptSwing/portfolio"
+                },
+                "textBlocks": [
+                    {
+                        "text": "My old portfolio site was geared mostly towards 3D Art - since I'd never had the time to change things around since I started working as a web developer (and wordpress didn't survive one of the more recent php upgrades), it was now time to build anew.\n\nObviously there's always stuff to do.\nMy main gripe is that I'm currently still fetching content from a static .json instead of querying my hosted SQL database, but I'd also like to add user management, WYSIWYG editing, file uploads at a later date.\n\nSo while this site is still a Work-In-Progress, I invite you to [peruse the code here](https://github.com/cptSwing/portfolio)."
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "title": "Mediaverse: Fader360",
+                "subTitle": "Open-source 360° Media Authoring Tool",
+                "titleCardBg": "/images/fader/mediaverse_fader_logo.jpg",
+                "codeLink": {
+                    "alt": "fader360-frontend (Github)",
+                    "href": "https://github.com/VRagments/fader360-frontend"
+                },
+                "toolsUsed": [
+                    "react",
+                    "react-three-fiber",
+                    "react-three-drei",
+                    "leva-gui",
+                    "tailwindcss",
+                    "3ds Max"
+                ],
+                "date": "2023-08-11",
+                "showCases": [
+                    {
+                        "caption": "Adding assets to Fader360",
+                        "imgUrl": "/images/fader/fader_add_assets.jpg"
+                    },
+                    {
+                        "caption": "Jumping between Scenes via SceneLink",
+                        "imgUrl": "/images/fader/fader_scenelinks.jpg"
+                    },
+                    {
+                        "caption": "Scene Options",
+                        "imgUrl": "/images/fader/fader_church.jpg"
+                    },
+                    {
+                        "caption": "Streaming 360 background video with subtitles",
+                        "imgUrl": "/images/fader/fader_subtitles.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Museum Backdrop Prototype",
+                        "imgUrl": "/images/fader/museum.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Newsroom Backdrop Prototype",
+                        "imgUrl": "/images/fader/newsroom.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
+                        "imgUrl": "/images/fader/toon.jpg"
+                    },
+                    {
+                        "caption": "(3D Model) Toony Farmland Backdrop Prototype",
+                        "imgUrl": "/images/fader/toon2.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "[Fader360](https://fader360.vrgmnts.net) is an open-source 360-degree storytelling tool, developed as part of the EU-funded trans-european project [Mediaverse](https://mediaverse-project.eu).\nBy combining various types of media (video, images, text, audio) in a 360 degree environment, users create their own stories - linking individual chapters together to craft new narratives. \n\n[Mediaverse](https://mediaverse-project.eu) was a cooperation between various universities all over Europe, as well as broadcasters *Deutsche Welle*, among others.\n\nOne example of a *DW* project using *Fader360* can be viewed here: [NYC Women's March](https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2) - read more about it in *Deutsche Welle*'s blogpost: [\"Immersive Citizen Journalism\"](https://mediaverse-project.eu/2023/09/20/immersive-citizen-journalism/)."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js).\n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "To display subtitles for the 360 background videos, the *srt* files provided were parsed and handled as *vtt* files .\n\n *Fader360*'s [backend](https://github.com/VRagments/fader360-backend) - created by colleagues - took care of asset uploads, linking these to Fader360 projects and newly created empty scenes. Login was handled with a mediaverse account, giving users access to other services within the project's infrastructure. \n\nCommunication with the RESTful backend was handled with axios."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "While the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below.\n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "title": "Brotherland",
+                "subTitle": "Interviews and portraits of ex \"contract workers\" in post-GDR east Germany",
+                "titleCardBg": "/images/brotherland/brotherland_small.jpg",
+                "date": "2023-06",
+                "codeLink": {
+                    "alt": "brotherland on github.com",
+                    "href": "https://github.com/cptSwing/brotherland"
+                },
+                "showCases": [
+                    {
+                        "caption": "Start",
+                        "imgUrl": "/images/brotherland/screen1_desktop.jpg"
+                    },
+                    {
+                        "caption": "Virtual Exhibit 2",
+                        "imgUrl": "/images/brotherland/screen2_desktop.jpg"
+                    },
+                    {
+                        "caption": "Interview Augusto Jone Munjunga",
+                        "imgUrl": "/images/brotherland/screen3_desktop.jpg"
+                    },
+                    {
+                        "caption": "Virtual Exhibit 3 (mobile)",
+                        "imgUrl": "/images/brotherland/screen4_mobile.jpg"
+                    },
+                    {
+                        "caption": "Menu (mobile)",
+                        "imgUrl": "/images/brotherland/screen5_mobile.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), a photo project by [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. The project explores biographies of the so-called ['Vertragsarbeiter'](https://www.politische-bildung-brandenburg.de/ausstellungen/als-arbeitskraft-willkommen) after the fall of the GDR, and their plight amid steadily worsening racism and economic turmoil. \n\nThe project was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "The site's ['virtual exhibits'](https://www.brotherland.info/html/virtual-exhibits/ve2.html) are inspired by the actual exhibit's various placards,\nwhile the large archive of [playable interviews](https://www.brotherland.info/html/interviews/intrvw_dhn01.html) and their transcriptions are linked to via QR code at actual exhibitions, and independantly browsable online. Short [biographies](https://www.brotherland.info/html/bio.html) of the interviewees round things off. Since the website is to be used as a companion the the photo exhibit (the aforementioned QR links to audio), it is mobile ready."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
+                    }
+                ],
+                "toolsUsed": [
+                    "parcel",
+                    "posthtml",
+                    "tailwindcss"
+                ]
+            },
+            {
+                "id": 4,
+                "title": "Scrollmersives",
+                "subTitle": "Scroll through various 3D experiences",
+                "titleCardBg": "/images/scrollmersives/scrollmersives_featured.jpg",
+                "date": "2022",
+                "toolsUsed": [
+                    "three.js",
+                    "3ds Max"
+                ],
+                "showCases": [
+                    {
+                        "caption": "electric scooter, early proof of concept",
+                        "imgUrl": "/images/scrollmersives/scooter.jpg"
+                    },
+                    {
+                        "caption": "Deutsche Welle - Uighur Sham Trials",
+                        "imgUrl": "/images/scrollmersives/dw_sham_trials.jpg"
+                    },
+                    {
+                        "caption": "Erstwhile Website for scrollmersive.com",
+                        "imgUrl": "/images/scrollmersives/scrollmersive_website.jpg"
+                    },
+                    {
+                        "caption": "Stöbich Fire Protection Services",
+                        "imgUrl": "/images/scrollmersives/stoebich.jpg"
+                    },
+                    {
+                        "caption": "Tagesspiegel BER",
+                        "imgUrl": "/images/ber/ber_security.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "[Scrollmersive](https://www.scrollmersive.com/) - developed by Vragments - tells stories via scroll-driven animations of 3d objects. These could be as simple as a rotating 3d mesh, or as complex as the camera following a path through a full 3d scene. While scrolling, animations in the 3d environment can be triggered, as well as further information presented via html cards."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "I handled a lot of the coding work on the very first [iterations of Scrollmersive](https://3d.zdf.de/experiences/scooter/) - amusingly, this version is still hosted at zdf.de as they were testing the product early on - as well as this 3d model of an electric scooter. The prototype was put together using vanilla [threeJS](https://www.threejs.org), leveraging the CSS2DRenderer for in-scene information-cards. There was a brief foray into using [babylonJS](https://www.babylonjs.com/) instead, but familiarity with threeJS won out in the end."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Later, I would transition more towards building the 3d content as projects came in.\n[Deutsche Welle](https://www.dw.com) commissioned Vragments to build [this 3d experience about Uyghur labor camps](https://www.scrollmersive.com/experiences/dw-uighur-sham-trials/) in China, here we worked closely with DW journalists and used provided satellite images and photos to recreate the scenery (due to small budget and little time as 'greybox' models only).\n\nLOTS of 3d work in very little time was done for the award-winning Vragments-[Tagesspiegel](https://www.tagesspiegel.de/) cooperation [\"Der BER im 3D-Modell\"](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/). Do check out the post I wrote about that particular project [here!](/1/6)"
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "While never really widely used commercially since Vragments pivoted away from Scrollmersive, among other advertising content, I also created this [version of an advertising SPA](https://www.scrollmersive.com/) featuring an animated flightpath of a paper airplane down the page, moving to the front of some elements, and behind other elements during it's flight. The site was built using vanilla javascript and *threeJs*, as well as *tailwindcss*."
+                    },
+                    {
+                        "useShowCaseIndex": 3,
+                        "text": "More recently, we were able to reuse a lot of the airport-related 3d content from the aforementioned Tagesspiegel application to showcase [Stöbich Fire Protection Solutions](https://som-stoebich.vrgmnts.net/), where I would do some more actual coding - setting up further animation triggers and shaders for highlighting (hidden) meshes and working on an automatic timeline with chapters and varying animation speeds - but also creating some simple animations in 3D Studio Max. I was moved off of this project after a while though, so the final version seen in the above link was completed by others."
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "title": "Side Projects",
+                "titleCardBg": "/images/projects/platecalc_mob.jpg",
+                "subTitle": "Plates-Calculator, etc etc",
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "plateCalc mobile",
+                        "imgUrl": "/images/projects/platecalc_mob.jpg"
+                    },
+                    {
+                        "caption": "shooty bang-bang, developed in one rookie-week",
+                        "imgUrl": "/images/projects/shooter_menu.jpg"
+                    },
+                    {
+                        "caption": "plateCalc desktop",
+                        "imgUrl": "/images/projects/platecalc_desktop.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "While I've written macroscripts - or the occasional shader code - for apps such as 3DS Max or Substance Designer ever since I started using them in earnest (and hopefully I'll get to posting some of the more useful snippets here in the near future), this post should feature more recent side projects."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Plate-Calculator: I was lazy, and since my gym app does not have this functionality, I built it myself.\n\nBasically, it tells me how many weight plates of X kilograms to load on each side of a barbell (or a dumbbell, or..) in order to hit a target weight. I'll be the first to admit that it's not much to look at, but it is what it is, and it's saved me quite some time. The option of deploying it as a PWA is not quite done yet, but I'm getting annoyed enough with having to run it via vite, so that feature should be forthcoming soon ;-)\n\nFeel free to [clone the repo!](https://github.com/cptSwing/plateCalc)"
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "On one hand I was too embarrassed to actually look at this project's code, on the other hand I was quite fond of the oldschool pixellated look of it's menus - This was my final project at SPICED full-stack bootcamp, completed in a week at the end of the program (early 2019). It was also my first encounter with threeJS, so it holds a special place in my heart. Pro forma, it even uses express in the background!\nI spent a good two or three vanity-days working on the fighter models in 3DS MAX before I actually got started on code, which in turn led to a couple of nights with less-than-optimal sleep phases, but alas."
+                    }
+                ]
+            }
+        ]
+    },
+    "3D": {
+        "id": 1,
+        "categoryTitle": "3D",
+        "categoryBackgroundColor": "rgb(128,200,225)",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
+        "categoryBlurb": "..a natural transition since I started out as a game artist / 3D generalist.",
+        "posts": [
+            {
+                "id": 5,
+                "title": "Groundwater AR App",
+                "subTitle": "Learn about the water cycle & the ground below our feet",
+                "titleCardBg": "/images/dwc/dwc_featured.jpg",
+                "date": "2022-11-03",
+                "showCases": [
+                    {
+                        "youtubeUrl": "https://www.youtube.com/embed/4FmyfmdA9nk?start=30&end=62&autoplay=1&mute=1"
+                    },
+                    {
+                        "caption": "View of Berlin's geology",
+                        "imgUrl": "/images/dwc/berlin_1.jpg"
+                    },
+                    {
+                        "caption": "Groundwater flow with an activated well",
+                        "imgUrl": "/images/dwc/closeup_1.jpg"
+                    },
+                    {
+                        "caption": "Flow particles converging",
+                        "imgUrl": "/images/dwc/closeup_2.jpg"
+                    },
+                    {
+                        "caption": "Particles in Unity Editor",
+                        "imgUrl": "/images/dwc/water_particles.jpg"
+                    },
+                    {
+                        "caption": "A 3D Texture drives the particles",
+                        "imgUrl": "/images/dwc/water_particles_2.jpg"
+                    },
+                    {
+                        "caption": "Animation of active well",
+                        "imgUrl": "/images/dwc/well_1.jpg"
+                    },
+                    {
+                        "caption": "Terrain layers",
+                        "imgUrl": "/images/dwc/layers.jpg"
+                    },
+                    {
+                        "caption": "Look-Dev 1",
+                        "imgUrl": "/images/dwc/diorama.jpg"
+                    },
+                    {
+                        "caption": "Look-Dev 2",
+                        "imgUrl": "/images/dwc/diorama_round.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "As part of EU-funded project [Digital Water City](http://www.digital-water.city/), Vragments worked with [Berliner Wasserbetriebe](https://www.bwb.de/) on a prototype of an app for [managing wells](https://www.digital-water.city/solution/mobile-application-for-asset-management-of-drinking-water-wells/), where I provided a few UI mockups. More importantly, again working with BWB, as well as [Kompetenzzentrum Wasser](https://kompetenz-wasser.de) and [Ecologic](https://www.ecologic.eu/de/16524), we built an [educational AR app](https://www.digital-water.city/solution/augmented-reality-ar-mobile-application-for-groundwater-visualization/) to inform about groundwater and the water table in Berlin."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "After a certain period of prototyping, we decided on an AR experience built in [Unity](https://unity.com/products/unity-engine), split into two segments: At first, the user'd be able to place a model of Berlin's geological layers via AR and step through these, as well as learn about the geology's history and groundwater's underground currents. Then, several scenarios could be activated, where slices of terrain - usually centered around water purification plants or groundwater wells - could be placed via AR, and concepts such as filtration of water at Wannsee lake and such were presented in narrated animations.\n\nThe youtube video by BWB gives some insight, the iOS app can be [downloaded here](https://apps.apple.com/us/app/grundwasser-sichtbar-machen/id1537443189)."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "In this project I was responsible for anything graphics related. I developed shaders in Unity, created animation timelines, cooked up a complicated render pipeline in order to be able to meld on-screen meshes and postprocessing effects with the video stream coming in from the devices' camera.\nI also spent an insane amount of time in 3D Studio Max, editing the very heavy and hard to work with models of Berlin's geology, simplifying them for perfomance reasons, and turning non solid layers into fully watertight (ha!) meshes, ironing out a lot of bugs along the way. Back in Unity, I worked on particle effects for water currents, and tied these together with the cartooney models we had decided on for the more detailed scenerios."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "In conclusion, a rewarding project. Not much in the way of coding, but I got to touch nearly all other aspects of developing a realtime application or game.\nApparently it is still in use with educators at BWB, which is nice to know - check out the gallery for more information."
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "title": "BER Airport (Tagespiegel)",
+                "subTitle": "Interactive fly-through of BER airport - and its teething problems",
+                "titleCardBg": "/images/ber/ber_featured.jpg",
+                "date": "2021-09-18",
+                "showCases": [
+                    {
+                        "caption": "\"Entrauchungsanlage\"",
+                        "imgUrl": "/images/ber/ber_entrauchung.jpg"
+                    },
+                    {
+                        "caption": "\"Check-In\"",
+                        "imgUrl": "/images/ber/ber_checkin.jpg"
+                    },
+                    {
+                        "caption": "\"Clay\"-Rendering of existing airport model",
+                        "imgUrl": "/images/ber/ber_1.jpg"
+                    },
+                    {
+                        "caption": "\"A-380\"",
+                        "imgUrl": "/images/ber/ber_a380.jpg"
+                    },
+                    {
+                        "caption": "\"Security\"",
+                        "imgUrl": "/images/ber/ber_security.jpg"
+                    },
+                    {
+                        "caption": "\"Clay\"-Rendering of existing airport model",
+                        "imgUrl": "/images/ber/ber_2.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "A cooperation between Vragments and Tagesspiegel, this project won us the [\"Medienpreis Luft-](https://www.medienpreis-luft-und-raumfahrt.de/preisverleihung-2021/) [und Raumfahrt\"](https://www.tagesspiegel.de/gesellschaft/medien/der-ber-im-3d-modell-tagesspiegel-gewinnt-medienpreis-luft-und-raumfahrt-2021-5126083.html). Hendrik Lehmann and the team at Tagesspiegel also went on to win the [\"Deutsche Reporterpreis\" (Multimedia)](https://x.com/reporterforum/status/1467950400250732549).\n\nTagespiegel [hosts the experience here](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/), do check it out. We are still quite proud of it."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "On scroll, the camera follows a path along various stations in the airport, pausing and presenting information on construction faults or other complications that had made the airport a lot more expensive than planned, and had lengthened construction by many years. Integrating with the team at Tagesspiegel happened on several levels: Design and code would be required to link up with the journalists regularly to keep tight control of the storyline, while integration into the hosting environment at [tagesspiegel.de](https://www.tagesspiegel.de) would have to be accomplished in parallel."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "A fast-paced project and a leap forward for scrollable-info-app [Scrollmersive](http://www.jbrandenburg.de/0/4), this project combined Tagesspiegel's journalism with Vragment's coding and 3d-modelling knowledge.\n\nMy focus would lie nearly exclusively on getting the 3d model of the BER into threeJS at acceptable frame rates, creating some keyframe animations and working on mesh highlights, as well as finding a suitable 'greybox' style to give the airport some visual texture (while not having to spend the time to give each and every element unique detail - which could distract from the story's narrative as well)."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "While a rougher version of the 3d model already existed, created for a joint VR project between Vragments and [Lorenz Matzat](https://web.archive.org/web/20160325040004/http://vrjournalist.de/ber-vr-entwicklertagebuch-seltsame-kopfbewegungen/) (I had built it as a freelancer a long time ago, from OSM maps and a ton of of reference photos, many even collected personally by the team on guided tours of the yet unopened airport), in order to run well and look good in a browser window, lots of extra work was necessary.\nLogically, some parts of the mesh had to be reorganized differently, texture assignments changed for threeJS, scene-wide UV's created for lightmapping (before threeJS really had lightmapping as a consideration), as well some extra things built for aforementioned animations or more detailed looks at the various failing parts of the airport."
+                    },
+                    {
+                        "useShowCaseIndex": 3,
+                        "text": "To lock down the visual style, we decided quickly to move away from a 'realistic' look and went with threeJs's completely unlit MeshBasicMaterial's for most surfaces. The whole scene was UV-mapped to two large textures, and - in many iterations - I baked shadowmaps as well as some others from within 3D Studio Max. Layered together, these would give depth to the surfaces, defining crevices and highlighting edges. Muted colors were added via another layer, or multiplied via exported vertex colors.\nSome surfaces did use lit shading, most notably the glass areas, as well as some metals (airplane models, for instance). This iterative process, with a close eye on texture size and performance (repeating/mirroring texture detail as much as possible, cutting extra geometry into meshes in order to use areas of the already baked texture, etc) constituted a large amount of the time I spent on the project."
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "title": "StasiVR (Deutschlandfunk)",
+                "subTitle": "Experiencing Stasi interrogations with VR",
+                "titleCardBg": "/images/stasi/stasi_featured_image.jpg",
+                "date": "2017",
+                "showCases": [
+                    {
+                        "youtubeUrl": "https://www.youtube.com/watch?v=1zk0nEt0ma8"
+                    },
+                    {
+                        "caption": "stast 1k",
+                        "imgUrl": "/images/stasi/stasi_1.jpg"
+                    },
+                    {
+                        "caption": "2 2 2 2",
+                        "imgUrl": "/images/stasi/stasi_2.jpg"
+                    },
+                    {
+                        "caption": "STASI 3",
+                        "imgUrl": "/images/stasi/stasi_3.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "/images/stasi/stasi_4.jpg"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "/images/stasi/stasi_5.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "StasiVR is another VR app for [Cardboard](https://vr.google.com/cardboard), built by [Vragments](http://www.vragments.com) and myself (3D content) for [Deutschlandfunk Kultur](https://www.deutschlandfunkkultur.de/), working together with Jana Wuttke, a [radio journalist](https://www.deutschlandfunkkultur.de/verhoere-als-virtual-reality-ein-ganz-andere-form-von-100.html). It places the user in an authentically recreated Stasi interrogation room, playing actual recordings of interrogations and at times injecting necessary journalistic context."
+                    },
+                    {
+                        "useShowCaseIndex": 5,
+                        "text": "Using dozens of photographs from the Stasi museum in Berlin, as well as results from Jana's research, I faithfully recreated the interrogation room, within the usual constraints one encounters when developing for mobile VR.\n\nEven so, the clear-cut and smaller scope allowed for some effects, such as the still-smoldering cigarette, as well as a post-processing effect to visually separate the two people in the room from the surroundings.\n\nMost of objects seen are uniquely unwrapped - and sparsely textured, for a \"muted\" look.\n\nWe brought everything together in the Unity game engine, which also provided a fairly easy way of deploying to mobile."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "While Deutschlandfunk's blog seems to have been taken offline at some point, the minisite for the project can be still be accessed [here (web archive)](https://web.archive.org/web/20231101111232/http://blogs.deutschlandradiokultur.de/stasiverhoer/).\nSurprisingly, the embedded video on the archive site does still work and gives a good first impression.\n\nEmbedded next to this text is a very short teaser of an unfinished version."
+                    },
+                    {
+                        "text": "Time and budget constraints meant that this project couldn't be developed into a more comprehensive app detailing the Stasi's interrogation methods, but teaching staff apparently still use it to this day.\n\nFor the project this VR app was a part of, Jana Wuttke and her colleague Martin Hartwig were nominated for the [\"Deutscher Radiopreis\"](http://www.deutscher-radiopreis.de/radiopreis/gala_2017/nominierte/Nominiert-in-der-Kategorie-Beste-Innovation,innovation136.html) (2017, \"Best innovation\"), and received the [\"Crossmediapreis\" 2018](https://web.archive.org/web/20221006030907/https://www.bremische-landesmedienanstalt.de/media-news/crossmediapreis-2018-unsere-preistraeger) from radio bremen.\n\n And here's another review by Deutschlandfunk: [Stasi-Verhör zum Nachempfinden](https://www.deutschlandfunk.de/virtual-reality-stasi-verhoer-zum-nachempfinden-100.html)"
+                    }
+                ]
+            },
+            {
+                "id": 8,
+                "title": "A 100 (RBB)",
+                "subTitle": "A 360° & VR experience for rbb|24 news",
+                "titleCardBg": "/images/a100/a100_featured_image.jpg",
+                "date": "2016-06-20",
+                "showCases": [
+                    {
+                        "youtubeUrl": "https://www.youtube.com/watch?v=x0uHyIeo3Cw"
+                    },
+                    {
+                        "caption": "The \"anchor\" - or hub - where different branches in the story extend from.",
+                        "imgUrl": "/images/a100/a100_1.jpg"
+                    },
+                    {
+                        "caption": "Geometry visible underneath",
+                        "imgUrl": "/images/a100/a100_2.jpg"
+                    },
+                    {
+                        "imgUrl": "/images/a100/a100_3.jpg"
+                    },
+                    {
+                        "imgUrl": "/images/a100/a100_4.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "A mobile VR project about the continuing construction of the A-100 highway in and around Berlin, this time for [Rundfunk Berlin Brandenburg](http://www.rbb-online.de) and [Lorenz Matzat](https://www.datenjournalist.de/), as well as [Vragments](http://www.vragments.com). Funding was also provided by [MIZ Babelsberg](https://www.miz-babelsberg.de/foerderung/allgemeines.html). It combined interviews, videos, and 360- as well as 3d content."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "While working with the regular restrictions for mobile VR ten years ago, there were additional challenges in displaying the tunnel under the existing 3d model of the city, splicing 2d sketches into 360 panoramic images, to name just a few.\n\nStill, it was a very enjoyable project to be a part of."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "The rbb has more information [here](https://www.rbb-online.de/unternehmen/der_rbb/profil/digitale_produkte/360vr/a100-vr.html), the apple [app store link](https://apps.apple.com/us/app/a100-vr/id1134883353?l=de&ls=1) even works.\n\nUsing Unity webplayer (not ultra fast, I'm afraid), the experience can be loaded in your browser as well: [Das A100-Virtual-Reality-Modell für den Browser](https://www.rbb24.de/politik/beitrag/2022/03/a100vr-web.html)"
+                    }
+                ]
+            },
+            {
+                "id": 9,
+                "title": "U Stadtmitte (VR)",
+                "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
+                "titleCardBg": "/images/stadtmitte/usm_featured_image.jpg",
+                "date": "2016",
+                "toolsUsed": [
+                    "Unity Engine",
+                    "3ds Max",
+                    "Substance Designer"
+                ],
+                "codeLink": {
+                    "href": "https://github.com/VRagments/StadtmitteVR"
+                },
+                "showCases": [
+                    {
+                        "imgUrl": "/images/stadtmitte/usm_7.jpg"
+                    },
+                    {
+                        "youtubeUrl": "https://www.youtube.com/watch?v=_FiuSNyn1QM"
+                    },
+                    {
+                        "imgUrl": "/images/stadtmitte/usm_3.jpg"
+                    },
+                    {
+                        "imgUrl": "/images/stadtmitte/usm_4.jpg"
+                    },
+                    {
+                        "imgUrl": "/images/stadtmitte/usm_6.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "[Technologiestiftung Berlin](https://www.technologiestiftung-berlin.de/), [BVG](http://www.bvg.de), [Vragments](http://www.vragments.com) and myself as freelancer built a mobile VR game for [Google Cardboards](https://vr.google.com/cardboard/). It was first presented at [Lange Nacht der Wissenschaften](https://www.technologiestiftung-berlin.de/profil/blog/virtuell-durch-die-lange-nacht)."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Despite being a smaller project, it had some interesting challenges and restrictions.\n\nI enjoyed being able to build the U-Bahn station \"Stadtmitte\" from BVG's original plans, for instance.\nThe combination of purely mobile platforms and VR imposed some very strict - and fun - limits on texture and geometry budgets. \n\nVR applications render the 3d content twice, from slightly different perspectives, once for each eye. Additionally, framerates seem more important than usual as low or choppy FPS can cause vertigo or motion sickness."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Lighting and shadows were almost exlusively static/baked, with carefully edited lightmaps to give the best resolution at spots that deserved it.\nMost every surface you see is a tiling texture, with painstakingly adjusted texture atlasses to keep down texture fetches.\nStill, we got away with PBR lighting - and the inclusion of normal mapping in select parts of the map allowed for some local fine detail.\n\n Vragments published the source [here](https://github.com/VRagments/StadtmitteVR), I am afraid it's long gone from any app stores. The App was built with the Unity game engine, and the 3d content using 3d Studio Max."
+                    }
+                ]
+            },
+            {
+                "id": 10,
+                "date": "2014",
+                "showCases": [
+                    {
+                        "caption": "Civilian Equipment 1",
+                        "imgUrl": "/images/em5/em5_civilian_equipment_01.jpg"
+                    },
+                    {
+                        "caption": "Civilian Equipment 2",
+                        "imgUrl": "/images/em5/em5_civilian_equipment_02.jpg"
+                    },
+                    {
+                        "caption": "Civilian Equipment 3",
+                        "imgUrl": "/images/em5/em5_civilian_equipment_03.jpg"
+                    },
+                    {
+                        "caption": "Engineer Equipment (wireframes)",
+                        "imgUrl": "/images/em5/em5_engineer_equipment_wires.jpg"
+                    },
+                    {
+                        "caption": "Firefighter Equipment",
+                        "imgUrl": "/images/em5/em5_firefighter_equipments_01.jpg"
+                    },
+                    {
+                        "caption": "Hotdog Stand",
+                        "imgUrl": "/images/em5/em5_hotdog_barrel.jpg"
+                    },
+                    {
+                        "caption": "Hotdog Stand (ingame cutscene)",
+                        "imgUrl": "/images/em5/em5_hotdog_ingame.jpg"
+                    },
+                    {
+                        "caption": "Medic Equipment",
+                        "imgUrl": "/images/em5/em5_medic_equipment.jpg"
+                    },
+                    {
+                        "caption": "Medic Equipment (wires)",
+                        "imgUrl": "/images/em5/em5_medic_equipment_wires.jpg"
+                    },
+                    {
+                        "caption": "Police Equipment 1",
+                        "imgUrl": "/images/em5/em5_police_equipment_01.jpg"
+                    },
+                    {
+                        "caption": "Police Equipment 2",
+                        "imgUrl": "/images/em5/em5_police_equipment_02.jpg"
+                    },
+                    {
+                        "caption": "Various city assets",
+                        "imgUrl": "/images/em5/em5_ubahn_flags.jpg"
+                    },
+                    {
+                        "caption": "Historical Firefighter assets",
+                        "imgUrl": "/images/em5/firefighter_historical_equipments_01.jpg"
+                    },
+                    {
+                        "caption": "XMas Special assets",
+                        "imgUrl": "/images/em5/em5_christmas.jpg"
+                    },
+                    {
+                        "caption": "Hangglider",
+                        "imgUrl": "/images/em5/hang_glider_01.jpg"
+                    }
+                ],
+                "subTitle": "Some 3D assets I created while working on strategy game \"Emergency 5\"",
+                "textBlocks": [
+                    {
+                        "text": "While I did a little work on one or two other titles during my time at [Promotion Software / Sixteen Tons Entertainment](https://www.sixteen-tons.de/), the bulk of my time was dedicated to real time strategy game [\"Emergency 5\"](https://www.youtube.com/watch?v=_KfDgpmfT0g).\n\nThe following gallery showcases a couple of the models I created for this title. Apart from modelling/texturing, I was tasked with reviewing and finalising models recieved by outsourced 3d modelers, integrating cutscene animations, among a host of other things. Admittedly a very work-intensive period in my life, but working in our small, tight-knit art-team was rewarding nonetheless."
+                    }
+                ],
+                "title": "Emergency 5",
+                "titleCardBg": "/images/em5/em5_equipments_featured_image.jpg"
+            },
+            {
+                "id": 11,
+                "title": "Personal 3D Projects",
+                "subTitle": "Where WIP's come to die",
+                "titleCardBg": "/images/personal3d/satellite_featured_image.jpg",
+                "date": "2016-05-12",
+                "showCases": [
+                    {
+                        "caption": "Maschinenkrieger SAFS",
+                        "imgUrl": "/images/personal3d/SAFS_Low_1.jpg"
+                    },
+                    {
+                        "caption": "Maschinenkrieger SAFS",
+                        "imgUrl": "/images/personal3d/SAFS_Low_2.jpg"
+                    },
+                    {
+                        "caption": "Maschinenkrieger SAFS",
+                        "imgUrl": "/images/personal3d/SAFS_Low_4.jpg"
+                    },
+                    {
+                        "caption": "Maschinenkrieger SAFS",
+                        "imgUrl": "/images/personal3d/SAFS_Low_5_wires.jpg"
+                    },
+                    {
+                        "caption": "Retro-Style Satellite (high poly)",
+                        "imgUrl": "/images/personal3d/satellite_close.jpg"
+                    },
+                    {
+                        "caption": "Retro-Style Satellite (high poly)",
+                        "imgUrl": "/images/personal3d/satellite_total.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle",
+                        "imgUrl": "/images/personal3d/Mosin_001.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle",
+                        "imgUrl": "/images/personal3d/Mosin_004.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle",
+                        "imgUrl": "/images/personal3d/Mosin_005.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle (wireframes)",
+                        "imgUrl": "/images/personal3d/Mosin_002_wires.jpg"
+                    },
+                    {
+                        "caption": "Mosin Nagant WW2 Rifle Textures",
+                        "imgUrl": "/images/personal3d/mosin_texture_flats_combined.jpg"
+                    },
+                    {
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
+                        "imgUrl": "/images/personal3d/Stretcher_Low_2_PC.jpg"
+                    },
+                    {
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
+                        "imgUrl": "/images/personal3d/Stretcher_Low_3_PC.jpg"
+                    },
+                    {
+                        "caption": "Incomplete Entry for polycount.com competition \"The Escape\"",
+                        "imgUrl": "/images/personal3d/Stretcher_Low_6_wires_PC.jpg"
+                    },
+                    {
+                        "caption": "T-35 - Pre-WW2 Soviet Tank - with 5 turrets (high poly)",
+                        "imgUrl": "/images/personal3d/t35_t35_high1.jpg"
+                    },
+                    {
+                        "caption": "T-35 - Pre-WW2 Soviet Tank - with 5 turrets (high poly)",
+                        "imgUrl": "/images/personal3d/t35_t35_high2.jpg"
+                    },
+                    {
+                        "caption": "T-35 - Pre-WW2 Soviet Tank - with 5 turrets (high poly)",
+                        "imgUrl": "/images/personal3d/t35_t35_high2.jpg"
+                    },
+                    {
+                        "caption": "Bündnis für Bleiberecht - Party w/ rendered Discoball",
+                        "imgUrl": "/images/2d/bbb_plakat.jpg"
+                    },
+                    {
+                        "caption": "Bündnis für Bleiberecht Video Design",
+                        "imgUrl": "/images/2d/bbb_vid.jpg"
+                    },
+                    {
+                        "caption": "Berlin Nazi-Frei 2D Poster layout",
+                        "imgUrl": "/images/2d/bnf_plakat.jpg"
+                    },
+                    {
+                        "caption": "VROmega LeapMotion 3DJam",
+                        "imgUrl": "/images/personal3d/vro_1.jpg"
+                    },
+                    {
+                        "caption": "VROmega LeapMotion 3DJam",
+                        "imgUrl": "/images/personal3d/vro_2.jpg"
+                    },
+                    {
+                        "caption": "VROmega LeapMotion 3DJam",
+                        "imgUrl": "/images/personal3d/vro_3.jpg"
+                    },
+                    {
+                        "caption": "VROmega LeapMotion 3DJam",
+                        "imgUrl": "/images/personal3d/vro_4.jpg"
+                    },
+                    {
+                        "caption": "Fortress Forever: Magnet Gun (prototype)",
+                        "imgUrl": "/images/personal3d/magnetgun_iso.jpg"
+                    },
+                    {
+                        "caption": "Fortress Forever: Magnet Gun (prototype)",
+                        "imgUrl": "/images/personal3d/magnetgun_iso_02.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "A collection of personal 3D projects I've taken on in my free time over the last decade or so. Some I've managed to sell a couple of times (such as this model of the iconic WW2 [Soviet Mosin Nagant rifle](https://www.cgtrader.com/3d-models/military/gun/mosin-nagant-m1891-30-pbr-and-game-ready)), some were entries in pro-bono 3D art competitions (\"The Escape\", [\"VROmega\"](https://www.youtube.com/watch?v=9FIFnqfqciw)), some part of my work for Half-Life mod [\"Fortress Forever\"](https://store.steampowered.com/app/253530/Fortress_Forever/). And some I just wanted to try my hand at or did as a favor for friends.\nMy completion rate is sorely lacking, but that's to be expected I guess..\n\nSlightly more context available when clicking through the gallery - I won't clutter this post with more unneeded text."
+                    }
+                ]
+            },
+            {
+                "id": 12,
+                "title": "Student Projects",
+                "subTitle": "Throwback to my first steps as a game artist..",
+                "titleCardBg": "/images/student3d/student_featured_image.jpg",
+                "date": "2012",
+                "showCases": [
+                    {
+                        "youtubeUrl": "https://www.youtube.com/watch?v=3Lwo2bEqa5U"
+                    },
+                    {
+                        "caption": "Meteör Speaker-Tower",
+                        "imgUrl": "/images/student3d/boxenturm_low_01.jpg"
+                    },
+                    {
+                        "caption": "Meteör Speaker-Tower",
+                        "imgUrl": "/images/student3d/boxenturm_low_05_wires.jpg"
+                    },
+                    {
+                        "caption": "Meteör Speaker-Tower High Poly",
+                        "imgUrl": "/images/student3d/boxenturm_high_01.jpg"
+                    },
+                    {
+                        "caption": "Meteör Spaceship",
+                        "imgUrl": "/images/student3d/sax_low_1.jpg"
+                    },
+                    {
+                        "caption": "Meteör Spaceship",
+                        "imgUrl": "/images/student3d/sax_low_3.jpg"
+                    },
+                    {
+                        "caption": "Meteör Spaceship Wireframes",
+                        "imgUrl": "/images/student3d/sax_low_4_wires.jpg"
+                    },
+                    {
+                        "caption": "Meteör Spaceship High Poly",
+                        "imgUrl": "/images/student3d/sax_high_2.jpg"
+                    },
+                    {
+                        "caption": "Meteör Spaceship In-Game",
+                        "imgUrl": "/images/student3d/sax_ingame_02.jpg"
+                    },
+                    {
+                        "caption": "Meteör Spaceship II",
+                        "imgUrl": "/images/student3d/radio_low_1.jpg"
+                    },
+                    {
+                        "caption": "Meteör Spaceship II Wireframes",
+                        "imgUrl": "/images/student3d/radio_low_1_wires.jpg"
+                    },
+                    {
+                        "caption": "Meteör Spaceship II High Poly",
+                        "imgUrl": "/images/student3d/radio_high_11.jpg"
+                    },
+                    {
+                        "caption": "Meteör Spaceship III (with texture flats)",
+                        "imgUrl": "/images/student3d/schallplatte_low_1_new.jpg"
+                    },
+                    {
+                        "caption": "Meteör Soundblaster",
+                        "imgUrl": "/images/student3d/waffe_low_31.jpg"
+                    },
+                    {
+                        "caption": "Meteör Soundblaster",
+                        "imgUrl": "/images/student3d/waffe_low_4.jpg"
+                    },
+                    {
+                        "caption": "Meteör Soundblaster Wireframes",
+                        "imgUrl": "/images/student3d/waffe_low_4_wires1.jpg"
+                    },
+                    {
+                        "caption": "Meteör Soundblaster High Poly",
+                        "imgUrl": "/images/student3d/waffe_high_31.jpg"
+                    },
+                    {
+                        "caption": "Meteör Stage (In-Game View)",
+                        "imgUrl": "/images/student3d/buehne_ingame_01.jpg"
+                    },
+                    {
+                        "caption": "Meteör Assets I created (In-Game View)",
+                        "imgUrl": "/images/student3d/INGAME_1.jpg"
+                    },
+                    {
+                        "caption": "Silenced Sten",
+                        "imgUrl": "/images/student3d/Sten_Low_Dio_1.jpg"
+                    },
+                    {
+                        "caption": "Silenced Sten",
+                        "imgUrl": "/images/student3d/Sten_Low_Dio_2.jpg"
+                    },
+                    {
+                        "caption": "Silenced Sten",
+                        "imgUrl": "/images/student3d/Sten_Low_4.jpg"
+                    },
+                    {
+                        "caption": "Silenced Sten Wireframe",
+                        "imgUrl": "/images/student3d/Sten_Low_5_wires.jpg"
+                    },
+                    {
+                        "caption": "Silenced Sten High Poly",
+                        "imgUrl": "/images/student3d/StenVI_3.jpg"
+                    },
+                    {
+                        "caption": "GA Group Project: Fighter",
+                        "imgUrl": "/images/student3d/fighter_1.jpg"
+                    },
+                    {
+                        "caption": "GA Group Project: Fighter",
+                        "imgUrl": "/images/student3d/fighter_2.jpg"
+                    },
+                    {
+                        "caption": "GA Group Project: Fighter High Poly",
+                        "imgUrl": "/images/student3d/fighter_high_3.jpg"
+                    },
+                    {
+                        "caption": "Sig 716",
+                        "imgUrl": "/images/student3d/sig_716_5.jpg"
+                    },
+                    {
+                        "caption": "Sig 716",
+                        "imgUrl": "/images/student3d/sig_716_6.jpg"
+                    },
+                    {
+                        "caption": "Sig 716",
+                        "imgUrl": "/images/student3d/sig_716_7_wires.jpg"
+                    },
+                    {
+                        "caption": "Sig 716",
+                        "imgUrl": "/images/student3d/sig_716_high_31.jpg"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "While studying to be a Game Artist at Games Academy (their 2-year course \"3D Art & Animation\"), I created many 3d models. Some were indidivual assignments, many were also produced while working in larger group settings working on more in-depth projects. Yeah, a school for game art... many guns.\n\nThis will be more of an image dump."
+                    },
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "METEÖR was the most successful project I worked on at Games Academy. A 2 semester group effort with rookie coders, rookie game designers, rookie artists and rookie project-managers, we made it into a [RockPaperShotgun article](https://www.rockpapershotgun.com/in-tune-with-the-audience-meteor) (wow!), and were even nominated for \"Best Game Design\" alongside some heavy hitters at the [Animago Awards 2012](https://digitaleleinwand.de/2012/10/08/wer-macht-das-rennen-um-die-digitale-ehre-die-nominierten-zum-animago-award-2012-stehen-fest/)."
+                    }
+                ]
+            }
+        ]
+    },
+    "About": {
+        "id": 2,
+        "categoryTitle": "About",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale",
+        "categoryBlurb": "So I build websites.\nAnd I build 3D stuff.\n\nAnd sometimes, I combine the two.",
+        "posts": [
+            {
+                "id": 14,
+                "date": "2024-09-12",
+                "textBlocks": [
+                    "I've done **cool** stuff",
+                    "More `cool` stuff",
+                    "Even more of the ***cool stuff*** tbh"
+                ],
+                "title": "Download Resumé"
+            },
+            {
+                "id": 15,
+                "date": "2024-09-12",
+                "showCases": [
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_1/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_2/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_3/900/600?grayscale"
+                    },
+                    {
+                        "caption": "ksdkjsdk",
+                        "imgUrl": "https://picsum.photos/seed/about_4/900/600?grayscale"
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "useShowCaseIndex": 0,
+                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
+                    },
+                    {
+                        "useShowCaseIndex": 1,
+                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
+                    },
+                    {
+                        "useShowCaseIndex": 2,
+                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
+                    }
+                ],
+                "title": "Just a few words.."
+            }
+        ]
+    },
+    "Log": {
+        "id": 3,
+        "categoryTitle": "Log",
+        "categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
+        "categoryBlurb": "And in other news..",
+        "posts": [
+            {
+                "id": 16,
+                "title": "Tailwind - clipInset",
+                "subTitle": "Adds TW classes for clip-path: inset()",
+                "titleCardBg": "/images/updates/code_clipInset.jpg",
+                "date": "2024-09-25",
+                "textBlocks": [
+                    {
+                        "text": "So I built a little [tailwind](https://tailwindcss.com/) plugin to add css's clip-path [(inset() only, for now)](https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/inset) to the standard classes. The initial version is [here](https://github.com/cptSwing/tailwind-css-plugins/blob/main/twClipInset.ts) - I've yet to put it through it's paces and haven't actually tried any rounding, but it's currently doing it's job on this here website, for instance! \n\n Usage is easy: `clip-inset-2`, `clip-inset-1/2` etc will clip content on all sides according to the same values as used in tailwind's `w-2` or `w-1/2` respectively (I am using the predefined 'width' values actually). \n\n`clip-inset-t` and `-r`, `-b`, `-l` clip the top, right, bottom left sides. `clip-inset-x` and `clip-inset-y` take care of horizontal and vertical sides."
+                    }
+                ]
+            },
+            {
+                "id": 17,
+                "date": "2023-06-14",
+                "textBlocks": [
+                    {
+                        "text": "Admittedly, this started out as a way to duck beneath Vragment's build pipeline (eslint, rather) yelling at me about console.log's left in the code - but it has matured somewhat since then.\n\nCalls to the DevConsole will be ignored if a production build is triggered, and in dev mode it can dump more thorough stacktraces, filter away some of the faff, has an option for deepcloning objects so they appear in the log as they do at runtime (slows things down, of course), and colors console output as well as tagging it with the filename it was called from (in VSCode).\n\n[Check it out here](https://gist.github.com/cptSwing/0b63288955b30efda603f019ccf00c2c) . Some things will likely break outside of a specific environment - I had to adjust how webpack outputs sourcemaps, for instance - so obviously YMMV."
+                    }
+                ],
+                "title": "DevConsole Gist"
+            }
+        ]
+    }
 }
