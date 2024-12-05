@@ -69,7 +69,7 @@ const useScrollPosition = (
             right: valueFromPercentage(rightOffScreen, paddingRight + cardOutline, topProgressPercentage),
             bottom: outlineByFour,
             position: 'absolute',
-            opacity: Math.max(0.2, Math.min(topProgressPercentage / 100, 0.75)),
+            opacity: Math.max(0.4, Math.min(topProgressPercentage / 100, 0.85)),
             filter: 'blur(2px) brightness(.85)',
         }),
         [topProgressPercentage, rightOffScreen, paddingRight, cardOutline, outlineByFour],

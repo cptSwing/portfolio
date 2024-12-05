@@ -105,7 +105,7 @@
                 },
                 "textBlocks": [
                     {
-                        "text": "My old portfolio site was geared mostly towards 3D Art - since I'd never had the time to change things around since I started working as a web developer (and wordpress didn't survive one of the more recent php upgrades), it was now time to build anew.\n\nObviously there's always stuff to do.\nMy main gripe is that I'm currently still fetching content from a static .json instead of querying my hosted SQL database, but I'd also like to add user management, WYSIWYG editing, file uploads at a later date.\n\nSo while this site is still a Work-In-Progress, I invite you to [peruse the code here](https://github.com/cptSwing/portfolio)."
+                        "text": "My old portfolio site was geared mostly towards 3D Art - since I'd never had the time to change things around since I started working as a web developer (and wordpress didn't survive one of the more recent php upgrades), it was now time to build anew.\n\nObviously there's always stuff to do:\nMy main gripe is that I'm currently still fetching content from a static .json instead of querying my hosted SQL database, but I'd also like to add user management, WYSIWYG editing, file uploads at a later date. And I'm sure `useScrollPosition()` and related scroll logic could be worked over for better performance..\n\nSo while this site is still a Work-In-Progress, I invite you to [peruse the code here](https://github.com/cptSwing/portfolio)."
                     }
                 ]
             },
@@ -296,6 +296,10 @@
                         "imgUrl": "/images/projects/platecalc_mob.jpg"
                     },
                     {
+                        "caption": "triplanar shader for threeJs",
+                        "imgUrl": "/images/updates/log_triplanar.jpg"
+                    },
+                    {
                         "caption": "shooty bang-bang, developed in one rookie-week",
                         "imgUrl": "/images/projects/shooter_menu.jpg"
                     },
@@ -314,6 +318,10 @@
                     },
                     {
                         "useShowCaseIndex": 1,
+                        "text": "Seeing as there is no triplanar mapping material supporting normal maps to be found anywhere, I had previously thrown together a buggier version for [Ring Configurator](https://www.jbrandenburg.de/0/0) but navigating the multiple differences between existing solutions for other engines, and threeJs was tough (left- vs righthandedness, world- vs objectspace, do I really need to recompute the tangent/binormal/normal matrix?).\nSo I sat down and tried again from scratch.\nI wrote a little more about it [here](https://www.jbrandenburg.de/3/18)"
+                    },
+                    {
+                        "useShowCaseIndex": 2,
                         "text": "On one hand I was too embarrassed to actually look at this project's code, on the other hand I was quite fond of the oldschool pixellated look of it's menus - This was my final project at SPICED full-stack bootcamp, completed in a week at the end of the program (early 2019). It was also my first encounter with threeJS, so it holds a special place in my heart. Pro forma, it even uses express in the background!\nI spent a good two or three vanity-days working on the fighter models in 3DS MAX before I actually got started on code, which in turn led to a couple of nights with less-than-optimal sleep phases, but alas."
                     }
                 ]
@@ -974,6 +982,18 @@
         "categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
         "categoryBlurb": "And in other news..",
         "posts": [
+            {
+                "id": 18,
+                "date": "2024-12-03",
+                "textBlocks": [
+                    {
+                        "text": "I sat down once more to whip up a [triplanar](https://www.martinpalko.com/triplanar-mapping/) shader in [glsl](https://en.wikipedia.org/wiki/OpenGL_Shading_Language) for [threejs](https://threejs.org/), this one uses [CustomShaderMaterial](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial) to extend a THREE.MeshStandardMaterial. It supports basecolors, normal maps, roughness maps for now.\n\nThis one is object-space only for now, I'd love to build a world space shader sometime soon.\n\n[Check it out here](https://github.com/cptSwing/three-triplanarmapping)"
+                    }
+                ],
+                "title": "Triplanar Mapping ",
+                "titleCardBg": "/images/updates/log_triplanar.jpg",
+                "subTitle": "Object-Space Shader for threeJs"
+            },
             {
                 "id": 16,
                 "title": "Tailwind - clipInset",
