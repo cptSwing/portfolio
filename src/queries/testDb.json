@@ -897,7 +897,7 @@
                 "id": 14,
                 "title": "Download Resumé/CV",
                 "date": "2024-11-21",
-                "textBlocks": [{ "text": "Download my CV in [English here](/public/pdfs/CV_EN.pdf)" }]
+                "textBlocks": [{ "text": "Download my CV in [English here](/pdfs/CV_EN.pdf)" }]
             },
             {
                 "id": 15,
