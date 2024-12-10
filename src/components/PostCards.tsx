@@ -13,9 +13,6 @@ export const PostCards: FC<{
     parentRef: React.MutableRefObject<HTMLDivElement | null>;
 }> = ({ posts, parentRef }) => {
     const scrollY = useThrottledVerticalScroll(parentRef, 50);
-    useEffect(() => {
-        console.log('%c[PostCards]', 'color: #833e61', `scrollY :`, scrollY);
-    }, [scrollY]);
 
     const [postCardsParentRef_Cb, { width: parentWidth, height: parentHeight }] = useMeasure<HTMLDivElement>();
     useEffect(() => {
