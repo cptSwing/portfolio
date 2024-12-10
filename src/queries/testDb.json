@@ -10,15 +10,7 @@
                 "id": 0,
                 "title": "Design Your Ring",
                 "titleCardBg": "/images/hd_dyr/hd_dyr_card.jpg",
-                "toolsUsed": [
-                    "react",
-                    "react-router",
-                    "react-three-fiber",
-                    "react-three-drei",
-                    "react-postprocessing",
-                    "three-bvh-csg",
-                    "tailwindcss"
-                ],
+                "toolsUsed": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
                 "subTitle": "Customizable Wedding-Rings in 3D",
                 "date": "2024-09-12",
                 "showCases": [
@@ -88,15 +80,7 @@
                 "id": 1,
                 "title": "This site!",
                 "titleCardBg": "/images/portfolio/portfolio_featured.jpg",
-                "toolsUsed": [
-                    "react",
-                    "react-router",
-                    "react-three-fiber",
-                    "react-three-drei",
-                    "react-postprocessing",
-                    "three-bvh-csg",
-                    "tailwindcss"
-                ],
+                "toolsUsed": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
                 "subTitle": "Rebuilt Portfolio from Scratch",
                 "date": "2024-07-30",
                 "codeLink": {
@@ -118,14 +102,7 @@
                     "alt": "fader360-frontend (Github)",
                     "href": "https://github.com/VRagments/fader360-frontend"
                 },
-                "toolsUsed": [
-                    "react",
-                    "react-three-fiber",
-                    "react-three-drei",
-                    "leva-gui",
-                    "tailwindcss",
-                    "3ds Max"
-                ],
+                "toolsUsed": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
                 "date": "2023-08-11",
                 "showCases": [
                     {
@@ -224,11 +201,7 @@
                         "text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
                     }
                 ],
-                "toolsUsed": [
-                    "parcel",
-                    "posthtml",
-                    "tailwindcss"
-                ]
+                "toolsUsed": ["parcel", "posthtml", "tailwindcss"]
             },
             {
                 "id": 4,
@@ -236,10 +209,7 @@
                 "subTitle": "Scroll through various 3D experiences",
                 "titleCardBg": "/images/scrollmersives/scrollmersives_featured.jpg",
                 "date": "2022",
-                "toolsUsed": [
-                    "three.js",
-                    "3ds Max"
-                ],
+                "toolsUsed": ["three.js", "3ds Max"],
                 "showCases": [
                     {
                         "caption": "electric scooter, early proof of concept",
@@ -547,11 +517,7 @@
                 "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
                 "titleCardBg": "/images/stadtmitte/usm_featured_image.jpg",
                 "date": "2016",
-                "toolsUsed": [
-                    "Unity Engine",
-                    "3ds Max",
-                    "Substance Designer"
-                ],
+                "toolsUsed": ["Unity Engine", "3ds Max", "Substance Designer"],
                 "codeLink": {
                     "href": "https://github.com/VRagments/StadtmitteVR"
                 },
@@ -929,16 +895,13 @@
         "posts": [
             {
                 "id": 14,
-                "date": "2024-09-12",
-                "textBlocks": [
-                    "I've done **cool** stuff",
-                    "More `cool` stuff",
-                    "Even more of the ***cool stuff*** tbh"
-                ],
-                "title": "Download Resumé"
+                "title": "Download Resumé/CV",
+                "date": "2024-11-21",
+                "textBlocks": [{ "text": "Download my CV in [English here](/public/pdfs/CV_EN.pdf)" }]
             },
             {
                 "id": 15,
+                "title": "And in my spare time, I like..",
                 "date": "2024-09-12",
                 "showCases": [
                     {
@@ -971,8 +934,7 @@
                         "useShowCaseIndex": 2,
                         "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
                     }
-                ],
-                "title": "Just a few words.."
+                ]
             }
         ]
     },
