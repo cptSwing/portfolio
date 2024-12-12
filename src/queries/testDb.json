@@ -152,7 +152,7 @@
                     },
                     {
                         "useShowCaseIndex": 2,
-                        "text": "While the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below.\n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further. "
+                        "text": "While the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below.\n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further.\n\nFeel free to login at [this fader dev backend instance](https://fader360.vrgmnts.net/users/login) with `jens@jbrandenburg.de` and password `!$V2&;+'i-EzrfF`, then follow [this link](https://fader360.vrgmnts.net/editor/edit?project_id=83d78046-e4dd-4679-a460-097ceb44104b) to directly enter the editor and click around, add assets to the scenes etc etc. Fader was not picked up commercially by anyone, so it's obviously rough around the edges ;-)"
                     }
                 ]
             },
