@@ -1,8 +1,6 @@
 import { MouseEvent, useCallback } from 'react';
 import {
-    AmbientLight,
     Color,
-    DirectionalLight,
     InstancedMesh,
     Matrix4,
     Mesh,
@@ -43,9 +41,6 @@ const mountThree = (div: HTMLDivElement) => {
     [width, height] = getWidthHeight(0, camera);
     console.log('%c[ThreeCanvas]', 'color: #06d142', `width, height :`, width, height);
 
-    const lights = getLights();
-    // scene.add(...lights);
-
     const pointLight = getPointLight();
     scene.add(pointLight);
 
@@ -69,21 +64,6 @@ const mountThree = (div: HTMLDivElement) => {
     document.addEventListener('mousemove', getMouseMoveHandler(mousePosition, pointLight));
 };
 
-const getLights = () => {
-    const ambientLight = new AmbientLight(0x000000);
-
-    const light1 = new DirectionalLight(0xffffff, 3);
-    light1.position.set(0, 200, 0);
-
-    const light2 = new DirectionalLight(0xffffff, 3);
-    light2.position.set(100, 200, 100);
-
-    const light3 = new DirectionalLight(0xffffff, 3);
-    light3.position.set(-100, -200, -100);
-
-    return [ambientLight, light1, light2, light3];
-};
-
 const getPointLight = () => {
     const pointLight = new PointLight(0xffffff, 1, 10);
     pointLight.position.set(0, 0, 3);
@@ -105,8 +85,13 @@ const getInstancedMesh = (color: Color) => {
     const countHorizontal = Math.ceil(width / roundedBoxSideLength);
     const countVertical = Math.ceil(height / roundedBoxSideLength);
 
+    // WARN not loaded when this is run
+    const rootElement = document.documentElement;
+    const bgGrey = rootElement.style.getPropertyValue('--theme-bg-base');
+    color.setStyle(bgGrey);
+
     const geometry = new RoundedBoxGeometry(roundedBoxSideLength, roundedBoxSideLength, roundedBoxSideLength, 1, roundedBoxSideLength / 10);
-    const material = new MeshPhongMaterial({ color: 'grey', specular: 'white', shininess: 20 });
+    const material = new MeshPhongMaterial({ specular: 'yellow', shininess: 10 });
     const instancedMesh = new InstancedMesh(geometry, material, countHorizontal * countVertical);
     instancedMesh.castShadow = true;
     instancedMesh.receiveShadow = true;
@@ -114,7 +99,7 @@ const getInstancedMesh = (color: Color) => {
     let i = 0;
     const extentX = width / 2;
     const extentY = height / 2;
-    const padding = roundedBoxSideLength / 10;
+    const padding = roundedBoxSideLength / 100;
 
     for (let x = 0; x < countHorizontal; x++) {
         for (let y = 0; y < countVertical; y++) {
@@ -185,20 +170,18 @@ const threeAnimate = (
         const newInstanceId = intersection[0].instanceId ?? instanceId;
 
         if (!(instanceId === newInstanceId)) {
-            console.log('%c[ThreeCanvas]', 'color: #b64dcc', `instanceId, newInstanceId :`, instanceId, newInstanceId);
-
-            instancedMesh.getMatrixAt(instanceId, matrix);
+            instancedMesh.getMatrixAt(newInstanceId, matrix);
 
             const b = matrix.elements;
-            b[14] += 0.0125;
+            b[14] += 0.0125; // Z axis
 
-            instancedMesh.setMatrixAt(instanceId, matrix);
+            instancedMesh.setMatrixAt(newInstanceId, matrix);
             instancedMesh.instanceMatrix.needsUpdate = true;
 
-            instancedMesh.getColorAt(instanceId, color);
+            instancedMesh.getColorAt(newInstanceId, color);
 
             if (color.equals(whiteColor)) {
-                instancedMesh.setColorAt(instanceId, color.setHex(Math.random() * 0xffffff));
+                instancedMesh.setColorAt(newInstanceId, color.setHex(Math.random() * 0xffffff));
                 instancedMesh.instanceColor!.needsUpdate = true;
             }
 
