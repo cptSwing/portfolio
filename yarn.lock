@@ -3986,11 +3986,6 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
-three-custom-shader-material@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-6.3.0.tgz#0ce62cc05deda9ae80faf352757ac139460398ca"
-  integrity sha512-5hd5IpAxybyJmrUBZ7tiVW67ESGzMcYv4im6Hs9m9Zgmwj3gHkbPhniqg2Mu69WrtaMialV9gxxFnGP91Yl1vA==
-
 three@^0.173.0:
   version "0.173.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.173.0.tgz#e82989961cd2db05768540458c81b29f565be921"

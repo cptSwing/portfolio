@@ -17,7 +17,7 @@ uniform float opacity;
 #include <lights_phong_pars_fragment>
 #include <shadowmap_pars_fragment>
 
-varying vec3 v_Color;
+varying vec3 v_Instance_Color;
 
 void main() {
     vec4 diffuseColor = vec4(diffuse, opacity);
@@ -29,7 +29,7 @@ void main() {
 
     // <-- CUSTOM SECTION (FRAGMENT)
 
-    diffuseColor.rgb = v_Color;
+    diffuseColor.rgb = v_Instance_Color;
 
     // CUSTOM SECTION (FRAGMENT) -->
 

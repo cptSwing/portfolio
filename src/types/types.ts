@@ -1,4 +1,6 @@
+import { InstancedEntity } from '@three.ez/instanced-mesh';
 import { MENU_CATEGORY, ToolsUrls } from './enums';
+import { Color } from 'three';
 
 export type ZustandStore = {
     values: {
@@ -49,4 +51,33 @@ export type DataBase = {
         categoryBlurb: string;
         categoryBackgroundColor?: string;
     };
+};
+
+/* Animation Types */
+
+export type GridData = {
+    overallWidth: number;
+    overallHeight: number;
+    instanceLength: number;
+    instancePadding: number;
+    gridCountHorizontal: number;
+    gridCountVertical: number;
+    gridFillDirection: 'horizontal' | 'vertical';
+    gridBaseColor: Color;
+};
+
+type PatternSettings = {
+    instance: InstancedEntity;
+    index: number;
+    gridData: GridData;
+    time: number;
+    timeAlpha: number;
+};
+
+export type PatternSettingsAnimation = PatternSettings & {
+    pattern: 'tumble' | 'sin-wave' | 'sin-disjointed' | 'none';
+};
+
+export type PatternSettingsColor = PatternSettings & {
+    pattern: 'sin' | 'none';
 };

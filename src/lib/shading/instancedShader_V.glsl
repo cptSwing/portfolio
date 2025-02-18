@@ -28,7 +28,7 @@ uniform float u_Time_Seconds;
 uniform float u_Time_Last_Hit;
 uniform uint u_hitIndex;
 
-varying vec3 v_Color;
+varying vec3 v_Instance_Color;
 
 void main() {
     // WARN keep this here
@@ -54,7 +54,7 @@ void main() {
     // lastColumn.z = 0.025 * animationProgress * u_hitWeight;
     // instanceMatrix[3] = lastColumn;
 
-    v_Color = getColorTexture();
+    v_Instance_Color = getColorTexture();
 
     // CUSTOM SECTION (VERTEX) -->
 
