@@ -1,20 +1,22 @@
 import { MouseEvent, useCallback } from 'react';
 import {
+    Clock,
     Color,
-    InstancedMesh,
+    Intersection,
     Matrix4,
-    Mesh,
-    MeshPhongMaterial,
+    Object3D,
     PerspectiveCamera,
-    PlaneGeometry,
     PointLight,
+    Points,
     Raycaster,
     Scene,
-    ShadowMaterial,
+    ShaderMaterial,
     Vector2,
+    Vector3,
     WebGLRenderer,
 } from 'three';
-import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import getInstancedMesh2, { getInstanceCount, getInstanceNeighbors } from '../lib/getInstancedMesh2';
+import { InstancedMesh2 } from '@three.ez/instanced-mesh';
 
 const ThreeCanvas = () => {
     const refCb = useCallback((div: HTMLDivElement | null) => {
@@ -28,44 +30,45 @@ const ThreeCanvas = () => {
 
 export default ThreeCanvas;
 
+const clock = new Clock();
+const mousePosition = new Vector2(0, 0);
 let [width, height]: [number, number] = [0, 0];
-const mountThree = (div: HTMLDivElement) => {
-    const mousePosition = new Vector2(1, 1);
-    const cameraOffset = 3;
+let [countHorizontal, countVertical]: [number, number] = [0, 0];
+const roundedBoxSideLength = 0.075;
+const padding = roundedBoxSideLength / 15;
 
+const mountThree = (div: HTMLDivElement) => {
     const scene = new Scene();
+    const raycaster = new Raycaster();
+    const color = new Color();
+
     const camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const cameraOffset = 3;
     camera.position.set(0, 0, cameraOffset);
-    // camera.lookAt(0, 0, 0);
 
     [width, height] = getWidthHeight(0, camera);
-    console.log('%c[ThreeCanvas]', 'color: #06d142', `width, height :`, width, height);
+
+    [countHorizontal, countVertical] = getInstanceCount(width, height, roundedBoxSideLength, padding);
 
     const pointLight = getPointLight();
     scene.add(pointLight);
 
-    const raycaster = new Raycaster();
-
-    const color = new Color();
-    const whiteColor = new Color().setHex(0xffffff);
-
-    const instancedMesh = getInstancedMesh(color);
-    scene.add(instancedMesh);
-
-    const shadowBackPlate = getShadowPlane();
-    scene.add(shadowBackPlate);
-
     const renderer = new WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setAnimationLoop(() => threeAnimate(renderer, scene, camera, raycaster, instancedMesh, mousePosition, color, whiteColor));
+
+    const object = getInstancedMesh2(renderer, roundedBoxSideLength, width, height, countHorizontal, countVertical, padding, color);
+    scene.add(object);
+
+    renderer.setAnimationLoop(() => threeAnimate(renderer, scene, camera, object.material));
+
     div.appendChild(renderer.domElement);
 
     window.addEventListener('resize', getResizeHandler(renderer, camera));
-    document.addEventListener('mousemove', getMouseMoveHandler(mousePosition, pointLight));
+    document.addEventListener('mousemove', getMouseMoveHandler(pointLight, camera, raycaster, object, color));
 };
 
 const getPointLight = () => {
-    const pointLight = new PointLight(0xffffff, 1, 10);
+    const pointLight = new PointLight(0xffffff, 0.075, 10, 0.5);
     pointLight.position.set(0, 0, 3);
     pointLight.castShadow = true;
 
@@ -78,71 +81,34 @@ const getPointLight = () => {
     return pointLight;
 };
 
-const matrix = new Matrix4();
-
-const getInstancedMesh = (color: Color) => {
-    const roundedBoxSideLength = 0.075;
-    const countHorizontal = Math.ceil(width / roundedBoxSideLength);
-    const countVertical = Math.ceil(height / roundedBoxSideLength);
-
-    // WARN not loaded when this is run
-    const rootElement = document.documentElement;
-    const bgGrey = rootElement.style.getPropertyValue('--theme-bg-base');
-    color.setStyle(bgGrey);
-
-    const geometry = new RoundedBoxGeometry(roundedBoxSideLength, roundedBoxSideLength, roundedBoxSideLength, 1, roundedBoxSideLength / 10);
-    const material = new MeshPhongMaterial({ specular: 'yellow', shininess: 10 });
-    const instancedMesh = new InstancedMesh(geometry, material, countHorizontal * countVertical);
-    instancedMesh.castShadow = true;
-    instancedMesh.receiveShadow = true;
-
-    let i = 0;
-    const extentX = width / 2;
-    const extentY = height / 2;
-    const padding = roundedBoxSideLength / 100;
-
-    for (let x = 0; x < countHorizontal; x++) {
-        for (let y = 0; y < countVertical; y++) {
-            const offsetX = x * (roundedBoxSideLength + padding);
-            const offsetY = y * (roundedBoxSideLength + padding);
-            matrix.setPosition(extentX - offsetX, extentY - offsetY, 0);
-
-            instancedMesh.setMatrixAt(i, matrix);
-            instancedMesh.setColorAt(i, color);
-
-            i++;
-        }
-    }
-
-    return instancedMesh;
-};
-
-const getShadowPlane = () => {
-    const planeGeometry = new PlaneGeometry(width, height);
-    const shadowMaterial = new ShadowMaterial({ color: 'red' });
-    const shadowPlane = new Mesh(planeGeometry, shadowMaterial);
-    shadowPlane.receiveShadow = true;
-    shadowPlane.position.setZ(-0.25);
-
-    return shadowPlane;
-};
-
 const getResizeHandler: (renderer: WebGLRenderer, camera: PerspectiveCamera) => EventListenerOrEventListenerObject = (renderer, camera) => {
     return (_ev: Event) => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
+        [width, height] = getWidthHeight(0, camera);
 
         renderer.setSize(window.innerWidth, window.innerHeight);
     };
 };
 
-const getMouseMoveHandler: (mousePosition: Vector2, pointLight: PointLight) => EventListenerOrEventListenerObject = (mousePosition, pointLight) => {
+const getMouseMoveHandler: (
+    pointLight: PointLight,
+    camera: PerspectiveCamera,
+    raycaster: Raycaster,
+    object: Object3D,
+    color: Color,
+) => EventListenerOrEventListenerObject = (pointLight, camera, raycaster, object, color) => {
     return (ev: Event | MouseEvent) => {
         const mouseEvent = ev as MouseEvent;
         mouseEvent.preventDefault();
 
-        mousePosition.x = (mouseEvent.clientX / window.innerWidth) * 2 - 1;
-        mousePosition.y = -(mouseEvent.clientY / window.innerHeight) * 2 + 1;
+        mousePosition.setX((mouseEvent.clientX / window.innerWidth) * 2 - 1);
+        mousePosition.setY(-(mouseEvent.clientY / window.innerHeight) * 2 + 1);
+
+        raycaster.setFromCamera(mousePosition, camera);
+        const intersection = raycaster.intersectObject(object, false);
+
+        handleIntersects(intersection, object, color);
 
         const lightPositionX = mousePosition.x * (width / 2);
         const lightPositionY = mousePosition.y * (height / 2);
@@ -151,45 +117,63 @@ const getMouseMoveHandler: (mousePosition: Vector2, pointLight: PointLight) => E
     };
 };
 
-let instanceId = 0;
-const threeAnimate = (
-    renderer: WebGLRenderer,
-    scene: Scene,
-    camera: PerspectiveCamera,
-    raycaster: Raycaster,
-    instancedMesh: InstancedMesh,
-    mousePosition: Vector2,
-    color: Color,
-    whiteColor: Color,
-) => {
-    raycaster.setFromCamera(mousePosition, camera);
+const threeAnimate = (renderer: WebGLRenderer, scene: Scene, camera: PerspectiveCamera, material: ShaderMaterial) => {
+    material.uniforms.u_Time_Seconds.value = clock.getElapsedTime();
+    renderer.render(scene, camera);
+};
 
-    const intersection = raycaster.intersectObject(instancedMesh);
-
+const timespan = 2;
+let matrix = new Matrix4();
+const positionVector = new Vector3();
+let intersected = 0;
+const handleIntersects = (intersection: Intersection[], object: Object3D, color: Color) => {
     if (intersection.length > 0) {
-        const newInstanceId = intersection[0].instanceId ?? instanceId;
+        if ((object as InstancedMesh2).isInstancedMesh2) {
+            const objInstanced = object as InstancedMesh2;
 
-        if (!(instanceId === newInstanceId)) {
-            instancedMesh.getMatrixAt(newInstanceId, matrix);
+            const newInstanceId = intersection[0].instanceId ?? intersected;
 
-            const b = matrix.elements;
-            b[14] += 0.0125; // Z axis
+            if (intersected !== newInstanceId) {
+                const elapsed = clock.getElapsedTime() / timespan;
+                (objInstanced.material as ShaderMaterial).uniforms.u_hitIndex.value = newInstanceId;
+                (objInstanced.material as ShaderMaterial).uniforms.u_Time_Last_Hit.value = elapsed;
 
-            instancedMesh.setMatrixAt(newInstanceId, matrix);
-            instancedMesh.instanceMatrix.needsUpdate = true;
+                const { above, below, toLeft, toRight } = getInstanceNeighbors(newInstanceId, countVertical);
 
-            instancedMesh.getColorAt(newInstanceId, color);
+                objInstanced.getMatrixAt(newInstanceId, matrix);
+                positionVector.set(matrix.elements[12], matrix.elements[13], matrix.elements[14]);
+                positionVector.setZ(Math.sin((elapsed * Math.PI) / 180));
+                matrix.setPosition(positionVector);
+                objInstanced.setMatrixAt(newInstanceId, matrix);
 
-            if (color.equals(whiteColor)) {
-                instancedMesh.setColorAt(newInstanceId, color.setHex(Math.random() * 0xffffff));
-                instancedMesh.instanceColor!.needsUpdate = true;
+                objInstanced.setColorAt(newInstanceId, color.setHex(0xffffff));
+                objInstanced.setColorAt(above, color.setHex(0xff0000));
+                objInstanced.setColorAt(below, color.setHex(0x00ff00));
+                objInstanced.setColorAt(toLeft, color.setHex(0x0000ff));
+                objInstanced.setColorAt(toRight, color.setHex(0x000000));
+
+                intersected = newInstanceId;
+
+                // const timeoutHandler = () => {
+                //     objInstanced.setUniformAt(newInstanceId, 'u_isHit', 0);
+                //     clearTimeout(timeout);
+                // };
+                // const timeout = setTimeout(timeoutHandler, 1000);
             }
+        } else {
+            const intersectionIndex = intersection[0].index ?? 0;
 
-            instanceId = newInstanceId;
+            if (!(intersected === intersectionIndex)) {
+                const points = object as Points;
+                const positions = points.geometry.getAttribute('position');
+
+                positions.array[intersectionIndex + 2] += 0.05;
+                positions.needsUpdate = true;
+
+                intersected = intersectionIndex;
+            }
         }
     }
-
-    renderer.render(scene, camera);
 };
 
 const getWidthHeight = (depth: number, camera: PerspectiveCamera) => [visibleWidthAtZDepth(depth, camera), visibleHeightAtZDepth(depth, camera)];
