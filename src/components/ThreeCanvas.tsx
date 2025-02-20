@@ -2,7 +2,6 @@ import { MouseEvent, useCallback } from 'react';
 import {
     AmbientLight,
     BufferGeometry,
-    Clock,
     Color,
     Intersection,
     Object3D,
@@ -18,7 +17,7 @@ import {
 import getInstancedMesh2, { getAdjacentIndices, getInstanceCount } from '../lib/getInstancedMesh2';
 import { InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { GridData } from '../types/types';
-import { meshAnimations, setAnimationPattern, setColorPattern } from '../lib/animateMeshes';
+import { meshAnimations, setAnimationPattern } from '../lib/animateMeshes';
 
 const ThreeCanvas = () => {
     const refCb = useCallback((div: HTMLDivElement | null) => {
@@ -146,7 +145,7 @@ let forwardAnimationRunning = 0;
 const threeAnimate = (
     renderer: WebGLRenderer,
     time_Ms: number,
-    frame: XRFrame,
+    _frame: XRFrame,
     scene: Scene,
     camera: PerspectiveCamera,
     mesh: InstancedMesh2<{}, BufferGeometry, ShaderMaterial>,
@@ -195,32 +194,31 @@ const handleIntersects = (intersection: Intersection[], object: Object3D) => {
             if (intersected !== newInstanceId) {
                 const { above, below, toLeft, toRight } = getAdjacentIndices(newInstanceId, gridData);
 
-                // objInstanced.setColorAt(newInstanceId, tempInstanceColor.setHex(0xffffff));
                 objInstanced.setUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor.setHex(0xffffff));
 
                 objInstanced.getUniformAt(newInstanceId, 'u_Hit', tempHitVector);
                 objInstanced.setUniformAt(newInstanceId, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 1)));
 
                 if (objInstanced.instances[above]) {
-                    objInstanced.setColorAt(above, tempInstanceColor.setHex(0xdddddd));
+                    objInstanced.setUniformAt(above, 'u_Hit_Color', tempInstanceColor.setHex(0xffdddd));
 
                     objInstanced.getUniformAt(above, 'u_Hit', tempHitVector);
                     objInstanced.setUniformAt(above, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
                 }
                 if (objInstanced.instances[below]) {
-                    objInstanced.setColorAt(below, tempInstanceColor.setHex(0xdddddd));
+                    objInstanced.setUniformAt(below, 'u_Hit_Color', tempInstanceColor.setHex(0xddffdd));
 
                     objInstanced.getUniformAt(below, 'u_Hit', tempHitVector);
                     objInstanced.setUniformAt(below, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
                 }
                 if (objInstanced.instances[toLeft]) {
-                    objInstanced.setColorAt(toLeft, tempInstanceColor.setHex(0xdddddd));
+                    objInstanced.setUniformAt(toLeft, 'u_Hit_Color', tempInstanceColor.setHex(0xddddff));
 
                     objInstanced.getUniformAt(toLeft, 'u_Hit', tempHitVector);
                     objInstanced.setUniformAt(toLeft, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
                 }
                 if (objInstanced.instances[toRight]) {
-                    objInstanced.setColorAt(toRight, tempInstanceColor.setHex(0xdddddd));
+                    objInstanced.setUniformAt(toRight, 'u_Hit_Color', tempInstanceColor.setHex(0xdd11dd));
 
                     objInstanced.getUniformAt(toRight, 'u_Hit', tempHitVector);
                     objInstanced.setUniformAt(toRight, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));

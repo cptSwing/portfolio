@@ -1,16 +1,15 @@
-import { Color, MathUtils, Quaternion, Vector3 } from 'three';
+import { Color, Vector3 } from 'three';
 import { PatternSettingsAnimation, PatternSettingsColor } from '../types/types';
 import { getColumnAndRowByIndex, originalPositions } from './getInstancedMesh2';
 
 const tempInstancePos = new Vector3();
-const tempInstanceQuaternion = new Quaternion();
 const tumbleThreshold = 0.05;
 let stopTime = 0;
 export const setAnimationPattern = ({ instance, index, time_Ms, timeAlpha = 0.1, pattern = 'none', endDelay_S = 0, gridData }: PatternSettingsAnimation) => {
     const { gridCountHorizontal, gridCountVertical, instanceLength } = gridData;
     const overallCount = gridCountHorizontal * gridCountVertical;
 
-    const [column, row] = getColumnAndRowByIndex(index, gridData);
+    const [column, row] = getColumnAndRowByIndex(index, gridData, false);
     const sinMultiplier = returnSinValue(overallCount);
     const time_S = time_Ms / 1000;
 
