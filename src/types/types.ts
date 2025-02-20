@@ -60,6 +60,7 @@ export type GridData = {
     overallHeight: number;
     instanceLength: number;
     instancePadding: number;
+    gridCount: number;
     gridCountHorizontal: number;
     gridCountVertical: number;
     gridFillDirection: 'horizontal' | 'vertical';
@@ -70,8 +71,9 @@ type PatternSettings = {
     instance: InstancedEntity;
     index: number;
     gridData: GridData;
-    time: number;
+    time_Ms: number;
     timeAlpha: number;
+    endDelay_S?: number;
 };
 
 export type PatternSettingsAnimation = PatternSettings & {

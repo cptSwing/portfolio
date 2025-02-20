@@ -1,5 +1,6 @@
 import { MouseEvent, useCallback } from 'react';
 import {
+    AmbientLight,
     BufferGeometry,
     Clock,
     Color,
@@ -14,9 +15,10 @@ import {
     Vector2,
     WebGLRenderer,
 } from 'three';
-import getInstancedMesh2, { getAdjacentIndices, getInstanceCount, setAnimationPattern, setColorPattern } from '../lib/getInstancedMesh2';
+import getInstancedMesh2, { getAdjacentIndices, getInstanceCount } from '../lib/getInstancedMesh2';
 import { InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { GridData } from '../types/types';
+import { meshAnimations, setAnimationPattern, setColorPattern } from '../lib/animateMeshes';
 
 const ThreeCanvas = () => {
     const refCb = useCallback((div: HTMLDivElement | null) => {
@@ -30,18 +32,18 @@ const ThreeCanvas = () => {
 
 export default ThreeCanvas;
 
-const clock = new Clock();
 const mousePosition = new Vector2(0, 0);
 
 let gridData: GridData = {
     overallWidth: 0,
     overallHeight: 0,
-    instanceLength: 0.075,
-    instancePadding: 0.005,
+    instanceLength: 0.05,
+    instancePadding: 0,
+    gridCount: 2000,
     gridCountHorizontal: 0,
     gridCountVertical: 0,
     gridFillDirection: 'horizontal',
-    gridBaseColor: new Color('grey'),
+    gridBaseColor: new Color(0x888888),
 };
 
 const mountThree = (div: HTMLDivElement) => {
@@ -63,8 +65,10 @@ const mountThree = (div: HTMLDivElement) => {
 
     gridData = getInstanceCount(gridData);
 
-    const pointLight = getPointLight();
-    scene.add(pointLight);
+    const pointLight = getPointLight(cameraOffset);
+    // scene.add(pointLight);
+
+    scene.add(new AmbientLight('white', 1));
 
     const renderer = new WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -72,28 +76,23 @@ const mountThree = (div: HTMLDivElement) => {
     const object = getInstancedMesh2(renderer, gridData);
     scene.add(object);
 
-    renderer.setAnimationLoop(() => threeAnimate(renderer, scene, camera, object));
+    renderer.setAnimationLoop((time, frame) => threeAnimate(renderer, time, frame, scene, camera, object));
 
     div.appendChild(renderer.domElement);
 
     window.addEventListener('resize', getResizeHandler(renderer, camera));
-    document.addEventListener('mousemove', getMouseMoveHandler(pointLight, camera, raycaster, object));
-
-    // // run 'tumble' once
-    // object.updateInstancesPosition((instance, idx) => {
-    //     instance.position.setY(5);
-    // });
+    document.addEventListener('mousemove', getMouseMoveHandler(pointLight, cameraOffset, camera, raycaster, object));
 };
 
-const getPointLight = () => {
-    const pointLight = new PointLight(0xffffff, 0.5, 10, 0.5);
-    pointLight.position.set(0, 0, 3);
+const getPointLight = (offset: number) => {
+    const pointLight = new PointLight(0xffffff, 0.5, 0, 0.5);
+    pointLight.position.set(0, 0, offset);
     pointLight.castShadow = true;
 
     pointLight.shadow.mapSize.width = 1024;
     pointLight.shadow.mapSize.height = 1024;
-    pointLight.shadow.camera.near = 0.5;
-    pointLight.shadow.camera.far = 500;
+    pointLight.shadow.camera.near = 0.1;
+    pointLight.shadow.camera.far = 50;
     pointLight.shadow.bias = -0.000512;
 
     return pointLight;
@@ -113,16 +112,18 @@ const getResizeHandler: (renderer: WebGLRenderer, camera: PerspectiveCamera) => 
     };
 };
 
-const getMouseMoveHandler: (pointLight: PointLight, camera: PerspectiveCamera, raycaster: Raycaster, object: Object3D) => EventListenerOrEventListenerObject = (
-    pointLight,
-    camera,
-    raycaster,
-    object,
-) => {
+const getMouseMoveHandler: (
+    pointLight: PointLight,
+    lightOffset: number,
+    camera: PerspectiveCamera,
+    raycaster: Raycaster,
+    object: Object3D,
+) => EventListenerOrEventListenerObject = (pointLight, lightOffset, camera, raycaster, object) => {
     return (ev: Event | MouseEvent) => {
         const mouseEvent = ev as MouseEvent;
         mouseEvent.preventDefault();
 
+        // Sets to [-1, 1] values, 0 at center
         mousePosition.setX((mouseEvent.clientX / window.innerWidth) * 2 - 1);
         mousePosition.setY(-(mouseEvent.clientY / window.innerHeight) * 2 + 1);
 
@@ -131,32 +132,59 @@ const getMouseMoveHandler: (pointLight: PointLight, camera: PerspectiveCamera, r
 
         handleIntersects(intersection, object);
 
+        // Converted to x,y at Scene Z:0
         const lightPositionX = mousePosition.x * (gridData.overallWidth / 2);
         const lightPositionY = mousePosition.y * (gridData.overallHeight / 2);
 
-        pointLight.position.set(lightPositionX, lightPositionY, 0.5);
+        pointLight.position.set(lightPositionX, lightPositionY, lightOffset);
     };
 };
 
+let time_Ms_Global = 0;
 let hasRunOnce = false;
-const threeAnimate = (renderer: WebGLRenderer, scene: Scene, camera: PerspectiveCamera, mesh: InstancedMesh2<{}, BufferGeometry, ShaderMaterial>) => {
-    const time = clock.getElapsedTime();
-    mesh.material.uniforms.u_Time_Seconds.value = time;
+let forwardAnimationRunning = 0;
+const threeAnimate = (
+    renderer: WebGLRenderer,
+    time_Ms: number,
+    frame: XRFrame,
+    scene: Scene,
+    camera: PerspectiveCamera,
+    mesh: InstancedMesh2<{}, BufferGeometry, ShaderMaterial>,
+) => {
+    mesh.material.uniforms.u_Time_Ms.value = time_Ms;
+    time_Ms_Global = time_Ms;
 
     mesh.updateInstances((instance, idx) => {
         if (!hasRunOnce) {
+            // instance.position.setY(instance.position.y + gridData.overallHeight);
             instance.position.y += gridData.overallHeight;
+
+            forwardAnimationRunning = 1;
+            if (idx >= gridData.gridCountHorizontal * gridData.gridCountVertical - 1) {
+                mesh.computeBoundingSphere();
+                hasRunOnce = true;
+            }
         }
-        setAnimationPattern({ instance, index: idx, time, timeAlpha: 0.2, pattern: 'tumble', gridData });
-        setColorPattern({ instance, index: idx, time, timeAlpha: 0.03, pattern: 'sin', gridData });
+
+        forwardAnimationRunning = setAnimationPattern({
+            instance,
+            index: idx,
+            time_Ms,
+            gridData,
+            ...(forwardAnimationRunning ? meshAnimations.tumble : meshAnimations.none),
+        });
+
+        // setColorPattern({ instance, index: idx, time_Ms, timeAlpha: 0.03, pattern: 'sin', gridData });
     });
-    hasRunOnce = true;
 
     renderer.render(scene, camera);
 };
 
-const tempInstanceColor = new Color();
 let intersected = 0;
+
+const tempHitVector = new Vector2(); // Stores current time in x., hit strength in y.
+const tempInstanceColor = new Color();
+
 const handleIntersects = (intersection: Intersection[], object: Object3D) => {
     if (intersection.length > 0) {
         if ((object as InstancedMesh2).isInstancedMesh2) {
@@ -165,29 +193,37 @@ const handleIntersects = (intersection: Intersection[], object: Object3D) => {
             const newInstanceId = intersection[0].instanceId ?? intersected;
 
             if (intersected !== newInstanceId) {
-                // (objInstanced.material as ShaderMaterial).uniforms.u_hitIndex.value = newInstanceId;
-                // (objInstanced.material as ShaderMaterial).uniforms.u_Time_Last_Hit.value = elapsed;
-
-                objInstanced.instances[newInstanceId].position.z += gridData.instanceLength;
-                objInstanced.setColorAt(newInstanceId, tempInstanceColor.setHex(0xffffff));
-
                 const { above, below, toLeft, toRight } = getAdjacentIndices(newInstanceId, gridData);
 
+                // objInstanced.setColorAt(newInstanceId, tempInstanceColor.setHex(0xffffff));
+                objInstanced.setUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor.setHex(0xffffff));
+
+                objInstanced.getUniformAt(newInstanceId, 'u_Hit', tempHitVector);
+                objInstanced.setUniformAt(newInstanceId, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 1)));
+
                 if (objInstanced.instances[above]) {
-                    objInstanced.instances[above].position.z += 0.025;
-                    objInstanced.setColorAt(above, tempInstanceColor.setHex(0xeeeeee));
+                    objInstanced.setColorAt(above, tempInstanceColor.setHex(0xdddddd));
+
+                    objInstanced.getUniformAt(above, 'u_Hit', tempHitVector);
+                    objInstanced.setUniformAt(above, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
                 }
                 if (objInstanced.instances[below]) {
-                    objInstanced.instances[below].position.z += 0.025;
-                    objInstanced.setColorAt(below, tempInstanceColor.setHex(0xeeeeee));
+                    objInstanced.setColorAt(below, tempInstanceColor.setHex(0xdddddd));
+
+                    objInstanced.getUniformAt(below, 'u_Hit', tempHitVector);
+                    objInstanced.setUniformAt(below, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
                 }
                 if (objInstanced.instances[toLeft]) {
-                    objInstanced.instances[toLeft].position.z += 0.025;
-                    objInstanced.setColorAt(toLeft, tempInstanceColor.setHex(0xeeeeee));
+                    objInstanced.setColorAt(toLeft, tempInstanceColor.setHex(0xdddddd));
+
+                    objInstanced.getUniformAt(toLeft, 'u_Hit', tempHitVector);
+                    objInstanced.setUniformAt(toLeft, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
                 }
                 if (objInstanced.instances[toRight]) {
-                    objInstanced.instances[toRight].position.z += 0.025;
-                    objInstanced.setColorAt(toRight, tempInstanceColor.setHex(0xeeeeee));
+                    objInstanced.setColorAt(toRight, tempInstanceColor.setHex(0xdddddd));
+
+                    objInstanced.getUniformAt(toRight, 'u_Hit', tempHitVector);
+                    objInstanced.setUniformAt(toRight, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
                 }
 
                 intersected = newInstanceId;

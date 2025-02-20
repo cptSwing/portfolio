@@ -22,13 +22,15 @@ mat4 getInstancedMatrix() {
     return mat4(v1, v2, v3, v4);
 }
 
-#define TIMESPAN 0.25
+#define RAYHIT_OFFSET 0.05
+#define TIMESPAN 2000.
 
-uniform float u_Time_Seconds;
-uniform float u_Time_Last_Hit;
-uniform uint u_hitIndex;
+uniform float u_Time_Ms;
+uniform vec2 u_Hit;
 
 varying vec3 v_Instance_Color;
+varying vec3 v_World_Position;
+varying float v_Anim_Progress;
 
 void main() {
     // WARN keep this here
@@ -42,18 +44,14 @@ void main() {
 
     // <-- CUSTOM SECTION (VERTEX)
 
-    float animationProgress = clamp((u_Time_Seconds - u_Time_Last_Hit) / TIMESPAN, 0., 1.);
-    // float isStarting = u_hitIndex == instanceIndex ? 1. : 0.;
-    // animationProgress = mix(1. - animationProgress, animationProgress, isStarting);
+    float timeHitMs = u_Hit.x;
+    v_Anim_Progress = clamp((u_Time_Ms - timeHitMs) / TIMESPAN, 0., 1.);
 
-    // vec4 lastColumn = instanceMatrix[3];
+    float offsetZ = RAYHIT_OFFSET * u_Hit.y;
+    transformed.z = mix(offsetZ, transformed.z, v_Anim_Progress);
 
-    // NOTE instanceIndex is a uint attr provided by InstancedMesh2
-    // if (u_hitIndex == instanceIndex) {}
-
-    // lastColumn.z = 0.025 * animationProgress * u_hitWeight;
-    // instanceMatrix[3] = lastColumn;
-
+    vec4 worldPosition = instanceMatrix * vec4(transformed, 1.0);
+    v_World_Position = worldPosition.xyz;
     v_Instance_Color = getColorTexture();
 
     // CUSTOM SECTION (VERTEX) -->
@@ -62,7 +60,6 @@ void main() {
 
     vViewPosition = -mvPosition.xyz;
 
-    #include <worldpos_vertex>
     #include <shadowmap_vertex>
 
 }

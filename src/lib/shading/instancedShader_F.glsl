@@ -17,7 +17,15 @@ uniform float opacity;
 #include <lights_phong_pars_fragment>
 #include <shadowmap_pars_fragment>
 
+uniform vec2 u_Hit;
+uniform vec3 u_Hit_Color;
+
 varying vec3 v_Instance_Color;
+varying float v_Anim_Progress;
+
+float remap(float value, float min1, float max1, float min2, float max2) {
+    return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
+}
 
 void main() {
     vec4 diffuseColor = vec4(diffuse, opacity);
@@ -29,7 +37,9 @@ void main() {
 
     // <-- CUSTOM SECTION (FRAGMENT)
 
-    diffuseColor.rgb = v_Instance_Color;
+    vec3 offsetColor = u_Hit_Color * vec3(u_Hit.y);
+    // diffuseColor.rgb = mix(v_Instance_Color + offsetColor, v_Instance_Color, v_Anim_Progress);
+    diffuseColor.rgb = u_Hit_Color;
 
     // CUSTOM SECTION (FRAGMENT) -->
 

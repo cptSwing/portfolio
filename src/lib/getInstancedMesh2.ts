@@ -1,29 +1,40 @@
 import { InstancedMesh2 } from '@three.ez/instanced-mesh';
-import { Color, ShaderLib, ShaderMaterial, UniformsUtils, Vector3, WebGLRenderer } from 'three';
-import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+import { CircleGeometry, Color, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
 import vertexShader from './shading/instancedShader_V.glsl';
 import fragmentShader from './shading/instancedShader_F.glsl';
-import { GridData, PatternSettingsAnimation, PatternSettingsColor } from '../types/types';
+import { GridData } from '../types/types';
 
-const originalPositions: [number, number, number][] = [];
+export const originalPositions: { x: number; y: number; z: number }[] = [];
+
+const growHexagon = (radius: number) => {
+    const a = (2 * Math.PI) / 6; // 60 deg
+    const rSin = radius * Math.sin(a);
+
+    console.log('%c[getInstancedMesh2]', 'color: #04dec4', `radius, rSin, radius/rSin :`, radius, rSin, radius / rSin);
+    return radius / rSin;
+};
 
 const getInstancedMesh2 = (renderer: WebGLRenderer, gridData: GridData) => {
     const { overallWidth, overallHeight, instanceLength, instancePadding, gridCountHorizontal, gridCountVertical, gridBaseColor } = gridData;
 
-    const geometry = new RoundedBoxGeometry(instanceLength, instanceLength, instanceLength / 5, 1, instanceLength / 5);
-    geometry.clearGroups();
-    geometry.deleteAttribute('uv');
+    // const geometry = new RoundedBoxGeometry( instanceLength, instanceLength, instanceLength / 5, 1, instanceLength / 5 );
+    // geometry.clearGroups();
+    const square = false;
+    let geometry;
+
+    if (square) {
+        geometry = new PlaneGeometry(instanceLength, instanceLength);
+    } else {
+        const growFactor = growHexagon(instanceLength / 2);
+
+        geometry = new CircleGeometry((instanceLength / 2) * growFactor, 6);
+        geometry.scale(growFactor, 1, 1);
+    }
 
     const shaderUniforms = UniformsUtils.merge([
         ShaderLib.phong.uniforms,
         {
-            u_Time_Seconds: {
-                value: 0,
-            },
-            u_hitIndex: {
-                value: 0,
-            },
-            u_Time_Last_Hit: {
+            u_Time_Ms: {
                 value: 0,
             },
         },
@@ -40,24 +51,25 @@ const getInstancedMesh2 = (renderer: WebGLRenderer, gridData: GridData) => {
     });
 
     const instancedMesh = new InstancedMesh2(geometry, material, { renderer, createEntities: true });
-    instancedMesh.castShadow = true;
-    instancedMesh.receiveShadow = true;
+    instancedMesh.initUniformsPerInstance({ vertex: { u_Hit: 'vec2' }, fragment: { u_Hit_Color: 'vec3' } });
 
     const lengthIncludingPadding = instanceLength + instancePadding;
-    const extentX = overallWidth / 2 - lengthIncludingPadding / 2;
-    const extentY = overallHeight / 2 - lengthIncludingPadding / 2;
+    const lengthIncludingPaddingHalf = lengthIncludingPadding / 2;
+    const extentX = -(overallWidth / 2 - lengthIncludingPaddingHalf); // Negative, so grid is filled from top-left
+    const extentY = overallHeight / 2 - lengthIncludingPaddingHalf;
 
     instancedMesh.addInstances(gridCountHorizontal * gridCountVertical, (instancedEntity, index) => {
-        const [column, row] = getDirectionalColumnsRows(index, gridData);
+        const [column, row] = getColumnAndRowByIndex(index, gridData);
 
         const offsetX = column * lengthIncludingPadding;
-        const offsetY = row * lengthIncludingPadding;
+        const offsetY = row * lengthIncludingPadding - (column % 2 === 0 ? lengthIncludingPaddingHalf : 0);
 
-        const position: [number, number, number] = [extentX - offsetX, extentY - offsetY, 0];
+        const position = { x: extentX + offsetX, y: extentY - offsetY, z: 0 };
         originalPositions.push(position);
 
-        instancedEntity.position.fromArray(position);
-        instancedEntity.color = gridBaseColor;
+        instancedEntity.position.set(position.x, position.y, position.z);
+        instancedEntity.color = gridBaseColor.setHex(0xffffff * Math.random() + 0.5);
+        // instancedEntity.setUniform('u_Hit_Color', gridBaseColor.setHex(0x000000));
     });
 
     return instancedMesh;
@@ -66,24 +78,32 @@ const getInstancedMesh2 = (renderer: WebGLRenderer, gridData: GridData) => {
 export default getInstancedMesh2;
 
 export const getInstanceCount = (params: GridData) => {
-    const { overallWidth, overallHeight, instanceLength, instancePadding } = params;
+    const { overallWidth, overallHeight, instancePadding, gridCount } = params;
 
-    const gridCountHorizontal = Math.ceil(overallWidth / (instanceLength + instancePadding));
-    const gridCountVertical = Math.ceil(overallHeight / (instanceLength + instancePadding));
+    // Via https://stackoverflow.com/a/1575761
+    const area = overallWidth * overallHeight;
+    const idealInstanceArea = area / gridCount;
+    const idealInstanceLength = Math.sqrt(idealInstanceArea);
 
-    return { ...params, gridCountHorizontal, gridCountVertical };
+    const columns = Math.round(overallWidth / idealInstanceLength);
+    let rows = Math.round(overallHeight / idealInstanceLength);
+
+    const minLength = Math.min(overallWidth / columns, overallWidth / rows);
+    if (overallHeight > minLength * rows) rows++;
+
+    return { ...params, instanceLength: minLength - instancePadding, gridCount: columns * rows, gridCountHorizontal: columns, gridCountVertical: rows };
 };
 
 export const getAdjacentIndices = (instanceIndex: number, { gridCountHorizontal, gridCountVertical, gridFillDirection }: GridData) => {
     const above = gridFillDirection === 'vertical' ? instanceIndex - 1 : instanceIndex - gridCountHorizontal;
     const below = gridFillDirection === 'vertical' ? instanceIndex + 1 : instanceIndex + gridCountHorizontal;
-    const toLeft = gridFillDirection === 'vertical' ? instanceIndex + gridCountVertical : instanceIndex + 1;
-    const toRight = gridFillDirection === 'vertical' ? instanceIndex - gridCountVertical : instanceIndex - 1;
+    const toLeft = gridFillDirection === 'vertical' ? instanceIndex - gridCountVertical : instanceIndex - 1;
+    const toRight = gridFillDirection === 'vertical' ? instanceIndex + gridCountVertical : instanceIndex + 1;
 
     return { above, below, toLeft, toRight };
 };
 
-const getDirectionalColumnsRows = (index: number, { gridFillDirection, gridCountVertical, gridCountHorizontal }: GridData) => {
+export const getColumnAndRowByIndex = (index: number, { gridFillDirection, gridCountVertical, gridCountHorizontal }: GridData) => {
     let column, row;
 
     if (gridFillDirection === 'vertical') {
@@ -96,57 +116,3 @@ const getDirectionalColumnsRows = (index: number, { gridFillDirection, gridCount
 
     return [column, row];
 };
-
-const tempInstancePos = new Vector3();
-export const setAnimationPattern = ({ instance, index, time, timeAlpha = 0.1, pattern = 'sin-wave', gridData }: PatternSettingsAnimation) => {
-    const [column, row] = getDirectionalColumnsRows(index, gridData);
-    const overallCount = gridData.gridCountHorizontal * gridData.gridCountVertical;
-    const sin = returnSinValue(overallCount);
-
-    // Using lerp to not instantly cancel other, possibly user-set, transforms on instance.position:
-    switch (pattern) {
-        case 'tumble':
-            if (instance.position.y > originalPositions[index][1]) {
-                tempInstancePos.copy(instance.position);
-                tempInstancePos.setY(originalPositions[index][1]);
-                instance.position.lerp(tempInstancePos, timeAlpha / (column ? column / 2 : 0.5));
-            }
-
-            break;
-
-        case 'sin-wave':
-            tempInstancePos.copy(instance.position);
-            tempInstancePos.setZ(Math.sin(time + tempInstancePos.z * sin) * Math.sin(time + row + index * sin) * (gridData.instanceLength / 3));
-            instance.position.lerp(tempInstancePos, timeAlpha);
-
-            break;
-
-        case 'sin-disjointed':
-            tempInstancePos.copy(instance.position);
-            tempInstancePos.setZ(Math.sin(time + tempInstancePos.z * 0.5) * Math.sin(time + (index / 2) * 0.5) * (gridData.instanceLength / 3));
-            instance.position.lerp(tempInstancePos, timeAlpha);
-
-            break;
-
-        // 'none'
-        default:
-            tempInstancePos.copy(instance.position);
-            tempInstancePos.setZ(0);
-            instance.position.lerp(tempInstancePos, timeAlpha);
-
-            break;
-    }
-};
-
-const tempInstanceCol = new Color();
-export const setColorPattern = ({ instance, index, time, timeAlpha = 0.1, pattern = 'sin', gridData }: PatternSettingsColor) => {
-    const { gridBaseColor } = gridData;
-
-    if (!instance.color.equals(tempInstanceCol)) {
-        tempInstanceCol.copy(instance.color);
-        tempInstanceCol.lerp(gridBaseColor, timeAlpha);
-        instance.owner.setColorAt(index, tempInstanceCol);
-    }
-};
-
-const returnSinValue = (instanceCount: number) => -0.0008 * instanceCount + 2.1;
