@@ -109,11 +109,10 @@ export const getInstanceCount = (params: GridData, isSquare: boolean) => {
 };
 
 export const getAdjacentIndices = (instanceIndex: number, gridData: GridData, isSquare: boolean) => {
-    const { gridCountHorizontal, gridCountVertical, gridFillDirection, instancePadding } = gridData;
+    const { gridCountHorizontal, gridCountVertical, gridFillDirection } = gridData;
     const [centerColumn] = getColumnAndRowByIndex(instanceIndex, gridData);
 
     const isEvenColumn = centerColumn % 2 === 0;
-    const hasPadding = instancePadding > 0;
 
     let adjacentIndices: number[] = [];
 
