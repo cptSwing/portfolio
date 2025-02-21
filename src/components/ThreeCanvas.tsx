@@ -1,12 +1,9 @@
-import { MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { MouseEvent,  useEffect, useMemo, useRef, useState } from 'react';
 import {
-    AmbientLight,
     BufferGeometry,
     Color,
     Intersection,
     PointLight,
-    PointLightHelper,
-    Raycaster,
     Scene,
     ShaderMaterial,
     Vector2,
