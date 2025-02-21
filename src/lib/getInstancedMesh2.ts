@@ -111,7 +111,7 @@ export const getInstanceCount = (params: GridData, isSquare: boolean) => {
 export const getAdjacentIndices = (instanceIndex: number, numColumns: number, distance: number, isSquare = false) => {
     const [hexCol, hexRow] = HexagonGeometry.getColumnAndRowByIndex(instanceIndex, numColumns);
 
-    let distance1: number[] = [];
+    let allNeighbors: number[] = [];
 
     if (isSquare) {
         const above = instanceIndex - numColumns;
@@ -119,35 +119,42 @@ export const getAdjacentIndices = (instanceIndex: number, numColumns: number, di
         const below = instanceIndex + numColumns;
         const toLeft = instanceIndex - 1;
 
-        distance1.push(above, toRight, below, toLeft);
+        allNeighbors.push(above, toRight, below, toLeft);
     } else {
         // 6 = query all six directions
-        distance1 = Array.from({ length: 6 }).map((_, idx) => {
-            const [nCol, nRow] = HexagonGeometry.getNeighborsEvenQ([hexCol, hexRow], idx);
+        let neighbors: [number, number][] = Array.from({ length: 6 }).map((_, idx) => HexagonGeometry.getNeighborsEvenQ([hexCol, hexRow], idx));
+
+        distance && getDistantNeighbors(neighbors);
+
+        allNeighbors = neighbors.map(([nCol, nRow]) => {
             let nIndex = nRow * numColumns + nCol;
 
             if (nCol < 0 || nCol >= numColumns) {
                 nIndex = -1; // prevent wrapping to other side, as filtered below
             }
+
             return nIndex;
         });
     }
 
-    const distance2: number[] = [];
+    return allNeighbors.filter((adjacent) => adjacent >= 0);
+};
 
-    distance1.forEach((hexIndex, idx) => {
-        switch (idx) {
-            case 0:
-                const [nCol, nRow] = HexagonGeometry.getNeighborsEvenQ([hexCol, hexRow], idx);
-                let nIndex = nRow * numColumns + nCol;
-                break;
+// TODO make this recursive?
+const getDistantNeighbors = (neighbors: [number, number][]) => {
+    const arrLength = neighbors.length;
 
-            default:
-                break;
-        }
-    });
+    for (let i = 0; i < arrLength; i++) {
+        const [nHexCol, nHexRow] = neighbors[i];
+        const nextI = i < arrLength - 1 ? i + 1 : 0;
 
-    distance1 = distance1.filter((adjacent) => adjacent >= 0);
+        /** neighbor queries two of it's further outwards neighbors: 0 queries 0, 1 --- 1 queries 1, 2 --- etc */
 
-    return distance1;
+        const nColRow0 = HexagonGeometry.getNeighborsEvenQ([nHexCol, nHexRow], i);
+        const nColRow1 = HexagonGeometry.getNeighborsEvenQ([nHexCol, nHexRow], nextI);
+
+        neighbors.push(nColRow0, nColRow1);
+    }
+
+    return neighbors;
 };

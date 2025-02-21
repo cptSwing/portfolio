@@ -1,6 +1,7 @@
 import { Color, Vector3 } from 'three';
 import { PatternSettingsAnimation, PatternSettingsColor } from '../types/types';
-import { getColumnAndRowByIndex, originalPositions } from './getInstancedMesh2';
+import { originalPositions } from './getInstancedMesh2';
+import HexagonGeometry from './classes/HexagonGeometry';
 
 const tempInstancePos = new Vector3();
 const tumbleThreshold = 0.05;
@@ -9,7 +10,7 @@ export const setAnimationPattern = ({ instance, index, time_Ms, timeAlpha = 0.1,
     const { gridCountHorizontal, gridCountVertical, instanceLength } = gridData;
     const overallCount = gridCountHorizontal * gridCountVertical;
 
-    const [column, row] = getColumnAndRowByIndex(index, gridData, false);
+    const [column, row] = HexagonGeometry.getColumnAndRowByIndex(index, gridCountHorizontal);
     const sinMultiplier = returnSinValue(overallCount);
     const time_S = time_Ms / 1000;
 

@@ -63,7 +63,6 @@ export type GridData = {
     gridCount: number;
     gridCountHorizontal: number;
     gridCountVertical: number;
-    gridFillDirection: 'horizontal' | 'vertical';
     gridBaseColor: Color;
 };
 

@@ -1,138 +1,72 @@
-import { MouseEvent, useCallback } from 'react';
+import { MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     AmbientLight,
     BufferGeometry,
     Color,
     Intersection,
-    Object3D,
-    PerspectiveCamera,
     PointLight,
     PointLightHelper,
-    Points,
     Raycaster,
     Scene,
     ShaderMaterial,
     Vector2,
     WebGLRenderer,
 } from 'three';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import getInstancedMesh2, { getAdjacentIndices, getInstanceCount } from '../lib/getInstancedMesh2';
 import { InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { GridData } from '../types/types';
 import { meshAnimations, setAnimationPattern } from '../lib/animateMeshes';
-
-const ThreeCanvas = () => {
-    const refCb = useCallback((div: HTMLDivElement | null) => {
-        if (div) {
-            mountThree(div);
-        }
-    }, []);
-
-    return <div ref={refCb} className='fixed left-0 top-0 -z-50' />;
-};
-
-export default ThreeCanvas;
+import { PerspectiveCamera } from '@react-three/drei';
 
 const mousePosition = new Vector2(0, 0);
+const isSquare = false;
 
+let time_Ms_Global = 0;
+let hasRunOnce = false;
+let forwardAnimationRunning = 0;
 let gridData: GridData = {
     overallWidth: 0,
     overallHeight: 0,
     instanceLength: 0.05,
     instancePadding: 0.001,
-    gridCount: 3000,
+    gridCount: 300,
     gridCountHorizontal: 0,
     gridCountVertical: 0,
-    gridFillDirection: 'horizontal',
     gridBaseColor: new Color(0x888888),
 };
-let debugPointLightHelper: PointLightHelper;
-const isSquare = false;
 
-const mountThree = (div: HTMLDivElement) => {
-    const scene = new Scene();
-    const raycaster = new Raycaster();
 
-    // WARN not loaded when this is run
-    // const rootElement = document.documentElement;
-    // const bgGrey = rootElement.style.getPropertyValue('--theme-bg-base');
-    // color.setStyle(bgGrey);
+const ThreeCanvas = () => {
+    const [wh, setWh] = useState([0, 0]);
+    const { camera } = useThree();
 
-    const camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 50);
-    const cameraOffset = 3;
-    camera.position.set(0, 0, cameraOffset);
+    const mousePosition_Ref = useRef( new Vector2() )
+    const pointLight_Ref = useRef<PointLight>()
+    const raycaster_Ref = useRef()
 
-    const [width, height] = getWidthHeight(0, camera);
-    gridData.overallWidth = width;
-    gridData.overallHeight = height;
+    const gridData_Memo = useMemo<GridData>(() => (), [wh])
 
-    gridData = getInstanceCount(gridData, isSquare);
+    useEffect(() => {
+        setWh(getWidthHeight(0, camera));
+    }, [ camera ] );
+    
+    useFrame( ( state, delta, frame ) => {
+        
+    })
 
-    const pointLight = getPointLight(0.5);
-    scene.add(pointLight);
-
-    debugPointLightHelper = new PointLightHelper(pointLight, 0.1);
-    scene.add(debugPointLightHelper);
-
-    scene.add(new AmbientLight('white', 1));
-
-    const renderer = new WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    const object = getInstancedMesh2(renderer, gridData, isSquare);
-    scene.add(object);
-
-    renderer.setAnimationLoop((time, frame) => threeAnimate(renderer, time, frame, scene, camera, object));
-
-    div.appendChild(renderer.domElement);
-
-    window.addEventListener('resize', getResizeHandler(renderer, camera));
-    document.addEventListener('mousemove', getMouseMoveHandler(pointLight, camera, raycaster, object));
-};
-
-const getPointLight = (offset: number) => {
-    const pointLight = new PointLight(0xffffff, 0.5, 0, 0.5);
-    pointLight.position.set(0, 0, offset);
-    pointLight.castShadow = true;
-
-    pointLight.shadow.mapSize.width = 1024;
-    pointLight.shadow.mapSize.height = 1024;
-    pointLight.shadow.camera.near = 0.1;
-    pointLight.shadow.camera.far = 50;
-    pointLight.shadow.bias = -0.000512;
-
-    return pointLight;
-};
-
-const getResizeHandler: (renderer: WebGLRenderer, camera: PerspectiveCamera) => EventListenerOrEventListenerObject = (renderer, camera) => {
-    return (_ev: Event) => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        // TODO needs to reset InstancedMesh2 as well
-        const [width, height] = getWidthHeight(0, camera);
-        gridData.overallWidth = width;
-        gridData.overallHeight = height;
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-};
-
-const getMouseMoveHandler: (pointLight: PointLight, camera: PerspectiveCamera, raycaster: Raycaster, object: Object3D) => EventListenerOrEventListenerObject = (
-    pointLight,
-    camera,
-    raycaster,
-    object,
-) => {
-    return (ev: Event | MouseEvent) => {
+    return (
+        <div className='fixed left-0 right-0 bottom-0 top-0 -z-50'>
+            <Canvas gl={ { alpha: true, antialias: true } } onMouseMove={  (ev: Event | MouseEvent) => {
         const mouseEvent = ev as MouseEvent;
         mouseEvent.preventDefault();
 
         // Sets to [-1, 1] values, 0 at center
-        mousePosition.setX((mouseEvent.clientX / window.innerWidth) * 2 - 1);
-        mousePosition.setY(-(mouseEvent.clientY / window.innerHeight) * 2 + 1);
+        mousePosition_Ref.current.setX((mouseEvent.clientX / window.innerWidth) * 2 - 1);
+        mousePosition_Ref.current.setY(-(mouseEvent.clientY / window.innerHeight) * 2 + 1);
 
-        raycaster.setFromCamera(mousePosition, camera);
-        const intersection = raycaster.intersectObject(object, false);
+        raycaster_Ref.current.setFromCamera(mousePosition_Ref.current, camera);
+        const intersection = raycaster_Ref.intersectObject(object, false);
 
         handleIntersects(intersection, object);
 
@@ -140,14 +74,45 @@ const getMouseMoveHandler: (pointLight: PointLight, camera: PerspectiveCamera, r
         const lightPositionX = mousePosition.x * (gridData.overallWidth / 2);
         const lightPositionY = mousePosition.y * (gridData.overallHeight / 2);
 
-        pointLight.position.setX(lightPositionX);
-        pointLight.position.setY(lightPositionY);
-    };
+        pointLight_Ref.current.position.setX(lightPositionX);
+        pointLight_Ref.current.position.setY(lightPositionY);
+    }}>
+                <PerspectiveCamera makeDefault position={ [ 0, 0, 3 ] } fov={ 60 } aspect={ window.innerWidth / window.innerHeight } near={ 0.01 } far={ 50 } />
+
+                <raycaster ref={raycaster_Ref} />
+
+                <pointLight ref={pointLight_Ref} position={[0, 0, 3]} color='white' intensity={0.5}  />
+                <ambientLight color='white' intensity={ 1 } />
+                
+            </Canvas>
+        </div>
+    );
 };
 
-let time_Ms_Global = 0;
-let hasRunOnce = false;
-let forwardAnimationRunning = 0;
+export default ThreeCanvas;
+
+
+
+const mountThree = (div: HTMLDivElement) => {
+    // WARN not loaded when this is run
+    // const rootElement = document.documentElement;
+    // const bgGrey = rootElement.style.getPropertyValue('--theme-bg-base');
+    // color.setStyle(bgGrey);
+
+
+
+    gridData = getInstanceCount(gridData, isSquare);
+
+    const object = getInstancedMesh2(renderer, gridData, isSquare);
+
+    renderer.setAnimationLoop((time, frame) => threeAnimate(renderer, time, frame, scene, camera, object));
+
+
+};
+
+
+
+
 const threeAnimate = (
     renderer: WebGLRenderer,
     time_Ms: number,
@@ -190,45 +155,28 @@ let intersected = 0;
 const tempHitVector = new Vector2(); // Stores current time in x., hit strength in y.
 const tempInstanceColor = new Color();
 
-const handleIntersects = (intersection: Intersection[], object: Object3D) => {
+const handleIntersects = (intersection: Intersection[], object: InstancedMesh2) => {
     if (intersection.length > 0) {
-        if ((object as InstancedMesh2).isInstancedMesh2) {
-            const objInstanced = object as InstancedMesh2;
+        const newInstanceId = intersection[0].instanceId ?? intersected;
 
-            const newInstanceId = intersection[0].instanceId ?? intersected;
+        if (intersected !== newInstanceId) {
+            const adjacentIndices = getAdjacentIndices(newInstanceId, gridData.gridCountHorizontal, 2);
 
-            if (intersected !== newInstanceId) {
-                console.log('%c[ThreeCanvas]', 'color: #cfaa97', `newInstanceId :`, newInstanceId);
-                const adjacentIndices = getAdjacentIndices(newInstanceId, gridData, isSquare);
+            object.getUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor);
+            object.setUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor.setHex(0xffffff));
 
-                objInstanced.getUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor);
-                objInstanced.setUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor.setHex(0xffffff));
+            object.getUniformAt(newInstanceId, 'u_Hit', tempHitVector);
+            object.setUniformAt(newInstanceId, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 1)));
 
-                objInstanced.getUniformAt(newInstanceId, 'u_Hit', tempHitVector);
-                objInstanced.setUniformAt(newInstanceId, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 1)));
+            adjacentIndices.forEach((instanceIndex) => {
+                object.getUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor);
+                object.setUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor.setHex(0xffdddd));
 
-                adjacentIndices.forEach((instanceIndex) => {
-                    objInstanced.getUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor);
-                    objInstanced.setUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor.setHex(0xffdddd));
+                object.getUniformAt(instanceIndex, 'u_Hit', tempHitVector);
+                object.setUniformAt(instanceIndex, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5))); // WARN Math.max needs to be switched to different solution, vals are not cleared
+            });
 
-                    objInstanced.getUniformAt(instanceIndex, 'u_Hit', tempHitVector);
-                    objInstanced.setUniformAt(instanceIndex, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
-                });
-
-                intersected = newInstanceId;
-            }
-        } else {
-            const intersectionIndex = intersection[0].index ?? 0;
-
-            if (!(intersected === intersectionIndex)) {
-                const points = object as Points;
-                const positions = points.geometry.getAttribute('position');
-
-                positions.array[intersectionIndex + 2] += 0.05;
-                positions.needsUpdate = true;
-
-                intersected = intersectionIndex;
-            }
+            intersected = newInstanceId;
         }
     }
 };
