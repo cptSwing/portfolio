@@ -46,7 +46,7 @@ const getInstancedMesh2 = (renderer: WebGLRenderer, gridData: GridData, isSquare
 
     instancedMesh.addInstances(gridCountHorizontal * gridCountVertical, (instancedEntity, index) => {
         let offsetX, offsetY;
-        const [column, row] = getColumnAndRowByIndex(index, gridData);
+        const [column, row] = HexagonGeometry.getColumnAndRowByIndex(index, gridCountHorizontal);
 
         if (isSquare) {
             offsetX = column * lengthIncludingPadding;
@@ -108,64 +108,46 @@ export const getInstanceCount = (params: GridData, isSquare: boolean) => {
     }
 };
 
-export const getAdjacentIndices = (instanceIndex: number, gridData: GridData, isSquare: boolean) => {
-    const { gridCountHorizontal, gridCountVertical, gridFillDirection } = gridData;
-    const [centerColumn] = getColumnAndRowByIndex(instanceIndex, gridData);
+export const getAdjacentIndices = (instanceIndex: number, numColumns: number, distance: number, isSquare = false) => {
+    const [hexCol, hexRow] = HexagonGeometry.getColumnAndRowByIndex(instanceIndex, numColumns);
 
-    const isEvenColumn = centerColumn % 2 === 0;
-
-    let adjacentIndices: number[] = [];
+    let distance1: number[] = [];
 
     if (isSquare) {
-        const above = gridFillDirection === 'vertical' ? instanceIndex - 1 : instanceIndex - gridCountHorizontal;
-        const toRight = gridFillDirection === 'vertical' ? instanceIndex + gridCountVertical : instanceIndex + 1;
-        const below = gridFillDirection === 'vertical' ? instanceIndex + 1 : instanceIndex + gridCountHorizontal;
-        const toLeft = gridFillDirection === 'vertical' ? instanceIndex - gridCountVertical : instanceIndex - 1;
+        const above = instanceIndex - numColumns;
+        const toRight = instanceIndex + 1;
+        const below = instanceIndex + numColumns;
+        const toLeft = instanceIndex - 1;
 
-        adjacentIndices.push(above, toRight, below, toLeft);
+        distance1.push(above, toRight, below, toLeft);
     } else {
-        let above, topRight, bottomRight, below, bottomLeft, topLeft;
+        // 6 = query all six directions
+        distance1 = Array.from({ length: 6 }).map((_, idx) => {
+            const [nCol, nRow] = HexagonGeometry.getNeighborsEvenQ([hexCol, hexRow], idx);
+            let nIndex = nRow * numColumns + nCol;
 
-        if (gridFillDirection === 'horizontal') {
-            above = instanceIndex - gridCountHorizontal;
-            topRight = isEvenColumn ? instanceIndex + 1 : instanceIndex - (gridCountHorizontal - 1);
-            bottomRight = isEvenColumn ? instanceIndex + gridCountHorizontal + 1 : instanceIndex + 1;
-            below = instanceIndex + gridCountHorizontal;
-            bottomLeft = isEvenColumn ? instanceIndex + gridCountHorizontal - 1 : instanceIndex - 1;
-            topLeft = isEvenColumn ? instanceIndex - 1 : instanceIndex - (gridCountHorizontal + 1);
-        } else {
-            above = instanceIndex - 1;
-            topRight = instanceIndex + gridCountVertical;
-            bottomRight = instanceIndex + gridCountVertical;
-            below = instanceIndex + 1;
-            bottomLeft = instanceIndex - gridCountVertical;
-            topLeft = instanceIndex - gridCountVertical;
-        }
-
-        if (centerColumn === 0) {
-            bottomLeft = -1;
-            topLeft = -1;
-        } else if (centerColumn === gridCountHorizontal - 1) {
-            topRight = -1;
-            bottomRight = -1;
-        }
-
-        adjacentIndices.push(above, topRight, bottomRight, below, bottomLeft, topLeft);
+            if (nCol < 0 || nCol >= numColumns) {
+                nIndex = -1; // prevent wrapping to other side, as filtered below
+            }
+            return nIndex;
+        });
     }
 
-    return adjacentIndices.filter((adjacent) => adjacent >= 0);
-};
+    const distance2: number[] = [];
 
-export const getColumnAndRowByIndex = (index: number, { gridFillDirection, gridCountVertical, gridCountHorizontal }: GridData) => {
-    let column, row;
+    distance1.forEach((hexIndex, idx) => {
+        switch (idx) {
+            case 0:
+                const [nCol, nRow] = HexagonGeometry.getNeighborsEvenQ([hexCol, hexRow], idx);
+                let nIndex = nRow * numColumns + nCol;
+                break;
 
-    if (gridFillDirection === 'vertical') {
-        column = Math.floor(index / gridCountVertical);
-        row = index % gridCountVertical;
-    } else {
-        column = index % gridCountHorizontal;
-        row = Math.floor(index / gridCountHorizontal);
-    }
+            default:
+                break;
+        }
+    });
 
-    return [column, row];
+    distance1 = distance1.filter((adjacent) => adjacent >= 0);
+
+    return distance1;
 };
