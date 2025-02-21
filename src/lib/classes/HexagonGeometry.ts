@@ -3,10 +3,10 @@ import { CircleGeometry } from 'three';
 // With guidance from https://eperezcosano.github.io/hex-grid/
 
 export default class HexagonGeometry extends CircleGeometry {
-    radius;
+    radius; // width / 2
     horizontalColumnOffset;
     verticalColumnOffset;
-    rowOffset;
+    rowOffset; // height
 
     constructor(radius: number, thetaStart?: number, thetaLength?: number) {
         super(radius, 6, thetaStart, thetaLength);
@@ -27,17 +27,12 @@ export default class HexagonGeometry extends CircleGeometry {
         const rowOffset = this.rowOffset;
         const radius = this.radius;
 
-        // Keep all hex onscreen when padding added
-        const hasPadding = padding > 0;
-        const evenOrUneven = column % 2 === 0 ? 0 : hasPadding ? 1 : -1;
+        const evenOrUneven = column % 2 === 0 ? 1 : 0;
 
         let x = column * (horizontalColumnOffset + padding);
         let y = (verticalColumnOffset + padding / 2) * evenOrUneven + row * (rowOffset + padding);
 
-        if (!hasPadding) {
-            x -= radius;
-            y -= radius - verticalColumnOffset;
-        }
+        x -= radius / 2; // start offset to left
 
         return [x, y];
     }

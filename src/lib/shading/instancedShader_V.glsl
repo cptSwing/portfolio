@@ -62,8 +62,9 @@ void main() {
     myPosition.z = mix(offsetZ, myPosition.z, animationProgress);
 
     vec3 myInstanceColor = getColorTexture();
-    vec3 offsetColor = 2. * u_Hit_Color * vec3(hitStrength);
-    myColor = mix(offsetColor, myInstanceColor, animationProgress);
+    vec3 rayHitColor = 2. * u_Hit_Color * vec3(hitStrength);
+    myColor = mix(rayHitColor, myInstanceColor, animationProgress);
+
     myColor += vec3(myPosition.z);
 
     vec4 myWorldPosition = instanceMatrix * vec4(transformed, 1.0);

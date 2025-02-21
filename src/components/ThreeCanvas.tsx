@@ -7,6 +7,7 @@ import {
     Object3D,
     PerspectiveCamera,
     PointLight,
+    PointLightHelper,
     Points,
     Raycaster,
     Scene,
@@ -37,13 +38,15 @@ let gridData: GridData = {
     overallWidth: 0,
     overallHeight: 0,
     instanceLength: 0.05,
-    instancePadding: 0,
-    gridCount: 2000,
+    instancePadding: 0.001,
+    gridCount: 3000,
     gridCountHorizontal: 0,
     gridCountVertical: 0,
     gridFillDirection: 'horizontal',
     gridBaseColor: new Color(0x888888),
 };
+let debugPointLightHelper: PointLightHelper;
+const isSquare = false;
 
 const mountThree = (div: HTMLDivElement) => {
     const scene = new Scene();
@@ -54,7 +57,7 @@ const mountThree = (div: HTMLDivElement) => {
     // const bgGrey = rootElement.style.getPropertyValue('--theme-bg-base');
     // color.setStyle(bgGrey);
 
-    const camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 50);
     const cameraOffset = 3;
     camera.position.set(0, 0, cameraOffset);
 
@@ -62,17 +65,20 @@ const mountThree = (div: HTMLDivElement) => {
     gridData.overallWidth = width;
     gridData.overallHeight = height;
 
-    gridData = getInstanceCount(gridData);
+    gridData = getInstanceCount(gridData, isSquare);
 
-    const pointLight = getPointLight(cameraOffset);
-    // scene.add(pointLight);
+    const pointLight = getPointLight(0.5);
+    scene.add(pointLight);
+
+    debugPointLightHelper = new PointLightHelper(pointLight, 0.1);
+    scene.add(debugPointLightHelper);
 
     scene.add(new AmbientLight('white', 1));
 
     const renderer = new WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    const object = getInstancedMesh2(renderer, gridData);
+    const object = getInstancedMesh2(renderer, gridData, isSquare);
     scene.add(object);
 
     renderer.setAnimationLoop((time, frame) => threeAnimate(renderer, time, frame, scene, camera, object));
@@ -80,7 +86,7 @@ const mountThree = (div: HTMLDivElement) => {
     div.appendChild(renderer.domElement);
 
     window.addEventListener('resize', getResizeHandler(renderer, camera));
-    document.addEventListener('mousemove', getMouseMoveHandler(pointLight, cameraOffset, camera, raycaster, object));
+    document.addEventListener('mousemove', getMouseMoveHandler(pointLight, camera, raycaster, object));
 };
 
 const getPointLight = (offset: number) => {
@@ -111,13 +117,12 @@ const getResizeHandler: (renderer: WebGLRenderer, camera: PerspectiveCamera) => 
     };
 };
 
-const getMouseMoveHandler: (
-    pointLight: PointLight,
-    lightOffset: number,
-    camera: PerspectiveCamera,
-    raycaster: Raycaster,
-    object: Object3D,
-) => EventListenerOrEventListenerObject = (pointLight, lightOffset, camera, raycaster, object) => {
+const getMouseMoveHandler: (pointLight: PointLight, camera: PerspectiveCamera, raycaster: Raycaster, object: Object3D) => EventListenerOrEventListenerObject = (
+    pointLight,
+    camera,
+    raycaster,
+    object,
+) => {
     return (ev: Event | MouseEvent) => {
         const mouseEvent = ev as MouseEvent;
         mouseEvent.preventDefault();
@@ -135,7 +140,8 @@ const getMouseMoveHandler: (
         const lightPositionX = mousePosition.x * (gridData.overallWidth / 2);
         const lightPositionY = mousePosition.y * (gridData.overallHeight / 2);
 
-        pointLight.position.set(lightPositionX, lightPositionY, lightOffset);
+        pointLight.position.setX(lightPositionX);
+        pointLight.position.setY(lightPositionY);
     };
 };
 
@@ -192,37 +198,22 @@ const handleIntersects = (intersection: Intersection[], object: Object3D) => {
             const newInstanceId = intersection[0].instanceId ?? intersected;
 
             if (intersected !== newInstanceId) {
-                const { above, below, toLeft, toRight } = getAdjacentIndices(newInstanceId, gridData);
+                console.log('%c[ThreeCanvas]', 'color: #cfaa97', `newInstanceId :`, newInstanceId);
+                const adjacentIndices = getAdjacentIndices(newInstanceId, gridData, isSquare);
 
+                objInstanced.getUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor);
                 objInstanced.setUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor.setHex(0xffffff));
 
                 objInstanced.getUniformAt(newInstanceId, 'u_Hit', tempHitVector);
                 objInstanced.setUniformAt(newInstanceId, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 1)));
 
-                if (objInstanced.instances[above]) {
-                    objInstanced.setUniformAt(above, 'u_Hit_Color', tempInstanceColor.setHex(0xffdddd));
+                adjacentIndices.forEach((instanceIndex) => {
+                    objInstanced.getUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor);
+                    objInstanced.setUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor.setHex(0xffdddd));
 
-                    objInstanced.getUniformAt(above, 'u_Hit', tempHitVector);
-                    objInstanced.setUniformAt(above, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
-                }
-                if (objInstanced.instances[below]) {
-                    objInstanced.setUniformAt(below, 'u_Hit_Color', tempInstanceColor.setHex(0xddffdd));
-
-                    objInstanced.getUniformAt(below, 'u_Hit', tempHitVector);
-                    objInstanced.setUniformAt(below, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
-                }
-                if (objInstanced.instances[toLeft]) {
-                    objInstanced.setUniformAt(toLeft, 'u_Hit_Color', tempInstanceColor.setHex(0xddddff));
-
-                    objInstanced.getUniformAt(toLeft, 'u_Hit', tempHitVector);
-                    objInstanced.setUniformAt(toLeft, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
-                }
-                if (objInstanced.instances[toRight]) {
-                    objInstanced.setUniformAt(toRight, 'u_Hit_Color', tempInstanceColor.setHex(0xdd11dd));
-
-                    objInstanced.getUniformAt(toRight, 'u_Hit', tempHitVector);
-                    objInstanced.setUniformAt(toRight, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
-                }
+                    objInstanced.getUniformAt(instanceIndex, 'u_Hit', tempHitVector);
+                    objInstanced.setUniformAt(instanceIndex, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5)));
+                });
 
                 intersected = newInstanceId;
             }
