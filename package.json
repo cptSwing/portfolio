@@ -10,7 +10,6 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@react-three/drei": "^10.0.0",
         "immer": "^10.1.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
@@ -22,7 +21,8 @@
     "devDependencies": {
         "@heroicons/react": "^2.1.5",
         "@kodingdotninja/use-tailwind-breakpoint": "^1.0.0",
-        "@react-three/fiber": "^9.0.4",
+        "@react-three/drei": "9.122.0",
+        "@react-three/fiber": "8.18.0",
         "@three.ez/instanced-mesh": "^0.3.0-alpha.9",
         "@types/react": "^18.3.7",
         "@types/react-dom": "^18.3.0",
