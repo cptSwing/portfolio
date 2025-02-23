@@ -1,6 +1,6 @@
-import { InstancedEntity } from '@three.ez/instanced-mesh';
+import { InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { MENU_CATEGORY, ToolsUrls } from './enums';
-import { Color } from 'three';
+import { BufferGeometry, Color, Object3DEventMap, ShaderMaterial } from 'three';
 
 export type ZustandStore = {
     values: {
@@ -53,6 +53,18 @@ export type DataBase = {
     };
 };
 
+/* Mesh Types */
+
+export type InstancedMesh2ShaderMaterial = InstancedMesh2<{}, BufferGeometry, ShaderMaterial, Object3DEventMap>;
+
+export type OriginalInstancePosition = {
+    x: number;
+    y: number;
+    z: number;
+};
+
+export type OriginalInstancePositions = OriginalInstancePosition[];
+
 /* Animation Types */
 
 export type GridData = {
@@ -76,6 +88,7 @@ type PatternSettings = {
 };
 
 export type PatternSettingsAnimation = PatternSettings & {
+    originalPosition: OriginalInstancePosition;
     pattern: 'tumble' | 'sin-wave' | 'sin-disjointed' | 'none';
 };
 

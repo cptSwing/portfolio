@@ -1,12 +1,20 @@
 import { Color, Vector3 } from 'three';
 import { PatternSettingsAnimation, PatternSettingsColor } from '../types/types';
-import { originalPositions } from './getInstancedMesh2';
 import HexagonGeometry from './classes/HexagonGeometry';
 
 const tempInstancePos = new Vector3();
 const tumbleThreshold = 0.05;
 let stopTime = 0;
-export const setAnimationPattern = ({ instance, index, time_Ms, timeAlpha = 0.1, pattern = 'none', endDelay_S = 0, gridData }: PatternSettingsAnimation) => {
+export const setAnimationPattern = ({
+    instance,
+    index,
+    time_Ms,
+    timeAlpha = 0.1,
+    pattern = 'none',
+    endDelay_S = 0,
+    gridData,
+    originalPosition,
+}: PatternSettingsAnimation) => {
     const { gridCountHorizontal, gridCountVertical, instanceLength } = gridData;
     const overallCount = gridCountHorizontal * gridCountVertical;
 
@@ -14,18 +22,17 @@ export const setAnimationPattern = ({ instance, index, time_Ms, timeAlpha = 0.1,
     const sinMultiplier = returnSinValue(overallCount);
     const time_S = time_Ms / 1000;
 
-    const instanceOriginalPosition = originalPositions[index];
-    tempInstancePos.set(instanceOriginalPosition.x, instanceOriginalPosition.y, instanceOriginalPosition.z);
+    tempInstancePos.set(originalPosition.x, originalPosition.y, originalPosition.z);
 
     let timing = timeAlpha;
     let forwardAnimationRunning = 0;
 
     switch (pattern) {
         case 'tumble':
-            tempInstancePos.set(instanceOriginalPosition.x, instanceOriginalPosition.y, instanceOriginalPosition.z);
+            tempInstancePos.set(originalPosition.x, originalPosition.y, originalPosition.z);
             forwardAnimationRunning = 1;
 
-            if (instance.position.y >= instanceOriginalPosition.y + tumbleThreshold) {
+            if (instance.position.y >= originalPosition.y + tumbleThreshold) {
                 stopTime = 0;
                 let sequentialRandomMultiplier = 1;
 
@@ -63,7 +70,7 @@ export const setAnimationPattern = ({ instance, index, time_Ms, timeAlpha = 0.1,
 
         // 'none'
         default:
-            tempInstancePos.set(instanceOriginalPosition.x, instanceOriginalPosition.y, instanceOriginalPosition.z);
+            tempInstancePos.set(originalPosition.x, originalPosition.y, originalPosition.z);
             break;
     }
 
