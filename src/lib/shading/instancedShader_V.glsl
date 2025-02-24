@@ -25,9 +25,9 @@ mat4 getInstancedMatrix() {
 
 // NOTE <-- Custom defines & uniforms 
 #define RAYHIT_OFFSET 0.05
-#define TIMESPAN 2000.
+#define TIMESPAN_S 2.
 
-uniform float u_Time_Ms;
+uniform float u_Time_S;
 
 // x: time of ray-hit; y: strength of ray-hit
 uniform vec2 u_Hit;
@@ -54,8 +54,8 @@ void main() {
     vec3 myColor = vColor;
     // ^ In
 
-    float timeHitMs = u_Hit.x;
-    float animationProgress = clamp((u_Time_Ms - timeHitMs) / TIMESPAN, 0., 1.);
+    float timeHit_S = u_Hit.x;
+    float animationProgress = clamp((u_Time_S - timeHit_S) / TIMESPAN_S, 0., 1.);
 
     float hitStrength = u_Hit.y;
     float offsetZ = RAYHIT_OFFSET * hitStrength;

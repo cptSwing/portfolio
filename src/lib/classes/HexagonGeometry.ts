@@ -5,29 +5,18 @@ import { CircleGeometry } from 'three';
 /** "even-q" vertical layout, as per here: https://www.redblobgames.com/grids/hexagons/#coordinates-offset */
 
 export default class HexagonGeometry extends CircleGeometry {
-    radius; // width / 2
-    horizontalColumnOffset;
-    verticalColumnOffset;
-    rowOffset; // height
+    static hexAngle = (2 * Math.PI) / 6; // 60 deg
+    static cos = Math.cos(this.hexAngle);
+    static sin = Math.sin(this.hexAngle);
 
     constructor(radius: number, thetaStart?: number, thetaLength?: number) {
         super(radius, 6, thetaStart, thetaLength);
-        this.radius = radius;
-
-        const angle = (2 * Math.PI) / 6; // 60 deg
-        const rSin = radius * Math.sin(angle);
-        const rCos = radius * Math.cos(angle);
-
-        this.horizontalColumnOffset = radius + rCos;
-        this.verticalColumnOffset = rSin;
-        this.rowOffset = rSin * 2;
     }
 
-    getXYOffsets(column: number, row: number, padding: number) {
-        const horizontalColumnOffset = this.horizontalColumnOffset;
-        const verticalColumnOffset = this.verticalColumnOffset;
-        const rowOffset = this.rowOffset;
-        const radius = this.radius;
+    static getXYOffsets(radius: number, padding: number, column: number, row: number) {
+        const horizontalColumnOffset = this.getHorizontalColumnOffset(radius);
+        const verticalColumnOffset = this.getVerticalColumnOffset(radius);
+        const rowOffset = verticalColumnOffset * 2; // height
 
         const evenOrUneven = column % 2 === 0 ? 1 : 0;
 
@@ -56,6 +45,16 @@ export default class HexagonGeometry extends CircleGeometry {
 
         return offsetCoordinates;
     }
+
+    static getHorizontalColumnOffset = (radius: number) => {
+        const rCos = radius * this.cos;
+        return radius + rCos;
+    };
+
+    static getVerticalColumnOffset = (radius: number) => {
+        const rSin = radius * this.sin;
+        return rSin;
+    };
 
     /** Index 0 is above/north, then moving clockwise (index 3 being below/south) */
     static directionDifferencesEvenQ: [

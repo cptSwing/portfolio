@@ -35,20 +35,21 @@ const gridDataDefaults: GridData = {
     gridBaseColor: new Color(0x888888),
 };
 
-let time_Ms_Global = 0;
+let time_S_Global = 0;
 
 const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
-    const { camera } = useThree();
+    const camera = useThree((state) => state.camera);
     const mesh_OrigPositions_Ref = useRef<[InstancedMesh2ShaderMaterial | null, OriginalInstancePositions]>([null, []]);
     const mousePosition_Ref = useRef(new Vector2());
     const raycaster_Ref = useRef<Raycaster | null>(null);
     const pointLight_Ref = useRef<PointLight | null>(null);
+    const hasRunOnce_Ref = useRef(true);
 
     const gridData_Memo = useMemo<GridData>(() => {
         const [width, height] = getWidthHeight(0, camera as PerspectiveCamera);
-        let gridData = { ...gridDataDefaults, overallWidth: width, overallHeight: height };
-
-        return getInstanceCount(gridData, isSquare);
+        const gridData = getInstanceCount({ ...gridDataDefaults, overallWidth: width, overallHeight: height }, isSquare);
+        hasRunOnce_Ref.current = false;
+        return gridData;
     }, [camera, isSquare]);
 
     useEvent(
@@ -85,10 +86,10 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 
     useFrame(({ scene, gl, camera, clock }, _delta, frame) => {
         if (mesh_OrigPositions_Ref.current) {
-            const [mesh_Ref, originalPositions_Ref] = mesh_OrigPositions_Ref.current;
+            const [mesh_Ref, originalPositions] = mesh_OrigPositions_Ref.current;
             mesh_Ref &&
-                originalPositions_Ref.length &&
-                threeAnimate(gl, clock.getElapsedTime(), frame, scene, camera, mesh_Ref, gridData_Memo, originalPositions_Ref);
+                originalPositions.length &&
+                threeAnimate(gl, clock.getElapsedTime(), frame, scene, camera, mesh_Ref, gridData_Memo, originalPositions, hasRunOnce_Ref);
         }
     });
 
@@ -96,47 +97,47 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
         <>
             <raycaster ref={raycaster_Ref} />;
             <pointLight ref={pointLight_Ref} position={[0, 0, 3]} color='white' intensity={0.5} />
-            <BackgroundMesh ref={mesh_OrigPositions_Ref} gridData={gridData_Memo} isSquare={isSquare} />
+            <BackgroundMesh meshAndPositions={mesh_OrigPositions_Ref} gridData={gridData_Memo} isSquare={isSquare} />
         </>
     );
 };
 
-let hasRunOnce = false;
 let forwardAnimationRunning = 0;
 const threeAnimate = (
     renderer: WebGLRenderer,
-    time_Ms: number,
+    time_S: number,
     _frame: XRFrame | undefined,
     scene: Scene,
     camera: Camera,
     mesh: InstancedMesh2ShaderMaterial,
     gridData: GridData,
-    originalPositions_Ref: OriginalInstancePositions,
+    originalPositions: OriginalInstancePositions,
+    hasRunOnce_Ref: React.MutableRefObject<boolean>,
 ) => {
-    mesh.material.uniforms.u_Time_Ms.value = time_Ms;
-    time_Ms_Global = time_Ms;
+    mesh.material.uniforms.u_Time_S.value = time_S;
+    time_S_Global = time_S;
 
     mesh.updateInstances((instance, idx) => {
-        if (!hasRunOnce) {
+        if (!hasRunOnce_Ref.current) {
             instance.position.y += gridData.overallHeight;
 
             forwardAnimationRunning = 1;
             if (idx >= gridData.gridCountHorizontal * gridData.gridCountVertical - 1) {
                 mesh.computeBoundingSphere();
-                hasRunOnce = true;
+                hasRunOnce_Ref.current = true;
             }
         }
 
         forwardAnimationRunning = setAnimationPattern({
             instance,
             index: idx,
-            time_Ms,
+            time_S,
             gridData,
-            originalPosition: originalPositions_Ref[idx],
+            originalPosition: originalPositions[idx],
             ...(forwardAnimationRunning ? meshAnimations.tumble : meshAnimations.none),
         });
 
-        // setColorPattern({ instance, index: idx, time_Ms, timeAlpha: 0.03, pattern: 'sin', gridData });
+        // setColorPattern({ instance, index: idx, time_S, timeAlpha: 0.03, pattern: 'sin', gridData });
     });
 
     renderer.render(scene, camera);
@@ -157,14 +158,14 @@ const handleIntersects = (intersection: Intersection[], object: InstancedMesh2, 
             object.setUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor.setHex(0xffffff));
 
             object.getUniformAt(newInstanceId, 'u_Hit', tempHitVector);
-            object.setUniformAt(newInstanceId, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 1)));
+            object.setUniformAt(newInstanceId, 'u_Hit', tempHitVector.set(time_S_Global, Math.max(tempHitVector.y, 1)));
 
             adjacentIndices.forEach((instanceIndex) => {
                 object.getUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor);
                 object.setUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor.setHex(0xffdddd));
 
                 object.getUniformAt(instanceIndex, 'u_Hit', tempHitVector);
-                object.setUniformAt(instanceIndex, 'u_Hit', tempHitVector.set(time_Ms_Global, Math.max(tempHitVector.y, 0.5))); // WARN Math.max needs to be switched to different solution, vals are not cleared
+                object.setUniformAt(instanceIndex, 'u_Hit', tempHitVector.set(time_S_Global, Math.max(tempHitVector.y, 0.5))); // WARN Math.max needs to be switched to different solution, vals are not cleared
             });
 
             intersected = newInstanceId;
@@ -172,7 +173,11 @@ const handleIntersects = (intersection: Intersection[], object: InstancedMesh2, 
     }
 };
 
-const getWidthHeight = (depth: number, camera: PerspectiveCamera) => [visibleWidthAtZDepth(depth, camera), visibleHeightAtZDepth(depth, camera)];
+const getWidthHeight = (depth: number, camera: PerspectiveCamera) => {
+    const widthAtZ = visibleWidthAtZDepth(depth, camera);
+    const heightAtZ = visibleHeightAtZDepth(depth, camera);
+    return [widthAtZ, heightAtZ];
+};
 
 /** https://discourse.threejs.org/t/functions-to-calculate-the-visible-width-height-at-a-given-z-depth-from-a-perspective-camera/269 */
 const visibleHeightAtZDepth = (depth: number, camera: PerspectiveCamera) => {

@@ -82,7 +82,7 @@ type PatternSettings = {
     instance: InstancedEntity;
     index: number;
     gridData: GridData;
-    time_Ms: number;
+    time_S: number;
     timeAlpha: number;
     endDelay_S?: number;
 };

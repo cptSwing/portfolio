@@ -8,7 +8,7 @@ let stopTime = 0;
 export const setAnimationPattern = ({
     instance,
     index,
-    time_Ms,
+    time_S,
     timeAlpha = 0.1,
     pattern = 'none',
     endDelay_S = 0,
@@ -20,16 +20,13 @@ export const setAnimationPattern = ({
 
     const [column, row] = HexagonGeometry.getColumnAndRowByIndex(index, gridCountHorizontal);
     const sinMultiplier = returnSinValue(overallCount);
-    const time_S = time_Ms / 1000;
 
     tempInstancePos.set(originalPosition.x, originalPosition.y, originalPosition.z);
-
     let timing = timeAlpha;
     let forwardAnimationRunning = 0;
 
     switch (pattern) {
         case 'tumble':
-            tempInstancePos.set(originalPosition.x, originalPosition.y, originalPosition.z);
             forwardAnimationRunning = 1;
 
             if (instance.position.y >= originalPosition.y + tumbleThreshold) {
@@ -50,7 +47,7 @@ export const setAnimationPattern = ({
                 if (!stopTime) {
                     stopTime = time_S;
                 } else if (time_S >= stopTime + endDelay_S) {
-                    instance.updateMatrixPosition();
+                    // instance.updateMatrixPosition();
                     forwardAnimationRunning = 0;
                 }
             }
@@ -70,7 +67,7 @@ export const setAnimationPattern = ({
 
         // 'none'
         default:
-            tempInstancePos.set(originalPosition.x, originalPosition.y, originalPosition.z);
+            // tempInstancePos.set(originalPosition.x, originalPosition.y, originalPosition.z);
             break;
     }
 
@@ -81,7 +78,7 @@ export const setAnimationPattern = ({
 };
 
 const tempInstanceCol = new Color();
-export const setColorPattern = ({ instance, index, time_Ms, timeAlpha = 0.1, pattern = 'sin', gridData }: PatternSettingsColor) => {
+export const setColorPattern = ({ instance, index, time_S, timeAlpha = 0.1, pattern = 'sin', gridData }: PatternSettingsColor) => {
     const { gridBaseColor } = gridData;
 
     if (!instance.color.equals(tempInstanceCol)) {
