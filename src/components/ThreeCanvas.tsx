@@ -1,5 +1,5 @@
 import { FC, MouseEvent, useMemo, useRef } from 'react';
-import { Color, Intersection, PointLight, Scene, Vector2, WebGLRenderer, PerspectiveCamera, Camera, Raycaster } from 'three';
+import { Color, Intersection, PointLight, Scene, Vector2, WebGLRenderer, PerspectiveCamera, Camera, Raycaster, Vector3, Vector4 } from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import BackgroundMesh, { getAdjacentIndices, getInstanceCount } from '../lib/instancedMesh2';
 import { InstancedMesh2 } from '@three.ez/instanced-mesh';
@@ -29,16 +29,15 @@ const gridDataDefaults: GridData = {
     overallHeight: 0,
     instanceLength: 0.05,
     instancePadding: 0,
-    gridCount: 300,
+    gridCount: 2000,
     gridCountHorizontal: 0,
     gridCountVertical: 0,
-    gridBaseColor: new Color(0x888888),
 };
 
 let time_S_Global = 0;
 
 const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
-    const camera = useThree((state) => state.camera);
+    const [renderer, camera] = useThree((state) => [state.gl, state.camera]) as [WebGLRenderer, Camera];
     const mesh_OrigPositions_Ref = useRef<[InstancedMesh2ShaderMaterial | null, OriginalInstancePositions]>([null, []]);
     const mousePosition_Ref = useRef(new Vector2());
     const raycaster_Ref = useRef<Raycaster | null>(null);
@@ -48,7 +47,10 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     const gridData_Memo = useMemo<GridData>(() => {
         const [width, height] = getWidthHeight(0, camera as PerspectiveCamera);
         const gridData = getInstanceCount({ ...gridDataDefaults, overallWidth: width, overallHeight: height }, isSquare);
+
+        // 'Tumble' animation runs again once gridData is updated (likely a resize event / actual first run):
         hasRunOnce_Ref.current = false;
+
         return gridData;
     }, [camera, isSquare]);
 
@@ -62,15 +64,15 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
             mousePosition_Ref.current.setX((mouseEvent.clientX / window.innerWidth) * 2 - 1);
             mousePosition_Ref.current.setY(-(mouseEvent.clientY / window.innerHeight) * 2 + 1);
 
-            if (mesh_OrigPositions_Ref.current && raycaster_Ref.current) {
-                const [mesh_Ref] = mesh_OrigPositions_Ref.current;
-                if (mesh_Ref) {
-                    raycaster_Ref.current.setFromCamera(mousePosition_Ref.current, camera);
-                    const intersection = raycaster_Ref.current.intersectObject(mesh_Ref, false);
+            // if (mesh_OrigPositions_Ref.current && raycaster_Ref.current) {
+            //     const [mesh_Ref] = mesh_OrigPositions_Ref.current;
+            //     if (mesh_Ref) {
+            //         raycaster_Ref.current.setFromCamera(mousePosition_Ref.current, camera);
+            //         const intersection = raycaster_Ref.current.intersectObject(mesh_Ref, false);
 
-                    handleIntersects(intersection, mesh_Ref, gridData_Memo.gridCountHorizontal);
-                }
-            }
+            //         handleIntersects(intersection, mesh_Ref, gridData_Memo.gridCountHorizontal);
+            //     }
+            // }
 
             if (pointLight_Ref.current) {
                 // Converted to x,y at Scene Z:0
@@ -84,12 +86,12 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
         document,
     );
 
-    useFrame(({ scene, gl, camera, clock }, _delta, frame) => {
+    useFrame(({ scene, camera, clock }, _delta, frame) => {
         if (mesh_OrigPositions_Ref.current) {
             const [mesh_Ref, originalPositions] = mesh_OrigPositions_Ref.current;
             mesh_Ref &&
                 originalPositions.length &&
-                threeAnimate(gl, clock.getElapsedTime(), frame, scene, camera, mesh_Ref, gridData_Memo, originalPositions, hasRunOnce_Ref);
+                threeAnimate(clock.getElapsedTime(), frame, scene, camera, mesh_Ref, gridData_Memo, originalPositions, hasRunOnce_Ref);
         }
     });
 
@@ -97,18 +99,23 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
         <>
             <raycaster ref={raycaster_Ref} />;
             <pointLight ref={pointLight_Ref} position={[0, 0, 3]} color='white' intensity={0.5} />
-            <BackgroundMesh meshAndPositions={mesh_OrigPositions_Ref} gridData={gridData_Memo} isSquare={isSquare} />
+            <BackgroundMesh meshAndPositions={mesh_OrigPositions_Ref} gridData={gridData_Memo} renderer={renderer} isSquare={isSquare} />
         </>
     );
 };
 
+const tempHitOffsetStrengthVector = new Vector4();
+const tempFromColor = new Color();
+const tempToColor = new Color();
+const testOffsetVec = new Vector4(0, 0, 0.05, 1);
+const tempPositionVector = new Vector3();
+
 let forwardAnimationRunning = 0;
 const threeAnimate = (
-    renderer: WebGLRenderer,
     time_S: number,
     _frame: XRFrame | undefined,
-    scene: Scene,
-    camera: Camera,
+    _scene: Scene,
+    _camera: Camera,
     mesh: InstancedMesh2ShaderMaterial,
     gridData: GridData,
     originalPositions: OriginalInstancePositions,
@@ -119,7 +126,8 @@ const threeAnimate = (
 
     mesh.updateInstances((instance, idx) => {
         if (!hasRunOnce_Ref.current) {
-            instance.position.y += gridData.overallHeight;
+            tempHitOffsetStrengthVector.set(0, gridData.overallHeight, 0, 1);
+            instance.setUniform('u_Hit_Offset', tempHitOffsetStrengthVector);
 
             forwardAnimationRunning = 1;
             if (idx >= gridData.gridCountHorizontal * gridData.gridCountVertical - 1) {
@@ -134,38 +142,46 @@ const threeAnimate = (
             time_S,
             gridData,
             originalPosition: originalPositions[idx],
-            ...(forwardAnimationRunning ? meshAnimations.tumble : meshAnimations.none),
+            // ...(forwardAnimationRunning ? meshAnimations.tumble : meshAnimations.none),
+            ...meshAnimations.none,
         });
 
         // setColorPattern({ instance, index: idx, time_S, timeAlpha: 0.03, pattern: 'sin', gridData });
     });
-
-    renderer.render(scene, camera);
 };
 
 let intersected = 0;
-const tempHitVector = new Vector2(); // Stores current time in x., hit strength in y.
-const tempInstanceColor = new Color();
 
 const handleIntersects = (intersection: Intersection[], object: InstancedMesh2, gridCountHorizontal: number) => {
     if (intersection.length > 0) {
         const newInstanceId = intersection[0].instanceId ?? intersected;
 
         if (intersected !== newInstanceId) {
+            object.setUniformAt(newInstanceId, 'u_Hit_Offset', testOffsetVec);
+            object.setUniformAt(newInstanceId, 'u_Hit_Color', tempFromColor.setHex(0xff0000));
+            object.setUniformAt(newInstanceId, 'u_Hit_Time', time_S_Global);
+
             const adjacentIndices = getAdjacentIndices(newInstanceId, gridCountHorizontal, 2);
+            adjacentIndices.forEach((instanceIndex, idx) => {
+                const hex = idx < 6 ? 0x00ff00 : 0x0000ff;
+                let strength = idx < 6 ? 0.666 : 0.333;
+                const oldTime = object.getUniformAt(instanceIndex, 'u_Hit_Time') as number;
+                const hasExpired = time_S_Global - oldTime > 1;
 
-            object.getUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor);
-            object.setUniformAt(newInstanceId, 'u_Hit_Color', tempInstanceColor.setHex(0xffffff));
+                object.getUniformAt(instanceIndex, 'u_Hit_Offset', tempHitOffsetStrengthVector);
+                tempHitOffsetStrengthVector.set(
+                    testOffsetVec.x,
+                    testOffsetVec.y,
+                    testOffsetVec.z,
+                    Math.max(hasExpired ? 0 : tempHitOffsetStrengthVector.w, strength),
+                );
+                object.setUniformAt(instanceIndex, 'u_Hit_Offset', tempHitOffsetStrengthVector);
 
-            object.getUniformAt(newInstanceId, 'u_Hit', tempHitVector);
-            object.setUniformAt(newInstanceId, 'u_Hit', tempHitVector.set(time_S_Global, Math.max(tempHitVector.y, 1)));
+                object.getUniformAt(instanceIndex, 'u_Hit_Color', tempFromColor);
+                tempToColor.setHex(hex);
+                object.setUniformAt(instanceIndex, 'u_Hit_Color', tempFromColor.lerp(tempToColor, hasExpired ? 1 : Math.min(strength * 2, 1)));
 
-            adjacentIndices.forEach((instanceIndex) => {
-                object.getUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor);
-                object.setUniformAt(instanceIndex, 'u_Hit_Color', tempInstanceColor.setHex(0xffdddd));
-
-                object.getUniformAt(instanceIndex, 'u_Hit', tempHitVector);
-                object.setUniformAt(instanceIndex, 'u_Hit', tempHitVector.set(time_S_Global, Math.max(tempHitVector.y, 0.5))); // WARN Math.max needs to be switched to different solution, vals are not cleared
+                object.setUniformAt(instanceIndex, 'u_Hit_Time', time_S_Global); // set last
             });
 
             intersected = newInstanceId;

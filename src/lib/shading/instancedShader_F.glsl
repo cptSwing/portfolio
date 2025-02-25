@@ -41,7 +41,7 @@ void main() {
     // myDiffuseColor.rgb = mix(offsetColor, v_Instance_Color, v_Anim_Progress);
 
     // Out \/
-    // diffuseColor = myDiffuseColor;
+    diffuseColor = vec4(v_Instance_Color, 1.);
     // WARN END CUSTOM SECTION (FRAGMENT) -->
 
     #include <alphatest_fragment>

@@ -75,7 +75,6 @@ export type GridData = {
     gridCount: number;
     gridCountHorizontal: number;
     gridCountVertical: number;
-    gridBaseColor: Color;
 };
 
 type PatternSettings = {

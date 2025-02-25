@@ -1,5 +1,5 @@
 import { InstancedMesh2 } from '@three.ez/instanced-mesh';
-import { Color, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils } from 'three';
+import { Color, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
 import vertexShader from './shading/instancedShader_V.glsl';
 import fragmentShader from './shading/instancedShader_F.glsl';
 import { GridData, InstancedMesh2ShaderMaterial, OriginalInstancePositions } from '../types/types';
@@ -14,12 +14,14 @@ declare module '@react-three/fiber' {
     }
 }
 
+const instancedMeshTempColor = new Color();
 const BackgroundMesh: FC<{
     gridData: GridData;
     meshAndPositions: MutableRefObject<[InstancedMesh2ShaderMaterial | null, OriginalInstancePositions]>;
+    renderer: WebGLRenderer;
     isSquare: boolean;
-}> = ({ gridData, meshAndPositions, isSquare }) => {
-    const { overallWidth, overallHeight, instanceLength, instancePadding, gridCountHorizontal, gridCountVertical, gridBaseColor } = gridData;
+}> = ({ gridData, meshAndPositions, renderer, isSquare }) => {
+    const { overallWidth, overallHeight, instanceLength, instancePadding, gridCountHorizontal, gridCountVertical } = gridData;
 
     const mesh_Ref = useRef<InstancedMesh2ShaderMaterial | null>(null);
     const originalPositions_Ref = useRef<OriginalInstancePositions>([]);
@@ -27,7 +29,7 @@ const BackgroundMesh: FC<{
     const meshRef_Cb = useCallback((mesh: InstancedMesh2 | null) => {
         if (mesh && mesh_Ref) {
             mesh_Ref.current = mesh as InstancedMesh2ShaderMaterial;
-            mesh.initUniformsPerInstance({ vertex: { u_Hit: 'vec2', u_Hit_Color: 'vec3' } });
+            mesh.initUniformsPerInstance({ vertex: { u_Hit_Offset: 'vec4', u_Hit_Color: 'vec3', u_Hit_Time: 'float' } });
         }
     }, []);
 
@@ -55,12 +57,10 @@ const BackgroundMesh: FC<{
                 }
 
                 const position = { x: extentX + offsetX, y: extentY - offsetY, z: 0 };
-
                 originalPositions_Ref.current.push(position);
-
                 instancedEntity.position.set(position.x, position.y, position.z);
-                instancedEntity.color = gridBaseColor;
-                // instancedEntity.color = gridBaseColor.setHex(0x888888 * Math.random());
+                instancedEntity.color = instancedMeshTempColor.setHex(0x888888);
+                // instancedEntity.color = instancedMeshTempColor.setHex(0x888888 * Math.random());
             });
 
             meshAndPositions.current = [mesh_Ref.current, originalPositions_Ref.current];
@@ -85,6 +85,7 @@ const BackgroundMesh: FC<{
             },
         ]);
 
+        shaderUniforms.diffuse.value = new Color(0x00ff00); // NOTE might be able to store something else here?
         shaderUniforms.shininess.value = 40;
         shaderUniforms.specular.value = new Color(0xffffff);
 
@@ -96,7 +97,7 @@ const BackgroundMesh: FC<{
         });
     }, []);
 
-    return <instancedMesh2 ref={meshRef_Cb} args={[geometry_Memo, material_Memo, { createEntities: true }]} position={[0, 0, 0]} />;
+    return <instancedMesh2 ref={meshRef_Cb} args={[geometry_Memo, material_Memo, { renderer, createEntities: true }]} position={[0, 0, 0]} />;
 };
 
 export default BackgroundMesh;

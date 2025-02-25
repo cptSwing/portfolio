@@ -23,27 +23,27 @@ mat4 getInstancedMatrix() {
 #include <normal_pars_vertex>
 #include <shadowmap_pars_vertex>
 
-// NOTE <-- Custom defines & uniforms 
-#define RAYHIT_OFFSET 0.05
-#define TIMESPAN_S 2.
+// <-- Custom defines & uniforms 
+#define TIMESPAN_S 1.
 
+// xyz: offset values; y: offset strength [0,1]
+uniform vec4 u_Hit_Offset;
+uniform vec3 u_Hit_Color;
+uniform float u_Hit_Time;
 uniform float u_Time_S;
 
-// x: time of ray-hit; y: strength of ray-hit
-uniform vec2 u_Hit;
-uniform vec3 u_Hit_Color;
+uniform vec3 diffuse;   // via ShaderLib.phong.uniforms
 
 varying vec3 v_Instance_Color;
 varying vec4 v_World_Position;
 varying float v_Anim_Progress;
-// -->
+// Custom defines & uniforms -->
 
 void main() {
     // WARN <-- keep this here
     mat4 instanceMatrix = getInstancedMatrix();
     // -->
 
-    #include <color_vertex>
     #include <beginnormal_vertex>
     #include <defaultnormal_vertex>
     #include <normal_vertex>
@@ -51,30 +51,32 @@ void main() {
 
     // NOTE <-- BEGIN CUSTOM SECTION (VERTEX)
     vec3 myPosition = transformed;
-    vec3 myColor = vColor;
+    vec3 myDiffuse = diffuse;  // 'diffuse' in phong shader, unused for now
+    vec3 myInstanceColor = getColorTexture(); // color-per-instance
     // ^ In
 
-    float timeHit_S = u_Hit.x;
-    float animationProgress = clamp((u_Time_S - timeHit_S) / TIMESPAN_S, 0., 1.);
+    // Prep Uniforms
+    vec3 myHitColor = u_Hit_Color;
+    vec3 myHitPositionOffset = u_Hit_Offset.xyz;
+    float myHitStrength = u_Hit_Offset.w;
 
-    float hitStrength = u_Hit.y;
-    float offsetZ = RAYHIT_OFFSET * hitStrength;
-    myPosition.z = mix(offsetZ, myPosition.z, animationProgress);
+    vec3 myColor;
 
-    vec3 myInstanceColor = getColorTexture();
-    vec3 rayHitColor = 2. * u_Hit_Color * vec3(hitStrength);
-    myColor = mix(rayHitColor, myInstanceColor, animationProgress);
+    // lerp [0, 1]
+    float animationProgress = clamp((u_Time_S - u_Hit_Time) / (TIMESPAN_S * myHitStrength), 0., 1.);
 
-    myColor += vec3(myPosition.z);
+    vec3 rayHitPosition = myPosition + myHitPositionOffset;
+    vec3 rayHitPositionModulated = mix(myPosition, rayHitPosition, myHitStrength);
+    myPosition = mix(rayHitPositionModulated, myPosition, animationProgress);
 
-    vec4 myWorldPosition = instanceMatrix * vec4(transformed, 1.0);
+    vec3 rayHitColor = 2. * myHitColor;
+    vec3 rayHitColorModulated = mix(myInstanceColor, rayHitColor, myHitStrength);
+    myColor = mix(rayHitColorModulated, myInstanceColor, animationProgress);
+
+    // vec4 myWorldPosition = instanceMatrix * vec4(myPosition, 1.0); 
 
     // Out \/
-    v_Anim_Progress = animationProgress;
-    v_World_Position = myWorldPosition;
-    v_Instance_Color = myInstanceColor;
-
-    vColor = myColor;
+    v_Instance_Color = myColor; // Pass to Fragment
     transformed = myPosition;
     // NOTE END CUSTOM SECTION (VERTEX) -->
 
