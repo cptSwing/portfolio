@@ -1,6 +1,6 @@
 import { InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { MENU_CATEGORY, ToolsUrls } from './enums';
-import { BufferGeometry, Color, Object3DEventMap, ShaderMaterial } from 'three';
+import { BufferGeometry, Object3DEventMap, ShaderMaterial } from 'three';
 
 export type ZustandStore = {
     values: {
@@ -88,7 +88,7 @@ type PatternSettings = {
 
 export type PatternSettingsAnimation = PatternSettings & {
     originalPosition: OriginalInstancePosition;
-    pattern: 'tumble' | 'sin-wave' | 'sin-disjointed' | 'none';
+    pattern: 'sin' | 'sin-columns' | 'sin-rows' | 'none';
 };
 
 export type PatternSettingsColor = PatternSettings & {

@@ -1,36 +1,45 @@
-import { Color, Vector3 } from 'three';
-import { PatternSettingsAnimation, PatternSettingsColor } from '../types/types';
+import { Vector4 } from 'three';
+import { GridData, InstancedMesh2ShaderMaterial, PatternSettingsAnimation } from '../types/types';
 import HexagonGeometry from './classes/HexagonGeometry';
+import { MutableRefObject } from 'react';
 
-const tempInstancePos = new Vector3();
-const tumbleThreshold = 0.05;
-let stopTime = 0;
-export const setAnimationPattern = ({
-    instance,
-    index,
-    time_S,
-    timeAlpha = 0.1,
-    pattern = 'none',
-    endDelay_S = 0,
-    gridData,
-    originalPosition,
-}: PatternSettingsAnimation) => {
-    const { gridCountHorizontal, gridCountVertical, instanceLength } = gridData;
-    const overallCount = gridCountHorizontal * gridCountVertical;
+export let animationLength_S = 1;
 
-    const [column, row] = HexagonGeometry.getColumnAndRowByIndex(index, gridCountHorizontal);
-    const sinMultiplier = returnSinValue(overallCount);
+const oldOffsetVector4 = new Vector4();
+const newOffsetVector4 = new Vector4();
+const oldColor = new Vector4();
+const newColor = new Vector4();
 
-    tempInstancePos.set(originalPosition.x, originalPosition.y, originalPosition.z);
-    let timing = timeAlpha;
-    let forwardAnimationRunning = 0;
+const testZOffsetValue = 0.05;
+const pushUpOffsetVector4 = new Vector4(0, 0, testZOffsetValue, 1);
 
-    switch (pattern) {
-        case 'tumble':
-            forwardAnimationRunning = 1;
+export const setShaderAnimation = (
+    mesh: InstancedMesh2ShaderMaterial,
+    gridData: GridData,
+    time_S: number,
+    intersectionHits_Ref: MutableRefObject<number[] | null>,
+    hasRunOnce_Ref: MutableRefObject<boolean>,
+    pattern: PatternSettingsAnimation['pattern'] = 'sin-columns',
+) => {
+    mesh.updateInstances((instance, idx) => {
+        const { overallHeight, gridCount, gridCountHorizontal, instanceLength } = gridData;
+        const [column, row] = HexagonGeometry.getColumnAndRowByIndex(idx, gridCountHorizontal);
 
-            if (instance.position.y >= originalPosition.y + tumbleThreshold) {
-                stopTime = 0;
+        const oldTime_S = instance.getUniform('u_Hit_Time') as number;
+        const hasExpired = time_S - oldTime_S > animationLength_S;
+        const animLengthDivided = animationLength_S / 50;
+
+        instance.getUniform('u_Hit_Offset', oldOffsetVector4);
+        newOffsetVector4.copy(oldOffsetVector4);
+
+        // Intro of sorts
+        if (!hasRunOnce_Ref.current) {
+            animationLength_S = 2;
+
+            if (hasExpired) {
+                animationLength_S = 1;
+                hasRunOnce_Ref.current = true;
+            } else if (idx < gridCount) {
                 let sequentialRandomMultiplier = 1;
 
                 if (column % 3 === 0) {
@@ -41,65 +50,104 @@ export const setAnimationPattern = ({
                     sequentialRandomMultiplier = 0.7;
                 }
 
-                sequentialRandomMultiplier -= Math.abs(column / (gridCountHorizontal * 2));
-                timing = timeAlpha * sequentialRandomMultiplier;
-            } else {
-                if (!stopTime) {
-                    stopTime = time_S;
-                } else if (time_S >= stopTime + endDelay_S) {
-                    // instance.updateMatrixPosition();
-                    forwardAnimationRunning = 0;
-                }
+                newOffsetVector4.set(0, overallHeight, 0, sequentialRandomMultiplier);
+                newOffsetVector4.setY(overallHeight);
             }
-            break;
+        } else {
+            const oldStrength = oldOffsetVector4.w;
+            instance.getUniform('u_Hit_Color', oldColor);
 
-        case 'sin-wave':
-            tempInstancePos.copy(instance.position);
-            tempInstancePos.setZ(
-                Math.sin(time_S + tempInstancePos.z * sinMultiplier) * Math.sin(time_S + (index + index / 2) * sinMultiplier) * (instanceLength / 3),
-            );
-            break;
+            let strength, hex;
 
-        case 'sin-disjointed':
-            tempInstancePos.copy(instance.position);
-            tempInstancePos.setZ(Math.sin(time_S + tempInstancePos.z * 0.5) * Math.sin(time_S + (index + row) * 0.5) * (instanceLength / 3));
-            break;
+            if (intersectionHits_Ref.current?.includes(idx)) {
+                const hitIndex = intersectionHits_Ref.current.indexOf(idx);
 
-        // 'none'
-        default:
-            // tempInstancePos.set(originalPosition.x, originalPosition.y, originalPosition.z);
-            break;
-    }
+                newOffsetVector4.setZ(pushUpOffsetVector4.z);
 
-    // Using lerp to not instantly cancel other, possibly user-set, transforms on instance.position:
-    instance.position.lerp(tempInstancePos, timing);
+                if (hitIndex < 0) {
+                    throw new Error('instance id not found in intersects');
+                } else if (hitIndex === 0) {
+                    strength = 1;
+                    hex = [3, 1, 1, 0.9];
+                    newColor.fromArray(hex);
+                } else {
+                    if (hitIndex < 7) {
+                        strength = Math.max(oldStrength - animLengthDivided, 0.5);
+                        hex = [1.5, 1.5, 1.5, 0.75];
+                    } else {
+                        strength = Math.max(oldStrength - animLengthDivided, 0.25);
+                        hex = [1, 1, 1, 0.5];
+                    }
 
-    return forwardAnimationRunning;
-};
+                    newColor.fromArray(hex);
+                    newColor.lerp(oldColor, 1 - Math.min(oldStrength - animLengthDivided, 1));
+                }
 
-const tempInstanceCol = new Color();
-export const setColorPattern = ({ instance, index, time_S, timeAlpha = 0.1, pattern = 'sin', gridData }: PatternSettingsColor) => {
-    const { gridBaseColor } = gridData;
+                instance.setUniform('u_Hit_Time', time_S); // set last
+            } else {
+                newOffsetVector4.setX(0);
+                newOffsetVector4.setY(0);
+                newOffsetVector4.setZ(0);
 
-    if (!instance.color.equals(tempInstanceCol)) {
-        tempInstanceCol.copy(instance.color);
-        tempInstanceCol.lerp(gridBaseColor, timeAlpha);
-        instance.owner.setColorAt(index, tempInstanceCol);
-    }
+                if (hasExpired) {
+                    strength = 0;
+                } else {
+                    strength = 1;
+                }
+
+                switch (pattern) {
+                    case 'sin-columns':
+                        let sinValCol = Math.sin(oldOffsetVector4.z + (time_S + column * testZOffsetValue));
+                        sinValCol = remapToRange(sinValCol, -1, 1, -testZOffsetValue, testZOffsetValue);
+
+                        newOffsetVector4.setZ(sinValCol);
+                        newColor.setW(0);
+                        break;
+
+                    case 'sin-rows':
+                        let sinValRow = Math.sin(oldOffsetVector4.z + (time_S + row / 5));
+                        sinValRow = remapToRange(sinValRow, -1, 1, -testZOffsetValue, testZOffsetValue);
+
+                        newOffsetVector4.setZ(sinValRow);
+                        newColor.setW(0);
+                        break;
+
+                    case 'sin':
+                        let sinVal = Math.sin(oldOffsetVector4.z + (row - column) * 0.25 + time_S * 2);
+                        sinVal = remapToRange(sinVal, -1, 1, -testZOffsetValue, testZOffsetValue);
+
+                        strength = 0.333;
+                        strength = Math.max(oldStrength - animLengthDivided, strength);
+                        newOffsetVector4.setZ(sinVal);
+
+                        newColor.copy(oldColor);
+                        oldColor.fromArray([0, 0, 0, 0]);
+                        newColor.lerp(oldColor, 1 - Math.min(oldStrength - animLengthDivided, 1));
+                        // newColor.setW(1);
+                        break;
+
+                    // 'none'
+                    default:
+                }
+
+                instance.setUniform('u_Hit_Time', time_S); // set last
+            }
+
+            instance.setUniform('u_Hit_Color', newColor);
+            newOffsetVector4.setW(strength);
+        }
+
+        instance.setUniform('u_Hit_Offset', newOffsetVector4);
+    });
 };
 
 export const meshAnimations: Record<string, Pick<PatternSettingsAnimation, 'pattern' | 'timeAlpha' | 'endDelay_S'>> = {
-    tumble: {
-        pattern: 'tumble',
-        timeAlpha: 0.2,
-        endDelay_S: 0.2,
-    },
     sinWave: {
-        pattern: 'sin-wave',
+        pattern: 'sin-columns',
         timeAlpha: 0.1,
     },
     sinDisjointed: {
-        pattern: 'sin-disjointed',
+        pattern: 'sin-rows',
         timeAlpha: 0.2,
     },
     none: {
@@ -109,3 +157,5 @@ export const meshAnimations: Record<string, Pick<PatternSettingsAnimation, 'patt
 };
 
 const returnSinValue = (instanceCount: number) => -0.0008 * instanceCount + 2.1;
+
+const remapToRange = (value: number, low1: number, high1: number, low2: number, high2: number) => low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);

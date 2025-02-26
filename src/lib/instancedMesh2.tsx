@@ -2,10 +2,11 @@ import { InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { Color, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
 import vertexShader from './shading/instancedShader_V.glsl';
 import fragmentShader from './shading/instancedShader_F.glsl';
-import { GridData, InstancedMesh2ShaderMaterial, OriginalInstancePositions } from '../types/types';
+import { GridData, InstancedMesh2ShaderMaterial } from '../types/types';
 import HexagonGeometry from './classes/HexagonGeometry';
 import { extend, Object3DNode } from '@react-three/fiber';
 import { FC, MutableRefObject, useCallback, useEffect, useMemo, useRef } from 'react';
+import { animationLength_S } from './animateMeshes';
 
 extend({ InstancedMesh2 });
 declare module '@react-three/fiber' {
@@ -15,39 +16,36 @@ declare module '@react-three/fiber' {
 }
 
 const instancedMeshTempColor = new Color();
+
 const BackgroundMesh: FC<{
     gridData: GridData;
-    meshAndPositions: MutableRefObject<[InstancedMesh2ShaderMaterial | null, OriginalInstancePositions]>;
+    meshRef: MutableRefObject<InstancedMesh2ShaderMaterial | null>;
     renderer: WebGLRenderer;
     isSquare: boolean;
-}> = ({ gridData, meshAndPositions, renderer, isSquare }) => {
-    const { overallWidth, overallHeight, instanceLength, instancePadding, gridCountHorizontal, gridCountVertical } = gridData;
+}> = ({ gridData, meshRef, renderer, isSquare }) => {
+    const { overallWidth, overallHeight, instanceLength, instancePadding, gridCount, gridCountHorizontal } = gridData;
 
     const mesh_Ref = useRef<InstancedMesh2ShaderMaterial | null>(null);
-    const originalPositions_Ref = useRef<OriginalInstancePositions>([]);
 
     const meshRef_Cb = useCallback((mesh: InstancedMesh2 | null) => {
         if (mesh && mesh_Ref) {
-            mesh_Ref.current = mesh as InstancedMesh2ShaderMaterial;
-            mesh.initUniformsPerInstance({ vertex: { u_Hit_Offset: 'vec4', u_Hit_Color: 'vec3', u_Hit_Time: 'float' } });
+            meshRef.current = mesh as InstancedMesh2ShaderMaterial;
+            mesh.initUniformsPerInstance({ vertex: { u_Hit_Offset: 'vec4', u_Hit_Color: 'vec4', u_Hit_Time: 'float' } });
         }
     }, []);
 
     useEffect(() => {
-        if (mesh_Ref.current) {
-            const instancedMesh = mesh_Ref.current;
+        if (meshRef.current) {
+            const instancedMesh = meshRef.current;
             const lengthIncludingPadding = instanceLength + instancePadding;
             const extentX = -(overallWidth / 2 - instanceLength / 2); // Negative, so grid is filled from top-left
             const extentY = overallHeight / 2;
 
-            instancedMesh.clearInstances();
-            if (originalPositions_Ref.current.length) {
-                originalPositions_Ref.current = [];
-            }
+            if (instancedMesh.instancesCount) instancedMesh.clearInstances();
 
-            instancedMesh.addInstances(gridCountHorizontal * gridCountVertical, (instancedEntity, index) => {
+            instancedMesh.addInstances(gridCount, (instance, idx) => {
                 let offsetX, offsetY;
-                const [column, row] = HexagonGeometry.getColumnAndRowByIndex(index, gridCountHorizontal);
+                const [column, row] = HexagonGeometry.getColumnAndRowByIndex(idx, gridCountHorizontal);
 
                 if (isSquare) {
                     offsetX = column * lengthIncludingPadding;
@@ -57,15 +55,13 @@ const BackgroundMesh: FC<{
                 }
 
                 const position = { x: extentX + offsetX, y: extentY - offsetY, z: 0 };
-                originalPositions_Ref.current.push(position);
-                instancedEntity.position.set(position.x, position.y, position.z);
-                instancedEntity.color = instancedMeshTempColor.setHex(0x888888);
-                // instancedEntity.color = instancedMeshTempColor.setHex(0x888888 * Math.random());
-            });
+                instance.position.set(position.x, position.y, position.z);
 
-            meshAndPositions.current = [mesh_Ref.current, originalPositions_Ref.current];
+                instance.color = instancedMeshTempColor.setHex(0xffff88);
+                // instance.color = instancedMeshTempColor.setHex(0x888888 * Math.random());
+            });
         }
-    }, [overallWidth, overallHeight, instanceLength, instancePadding, gridCountHorizontal, gridCountVertical, isSquare]);
+    }, [overallWidth, overallHeight, instanceLength, instancePadding, gridCount, gridCountHorizontal, isSquare]);
 
     const geometry_Memo = useMemo(() => {
         if (isSquare) {
@@ -77,23 +73,20 @@ const BackgroundMesh: FC<{
 
     const material_Memo = useMemo(() => {
         const shaderUniforms = UniformsUtils.merge([
-            ShaderLib.phong.uniforms,
+            ShaderLib.basic.uniforms,
             {
                 u_Time_S: {
                     value: 0,
                 },
+                u_Anim_Length_S: { value: animationLength_S },
             },
         ]);
-
-        shaderUniforms.diffuse.value = new Color(0x00ff00); // NOTE might be able to store something else here?
-        shaderUniforms.shininess.value = 40;
-        shaderUniforms.specular.value = new Color(0xffffff);
 
         return new ShaderMaterial({
             uniforms: shaderUniforms,
             vertexShader,
             fragmentShader,
-            lights: true,
+            wireframe: false,
         });
     }, []);
 
