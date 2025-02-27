@@ -3,7 +3,7 @@ import { Intersection, Vector2, WebGLRenderer, PerspectiveCamera, Camera, Raycas
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import BackgroundMesh, { getAdjacentIndices, getInstanceCount } from '../lib/instancedMesh2';
 import { GridData, InstancedMesh2ShaderMaterial } from '../types/types';
-import { animationLength_S, setShaderAnimation } from '../lib/animateMeshes';
+import { setShaderAnimation } from '../lib/animateMeshes';
 import { PerspectiveCamera as PerspectiveCameraImpl } from '@react-three/drei';
 import { useEvent } from 'react-use';
 
@@ -11,11 +11,12 @@ const ThreeCanvas = () => {
     return (
         <div className='fixed bottom-0 left-0 right-0 top-0 -z-50'>
             <Canvas gl={{ alpha: true, antialias: true }}>
-                <PerspectiveCameraImpl makeDefault position={[0, 0, 3]} fov={60} aspect={window.innerWidth / window.innerHeight} near={0.01} far={50} />
+                <PerspectiveCameraImpl makeDefault position={[0, 0, 10]} fov={60} aspect={window.innerWidth / window.innerHeight} near={5} far={20} />
 
                 <Background isSquare={false} />
 
-                <ambientLight color='white' intensity={1} />
+                {/* <ambientLight color='white' intensity={1} /> */}
+                {/* <directionalLight position={[0, 2, 0]} color={0xffffff} intensity={3} /> */}
             </Canvas>
         </div>
     );
@@ -27,11 +28,23 @@ const gridDataDefaults: GridData = {
     overallWidth: 0,
     overallHeight: 0,
     instanceLength: 0.05,
-    instancePadding: 0.01,
+    instancePadding: 0.025,
     gridCount: 1500,
     gridCountHorizontal: 0,
     gridCountVertical: 0,
 };
+
+// const light1 = new THREE.DirectionalLight(0xffffff, 3);
+// light1.position.set(0, 200, 0);
+// scene.add(light1);
+
+// const light2 = new THREE.DirectionalLight(0xffffff, 3);
+// light2.position.set(100, 200, 100);
+// scene.add(light2);
+
+// const light3 = new THREE.DirectionalLight(0xffffff, 3);
+// light3.position.set(-100, -200, -100);
+// scene.add(light3);
 
 const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     const [renderer, camera] = useThree((state) => [state.gl, state.camera]) as [WebGLRenderer, Camera];
@@ -95,23 +108,23 @@ const threeAnimate = (
     intersectionHits_Ref: MutableRefObject<number[] | null>,
     hasRunOnce_Ref: MutableRefObject<boolean>,
 ) => {
-    mesh.material.uniforms.u_Anim_Length_S.value = animationLength_S;
     mesh.material.uniforms.u_Time_S.value = time_S;
     setShaderAnimation(mesh, gridData, time_S, intersectionHits_Ref, hasRunOnce_Ref, 'sin');
 };
 
 let intersected = 0;
+let adjacentIndices: number[] = [];
 const getIntersectIndices = (intersection: Intersection[], gridCountHorizontal: number) => {
     const newInstanceId = intersection[0].instanceId ?? intersected;
 
     if (intersected !== newInstanceId) {
-        const adjacentIndices = getAdjacentIndices(newInstanceId, gridCountHorizontal, 2);
+        // console.log('%c[ThreeCanvas]', 'color: #5d73a7', `intersection: ${newInstanceId}`);
+        adjacentIndices = getAdjacentIndices(newInstanceId, gridCountHorizontal, 2);
         adjacentIndices.unshift(newInstanceId);
 
-        return adjacentIndices;
-    } else {
-        return null;
+        intersected = newInstanceId;
     }
+    return adjacentIndices;
 };
 
 const getWidthHeight = (depth: number, camera: PerspectiveCamera) => {

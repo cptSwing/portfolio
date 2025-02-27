@@ -1,16 +1,15 @@
-import { Vector4 } from 'three';
+import { Color, Vector4 } from 'three';
 import { GridData, InstancedMesh2ShaderMaterial, PatternSettingsAnimation } from '../types/types';
 import HexagonGeometry from './classes/HexagonGeometry';
 import { MutableRefObject } from 'react';
 
-export let animationLength_S = 1;
-
 const oldOffsetVector4 = new Vector4();
 const newOffsetVector4 = new Vector4();
-const oldColor = new Vector4();
-const newColor = new Vector4();
 
-const testZOffsetValue = 0.05;
+const oldColor = new Color();
+const newColor = new Color();
+
+const testZOffsetValue = 0.25;
 const pushUpOffsetVector4 = new Vector4(0, 0, testZOffsetValue, 1);
 
 export const setShaderAnimation = (
@@ -21,6 +20,8 @@ export const setShaderAnimation = (
     hasRunOnce_Ref: MutableRefObject<boolean>,
     pattern: PatternSettingsAnimation['pattern'] = 'sin-columns',
 ) => {
+    const animationLength_S = mesh.material.uniforms.u_Anim_Length_S.value;
+
     mesh.updateInstances((instance, idx) => {
         const { overallHeight, gridCount, gridCountHorizontal, instanceLength } = gridData;
         const [column, row] = HexagonGeometry.getColumnAndRowByIndex(idx, gridCountHorizontal);
@@ -29,15 +30,17 @@ export const setShaderAnimation = (
         const hasExpired = time_S - oldTime_S > animationLength_S;
         const animLengthDivided = animationLength_S / 50;
 
+        mesh.getColorAt(idx, oldColor);
+
         instance.getUniform('u_Hit_Offset', oldOffsetVector4);
         newOffsetVector4.copy(oldOffsetVector4);
 
         // Intro of sorts
         if (!hasRunOnce_Ref.current) {
-            animationLength_S = 2;
+            mesh.material.uniforms.u_Anim_Length_S.value = 2;
 
             if (hasExpired) {
-                animationLength_S = 1;
+                mesh.material.uniforms.u_Anim_Length_S.value = 15;
                 hasRunOnce_Ref.current = true;
             } else if (idx < gridCount) {
                 let sequentialRandomMultiplier = 1;
@@ -55,9 +58,8 @@ export const setShaderAnimation = (
             }
         } else {
             const oldStrength = oldOffsetVector4.w;
-            instance.getUniform('u_Hit_Color', oldColor);
 
-            let strength, hex;
+            let strength;
 
             if (intersectionHits_Ref.current?.includes(idx)) {
                 const hitIndex = intersectionHits_Ref.current.indexOf(idx);
@@ -68,19 +70,17 @@ export const setShaderAnimation = (
                     throw new Error('instance id not found in intersects');
                 } else if (hitIndex === 0) {
                     strength = 1;
-                    hex = [3, 1, 1, 0.9];
-                    newColor.fromArray(hex);
+                    newColor.setRGB(1, 1, 1);
                 } else {
                     if (hitIndex < 7) {
                         strength = Math.max(oldStrength - animLengthDivided, 0.5);
-                        hex = [1.5, 1.5, 1.5, 0.75];
+                        newColor.setRGB(0.75, 0.75, 0.75);
                     } else {
                         strength = Math.max(oldStrength - animLengthDivided, 0.25);
-                        hex = [1, 1, 1, 0.5];
+                        newColor.setRGB(0.5, 0.5, 0.5);
                     }
 
-                    newColor.fromArray(hex);
-                    newColor.lerp(oldColor, 1 - Math.min(oldStrength - animLengthDivided, 1));
+                    // newColor.lerp(oldColor, 1 - Math.min(oldStrength - animLengthDivided, 1));
                 }
 
                 instance.setUniform('u_Hit_Time', time_S); // set last
@@ -101,7 +101,7 @@ export const setShaderAnimation = (
                         sinValCol = remapToRange(sinValCol, -1, 1, -testZOffsetValue, testZOffsetValue);
 
                         newOffsetVector4.setZ(sinValCol);
-                        newColor.setW(0);
+
                         break;
 
                     case 'sin-rows':
@@ -109,7 +109,7 @@ export const setShaderAnimation = (
                         sinValRow = remapToRange(sinValRow, -1, 1, -testZOffsetValue, testZOffsetValue);
 
                         newOffsetVector4.setZ(sinValRow);
-                        newColor.setW(0);
+
                         break;
 
                     case 'sin':
@@ -120,10 +120,8 @@ export const setShaderAnimation = (
                         strength = Math.max(oldStrength - animLengthDivided, strength);
                         newOffsetVector4.setZ(sinVal);
 
-                        newColor.copy(oldColor);
-                        oldColor.fromArray([0, 0, 0, 0]);
+                        newColor.setRGB(0, 0, 0);
                         newColor.lerp(oldColor, 1 - Math.min(oldStrength - animLengthDivided, 1));
-                        // newColor.setW(1);
                         break;
 
                     // 'none'
@@ -133,7 +131,8 @@ export const setShaderAnimation = (
                 instance.setUniform('u_Hit_Time', time_S); // set last
             }
 
-            instance.setUniform('u_Hit_Color', newColor);
+            mesh.setColorAt(idx, newColor);
+            // mesh.colorsTexture.needsUpdate = true;
             newOffsetVector4.setW(strength);
         }
 
