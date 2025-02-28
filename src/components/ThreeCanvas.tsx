@@ -15,8 +15,10 @@ const ThreeCanvas = () => {
 
                 <Background isSquare={false} />
 
-                {/* <ambientLight color='white' intensity={1} /> */}
-                {/* <directionalLight position={[0, 2, 0]} color={0xffffff} intensity={3} /> */}
+                <ambientLight color='white' intensity={1} />
+                <directionalLight position={[0, 2, 0]} color={0xffffff} intensity={3} />
+                <directionalLight position={[1, 2, 1]} color={0xffffff} intensity={3} />
+                <directionalLight position={[-1, -2, -1]} color={0xffffff} intensity={3} />
             </Canvas>
         </div>
     );
@@ -33,18 +35,6 @@ const gridDataDefaults: GridData = {
     gridCountHorizontal: 0,
     gridCountVertical: 0,
 };
-
-// const light1 = new THREE.DirectionalLight(0xffffff, 3);
-// light1.position.set(0, 200, 0);
-// scene.add(light1);
-
-// const light2 = new THREE.DirectionalLight(0xffffff, 3);
-// light2.position.set(100, 200, 100);
-// scene.add(light2);
-
-// const light3 = new THREE.DirectionalLight(0xffffff, 3);
-// light3.position.set(-100, -200, -100);
-// scene.add(light3);
 
 const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     const [renderer, camera] = useThree((state) => [state.gl, state.camera]) as [WebGLRenderer, Camera];
@@ -108,7 +98,6 @@ const threeAnimate = (
     intersectionHits_Ref: MutableRefObject<number[] | null>,
     hasRunOnce_Ref: MutableRefObject<boolean>,
 ) => {
-    mesh.material.uniforms.u_Time_S.value = time_S;
     setShaderAnimation(mesh, gridData, time_S, intersectionHits_Ref, hasRunOnce_Ref, 'sin');
 };
 
@@ -118,7 +107,6 @@ const getIntersectIndices = (intersection: Intersection[], gridCountHorizontal: 
     const newInstanceId = intersection[0].instanceId ?? intersected;
 
     if (intersected !== newInstanceId) {
-        // console.log('%c[ThreeCanvas]', 'color: #5d73a7', `intersection: ${newInstanceId}`);
         adjacentIndices = getAdjacentIndices(newInstanceId, gridCountHorizontal, 2);
         adjacentIndices.unshift(newInstanceId);
 

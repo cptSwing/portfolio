@@ -1,4 +1,4 @@
-import { InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
+import { createRadixSort, InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { Color, CubeTextureLoader, Matrix3, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
 import vertexShader from './shading/instancedShader_V.glsl';
 import fragmentShader from './shading/instancedShader_F.glsl';
@@ -28,7 +28,9 @@ const BackgroundMesh: FC<{
     const meshRef_Cb = useCallback((mesh: InstancedMesh2 | null) => {
         if (mesh) {
             meshRef.current = mesh as InstancedMesh2ShaderMaterial;
-            mesh.initUniformsPerInstance({ vertex: { u_Hit_Offset: 'vec4', u_Hit_Time: 'float' } });
+            mesh.initUniformsPerInstance({ vertex: { u_Hit_Offset: 'vec4', u_Hit_Time: 'float', u_Anim_Progress: 'float' } });
+            mesh.sortObjects = true;
+            mesh.customSort = createRadixSort(mesh);
         }
     }, []);
 
@@ -84,64 +86,38 @@ const BackgroundMesh: FC<{
     }, [isSquare, instanceLength]);
 
     const material_Memo = useMemo(() => {
-        const { diffuse, opacity, reflectivity, envMap, envMapIntensity, envMapRotation, flipEnvMap, fogColor, fogDensity, fogFar, fogNear } =
-            ShaderLib.basic.uniforms;
-        const veryBasicUniforms = {
-            diffuse,
-            opacity,
-            reflectivity,
-            envMap,
-            envMapIntensity,
-            envMapRotation,
-            flipEnvMap,
-            fogColor,
-            fogDensity,
-            fogFar,
-            fogNear,
-        };
-
         const shaderUniforms = UniformsUtils.merge([
-            veryBasicUniforms,
+            ShaderLib.phong.uniforms,
             {
-                u_Time_S: {
-                    value: 0,
-                },
-                u_Anim_Length_S: { value: 2 },
                 u_Length: { value: 0.1 },
             },
         ]);
 
-        shaderUniforms.diffuse.value.setHex(0x5a5a5a);
+        console.log('%c[instancedMesh2]', 'color: #90e8fc', `shaderUniforms :`, shaderUniforms);
 
-        // not really working:
-        shaderUniforms.envMap.value = getEnvMap('/3d/textures/cubemaps/swedishroyalcastle/');
-        shaderUniforms.envMapIntensity.value = 1;
-        shaderUniforms.envMapRotation.value = new Matrix3().rotate(0.3);
-        shaderUniforms.reflectivity.value = 1;
+        shaderUniforms.diffuse.value.setHex(0xff8800);
+        shaderUniforms.opacity.value = 1;
 
-        return new ShaderMaterial({
+        const shaderMaterial = new ShaderMaterial({
             uniforms: shaderUniforms,
             defines: {
                 USE_UV: '',
-                USE_VERTEX_COLOR: '',
-                USE_ENVMAP: '',
-                ENVMAP_TYPE_CUBE: '',
-                // ENVMAP_BLENDING_MULTIPLY: '',
-                // ENVMAP_BLENDING_MIX: '',
-                ENVMAP_BLENDING_ADD: '',
-                USE_ALPHAHASH: '',
-                USE_INSTANCING: '',
-                USE_INSTANCING_INDIRECT: '',
+                // USE_VERTEX_COLOR: '',
+                // USE_ALPHAHASH: '',
+                // USE_INSTANCING: '',
+                // USE_INSTANCING_INDIRECT: '',
                 USE_INSTANCING_COLOR: '',
                 USE_INSTANCING_COLOR_INDIRECT: '',
             },
             vertexShader,
             fragmentShader,
-            vertexColors: true,
+            // vertexColors: true,
             wireframe: false,
-            // lights: true,
-            // combine: MixOperation,
+            lights: true,
+            transparent: shaderUniforms.opacity.value >= 1 ? false : true,
         });
+
+        return shaderMaterial;
     }, []);
 
     return <instancedMesh2 ref={meshRef_Cb} args={[geometry_Memo, material_Memo, { renderer, createEntities: true }]} position={[0, 0, 0]} />;
