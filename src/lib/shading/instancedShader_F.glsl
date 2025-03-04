@@ -33,25 +33,27 @@ uniform float opacity;
 
 // NOTE <-- Custom defines, uniforms, functions
 
-#define FRESNEL_AMOUNT 1.5
-#define FRESNEL_OFFSET 0.05
-#define FRESNEL_INTENSITY 0.5
-#define FRESNEL_ALPHA 1.
-
 float remap(float value, float min1, float max1, float min2, float max2) {
     return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
-}
-
-float fresnelFunc(float amount, float offset, vec3 normal, vec3 view) {
-    return offset + (1.0 - offset) * pow(1.0 - dot(normal, view), amount);
 }
 
 // per Mesh uniforms
 uniform float u_Length;
 
-varying vec3 vPositionW;
-varying vec3 vNormalW;
+#ifdef USE_FRESNEL
+    #define FRESNEL_AMOUNT 1.
+    #define FRESNEL_OFFSET 0.05
+    #define FRESNEL_INTENSITY 2.
+    #define FRESNEL_ALPHA 0.25
+
+float fresnelFunc(float amount, float offset, vec3 normal, vec3 view) {
+    return offset + (1.0 - offset) * pow(1.0 - dot(normal, view), amount);
+}
+
 varying vec3 vViewDirection;
+#endif
+
+varying vec3 vPositionW;
 
 // Custom defines & uniforms -->
 
@@ -90,13 +92,19 @@ void main() {
 
     myColor = saturate(fakeShadows);
 
+#ifdef USE_FRESNEL
     float fresnel = fresnelFunc(FRESNEL_AMOUNT, FRESNEL_OFFSET, vNormal, vViewDirection);
-
-    // vec3 fresnelColor = (vec3(1., 1., 1.) * fresnel) * FRESNEL_INTENSITY;
-    // myColor = mix(myColor, fresnelColor, fresnel * FRESNEL_ALPHA);
+    vec3 fresnelColor = (vec3(1., 1., 1.) * fresnel) * FRESNEL_INTENSITY;
+    myColor = mix(myColor, fresnelColor, fresnel * FRESNEL_ALPHA);
+#endif
 
     // Out \/
+
+#ifdef USE_FRESNEL
     diffuseColor = vec4(myColor, (opacity >= 1.0 ? opacity : opacity * fresnel));
+#else
+    diffuseColor = vec4(myColor, opacity);
+#endif
 
     // NOTE END CUSTOM SECTION (FRAGMENT) -->
     //
@@ -113,4 +121,8 @@ void main() {
 	#include <fog_fragment>
 	#include <premultiplied_alpha_fragment>
 	#include <dithering_fragment>
+
+    // gl_FragColor = vec4(myColor, 1.);
+    // gl_FragColor = vec4(vec3(vNormal.x), 1.);
+
 }

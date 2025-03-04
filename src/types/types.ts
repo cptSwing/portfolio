@@ -70,12 +70,15 @@ export type OriginalInstancePositions = OriginalInstancePosition[];
 export type GridData = {
     overallWidth: number;
     overallHeight: number;
-    instanceLength: number;
+    instanceFlatTop: boolean;
+    instanceWidth: number;
     instancePadding: number;
     gridCount: number;
-    gridCountHorizontal: number;
-    gridCountVertical: number;
+    gridColumns: number;
+    gridRows: number;
 };
+
+export type DefaultGridData = Omit<GridData, 'instanceWidth'> & { instanceWidth: null };
 
 type PatternSettings = {
     instance: InstancedEntity;
@@ -88,7 +91,7 @@ type PatternSettings = {
 
 export type PatternSettingsAnimation = PatternSettings & {
     originalPosition: OriginalInstancePosition;
-    pattern: 'sin' | 'sin-columns' | 'sin-rows' | 'none';
+    pattern: 'sin' | 'sin-columns' | 'sin-rows' | 'raindrops' | 'none';
 };
 
 export type PatternSettingsColor = PatternSettings & {

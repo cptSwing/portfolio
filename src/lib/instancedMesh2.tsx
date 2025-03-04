@@ -1,12 +1,11 @@
-import { createRadixSort, InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
-import { Color, CubeTextureLoader, Matrix3, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
+import { InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
+import { Color, CubeTextureLoader, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
 import vertexShader from './shading/instancedShader_V.glsl';
 import fragmentShader from './shading/instancedShader_F.glsl';
-import { GridData, InstancedMesh2ShaderMaterial } from '../types/types';
-import HexagonGeometry from './classes/HexagonGeometry';
+import { DefaultGridData, GridData, InstancedMesh2ShaderMaterial } from '../types/types';
 import { extend, Object3DNode } from '@react-three/fiber';
 import { FC, MutableRefObject, useCallback, useEffect, useMemo } from 'react';
-import HexagonalPrismGeometry from './classes/HexagonalPrismGeometry';
+import HexagonalPrismGeometry, { HexagonalPrismUtilities } from './classes/HexagonalPrismGeometry';
 
 extend({ InstancedMesh2 });
 declare module '@react-three/fiber' {
@@ -22,28 +21,39 @@ const BackgroundMesh: FC<{
     meshRef: MutableRefObject<InstancedMesh2ShaderMaterial | null>;
     renderer: WebGLRenderer;
     isSquare: boolean;
-}> = ({ gridData, meshRef, renderer, isSquare }) => {
-    const { overallWidth, overallHeight, instanceLength, instancePadding, gridCount, gridCountHorizontal } = gridData;
+    useFresnel?: boolean;
+}> = ({ gridData, meshRef, renderer, isSquare, useFresnel = false }) => {
+    const { overallWidth, overallHeight, instanceFlatTop, instanceWidth, instancePadding, gridCount, gridColumns, gridRows } = gridData;
 
     const meshRef_Cb = useCallback((mesh: InstancedMesh2 | null) => {
         if (mesh) {
             meshRef.current = mesh as InstancedMesh2ShaderMaterial;
             mesh.initUniformsPerInstance({ vertex: { u_Hit_Offset: 'vec4', u_Hit_Time: 'float', u_Anim_Progress: 'float' } });
-            mesh.sortObjects = true;
-            mesh.customSort = createRadixSort(mesh);
+            // mesh.sortObjects = true;
+            // mesh.customSort = createRadixSort(mesh);
         }
     }, []);
 
     useEffect(() => {
         if (meshRef.current) {
             const instancedMesh = meshRef.current;
-            const extentX = -(overallWidth / 2 - instanceLength / 2); // Negative, so grid is filled from top-left
+            const extentX = -(overallWidth / 2); // Negative, so grid is filled from top-left
             const extentY = overallHeight / 2;
 
             if (!instancedMesh.instancesCount) {
-                console.log('%c[instancedMesh2]', 'color: #b85533', `Creating Instances ${gridCount}`);
+                console.log('%c[instancedMesh2]', 'color: #b85533', `Creating Instances ${gridCount} (cols:${gridColumns} rows:${gridRows})`);
                 instancedMesh.addInstances(gridCount, (instance, idx) => {
-                    updateInstances(instance, idx, gridCountHorizontal, [extentX, extentY], instanceLength, instancePadding, isSquare, instancedMeshTempColor);
+                    updateInstances(
+                        instance,
+                        idx,
+                        gridColumns,
+                        [extentX, extentY],
+                        instanceWidth,
+                        instancePadding,
+                        isSquare,
+                        instanceFlatTop,
+                        instancedMeshTempColor,
+                    );
                 });
             } else {
                 const difference = gridCount - instancedMesh.instancesCount;
@@ -53,21 +63,20 @@ const BackgroundMesh: FC<{
                         updateInstances(
                             instance,
                             idx,
-                            gridCountHorizontal,
+                            gridColumns,
                             [extentX, extentY],
-                            instanceLength,
+                            instanceWidth,
                             instancePadding,
                             isSquare,
+                            instanceFlatTop,
                             instancedMeshTempColor,
                         );
                         instance.color = instancedMeshTempColor.setHex(0x888888 * Math.random());
-                        // instancedMesh.updateInstancesPosition((instance, idx) => {})     // likely need to mess with array id's / instance id's / transforms ???
                     });
                 } else if (Math.sign(difference) === -1) {
                     console.log('%c[instancedMesh2]', 'color: #b85533', `Removing Instances ${difference}`);
                     const idsToRemove = Array.from({ length: -difference }).map((_elem, idx) => -difference + idx);
                     instancedMesh.removeInstances(...idsToRemove);
-                    // instancedMesh.updateInstancesPosition((instance, idx) => {})     // likely need to mess with array id's / instance id's / transforms ???
                 } else {
                     throw new Error('difference is 0');
                 }
@@ -75,50 +84,48 @@ const BackgroundMesh: FC<{
 
             meshRef.current = instancedMesh;
         }
-    }, [overallWidth, overallHeight, instanceLength, instancePadding, gridCount, gridCountHorizontal, isSquare]);
+    }, [overallWidth, overallHeight, instanceWidth, instancePadding, gridCount, gridColumns, isSquare, instanceFlatTop]);
 
     const geometry_Memo = useMemo(() => {
         if (isSquare) {
-            return new PlaneGeometry(instanceLength, instanceLength);
+            return new PlaneGeometry(instanceWidth, instanceWidth);
         } else {
-            return new HexagonalPrismGeometry(instanceLength / 2, 0.1);
+            const size = HexagonalPrismUtilities.getSizeFromWidth(instanceWidth, instanceFlatTop);
+            return new HexagonalPrismGeometry(size, instanceWidth, instanceFlatTop);
         }
-    }, [isSquare, instanceLength]);
+    }, [isSquare, instanceWidth, instanceFlatTop]);
 
     const material_Memo = useMemo(() => {
         const shaderUniforms = UniformsUtils.merge([
             ShaderLib.phong.uniforms,
             {
-                u_Length: { value: 0.1 },
+                u_Length: { value: instanceWidth },
             },
         ]);
 
-        console.log('%c[instancedMesh2]', 'color: #90e8fc', `shaderUniforms :`, shaderUniforms);
-
         shaderUniforms.diffuse.value.setHex(0xff8800);
         shaderUniforms.opacity.value = 1;
+        shaderUniforms.shininess.value = 10;
+        shaderUniforms.specular.value.setHex(0xdddddd);
 
         const shaderMaterial = new ShaderMaterial({
             uniforms: shaderUniforms,
             defines: {
                 USE_UV: '',
-                // USE_VERTEX_COLOR: '',
-                // USE_ALPHAHASH: '',
-                // USE_INSTANCING: '',
-                // USE_INSTANCING_INDIRECT: '',
                 USE_INSTANCING_COLOR: '',
                 USE_INSTANCING_COLOR_INDIRECT: '',
+                ...(useFresnel ? { USE_FRESNEL: '' } : {}),
+                FLAT_SHADED: '',
             },
             vertexShader,
             fragmentShader,
-            // vertexColors: true,
             wireframe: false,
             lights: true,
             transparent: shaderUniforms.opacity.value >= 1 ? false : true,
         });
 
         return shaderMaterial;
-    }, []);
+    }, [instanceWidth, useFresnel]);
 
     return <instancedMesh2 ref={meshRef_Cb} args={[geometry_Memo, material_Memo, { renderer, createEntities: true }]} position={[0, 0, 0]} />;
 };
@@ -130,72 +137,72 @@ const updateInstances = (
     index: number,
     gridColumns: number,
     [extentX, extentY]: [number, number],
-    length: number,
+    width: number,
     padding: number,
     isSquare: boolean,
+    flatTop: boolean,
     colorObject: Color,
 ) => {
     let offsetX, offsetY;
-    const [column, row] = HexagonalPrismGeometry.getColumnAndRowByIndex(index, gridColumns);
+    const [column, row] = HexagonalPrismUtilities.getColumnAndRowByIndex(index, gridColumns);
 
     if (isSquare) {
-        offsetX = column * length + padding;
-        offsetY = row * length + padding;
+        offsetX = column * width + padding;
+        offsetY = row * width + padding;
     } else {
-        [offsetX, offsetY] = HexagonalPrismGeometry.getXYOffsets(length / 2, padding, column, row);
+        [offsetX, offsetY] = HexagonalPrismUtilities.getXYOffsets(width, padding, column, row, flatTop);
     }
 
     const position = { x: extentX + offsetX, y: extentY - offsetY, z: 0 };
     instance.position.set(position.x, position.y, position.z);
 
-    // Set to black to not initially add anything to 'diffuse'
-    instance.color = colorObject.setHex(0x000000);
-    // instance.color = colorObject.setHex(0x888888 * Math.random());
+    instance.color = colorObject.setHex(0x000000); // Set to black to not initially add anything to 'diffuse'
 };
 
-export const getInstanceCount = (params: GridData, isSquare: boolean) => {
-    const { overallWidth, overallHeight, instancePadding, gridCount } = params;
+export const getInstanceCount = (params: DefaultGridData, isSquare: boolean) => {
+    const { overallWidth, overallHeight, instanceFlatTop, instancePadding, gridCount } = params;
 
     const overallArea = overallWidth * overallHeight;
     const idealInstanceArea = overallArea / gridCount;
 
     if (isSquare) {
         // Via https://stackoverflow.com/a/1575761
-        const idealInstanceLength = Math.sqrt(idealInstanceArea);
+        const idealInstanceWidth = Math.sqrt(idealInstanceArea);
 
-        const columns = Math.round(overallWidth / idealInstanceLength);
-        let rows = Math.round(overallHeight / idealInstanceLength);
+        const columns = Math.round(overallWidth / idealInstanceWidth);
+        let rows = Math.round(overallHeight / idealInstanceWidth);
 
         const minLength = Math.min(overallWidth / columns, overallWidth / rows);
         if (overallHeight > minLength * rows) rows++;
 
-        return { ...params, instanceLength: minLength - instancePadding, gridCount: columns * rows, gridCountHorizontal: columns, gridCountVertical: rows };
+        return { ...params, instanceWidth: minLength - instancePadding, gridCount: columns * rows, gridColumns: columns, gridRows: rows };
     } else {
-        const side = Math.sqrt((2 * idealInstanceArea) / (3 * Math.sqrt(3))); // same as radius
+        const size = Math.sqrt((2 * idealInstanceArea) / (3 * Math.sqrt(3))); // same as radius
+        const [horizontalSpacing, verticalSpacing] = HexagonalPrismUtilities.getSpacing(size, instanceFlatTop); // column width, basically
+        const rSin = HexagonalPrismUtilities.hexSine * size;
 
-        const widthWhenStacked = side * 1.5;
-        const columns = Math.round((overallWidth - side / 2 - instancePadding) / widthWhenStacked);
+        const shorterToLongerDimRatio = instanceFlatTop ? rSin / size : size / rSin;
+        const adjustedHorizontalPadding = instancePadding * shorterToLongerDimRatio;
+        const horizontalSpacingNoPadding = Math.max(0.001, horizontalSpacing - adjustedHorizontalPadding);
 
-        const newWidthWhenStacked = (overallWidth + side / 2 + instancePadding) / columns;
-        const newSide = newWidthWhenStacked * (2 / 3);
-        const newDiameter = newSide * 2;
+        const newSizeH = HexagonalPrismUtilities.getSizeFromSpacing(horizontalSpacingNoPadding, true, instanceFlatTop);
+        const [width, height] = HexagonalPrismUtilities.getWidthHeight(newSizeH, instanceFlatTop);
 
-        const apothem = (Math.sqrt(3) / 2) * newSide; // half height
-        const height = 2 * apothem;
-        const rows = Math.ceil((overallHeight - apothem) / height) + 1; // pad rows beyond screen w/ +1
+        const numColumns = Math.ceil((overallWidth + adjustedHorizontalPadding) / horizontalSpacing);
+        const numRows = Math.ceil((overallHeight + height / 2) / verticalSpacing);
 
         return {
             ...params,
-            instanceLength: newDiameter - instancePadding,
-            gridCount: columns * rows,
-            gridCountHorizontal: columns,
-            gridCountVertical: rows,
-        };
+            instanceWidth: width,
+            gridCount: numColumns * numRows,
+            gridColumns: numColumns,
+            gridRows: numRows,
+        } as GridData;
     }
 };
 
-export const getAdjacentIndices = (instanceIndex: number, numColumns: number, distance: number, isSquare = false) => {
-    const [hexCol, hexRow] = HexagonGeometry.getColumnAndRowByIndex(instanceIndex, numColumns);
+export const getAdjacentIndices = (instanceIndex: number, numColumns: number, numRows: number, distance: number, flatTop: boolean, isSquare = false) => {
+    const [hexCol, hexRow] = HexagonalPrismUtilities.getColumnAndRowByIndex(instanceIndex, numColumns);
 
     let allNeighbors: number[] = [];
 
@@ -208,14 +215,16 @@ export const getAdjacentIndices = (instanceIndex: number, numColumns: number, di
         allNeighbors.push(above, toRight, below, toLeft);
     } else {
         // 6 = query all six directions
-        let neighbors: [number, number][] = Array.from({ length: 6 }).map((_, idx) => HexagonGeometry.getNeighborsEvenQ([hexCol, hexRow], idx));
+        let neighbors: [number, number][] = Array.from({ length: 6 }).map((_, idx) => HexagonalPrismUtilities.getNeighbors([hexCol, hexRow], idx, flatTop));
 
-        distance && getDistantNeighbors(neighbors);
+        distance && getDistantNeighbors(neighbors, flatTop);
 
         allNeighbors = neighbors.map(([nCol, nRow]) => {
             let nIndex = nRow * numColumns + nCol;
 
             if (nCol < 0 || nCol >= numColumns) {
+                nIndex = -1; // prevent wrapping to other side, as filtered below
+            } else if (nRow < 0 || nRow >= numRows) {
                 nIndex = -1; // prevent wrapping to other side, as filtered below
             }
 
@@ -227,17 +236,16 @@ export const getAdjacentIndices = (instanceIndex: number, numColumns: number, di
 };
 
 // TODO make this recursive?
-const getDistantNeighbors = (neighbors: [number, number][]) => {
+const getDistantNeighbors = (neighbors: [number, number][], flatTop: boolean) => {
     const arrLength = neighbors.length;
 
     for (let i = 0; i < arrLength; i++) {
         const [nHexCol, nHexRow] = neighbors[i];
         const nextI = i < arrLength - 1 ? i + 1 : 0;
 
-        /** neighbor queries two of it's further outwards neighbors: 0 queries 0, 1 --- 1 queries 1, 2 --- etc */
-
-        const nColRow0 = HexagonGeometry.getNeighborsEvenQ([nHexCol, nHexRow], i);
-        const nColRow1 = HexagonGeometry.getNeighborsEvenQ([nHexCol, nHexRow], nextI);
+        /** each neighbor queries two of it's further outwards neighbors: 0 queries it's neightbors 0 and 1; 1 queries it's 1 and 2 --- etc */
+        const nColRow0 = HexagonalPrismUtilities.getNeighbors([nHexCol, nHexRow], i, flatTop);
+        const nColRow1 = HexagonalPrismUtilities.getNeighbors([nHexCol, nHexRow], nextI, flatTop);
 
         neighbors.push(nColRow0, nColRow1);
     }
@@ -246,7 +254,7 @@ const getDistantNeighbors = (neighbors: [number, number][]) => {
 };
 
 const cubeTextureLoader = new CubeTextureLoader();
-const getEnvMap = (path: string) => {
+const _getEnvMap = (path: string) => {
     // const path = '../../examples/textures/cube/SwedishRoyalCastle/';
     const format = '.jpg';
     const urls = [path + 'px' + format, path + 'nx' + format, path + 'py' + format, path + 'ny' + format, path + 'pz' + format, path + 'nz' + format];

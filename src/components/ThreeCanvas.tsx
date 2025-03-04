@@ -2,23 +2,33 @@ import { FC, MouseEvent, MutableRefObject, useMemo, useRef } from 'react';
 import { Intersection, Vector2, WebGLRenderer, PerspectiveCamera, Camera, Raycaster } from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import BackgroundMesh, { getAdjacentIndices, getInstanceCount } from '../lib/instancedMesh2';
-import { GridData, InstancedMesh2ShaderMaterial } from '../types/types';
+import { DefaultGridData, GridData, InstancedMesh2ShaderMaterial } from '../types/types';
 import { setShaderAnimation } from '../lib/animateMeshes';
 import { PerspectiveCamera as PerspectiveCameraImpl } from '@react-three/drei';
 import { useEvent } from 'react-use';
+import { HexagonalPrismUtilities } from '../lib/classes/HexagonalPrismGeometry';
+
+const cameraOffset = 20;
 
 const ThreeCanvas = () => {
     return (
         <div className='fixed bottom-0 left-0 right-0 top-0 -z-50'>
             <Canvas gl={{ alpha: true, antialias: true }}>
-                <PerspectiveCameraImpl makeDefault position={[0, 0, 10]} fov={60} aspect={window.innerWidth / window.innerHeight} near={5} far={20} />
+                <PerspectiveCameraImpl
+                    makeDefault
+                    position={[0, 0, cameraOffset]}
+                    fov={45}
+                    aspect={window.innerWidth / window.innerHeight}
+                    near={Math.max(0, cameraOffset - 10)}
+                    far={cameraOffset + 2}
+                />
 
                 <Background isSquare={false} />
 
                 <ambientLight color='white' intensity={1} />
-                <directionalLight position={[0, 2, 0]} color={0xffffff} intensity={3} />
-                <directionalLight position={[1, 2, 1]} color={0xffffff} intensity={3} />
-                <directionalLight position={[-1, -2, -1]} color={0xffffff} intensity={3} />
+                <directionalLight position={[-1, 2, 1]} color={0xffffff} intensity={1.5} />
+                <directionalLight position={[1, 2, 1]} color={0xffffff} intensity={1.5} />
+                <directionalLight position={[0, -2, -1]} color={0xbbbbff} intensity={0.25} />
             </Canvas>
         </div>
     );
@@ -26,14 +36,15 @@ const ThreeCanvas = () => {
 
 export default ThreeCanvas;
 
-const gridDataDefaults: GridData = {
+const gridDataDefaults: DefaultGridData = {
     overallWidth: 0,
     overallHeight: 0,
-    instanceLength: 0.05,
-    instancePadding: 0.025,
-    gridCount: 1500,
-    gridCountHorizontal: 0,
-    gridCountVertical: 0,
+    instanceFlatTop: false,
+    instanceWidth: null,
+    instancePadding: 0.075,
+    gridCount: 1000,
+    gridColumns: 0,
+    gridRows: 0,
 };
 
 const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
@@ -70,7 +81,12 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                 const intersection = raycaster_Ref.current.intersectObject(mesh_Ref.current, false);
 
                 if (intersection.length) {
-                    intersectionHits_Ref.current = getIntersectIndices(intersection, gridData_Memo.gridCountHorizontal);
+                    intersectionHits_Ref.current = getIntersectIndices(
+                        intersection,
+                        gridData_Memo.gridColumns,
+                        gridData_Memo.gridRows,
+                        gridData_Memo.instanceFlatTop,
+                    );
                 }
             }
 
@@ -102,17 +118,25 @@ const threeAnimate = (
 };
 
 let intersected = 0;
-let adjacentIndices: number[] = [];
-const getIntersectIndices = (intersection: Intersection[], gridCountHorizontal: number) => {
+let hitIndices: number[] = [];
+const getIntersectIndices = (intersection: Intersection[], gridColumns: number, gridRows: number, flatTop: boolean) => {
     const newInstanceId = intersection[0].instanceId ?? intersected;
 
     if (intersected !== newInstanceId) {
-        adjacentIndices = getAdjacentIndices(newInstanceId, gridCountHorizontal, 2);
-        adjacentIndices.unshift(newInstanceId);
+        hitIndices.push(newInstanceId);
+        hitIndices = [newInstanceId, ...getAdjacentIndices(newInstanceId, gridColumns, gridRows, 2, flatTop)];
 
         intersected = newInstanceId;
+
+        console.log(
+            '%c[ThreeCanvas]',
+            'color: #ed43fd',
+            `id: ${intersected} --> col, row :`,
+            ...HexagonalPrismUtilities.getColumnAndRowByIndex(intersected, gridColumns),
+            hitIndices,
+        );
     }
-    return adjacentIndices;
+    return hitIndices;
 };
 
 const getWidthHeight = (depth: number, camera: PerspectiveCamera) => {

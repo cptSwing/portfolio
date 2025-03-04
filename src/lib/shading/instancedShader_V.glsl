@@ -16,10 +16,6 @@ varying vec3 vViewPosition;
 
 // NOTE <-- Custom defines, uniforms, functions
 
-#define FRESNEL_BIAS 0.1
-#define FRESNEL_SCALE 1.
-#define FRESNEL_POWER 2.
-
 // per Instance uniforms
 uniform vec4 u_Hit_Offset; // xyz: offset values; y: offset strength [0,1]
 uniform float u_Anim_Progress;
@@ -27,8 +23,11 @@ uniform float u_Anim_Progress;
 uniform vec3 diffuse;   // via ShaderLib.basic.uniforms
 
 varying vec3 vPositionW;
-varying vec3 vNormalW;
+
+#ifdef USE_FRESNEL
+// shoehorned in from: https://github.com/otanodesignco/Fresnel-Shader-Material
 varying vec3 vViewDirection;
+#endif
 
 // Custom defines & uniforms -->
 
@@ -61,27 +60,18 @@ void main() {
 
     vec4 worldPosition = instanceMatrix * modelMatrix * vec4(transformed, 1.0);
 
-    // anim values [0, 1], start to finish
-    // float animationProgress = clamp((u_Time_S - u_Hit_Time) / u_Anim_Length_S, 0., 1.);
-
-    vec3 positionOffsetted = (myHitOffset * vec3(myHitOffsetStrength)) + myPosition;
-    // myPosition = mix( myPosition,positionOffsetted, u_Anim_Progress);
-    myPosition = positionOffsetted;
+    vec3 positionOffsetted = myHitOffset * vec3(myHitOffsetStrength);
+    myPosition += positionOffsetted;
 
     vec3 rayHighlighted = clamp(myInstanceVertexColor + myDiffuse, 0., 1.);
     vec3 myColor = mix(rayHighlighted, myDiffuse, u_Anim_Progress);
 
     vec3 myNormalW = normalize(normalMatrix * transformedNormal);
 
-    // vec3 objectPosition = (modelMatrix * vec4(position, 1.0)).xyz; // object space coordinates
-    // vView = normalize(cameraPosition - objectPosition); // view direction in object space
-    // vNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz); // normalized object space normals
-
     // Pass to Fragment
     vColor = myColor;
     vPositionW = worldPosition.xyz;
-    vNormal = transformedNormal;
-    vNormalW = myNormalW; // modelMatrix? * instanceMatrix (no?)
+    // vNormal = transformedNormal;
 
     // Out \/
     transformed = myPosition;
@@ -97,7 +87,9 @@ void main() {
 
     #include <worldpos_vertex>
 
+#ifdef USE_FRESNEL
     vViewDirection = normalize(cameraPosition - vec3(worldPosition));
+#endif
 
 	#include <envmap_vertex>
 	#include <shadowmap_vertex>

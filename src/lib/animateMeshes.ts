@@ -2,14 +2,16 @@ import { Color, MathUtils, Vector4 } from 'three';
 import { GridData, InstancedMesh2ShaderMaterial, PatternSettingsAnimation } from '../types/types';
 import HexagonGeometry from './classes/HexagonGeometry';
 import { MutableRefObject } from 'react';
+import { getAdjacentIndices } from './instancedMesh2';
 
-const oldOffsetVector4 = new Vector4();
-const newOffsetVector4 = new Vector4();
+// .w holds offset strength
+const prevOffset = new Vector4();
+const newOffset = new Vector4();
 
 const newColor = new Color();
 
-const testZOffsetValue = 0.25;
-const pushUpOffsetVector4 = new Vector4(0, 0, testZOffsetValue, 1);
+const timeScale = 0.75;
+const introTargetOffsets = new Vector4(0, 0, 0, 1);
 
 let animationLength_S = 3;
 
@@ -21,19 +23,30 @@ export const setShaderAnimation = (
     hasRunOnce_Ref: MutableRefObject<boolean>,
     pattern: PatternSettingsAnimation['pattern'] = 'sin-columns',
 ) => {
-    mesh.updateInstances((instance, idx) => {
-        const { overallHeight, gridCount, gridCountHorizontal, instanceLength } = gridData;
-        const [column, row] = HexagonGeometry.getColumnAndRowByIndex(idx, gridCountHorizontal);
+    const { overallHeight, gridCount, gridColumns, gridRows, instanceFlatTop, instanceWidth } = gridData;
 
-        instance.getUniform('u_Hit_Offset', oldOffsetVector4);
+    // TODO write more comprehensive animation system --> background patterns (such as sin-wave etc), overlaid/overwritten by actions such as mousevent, raindrop, shake etc etc
+    if (pattern === 'raindrops') {
+        if (Math.ceil(time_S) % 2 === 0) {
+            const randomDropIndex = Math.ceil(remapToRange(Math.random(), 0, 1, 0, gridCount - 1));
+            intersectionHits_Ref.current = [randomDropIndex, ...getAdjacentIndices(randomDropIndex, gridColumns, gridRows, 2, instanceFlatTop)];
+        }
+    }
+
+    mesh.updateInstances((instance, idx) => {
+        const [column, row] = HexagonGeometry.getColumnAndRowByIndex(idx, gridColumns);
+
+        instance.getUniform('u_Hit_Offset', prevOffset);
+
         const oldTime_S = instance.getUniform('u_Hit_Time') as number;
-        const animationProgress = MathUtils.clamp((time_S - oldTime_S) / animationLength_S, 0, 1);
+        const animationProgress = getAnimationProgress(animationLength_S, oldTime_S, time_S);
 
         // Intro of sorts
         if (!hasRunOnce_Ref.current) {
+            newOffset.copy(introTargetOffsets);
+
             if (animationProgress >= 1) {
                 animationLength_S = 3;
-                newOffsetVector4.set(0, 0, 0, 1);
                 hasRunOnce_Ref.current = true;
             } else {
                 let sequentialRandomMultiplier = 1;
@@ -46,11 +59,9 @@ export const setShaderAnimation = (
                     sequentialRandomMultiplier = 0.7;
                 }
 
-                newOffsetVector4.set(0, 0, 0, 0);
-
-                oldOffsetVector4.setY(overallHeight);
-                newOffsetVector4.lerpVectors(oldOffsetVector4, newOffsetVector4, animationProgress);
-                newOffsetVector4.setW(sequentialRandomMultiplier);
+                prevOffset.setY(overallHeight);
+                newOffset.lerpVectors(prevOffset, newOffset, animationProgress);
+                newOffset.setW(sequentialRandomMultiplier);
             }
         } else {
             let strength;
@@ -74,46 +85,56 @@ export const setShaderAnimation = (
                 }
 
                 mesh.setColorAt(idx, newColor);
-                newOffsetVector4.setZ(pushUpOffsetVector4.z);
-                newOffsetVector4.setW(strength);
+
+                // animationProgress is always 0 since u_Hit_Time is set each frame - so we set values to prevOffset
+                prevOffset.setZ(instanceWidth);
+                prevOffset.setW(strength);
                 instance.setUniform('u_Hit_Time', time_S); // set last
             } else {
                 switch (pattern) {
                     case 'sin-columns':
-                        let sinValCol = Math.sin(oldOffsetVector4.z + (time_S + column * testZOffsetValue));
-                        sinValCol = remapToRange(sinValCol, -1, 1, -testZOffsetValue, testZOffsetValue);
+                        let sinValCol = Math.sin(prevOffset.z + (time_S + (column * instanceWidth) / 2));
+                        sinValCol = remapToRange(sinValCol, -1, 1, -instanceWidth / 2, instanceWidth / 2);
 
-                        newOffsetVector4.setZ(sinValCol);
+                        newOffset.setZ(sinValCol);
 
                         break;
 
                     case 'sin-rows':
-                        let sinValRow = Math.sin(oldOffsetVector4.z + (time_S + row / 5));
-                        sinValRow = remapToRange(sinValRow, -1, 1, -testZOffsetValue, testZOffsetValue);
+                        let sinValRow = Math.sin(prevOffset.z + (time_S + row / 5));
+                        sinValRow = remapToRange(sinValRow, -1, 1, -instanceWidth / 2, instanceWidth / 2);
 
-                        newOffsetVector4.setZ(sinValRow);
+                        newOffset.setZ(sinValRow);
 
                         break;
 
                     case 'sin':
-                        let sinVal = Math.sin(oldOffsetVector4.z + (row - column) * 0.25 + time_S * 2);
-                        sinVal = remapToRange(sinVal, -1, 1, -testZOffsetValue / 5, testZOffsetValue / 5);
+                        let sinVal = Math.sin(time_S * timeScale + (row - column) * 0.25);
+                        sinVal = remapToRange(sinVal, -1, 1, -instanceWidth / 2, instanceWidth / 2);
 
-                        newOffsetVector4.setZ(sinVal);
-                        newOffsetVector4.setW(1);
-                        newOffsetVector4.lerpVectors(oldOffsetVector4, newOffsetVector4, animationProgress);
+                        newOffset.setZ(sinVal);
+                        newOffset.setW(animationProgress);
+                        newOffset.lerpVectors(prevOffset, newOffset, animationProgress);
                         break;
+
+                    // case 'raindrops':
+                    //     break;
 
                     // 'none'
                     default:
+                        newOffset.copy(introTargetOffsets);
+                        break;
                 }
             }
         }
 
+        newOffset.lerpVectors(prevOffset, newOffset, animationProgress);
+        instance.setUniform('u_Hit_Offset', newOffset);
         instance.setUniform('u_Anim_Progress', animationProgress);
-        instance.setUniform('u_Hit_Offset', newOffsetVector4);
     });
 };
+
+const getAnimationProgress = (length: number, startTime: number, currentTime: number) => MathUtils.clamp((currentTime - startTime) / length, 0, 1);
 
 export const meshAnimations: Record<string, Pick<PatternSettingsAnimation, 'pattern' | 'timeAlpha' | 'endDelay_S'>> = {
     sinWave: {
