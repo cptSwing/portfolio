@@ -43,7 +43,7 @@ uniform float u_Length;
 #ifdef USE_FRESNEL
     #define FRESNEL_AMOUNT 1.
     #define FRESNEL_OFFSET 0.05
-    #define FRESNEL_INTENSITY 2.
+    #define FRESNEL_INTENSITY 0.333
     #define FRESNEL_ALPHA 0.25
 
 float fresnelFunc(float amount, float offset, vec3 normal, vec3 view) {
@@ -54,6 +54,7 @@ varying vec3 vViewDirection;
 #endif
 
 varying vec3 vPositionW;
+varying float vAnimProgress;
 
 // Custom defines & uniforms -->
 
@@ -79,6 +80,7 @@ void main() {
     vec3 myColor = vColor;
     vec2 myUv = vUv;
     vec3 myWorldPosition = vPositionW;
+    float myShininess = shininess;
 
     vec3 blackColor = vec3(0.);
 
@@ -91,16 +93,13 @@ void main() {
     vec3 fakeShadows = mix(fakeHighlight, blackColor, bottomShadowMask);
 
     myColor = saturate(fakeShadows);
+    myShininess = clamp((1. - vAnimProgress) * 100., 7.5, 100.);
 
 #ifdef USE_FRESNEL
     float fresnel = fresnelFunc(FRESNEL_AMOUNT, FRESNEL_OFFSET, vNormal, vViewDirection);
     vec3 fresnelColor = (vec3(1., 1., 1.) * fresnel) * FRESNEL_INTENSITY;
     myColor = mix(myColor, fresnelColor, fresnel * FRESNEL_ALPHA);
-#endif
 
-    // Out \/
-
-#ifdef USE_FRESNEL
     diffuseColor = vec4(myColor, (opacity >= 1.0 ? opacity : opacity * fresnel));
 #else
     diffuseColor = vec4(myColor, opacity);
@@ -108,7 +107,11 @@ void main() {
 
     // NOTE END CUSTOM SECTION (FRAGMENT) -->
     //
+
     #include <lights_phong_fragment>
+    // ^^^
+    material.specularShininess = myShininess;
+
 	#include <lights_fragment_begin>
 	#include <lights_fragment_maps>
 	#include <lights_fragment_end>

@@ -23,6 +23,7 @@ uniform float u_Anim_Progress;
 uniform vec3 diffuse;   // via ShaderLib.basic.uniforms
 
 varying vec3 vPositionW;
+varying float vAnimProgress;
 
 #ifdef USE_FRESNEL
 // shoehorned in from: https://github.com/otanodesignco/Fresnel-Shader-Material
@@ -66,12 +67,10 @@ void main() {
     vec3 rayHighlighted = clamp(myInstanceVertexColor + myDiffuse, 0., 1.);
     vec3 myColor = mix(rayHighlighted, myDiffuse, u_Anim_Progress);
 
-    vec3 myNormalW = normalize(normalMatrix * transformedNormal);
-
     // Pass to Fragment
     vColor = myColor;
     vPositionW = worldPosition.xyz;
-    // vNormal = transformedNormal;
+    vAnimProgress = u_Anim_Progress;
 
     // Out \/
     transformed = myPosition;

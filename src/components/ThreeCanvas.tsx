@@ -8,7 +8,7 @@ import { PerspectiveCamera as PerspectiveCameraImpl } from '@react-three/drei';
 import { useEvent } from 'react-use';
 import { HexagonalPrismUtilities } from '../lib/classes/HexagonalPrismGeometry';
 
-const cameraOffset = 20;
+const cameraOffset = 30;
 
 const ThreeCanvas = () => {
     return (
@@ -17,9 +17,9 @@ const ThreeCanvas = () => {
                 <PerspectiveCameraImpl
                     makeDefault
                     position={[0, 0, cameraOffset]}
-                    fov={45}
+                    fov={30}
                     aspect={window.innerWidth / window.innerHeight}
-                    near={Math.max(0, cameraOffset - 10)}
+                    near={Math.max(0, cameraOffset - 5)}
                     far={cameraOffset + 2}
                 />
 
@@ -41,8 +41,8 @@ const gridDataDefaults: DefaultGridData = {
     overallHeight: 0,
     instanceFlatTop: false,
     instanceWidth: null,
-    instancePadding: 0.075,
-    gridCount: 1000,
+    instancePadding: 0.05,
+    gridCount: 2000,
     gridColumns: 0,
     gridRows: 0,
 };
@@ -102,7 +102,7 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     return (
         <>
             <raycaster ref={raycaster_Ref} />
-            <BackgroundMesh meshRef={mesh_Ref} gridData={gridData_Memo} renderer={renderer} isSquare={isSquare} />
+            <BackgroundMesh meshRef={mesh_Ref} gridData={gridData_Memo} renderer={renderer} isSquare={isSquare} useFresnel />
         </>
     );
 };

@@ -8,8 +8,7 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
     parameters = {};
 
     // radius is the radius of the outer circle touching all hexagon corners
-    constructor(radius: number, height: number, flatTop = true, thetaStart = 0, thetaLength = Math.PI * 2) {
-        // super(radius, radius, height, hexagonSides, 1, false, thetaStart, thetaLength);
+    constructor(radius: number, height: number, flatTop = true, isFlatShaded = false, thetaStart = 0, thetaLength = Math.PI * 2) {
         super();
 
         const radialSegments = 6;
@@ -42,52 +41,34 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
         const indexArray: number[][] = [];
         const halfHeight = height / 2;
         let groupStart = 0;
-        const generateNormals = false;
 
         // generate geometry
         generateTorso();
         if (radiusTop > 0) generateCap(true);
-        // if (radiusBottom > 0) generateCap(false);
 
         // build geometry
         this.setIndex(indices);
         this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
-        generateNormals && this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+        if (!isFlatShaded) {
+            this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+        }
         this.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
 
         // added
+        if (!isFlatShaded) {
+            this.computeVertexNormals();
 
-        // this.computeVertexNormals();
-
-        // if the geometry is closed, we need to average the normals along the seam.
-        // because the corresponding vertices are identical (but still have different UVs).
-        // handleNormals();
+            handleNormals();
+        }
 
         this.rotateX(MathUtils.degToRad(90));
-        flatTop && this.rotateZ(MathUtils.degToRad(90));
+
+        if (flatTop) {
+            this.rotateZ(MathUtils.degToRad(90));
+        }
+
         this.center();
         this.computeBoundingBox();
-
-        // const indexAttr = this.getIndex();
-
-        // if (indexAttr) {
-        //     const sideGroup = this.groups[0];
-        //     const topGroup = this.groups[1];
-        //     const bottomGroup = this.groups[2];
-
-        //     const uvAttr = this.getAttribute('uv');
-        //     const posAttr = this.getAttribute('position');
-
-        //     const newArray = Array.from({ length: uvAttr.array.length }, () => 0);
-        //     const newUvAttr = new Float32BufferAttribute(newArray, uvAttr.itemSize);
-
-        //     this.setAttributesCaps(newUvAttr, [1, 0], 'top', topGroup, sideGroup, indexAttr, posAttr);
-        //     this.setAttributesCaps(newUvAttr, [0, 1], 'bottom', bottomGroup, sideGroup, indexAttr, posAttr);
-
-        //     this.setAttribute('uv', newUvAttr);
-        // }
-
-        // this.clearGroups();
 
         function generateTorso() {
             const normal = new Vector3();
@@ -95,11 +76,7 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
 
             let groupCount = 0;
 
-            // this will be used to calculate the normal
-            // const slope = ( radiusBottom - radiusTop ) / height;
-
             const slopeFillet = (radius - filletRadius) / fillet;
-            console.log('%c[HexagonalPrismGeometry]', 'color: #231697', `slopeFillet :`, slopeFillet);
             const slope = 0;
 
             const filletTopRow = 0;
@@ -114,7 +91,6 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
 
                 let radiusRow: number;
                 if (y === filletTopRow) {
-                    // y0 is the topmost row
                     radiusRow = filletRadius;
                 } else {
                     radiusRow = radius;
@@ -145,24 +121,12 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
                     vertices.push(vertex.x, vertex.y, vertex.z);
 
                     // normal
-                    if (generateNormals) {
-                        if (y === filletTopRow) {
-                            normal.set(0, 1, 0);
-                        } else {
-                            normal.set(sinTheta, slope, cosTheta).normalize();
-                        }
+                    if (!isFlatShaded) {
+                        normal.set(sinTheta, slope, cosTheta).normalize();
                         normals.push(normal.x, normal.y, normal.z);
-                        if (x === 6) {
-                            console.log('%c[HexagonalPrismGeometry]', 'color: #aadf46', `y:${y} x:${x} :`);
-                        }
                     }
-                    // uv
-                    // if (x === 6) {
-                    //     uvs.push(0, 1);
-                    // } else {
-                    //     uvs.push(0, 0);
-                    // }
 
+                    // uv
                     if (y === filletTopRow) {
                         uvs.push(1, 0);
                     } else if (y === overallBottomRow) {
@@ -212,11 +176,8 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
             // save the index of the first center vertex
             const centerIndexStart = index;
 
-            // const vertex = new Vector3();
-
             let groupCount = 0;
 
-            // const radius = top === true ? filletRadius : radiusBottom;
             const sign = top === true ? 1 : -1;
 
             // first we generate the center vertex data of the cap.
@@ -227,7 +188,7 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
                 vertices.push(0, halfHeight * sign, 0);
 
                 // normal
-                if (generateNormals) {
+                if (!isFlatShaded) {
                     normals.push(0, sign, 0);
                 }
                 // uv
@@ -239,34 +200,6 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
 
             // save the index of the last center vertex
             const centerIndexEnd = index;
-
-            // // now we generate the surrounding vertices, normals and uvs
-            // for (let x = 0; x <= radialSegments; x++) {
-            //     const u = x / radialSegments;
-            //     const theta = u * thetaLength + thetaStart;
-
-            //     const cosTheta = Math.cos(theta);
-            //     const sinTheta = Math.sin(theta);
-
-            //     // vertex
-            //     vertex.x = radius * sinTheta;
-            //     vertex.y = halfHeight * sign;
-            //     vertex.z = radius * cosTheta;
-            //     vertices.push(vertex.x, vertex.y, vertex.z);
-
-            //     // normal
-            //     if (top) {
-            //         normals.push(normals[x * 3], normals[x * 3 + 1], normals[x * 3 + 2]);
-            //     } else {
-            //         normals.push(0, sign, 0);
-            //     }
-
-            //     // uv
-            //     uvs.push(1, 0);
-
-            //     // increase index
-            //     index++;
-            // }
 
             // generate indices
             for (let x = 0; x < radialSegments; x++) {
@@ -298,50 +231,53 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
             const n2 = new Vector3();
             const n = new Vector3();
 
-            // this is the buffer offset for the last line of vertices
-            // const base = radialSegments * heightSegments * vertices.length * 3;
-            // const base = 61;
-            const base = 50;
+            // normal[0], normal[6] on ring 0 should be: [0, 1, 2] and [18, 19, 20]
+            // normal[0], normal[6] on ring 1 should be: [21, 22, 23] and [39, 40, 41]
+            // normal[0], normal[6] on ring 2 should be: [42, 43, 44] and [60, 61, 62]
+            const firstNormals = [0, 21, 42];
+            const lastNormals = [18, 39, 60];
 
-            for (let i = 0, j = 0; i < heightSegments; i++, j += 3) {
-                // select the normal of the vertex in the first line
-                n1.x = normals[i * (j + 0)];
-                n1.y = normals[i * (j + 1)];
-                n1.z = normals[i * (j + 2)];
+            for (let i = 0, j = 0; i < firstNormals.length; i++, j += 3) {
+                const firstNormal = firstNormals[i];
+                const lastNormal = lastNormals[i];
+                // select the normal of the first vertex
+                n1.x = normals[firstNormal + 0];
+                n1.y = normals[firstNormal + 1];
+                n1.z = normals[firstNormal + 2];
 
-                // select the normal of the vertex in the last line
-                n2.x = normals[i * radialSegments * (j + 0)];
-                n2.y = normals[i * radialSegments * (j + 1)];
-                n2.z = normals[i * radialSegments * (j + 2)];
+                // select the normal of the last vertex
+                n2.x = normals[lastNormal + 0];
+                n2.y = normals[lastNormal + 1];
+                n2.z = normals[lastNormal + 2];
 
                 // average normals
                 n.addVectors(n1, n2).normalize();
 
                 // assign the new values to both normals
-                normals[i * (j + 0)] = normals[i * radialSegments * (j + 0)] = n.x;
-                normals[i * (j + 1)] = normals[i * radialSegments * (j + 1)] = n.y;
-                normals[i * (j + 2)] = normals[i * radialSegments * (j + 2)] = n.z;
+                normals[firstNormal + 0] = normals[lastNormal + 0] = n.x;
+                normals[firstNormal + 1] = normals[lastNormal + 1] = n.y;
+                normals[firstNormal + 2] = normals[lastNormal + 2] = n.z;
             }
 
-            // for (let i = 0, j = 0; i < vertices.length; i++, j += 3) {
-            //     // select the normal of the vertex in the first line
-            //     n1.x = normals[j + 0];
-            //     n1.y = normals[j + 1];
-            //     n1.z = normals[j + 2];
+            const topNormals = Array.from({ length: 21 / 3 + 18 / 3 }).map((_, idx) => (idx < 21 / 3 ? idx * 3 : (idx + 42 / 3) * 3));
 
-            //     // select the normal of the vertex in the last line
-            //     n2.x = normals[base + j + 0];
-            //     n2.y = normals[base + j + 1];
-            //     n2.z = normals[base + j + 2];
+            for (let i = 0; i < topNormals.length; i++) {
+                const topNormal = topNormals[i];
+                n1.x = 0;
+                n1.y = 1;
+                n1.z = 0;
 
-            //     // average normals
-            //     n.addVectors(n1, n2).normalize();
+                n2.x = normals[topNormal + 0];
+                n2.y = normals[topNormal + 1];
+                n2.z = normals[topNormal + 2];
 
-            //     // assign the new values to both normals
-            //     normals[j + 0] = normals[base + j + 0] = n.x;
-            //     normals[j + 1] = normals[base + j + 1] = n.y;
-            //     normals[j + 2] = normals[base + j + 2] = n.z;
-            // }
+                // average normals
+                n.addVectors(n1, n2).normalize();
+
+                normals[topNormal + 0] = n.x;
+                normals[topNormal + 1] = n.y;
+                normals[topNormal + 2] = n.z;
+            }
         }
     }
 

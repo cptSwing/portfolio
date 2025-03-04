@@ -1,5 +1,5 @@
-import { InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
-import { Color, CubeTextureLoader, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
+import { createRadixSort, InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
+import { Color, CubeTextureLoader, DoubleSide, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
 import vertexShader from './shading/instancedShader_V.glsl';
 import fragmentShader from './shading/instancedShader_F.glsl';
 import { DefaultGridData, GridData, InstancedMesh2ShaderMaterial } from '../types/types';
@@ -15,6 +15,7 @@ declare module '@react-three/fiber' {
 }
 
 const instancedMeshTempColor = new Color();
+const isFlatShaded = false;
 
 const BackgroundMesh: FC<{
     gridData: GridData;
@@ -29,8 +30,8 @@ const BackgroundMesh: FC<{
         if (mesh) {
             meshRef.current = mesh as InstancedMesh2ShaderMaterial;
             mesh.initUniformsPerInstance({ vertex: { u_Hit_Offset: 'vec4', u_Hit_Time: 'float', u_Anim_Progress: 'float' } });
-            // mesh.sortObjects = true;
-            // mesh.customSort = createRadixSort(mesh);
+            mesh.sortObjects = true;
+            mesh.customSort = createRadixSort(mesh);
         }
     }, []);
 
@@ -91,7 +92,7 @@ const BackgroundMesh: FC<{
             return new PlaneGeometry(instanceWidth, instanceWidth);
         } else {
             const size = HexagonalPrismUtilities.getSizeFromWidth(instanceWidth, instanceFlatTop);
-            return new HexagonalPrismGeometry(size, instanceWidth, instanceFlatTop);
+            return new HexagonalPrismGeometry(size, instanceWidth, instanceFlatTop, isFlatShaded);
         }
     }, [isSquare, instanceWidth, instanceFlatTop]);
 
@@ -105,7 +106,7 @@ const BackgroundMesh: FC<{
 
         shaderUniforms.diffuse.value.setHex(0xff8800);
         shaderUniforms.opacity.value = 1;
-        shaderUniforms.shininess.value = 10;
+        shaderUniforms.shininess.value = 100;
         shaderUniforms.specular.value.setHex(0xdddddd);
 
         const shaderMaterial = new ShaderMaterial({
@@ -115,12 +116,13 @@ const BackgroundMesh: FC<{
                 USE_INSTANCING_COLOR: '',
                 USE_INSTANCING_COLOR_INDIRECT: '',
                 ...(useFresnel ? { USE_FRESNEL: '' } : {}),
-                FLAT_SHADED: '',
+                ...(isFlatShaded ? { FLAT_SHADED: '' } : {}),
             },
             vertexShader,
             fragmentShader,
             wireframe: false,
             lights: true,
+            // side: DoubleSide,
             transparent: shaderUniforms.opacity.value >= 1 ? false : true,
         });
 
