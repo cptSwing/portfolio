@@ -216,10 +216,7 @@ export const getAdjacentIndices = (instanceIndex: number, numColumns: number, nu
 
         allNeighbors.push(above, toRight, below, toLeft);
     } else {
-        // 6 = query all six directions
-        let neighbors: [number, number][] = Array.from({ length: 6 }).map((_, idx) => HexagonalPrismUtilities.getNeighbors([hexCol, hexRow], idx, flatTop));
-
-        distance && getDistantNeighbors(neighbors, flatTop);
+        const neighbors = getHexagonRings(3, [[hexCol, hexRow]], flatTop);
 
         allNeighbors = neighbors.map(([nCol, nRow]) => {
             let nIndex = nRow * numColumns + nCol;
@@ -235,6 +232,48 @@ export const getAdjacentIndices = (instanceIndex: number, numColumns: number, nu
     }
 
     return allNeighbors.filter((adjacent) => adjacent >= 0);
+};
+
+const getHexagonRings = (distance: number, coordinates: [number, number][], flatTop: boolean, iteration = 1) => {
+    if (iteration === 1) {
+        const centerCoords = coordinates[0];
+        coordinates = [];
+
+        // Initial ring (6 neighbors)
+        for (let i = 0; i < 6; i++) {
+            const coords = HexagonalPrismUtilities.getNeighbors(centerCoords, i, flatTop);
+            coordinates.push(coords);
+        }
+    } else {
+        const loopStart = coordinates.length - (iteration - 1) * 6;
+        const loopEnd = coordinates.length;
+
+        for (let j = loopStart, k = 0; j < loopEnd; j++, k++) {
+            const [nHexCol, nHexRow] = coordinates[j];
+
+            const neighbor = k;
+            let nextNeighbor;
+            if (k + 1 > 5) {
+                nextNeighbor = 0;
+                k = 0;
+            } else {
+                nextNeighbor = k + 1;
+            }
+
+            // TODO revise the below algo, not working ;D
+            /** each neighbor queries two of it's further outwards neighbors: 0 queries it's neightbors 0 and 1; 1 queries it's 1 and 2 --- etc */
+            const nColRow0 = HexagonalPrismUtilities.getNeighbors([nHexCol, nHexRow], neighbor, flatTop);
+            const nColRow1 = HexagonalPrismUtilities.getNeighbors([nHexCol, nHexRow], nextNeighbor, flatTop);
+
+            coordinates.push(nColRow0, nColRow1);
+        }
+    }
+
+    if (iteration === distance) {
+        return coordinates;
+    } else {
+        return getHexagonRings(distance, coordinates, flatTop, iteration + 1);
+    }
 };
 
 // TODO make this recursive?

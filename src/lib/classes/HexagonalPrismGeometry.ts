@@ -13,14 +13,11 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
 
         const radialSegments = 6;
         const heightSegments = 2;
-        const radiusTop = radius;
-        const radiusBottom = radius;
         const fillet = radius / 5;
         const filletRadius = radius - fillet;
 
         this.parameters = {
-            radiusTop,
-            radiusBottom,
+            radius,
             height: height,
             radialSegments,
             heightSegments, // WARN chamfer needs more I guess
@@ -44,7 +41,7 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
 
         // generate geometry
         generateTorso();
-        if (radiusTop > 0) generateCap(true);
+        if (radius > 0) generateCap(true);
 
         // build geometry
         this.setIndex(indices);
@@ -57,7 +54,6 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
         // added
         if (!isFlatShaded) {
             this.computeVertexNormals();
-
             handleNormals();
         }
 
@@ -76,7 +72,6 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
 
             let groupCount = 0;
 
-            const slopeFillet = (radius - filletRadius) / fillet;
             const slope = 0;
 
             const filletTopRow = 0;
@@ -153,12 +148,10 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
                     const d = indexArray[y][x + 1];
 
                     // faces
-                    if (radiusTop > 0 || y !== 0) {
+                    if (radius > 0) {
                         indices.push(a, b, d);
                         groupCount += 3;
-                    }
 
-                    if (radiusBottom > 0 || y !== heightSegments - 1) {
                         indices.push(b, c, d);
                         groupCount += 3;
                     }
@@ -181,8 +174,6 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
             const sign = top === true ? 1 : -1;
 
             // first we generate the center vertex data of the cap.
-            // because the geometry needs one set of uvs per face,
-            // we must generate a center vertex per face/segment
             for (let x = 1; x <= radialSegments; x++) {
                 // vertex
                 vertices.push(0, halfHeight * sign, 0);
@@ -408,9 +399,10 @@ export class HexagonalPrismUtilities {
     static getNeighbors([hexColumn, hexRow]: [number, number], direction: number, flatTop: boolean) {
         const directions = flatTop ? this.directionDifferencesEvenQ : this.directionDifferencesEvenR;
 
-        // bitwise AND,"because it works with negative numbers too"
+        // bitwise AND -> "because it works with negative numbers too"
         const parity = (flatTop ? hexColumn : hexRow) & 1;
         const diff = directions[parity][direction];
+
         const offsetCoordinates: [number, number] = [hexColumn + diff[0], hexRow + diff[1]];
 
         return offsetCoordinates;
