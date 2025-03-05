@@ -80,6 +80,10 @@ export type GridData = {
 
 export type DefaultGridData = Omit<GridData, 'instanceWidth'> & { instanceWidth: null };
 
+export type CubeCoordinate = [number, number, number];
+
+export type OffsetCoordinate = [number, number];
+
 type PatternSettings = {
     instance: InstancedEntity;
     index: number;

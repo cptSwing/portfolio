@@ -1,5 +1,6 @@
 import { BufferAttribute, BufferGeometry, Float32BufferAttribute, GeometryGroup, InterleavedBufferAttribute, MathUtils, Vector3 } from 'three';
 import { getIndexedVertex } from '../threeHelpers';
+import { CubeCoordinate, OffsetCoordinate } from '../../types/types';
 
 // With lots of guidance from https://www.redblobgames.com/grids/hexagons/
 
@@ -388,16 +389,78 @@ export class HexagonalPrismUtilities {
         return [x, y];
     }
 
-    static getColumnAndRowByIndex = (index: number, numColumns: number) => {
+    static getColumnAndRowByIndex(index: number, numColumns: number) {
         const column = index % numColumns;
         const row = Math.floor(index / numColumns);
 
-        return [column, row] as [number, number];
-    };
+        return [column, row] as OffsetCoordinate;
+    }
+
+    static coord_CubeToEvenR([q, r, _s]: CubeCoordinate) {
+        const column = q + (r + (r & 1)) / 2;
+        const row = r;
+        return [column, row] as OffsetCoordinate;
+    }
+
+    static coord_EvenRToCube([column, row]: OffsetCoordinate) {
+        const q = column - (row + (row & 1)) / 2;
+        const r = row;
+        const s = -q - r;
+        return [q, r, s] as CubeCoordinate;
+    }
+
+    static getRingCubeCoordinates([q, r, s]: CubeCoordinate, radius: number) {
+        const [qDir0, rDir0, sDir0] = this.directionDifferencesCube[4];
+        const [qScaled, rScaled, sScaled] = [qDir0 * radius, rDir0 * radius, sDir0 * radius];
+        const results = [];
+
+        let cubeHex: CubeCoordinate = [q + qScaled, r + rScaled, s + sScaled];
+
+        for (let i = 0; i < 6; i++) {
+            for (let j = 0; j < radius; j++) {
+                results.push(cubeHex);
+                cubeHex = this.getNeighborsCubeCoordinates(cubeHex, i);
+            }
+        }
+
+        return results;
+    }
+
+    static getSpiralRingsCubeCoordinates(cubeHex: CubeCoordinate, radius: number) {
+        const results: CubeCoordinate[][] = [];
+
+        for (let i = 1; i <= radius; i++) {
+            results.push(this.getRingCubeCoordinates(cubeHex, i));
+        }
+        return results;
+    }
+
+    static getNeighborsCubeCoordinates([q, r, s]: CubeCoordinate, direction: number, diagonal = false) {
+        const [dirQ, dirR, dirS] = diagonal ? this.directionDifferencesDiagonalCube[direction] : this.directionDifferencesCube[direction];
+        return [q + dirQ, r + dirR, s + dirS] as CubeCoordinate;
+    }
+
+    static directionDifferencesCube: [CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate] = [
+        [+1, -1, 0],
+        [+1, 0, -1],
+        [0, +1, -1],
+        [-1, +1, 0],
+        [-1, 0, +1],
+        [0, -1, +1],
+    ];
+
+    static directionDifferencesDiagonalCube: [CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate] = [
+        [+1, -2, +1],
+        [+2, -1, -1],
+        [+1, +1, -2],
+        [-1, +2, -1],
+        [-2, +1, +1],
+        [-1, -1, +2],
+    ];
 
     // Even-R shoves even rows (r) right (pointy-top hexes)
-    static getNeighbors([hexColumn, hexRow]: [number, number], direction: number, flatTop: boolean) {
-        const directions = flatTop ? this.directionDifferencesEvenQ : this.directionDifferencesEvenR;
+    static getNeighborsOffsetCoordinates([hexColumn, hexRow]: OffsetCoordinate, direction: number, flatTop: boolean) {
+        const directions = flatTop ? this.directionDifferencesOffsetEvenQ : this.directionDifferencesOffsetEvenR;
 
         // bitwise AND -> "because it works with negative numbers too"
         const parity = (flatTop ? hexColumn : hexRow) & 1;
@@ -409,7 +472,7 @@ export class HexagonalPrismUtilities {
     }
 
     /** Index 0 is above/north, then moving clockwise (index 3 being below/south) */
-    static directionDifferencesEvenQ: [
+    static directionDifferencesOffsetEvenQ: [
         [[number, number], [number, number], [number, number], [number, number], [number, number], [number, number]],
         [[number, number], [number, number], [number, number], [number, number], [number, number], [number, number]],
     ] = [
@@ -434,7 +497,7 @@ export class HexagonalPrismUtilities {
     ];
 
     /** Index 0 is the first hex in the north-eastern area, eg first hex in local X+/Y+. then moving clockwise (index 3 being below/south-west) */
-    static directionDifferencesEvenR: [
+    static directionDifferencesOffsetEvenR: [
         [[number, number], [number, number], [number, number], [number, number], [number, number], [number, number]],
         [[number, number], [number, number], [number, number], [number, number], [number, number], [number, number]],
     ] = [

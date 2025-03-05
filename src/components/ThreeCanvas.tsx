@@ -6,7 +6,6 @@ import { DefaultGridData, GridData, InstancedMesh2ShaderMaterial } from '../type
 import { setShaderAnimation } from '../lib/animateMeshes';
 import { PerspectiveCamera as PerspectiveCameraImpl } from '@react-three/drei';
 import { useEvent } from 'react-use';
-import { HexagonalPrismUtilities } from '../lib/classes/HexagonalPrismGeometry';
 
 const cameraOffset = 30;
 
@@ -124,17 +123,9 @@ const getIntersectIndices = (intersection: Intersection[], gridColumns: number, 
 
     if (intersected !== newInstanceId) {
         hitIndices.push(newInstanceId);
-        hitIndices = [newInstanceId, ...getAdjacentIndices(newInstanceId, gridColumns, gridRows, 2, flatTop)];
+        hitIndices = [newInstanceId, ...getAdjacentIndices(newInstanceId, gridColumns, gridRows, 4, flatTop)];
 
         intersected = newInstanceId;
-
-        console.log(
-            '%c[ThreeCanvas]',
-            'color: #ed43fd',
-            `id: ${intersected} --> col, row :`,
-            ...HexagonalPrismUtilities.getColumnAndRowByIndex(intersected, gridColumns),
-            hitIndices,
-        );
     }
     return hitIndices;
 };

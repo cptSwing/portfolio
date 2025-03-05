@@ -1,8 +1,8 @@
 import { createRadixSort, InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
-import { Color, CubeTextureLoader, DoubleSide, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
+import { Color, CubeTextureLoader, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
 import vertexShader from './shading/instancedShader_V.glsl';
 import fragmentShader from './shading/instancedShader_F.glsl';
-import { DefaultGridData, GridData, InstancedMesh2ShaderMaterial } from '../types/types';
+import { DefaultGridData, GridData, InstancedMesh2ShaderMaterial, OffsetCoordinate } from '../types/types';
 import { extend, Object3DNode } from '@react-three/fiber';
 import { FC, MutableRefObject, useCallback, useEffect, useMemo } from 'react';
 import HexagonalPrismGeometry, { HexagonalPrismUtilities } from './classes/HexagonalPrismGeometry';
@@ -203,9 +203,17 @@ export const getInstanceCount = (params: DefaultGridData, isSquare: boolean) => 
     }
 };
 
-export const getAdjacentIndices = (instanceIndex: number, numColumns: number, numRows: number, distance: number, flatTop: boolean, isSquare = false) => {
-    const [hexCol, hexRow] = HexagonalPrismUtilities.getColumnAndRowByIndex(instanceIndex, numColumns);
+export const getAllNeighbors = (instanceIndex: number, distance: number, numColumns: number) => {
+    const offsetCoords = HexagonalPrismUtilities.getColumnAndRowByIndex(instanceIndex, numColumns);
+    const cubeCoords = HexagonalPrismUtilities.coord_EvenRToCube(offsetCoords);
+    const neighboringRings = HexagonalPrismUtilities.getSpiralRingsCubeCoordinates(cubeCoords, distance);
+    const neighborsOffsetCoords = neighboringRings.map((cubeCoordArray) =>
+        cubeCoordArray.map((cubeCoord) => HexagonalPrismUtilities.coord_CubeToEvenR(cubeCoord)),
+    );
+    return neighborsOffsetCoords;
+};
 
+export const getAdjacentIndices = (instanceIndex: number, numColumns: number, numRows: number, distance: number, _flatTop = false, isSquare = false) => {
     let allNeighbors: number[] = [];
 
     if (isSquare) {
@@ -216,22 +224,22 @@ export const getAdjacentIndices = (instanceIndex: number, numColumns: number, nu
 
         allNeighbors.push(above, toRight, below, toLeft);
     } else {
-        const neighbors = getHexagonRings(3, [[hexCol, hexRow]], flatTop);
-
-        allNeighbors = neighbors.map(([nCol, nRow]) => {
-            let nIndex = nRow * numColumns + nCol;
-
-            if (nCol < 0 || nCol >= numColumns) {
-                nIndex = -1; // prevent wrapping to other side, as filtered below
-            } else if (nRow < 0 || nRow >= numRows) {
-                nIndex = -1; // prevent wrapping to other side, as filtered below
-            }
-
-            return nIndex;
-        });
+        const neighbors = getAllNeighbors(instanceIndex, distance, numColumns);
+        allNeighbors = neighbors.flat().map((coords) => offsetCoordsToIndices(coords, numColumns, numRows));
     }
 
     return allNeighbors.filter((adjacent) => adjacent >= 0);
+};
+
+const offsetCoordsToIndices = (coord: OffsetCoordinate, numColumns: number, numRows: number) => {
+    const [column, row] = coord;
+    let index = row * numColumns + column;
+
+    if (column < 0 || column >= numColumns || row < 0 || row >= numRows) {
+        index = -1; // prevent wrapping to other side, as filtered below
+    }
+
+    return index;
 };
 
 const getHexagonRings = (distance: number, coordinates: [number, number][], flatTop: boolean, iteration = 1) => {
@@ -241,7 +249,7 @@ const getHexagonRings = (distance: number, coordinates: [number, number][], flat
 
         // Initial ring (6 neighbors)
         for (let i = 0; i < 6; i++) {
-            const coords = HexagonalPrismUtilities.getNeighbors(centerCoords, i, flatTop);
+            const coords = HexagonalPrismUtilities.getNeighborsOffsetCoordinates(centerCoords, i, flatTop);
             coordinates.push(coords);
         }
     } else {
@@ -262,8 +270,8 @@ const getHexagonRings = (distance: number, coordinates: [number, number][], flat
 
             // TODO revise the below algo, not working ;D
             /** each neighbor queries two of it's further outwards neighbors: 0 queries it's neightbors 0 and 1; 1 queries it's 1 and 2 --- etc */
-            const nColRow0 = HexagonalPrismUtilities.getNeighbors([nHexCol, nHexRow], neighbor, flatTop);
-            const nColRow1 = HexagonalPrismUtilities.getNeighbors([nHexCol, nHexRow], nextNeighbor, flatTop);
+            const nColRow0 = HexagonalPrismUtilities.getNeighborsOffsetCoordinates([nHexCol, nHexRow], neighbor, flatTop);
+            const nColRow1 = HexagonalPrismUtilities.getNeighborsOffsetCoordinates([nHexCol, nHexRow], nextNeighbor, flatTop);
 
             coordinates.push(nColRow0, nColRow1);
         }
@@ -274,24 +282,6 @@ const getHexagonRings = (distance: number, coordinates: [number, number][], flat
     } else {
         return getHexagonRings(distance, coordinates, flatTop, iteration + 1);
     }
-};
-
-// TODO make this recursive?
-const getDistantNeighbors = (neighbors: [number, number][], flatTop: boolean) => {
-    const arrLength = neighbors.length;
-
-    for (let i = 0; i < arrLength; i++) {
-        const [nHexCol, nHexRow] = neighbors[i];
-        const nextI = i < arrLength - 1 ? i + 1 : 0;
-
-        /** each neighbor queries two of it's further outwards neighbors: 0 queries it's neightbors 0 and 1; 1 queries it's 1 and 2 --- etc */
-        const nColRow0 = HexagonalPrismUtilities.getNeighbors([nHexCol, nHexRow], i, flatTop);
-        const nColRow1 = HexagonalPrismUtilities.getNeighbors([nHexCol, nHexRow], nextI, flatTop);
-
-        neighbors.push(nColRow0, nColRow1);
-    }
-
-    return neighbors;
 };
 
 const cubeTextureLoader = new CubeTextureLoader();
