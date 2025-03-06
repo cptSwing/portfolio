@@ -83,16 +83,12 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                 const intersection = raycaster_Ref.current.intersectObject(mesh_Ref.current, false);
 
                 if (intersection.length) {
-                    intersectionHits_Ref.current = getIntersectIndices(
-                        intersection,
-                        gridData_Memo.gridColumns,
-                        gridData_Memo.gridRows,
-                        gridData_Memo.instanceFlatTop,
-                    );
+                    intersectionHits_Ref.current = getIntersectIndices(intersection, gridData_Memo.gridColumns, gridData_Memo.gridRows);
                 }
             }
 
-            // const lightPositionX = mousePosition_Ref.current.x * (gridData_Memo.overallWidth / 2);   // Converted to x,y at Scene Z:0
+            // How to convert to x,y at Scene Z:0
+            // const lightPositionX = mousePosition_Ref.current.x * (gridData_Memo.overallWidth / 2);
         },
         document,
     );
@@ -121,12 +117,18 @@ const threeAnimate = (
 
 let intersected = 0;
 let hitIndices: number[] = [];
-const getIntersectIndices = (intersection: Intersection[], gridColumns: number, gridRows: number, flatTop: boolean) => {
+const getIntersectIndices = (intersection: Intersection[], gridColumns: number, gridRows: number) => {
     const newInstanceId = intersection[0].instanceId ?? intersected;
 
     if (intersected !== newInstanceId) {
         hitIndices.push(newInstanceId);
-        hitIndices = [newInstanceId, ...HexGrid.getAdjacentIndices(newInstanceId, gridColumns, gridRows, 4, flatTop)];
+        // hitIndices = [newInstanceId, ...HexGrid.getAllNeighborsIndices(newInstanceId, 4, gridColumns, gridRows)];
+        hitIndices = [
+            newInstanceId,
+            ...HexGrid.getAxesNeighborsIndices(newInstanceId, 6, 'q', 'both', gridColumns, gridRows),
+            ...HexGrid.getAxesNeighborsIndices(newInstanceId, 6, 'r', 'both', gridColumns, gridRows),
+            ...HexGrid.getAxesNeighborsIndices(newInstanceId, 6, 's', 'both', gridColumns, gridRows),
+        ];
 
         intersected = newInstanceId;
     }

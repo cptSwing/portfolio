@@ -1,8 +1,5 @@
 import { BufferAttribute, BufferGeometry, Float32BufferAttribute, GeometryGroup, InterleavedBufferAttribute, MathUtils, Vector3 } from 'three';
 import { getIndexedVertex } from '../threeHelpers';
-import { CubeCoordinate, OffsetCoordinate } from '../../types/types';
-
-// With lots of guidance from https://www.redblobgames.com/grids/hexagons/
 
 export default class HexagonalPrismGeometry extends BufferGeometry {
     type = 'HexagonalPrismGeometry';

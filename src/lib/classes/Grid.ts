@@ -7,24 +7,26 @@ export class Grid {
         instance.color = colorObject.setHex(0x000000); // Set to black to not initially add anything to 'diffuse'
     };
 
-    static getColumnAndRowByIndex(index: number, numColumns: number) {
+    static getOffsetCoordFromIndex(index: number, numColumns: number) {
         const column = index % numColumns;
         const row = Math.floor(index / numColumns);
 
         return [column, row] as OffsetCoordinate;
     }
 
-    static offsetCoordsToIndices(coord: OffsetCoordinate, numColumns: number, numRows: number, filterOutOfBounds = true) {
+    static getIndexFromOffsetCoord(coord: OffsetCoordinate, numColumns: number, numRows: number, markOutOfBounds = true) {
         const [column, row] = coord;
         let index = row * numColumns + column;
 
-        if (filterOutOfBounds && (column < 0 || column >= numColumns || row < 0 || row >= numRows)) {
-            index = -1; // prevent wrapping to other side, as filtered below
+        if (markOutOfBounds && (column < 0 || column >= numColumns || row < 0 || row >= numRows)) {
+            index = -1; // prevent wrapping to other side, mark with -1
         }
 
         return index;
     }
 }
+
+/* With lots of guidance from https://www.redblobgames.com/grids/hexagons/ */
 
 export class HexGrid extends Grid {
     static hexAngle = (2 * Math.PI) / 6; // 60 deg
@@ -70,32 +72,55 @@ export class HexGrid extends Grid {
         flatTop: boolean,
     ) {
         let offsetX, offsetY;
-        const [column, row] = this.getColumnAndRowByIndex(index, gridColumns);
+        const [column, row] = this.getOffsetCoordFromIndex(index, gridColumns);
         [offsetX, offsetY] = this.getXYOffsets(width, padding, column, row, flatTop);
 
         const position = { x: extentX + offsetX, y: extentY - offsetY, z: 0 };
         instance.position.set(position.x, position.y, position.z);
     }
 
-    static getAdjacentIndices(instanceIndex: number, numColumns: number, numRows: number, distance: number, _flatTop = false, filterOutOfBounds = true) {
-        let allNeighbors: number[] = [];
+    static getCubeCoordFromInstanceIndex(instanceIndex: number, numColumns: number) {
+        const offsetCoord = this.getOffsetCoordFromIndex(instanceIndex, numColumns);
+        return this.coord_EvenRToCube(offsetCoord);
+    }
 
-        const neighbors = this.getAllNeighbors(instanceIndex, distance, numColumns);
-        allNeighbors = neighbors.flat().map((coords) => this.offsetCoordsToIndices(coords, numColumns, numRows, filterOutOfBounds));
+    static getInstanceIndexFromCubeCoord(cubeCoord: CubeCoordinate, numColumns: number, numRows: number, markOutOfBounds: boolean) {
+        const offsetCoordinate = this.coord_CubeToEvenR(cubeCoord);
+        return this.getIndexFromOffsetCoord(offsetCoordinate, numColumns, numRows, markOutOfBounds);
+    }
 
-        if (filterOutOfBounds) {
-            return allNeighbors.filter((adjacent) => adjacent >= 0);
+    static getAxesNeighborsIndices(
+        instanceIndex: number,
+        distance: number,
+        axis: 'q' | 'r' | 's',
+        direction: 'left' | 'right' | 'both',
+        numColumns: number,
+        numRows: number,
+        markOutOfBounds = true,
+    ) {
+        const cubeCoords = this.getCubeCoordFromInstanceIndex(instanceIndex, numColumns);
+        const axisNeighbors = this.getAxisCubeCoordinates(cubeCoords, distance, axis, direction);
+        const axisNeighorsIndices = axisNeighbors.map((cubeCoord) => this.getInstanceIndexFromCubeCoord(cubeCoord, numColumns, numRows, markOutOfBounds));
+
+        if (markOutOfBounds) {
+            return axisNeighorsIndices.filter((adjacent) => adjacent >= 0);
         } else {
-            return allNeighbors;
+            return axisNeighorsIndices;
         }
     }
 
-    static getAllNeighbors(instanceIndex: number, distance: number, numColumns: number) {
-        const offsetCoords = this.getColumnAndRowByIndex(instanceIndex, numColumns);
-        const cubeCoords = this.coord_EvenRToCube(offsetCoords);
+    static getAllNeighborsIndices(instanceIndex: number, distance: number, numColumns: number, numRows: number, markOutOfBounds = true) {
+        const cubeCoords = this.getCubeCoordFromInstanceIndex(instanceIndex, numColumns);
         const neighboringRings = this.getSpiralRingsCubeCoordinates(cubeCoords, distance);
-        const neighborsOffsetCoords = neighboringRings.map((cubeCoordArray) => cubeCoordArray.map((cubeCoord) => this.coord_CubeToEvenR(cubeCoord)));
-        return neighborsOffsetCoords;
+        const neighboringRingsIndices = neighboringRings
+            .flat()
+            .map((cubeCoord) => this.getInstanceIndexFromCubeCoord(cubeCoord, numColumns, numRows, markOutOfBounds));
+
+        if (markOutOfBounds) {
+            return neighboringRingsIndices.filter((adjacent) => adjacent >= 0);
+        } else {
+            return neighboringRingsIndices;
+        }
     }
 
     static getWidthHeight(size: number, flatTop = true) {
@@ -175,15 +200,52 @@ export class HexGrid extends Grid {
         return [q, r, s] as CubeCoordinate;
     }
 
-    static getRingCubeCoordinates([q, r, s]: CubeCoordinate, radius: number) {
+    // not 'flatTop'ped yet
+    static getAxisCubeCoordinates([q, r, s]: CubeCoordinate, distance: number, axis: 'q' | 'r' | 's', direction: 'left' | 'right' | 'both', _flatTop = false) {
+        let nextAxisSign = direction === 'left' || direction === 'both' ? -1 : 1;
+        let ultimateAxisSign = nextAxisSign * -1;
+        const distanceToTravel = direction === 'both' ? distance * 2 : distance;
+
+        const axisCoordinates: CubeCoordinate[] = [];
+
+        for (let i = 1; i <= distanceToTravel; i++) {
+            let k = i;
+            if (i > distance) {
+                nextAxisSign = 1;
+                ultimateAxisSign = -1;
+                k = i - distance;
+            }
+
+            let axisDifference: CubeCoordinate;
+            switch (axis) {
+                case 'q':
+                    axisDifference = [q, r + k * nextAxisSign, s + k * ultimateAxisSign];
+                    break;
+
+                case 'r':
+                    axisDifference = [q + k * nextAxisSign, r, s + k * ultimateAxisSign];
+                    break;
+
+                case 's':
+                    axisDifference = [q + k * nextAxisSign, r + k * ultimateAxisSign, s];
+                    break;
+            }
+            axisCoordinates.push(axisDifference);
+        }
+        console.log('%c[Grid]', 'color: #f0dc95', `axisCoordinates :`, axisCoordinates);
+        return axisCoordinates;
+    }
+
+    // Get coordinates of hexes in a ring at 'distance'
+    static getRingCubeCoordinates([q, r, s]: CubeCoordinate, distance: number) {
         const [qDir0, rDir0, sDir0] = this.directionDifferencesCube[4];
-        const [qScaled, rScaled, sScaled] = [qDir0 * radius, rDir0 * radius, sDir0 * radius];
+        const [qScaled, rScaled, sScaled] = [qDir0 * distance, rDir0 * distance, sDir0 * distance];
         const results = [];
 
         let cubeHex: CubeCoordinate = [q + qScaled, r + rScaled, s + sScaled];
 
         for (let i = 0; i < 6; i++) {
-            for (let j = 0; j < radius; j++) {
+            for (let j = 0; j < distance; j++) {
                 results.push(cubeHex);
                 cubeHex = this.getNeighborsCubeCoordinates(cubeHex, i);
             }
@@ -192,10 +254,11 @@ export class HexGrid extends Grid {
         return results;
     }
 
-    static getSpiralRingsCubeCoordinates(cubeHex: CubeCoordinate, radius: number) {
+    // get all coordinates of hexes between center 'cubeHex' and 'distance', returning one array per ring, going outwards
+    static getSpiralRingsCubeCoordinates(cubeHex: CubeCoordinate, distance: number) {
         const results: CubeCoordinate[][] = [];
 
-        for (let i = 1; i <= radius; i++) {
+        for (let i = 1; i <= distance; i++) {
             results.push(this.getRingCubeCoordinates(cubeHex, i));
         }
         return results;
@@ -215,6 +278,7 @@ export class HexGrid extends Grid {
         [0, -1, +1],
     ];
 
+    /* "Diagonals" : first hex lying outside of the 3 axes defining a hex --> https://www.redblobgames.com/grids/hexagons/#neighbors-diagonal */
     static directionDifferencesDiagonalCube: [CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate] = [
         [+1, -2, +1],
         [+2, -1, -1],
@@ -316,7 +380,7 @@ export class SquareGrid extends Grid {
         padding: number,
     ) => {
         let offsetX, offsetY;
-        const [column, row] = this.getColumnAndRowByIndex(index, gridColumns);
+        const [column, row] = this.getOffsetCoordFromIndex(index, gridColumns);
 
         offsetX = column * width + padding;
         offsetY = row * width + padding;
@@ -325,7 +389,7 @@ export class SquareGrid extends Grid {
         instance.position.set(position.x, position.y, position.z);
     };
 
-    static getAdjacentIndices(instanceIndex: number, numColumns: number, filterOutOfBounds = true) {
+    static getAdjacentIndices(instanceIndex: number, numColumns: number, markOutOfBounds = true) {
         let allNeighbors: number[] = [];
 
         const above = instanceIndex - numColumns;
@@ -335,6 +399,6 @@ export class SquareGrid extends Grid {
 
         allNeighbors.push(above, toRight, below, toLeft);
 
-        return filterOutOfBounds ? allNeighbors.filter((adjacent) => adjacent >= 0) : allNeighbors;
+        return markOutOfBounds ? allNeighbors.filter((adjacent) => adjacent >= 0) : allNeighbors;
     }
 }
