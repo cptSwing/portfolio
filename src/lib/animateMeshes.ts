@@ -2,7 +2,7 @@ import { Color, MathUtils, Vector4 } from 'three';
 import { GridData, InstancedMesh2ShaderMaterial, PatternSettingsAnimation } from '../types/types';
 import HexagonGeometry from './classes/HexagonGeometry';
 import { MutableRefObject } from 'react';
-import { getAdjacentIndices } from './instancedMesh2';
+import { HexGrid } from './classes/Grid';
 
 // .w holds offset strength
 const prevOffset = new Vector4();
@@ -29,7 +29,7 @@ export const setShaderAnimation = (
     if (pattern === 'raindrops') {
         if (Math.ceil(time_S) % 2 === 0) {
             const randomDropIndex = Math.ceil(remapToRange(Math.random(), 0, 1, 0, gridCount - 1));
-            intersectionHits_Ref.current = [randomDropIndex, ...getAdjacentIndices(randomDropIndex, gridColumns, gridRows, 2, instanceFlatTop)];
+            intersectionHits_Ref.current = [randomDropIndex, ...HexGrid.getAdjacentIndices(randomDropIndex, gridColumns, gridRows, 2, instanceFlatTop)];
         }
     }
 

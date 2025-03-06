@@ -1,11 +1,12 @@
 import { FC, MouseEvent, MutableRefObject, useMemo, useRef } from 'react';
 import { Intersection, Vector2, WebGLRenderer, PerspectiveCamera, Camera, Raycaster } from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import BackgroundMesh, { getAdjacentIndices, getInstanceCount } from '../lib/instancedMesh2';
+import BackgroundMesh from '../lib/instancedMesh2';
 import { DefaultGridData, GridData, InstancedMesh2ShaderMaterial } from '../types/types';
 import { setShaderAnimation } from '../lib/animateMeshes';
 import { PerspectiveCamera as PerspectiveCameraImpl } from '@react-three/drei';
 import { useEvent } from 'react-use';
+import { HexGrid, SquareGrid } from '../lib/classes/Grid';
 
 const cameraOffset = 30;
 
@@ -57,7 +58,9 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 
     const gridData_Memo = useMemo<GridData>(() => {
         const [width, height] = getWidthHeight(0, camera as PerspectiveCamera);
-        const gridData = getInstanceCount({ ...gridDataDefaults, overallWidth: width, overallHeight: height }, isSquare);
+        const gridData = isSquare
+            ? SquareGrid.getInstanceCount({ ...gridDataDefaults, overallWidth: width, overallHeight: height })
+            : HexGrid.getInstanceCount({ ...gridDataDefaults, overallWidth: width, overallHeight: height });
 
         // 'Tumble' animation runs again once gridData is updated (likely a resize event / actual first run):
         hasRunOnce_Ref.current = false;
@@ -123,7 +126,7 @@ const getIntersectIndices = (intersection: Intersection[], gridColumns: number, 
 
     if (intersected !== newInstanceId) {
         hitIndices.push(newInstanceId);
-        hitIndices = [newInstanceId, ...getAdjacentIndices(newInstanceId, gridColumns, gridRows, 4, flatTop)];
+        hitIndices = [newInstanceId, ...HexGrid.getAdjacentIndices(newInstanceId, gridColumns, gridRows, 4, flatTop)];
 
         intersected = newInstanceId;
     }
