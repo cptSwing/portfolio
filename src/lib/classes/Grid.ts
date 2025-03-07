@@ -1,6 +1,6 @@
 import { InstancedEntity } from '@three.ez/instanced-mesh';
 import { Color } from 'three';
-import { OffsetCoordinate, DefaultGridData, GridData, CubeCoordinate } from '../../types/types';
+import { OffsetCoordinate, DefaultGridData, GridData, CubeCoordinate, CubeCoordinateByDistance } from '../../types/types';
 
 export class Grid {
     static setInstanceColor = (instance: InstancedEntity, colorObject: Color) => {
@@ -84,40 +84,59 @@ export class HexGrid extends Grid {
         return this.coord_EvenRToCube(offsetCoord);
     }
 
-    static getInstanceIndexFromCubeCoord(cubeCoord: CubeCoordinate, numColumns: number, numRows: number, markOutOfBounds: boolean) {
+    static getInstanceIndexFromCubeCoord(cubeCoord: CubeCoordinate, gridColsRows: [number, number], markOutOfBounds: boolean) {
+        const [numColumns, numRows] = gridColsRows;
         const offsetCoordinate = this.coord_CubeToEvenR(cubeCoord);
         return this.getIndexFromOffsetCoord(offsetCoordinate, numColumns, numRows, markOutOfBounds);
     }
 
-    static getAxesNeighborsIndices(
+    static getAxesIndices(
         instanceIndex: number,
         distance: number,
         axis: 'q' | 'r' | 's',
         direction: 'left' | 'right' | 'both',
-        numColumns: number,
-        numRows: number,
+        gridColsRows: [number, number],
         markOutOfBounds = true,
     ) {
+        const [numColumns] = gridColsRows;
         const cubeCoords = this.getCubeCoordFromInstanceIndex(instanceIndex, numColumns);
         const axisNeighbors = this.getAxisCubeCoordinates(cubeCoords, distance, axis, direction);
-        const axisNeighorsIndices = axisNeighbors.map((cubeCoord) => this.getInstanceIndexFromCubeCoord(cubeCoord, numColumns, numRows, markOutOfBounds));
+        const axisNeighorsIndices = axisNeighbors.map((cubeCoordsAtDistance) =>
+            cubeCoordsAtDistance.map((cubeCoord) => this.getInstanceIndexFromCubeCoord(cubeCoord, gridColsRows, markOutOfBounds)),
+        );
 
         if (markOutOfBounds) {
-            return axisNeighorsIndices.filter((adjacent) => adjacent >= 0);
+            return axisNeighorsIndices.map((indicesAtDistance) => indicesAtDistance.filter((adjacent) => adjacent >= 0));
         } else {
             return axisNeighorsIndices;
         }
     }
 
-    static getAllNeighborsIndices(instanceIndex: number, distance: number, numColumns: number, numRows: number, markOutOfBounds = true) {
+    static getSpiralIndices(instanceIndex: number, distance: number, gridColsRows: [number, number], markOutOfBounds = true) {
+        const [numColumns] = gridColsRows;
         const cubeCoords = this.getCubeCoordFromInstanceIndex(instanceIndex, numColumns);
         const neighboringRings = this.getSpiralRingsCubeCoordinates(cubeCoords, distance);
-        const neighboringRingsIndices = neighboringRings
-            .flat()
-            .map((cubeCoord) => this.getInstanceIndexFromCubeCoord(cubeCoord, numColumns, numRows, markOutOfBounds));
+        const neighboringRingsIndices = neighboringRings.map((cubeCoordsAtDistance) =>
+            cubeCoordsAtDistance.map((cubeCoord) => this.getInstanceIndexFromCubeCoord(cubeCoord, gridColsRows, markOutOfBounds)),
+        );
 
         if (markOutOfBounds) {
-            return neighboringRingsIndices.filter((adjacent) => adjacent >= 0);
+            return neighboringRingsIndices.map((indicesAtDistance) => indicesAtDistance.filter((adjacent) => adjacent >= 0));
+        } else {
+            return neighboringRingsIndices;
+        }
+    }
+
+    static getRingIndices(instanceIndex: number, distance: number, gridColsRows: [number, number], markOutOfBounds = true) {
+        const [numColumns] = gridColsRows;
+        const cubeCoords = this.getCubeCoordFromInstanceIndex(instanceIndex, numColumns);
+        const neighboringRings = this.getSingleRingsCubeCoordinates(cubeCoords, distance);
+        const neighboringRingsIndices = neighboringRings.map((cubeCoordsAtDistance) =>
+            cubeCoordsAtDistance.map((cubeCoord) => this.getInstanceIndexFromCubeCoord(cubeCoord, gridColsRows, markOutOfBounds)),
+        );
+
+        if (markOutOfBounds) {
+            return neighboringRingsIndices.map((indicesAtDistance) => indicesAtDistance.filter((adjacent) => adjacent >= 0));
         } else {
             return neighboringRingsIndices;
         }
@@ -200,13 +219,17 @@ export class HexGrid extends Grid {
         return [q, r, s] as CubeCoordinate;
     }
 
+    static getCoordinateDistanceArray(distance: number) {
+        return Array.from({ length: distance + 1 }).map(() => []) as CubeCoordinateByDistance;
+    }
+
     // not 'flatTop'ped yet
     static getAxisCubeCoordinates([q, r, s]: CubeCoordinate, distance: number, axis: 'q' | 'r' | 's', direction: 'left' | 'right' | 'both', _flatTop = false) {
         let nextAxisSign = direction === 'left' || direction === 'both' ? -1 : 1;
         let ultimateAxisSign = nextAxisSign * -1;
         const distanceToTravel = direction === 'both' ? distance * 2 : distance;
 
-        const axisCoordinates: CubeCoordinate[] = [];
+        const results: CubeCoordinateByDistance = this.getCoordinateDistanceArray(distance);
 
         for (let i = 1; i <= distanceToTravel; i++) {
             let k = i;
@@ -230,16 +253,17 @@ export class HexGrid extends Grid {
                     axisDifference = [q + k * nextAxisSign, r + k * ultimateAxisSign, s];
                     break;
             }
-            axisCoordinates.push(axisDifference);
+            results[k].push(axisDifference);
         }
-        console.log('%c[Grid]', 'color: #f0dc95', `axisCoordinates :`, axisCoordinates);
-        return axisCoordinates;
+
+        return results;
     }
 
     // Get coordinates of hexes in a ring at 'distance'
     static getRingCubeCoordinates([q, r, s]: CubeCoordinate, distance: number) {
         const [qDir0, rDir0, sDir0] = this.directionDifferencesCube[4];
         const [qScaled, rScaled, sScaled] = [qDir0 * distance, rDir0 * distance, sDir0 * distance];
+
         const results = [];
 
         let cubeHex: CubeCoordinate = [q + qScaled, r + rScaled, s + sScaled];
@@ -254,12 +278,19 @@ export class HexGrid extends Grid {
         return results;
     }
 
+    // as above, but with correct return type
+    static getSingleRingsCubeCoordinates(cubeHex: CubeCoordinate, distance: number) {
+        const results: CubeCoordinateByDistance = this.getCoordinateDistanceArray(distance);
+        results[distance] = this.getRingCubeCoordinates(cubeHex, distance);
+        return results;
+    }
+
     // get all coordinates of hexes between center 'cubeHex' and 'distance', returning one array per ring, going outwards
     static getSpiralRingsCubeCoordinates(cubeHex: CubeCoordinate, distance: number) {
-        const results: CubeCoordinate[][] = [];
+        const results: CubeCoordinateByDistance = this.getCoordinateDistanceArray(distance);
 
         for (let i = 1; i <= distance; i++) {
-            results.push(this.getRingCubeCoordinates(cubeHex, i));
+            results[i] = this.getRingCubeCoordinates(cubeHex, i);
         }
         return results;
     }

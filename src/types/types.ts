@@ -82,6 +82,9 @@ export type DefaultGridData = Omit<GridData, 'instanceWidth'> & { instanceWidth:
 
 export type CubeCoordinate = [number, number, number];
 
+/** Where index 0 would contain the center hex's coordinates, index 1 contains coordinates for distance 1, index 2 contains coordinates at distance 2, etc */
+export type CubeCoordinateByDistance = CubeCoordinate[][];
+
 export type OffsetCoordinate = [number, number];
 
 type PatternSettings = {

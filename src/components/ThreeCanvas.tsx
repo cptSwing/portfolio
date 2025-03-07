@@ -7,6 +7,7 @@ import { setShaderAnimation } from '../lib/animateMeshes';
 import { PerspectiveCamera as PerspectiveCameraImpl } from '@react-three/drei';
 import { useEvent } from 'react-use';
 import { HexGrid, SquareGrid } from '../lib/classes/Grid';
+import { getWidthHeight } from '../lib/threeHelpers';
 
 const cameraOffset = 30;
 
@@ -50,7 +51,7 @@ const gridDataDefaults: DefaultGridData = {
 const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     const [renderer, camera] = useThree((state) => [state.gl, state.camera]) as [WebGLRenderer, Camera];
     const mesh_Ref = useRef<InstancedMesh2ShaderMaterial | null>(null);
-    const intersectionHits_Ref = useRef<number[] | null>(null);
+    const intersectionHits_Ref = useRef<number[][] | null>(null);
 
     const mousePosition_Ref = useRef(new Vector2());
     const raycaster_Ref = useRef<Raycaster | null>(null);
@@ -83,7 +84,7 @@ const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                 const intersection = raycaster_Ref.current.intersectObject(mesh_Ref.current, false);
 
                 if (intersection.length) {
-                    intersectionHits_Ref.current = getIntersectIndices(intersection, gridData_Memo.gridColumns, gridData_Memo.gridRows);
+                    intersectionHits_Ref.current = getIntersectIndices(intersection, [gridData_Memo.gridColumns, gridData_Memo.gridRows]);
                 }
             }
 
@@ -109,53 +110,82 @@ const threeAnimate = (
     time_S: number,
     mesh: InstancedMesh2ShaderMaterial,
     gridData: GridData,
-    intersectionHits_Ref: MutableRefObject<number[] | null>,
+    intersectionHits_Ref: MutableRefObject<number[][] | null>,
     hasRunOnce_Ref: MutableRefObject<boolean>,
 ) => {
     setShaderAnimation(mesh, gridData, time_S, intersectionHits_Ref, hasRunOnce_Ref, 'sin');
 };
 
 let intersected = 0;
-let hitIndices: number[] = [];
-const getIntersectIndices = (intersection: Intersection[], gridColumns: number, gridRows: number) => {
+let hitIndices: number[][] = [];
+const getIntersectIndices = (intersection: Intersection[], gridColsRows: [number, number]) => {
     const newInstanceId = intersection[0].instanceId ?? intersected;
 
     if (intersected !== newInstanceId) {
-        hitIndices.push(newInstanceId);
-        // hitIndices = [newInstanceId, ...HexGrid.getAllNeighborsIndices(newInstanceId, 4, gridColumns, gridRows)];
-        hitIndices = [
-            newInstanceId,
-            ...HexGrid.getAxesNeighborsIndices(newInstanceId, 6, 'q', 'both', gridColumns, gridRows),
-            ...HexGrid.getAxesNeighborsIndices(newInstanceId, 6, 'r', 'both', gridColumns, gridRows),
-            ...HexGrid.getAxesNeighborsIndices(newInstanceId, 6, 's', 'both', gridColumns, gridRows),
-        ];
+        const { getHexagonShape, getRingShape, getStarShape, mergeIndicesDistanceLevels, filterIndices } = HitsAnimation;
+        const hitIndices1 = getHexagonShape(newInstanceId, 2, gridColsRows);
+        const hitIndices2 = getRingShape(newInstanceId, [6, 8, 10], gridColsRows);
+        const hitIndices3 = getStarShape(newInstanceId, 4, gridColsRows);
+        hitIndices = mergeIndicesDistanceLevels(hitIndices1, hitIndices2, hitIndices3);
+
+        hitIndices = filterIndices(hitIndices);
 
         intersected = newInstanceId;
     }
     return hitIndices;
 };
 
-const getWidthHeight = (depth: number, camera: PerspectiveCamera) => {
-    const widthAtZ = visibleWidthAtZDepth(depth, camera);
-    const heightAtZ = visibleHeightAtZDepth(depth, camera);
-    return [widthAtZ, heightAtZ];
-};
+class HitsAnimation {
+    static animationTimer(time: number) {
+        // TODO something with the 'time' stamp from useFrame --> do x every 10 seconds, or some such
+    }
 
-/** https://discourse.threejs.org/t/functions-to-calculate-the-visible-width-height-at-a-given-z-depth-from-a-perspective-camera/269 */
-const visibleHeightAtZDepth = (depth: number, camera: PerspectiveCamera) => {
-    // compensate for cameras not positioned at z=0
-    const cameraOffset = camera.position.z;
-    if (depth < cameraOffset) depth -= cameraOffset;
-    else depth += cameraOffset;
+    static getRingShape(instanceIndex: number, distance: number | number[], gridColsRows: [number, number]) {
+        let indicesArray: number[][];
 
-    // vertical fov in radians
-    const vFOV = (camera.fov * Math.PI) / 180;
+        if (Array.isArray(distance) && distance.length) {
+            const rings: number[][][] = distance.map((distanceValue) => HexGrid.getRingIndices(instanceIndex, distanceValue, gridColsRows));
+            indicesArray = HitsAnimation.mergeIndicesDistanceLevels(...rings);
+        } else {
+            indicesArray = HexGrid.getRingIndices(instanceIndex, distance as number, gridColsRows);
+        }
+        indicesArray[0] = [instanceIndex];
+        return indicesArray;
+    }
 
-    // Math.abs to ensure the result is always positive
-    return 2 * Math.tan(vFOV / 2) * Math.abs(depth);
-};
+    static getHexagonShape(instanceIndex: number, distance: number, gridColsRows: [number, number]) {
+        const indicesArray = HexGrid.getSpiralIndices(instanceIndex, distance, gridColsRows);
+        indicesArray[0] = [instanceIndex];
+        return indicesArray;
+    }
 
-const visibleWidthAtZDepth = (depth: number, camera: PerspectiveCamera) => {
-    const height = visibleHeightAtZDepth(depth, camera);
-    return height * camera.aspect;
-};
+    static getStarShape(instanceIndex: number, distance: number, gridColsRows: [number, number]) {
+        const indicesArrayQ = HexGrid.getAxesIndices(instanceIndex, distance, 'q', 'both', gridColsRows);
+        const indicesArrayR = HexGrid.getAxesIndices(instanceIndex, distance, 'r', 'both', gridColsRows);
+        const indicesArrayS = HexGrid.getAxesIndices(instanceIndex, distance, 's', 'both', gridColsRows);
+
+        const indicesArray = HitsAnimation.mergeIndicesDistanceLevels(indicesArrayQ, indicesArrayR, indicesArrayS);
+        indicesArray[0] = [instanceIndex];
+
+        return indicesArray;
+    }
+
+    static mergeIndicesDistanceLevels(...arrayOfIndicesByDistance: number[][][]) {
+        const longestArrayIndex = arrayOfIndicesByDistance.reduce((prev, current, idx, arr) => (arr[prev].length > current.length ? prev : idx), 0);
+        const longestIndicesArray = arrayOfIndicesByDistance.splice(longestArrayIndex, 1)[0];
+
+        arrayOfIndicesByDistance.forEach((indices) => {
+            for (let i = 1; i < longestIndicesArray.length; i++) {
+                indices[i] && longestIndicesArray[i].push(...indices[i]);
+            }
+        });
+
+        return longestIndicesArray;
+    }
+
+    static filterIndices(indicesArray: number[][]) {
+        const filtered = indicesArray.filter((indicesAtDistance) => indicesAtDistance.length);
+        const filteredAndDeDuped = filtered.map((indices) => Array.from(new Set(indices)));
+        return filteredAndDeDuped;
+    }
+}

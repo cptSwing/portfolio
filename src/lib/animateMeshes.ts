@@ -19,19 +19,20 @@ export const setShaderAnimation = (
     mesh: InstancedMesh2ShaderMaterial,
     gridData: GridData,
     time_S: number,
-    intersectionHits_Ref: MutableRefObject<number[] | null>,
+    intersectionHits_Ref: MutableRefObject<number[][] | null>,
     hasRunOnce_Ref: MutableRefObject<boolean>,
     pattern: PatternSettingsAnimation['pattern'] = 'sin-columns',
 ) => {
     const { overallHeight, gridCount, gridColumns, gridRows, instanceFlatTop, instanceWidth } = gridData;
+    const hits = intersectionHits_Ref.current;
 
     // TODO write more comprehensive animation system --> background patterns (such as sin-wave etc), overlaid/overwritten by actions such as mousevent, raindrop, shake etc etc
-    if (pattern === 'raindrops') {
-        if (Math.ceil(time_S) % 2 === 0) {
-            const randomDropIndex = Math.ceil(remapToRange(Math.random(), 0, 1, 0, gridCount - 1));
-            intersectionHits_Ref.current = [randomDropIndex, ...HexGrid.getAdjacentIndices(randomDropIndex, gridColumns, gridRows, 2, instanceFlatTop)];
-        }
-    }
+    // if (pattern === 'raindrops') {
+    //     if (Math.ceil(time_S) % 2 === 0) {
+    //         const randomDropIndex = Math.ceil(remapToRange(Math.random(), 0, 1, 0, gridCount - 1));
+    //         intersectionHits_Ref.current = [randomDropIndex, ...HexGrid.getAdjacentIndices(randomDropIndex, gridColumns, gridRows, 2, instanceFlatTop)];
+    //     }
+    // }
 
     mesh.updateInstances((instance, idx) => {
         const [column, row] = HexagonGeometry.getColumnAndRowByIndex(idx, gridColumns);
@@ -64,31 +65,19 @@ export const setShaderAnimation = (
                 newOffset.setW(sequentialRandomMultiplier);
             }
         } else {
-            let strength;
+            const relativeDistance = hits?.findIndex((indicesAtDistance) => indicesAtDistance.includes(idx));
 
-            if (intersectionHits_Ref.current?.includes(idx)) {
-                const hitIndex = intersectionHits_Ref.current.indexOf(idx);
+            if (typeof relativeDistance === 'number' && relativeDistance >= 0) {
+                const fractionAtDistance = (hits!.length - relativeDistance) / hits!.length;
+                const clampedFraction = Math.max(fractionAtDistance, 0.2);
 
-                if (hitIndex < 0) {
-                    throw new Error('instance id not found in intersects');
-                } else if (hitIndex === 0) {
-                    strength = 1;
-                    newColor.setRGB(1, 1, 1);
-                } else {
-                    if (hitIndex < 7) {
-                        strength = 0.666;
-                        newColor.setRGB(0.666, 0.666, 0.666);
-                    } else {
-                        strength = 0.333;
-                        newColor.setRGB(0.333, 0.333, 0.333);
-                    }
-                }
-
-                mesh.setColorAt(idx, newColor);
+                newColor.setRGB(clampedFraction, clampedFraction, clampedFraction);
 
                 // animationProgress is always 0 since u_Hit_Time is set each frame - so we set values to prevOffset
                 prevOffset.setZ(instanceWidth);
-                prevOffset.setW(strength);
+                prevOffset.setW(clampedFraction);
+                mesh.setColorAt(idx, newColor);
+
                 instance.setUniform('u_Hit_Time', time_S); // set last
             } else {
                 switch (pattern) {
@@ -116,9 +105,6 @@ export const setShaderAnimation = (
                         newOffset.setW(animationProgress);
                         newOffset.lerpVectors(prevOffset, newOffset, animationProgress);
                         break;
-
-                    // case 'raindrops':
-                    //     break;
 
                     // 'none'
                     default:
