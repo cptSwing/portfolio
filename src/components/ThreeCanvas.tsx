@@ -8,6 +8,7 @@ import { PerspectiveCamera as PerspectiveCameraImpl } from '@react-three/drei';
 import { useEvent } from 'react-use';
 import { HexGrid, SquareGrid } from '../lib/classes/Grid';
 import { getWidthHeight } from '../lib/threeHelpers';
+import { GridAnimations } from '../lib/classes/GridAnimations';
 
 const cameraOffset = 30;
 
@@ -122,7 +123,7 @@ const getIntersectIndices = (intersection: Intersection[], gridColsRows: [number
     const newInstanceId = intersection[0].instanceId ?? intersected;
 
     if (intersected !== newInstanceId) {
-        const { getHexagonShape, getRingShape, getStarShape, mergeIndicesDistanceLevels, filterIndices } = HitsAnimation;
+        const { getHexagonShape, getRingShape, getStarShape, mergeIndicesDistanceLevels, filterIndices } = GridAnimations;
         const hitIndices1 = getHexagonShape(newInstanceId, 2, gridColsRows);
         const hitIndices2 = getRingShape(newInstanceId, [6, 8, 10], gridColsRows);
         const hitIndices3 = getStarShape(newInstanceId, 4, gridColsRows);
@@ -134,58 +135,3 @@ const getIntersectIndices = (intersection: Intersection[], gridColsRows: [number
     }
     return hitIndices;
 };
-
-class HitsAnimation {
-    static animationTimer(time: number) {
-        // TODO something with the 'time' stamp from useFrame --> do x every 10 seconds, or some such
-    }
-
-    static getRingShape(instanceIndex: number, distance: number | number[], gridColsRows: [number, number]) {
-        let indicesArray: number[][];
-
-        if (Array.isArray(distance) && distance.length) {
-            const rings: number[][][] = distance.map((distanceValue) => HexGrid.getRingIndices(instanceIndex, distanceValue, gridColsRows));
-            indicesArray = HitsAnimation.mergeIndicesDistanceLevels(...rings);
-        } else {
-            indicesArray = HexGrid.getRingIndices(instanceIndex, distance as number, gridColsRows);
-        }
-        indicesArray[0] = [instanceIndex];
-        return indicesArray;
-    }
-
-    static getHexagonShape(instanceIndex: number, distance: number, gridColsRows: [number, number]) {
-        const indicesArray = HexGrid.getSpiralIndices(instanceIndex, distance, gridColsRows);
-        indicesArray[0] = [instanceIndex];
-        return indicesArray;
-    }
-
-    static getStarShape(instanceIndex: number, distance: number, gridColsRows: [number, number]) {
-        const indicesArrayQ = HexGrid.getAxesIndices(instanceIndex, distance, 'q', 'both', gridColsRows);
-        const indicesArrayR = HexGrid.getAxesIndices(instanceIndex, distance, 'r', 'both', gridColsRows);
-        const indicesArrayS = HexGrid.getAxesIndices(instanceIndex, distance, 's', 'both', gridColsRows);
-
-        const indicesArray = HitsAnimation.mergeIndicesDistanceLevels(indicesArrayQ, indicesArrayR, indicesArrayS);
-        indicesArray[0] = [instanceIndex];
-
-        return indicesArray;
-    }
-
-    static mergeIndicesDistanceLevels(...arrayOfIndicesByDistance: number[][][]) {
-        const longestArrayIndex = arrayOfIndicesByDistance.reduce((prev, current, idx, arr) => (arr[prev].length > current.length ? prev : idx), 0);
-        const longestIndicesArray = arrayOfIndicesByDistance.splice(longestArrayIndex, 1)[0];
-
-        arrayOfIndicesByDistance.forEach((indices) => {
-            for (let i = 1; i < longestIndicesArray.length; i++) {
-                indices[i] && longestIndicesArray[i].push(...indices[i]);
-            }
-        });
-
-        return longestIndicesArray;
-    }
-
-    static filterIndices(indicesArray: number[][]) {
-        const filtered = indicesArray.filter((indicesAtDistance) => indicesAtDistance.length);
-        const filteredAndDeDuped = filtered.map((indices) => Array.from(new Set(indices)));
-        return filteredAndDeDuped;
-    }
-}

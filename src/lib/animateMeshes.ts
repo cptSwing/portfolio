@@ -2,7 +2,7 @@ import { Color, MathUtils, Vector4 } from 'three';
 import { GridData, InstancedMesh2ShaderMaterial, PatternSettingsAnimation } from '../types/types';
 import HexagonGeometry from './classes/HexagonGeometry';
 import { MutableRefObject } from 'react';
-import { HexGrid } from './classes/Grid';
+import { remapRange } from './remapRange';
 
 // .w holds offset strength
 const prevOffset = new Vector4();
@@ -83,7 +83,7 @@ export const setShaderAnimation = (
                 switch (pattern) {
                     case 'sin-columns':
                         let sinValCol = Math.sin(prevOffset.z + (time_S + (column * instanceWidth) / 2));
-                        sinValCol = remapToRange(sinValCol, -1, 1, -instanceWidth / 2, instanceWidth / 2);
+                        sinValCol = remapRange(sinValCol, -1, 1, -instanceWidth / 2, instanceWidth / 2);
 
                         newOffset.setZ(sinValCol);
 
@@ -91,7 +91,7 @@ export const setShaderAnimation = (
 
                     case 'sin-rows':
                         let sinValRow = Math.sin(prevOffset.z + (time_S + row / 5));
-                        sinValRow = remapToRange(sinValRow, -1, 1, -instanceWidth / 2, instanceWidth / 2);
+                        sinValRow = remapRange(sinValRow, -1, 1, -instanceWidth / 2, instanceWidth / 2);
 
                         newOffset.setZ(sinValRow);
 
@@ -99,7 +99,7 @@ export const setShaderAnimation = (
 
                     case 'sin':
                         let sinVal = Math.sin(time_S * timeScale + (row - column) * 0.25);
-                        sinVal = remapToRange(sinVal, -1, 1, -instanceWidth / 2, instanceWidth / 2);
+                        sinVal = remapRange(sinVal, -1, 1, -instanceWidth / 2, instanceWidth / 2);
 
                         newOffset.setZ(sinVal);
                         newOffset.setW(animationProgress);
@@ -138,5 +138,3 @@ export const meshAnimations: Record<string, Pick<PatternSettingsAnimation, 'patt
 };
 
 const _returnSinValue = (instanceCount: number) => -0.0008 * instanceCount + 2.1;
-
-const remapToRange = (value: number, low1: number, high1: number, low2: number, high2: number) => low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
