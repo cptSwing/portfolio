@@ -10,7 +10,7 @@ export class GridAnimations {
 
         if (Array.isArray(distance) && distance.length) {
             const rings: number[][][] = distance.map((distanceValue) => HexGrid.getRingIndices(instanceIndex, distanceValue, gridColsRows));
-            indicesArray = this.mergeIndicesDistanceLevels(...rings);
+            indicesArray = GridAnimations.mergeIndicesDistanceLevels(...rings);
         } else {
             indicesArray = HexGrid.getRingIndices(instanceIndex, distance as number, gridColsRows);
         }
@@ -29,7 +29,7 @@ export class GridAnimations {
         const indicesArrayR = HexGrid.getAxesIndices(instanceIndex, distance, 'r', 'both', gridColsRows);
         const indicesArrayS = HexGrid.getAxesIndices(instanceIndex, distance, 's', 'both', gridColsRows);
 
-        const indicesArray = this.mergeIndicesDistanceLevels(indicesArrayQ, indicesArrayR, indicesArrayS);
+        const indicesArray = GridAnimations.mergeIndicesDistanceLevels(indicesArrayQ, indicesArrayR, indicesArrayS);
         indicesArray[0] = [instanceIndex];
 
         return indicesArray;
