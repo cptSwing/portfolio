@@ -1,5 +1,5 @@
 import { useThree, useFrame } from '@react-three/fiber';
-import { FC, useRef, useMemo, MutableRefObject, useState, useLayoutEffect, useEffect, useCallback } from 'react';
+import { FC, useRef, useMemo, MutableRefObject, useEffect, useCallback } from 'react';
 import { useEvent } from 'react-use';
 import {
     WebGLRenderer,
@@ -20,12 +20,11 @@ import { GridAnimations } from '../../lib/classes/GridAnimations';
 import { getWidthHeight } from '../../lib/threeHelpers';
 import { DefaultGridData, InstancedGridMesh, GridData, GridShaderMaterial } from '../../types/types';
 import { ndcFromViewportCoordinates } from '../../lib/ndcFromViewportCoordinates';
-import { stringToHexadecimal } from '../../lib/convertColors';
 import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
 import { createRadixSort, InstancedMesh2 } from '@three.ez/instanced-mesh';
 import vertexShader from '../../lib/shading/instancedShader_V.glsl';
 import fragmentShader from '../../lib/shading/instancedShader_F.glsl';
-import InstancedGridMeshFiber from './InstancedGridMeshFiber';
+import InstancedGridMeshFiber, { getColorsFromTheme } from './InstancedGridMeshFiber';
 
 const gridDataDefaults: DefaultGridData = {
     overallWidth: 0,
@@ -33,7 +32,7 @@ const gridDataDefaults: DefaultGridData = {
     instanceFlatTop: false,
     instanceWidth: null,
     instancePadding: 0.05,
-    gridCount: 2000,
+    gridCount: 1500,
     gridColumns: 0,
     gridRows: 0,
 };
@@ -58,14 +57,6 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 
         return gridData;
     }, [camera, isSquare]);
-
-    const [gridColor, setGridColor] = useState('#ff8800');
-
-    useLayoutEffect(() => {
-        if (document.readyState === 'complete') {
-            setGridColor('#ff88ff');
-        }
-    }, []);
 
     useEvent(
         'mousemove',
@@ -101,7 +92,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     return (
         <>
             <raycaster ref={raycaster_Ref} />
-            <BackgroundMesh meshRef={mesh_Ref} gridData={gridData_Memo} renderer={renderer} hexColor={gridColor} useFresnel />
+            <BackgroundMesh meshRef={mesh_Ref} gridData={gridData_Memo} renderer={renderer} useFresnel />
         </>
     );
 };
@@ -115,10 +106,9 @@ const BackgroundMesh: FC<{
     gridData: GridData;
     meshRef: MutableRefObject<InstancedGridMesh | null>;
     renderer: WebGLRenderer;
-    hexColor: string;
     isSquare?: boolean;
     useFresnel?: boolean;
-}> = ({ gridData, meshRef, renderer, hexColor, isSquare = false, useFresnel = false }) => {
+}> = ({ gridData, meshRef, renderer, isSquare = false, useFresnel = false }) => {
     const { overallWidth, overallHeight, instanceFlatTop, instanceWidth, instancePadding, gridCount, gridColumns, gridRows } = gridData;
 
     const meshRef_Cb = useCallback((mesh: InstancedMesh2 | null) => {
@@ -182,14 +172,20 @@ const BackgroundMesh: FC<{
     }, [isSquare, instanceWidth, instanceFlatTop]);
 
     const material_Memo = useMemo(() => {
+        const [currentBackground, currentActivePrimary, currentActiveSecondary] = getColorsFromTheme();
+
         const shaderUniforms = UniformsUtils.merge([
             ShaderLib.phong.uniforms,
             {
                 u_Length: { value: instanceWidth },
+                u_FresnelColor: { value: instancedMeshTempColor.setHex(currentActivePrimary) },
+                u_HighLightColor: {
+                    value: instancedMeshTempColor.clone().setHex(currentActiveSecondary),
+                },
             },
         ]) as GridShaderMaterial['uniforms'];
 
-        shaderUniforms.diffuse.value.setHex(stringToHexadecimal(hexColor));
+        shaderUniforms.diffuse.value.setHex(currentBackground);
         shaderUniforms.opacity.value = 1;
         shaderUniforms.shininess.value = 100;
         shaderUniforms.specular.value.setHex(0xdddddd);
@@ -207,8 +203,9 @@ const BackgroundMesh: FC<{
             fragmentShader,
             wireframe: false,
             lights: true,
+            transparent: true,
             // side: DoubleSide,
-            transparent: shaderUniforms.opacity.value >= 1 ? false : true,
+            // transparent: shaderUniforms.opacity.value >= 1 ? false : true,
         });
 
         return shaderMaterial as GridShaderMaterial;
@@ -234,10 +231,10 @@ const getIntersectIndices = (intersection: Intersection[], gridColsRows: [number
 
     if (intersected !== newInstanceId) {
         const { getHexagonShape, getRingShape, getStarShape, mergeIndicesDistanceLevels, filterIndices } = GridAnimations;
-        const hitIndices1 = getHexagonShape(newInstanceId, 2, gridColsRows);
-        const hitIndices2 = getRingShape(newInstanceId, [6, 8, 10], gridColsRows);
-        const hitIndices3 = getStarShape(newInstanceId, 4, gridColsRows);
-        hitIndices = mergeIndicesDistanceLevels(hitIndices1, hitIndices2, hitIndices3);
+        // const hitIndices1 = getHexagonShape(newInstanceId, 3, gridColsRows);
+        const hitIndices2 = getRingShape(newInstanceId, [7, 9, 11], gridColsRows);
+        const hitIndices3 = getStarShape(newInstanceId, 5, gridColsRows);
+        hitIndices = mergeIndicesDistanceLevels(hitIndices2, hitIndices3);
 
         hitIndices = filterIndices(hitIndices);
 

@@ -61,6 +61,9 @@ export interface GridShaderMaterial extends ShaderMaterial {
         opacity: IUniform<number>;
         specular: IUniform<Color>;
         shininess: IUniform<number>;
+        u_Length: IUniform<number>;
+        u_FresnelColor: IUniform<Color>;
+        u_HighLightColor: IUniform<Color>;
     };
 }
 

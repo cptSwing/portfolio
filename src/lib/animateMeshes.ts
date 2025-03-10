@@ -23,7 +23,7 @@ export const setShaderAnimation = (
     hasRunOnce_Ref: MutableRefObject<boolean>,
     pattern: PatternSettingsAnimation['pattern'] = 'sin-columns',
 ) => {
-    const { overallHeight, gridCount, gridColumns, gridRows, instanceFlatTop, instanceWidth } = gridData;
+    const { overallHeight, gridCount, gridColumns, gridRows, instanceWidth } = gridData;
     const hits = intersectionHits_Ref.current;
 
     // TODO write more comprehensive animation system --> background patterns (such as sin-wave etc), overlaid/overwritten by actions such as mousevent, raindrop, shake etc etc
@@ -65,19 +65,20 @@ export const setShaderAnimation = (
                 newOffset.setW(sequentialRandomMultiplier);
             }
         } else {
-            const relativeDistance = hits?.findIndex((indicesAtDistance) => indicesAtDistance.includes(idx));
+            const distance = hits?.findIndex((indicesAtDistance) => indicesAtDistance.includes(idx));
 
-            if (typeof relativeDistance === 'number' && relativeDistance >= 0) {
-                const fractionAtDistance = (hits!.length - relativeDistance) / hits!.length;
+            if (typeof distance === 'number' && distance >= 0) {
+                const fractionAtDistance = (hits!.length - distance) / hits!.length;
                 const clampedFraction = Math.max(fractionAtDistance, 0.2);
+                const highLightColor = mesh.material.uniforms.u_HighLightColor.value;
 
-                newColor.setRGB(clampedFraction, clampedFraction, clampedFraction);
+                newColor.copy(highLightColor).multiplyScalar(clampedFraction);
+                // newColor.setRGB( clampedFraction, clampedFraction, clampedFraction );
 
                 // animationProgress is always 0 since u_Hit_Time is set each frame - so we set values to prevOffset
                 prevOffset.setZ(instanceWidth);
                 prevOffset.setW(clampedFraction);
                 mesh.setColorAt(idx, newColor);
-
                 instance.setUniform('u_Hit_Time', time_S); // set last
             } else {
                 switch (pattern) {

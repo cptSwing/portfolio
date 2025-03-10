@@ -39,11 +39,12 @@ float remap(float value, float min1, float max1, float min2, float max2) {
 
 // per Mesh uniforms
 uniform float u_Length;
+uniform vec3 u_FresnelColor;
 
 #ifdef USE_FRESNEL
-    #define FRESNEL_AMOUNT 1.
+    #define FRESNEL_AMOUNT 3.
     #define FRESNEL_OFFSET 0.05
-    #define FRESNEL_INTENSITY 0.333
+    #define FRESNEL_INTENSITY 1.
     #define FRESNEL_ALPHA 0.25
 
 float fresnelFunc(float amount, float offset, vec3 normal, vec3 view) {
@@ -81,6 +82,7 @@ void main() {
     vec2 myUv = vUv;
     vec3 myWorldPosition = vPositionW;
     float myShininess = shininess;
+    float myOpacity = opacity;
 
     vec3 blackColor = vec3(0.);
 
@@ -94,15 +96,16 @@ void main() {
 
     myColor = saturate(fakeShadows);
     myShininess = clamp((1. - vAnimProgress) * 100., 7.5, 100.);
+    myOpacity = clamp(myOpacity * vAnimProgress, 0.75, 1.);
 
 #ifdef USE_FRESNEL
     float fresnel = fresnelFunc(FRESNEL_AMOUNT, FRESNEL_OFFSET, vNormal, vViewDirection);
-    vec3 fresnelColor = (vec3(1., 1., 1.) * fresnel) * FRESNEL_INTENSITY;
+    vec3 fresnelColor = (u_FresnelColor * fresnel) * FRESNEL_INTENSITY;
     myColor = mix(myColor, fresnelColor, fresnel * FRESNEL_ALPHA);
 
-    diffuseColor = vec4(myColor, (opacity >= 1.0 ? opacity : opacity * fresnel));
+    diffuseColor = vec4(myColor, (opacity >= 1.0 ? myOpacity : myOpacity * fresnel));
 #else
-    diffuseColor = vec4(myColor, opacity);
+    diffuseColor = vec4(myColor, myOpacity);
 #endif
 
     // NOTE END CUSTOM SECTION (FRAGMENT) -->
