@@ -8,6 +8,7 @@ import { GridAnimations } from '../lib/classes/GridAnimations';
 import BackgroundMesh from '../lib/instancedMesh2';
 import { getWidthHeight } from '../lib/threeHelpers';
 import { DefaultGridData, InstancedMesh2ShaderMaterial, GridData } from '../types/types';
+import { ndcFromViewportCoordinates } from '../lib/ndcFromViewportCoordinates';
 
 const gridDataDefaults: DefaultGridData = {
     overallWidth: 0,
@@ -49,8 +50,9 @@ export const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                 mouseEvent.preventDefault();
 
                 // Sets to [-1, 1] values, 0 at center
-                mousePosition_Ref.current.setX((mouseEvent.clientX / window.innerWidth) * 2 - 1);
-                mousePosition_Ref.current.setY(-(mouseEvent.clientY / window.innerHeight) * 2 + 1);
+                const [ndcX, ndcY] = ndcFromViewportCoordinates([mouseEvent.clientX, mouseEvent.clientY], window.innerWidth, window.innerHeight);
+                mousePosition_Ref.current.setX(ndcX);
+                mousePosition_Ref.current.setY(ndcY);
 
                 raycaster_Ref.current.setFromCamera(mousePosition_Ref.current, camera);
                 const intersection = raycaster_Ref.current.intersectObject(mesh_Ref.current, false);
@@ -60,7 +62,8 @@ export const Background: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                 }
             }
 
-            // How to convert to x,y at Scene Z:0
+            // TODO make helper function
+            // How to convert to x,y at Scene Z:0 :
             // const lightPositionX = mousePosition_Ref.current.x * (gridData_Memo.overallWidth / 2);
         },
         document,
