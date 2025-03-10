@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera as PerspectiveCameraImpl } from '@react-three/drei';
-import { Background } from './ThreeBackground';
+import BackgroundGrid from './BackgroundGrid';
 
 const cameraOffset = 30;
 
@@ -17,7 +17,7 @@ const ThreeCanvas = () => {
                     far={cameraOffset + 2}
                 />
 
-                <Background isSquare={false} />
+                <BackgroundGrid isSquare={false} />
 
                 <ambientLight color='white' intensity={1} />
                 <directionalLight position={[-1, 2, 1]} color={0xffffff} intensity={1.5} />

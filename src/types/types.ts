@@ -1,6 +1,6 @@
 import { InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { MENU_CATEGORY, ToolsUrls } from './enums';
-import { BufferGeometry, Object3DEventMap, ShaderMaterial } from 'three';
+import { BufferGeometry, Color, IUniform, NormalBufferAttributes, Object3DEventMap, ShaderMaterial } from 'three';
 
 export type ZustandStore = {
     values: {
@@ -55,7 +55,16 @@ export type DataBase = {
 
 /* Mesh Types */
 
-export type InstancedMesh2ShaderMaterial = InstancedMesh2<{}, BufferGeometry, ShaderMaterial, Object3DEventMap>;
+export interface GridShaderMaterial extends ShaderMaterial {
+    uniforms: {
+        diffuse: IUniform<Color>;
+        opacity: IUniform<number>;
+        specular: IUniform<Color>;
+        shininess: IUniform<number>;
+    };
+}
+
+export type InstancedGridMesh = InstancedMesh2<{}, BufferGeometry<NormalBufferAttributes>, GridShaderMaterial, Object3DEventMap>;
 
 export type OriginalInstancePosition = {
     x: number;

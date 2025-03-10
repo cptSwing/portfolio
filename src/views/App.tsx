@@ -4,7 +4,7 @@ import Nav from '../components/Nav';
 import { BrowserRouter, Outlet, Route, Routes, useParams } from 'react-router-dom';
 import BarWrapped from '../components/BarWrapped';
 import classNames from '../lib/classNames';
-import ThreeCanvas from '../components/ThreeCanvas';
+import ThreeCanvas from '../components/Three/ThreeCanvas';
 
 const App = () => {
     return (

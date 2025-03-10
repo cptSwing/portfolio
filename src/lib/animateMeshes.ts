@@ -1,5 +1,5 @@
 import { Color, MathUtils, Vector4 } from 'three';
-import { GridData, InstancedMesh2ShaderMaterial, PatternSettingsAnimation } from '../types/types';
+import { GridData, InstancedGridMesh, PatternSettingsAnimation } from '../types/types';
 import HexagonGeometry from './classes/HexagonGeometry';
 import { MutableRefObject } from 'react';
 import { remapRange } from './remapRange';
@@ -16,7 +16,7 @@ const introTargetOffsets = new Vector4(0, 0, 0, 1);
 let animationLength_S = 3;
 
 export const setShaderAnimation = (
-    mesh: InstancedMesh2ShaderMaterial,
+    mesh: InstancedGridMesh,
     gridData: GridData,
     time_S: number,
     intersectionHits_Ref: MutableRefObject<number[][] | null>,
