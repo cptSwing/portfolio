@@ -12,3 +12,7 @@ export const removeCssProperties = (element: HTMLElement, styleProperties: Anima
         element.style.removeProperty(property);
     }
 };
+
+export const getCssProperties = (element: HTMLElement, styleProperty: string) => {
+    return element.style.getPropertyValue(styleProperty);
+};
