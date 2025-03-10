@@ -31,8 +31,8 @@ const gridDataDefaults: DefaultGridData = {
     overallHeight: 0,
     instanceFlatTop: false,
     instanceWidth: null,
-    instancePadding: 0.05,
-    gridCount: 1500,
+    instancePadding: 0,
+    gridCount: 1000,
     gridColumns: 0,
     gridRows: 0,
 };
@@ -99,6 +99,36 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 
 export default BackgroundGrid;
 
+const backgroundAnimate = (
+    time_S: number,
+    mesh: InstancedGridMesh,
+    gridData: GridData,
+    intersectionHits_Ref: MutableRefObject<number[][] | null>,
+    hasRunOnce_Ref: MutableRefObject<boolean>,
+) => {
+    setShaderAnimation(mesh, gridData, time_S, intersectionHits_Ref, hasRunOnce_Ref, 'sin');
+};
+
+let intersected = 0;
+let hitIndices: number[][] = [];
+const getIntersectIndices = (intersection: Intersection[], gridColsRows: [number, number]) => {
+    const newInstanceId = intersection[0].instanceId ?? intersected;
+
+    if (intersected !== newInstanceId) {
+        const { getHexagonShape, getRingShape, getStarShape, mergeIndicesDistanceLevels, filterIndices } = GridAnimations;
+        // const hitIndices1 = getHexagonShape(newInstanceId, 3, gridColsRows);
+        const hitIndices2 = getRingShape(newInstanceId, [2, 4, 6], gridColsRows);
+        // const hitIndices3 = getStarShape(newInstanceId, 5, gridColsRows);
+        // hitIndices = mergeIndicesDistanceLevels(hitIndices2, hitIndices3);
+
+        hitIndices = filterIndices(hitIndices2);
+
+        console.log('%c[BackgroundGrid]', 'color: #912e76', `newInstanceId :`, newInstanceId);
+        intersected = newInstanceId;
+    }
+    return hitIndices;
+};
+
 const instancedMeshTempColor = new Color();
 const isFlatShaded = false;
 
@@ -128,13 +158,24 @@ const BackgroundMesh: FC<{
 
             if (!instancedMesh.instancesCount) {
                 console.log('%c[instancedMesh2]', 'color: #b85533', `Creating Instances ${gridCount} (cols:${gridColumns} rows:${gridRows})`);
+
+                const testCenter1 = 173;
+                const adjacent1 = GridAnimations.getHexagonShape(testCenter1, 2, [gridColumns, gridRows]).flat();
+
+                const testCenter2 = 304;
+                const adjacent2 = GridAnimations.getHexagonShape(testCenter2, 2, [gridColumns, gridRows]).flat();
+
+                const allAdjacent = [...adjacent1, ...adjacent2];
+
                 instancedMesh.addInstances(gridCount, (instance, idx) => {
-                    if (isSquare) {
-                        SquareGrid.setInstancePosition(instance, idx, gridColumns, [extentX, extentY], instanceWidth, instancePadding);
-                    } else {
-                        HexGrid.setInstancePosition(instance, idx, gridColumns, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
+                    if (!allAdjacent.includes(idx)) {
+                        if (isSquare) {
+                            SquareGrid.setInstancePosition(instance, idx, gridColumns, [extentX, extentY], instanceWidth, instancePadding);
+                        } else {
+                            HexGrid.setInstancePosition(instance, idx, gridColumns, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
+                        }
+                        Grid.setInstanceColor(instance, instancedMeshTempColor);
                     }
-                    Grid.setInstanceColor(instance, instancedMeshTempColor);
                 });
             } else {
                 const difference = gridCount - instancedMesh.instancesCount;
@@ -212,33 +253,4 @@ const BackgroundMesh: FC<{
     }, [instanceWidth, useFresnel]);
 
     return <InstancedGridMeshFiber ref={meshRef_Cb} geometry={geometry_Memo} material={material_Memo} params={{ renderer, createEntities: true }} />;
-};
-
-const backgroundAnimate = (
-    time_S: number,
-    mesh: InstancedGridMesh,
-    gridData: GridData,
-    intersectionHits_Ref: MutableRefObject<number[][] | null>,
-    hasRunOnce_Ref: MutableRefObject<boolean>,
-) => {
-    setShaderAnimation(mesh, gridData, time_S, intersectionHits_Ref, hasRunOnce_Ref, 'sin');
-};
-
-let intersected = 0;
-let hitIndices: number[][] = [];
-const getIntersectIndices = (intersection: Intersection[], gridColsRows: [number, number]) => {
-    const newInstanceId = intersection[0].instanceId ?? intersected;
-
-    if (intersected !== newInstanceId) {
-        const { getHexagonShape, getRingShape, getStarShape, mergeIndicesDistanceLevels, filterIndices } = GridAnimations;
-        // const hitIndices1 = getHexagonShape(newInstanceId, 3, gridColsRows);
-        const hitIndices2 = getRingShape(newInstanceId, [7, 9, 11], gridColsRows);
-        const hitIndices3 = getStarShape(newInstanceId, 5, gridColsRows);
-        hitIndices = mergeIndicesDistanceLevels(hitIndices2, hitIndices3);
-
-        hitIndices = filterIndices(hitIndices);
-
-        intersected = newInstanceId;
-    }
-    return hitIndices;
 };

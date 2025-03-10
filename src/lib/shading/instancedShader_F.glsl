@@ -96,7 +96,7 @@ void main() {
 
     myColor = saturate(fakeShadows);
     myShininess = clamp((1. - vAnimProgress) * 100., 7.5, 100.);
-    myOpacity = clamp(myOpacity * vAnimProgress, 0.75, 1.);
+    myOpacity = clamp(myOpacity * vAnimProgress, 0.666, 1.);
 
 #ifdef USE_FRESNEL
     float fresnel = fresnelFunc(FRESNEL_AMOUNT, FRESNEL_OFFSET, vNormal, vViewDirection);

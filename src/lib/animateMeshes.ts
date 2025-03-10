@@ -47,7 +47,7 @@ export const setShaderAnimation = (
             newOffset.copy(introTargetOffsets);
 
             if (animationProgress >= 1) {
-                animationLength_S = 3;
+                animationLength_S = 1.5;
                 hasRunOnce_Ref.current = true;
             } else {
                 let sequentialRandomMultiplier = 1;
