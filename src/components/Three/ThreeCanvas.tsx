@@ -11,7 +11,7 @@ const ThreeCanvas = () => {
                 <PerspectiveCameraImpl
                     makeDefault
                     position={[0, 0, cameraOffset]}
-                    fov={30}
+                    fov={45}
                     aspect={window.innerWidth / window.innerHeight}
                     near={Math.max(0, cameraOffset - 5)}
                     far={cameraOffset + 2}

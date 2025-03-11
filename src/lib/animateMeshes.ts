@@ -34,8 +34,8 @@ export const setShaderAnimation = (
     //     }
     // }
 
-    mesh.updateInstances((instance, idx) => {
-        const [column, row] = HexagonGeometry.getColumnAndRowByIndex(idx, gridColumns);
+    mesh.updateInstances((instance) => {
+        const [column, row] = HexagonGeometry.getColumnAndRowByIndex(instance.id, gridColumns);
 
         instance.getUniform('u_Hit_Offset', prevOffset);
 
@@ -65,7 +65,7 @@ export const setShaderAnimation = (
                 newOffset.setW(sequentialRandomMultiplier);
             }
         } else {
-            const distance = hits?.findIndex((indicesAtDistance) => indicesAtDistance.includes(idx));
+            const distance = hits?.findIndex((indicesAtDistance) => indicesAtDistance.includes(instance.id));
 
             if (typeof distance === 'number' && distance >= 0) {
                 const fractionAtDistance = (hits!.length - distance) / hits!.length;
@@ -73,12 +73,11 @@ export const setShaderAnimation = (
                 const highLightColor = mesh.material.uniforms.u_HighLightColor.value;
 
                 newColor.copy(highLightColor).multiplyScalar(clampedFraction);
-                // newColor.setRGB( clampedFraction, clampedFraction, clampedFraction );
 
                 // animationProgress is always 0 since u_Hit_Time is set each frame - so we set values to prevOffset
                 prevOffset.setZ(instanceWidth);
                 prevOffset.setW(clampedFraction);
-                mesh.setColorAt(idx, newColor);
+                mesh.setColorAt(instance.id, newColor);
                 instance.setUniform('u_Hit_Time', time_S); // set last
             } else {
                 switch (pattern) {

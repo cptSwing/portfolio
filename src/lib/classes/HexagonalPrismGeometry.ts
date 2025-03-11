@@ -1,4 +1,4 @@
-import { BufferAttribute, BufferGeometry, Float32BufferAttribute, GeometryGroup, InterleavedBufferAttribute, MathUtils, Vector3 } from 'three';
+import { BufferAttribute, BufferGeometry, Float32BufferAttribute, GeometryGroup, InterleavedBufferAttribute, Vector3 } from 'three';
 import { getIndexedVertex } from '../threeHelpers';
 
 export default class HexagonalPrismGeometry extends BufferGeometry {
@@ -6,7 +6,7 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
     parameters = {};
 
     // radius is the radius of the outer circle touching all hexagon corners
-    constructor(radius: number, height: number, flatTop = true, isFlatShaded = false, thetaStart = 0, thetaLength = Math.PI * 2) {
+    constructor(radius: number, height: number, isFlatShaded = false, thetaStart = 0, thetaLength = Math.PI * 2) {
         super();
 
         const radialSegments = 6;
@@ -53,12 +53,6 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
         if (!isFlatShaded) {
             this.computeVertexNormals();
             handleNormals();
-        }
-
-        this.rotateX(MathUtils.degToRad(90));
-
-        if (flatTop) {
-            this.rotateZ(MathUtils.degToRad(90));
         }
 
         this.center();

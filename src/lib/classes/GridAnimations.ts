@@ -35,12 +35,13 @@ export class GridAnimations {
         return indicesArray;
     }
 
+    /** Merges several arrays of Indices, taking their distance level into account. */
     static mergeIndicesDistanceLevels(...arrayOfIndicesByDistance: number[][][]) {
         const longestArrayIndex = arrayOfIndicesByDistance.reduce((prev, current, idx, arr) => (arr[prev].length > current.length ? prev : idx), 0);
         const longestIndicesArray = arrayOfIndicesByDistance.splice(longestArrayIndex, 1)[0];
 
         arrayOfIndicesByDistance.forEach((indices) => {
-            for (let i = 1; i < longestIndicesArray.length; i++) {
+            for (let i = 0; i < longestIndicesArray.length; i++) {
                 indices[i] && longestIndicesArray[i].push(...indices[i]);
             }
         });
@@ -48,9 +49,12 @@ export class GridAnimations {
         return longestIndicesArray;
     }
 
-    static filterIndices(indicesArray: number[][]) {
-        const filtered = indicesArray.filter((indicesAtDistance) => indicesAtDistance.length);
+    static filterIndices(indicesArray: number[][], removeCenter = false) {
+        let filtered = indicesArray;
+        if (removeCenter) filtered.splice(0, 1);
+        filtered = indicesArray.filter((indicesAtDistance) => indicesAtDistance.length);
         const filteredAndDeDuped = filtered.map((indices) => Array.from(new Set(indices)));
+
         return filteredAndDeDuped;
     }
 }

@@ -13,18 +13,20 @@ import {
     ShaderLib,
     PlaneGeometry,
     Color,
+    MathUtils,
 } from 'three';
 import { setShaderAnimation } from '../../lib/animateMeshes';
 import { SquareGrid, HexGrid, Grid } from '../../lib/classes/Grid';
 import { GridAnimations } from '../../lib/classes/GridAnimations';
 import { getWidthHeight } from '../../lib/threeHelpers';
 import { DefaultGridData, InstancedGridMesh, GridData, GridShaderMaterial } from '../../types/types';
-import { ndcFromViewportCoordinates } from '../../lib/ndcFromViewportCoordinates';
+import { getExtentsInNDC, ndcFromViewportCoordinates } from '../../lib/ndcFromViewportCoordinates';
 import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
 import { createRadixSort, InstancedMesh2 } from '@three.ez/instanced-mesh';
 import vertexShader from '../../lib/shading/instancedShader_V.glsl';
 import fragmentShader from '../../lib/shading/instancedShader_F.glsl';
 import InstancedGridMeshFiber, { getColorsFromTheme } from './InstancedGridMeshFiber';
+import HexMenuItem from './HexMenuItem';
 
 const gridDataDefaults: DefaultGridData = {
     overallWidth: 0,
@@ -58,6 +60,18 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
         return gridData;
     }, [camera, isSquare]);
 
+    const hexMenuItemPositions_Memo = useMemo(() => {
+        const { gridColumns, gridRows } = gridData_Memo;
+
+        const getIndexAtPosition = (x: number, y: number) => {
+            const xPos = Math.floor(gridColumns * x);
+            const yPos = Math.floor(gridRows * y);
+            return xPos + gridColumns * yPos;
+        };
+
+        return [getIndexAtPosition(0.5, 0.25), getIndexAtPosition(0.75, 0.5)];
+    }, [gridData_Memo]);
+
     useEvent(
         'mousemove',
         (ev: Event | MouseEvent) => {
@@ -85,6 +99,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
         document,
     );
 
+    // TODO use 'mouse' from here, seen in https://sbcode.net/react-three-fiber/look-at-mouse/ ?
     useFrame(({ clock }) => {
         mesh_Ref.current && backgroundAnimate(clock.getElapsedTime(), mesh_Ref.current, gridData_Memo, intersectionHits_Ref, hasRunOnce_Ref);
     });
@@ -92,7 +107,10 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     return (
         <>
             <raycaster ref={raycaster_Ref} />
-            <BackgroundMesh meshRef={mesh_Ref} gridData={gridData_Memo} renderer={renderer} useFresnel />
+            {hexMenuItemPositions_Memo.map((gridPosition) => (
+                <HexMenuItem gridData={gridData_Memo} positionIndex={gridPosition} renderer={renderer} />
+            ))}
+            <BackgroundMesh meshRef={mesh_Ref} gridData={gridData_Memo} menuItemPositions={hexMenuItemPositions_Memo} renderer={renderer} useFresnel />
         </>
     );
 };
@@ -115,15 +133,9 @@ const getIntersectIndices = (intersection: Intersection[], gridColsRows: [number
     const newInstanceId = intersection[0].instanceId ?? intersected;
 
     if (intersected !== newInstanceId) {
-        const { getHexagonShape, getRingShape, getStarShape, mergeIndicesDistanceLevels, filterIndices } = GridAnimations;
-        // const hitIndices1 = getHexagonShape(newInstanceId, 3, gridColsRows);
-        const hitIndices2 = getRingShape(newInstanceId, [2, 4, 6], gridColsRows);
-        // const hitIndices3 = getStarShape(newInstanceId, 5, gridColsRows);
-        // hitIndices = mergeIndicesDistanceLevels(hitIndices2, hitIndices3);
+        hitIndices = GridAnimations.getRingShape(newInstanceId, 2, gridColsRows);
 
-        hitIndices = filterIndices(hitIndices2);
-
-        console.log('%c[BackgroundGrid]', 'color: #912e76', `newInstanceId :`, newInstanceId);
+        // console.log('%c[BackgroundGrid]', 'color: #912e76', `newInstanceId :`, newInstanceId);
         intersected = newInstanceId;
     }
     return hitIndices;
@@ -135,10 +147,11 @@ const isFlatShaded = false;
 const BackgroundMesh: FC<{
     gridData: GridData;
     meshRef: MutableRefObject<InstancedGridMesh | null>;
+    menuItemPositions: number[];
     renderer: WebGLRenderer;
     isSquare?: boolean;
     useFresnel?: boolean;
-}> = ({ gridData, meshRef, renderer, isSquare = false, useFresnel = false }) => {
+}> = ({ gridData, meshRef, menuItemPositions, renderer, isSquare = false, useFresnel = false }) => {
     const { overallWidth, overallHeight, instanceFlatTop, instanceWidth, instancePadding, gridCount, gridColumns, gridRows } = gridData;
 
     const meshRef_Cb = useCallback((mesh: InstancedMesh2 | null) => {
@@ -153,62 +166,39 @@ const BackgroundMesh: FC<{
     useEffect(() => {
         if (meshRef.current) {
             const instancedMesh = meshRef.current;
-            const extentX = -(overallWidth / 2); // Negative, so grid is filled from top-left
-            const extentY = overallHeight / 2;
 
-            if (!instancedMesh.instancesCount) {
-                console.log('%c[instancedMesh2]', 'color: #b85533', `Creating Instances ${gridCount} (cols:${gridColumns} rows:${gridRows})`);
+            console.log('%c[instancedMesh2]', 'color: #b85533', `Creating Instances ${gridCount} (cols:${gridColumns} rows:${gridRows})`);
+            const indicesUnderMenuItems = menuItemPositions.map((menuItemIndex) => GridAnimations.getRingShape(menuItemIndex, 3, [gridColumns, gridRows]));
+            const merged = GridAnimations.mergeIndicesDistanceLevels(...indicesUnderMenuItems);
+            const filtered = GridAnimations.filterIndices(merged, true).flat();
 
-                const testCenter1 = 173;
-                const adjacent1 = GridAnimations.getHexagonShape(testCenter1, 2, [gridColumns, gridRows]).flat();
+            const [extentX, extentY] = getExtentsInNDC(overallWidth, overallHeight);
 
-                const testCenter2 = 304;
-                const adjacent2 = GridAnimations.getHexagonShape(testCenter2, 2, [gridColumns, gridRows]).flat();
-
-                const allAdjacent = [...adjacent1, ...adjacent2];
-
-                instancedMesh.addInstances(gridCount, (instance, idx) => {
-                    if (!allAdjacent.includes(idx)) {
-                        if (isSquare) {
-                            SquareGrid.setInstancePosition(instance, idx, gridColumns, [extentX, extentY], instanceWidth, instancePadding);
-                        } else {
-                            HexGrid.setInstancePosition(instance, idx, gridColumns, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
-                        }
-                        Grid.setInstanceColor(instance, instancedMeshTempColor);
-                    }
-                });
-            } else {
-                const difference = gridCount - instancedMesh.instancesCount;
-                if (Math.sign(difference) === 1) {
-                    console.log('%c[instancedMesh2]', 'color: #b85533', `Adding Instances ${difference}`);
-                    instancedMesh.addInstances(difference, (instance, idx) => {
-                        if (isSquare) {
-                            SquareGrid.setInstancePosition(instance, idx, gridColumns, [extentX, extentY], instanceWidth, instancePadding);
-                        } else {
-                            HexGrid.setInstancePosition(instance, idx, gridColumns, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
-                        }
-                        Grid.setInstanceColor(instance, instancedMeshTempColor);
-                        instance.color = instancedMeshTempColor.setHex(0x888888 * Math.random());
-                    });
-                } else if (Math.sign(difference) === -1) {
-                    console.log('%c[instancedMesh2]', 'color: #b85533', `Removing Instances ${difference}`);
-                    const idsToRemove = Array.from({ length: -difference }).map((_elem, idx) => -difference + idx);
-                    instancedMesh.removeInstances(...idsToRemove);
+            instancedMesh.addInstances(gridCount, (instance) => {
+                if (isSquare) {
+                    SquareGrid.setInstancePosition(instance, instance.id, gridColumns, [extentX, extentY], instanceWidth, instancePadding);
                 } else {
-                    throw new Error('difference is 0');
+                    HexGrid.setInstancePosition(instance, instance.id, gridColumns, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
                 }
-            }
+
+                Grid.setInstanceColor(instance, instancedMeshTempColor);
+
+                if (filtered.includes(instance.id)) {
+                    instance.position.setZ(-10);
+                    // instance.color.setHex(0x666666);
+                }
+            });
 
             meshRef.current = instancedMesh;
         }
-    }, [overallWidth, overallHeight, instanceWidth, instancePadding, gridCount, gridColumns, isSquare, instanceFlatTop]);
+    }, [menuItemPositions, overallWidth, overallHeight, instanceWidth, instancePadding, gridCount, gridColumns, isSquare, instanceFlatTop]);
 
-    const geometry_Memo = useMemo(() => {
+    const hexGridGeometry_Memo = useMemo(() => {
         if (isSquare) {
             return new PlaneGeometry(instanceWidth, instanceWidth);
         } else {
             const size = HexGrid.getSizeFromWidth(instanceWidth, instanceFlatTop);
-            return new HexagonalPrismGeometry(size, instanceWidth, instanceFlatTop, isFlatShaded);
+            return new HexagonalPrismGeometry(size, instanceWidth, instanceFlatTop).rotateX(MathUtils.degToRad(90));
         }
     }, [isSquare, instanceWidth, instanceFlatTop]);
 
@@ -244,7 +234,7 @@ const BackgroundMesh: FC<{
             fragmentShader,
             wireframe: false,
             lights: true,
-            transparent: true,
+            // transparent: true,
             // side: DoubleSide,
             // transparent: shaderUniforms.opacity.value >= 1 ? false : true,
         });
@@ -252,5 +242,9 @@ const BackgroundMesh: FC<{
         return shaderMaterial as GridShaderMaterial;
     }, [instanceWidth, useFresnel]);
 
-    return <InstancedGridMeshFiber ref={meshRef_Cb} geometry={geometry_Memo} material={material_Memo} params={{ renderer, createEntities: true }} />;
+    return (
+        <>
+            <InstancedGridMeshFiber ref={meshRef_Cb} geometry={hexGridGeometry_Memo} material={material_Memo} params={{ renderer, createEntities: true }} />
+        </>
+    );
 };

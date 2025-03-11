@@ -1,5 +1,5 @@
 import { InstancedEntity } from '@three.ez/instanced-mesh';
-import { Color } from 'three';
+import { Color, Object3D } from 'three';
 import { OffsetCoordinate, DefaultGridData, GridData, CubeCoordinate, CubeCoordinateByDistance } from '../../types/types';
 
 export class Grid {
@@ -63,7 +63,7 @@ export class HexGrid extends Grid {
     };
 
     static setInstancePosition(
-        instance: InstancedEntity,
+        instance: InstancedEntity | Object3D,
         index: number,
         gridColumns: number,
         [extentX, extentY]: [number, number],
