@@ -1,30 +1,15 @@
 import { useThree, useFrame } from '@react-three/fiber';
-import { FC, useRef, useMemo, MutableRefObject, useEffect, useCallback, createRef, RefObject, useState } from 'react';
+import { FC, useRef, useMemo, MutableRefObject, useEffect, createRef } from 'react';
 import { useEvent } from 'react-use';
-import {
-    WebGLRenderer,
-    Camera,
-    Vector2,
-    Raycaster,
-    PerspectiveCamera,
-    Intersection,
-    ShaderMaterial,
-    UniformsUtils,
-    ShaderLib,
-    PlaneGeometry,
-    Color,
-    MathUtils,
-    Mesh,
-} from 'three';
+import { WebGLRenderer, Camera, Vector2, Raycaster, PerspectiveCamera, Intersection, Mesh } from 'three';
 import { setShaderAnimation } from '../../lib/animateMeshes';
-import { SquareGrid, HexGrid, Grid } from '../../lib/classes/Grid';
+import { SquareGrid, HexGrid } from '../../lib/classes/Grid';
 import { GridAnimations } from '../../lib/classes/GridAnimations';
 import { getWidthHeight } from '../../lib/threeHelpers';
-import { DefaultGridData, InstancedGridMesh, GridData, GridShaderMaterial } from '../../types/types';
-import { getExtentsInNDC, ndcFromViewportCoordinates } from '../../lib/ndcFromViewportCoordinates';
-import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
-import { createRadixSort, InstancedMesh2 } from '@three.ez/instanced-mesh';
-import InstancedGridMeshFiber, { getColorsFromTheme } from './InstancedGridMeshFiber';
+import { DefaultGridData, InstancedGridMesh, GridData } from '../../types/types';
+import { ndcFromViewportCoordinates } from '../../lib/ndcFromViewportCoordinates';
+import { InstancedMesh2 } from '@three.ez/instanced-mesh';
+import InstancedGridMeshFiber from './InstancedGridMeshFiber';
 import HexMenuItem from './HexMenuItem';
 
 const gridDataDefaults: DefaultGridData = {

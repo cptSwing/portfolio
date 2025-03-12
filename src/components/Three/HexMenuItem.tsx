@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, MutableRefObject, useCallback, useEffect, useMemo, useRef } from 'react';
+import { forwardRef, MutableRefObject, useCallback, useMemo } from 'react';
 import { MathUtils, Mesh, MeshPhysicalMaterial, WebGLRenderer } from 'three';
 import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
 import { GridData } from '../../types/types';

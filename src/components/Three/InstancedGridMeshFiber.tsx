@@ -6,7 +6,7 @@ import { useIsDocumentReady } from '../../hooks/useIsDocumentReady';
 import { useZustand } from '../../lib/zustand';
 import { getCssProperties } from '../../lib/cssProperties';
 import { stringToHexadecimal } from '../../lib/convertColors';
-import { Color, MathUtils, Mesh, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
+import { Color, MathUtils, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
 import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
 import { Grid, HexGrid, SquareGrid } from '../../lib/classes/Grid';
 import vertexShader from '../../lib/shading/instancedShader_V.glsl';
