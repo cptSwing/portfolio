@@ -55,9 +55,6 @@ export default class HexagonalPrismGeometry extends BufferGeometry {
             handleNormals();
         }
 
-        this.center();
-        this.computeBoundingBox();
-
         function generateTorso() {
             const normal = new Vector3();
             const vertex = new Vector3();

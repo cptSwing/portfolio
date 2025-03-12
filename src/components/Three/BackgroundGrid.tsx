@@ -1,5 +1,5 @@
 import { useThree, useFrame } from '@react-three/fiber';
-import { FC, useRef, useMemo, MutableRefObject, useEffect, useCallback } from 'react';
+import { FC, useRef, useMemo, MutableRefObject, useEffect, useCallback, createRef, RefObject, useState } from 'react';
 import { useEvent } from 'react-use';
 import {
     WebGLRenderer,
@@ -14,6 +14,7 @@ import {
     PlaneGeometry,
     Color,
     MathUtils,
+    Mesh,
 } from 'three';
 import { setShaderAnimation } from '../../lib/animateMeshes';
 import { SquareGrid, HexGrid, Grid } from '../../lib/classes/Grid';
@@ -23,8 +24,6 @@ import { DefaultGridData, InstancedGridMesh, GridData, GridShaderMaterial } from
 import { getExtentsInNDC, ndcFromViewportCoordinates } from '../../lib/ndcFromViewportCoordinates';
 import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
 import { createRadixSort, InstancedMesh2 } from '@three.ez/instanced-mesh';
-import vertexShader from '../../lib/shading/instancedShader_V.glsl';
-import fragmentShader from '../../lib/shading/instancedShader_F.glsl';
 import InstancedGridMeshFiber, { getColorsFromTheme } from './InstancedGridMeshFiber';
 import HexMenuItem from './HexMenuItem';
 
@@ -41,8 +40,6 @@ const gridDataDefaults: DefaultGridData = {
 
 const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     const [renderer, camera] = useThree((state) => [state.gl, state.camera]) as [WebGLRenderer, Camera];
-    const mesh_Ref = useRef<InstancedGridMesh | null>(null);
-    const intersectionHits_Ref = useRef<number[][] | null>(null);
 
     const mousePosition_Ref = useRef(new Vector2());
     const raycaster_Ref = useRef<Raycaster | null>(null);
@@ -69,13 +66,31 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
             return xPos + gridColumns * yPos;
         };
 
-        return [getIndexAtPosition(0.5, 0.25), getIndexAtPosition(0.75, 0.5)];
+        const positions = [getIndexAtPosition(0.5, 0.25), getIndexAtPosition(0.75, 0.5)];
+
+        return positions;
     }, [gridData_Memo]);
+
+    const hexMenuItemReferences_Memo = useMemo(
+        () => Array.from({ length: hexMenuItemPositions_Memo.length }).map(() => createRef<Mesh>()),
+        [hexMenuItemPositions_Memo],
+    );
+    const gridMesh_Ref = useRef<InstancedGridMesh | null>(null);
+
+    const intersectionHits_Ref = useRef<[number[][], Mesh] | null>(null);
+
+    const hexMenuMeshes_Ref = useRef<Mesh[] | null>(null);
+
+    useEffect(() => {
+        if (!hexMenuMeshes_Ref.current && hexMenuItemReferences_Memo.some((ref) => ref.current)) {
+            hexMenuMeshes_Ref.current = hexMenuItemReferences_Memo.map((ref) => ref.current) as Mesh[];
+        }
+    }, [hexMenuMeshes_Ref, hexMenuItemReferences_Memo]);
 
     useEvent(
         'mousemove',
         (ev: Event | MouseEvent) => {
-            if (mesh_Ref.current && raycaster_Ref.current) {
+            if (raycaster_Ref.current && gridMesh_Ref.current && hexMenuMeshes_Ref.current) {
                 const mouseEvent = ev as MouseEvent;
                 mouseEvent.preventDefault();
 
@@ -85,7 +100,11 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                 mousePosition_Ref.current.setY(ndcY);
 
                 raycaster_Ref.current.setFromCamera(mousePosition_Ref.current, camera);
-                const intersection = raycaster_Ref.current.intersectObject(mesh_Ref.current, false);
+
+                const allMeshes = [gridMesh_Ref.current, ...hexMenuMeshes_Ref.current];
+
+                console.log('%c[BackgroundGrid]', 'color: #945f2d', `allMeshes :`, allMeshes);
+                const intersection: Intersection<InstancedMesh2 | Mesh>[] = raycaster_Ref.current.intersectObjects(allMeshes, false);
 
                 if (intersection.length) {
                     intersectionHits_Ref.current = getIntersectIndices(intersection, [gridData_Memo.gridColumns, gridData_Memo.gridRows]);
@@ -100,151 +119,84 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     );
 
     // TODO use 'mouse' from here, seen in https://sbcode.net/react-three-fiber/look-at-mouse/ ?
-    useFrame(({ clock }) => {
-        mesh_Ref.current && backgroundAnimate(clock.getElapsedTime(), mesh_Ref.current, gridData_Memo, intersectionHits_Ref, hasRunOnce_Ref);
+    useFrame(({ clock, mouse }) => {
+        gridMesh_Ref.current &&
+            hexMenuMeshes_Ref.current &&
+            animate(clock.getElapsedTime(), gridMesh_Ref.current, hexMenuMeshes_Ref.current, gridData_Memo, intersectionHits_Ref, hasRunOnce_Ref);
     });
 
     return (
         <>
             <raycaster ref={raycaster_Ref} />
-            {hexMenuItemPositions_Memo.map((gridPosition) => (
-                <HexMenuItem gridData={gridData_Memo} positionIndex={gridPosition} renderer={renderer} />
+            {hexMenuItemPositions_Memo.map((gridPosition, idx) => (
+                <HexMenuItem
+                    key={`key${gridPosition}-${idx}`}
+                    ref={hexMenuItemReferences_Memo[idx]}
+                    gridData={gridData_Memo}
+                    positionIndex={gridPosition}
+                    renderer={renderer}
+                />
             ))}
-            <BackgroundMesh meshRef={mesh_Ref} gridData={gridData_Memo} menuItemPositions={hexMenuItemPositions_Memo} renderer={renderer} useFresnel />
+            <InstancedGridMeshFiber ref={gridMesh_Ref} renderer={renderer} gridData={gridData_Memo} isSquare={isSquare} useFresnel />
         </>
     );
 };
 
 export default BackgroundGrid;
 
-const backgroundAnimate = (
+let intersected = 0;
+let hitHexMenuMesh: Mesh | null;
+let hitIndices: number[][] = [];
+const getIntersectIndices = (intersection: Intersection<InstancedMesh2 | Mesh>[], gridColsRows: [number, number]) => {
+    const firstHit = intersection[0];
+
+    console.log('%c[BackgroundGrid]', 'color: #0db788', `firstHit :`, firstHit);
+    if (firstHit.instanceId) {
+        // Is a submesh of InstancedMesh
+
+        const newInstanceId = firstHit.instanceId ?? intersected;
+        if (intersected !== newInstanceId) {
+            hitIndices = GridAnimations.getRingShape(newInstanceId, 2, gridColsRows);
+
+            intersected = newInstanceId;
+        }
+
+        hitHexMenuMesh = null;
+    } else if (firstHit.object.isMesh) {
+        // Is a HexMenuItem
+
+        if (hitHexMenuMesh?.uuid !== firstHit.object.uuid) {
+            hitHexMenuMesh = firstHit.object;
+        }
+
+        hitIndices = [];
+    }
+
+    console.log('%c[BackgroundGrid]', 'color: #516b37', `hitHexMenuMesh :`, hitHexMenuMesh);
+    return [hitIndices, hitHexMenuMesh] as [typeof hitIndices, Mesh];
+};
+
+const animate = (
     time_S: number,
-    mesh: InstancedGridMesh,
+    gridMesh: InstancedGridMesh,
+    hexMenuMeshes: Mesh[],
     gridData: GridData,
-    intersectionHits_Ref: MutableRefObject<number[][] | null>,
+    intersectionHits_Ref: MutableRefObject<[number[][], Mesh] | null>,
     hasRunOnce_Ref: MutableRefObject<boolean>,
 ) => {
-    setShaderAnimation(mesh, gridData, time_S, intersectionHits_Ref, hasRunOnce_Ref, 'sin');
-};
-
-let intersected = 0;
-let hitIndices: number[][] = [];
-const getIntersectIndices = (intersection: Intersection[], gridColsRows: [number, number]) => {
-    const newInstanceId = intersection[0].instanceId ?? intersected;
-
-    if (intersected !== newInstanceId) {
-        hitIndices = GridAnimations.getRingShape(newInstanceId, 2, gridColsRows);
-
-        // console.log('%c[BackgroundGrid]', 'color: #912e76', `newInstanceId :`, newInstanceId);
-        intersected = newInstanceId;
+    if (intersectionHits_Ref.current) {
+        const [gridHits, hitHexMenuMesh] = intersectionHits_Ref.current;
+        gridHits.length && setShaderAnimation(gridMesh, gridData, time_S, gridHits, hasRunOnce_Ref, 'sin');
+        hitHexMenuMesh && setHexMenuAnimation(hexMenuMeshes, hitHexMenuMesh);
     }
-    return hitIndices;
 };
 
-const instancedMeshTempColor = new Color();
-const isFlatShaded = false;
-
-const BackgroundMesh: FC<{
-    gridData: GridData;
-    meshRef: MutableRefObject<InstancedGridMesh | null>;
-    menuItemPositions: number[];
-    renderer: WebGLRenderer;
-    isSquare?: boolean;
-    useFresnel?: boolean;
-}> = ({ gridData, meshRef, menuItemPositions, renderer, isSquare = false, useFresnel = false }) => {
-    const { overallWidth, overallHeight, instanceFlatTop, instanceWidth, instancePadding, gridCount, gridColumns, gridRows } = gridData;
-
-    const meshRef_Cb = useCallback((mesh: InstancedMesh2 | null) => {
-        if (mesh) {
-            meshRef.current = mesh as InstancedGridMesh;
-            mesh.initUniformsPerInstance({ vertex: { u_Hit_Offset: 'vec4', u_Hit_Time: 'float', u_Anim_Progress: 'float' } });
-            mesh.sortObjects = true;
-            mesh.customSort = createRadixSort(mesh);
+const setHexMenuAnimation = (meshes: Mesh[], hitMesh: Mesh) => {
+    meshes.forEach((mesh) => {
+        if (mesh === hitMesh) {
+            mesh.position.setZ(2);
+        } else if (mesh.position.z !== 0) {
+            mesh.position.setZ(0);
         }
-    }, []);
-
-    useEffect(() => {
-        if (meshRef.current) {
-            const instancedMesh = meshRef.current;
-
-            console.log('%c[instancedMesh2]', 'color: #b85533', `Creating Instances ${gridCount} (cols:${gridColumns} rows:${gridRows})`);
-            const indicesUnderMenuItems = menuItemPositions.map((menuItemIndex) => GridAnimations.getRingShape(menuItemIndex, 3, [gridColumns, gridRows]));
-            const merged = GridAnimations.mergeIndicesDistanceLevels(...indicesUnderMenuItems);
-            const filtered = GridAnimations.filterIndices(merged, true).flat();
-
-            const [extentX, extentY] = getExtentsInNDC(overallWidth, overallHeight);
-
-            instancedMesh.addInstances(gridCount, (instance) => {
-                if (isSquare) {
-                    SquareGrid.setInstancePosition(instance, instance.id, gridColumns, [extentX, extentY], instanceWidth, instancePadding);
-                } else {
-                    HexGrid.setInstancePosition(instance, instance.id, gridColumns, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
-                }
-
-                Grid.setInstanceColor(instance, instancedMeshTempColor);
-
-                if (filtered.includes(instance.id)) {
-                    instance.position.setZ(-10);
-                    // instance.color.setHex(0x666666);
-                }
-            });
-
-            meshRef.current = instancedMesh;
-        }
-    }, [menuItemPositions, overallWidth, overallHeight, instanceWidth, instancePadding, gridCount, gridColumns, isSquare, instanceFlatTop]);
-
-    const hexGridGeometry_Memo = useMemo(() => {
-        if (isSquare) {
-            return new PlaneGeometry(instanceWidth, instanceWidth);
-        } else {
-            const size = HexGrid.getSizeFromWidth(instanceWidth, instanceFlatTop);
-            return new HexagonalPrismGeometry(size, instanceWidth, instanceFlatTop).rotateX(MathUtils.degToRad(90));
-        }
-    }, [isSquare, instanceWidth, instanceFlatTop]);
-
-    const material_Memo = useMemo(() => {
-        const [currentBackground, currentActivePrimary, currentActiveSecondary] = getColorsFromTheme();
-
-        const shaderUniforms = UniformsUtils.merge([
-            ShaderLib.phong.uniforms,
-            {
-                u_Length: { value: instanceWidth },
-                u_FresnelColor: { value: instancedMeshTempColor.setHex(currentActivePrimary) },
-                u_HighLightColor: {
-                    value: instancedMeshTempColor.clone().setHex(currentActiveSecondary),
-                },
-            },
-        ]) as GridShaderMaterial['uniforms'];
-
-        shaderUniforms.diffuse.value.setHex(currentBackground);
-        shaderUniforms.opacity.value = 1;
-        shaderUniforms.shininess.value = 100;
-        shaderUniforms.specular.value.setHex(0xdddddd);
-
-        const shaderMaterial = new ShaderMaterial({
-            uniforms: shaderUniforms,
-            defines: {
-                USE_UV: '',
-                USE_INSTANCING_COLOR: '',
-                USE_INSTANCING_COLOR_INDIRECT: '',
-                ...(useFresnel ? { USE_FRESNEL: '' } : {}),
-                ...(isFlatShaded ? { FLAT_SHADED: '' } : {}),
-            },
-            vertexShader,
-            fragmentShader,
-            wireframe: false,
-            lights: true,
-            // transparent: true,
-            // side: DoubleSide,
-            // transparent: shaderUniforms.opacity.value >= 1 ? false : true,
-        });
-
-        return shaderMaterial as GridShaderMaterial;
-    }, [instanceWidth, useFresnel]);
-
-    return (
-        <>
-            <InstancedGridMeshFiber ref={meshRef_Cb} geometry={hexGridGeometry_Memo} material={material_Memo} params={{ renderer, createEntities: true }} />
-        </>
-    );
+    });
 };

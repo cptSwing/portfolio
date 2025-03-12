@@ -19,18 +19,17 @@ export const setShaderAnimation = (
     mesh: InstancedGridMesh,
     gridData: GridData,
     time_S: number,
-    intersectionHits_Ref: MutableRefObject<number[][] | null>,
+    gridHits: number[][] | null,
     hasRunOnce_Ref: MutableRefObject<boolean>,
     pattern: PatternSettingsAnimation['pattern'] = 'sin-columns',
 ) => {
     const { overallHeight, gridCount, gridColumns, gridRows, instanceWidth } = gridData;
-    const hits = intersectionHits_Ref.current;
 
     // TODO write more comprehensive animation system --> background patterns (such as sin-wave etc), overlaid/overwritten by actions such as mousevent, raindrop, shake etc etc
     // if (pattern === 'raindrops') {
     //     if (Math.ceil(time_S) % 2 === 0) {
     //         const randomDropIndex = Math.ceil(remapToRange(Math.random(), 0, 1, 0, gridCount - 1));
-    //         intersectionHits_Ref.current = [randomDropIndex, ...HexGrid.getAdjacentIndices(randomDropIndex, gridColumns, gridRows, 2, instanceFlatTop)];
+    //         gridHits = [randomDropIndex, ...HexGrid.getAdjacentIndices(randomDropIndex, gridColumns, gridRows, 2, instanceFlatTop)];
     //     }
     // }
 
@@ -65,10 +64,10 @@ export const setShaderAnimation = (
                 newOffset.setW(sequentialRandomMultiplier);
             }
         } else {
-            const distance = hits?.findIndex((indicesAtDistance) => indicesAtDistance.includes(instance.id));
+            const distance = gridHits?.findIndex((indicesAtDistance) => indicesAtDistance.includes(instance.id));
 
             if (typeof distance === 'number' && distance >= 0) {
-                const fractionAtDistance = (hits!.length - distance) / hits!.length;
+                const fractionAtDistance = (gridHits!.length - distance) / gridHits!.length;
                 const clampedFraction = Math.max(fractionAtDistance, 0.2);
                 const highLightColor = mesh.material.uniforms.u_HighLightColor.value;
 

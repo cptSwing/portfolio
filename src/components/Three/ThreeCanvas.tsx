@@ -19,13 +19,21 @@ const ThreeCanvas = () => {
 
                 <BackgroundGrid isSquare={false} />
 
-                <ambientLight color='white' intensity={1} />
-                <directionalLight position={[-1, 2, 1]} color={0xffffff} intensity={1.5} />
-                <directionalLight position={[1, 2, 1]} color={0xffffff} intensity={1.5} />
-                <directionalLight position={[0, -2, -1]} color={0xbbbbff} intensity={0.25} />
+                <Lights />
             </Canvas>
         </div>
     );
 };
 
 export default ThreeCanvas;
+
+const Lights = () => {
+    return (
+        <>
+            <ambientLight color='white' intensity={1} />
+            <directionalLight position={[-1, 2, 1]} color={0xffffff} intensity={1.5} />
+            <directionalLight position={[1, 2, 1]} color={0xffffff} intensity={1.5} />
+            <directionalLight position={[0, -2, -1]} color={0xbbbbff} intensity={0.25} />
+        </>
+    );
+};

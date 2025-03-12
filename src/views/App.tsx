@@ -11,9 +11,9 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 <Route element={<RouteOutlet />}>
-                    <Route path='/:catId?' element={<NavOutlet />}>
+                    {/* <Route path='/:catId?' element={<NavOutlet />}>
                         <Route path='/:catId/:postId' element={<Content />} />
-                    </Route>
+                    </Route> */}
                 </Route>
             </Routes>
             <ThreeCanvas />
