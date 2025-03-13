@@ -1,12 +1,12 @@
 import { useThree, useFrame } from '@react-three/fiber';
 import { FC, useRef, useMemo, MutableRefObject, useEffect, createRef } from 'react';
 import { useEvent } from 'react-use';
-import { WebGLRenderer, Camera, Vector2, Raycaster, PerspectiveCamera, Intersection, Mesh } from 'three';
-import { setShaderAnimation } from '../../lib/animateMeshes';
+import { WebGLRenderer, Camera, Vector2, Raycaster, PerspectiveCamera, Intersection } from 'three';
+import { setAmbientGridAnimation, setIntroGridAnimation, setMenuAnimation, setSpecificGridAnimation } from '../../lib/animateMeshes';
 import { SquareGrid, HexGrid } from '../../lib/classes/Grid';
 import { GridAnimations } from '../../lib/classes/GridAnimations';
 import { getWidthHeight } from '../../lib/threeHelpers';
-import { DefaultGridData, InstancedGridMesh, GridData } from '../../types/types';
+import { DefaultGridData, InstancedGridMesh, GridData, HexMenuMesh } from '../../types/types';
 import { ndcFromViewportCoordinates } from '../../lib/ndcFromViewportCoordinates';
 import { InstancedMesh2 } from '@three.ez/instanced-mesh';
 import InstancedGridMeshFiber from './InstancedGridMeshFiber';
@@ -26,10 +26,15 @@ const gridDataDefaults: DefaultGridData = {
 const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     const [renderer, camera] = useThree((state) => [state.gl, state.camera]) as [WebGLRenderer, Camera];
 
+    // --> Various refs
     const mousePosition_Ref = useRef(new Vector2());
     const raycaster_Ref = useRef<Raycaster | null>(null);
-    const hasRunOnce_Ref = useRef(true);
+    const hasRunOnce_Ref = useRef(false);
+    const gridMesh_Ref = useRef<InstancedGridMesh | null>(null);
+    const hexMenuMeshes_Ref = useRef<HexMenuMesh[] | null>(null);
+    const intersectionHits_Ref = useRef<IntersectionResults | null>(null);
 
+    // --> Assemble the final GridData
     const gridData_Memo = useMemo<GridData>(() => {
         const [width, height] = getWidthHeight(0, camera as PerspectiveCamera);
         const gridData = isSquare
@@ -42,6 +47,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
         return gridData;
     }, [camera, isSquare]);
 
+    // --> Calculate Placement for Menu items
     const hexMenuItemPositions_Memo = useMemo(() => {
         const { gridColumns, gridRows } = gridData_Memo;
 
@@ -56,22 +62,20 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
         return positions;
     }, [gridData_Memo]);
 
+    // --> Create Refs for array of <HexMenuItem>
     const hexMenuItemReferences_Memo = useMemo(
-        () => Array.from({ length: hexMenuItemPositions_Memo.length }).map(() => createRef<Mesh>()),
+        () => Array.from({ length: hexMenuItemPositions_Memo.length }).map(() => createRef<HexMenuMesh>()),
         [hexMenuItemPositions_Memo],
     );
-    const gridMesh_Ref = useRef<InstancedGridMesh | null>(null);
 
-    const intersectionHits_Ref = useRef<[number[][], Mesh] | null>(null);
-
-    const hexMenuMeshes_Ref = useRef<Mesh[] | null>(null);
-
+    // --> Store actual Mesh references for use further below
     useEffect(() => {
         if (!hexMenuMeshes_Ref.current && hexMenuItemReferences_Memo.some((ref) => ref.current)) {
-            hexMenuMeshes_Ref.current = hexMenuItemReferences_Memo.map((ref) => ref.current) as Mesh[];
+            hexMenuMeshes_Ref.current = hexMenuItemReferences_Memo.map((ref) => ref.current) as HexMenuMesh[];
         }
     }, [hexMenuMeshes_Ref, hexMenuItemReferences_Memo]);
 
+    // --> Calculate hits only on mousemove instead of in useFrame()
     useEvent(
         'mousemove',
         (ev: Event | MouseEvent) => {
@@ -88,8 +92,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 
                 const allMeshes = [gridMesh_Ref.current, ...hexMenuMeshes_Ref.current];
 
-                console.log('%c[BackgroundGrid]', 'color: #945f2d', `allMeshes :`, allMeshes);
-                const intersection: Intersection<InstancedMesh2 | Mesh>[] = raycaster_Ref.current.intersectObjects(allMeshes, false);
+                const intersection: Intersection<InstancedMesh2 | HexMenuMesh>[] = raycaster_Ref.current.intersectObjects(allMeshes, false);
 
                 if (intersection.length) {
                     intersectionHits_Ref.current = getIntersectIndices(intersection, [gridData_Memo.gridColumns, gridData_Memo.gridRows]);
@@ -104,10 +107,11 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     );
 
     // TODO use 'mouse' from here, seen in https://sbcode.net/react-three-fiber/look-at-mouse/ ?
-    useFrame(({ clock, mouse }) => {
-        gridMesh_Ref.current &&
-            hexMenuMeshes_Ref.current &&
+    // --> Animation of all Meshes
+    useFrame(({ clock }) => {
+        if (gridMesh_Ref.current && hexMenuMeshes_Ref.current) {
             animate(clock.getElapsedTime(), gridMesh_Ref.current, hexMenuMeshes_Ref.current, gridData_Memo, intersectionHits_Ref, hasRunOnce_Ref);
+        }
     });
 
     return (
@@ -130,58 +134,58 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 export default BackgroundGrid;
 
 let intersected = 0;
-let hitHexMenuMesh: Mesh | null;
-let hitIndices: number[][] = [];
-const getIntersectIndices = (intersection: Intersection<InstancedMesh2 | Mesh>[], gridColsRows: [number, number]) => {
+let hexMeshHit: HexMenuMesh | null;
+let gridHits: number[][] = [];
+const getIntersectIndices = (intersection: Intersection<InstancedMesh2 | HexMenuMesh>[], gridColsRows: [number, number]) => {
     const firstHit = intersection[0];
 
-    console.log('%c[BackgroundGrid]', 'color: #0db788', `firstHit :`, firstHit);
     if (firstHit.instanceId) {
         // Is a submesh of InstancedMesh
-
         const newInstanceId = firstHit.instanceId ?? intersected;
         if (intersected !== newInstanceId) {
-            hitIndices = GridAnimations.getRingShape(newInstanceId, 2, gridColsRows);
+            gridHits = GridAnimations.getRingShape(newInstanceId, 2, gridColsRows);
+            gridHits = GridAnimations.filterIndices(gridHits);
 
             intersected = newInstanceId;
         }
 
-        hitHexMenuMesh = null;
+        hexMeshHit = null;
     } else if (firstHit.object.isMesh) {
         // Is a HexMenuItem
-
-        if (hitHexMenuMesh?.uuid !== firstHit.object.uuid) {
-            hitHexMenuMesh = firstHit.object;
+        if (hexMeshHit?.uuid !== firstHit.object.uuid) {
+            hexMeshHit = firstHit.object as HexMenuMesh;
         }
 
-        hitIndices = [];
+        gridHits = [];
     }
 
-    console.log('%c[BackgroundGrid]', 'color: #516b37', `hitHexMenuMesh :`, hitHexMenuMesh);
-    return [hitIndices, hitHexMenuMesh] as [typeof hitIndices, Mesh];
+    return [gridHits, hexMeshHit] as IntersectionResults;
 };
 
 const animate = (
     time_S: number,
     gridMesh: InstancedGridMesh,
-    hexMenuMeshes: Mesh[],
+    hexMenuMeshes: HexMenuMesh[],
     gridData: GridData,
-    intersectionHits_Ref: MutableRefObject<[number[][], Mesh] | null>,
+    intersectionHits_Ref: MutableRefObject<IntersectionResults | null>,
     hasRunOnce_Ref: MutableRefObject<boolean>,
 ) => {
+    gridMesh.material.uniforms.u_Time_S.value = time_S;
+
+    // --> Background animation
+    setAmbientGridAnimation(gridMesh, gridData, time_S, 'sin');
+
+    // --> Intro, returns 'true' once animation is over
+    if (!hasRunOnce_Ref.current) {
+        hasRunOnce_Ref.current = setIntroGridAnimation(gridMesh, gridData, time_S);
+    }
+
+    // --> React to Hits (overwriting values from setAmbientAnimation())
     if (intersectionHits_Ref.current) {
-        const [gridHits, hitHexMenuMesh] = intersectionHits_Ref.current;
-        gridHits.length && setShaderAnimation(gridMesh, gridData, time_S, gridHits, hasRunOnce_Ref, 'sin');
-        hitHexMenuMesh && setHexMenuAnimation(hexMenuMeshes, hitHexMenuMesh);
+        const [gridHits, hexMeshHit] = intersectionHits_Ref.current;
+        gridHits.length && setSpecificGridAnimation(gridMesh, gridData, time_S, gridHits);
+        hexMeshHit && setMenuAnimation(hexMenuMeshes, hexMeshHit);
     }
 };
 
-const setHexMenuAnimation = (meshes: Mesh[], hitMesh: Mesh) => {
-    meshes.forEach((mesh) => {
-        if (mesh === hitMesh) {
-            mesh.position.setZ(2);
-        } else if (mesh.position.z !== 0) {
-            mesh.position.setZ(0);
-        }
-    });
-};
+type IntersectionResults = [number[][], HexMenuMesh | null];

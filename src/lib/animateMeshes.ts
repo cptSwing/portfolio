@@ -1,29 +1,85 @@
-import { Color, MathUtils, Vector4 } from 'three';
-import { GridData, InstancedGridMesh, PatternSettingsAnimation } from '../types/types';
+import { Color, MathUtils, Vector3 } from 'three';
+import { GridData, HexMenuMesh, InstancedGridMesh, PatternSettingsAnimation } from '../types/types';
 import HexagonGeometry from './classes/HexagonGeometry';
-import { MutableRefObject } from 'react';
 import { remapRange } from './remapRange';
 
-// .w holds offset strength
-const prevOffset = new Vector4();
-const newOffset = new Vector4();
-
+// .w holds information on wether offset is a Hit's offset (1 or 0)
+const defaultOffset = new Vector3(0, 0, 0);
+const newOffset = defaultOffset.clone();
 const newColor = new Color();
 
+export const introAnimationLength_S = 0.5;
+const standardAnimationLength = 1.5;
+
+let maxBackgroundMovement = 0;
+
+export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number) => {
+    const { overallHeight, gridColumns, instanceWidth } = gridData;
+    let hasRunOnce = false;
+    newOffset.copy(defaultOffset);
+
+    mesh.updateInstances((instance) => {
+        const [column] = HexagonGeometry.getColumnAndRowByIndex(instance.id, gridColumns);
+        const animationProgress = getAnimationProgress(introAnimationLength_S, 0, time_S);
+
+        if (animationProgress >= 1) {
+            maxBackgroundMovement = instanceWidth / 2;
+            mesh.material.uniforms.u_Animation_Length_S.value = standardAnimationLength;
+            hasRunOnce = true;
+        } else {
+            let sequentialRandomMultiplier = 1;
+
+            if (column % 3 === 0) {
+                sequentialRandomMultiplier = 0.9;
+            } else if (column % 5 === 0) {
+                sequentialRandomMultiplier = 0.8;
+            } else if (column % 7 === 0) {
+                sequentialRandomMultiplier = 0.7;
+            }
+
+            newOffset.setY(overallHeight * sequentialRandomMultiplier);
+            instance.setUniform('u_Offset', newOffset);
+        }
+    });
+
+    return hasRunOnce;
+};
+
+const tempHighlightColor = new Color(0.5, 0.75, 0.25);
+const minimumAtFarthestDistance = 0.2;
+export const setSpecificGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, gridHits: number[][]) => {
+    const { instanceWidth } = gridData;
+
+    // const highLightColor = mesh.material.uniforms.u_HighLight_Color.value;
+    const highLightColor = tempHighlightColor;
+
+    newOffset.copy(defaultOffset);
+
+    gridHits.forEach((hits, idx) => {
+        const relativeDistance = idx;
+
+        hits.forEach((instanceId) => {
+            const instance = mesh.instances[instanceId];
+
+            const fractionAtDistance = (gridHits.length - relativeDistance) / gridHits.length;
+            const clampedFraction = Math.max(fractionAtDistance, minimumAtFarthestDistance);
+
+            newColor.copy(highLightColor).multiplyScalar(clampedFraction);
+            mesh.setColorAt(instanceId, newColor);
+
+            newOffset.setZ(instanceWidth * clampedFraction);
+
+            instance.setUniform('u_Offset', newOffset);
+            instance.setUniform('u_Hit_Time_S', time_S); // set last
+        });
+    });
+};
+
 const timeScale = 0.75;
-const introTargetOffsets = new Vector4(0, 0, 0, 1);
 
-let animationLength_S = 3;
-
-export const setShaderAnimation = (
-    mesh: InstancedGridMesh,
-    gridData: GridData,
-    time_S: number,
-    gridHits: number[][] | null,
-    hasRunOnce_Ref: MutableRefObject<boolean>,
-    pattern: PatternSettingsAnimation['pattern'] = 'sin-columns',
-) => {
-    const { overallHeight, gridCount, gridColumns, gridRows, instanceWidth } = gridData;
+export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, pattern: PatternSettingsAnimation['pattern'] = 'sin') => {
+    const { gridColumns } = gridData;
+    newOffset.copy(defaultOffset);
 
     // TODO write more comprehensive animation system --> background patterns (such as sin-wave etc), overlaid/overwritten by actions such as mousevent, raindrop, shake etc etc
     // if (pattern === 'raindrops') {
@@ -36,89 +92,32 @@ export const setShaderAnimation = (
     mesh.updateInstances((instance) => {
         const [column, row] = HexagonGeometry.getColumnAndRowByIndex(instance.id, gridColumns);
 
-        instance.getUniform('u_Hit_Offset', prevOffset);
+        switch (pattern) {
+            case 'sin':
+                let sinVal = Math.sin(time_S * timeScale + (row - column) * 0.25);
+                sinVal = remapRange(sinVal, -1, 1, -maxBackgroundMovement, maxBackgroundMovement);
 
-        const oldTime_S = instance.getUniform('u_Hit_Time') as number;
-        const animationProgress = getAnimationProgress(animationLength_S, oldTime_S, time_S);
+                newOffset.setZ(sinVal);
+                break;
 
-        // Intro of sorts
-        if (!hasRunOnce_Ref.current) {
-            newOffset.copy(introTargetOffsets);
-
-            if (animationProgress >= 1) {
-                animationLength_S = 1.5;
-                hasRunOnce_Ref.current = true;
-            } else {
-                let sequentialRandomMultiplier = 1;
-
-                if (column % 3 === 0) {
-                    sequentialRandomMultiplier = 0.9;
-                } else if (column % 5 === 0) {
-                    sequentialRandomMultiplier = 0.8;
-                } else if (column % 7 === 0) {
-                    sequentialRandomMultiplier = 0.7;
-                }
-
-                prevOffset.setY(overallHeight);
-                newOffset.lerpVectors(prevOffset, newOffset, animationProgress);
-                newOffset.setW(sequentialRandomMultiplier);
-            }
-        } else {
-            const distance = gridHits?.findIndex((indicesAtDistance) => indicesAtDistance.includes(instance.id));
-
-            if (typeof distance === 'number' && distance >= 0) {
-                const fractionAtDistance = (gridHits!.length - distance) / gridHits!.length;
-                const clampedFraction = Math.max(fractionAtDistance, 0.2);
-                const highLightColor = mesh.material.uniforms.u_HighLightColor.value;
-
-                newColor.copy(highLightColor).multiplyScalar(clampedFraction);
-
-                // animationProgress is always 0 since u_Hit_Time is set each frame - so we set values to prevOffset
-                prevOffset.setZ(instanceWidth);
-                prevOffset.setW(clampedFraction);
-                mesh.setColorAt(instance.id, newColor);
-                instance.setUniform('u_Hit_Time', time_S); // set last
-            } else {
-                switch (pattern) {
-                    case 'sin-columns':
-                        let sinValCol = Math.sin(prevOffset.z + (time_S + (column * instanceWidth) / 2));
-                        sinValCol = remapRange(sinValCol, -1, 1, -instanceWidth / 2, instanceWidth / 2);
-
-                        newOffset.setZ(sinValCol);
-
-                        break;
-
-                    case 'sin-rows':
-                        let sinValRow = Math.sin(prevOffset.z + (time_S + row / 5));
-                        sinValRow = remapRange(sinValRow, -1, 1, -instanceWidth / 2, instanceWidth / 2);
-
-                        newOffset.setZ(sinValRow);
-
-                        break;
-
-                    case 'sin':
-                        let sinVal = Math.sin(time_S * timeScale + (row - column) * 0.25);
-                        sinVal = remapRange(sinVal, -1, 1, -instanceWidth / 2, instanceWidth / 2);
-
-                        newOffset.setZ(sinVal);
-                        newOffset.setW(animationProgress);
-                        newOffset.lerpVectors(prevOffset, newOffset, animationProgress);
-                        break;
-
-                    // 'none'
-                    default:
-                        newOffset.copy(introTargetOffsets);
-                        break;
-                }
-            }
+            // 'none'
+            default:
+                break;
         }
 
-        newOffset.lerpVectors(prevOffset, newOffset, animationProgress);
-        instance.setUniform('u_Hit_Offset', newOffset);
-        instance.setUniform('u_Anim_Progress', animationProgress);
+        instance.setUniform('u_Offset', newOffset);
     });
 };
 
+export const setMenuAnimation = (hexMeshes: HexMenuMesh[], hexMeshHit: HexMenuMesh) => {
+    hexMeshes.forEach((mesh) => {
+        if (mesh === hexMeshHit) {
+            mesh.position.setZ(2);
+        } else if (mesh.position.z !== 0) {
+            mesh.position.setZ(0);
+        }
+    });
+};
 const getAnimationProgress = (length: number, startTime: number, currentTime: number) => MathUtils.clamp((currentTime - startTime) / length, 0, 1);
 
 export const meshAnimations: Record<string, Pick<PatternSettingsAnimation, 'pattern' | 'timeAlpha' | 'endDelay_S'>> = {

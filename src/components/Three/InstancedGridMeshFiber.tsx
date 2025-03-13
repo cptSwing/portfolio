@@ -12,9 +12,11 @@ import { Grid, HexGrid, SquareGrid } from '../../lib/classes/Grid';
 import vertexShader from '../../lib/shading/instancedShader_V.glsl';
 import fragmentShader from '../../lib/shading/instancedShader_F.glsl';
 import { getExtentsInNDC } from '../../lib/ndcFromViewportCoordinates';
+import { introAnimationLength_S } from '../../lib/animateMeshes';
 
 extend({ InstancedMesh2 });
 
+introAnimationLength_S;
 const instancedMeshTempColor = new Color();
 const isFlatShaded = false;
 
@@ -50,9 +52,11 @@ const InstancedGridMeshFiber = memo(
             const shaderUniforms = UniformsUtils.merge([
                 ShaderLib.phong.uniforms,
                 {
-                    u_Length: { value: instanceWidth },
-                    u_FresnelColor: { value: instancedMeshTempColor.setHex(currentActivePrimary) },
-                    u_HighLightColor: {
+                    u_Time_S: { value: 0 },
+                    u_Animation_Length_S: { value: introAnimationLength_S },
+                    u_Instance_Width: { value: instanceWidth },
+                    u_Fresnel_Color: { value: instancedMeshTempColor.setHex(currentActivePrimary) },
+                    u_HighLight_Color: {
                         value: instancedMeshTempColor.clone().setHex(currentActiveSecondary),
                     },
                 },
@@ -119,7 +123,7 @@ const InstancedGridMeshFiber = memo(
                         // }
                     });
 
-                    mesh.initUniformsPerInstance({ vertex: { u_Hit_Offset: 'vec4', u_Hit_Time: 'float', u_Anim_Progress: 'float' } });
+                    mesh.initUniformsPerInstance({ vertex: { u_Offset: 'vec3', u_Hit_Time_S: 'float' } });
                     mesh.sortObjects = true;
                     mesh.customSort = createRadixSort(mesh);
 
@@ -135,8 +139,8 @@ const InstancedGridMeshFiber = memo(
                 const [currentBackground, currentActivePrimary, currentActiveSecondary] = getColorsFromTheme();
 
                 innerRef.current.material.uniforms.diffuse.value.setHex(currentBackground);
-                innerRef.current.material.uniforms.u_FresnelColor.value.setHex(currentActivePrimary);
-                innerRef.current.material.uniforms.u_HighLightColor.value.setHex(currentActiveSecondary);
+                innerRef.current.material.uniforms.u_Fresnel_Color.value.setHex(currentActivePrimary);
+                innerRef.current.material.uniforms.u_HighLight_Color.value.setHex(currentActiveSecondary);
             }
         }, [themeIndex, documentIsReady]);
 

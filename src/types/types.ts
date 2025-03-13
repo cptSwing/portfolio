@@ -1,6 +1,7 @@
 import { InstancedEntity, InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { MENU_CATEGORY, ToolsUrls } from './enums';
-import { BufferGeometry, Color, IUniform, NormalBufferAttributes, Object3DEventMap, ShaderMaterial } from 'three';
+import { BufferGeometry, Color, IUniform, Mesh, NormalBufferAttributes, Object3DEventMap, ShaderMaterial } from 'three';
+import HexagonalPrismGeometry from '../lib/classes/HexagonalPrismGeometry';
 
 export type ZustandStore = {
     values: {
@@ -61,13 +62,18 @@ export interface GridShaderMaterial extends ShaderMaterial {
         opacity: IUniform<number>;
         specular: IUniform<Color>;
         shininess: IUniform<number>;
-        u_Length: IUniform<number>;
-        u_FresnelColor: IUniform<Color>;
-        u_HighLightColor: IUniform<Color>;
+
+        u_Time_S: IUniform<number>;
+        u_Animation_Length_S: IUniform<number>;
+        u_Instance_Width: IUniform<number>;
+        u_Fresnel_Color: IUniform<Color>;
+        u_HighLight_Color: IUniform<Color>;
     };
 }
 
 export type InstancedGridMesh = InstancedMesh2<{}, BufferGeometry<NormalBufferAttributes>, GridShaderMaterial, Object3DEventMap>;
+
+export type HexMenuMesh = Mesh<HexagonalPrismGeometry>;
 
 export type OriginalInstancePosition = {
     x: number;

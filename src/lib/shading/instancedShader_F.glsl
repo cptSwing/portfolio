@@ -37,9 +37,9 @@ float remap(float value, float min1, float max1, float min2, float max2) {
     return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
 }
 
-// per Mesh uniforms
-uniform float u_Length;
-uniform vec3 u_FresnelColor;
+// per material uniforms
+uniform float u_Instance_Width;
+uniform vec3 u_Fresnel_Color;
 
 #ifdef USE_FRESNEL
     #define FRESNEL_AMOUNT 3.
@@ -88,7 +88,7 @@ void main() {
 
     float topHighlightMask = clamp(myUv.x, 0.5, 1.);
     float bottomShadowMask = myUv.y;
-    float worldDepth = remap(myWorldPosition.z, -u_Length, u_Length, 0., 1.);
+    float worldDepth = remap(myWorldPosition.z, -u_Instance_Width, u_Instance_Width, 0., 1.);
 
     vec3 fakeDepth = mix(myColor * blackColor, myColor, worldDepth);
     vec3 fakeHighlight = mix(fakeDepth, myColor * 1.5, topHighlightMask);
@@ -100,7 +100,7 @@ void main() {
 
 #ifdef USE_FRESNEL
     float fresnel = fresnelFunc(FRESNEL_AMOUNT, FRESNEL_OFFSET, vNormal, vViewDirection);
-    vec3 fresnelColor = (u_FresnelColor * fresnel) * FRESNEL_INTENSITY;
+    vec3 fresnelColor = (u_Fresnel_Color * fresnel) * FRESNEL_INTENSITY;
     myColor = mix(myColor, fresnelColor, fresnel * FRESNEL_ALPHA);
 
     diffuseColor = vec4(myColor, (opacity >= 1.0 ? myOpacity : myOpacity * fresnel));
