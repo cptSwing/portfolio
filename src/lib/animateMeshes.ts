@@ -3,8 +3,7 @@ import { GridData, HexMenuMesh, InstancedGridMesh, PatternSettingsAnimation } fr
 import HexagonGeometry from './classes/HexagonGeometry';
 import { remapRange } from './remapRange';
 
-// .w holds information on wether offset is a Hit's offset (1 or 0)
-const defaultOffset = new Vector3(0, 0, 0);
+const defaultOffset = new Vector3(0, 0, -0.1);
 const newOffset = defaultOffset.clone();
 const newColor = new Color();
 

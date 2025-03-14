@@ -50,19 +50,17 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     // --> Calculate Placement for Menu items
     const hexMenuItemPositions_Memo = useMemo(() => {
         const { gridColumns, gridRows } = gridData_Memo;
-
-        const getIndexAtPosition = (x: number, y: number) => {
-            const xPos = Math.floor(gridColumns * x);
-            const yPos = Math.floor(gridRows * y);
-            return xPos + gridColumns * yPos;
-        };
-
-        const positions = [getIndexAtPosition(0.333, 0.25), getIndexAtPosition(0.45, 0.45)];
-
+        const positions = [
+            getIndexAtPosition(0.45, 0.25, gridColumns, gridRows),
+            getIndexAtPosition(0.54, 0.4, gridColumns, gridRows),
+            getIndexAtPosition(0.45, 0.55, gridColumns, gridRows),
+            getIndexAtPosition(0.54, 0.65, gridColumns, gridRows),
+        ];
         return positions;
     }, [gridData_Memo]);
 
     const [hexRefs, hexRefCallback] = useArrayRef<HexMenuMesh>();
+    console.log('%c[BackgroundGrid]', 'color: #416da8', `hexRefs :`, hexRefs);
 
     // --> Calculate hits only on mousemove instead of in useFrame()
     useEvent(
@@ -108,11 +106,10 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
             {hexMenuItemPositions_Memo.map((gridPosition, idx) => (
                 <HexMenuItem
                     key={`key${gridPosition}-${idx}`}
-                    // ref={ hexMenuItemReferences_Memo[ idx ] }
                     ref={hexRefCallback(idx)}
                     gridData={gridData_Memo}
                     positionIndex={gridPosition}
-                    renderer={renderer}
+                    scaleXZ={[5, 5]}
                 />
             ))}
             <InstancedGridMeshFiber ref={gridMesh_Ref} renderer={renderer} gridData={gridData_Memo} isSquare={isSquare} useFresnel />
@@ -121,6 +118,32 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 };
 
 export default BackgroundGrid;
+
+const animate = (
+    time_S: number,
+    gridMesh: InstancedGridMesh,
+    hexMenuMeshes: HexMenuMesh[],
+    gridData: GridData,
+    intersectionHits_Ref: MutableRefObject<IntersectionResults | null>,
+    hasRunOnce_Ref: MutableRefObject<boolean>,
+) => {
+    gridMesh.material.uniforms.u_Time_S.value = time_S;
+
+    // --> Background animation
+    setAmbientGridAnimation(gridMesh, gridData, time_S, 'none');
+
+    // --> Intro, returns 'true' once animation is over
+    if (!hasRunOnce_Ref.current) {
+        hasRunOnce_Ref.current = setIntroGridAnimation(gridMesh, gridData, time_S);
+    }
+
+    // --> React to Hits (overwriting values from setAmbientAnimation())
+    if (intersectionHits_Ref.current) {
+        const [gridHits, hexMeshHit] = intersectionHits_Ref.current;
+        gridHits.length && setSpecificGridAnimation(gridMesh, gridData, time_S, gridHits);
+        hexMeshHit && setMenuAnimation(hexMenuMeshes, hexMeshHit);
+    }
+};
 
 let intersected = 0;
 let hexMeshHit: HexMenuMesh | null;
@@ -151,30 +174,11 @@ const getIntersectIndices = (intersection: Intersection<InstancedMesh2 | HexMenu
     return [gridHits, hexMeshHit] as IntersectionResults;
 };
 
-const animate = (
-    time_S: number,
-    gridMesh: InstancedGridMesh,
-    hexMenuMeshes: HexMenuMesh[],
-    gridData: GridData,
-    intersectionHits_Ref: MutableRefObject<IntersectionResults | null>,
-    hasRunOnce_Ref: MutableRefObject<boolean>,
-) => {
-    gridMesh.material.uniforms.u_Time_S.value = time_S;
-
-    // --> Background animation
-    setAmbientGridAnimation(gridMesh, gridData, time_S, 'sin');
-
-    // --> Intro, returns 'true' once animation is over
-    if (!hasRunOnce_Ref.current) {
-        hasRunOnce_Ref.current = setIntroGridAnimation(gridMesh, gridData, time_S);
-    }
-
-    // --> React to Hits (overwriting values from setAmbientAnimation())
-    if (intersectionHits_Ref.current) {
-        const [gridHits, hexMeshHit] = intersectionHits_Ref.current;
-        gridHits.length && setSpecificGridAnimation(gridMesh, gridData, time_S, gridHits);
-        hexMeshHit && setMenuAnimation(hexMenuMeshes, hexMeshHit);
-    }
+/** Returns grid index at viewport position (width [0,1], height [0,1]) */
+const getIndexAtPosition = (x: number, y: number, columns: number, rows: number) => {
+    const xPos = Math.floor(columns * x);
+    const yPos = Math.floor(rows * y);
+    return xPos + columns * yPos;
 };
 
 /** Local Types */

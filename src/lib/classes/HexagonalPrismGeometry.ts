@@ -1,5 +1,5 @@
 import { BufferAttribute, BufferGeometry, Float32BufferAttribute, GeometryGroup, InterleavedBufferAttribute, Vector3 } from 'three';
-import { getIndexedVertex } from '../threeHelpers';
+import { getIndexedVertex } from '../THREE_bufferAttributeHelpers';
 
 export default class HexagonalPrismGeometry extends BufferGeometry {
     type = 'HexagonalPrismGeometry';

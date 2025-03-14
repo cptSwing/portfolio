@@ -5,13 +5,13 @@ import { GridData, GridShaderMaterial, InstancedGridMesh } from '../../types/typ
 import { useIsDocumentReady } from '../../hooks/useIsDocumentReady';
 import { useZustand } from '../../lib/zustand';
 import { getCssProperties } from '../../lib/cssProperties';
-import { stringToHexadecimal } from '../../lib/convertColors';
+import { stringToHexadecimal } from '../../lib/THREE_colorConversions';
 import { Color, MathUtils, PlaneGeometry, ShaderLib, ShaderMaterial, UniformsUtils, WebGLRenderer } from 'three';
 import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
 import { Grid, HexGrid, SquareGrid } from '../../lib/classes/Grid';
 import vertexShader from '../../lib/shading/instancedShader_V.glsl';
 import fragmentShader from '../../lib/shading/instancedShader_F.glsl';
-import { getExtentsInNDC } from '../../lib/ndcFromViewportCoordinates';
+import { getExtentsInNDC } from '../../lib/THREE_coordinateConversions';
 import { introAnimationLength_S } from '../../lib/animateMeshes';
 
 extend({ InstancedMesh2 });
@@ -91,7 +91,11 @@ const InstancedGridMeshFiber = memo(
         const meshRef_Cb = useCallback(
             (mesh: InstancedMesh2 | null) => {
                 if (mesh) {
-                    console.log('%c[instancedMesh2]', 'color: #b85533', `Creating Instances ${gridCount} (cols:${gridColumns} rows:${gridRows})`);
+                    console.log(
+                        '%c[instancedMesh2]',
+                        'color: #b85533',
+                        `Creating ${gridCount} Instances (cols:${gridColumns} rows:${gridRows}), w:${overallWidth} h:${overallHeight}`,
+                    );
                     // const indicesUnderMenuItems = menuItemPositions.map((menuItemIndex) => GridAnimations.getRingShape(menuItemIndex, 3, [gridColumns, gridRows]));
                     // const merged = GridAnimations.mergeIndicesDistanceLevels(...indicesUnderMenuItems);
                     // const filtered = GridAnimations.filterIndices(merged, true).flat();
