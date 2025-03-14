@@ -5,12 +5,12 @@ import { WebGLRenderer, Camera, Vector2, Raycaster, PerspectiveCamera, Intersect
 import { setAmbientGridAnimation, setIntroGridAnimation, setMenuAnimation, setSpecificGridAnimation } from '../../lib/animateMeshes';
 import { SquareGrid, HexGrid } from '../../lib/classes/Grid';
 import { GridAnimations } from '../../lib/classes/GridAnimations';
-import { getWidthHeight } from '../../lib/threeHelpers';
 import { DefaultGridData, InstancedGridMesh, GridData, HexMenuMesh } from '../../types/types';
-import { ndcFromViewportCoordinates } from '../../lib/ndcFromViewportCoordinates';
+import { ndcFromViewportCoordinates } from '../../lib/THREE_coordinateConversions';
 import { InstancedMesh2 } from '@three.ez/instanced-mesh';
 import InstancedGridMeshFiber from './InstancedGridMeshFiber';
 import HexMenuItem from './HexMenuItem';
+import { getWidthHeight } from '../../lib/THREE_cameraHelpers';
 
 const gridDataDefaults: DefaultGridData = {
     overallWidth: 0,
@@ -84,7 +84,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                 mouseEvent.preventDefault();
 
                 // Sets to [-1, 1] values, 0 at center
-                const [ndcX, ndcY] = ndcFromViewportCoordinates([mouseEvent.clientX, mouseEvent.clientY], window.innerWidth, window.innerHeight);
+                const [ndcX, ndcY] = ndcFromViewportCoordinates(mouseEvent.clientX, mouseEvent.clientY, window.innerWidth, window.innerHeight);
                 mousePosition_Ref.current.setX(ndcX);
                 mousePosition_Ref.current.setY(ndcY);
 
@@ -101,7 +101,6 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 
             // TODO make helper function
             // How to convert to x,y at Scene Z:0 :
-            // const lightPositionX = mousePosition_Ref.current.x * (gridData_Memo.overallWidth / 2);
         },
         document,
     );
@@ -187,5 +186,7 @@ const animate = (
         hexMeshHit && setMenuAnimation(hexMenuMeshes, hexMeshHit);
     }
 };
+
+/** Local Types */
 
 type IntersectionResults = [number[][], HexMenuMesh | null];
