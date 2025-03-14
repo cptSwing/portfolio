@@ -1,5 +1,5 @@
 import { useThree, useFrame } from '@react-three/fiber';
-import { FC, useRef, useMemo, MutableRefObject, useEffect, createRef } from 'react';
+import { FC, useRef, useMemo, MutableRefObject } from 'react';
 import { useEvent } from 'react-use';
 import { WebGLRenderer, Camera, Vector2, Raycaster, PerspectiveCamera, Intersection } from 'three';
 import { setAmbientGridAnimation, setIntroGridAnimation, setMenuAnimation, setSpecificGridAnimation } from '../../lib/animateMeshes';
@@ -11,6 +11,7 @@ import { InstancedMesh2 } from '@three.ez/instanced-mesh';
 import InstancedGridMeshFiber from './InstancedGridMeshFiber';
 import HexMenuItem from './HexMenuItem';
 import { getWidthHeight } from '../../lib/THREE_cameraHelpers';
+import { useArrayRef } from '../../hooks/useRefArray';
 
 const gridDataDefaults: DefaultGridData = {
     overallWidth: 0,
@@ -31,7 +32,6 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     const raycaster_Ref = useRef<Raycaster | null>(null);
     const hasRunOnce_Ref = useRef(false);
     const gridMesh_Ref = useRef<InstancedGridMesh | null>(null);
-    const hexMenuMeshes_Ref = useRef<HexMenuMesh[] | null>(null);
     const intersectionHits_Ref = useRef<IntersectionResults | null>(null);
 
     // --> Assemble the final GridData
@@ -57,29 +57,18 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
             return xPos + gridColumns * yPos;
         };
 
-        const positions = [getIndexAtPosition(0.5, 0.25), getIndexAtPosition(0.75, 0.5)];
+        const positions = [getIndexAtPosition(0.333, 0.25), getIndexAtPosition(0.45, 0.45)];
 
         return positions;
     }, [gridData_Memo]);
 
-    // --> Create Refs for array of <HexMenuItem>
-    const hexMenuItemReferences_Memo = useMemo(
-        () => Array.from({ length: hexMenuItemPositions_Memo.length }).map(() => createRef<HexMenuMesh>()),
-        [hexMenuItemPositions_Memo],
-    );
-
-    // --> Store actual Mesh references for use further below
-    useEffect(() => {
-        if (!hexMenuMeshes_Ref.current && hexMenuItemReferences_Memo.some((ref) => ref.current)) {
-            hexMenuMeshes_Ref.current = hexMenuItemReferences_Memo.map((ref) => ref.current) as HexMenuMesh[];
-        }
-    }, [hexMenuMeshes_Ref, hexMenuItemReferences_Memo]);
+    const [hexRefs, hexRefCallback] = useArrayRef<HexMenuMesh>();
 
     // --> Calculate hits only on mousemove instead of in useFrame()
     useEvent(
         'mousemove',
         (ev: Event | MouseEvent) => {
-            if (raycaster_Ref.current && gridMesh_Ref.current && hexMenuMeshes_Ref.current) {
+            if (raycaster_Ref.current && gridMesh_Ref.current && hexRefs.current) {
                 const mouseEvent = ev as MouseEvent;
                 mouseEvent.preventDefault();
 
@@ -90,7 +79,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 
                 raycaster_Ref.current.setFromCamera(mousePosition_Ref.current, camera);
 
-                const allMeshes = [gridMesh_Ref.current, ...hexMenuMeshes_Ref.current];
+                const allMeshes = [gridMesh_Ref.current, ...hexRefs.current];
 
                 const intersection: Intersection<InstancedMesh2 | HexMenuMesh>[] = raycaster_Ref.current.intersectObjects(allMeshes, false);
 
@@ -108,8 +97,8 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     // TODO use 'mouse' from here, seen in https://sbcode.net/react-three-fiber/look-at-mouse/ ?
     // --> Animation of all Meshes
     useFrame(({ clock }) => {
-        if (gridMesh_Ref.current && hexMenuMeshes_Ref.current) {
-            animate(clock.getElapsedTime(), gridMesh_Ref.current, hexMenuMeshes_Ref.current, gridData_Memo, intersectionHits_Ref, hasRunOnce_Ref);
+        if (gridMesh_Ref.current && hexRefs.current) {
+            animate(clock.getElapsedTime(), gridMesh_Ref.current, hexRefs.current, gridData_Memo, intersectionHits_Ref, hasRunOnce_Ref);
         }
     });
 
@@ -119,7 +108,8 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
             {hexMenuItemPositions_Memo.map((gridPosition, idx) => (
                 <HexMenuItem
                     key={`key${gridPosition}-${idx}`}
-                    ref={hexMenuItemReferences_Memo[idx]}
+                    // ref={ hexMenuItemReferences_Memo[ idx ] }
+                    ref={hexRefCallback(idx)}
                     gridData={gridData_Memo}
                     positionIndex={gridPosition}
                     renderer={renderer}
