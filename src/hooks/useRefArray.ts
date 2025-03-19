@@ -19,3 +19,5 @@ export const useArrayRef = <T>(): [React.MutableRefObject<T[]>, (index: number) 
 
     return [array_Ref, createRef];
 };
+
+/** TODO hook to use specific keys: https://stackoverflow.com/a/68509263 */

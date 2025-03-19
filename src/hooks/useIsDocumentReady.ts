@@ -5,8 +5,6 @@ export const useIsDocumentReady = (callback?: EffectCallback) => {
 
     const handleStateChange = useCallback(
         (ev: Event) => {
-            console.log('%c[useIsDocumentReady]', 'color: #f32ba3', `ev.target :`, ev.target);
-
             if (ev.target?.readyState === 'complete') {
                 setIsReady(true);
             } else {

@@ -1,5 +1,7 @@
 import { ForwardedRef, MutableRefObject, useEffect, useRef } from 'react';
 
+/* https://stackoverflow.com/a/73046577 */
+
 const useForwardedRef = <T>(ref: ForwardedRef<T>, callback?: (elem: T | null) => void): MutableRefObject<T | null> => {
     const innerRef = useRef<T | null>(null);
 
