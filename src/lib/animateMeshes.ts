@@ -1,6 +1,5 @@
 import { Color, MathUtils, Vector3 } from 'three';
 import { GridData, HexMenuMesh, InstancedGridMesh, PatternSettingsAnimation } from '../types/types';
-import HexagonGeometry from './classes/HexagonGeometry';
 import { remapRange } from './remapRange';
 import { animationSettings } from '../config/threeSettings';
 import { Grid } from './classes/Grid';
@@ -12,12 +11,12 @@ const newColor = new Color();
 let maxBackgroundMovement = 0;
 
 export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number) => {
-    const { overallHeight, gridColumns, instanceWidth } = gridData;
+    const { gridHeight, gridColumnCount, instanceWidth } = gridData;
     let hasRunOnce = false;
     newOffset.copy(defaultOffset);
 
     mesh.updateInstances((instance) => {
-        const [column] = Grid.getOffsetCoordFromIndex(instance.id, gridColumns);
+        const [column] = Grid.getOffsetCoordFromIndex(instance.id, gridColumnCount);
         const animationProgress = getAnimationProgress(animationSettings.intro.length_S, 0, time_S);
 
         if (animationProgress >= 1) {
@@ -35,7 +34,7 @@ export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridDat
                 sequentialRandomMultiplier = 0.7;
             }
 
-            newOffset.setY(overallHeight * sequentialRandomMultiplier);
+            newOffset.setY(gridHeight * sequentialRandomMultiplier);
             instance.setUniform('u_Offset', newOffset);
         }
     });
@@ -74,19 +73,19 @@ export const setSpecificGridHitsAnimation = (mesh: InstancedGridMesh, gridData: 
 };
 
 export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, pattern: PatternSettingsAnimation['pattern'] = 'sin') => {
-    const { gridColumns } = gridData;
+    const { gridColumnCount } = gridData;
     newOffset.copy(defaultOffset);
 
     // TODO write more comprehensive animation system --> background patterns (such as sin-wave etc), overlaid/overwritten by actions such as mousevent, raindrop, shake etc etc
     // if (pattern === 'raindrops') {
     //     if (Math.ceil(time_S) % 2 === 0) {
     //         const randomDropIndex = Math.ceil(remapToRange(Math.random(), 0, 1, 0, gridCount - 1));
-    //         gridHits = [randomDropIndex, ...HexGrid.getAdjacentIndices(randomDropIndex, gridColumns, gridRows, 2, instanceFlatTop)];
+    //         gridHits = [randomDropIndex, ...HexGrid.getAdjacentIndices(randomDropIndex, gridColumnCount, gridRows, 2, instanceFlatTop)];
     //     }
     // }
 
     mesh.updateInstances((instance) => {
-        const [column, row] = Grid.getOffsetCoordFromIndex(instance.id, gridColumns);
+        const [column, row] = Grid.getOffsetCoordFromIndex(instance.id, gridColumnCount);
 
         switch (pattern) {
             case 'sin':

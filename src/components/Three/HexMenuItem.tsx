@@ -16,7 +16,7 @@ const tempVector = new Vector3();
 
 const HexMenuItem = forwardRef<HexMenuMesh, { gridData: GridData; positionIndex: number; scaleXZ?: [number, number] }>(
     ({ gridData, positionIndex, scaleXZ = [1, 2] }, ref) => {
-        const { overallWidth, overallHeight, gridColumns, gridRows, instanceWidth, instancePadding, instanceFlatTop } = gridData;
+        const { gridWidth, gridHeight, gridColumnCount, gridRowCount, instanceWidth, instancePadding, instanceFlatTop } = gridData;
         const [scaleX, scaleZ] = scaleXZ;
 
         const [zMax, setZMax] = useState(0);
@@ -31,14 +31,14 @@ const HexMenuItem = forwardRef<HexMenuMesh, { gridData: GridData; positionIndex:
         const refCallback = useCallback(
             (mesh: HexMenuMesh | null) => {
                 if (mesh) {
-                    const [extentX, extentY] = getExtentsFromOrigin(overallWidth, overallHeight);
-                    HexGrid.setInstancePosition(mesh, positionIndex, gridColumns, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
+                    const [extentX, extentY] = getExtentsFromOrigin(gridWidth, gridHeight);
+                    HexGrid.setInstancePosition(mesh, positionIndex, gridColumnCount, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
 
                     !mesh.geometry.boundingBox && mesh.geometry.computeBoundingBox();
                     mesh.geometry.boundingBox && setZMax(mesh.geometry.boundingBox.max.z);
                 }
             },
-            [overallWidth, positionIndex, overallHeight, gridColumns, gridRows, instanceWidth, instancePadding, instanceFlatTop],
+            [gridWidth, positionIndex, gridHeight, gridColumnCount, gridRowCount, instanceWidth, instancePadding, instanceFlatTop],
         );
 
         const meshRef = useForwardedRef(ref, refCallback);

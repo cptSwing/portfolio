@@ -30,7 +30,7 @@ const InstancedGridMeshFiber = memo(
             useFresnel?: boolean;
         }
     >(({ renderer, gridData, isSquare, useFresnel }, ref) => {
-        const { overallWidth, overallHeight, instanceFlatTop, instanceWidth, instancePadding, gridCount, gridColumns, gridRows } = gridData;
+        const { gridWidth, gridHeight, instanceFlatTop, instanceWidth, instancePadding, gridInstanceCount, gridColumnCount, gridRowCount } = gridData;
 
         const themeIndex = useZustand((state) => state.values.themeIndex);
         const innerRef = useRef<InstancedGridMesh | null>(null);
@@ -94,24 +94,24 @@ const InstancedGridMeshFiber = memo(
                     console.log(
                         '%c[instancedMesh2]',
                         'color: #b85533',
-                        `Creating ${gridCount} Instances (cols:${gridColumns} rows:${gridRows}), w:${overallWidth} h:${overallHeight}`,
+                        `Creating ${gridInstanceCount} Instances (cols:${gridColumnCount} rows:${gridRowCount}), w:${gridWidth} h:${gridHeight}`,
                     );
-                    // const indicesUnderMenuItems = menuItemPositions.map((menuItemIndex) => GridAnimations.getRingShape(menuItemIndex, 3, [gridColumns, gridRows]));
+                    // const indicesUnderMenuItems = menuItemPositions.map((menuItemIndex) => GridAnimations.getRingShape(menuItemIndex, 3, [gridColumnCount, gridRowCount]));
                     // const merged = GridAnimations.mergeIndicesDistanceLevels(...indicesUnderMenuItems);
                     // const filtered = GridAnimations.filterIndices(merged, true).flat();
 
-                    const [extentX, extentY] = getExtentsFromOrigin(overallWidth, overallHeight);
+                    const [extentX, extentY] = getExtentsFromOrigin(gridWidth, gridHeight);
 
                     if (mesh.instancesCount) mesh.clearInstances();
 
-                    mesh.addInstances(gridCount, (instance) => {
+                    mesh.addInstances(gridInstanceCount, (instance) => {
                         if (isSquare) {
-                            SquareGrid.setInstancePosition(instance, instance.id, gridColumns, [extentX, extentY], instanceWidth, instancePadding);
+                            SquareGrid.setInstancePosition(instance, instance.id, gridColumnCount, [extentX, extentY], instanceWidth, instancePadding);
                         } else {
                             HexGrid.setInstancePosition(
                                 instance,
                                 instance.id,
-                                gridColumns,
+                                gridColumnCount,
                                 [extentX, extentY],
                                 instanceWidth,
                                 instancePadding,
@@ -135,7 +135,7 @@ const InstancedGridMeshFiber = memo(
                     if (ref) (ref as MutableRefObject<InstancedGridMesh>).current = innerRef.current;
                 }
             },
-            [ref, overallWidth, overallHeight, instanceWidth, instancePadding, gridCount, gridColumns, isSquare, instanceFlatTop],
+            [ref, gridWidth, gridHeight, instanceWidth, instancePadding, gridInstanceCount, gridColumnCount, isSquare, instanceFlatTop],
         );
 
         useLayoutEffect(() => {

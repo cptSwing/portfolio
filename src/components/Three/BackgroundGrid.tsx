@@ -15,14 +15,14 @@ import { useArrayRef } from '../../hooks/useRefArray';
 import { Select } from '@react-three/drei';
 
 const gridDataDefaults: DefaultGridData = {
-    overallWidth: 0,
-    overallHeight: 0,
+    gridWidth: 0,
+    gridHeight: 0,
     instanceFlatTop: false,
     instanceWidth: null,
     instancePadding: 0,
-    gridCount: 1000,
-    gridColumns: 0,
-    gridRows: 0,
+    gridInstanceCount: 1000,
+    gridColumnCount: 0,
+    gridRowCount: 0,
 };
 
 const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
@@ -43,8 +43,8 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
         const [widthAdjusted, heightAdjusted] = adjustDimensionsForCameraAngle(width, height, camera as OrthographicCamera);
 
         const gridData = isSquare
-            ? SquareGrid.getInstanceCount({ ...gridDataDefaults, overallWidth: widthAdjusted, overallHeight: heightAdjusted })
-            : HexGrid.getInstanceCount({ ...gridDataDefaults, overallWidth: widthAdjusted, overallHeight: heightAdjusted });
+            ? SquareGrid.getInstanceCount({ ...gridDataDefaults, gridWidth: widthAdjusted, gridHeight: heightAdjusted })
+            : HexGrid.getInstanceCount({ ...gridDataDefaults, gridWidth: widthAdjusted, gridHeight: heightAdjusted });
 
         // 'Tumble' animation runs again once gridData is updated (likely a resize event / actual first run):
         hasRunOnce_Ref.current = false;
@@ -55,21 +55,21 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     //
     // --> Calculate Placement for Menu items
     const hexMenuItemMeshPositions_Memo = useMemo(() => {
-        const { gridColumns, gridRows } = gridData_Memo;
+        const { gridColumnCount, gridRowCount } = gridData_Memo;
         const positions = [
-            getIndexAtPosition(0.35, 0.25, gridColumns, gridRows),
-            getIndexAtPosition(0.45, 0.4, gridColumns, gridRows),
-            getIndexAtPosition(0.525, 0.275, gridColumns, gridRows),
-            getIndexAtPosition(0.625, 0.4, gridColumns, gridRows),
+            getIndexAtPosition(0.35, 0.25, gridColumnCount, gridRowCount),
+            getIndexAtPosition(0.45, 0.4, gridColumnCount, gridRowCount),
+            getIndexAtPosition(0.525, 0.275, gridColumnCount, gridRowCount),
+            getIndexAtPosition(0.625, 0.4, gridColumnCount, gridRowCount),
         ];
         return positions;
     }, [gridData_Memo]);
 
     const hexMenuGridPositions_Memo = useMemo(() => {
-        const { gridColumns, gridRows } = gridData_Memo;
+        const { gridColumnCount, gridRowCount } = gridData_Memo;
 
         const gridIds = hexMenuItemMeshPositions_Memo.map((instanceId) => {
-            const shapeIds = GridAnimations.getHexagonShape(instanceId, 2, [gridColumns, gridRows]);
+            const shapeIds = GridAnimations.getHexagonShape(instanceId, 2, [gridColumnCount, gridRowCount]);
             return GridAnimations.filterIndices(shapeIds);
         });
 
@@ -100,7 +100,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                 const intersection: Intersection<InstancedMesh2 | HexMenuMesh>[] = raycaster_Ref.current.intersectObjects(allMeshes, false);
 
                 if (intersection.length) {
-                    intersectionHits_Ref.current = getIntersectIndices(intersection, [gridData_Memo.gridColumns, gridData_Memo.gridRows]);
+                    intersectionHits_Ref.current = getIntersectIndices(intersection, [gridData_Memo.gridColumnCount, gridData_Memo.gridRowCount]);
                 }
             }
         },

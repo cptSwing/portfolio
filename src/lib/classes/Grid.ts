@@ -11,7 +11,6 @@ export class Grid {
         const column = index % numColumns;
         const row = Math.floor(index / numColumns);
 
-        console.log('%c[Grid]', 'color: #70d0ea', `column, row :`, column, row);
         return [column, row] as OffsetCoordinate;
     }
 
@@ -35,10 +34,10 @@ export class HexGrid extends Grid {
     static hexCosine = Math.cos(this.hexAngle);
 
     static getInstanceCount = (params: DefaultGridData) => {
-        const { overallWidth, overallHeight, instanceFlatTop, instancePadding, gridCount } = params;
+        const { gridWidth, gridHeight, instanceFlatTop, instancePadding, gridInstanceCount } = params;
 
-        const overallArea = overallWidth * overallHeight;
-        const idealInstanceArea = overallArea / gridCount;
+        const overallArea = gridWidth * gridHeight;
+        const idealInstanceArea = overallArea / gridInstanceCount;
 
         const size = Math.sqrt((2 * idealInstanceArea) / (3 * Math.sqrt(3))); // same as radius
         const [horizontalSpacing, verticalSpacing] = this.getSpacing(size, instanceFlatTop); // column width, basically
@@ -51,33 +50,32 @@ export class HexGrid extends Grid {
         const newSizeH = this.getSizeFromSpacing(horizontalSpacingNoPadding, true, instanceFlatTop);
         const [width, height] = this.getWidthHeight(newSizeH, instanceFlatTop);
 
-        const numColumns = Math.ceil((overallWidth + adjustedHorizontalPadding) / horizontalSpacing) + 1;
-        const numRows = Math.floor((overallHeight + height / 2) / verticalSpacing) + 1;
+        const numColumns = Math.ceil((gridWidth + adjustedHorizontalPadding) / horizontalSpacing) + 1;
+        const numRows = Math.floor((gridHeight + height / 2) / verticalSpacing) + 1;
 
         return {
             ...params,
             instanceWidth: width,
-            gridCount: numColumns * numRows,
-            gridColumns: numColumns,
-            gridRows: numRows,
+            gridInstanceCount: numColumns * numRows,
+            gridColumnCount: numColumns,
+            gridRowCount: numRows,
         } as GridData;
     };
 
     static setInstancePosition(
-        instance: InstancedEntity | Object3D,
-        index: number,
-        gridColumns: number,
+        object: Object3D | InstancedEntity,
+        gridIndex: number,
+        gridColumnCount: number,
         [extentX, extentY]: [number, number],
         width: number,
         padding: number,
         flatTop: boolean,
     ) {
-        let offsetX, offsetY;
-        const [column, row] = this.getOffsetCoordFromIndex(index, gridColumns);
-        [offsetX, offsetY] = this.getXYOffsets(width, padding, column, row, flatTop);
+        const offsetCoord = this.getOffsetCoordFromIndex(gridIndex, gridColumnCount);
+        const [wsX, wsY] = this.getWorldSpaceXYFromOffsetCoord(width, padding, offsetCoord, flatTop);
 
-        const position = { x: extentX + offsetX, y: extentY - offsetY, z: 0 };
-        instance.position.set(position.x, position.y, position.z);
+        const position = { x: extentX + wsX, y: extentY - wsY, z: 0 };
+        object.position.set(position.x, position.y, position.z);
     }
 
     static getCubeCoordFromInstanceIndex(instanceIndex: number, numColumns: number) {
@@ -183,7 +181,7 @@ export class HexGrid extends Grid {
     }
 
     // TODO rename me!
-    static getXYOffsets(width: number, padding: number, column: number, row: number, flatTop: boolean) {
+    static getWorldSpaceXYFromOffsetCoord(width: number, padding: number, [column, row]: OffsetCoordinate, flatTop: boolean) {
         const size = this.getSizeFromWidth(width, flatTop);
         const [horizontalSpacing, verticalSpacing] = this.getSpacing(size, flatTop);
         const [, height] = this.getWidthHeight(size, flatTop);
@@ -205,7 +203,6 @@ export class HexGrid extends Grid {
             x += ((width + padding * shorterToLongerDimRatio) / 2) * evenOrUneven;
         }
 
-        console.log('%c[Grid]', 'color: #d39ab4', `x,y,column,row :`, x, y, column, row);
         return [x, y] as [number, number];
     }
 
@@ -388,33 +385,39 @@ export class HexGrid extends Grid {
 
 export class SquareGrid extends Grid {
     static getInstanceCount = (params: DefaultGridData) => {
-        const { overallWidth, overallHeight, instancePadding, gridCount } = params;
+        const { gridWidth, gridHeight, instancePadding, gridInstanceCount } = params;
 
-        const overallArea = overallWidth * overallHeight;
-        const idealInstanceArea = overallArea / gridCount;
+        const overallArea = gridWidth * gridHeight;
+        const idealInstanceArea = overallArea / gridInstanceCount;
 
         // Via https://stackoverflow.com/a/1575761
         const idealInstanceWidth = Math.sqrt(idealInstanceArea);
 
-        const columns = Math.round(overallWidth / idealInstanceWidth);
-        let rows = Math.round(overallHeight / idealInstanceWidth);
+        const columns = Math.round(gridWidth / idealInstanceWidth);
+        let rows = Math.round(gridHeight / idealInstanceWidth);
 
-        const minLength = Math.min(overallWidth / columns, overallWidth / rows);
-        if (overallHeight > minLength * rows) rows++;
+        const minLength = Math.min(gridWidth / columns, gridWidth / rows);
+        if (gridHeight > minLength * rows) rows++;
 
-        return { ...params, instanceWidth: minLength - instancePadding, gridCount: columns * rows, gridColumns: columns, gridRows: rows } as GridData;
+        return {
+            ...params,
+            instanceWidth: minLength - instancePadding,
+            gridInstanceCount: columns * rows,
+            gridColumnCount: columns,
+            gridRowCount: rows,
+        } as GridData;
     };
 
     static setInstancePosition = (
         instance: InstancedEntity,
         index: number,
-        gridColumns: number,
+        gridColumnCount: number,
         [extentX, extentY]: [number, number],
         width: number,
         padding: number,
     ) => {
         let offsetX, offsetY;
-        const [column, row] = this.getOffsetCoordFromIndex(index, gridColumns);
+        const [column, row] = this.getOffsetCoordFromIndex(index, gridColumnCount);
 
         offsetX = column * width + padding;
         offsetY = row * width + padding;

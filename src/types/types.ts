@@ -86,19 +86,19 @@ export type OriginalInstancePositions = OriginalInstancePosition[];
 /* Animation Types */
 
 export type GridData = {
-    overallWidth: number;
-    overallHeight: number;
+    gridWidth: number;
+    gridHeight: number;
+    gridInstanceCount: number;
+    gridColumnCount: number;
+    gridRowCount: number;
     instanceFlatTop: boolean;
     instanceWidth: number;
     instancePadding: number;
-    gridCount: number;
-    gridColumns: number;
-    gridRows: number;
 };
 
 export type DefaultGridData = Omit<GridData, 'instanceWidth'> & { instanceWidth: null };
 
-/** Cube Coordinates as [q, r, s] */
+/** Cube Coordinates as [q, r, s] --> Each element corresponding to offsets on a respective direction radiating outwards of a hex */
 export type CubeCoordinate = [number, number, number];
 
 /** Where index 0 would contain the center hex's coordinates, index 1 contains coordinates for distance 1, index 2 contains coordinates at distance 2, etc */
