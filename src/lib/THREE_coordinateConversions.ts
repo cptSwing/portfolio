@@ -2,6 +2,8 @@
 export const ndcFromViewportCoordinates = (viewportX: number, viewportY: number, viewportWidth: number, viewportHeight: number) => {
     const ndcX = (viewportX / viewportWidth) * 2 - 1;
     const ndcY = -(viewportY / viewportHeight) * 2 + 1;
+
+    // console.log('%c[THREE_coordinateConversions]', 'color: #9f1ac1', `X -> ${viewportX}/${ndcX}, Y -> ${viewportY}/${ndcY}:  `);
     return [ndcX, ndcY] as [number, number];
 };
 

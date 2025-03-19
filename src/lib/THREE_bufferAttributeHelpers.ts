@@ -121,5 +121,5 @@ export const setIndexedVertex = (
         attribute.setXYZW(attributeIndex, ...(values as [number, number, number, number]));
     }
 
-    return [attributeIndex, attribute.getX(attributeIndex), attribute.getY(attributeIndex)];
+    return [attributeIndex, attribute.getX(attributeIndex), attribute.getY(attributeIndex), attribute.getZ(attributeIndex)];
 };
