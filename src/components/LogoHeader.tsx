@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import classNames from '../lib/classNames';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
 import Socials from './Socials';
-import { bars_totalDuration } from '../lib/animationValues';
+import { bars_totalDuration } from '../config/animationValues';
 
 const logoText = 'webdev\n& 3d things';
 

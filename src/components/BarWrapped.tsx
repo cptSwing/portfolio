@@ -2,7 +2,7 @@ import { FC } from 'react';
 import classNames from '../lib/classNames';
 import { useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
-import { bars_heightenDuration, bars_widenDuration } from '../lib/animationValues';
+import { bars_heightenDuration, bars_widenDuration } from '../config/animationValues';
 
 const BarWrapped: FC<{ children: React.ReactNode }> = ({ children }) => {
     const { catId, postId } = useParams();

@@ -11,7 +11,7 @@ import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import GetBackgroundSvg from './GetBackgroundSvg.tsx';
 import { useBreakpoint } from '../hooks/useBreakPoint.ts';
 import remarkBreaks from 'remark-breaks';
-import { bars_totalDuration } from '../lib/animationValues.ts';
+import { bars_totalDuration } from '../config/animationValues.ts';
 import { useMeasure } from 'react-use';
 
 const testDbTyped = testDb as DataBase;
