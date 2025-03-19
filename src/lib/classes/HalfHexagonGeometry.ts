@@ -1,16 +1,34 @@
-import { CircleGeometry } from 'three';
+import { BufferAttribute, CircleGeometry, InterleavedBufferAttribute, MathUtils } from 'three';
+import { getIndexedVertex, setIndexedVertex } from '../THREE_bufferAttributeHelpers';
 
 // With guidance from https://eperezcosano.github.io/hex-grid/
 
 /** "even-q" vertical layout, as per here: https://www.redblobgames.com/grids/hexagons/#coordinates-offset */
 
-export default class HexagonGeometry extends CircleGeometry {
+export default class HalfHexagonGeometry extends CircleGeometry {
     static hexAngle = (2 * Math.PI) / 6; // 60 deg
     static cos = Math.cos(this.hexAngle);
     static sin = Math.sin(this.hexAngle);
 
-    constructor(radius: number, thetaStart?: number, thetaLength?: number) {
-        super(radius, 6, thetaStart, thetaLength);
+    constructor(radius: number) {
+        super(radius, 3, 0, MathUtils.degToRad(180));
+    }
+
+    static translateXPosition(translateBy: number, index: BufferAttribute, attribute: BufferAttribute | InterleavedBufferAttribute) {
+        [0, 1, 11, 13, 19, 22].forEach((vIndex) => {
+            const { points } = getIndexedVertex(vIndex, index, attribute);
+            setIndexedVertex(vIndex, index, attribute, [points[0] + translateBy, points[1], points[2]]);
+        });
+        // this.attributes['position'].needsUpdate = true;
+    }
+
+    static translateYPosition(translateBy: number, index: BufferAttribute, attribute: BufferAttribute | InterleavedBufferAttribute) {
+        const lowerHalfIndices = [15, 16, 17, 19, 22];
+        [...lowerHalfIndices, 10, 13].forEach((vIndex) => {
+            const { points } = getIndexedVertex(vIndex, index, attribute);
+            setIndexedVertex(vIndex, index, attribute, [points[0], points[1] + translateBy, points[2]]);
+        });
+        // this.attributes['position'].needsUpdate = true;
     }
 
     static getXYOffsets(radius: number, padding: number, column: number, row: number) {
@@ -36,7 +54,7 @@ export default class HexagonGeometry extends CircleGeometry {
     };
 
     static getNeighborsEvenQ([hexColumn, hexRow]: [number, number], direction: number) {
-        const directions = HexagonGeometry.directionDifferencesEvenQ;
+        const directions = HalfHexagonGeometry.directionDifferencesEvenQ;
 
         // bitwise AND,"because it works with negative numbers too"
         const parity = hexColumn & 1;
