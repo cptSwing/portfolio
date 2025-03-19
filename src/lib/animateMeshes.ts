@@ -1,15 +1,13 @@
 import { Color, MathUtils, Vector3 } from 'three';
 import { GridData, HexMenuMesh, InstancedGridMesh, PatternSettingsAnimation } from '../types/types';
-import HexagonGeometry from './classes/HalfHexagonGeometry';
+import HexagonGeometry from './classes/HexagonGeometry';
 import { remapRange } from './remapRange';
 import { animationSettings } from '../config/threeSettings';
+import { Grid } from './classes/Grid';
 
 const defaultOffset = new Vector3(0, 0, -0.1);
 const newOffset = defaultOffset.clone();
 const newColor = new Color();
-
-export const introAnimationLength_S = 0.5;
-const standardAnimationLength = 1.5;
 
 let maxBackgroundMovement = 0;
 
@@ -19,12 +17,12 @@ export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridDat
     newOffset.copy(defaultOffset);
 
     mesh.updateInstances((instance) => {
-        const [column] = HexagonGeometry.getColumnAndRowByIndex(instance.id, gridColumns);
-        const animationProgress = getAnimationProgress(introAnimationLength_S, 0, time_S);
+        const [column] = Grid.getOffsetCoordFromIndex(instance.id, gridColumns);
+        const animationProgress = getAnimationProgress(animationSettings.intro.length_S, 0, time_S);
 
         if (animationProgress >= 1) {
             maxBackgroundMovement = instanceWidth / 2;
-            mesh.material.uniforms.u_Animation_Length_S.value = standardAnimationLength;
+            mesh.material.uniforms.u_Animation_Length_S.value = animationSettings.ambient.length_S;
             hasRunOnce = true;
         } else {
             let sequentialRandomMultiplier = 1;
@@ -47,7 +45,7 @@ export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridDat
 
 const tempHighlightColor = new Color(0.5, 0.75, 0.25);
 const minimumAtFarthestDistance = 0.2;
-export const setSpecificGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, gridHits: number[][]) => {
+export const setSpecificGridHitsAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, gridHits: number[][]) => {
     const { instanceWidth } = gridData;
 
     // const highLightColor = mesh.material.uniforms.u_HighLight_Color.value;
@@ -55,13 +53,13 @@ export const setSpecificGridAnimation = (mesh: InstancedGridMesh, gridData: Grid
 
     newOffset.copy(defaultOffset);
 
-    gridHits.forEach((hits, idx) => {
+    gridHits.forEach((hits, idx, arr) => {
         const relativeDistance = idx;
+        const fractionAtDistance = (arr.length - relativeDistance) / arr.length;
 
         hits.forEach((instanceId) => {
             const instance = mesh.instances[instanceId];
 
-            const fractionAtDistance = (gridHits.length - relativeDistance) / gridHits.length;
             const clampedFraction = Math.max(fractionAtDistance, minimumAtFarthestDistance);
 
             newColor.copy(highLightColor).multiplyScalar(clampedFraction);
@@ -74,8 +72,6 @@ export const setSpecificGridAnimation = (mesh: InstancedGridMesh, gridData: Grid
         });
     });
 };
-
-const timeScale = 0.75;
 
 export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, pattern: PatternSettingsAnimation['pattern'] = 'sin') => {
     const { gridColumns } = gridData;
@@ -90,11 +86,11 @@ export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridD
     // }
 
     mesh.updateInstances((instance) => {
-        const [column, row] = HexagonGeometry.getColumnAndRowByIndex(instance.id, gridColumns);
+        const [column, row] = Grid.getOffsetCoordFromIndex(instance.id, gridColumns);
 
         switch (pattern) {
             case 'sin':
-                let sinVal = Math.sin(time_S * timeScale + (row - column) * 0.25);
+                let sinVal = Math.sin(time_S * animationSettings.ambient.timeScale + (row - column) * 0.25);
                 sinVal = remapRange(sinVal, -1, 1, -maxBackgroundMovement, maxBackgroundMovement);
 
                 newOffset.setZ(sinVal);
@@ -109,13 +105,41 @@ export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridD
     });
 };
 
-export const setMenuAnimation = (hexMeshes: HexMenuMesh[], hexMeshHit: HexMenuMesh, gridData: GridData) => {
+export const setMenuHitsAnimation = (hexMeshes: HexMenuMesh[], hexMeshHit: HexMenuMesh, gridData: GridData) => {
     hexMeshes.forEach((mesh) => {
         if (mesh === hexMeshHit) {
             mesh.position.setZ(animationSettings.menu.menuItemOffsetZ * gridData.instanceWidth);
         } else if (mesh.position.z !== 0) {
             mesh.position.setZ(0);
         }
+    });
+};
+
+export const setMenuAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, gridIds: number[][][]) => {
+    const { instanceWidth } = gridData;
+
+    // const highLightColor = mesh.material.uniforms.u_HighLight_Color.value;
+    const highLightColor = tempHighlightColor;
+
+    gridIds.forEach((menuItemShape) => {
+        menuItemShape.forEach((hits, idx, arr) => {
+            const relativeDistance = idx;
+            const fractionAtDistance = (arr.length - relativeDistance) / arr.length;
+
+            hits.forEach((instanceId) => {
+                const instance = mesh.instances[instanceId];
+
+                const clampedFraction = Math.max(fractionAtDistance, minimumAtFarthestDistance);
+
+                newColor.copy(highLightColor).multiplyScalar(clampedFraction);
+                mesh.setColorAt(instanceId, newColor);
+
+                newOffset.setZ(instanceWidth);
+
+                instance.setUniform('u_Offset', newOffset);
+                instance.setUniform('u_Hit_Time_S', time_S); // set last
+            });
+        });
     });
 };
 

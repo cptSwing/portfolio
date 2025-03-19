@@ -3,13 +3,13 @@ import { Group, MathUtils, MeshPhongMaterial, MeshPhysicalMaterial, PlaneGeometr
 import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
 import { GridData, HexMenuMesh } from '../../types/types';
 import { HexGrid } from '../../lib/classes/Grid';
-import { getExtentsInNDC } from '../../lib/THREE_coordinateConversions';
+import { getExtentsFromOrigin } from '../../lib/THREE_coordinateConversions';
 import { Html, useSelect } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { easing } from 'maath';
 import useForwardedRef from '../../hooks/useForwardedRef';
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
-import HalfHexagonGeometry from '../../lib/classes/HalfHexagonGeometry';
+import HexagonGeometry, { translateXPosition, translateYPosition } from '../../lib/classes/HexagonGeometry';
 import { animationSettings, vectors } from '../../config/threeSettings';
 
 const tempVector = new Vector3();
@@ -26,13 +26,12 @@ const HexMenuItem = forwardRef<HexMenuMesh, { gridData: GridData; positionIndex:
             return new HexagonalPrismGeometry(gridInstanceSize * scaleX, gridInstanceSize * scaleZ)
                 .rotateX(MathUtils.degToRad(90))
                 .rotateZ(MathUtils.degToRad(90));
-            // .center();
         }, [instanceWidth, instanceFlatTop, scaleXZ]);
 
         const refCallback = useCallback(
             (mesh: HexMenuMesh | null) => {
                 if (mesh) {
-                    const [extentX, extentY] = getExtentsInNDC(overallWidth, overallHeight);
+                    const [extentX, extentY] = getExtentsFromOrigin(overallWidth, overallHeight);
                     HexGrid.setInstancePosition(mesh, positionIndex, gridColumns, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
 
                     !mesh.geometry.boundingBox && mesh.geometry.computeBoundingBox();
@@ -50,8 +49,9 @@ const HexMenuItem = forwardRef<HexMenuMesh, { gridData: GridData; positionIndex:
                     // wireframe: true,
                     flatShading: true,
                     transparent: true,
-                    opacity: 1,
+                    opacity: 0.25,
                     color: 0xaabbee,
+                    visible: false, // The meshes are used for raycasting only atm
                 }),
             [],
         );
@@ -75,7 +75,7 @@ const HexMenuItem = forwardRef<HexMenuMesh, { gridData: GridData; positionIndex:
                 tempVector.x *= -1;
                 setCameraMovement(tempVector);
             } else {
-                hexMenuMaterial_Memo.opacity = 1;
+                hexMenuMaterial_Memo.opacity = 0.25;
                 setIsSelected(false);
             }
         }, [selected]);
@@ -107,11 +107,9 @@ const HexMenuItem = forwardRef<HexMenuMesh, { gridData: GridData; positionIndex:
                 material={hexMenuMaterial_Memo}
                 position-z={isSelected && animationSettings.menu.menuItemOffsetZ}
             >
-                {(isSelected || !selected.length) && (
-                    <Html occlude transform position-z={zMax + 0.05} distanceFactor={1}>
-                        {`${isSelected ? 'selected ' : positionIndex}`}
-                    </Html>
-                )}
+                <Html occlude transform position-z={zMax + 0.05}>
+                    <div className='size-full cursor-pointer'>{`${isSelected ? 'selected ' : positionIndex}`}</div>
+                </Html>
                 {isSelected && <HexMenuContent gridData={gridData} scaleX={scaleX} widthPx={400} htmlZ={zMax} />}
             </mesh>
         );
@@ -128,9 +126,9 @@ const HexMenuContent: FC<{ gridData: GridData; scaleX: number; widthPx: number; 
         const gridInstanceSize = HexGrid.getSizeFromWidth(instanceWidth, !instanceFlatTop);
 
         const radius = gridInstanceSize * scaleX;
-        const halfTop = new HalfHexagonGeometry(radius);
+        const halfTop = new HexagonGeometry(radius, true);
         const squareBetween = new PlaneGeometry(radius * 2, 0);
-        const halfBottom = new HalfHexagonGeometry(radius).rotateZ(MathUtils.degToRad(180));
+        const halfBottom = new HexagonGeometry(radius, true).rotateZ(MathUtils.degToRad(180));
 
         const geo = BufferGeometryUtils.mergeGeometries([halfTop, squareBetween, halfBottom]).translate(0, 0, instanceWidth);
 
@@ -139,8 +137,8 @@ const HexMenuContent: FC<{ gridData: GridData; scaleX: number; widthPx: number; 
 
     useEffect(() => {
         if (hexItemContentGeo_Memo.index) {
-            HalfHexagonGeometry.translateXPosition(9, hexItemContentGeo_Memo.index, hexItemContentGeo_Memo.attributes['position']);
-            HalfHexagonGeometry.translateYPosition(-6, hexItemContentGeo_Memo.index, hexItemContentGeo_Memo.attributes['position']);
+            translateXPosition(9, hexItemContentGeo_Memo.index, hexItemContentGeo_Memo.attributes['position']);
+            translateYPosition(-6, hexItemContentGeo_Memo.index, hexItemContentGeo_Memo.attributes['position']);
         }
     }, [hexItemContentGeo_Memo, widthPx]);
 

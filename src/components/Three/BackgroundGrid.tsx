@@ -1,8 +1,8 @@
 import { useThree, useFrame } from '@react-three/fiber';
 import { FC, useRef, useMemo, MutableRefObject, useState } from 'react';
 import { useEvent } from 'react-use';
-import { WebGLRenderer, Camera, Vector2, Raycaster, Intersection, Object3D } from 'three';
-import { setAmbientGridAnimation, setIntroGridAnimation, setMenuAnimation, setSpecificGridAnimation } from '../../lib/animateMeshes';
+import { WebGLRenderer, Camera, Vector2, Raycaster, Intersection, Object3D, OrthographicCamera } from 'three';
+import { setAmbientGridAnimation, setIntroGridAnimation, setMenuAnimation, setMenuHitsAnimation, setSpecificGridHitsAnimation } from '../../lib/animateMeshes';
 import { SquareGrid, HexGrid } from '../../lib/classes/Grid';
 import { GridAnimations } from '../../lib/classes/GridAnimations';
 import { DefaultGridData, InstancedGridMesh, GridData, HexMenuMesh } from '../../types/types';
@@ -25,27 +25,6 @@ const gridDataDefaults: DefaultGridData = {
     gridRows: 0,
 };
 
-const tempVector2 = new Vector2();
-const adjustForCameraAngle = (width: number, height: number, camera: Camera) => {
-    const distanceToOriginXZ = tempVector2.set(camera.position.x, camera.position.z).length();
-    const distanceToOriginYZ = tempVector2.set(camera.position.y, camera.position.z).length();
-
-    const newWidth = 2 * getSimilarHypotenuse(width, camera.position.x, distanceToOriginXZ);
-    const newHeight = 2 * getSimilarHypotenuse(height, camera.position.y, distanceToOriginYZ);
-
-    return [isNaN(newWidth) ? width : newWidth, isNaN(newHeight) ? height : newHeight];
-
-    function getSimilarHypotenuse(side: number, cameraDistanceOnAxis: number, cameraToOrigin: number) {
-        const angleB = Math.asin(cameraDistanceOnAxis / cameraToOrigin);
-
-        const legA = side / 2;
-        const legB = legA * Math.tan(angleB);
-        const hypo = Math.sqrt(legA * legA + legB * legB);
-
-        return hypo;
-    }
-};
-
 const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     const [renderer, camera] = useThree((state) => [state.gl, state.camera]) as [WebGLRenderer, Camera];
 
@@ -61,7 +40,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     // --> Assemble the final GridData
     const gridData_Memo = useMemo<GridData>(() => {
         const [width, height] = getWidthHeightAtDepth(0, camera);
-        const [widthAdjusted, heightAdjusted] = adjustForCameraAngle(width, height, camera);
+        const [widthAdjusted, heightAdjusted] = adjustDimensionsForCameraAngle(width, height, camera as OrthographicCamera);
 
         const gridData = isSquare
             ? SquareGrid.getInstanceCount({ ...gridDataDefaults, overallWidth: widthAdjusted, overallHeight: heightAdjusted })
@@ -75,7 +54,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 
     //
     // --> Calculate Placement for Menu items
-    const hexMenuItemPositions_Memo = useMemo(() => {
+    const hexMenuItemMeshPositions_Memo = useMemo(() => {
         const { gridColumns, gridRows } = gridData_Memo;
         const positions = [
             getIndexAtPosition(0.35, 0.25, gridColumns, gridRows),
@@ -85,6 +64,18 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
         ];
         return positions;
     }, [gridData_Memo]);
+
+    const hexMenuGridPositions_Memo = useMemo(() => {
+        const { gridColumns, gridRows } = gridData_Memo;
+
+        const gridIds = hexMenuItemMeshPositions_Memo.map((instanceId) => {
+            const shapeIds = GridAnimations.getHexagonShape(instanceId, 2, [gridColumns, gridRows]);
+            return GridAnimations.filterIndices(shapeIds);
+        });
+
+        console.log('%c[BackgroundGrid]', 'color: #c0b023', `gridIds :`, gridIds);
+        return gridIds;
+    }, [gridData_Memo, hexMenuItemMeshPositions_Memo]);
 
     const [hexRefs, hexRefCallback] = useArrayRef<HexMenuMesh>();
 
@@ -112,9 +103,6 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                     intersectionHits_Ref.current = getIntersectIndices(intersection, [gridData_Memo.gridColumns, gridData_Memo.gridRows]);
                 }
             }
-
-            // TODO make helper function
-            // How to convert to x,y at Scene Z:0 :
         },
         document,
     );
@@ -125,7 +113,15 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     // --> Animation of all Meshes
     useFrame(({ clock }) => {
         if (gridMesh_Ref.current && hexRefs.current) {
-            animate(clock.getElapsedTime(), gridMesh_Ref.current, hexRefs.current, gridData_Memo, intersectionHits_Ref, hasRunOnce_Ref);
+            animate(
+                clock.getElapsedTime(),
+                gridMesh_Ref.current,
+                hexRefs.current,
+                hexMenuGridPositions_Memo,
+                gridData_Memo,
+                intersectionHits_Ref,
+                hasRunOnce_Ref,
+            );
         }
     });
 
@@ -137,7 +133,7 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                     setSelected(selected);
                 }}
             >
-                {hexMenuItemPositions_Memo.map((gridPosition, idx, arr) => (
+                {hexMenuItemMeshPositions_Memo.map((gridPosition, idx, arr) => (
                     <HexMenuItem
                         key={`key${gridPosition}-${idx}`}
                         ref={hexRefCallback(idx)}
@@ -159,26 +155,31 @@ const animate = (
     time_S: number,
     gridMesh: InstancedGridMesh,
     hexMenuMeshes: HexMenuMesh[],
+    hexMenuGridIds: number[][][],
     gridData: GridData,
     intersectionHits_Ref: MutableRefObject<IntersectionResults | null>,
     hasRunOnce_Ref: MutableRefObject<boolean>,
 ) => {
+    // Set current time for shader calculations
     gridMesh.material.uniforms.u_Time_S.value = time_S;
 
-    // --> Background animation
+    // 1. --> Background animation
     setAmbientGridAnimation(gridMesh, gridData, time_S, 'sin');
 
-    // --> Intro, returns 'true' once animation is over
+    // 2. --> Intro, returns 'true' once animation is over
     if (!hasRunOnce_Ref.current) {
         hasRunOnce_Ref.current = setIntroGridAnimation(gridMesh, gridData, time_S);
     }
 
-    // --> React to Hits (overwriting values from setAmbientGridAnimation())
+    // 3. --> React to Hits (overwriting values from setAmbientGridAnimation())
     if (intersectionHits_Ref.current) {
         const [gridHits, hexMeshHit] = intersectionHits_Ref.current;
-        gridHits.length && setSpecificGridAnimation(gridMesh, gridData, time_S, gridHits);
-        hexMeshHit && setMenuAnimation(hexMenuMeshes, hexMeshHit, gridData);
+        gridHits.length && setSpecificGridHitsAnimation(gridMesh, gridData, time_S, gridHits);
+        hexMeshHit && setMenuHitsAnimation(hexMenuMeshes, hexMeshHit, gridData);
     }
+
+    // 4. --> Set Menu Animations (overwriting the previous)
+    setMenuAnimation(gridMesh, gridData, time_S, hexMenuGridIds);
 };
 
 let intersected = 0;
@@ -207,9 +208,60 @@ const getIntersectIndices = (intersection: Intersection<InstancedMesh2 | HexMenu
         gridHits = [];
     }
 
+    // console.log('%c[BackgroundGrid]', 'color: #d49f55', `gridHits, hexMeshHit :`, gridHits, hexMeshHit);
+
     return [gridHits, hexMeshHit] as IntersectionResults;
 };
 
+/**
+ * Adjusts precalculated screen-width dimensions (expressed in it's left, right, top, bottom values) for an orthographic's camera angle if it is not on X:0 or Y:0 while looking at origin. Will only work usefully if either X OR Y are non-zero.
+ * @param width width of imagined plane at origin, spanning frustum at origin
+ * @param height height of imagined plane at origin, spanning frustum at origin
+ * @param camera a camera, looking at origin (orthographic, perspective will not work for now)
+ * @returns new width and height values, taking offset position of camera into account.
+ */
+const adjustDimensionsForCameraAngle = (width: number, height: number, camera: OrthographicCamera) => {
+    const tempVector2 = new Vector2();
+    let newWidth = width;
+    let newHeight = height;
+
+    if (camera.position.x === 0 || camera.position.y === 0) {
+        if (camera.position.x !== 0) {
+            const distanceToOriginXZ = tempVector2.set(camera.position.x, camera.position.z).length();
+            newWidth = 2 * getSimilarHypotenuse(width, camera.position.x, distanceToOriginXZ);
+        } else if (camera.position.y !== 0) {
+            const distanceToOriginYZ = tempVector2.set(camera.position.y, camera.position.z).length();
+            newHeight = 2 * getSimilarHypotenuse(height, camera.position.y, distanceToOriginYZ);
+        }
+    } else {
+        throw new Error('Both camera X and Y are non-zero!');
+    }
+
+    return [isNaN(newWidth) ? width : newWidth, isNaN(newHeight) ? height : newHeight] as [number, number];
+
+    /**
+     * Assuming an orthographic frustum, eg a rectangle extending from camera, use pythagoras to calculate new dimensions of (half)side when the plane at origin is viewed at an angle.
+     * @param side current width or height of imagined plane at origin, facing Z+
+     * @param cameraDistanceOnAxis camera position on either X (width), or Y (height)
+     * @param cameraDistanceToOrigin camera distance to origin
+     * @returns
+     */
+    function getSimilarHypotenuse(side: number, cameraDistanceOnAxis: number, cameraDistanceToOrigin: number) {
+        /* this angle - camera to origin vector - is the same as the angle between imaginary side of the camera's rotated frustum, passing through origin. the angle then describes one tip of a straight-angle triangle, at origin */
+        const angleB = Math.asin(cameraDistanceOnAxis / cameraDistanceToOrigin);
+
+        /* half the frustum's length is one known side of the above straight-angle triangle */
+        const legA = side / 2;
+        /* the other side */
+        const legB = legA * Math.tan(angleB);
+        /* and length of the hypotenuse, which is half the width the origin plane should be if viewed at an angle */
+        const hypo = Math.sqrt(legA * legA + legB * legB);
+
+        return hypo;
+    }
+};
+
+// TODO change this to use either ndc or actual VP pixels, introducing yet another coord space is not too smart
 /** Returns grid index at viewport position (width [0,1], height [0,1]) */
 const getIndexAtPosition = (x: number, y: number, columns: number, rows: number) => {
     const xPos = Math.floor(columns * x);

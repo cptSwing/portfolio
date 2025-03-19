@@ -4,6 +4,13 @@ export const animationSettings = {
     menu: {
         menuItemOffsetZ: 2,
     },
+    ambient: {
+        length_S: 1.5,
+        timeScale: 0.75,
+    },
+    intro: {
+        length_S: 0.5,
+    },
 };
 
 export const cameraSettings = {

@@ -11,12 +11,11 @@ import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
 import { Grid, HexGrid, SquareGrid } from '../../lib/classes/Grid';
 import vertexShader from '../../lib/shading/instancedShader_V.glsl';
 import fragmentShader from '../../lib/shading/instancedShader_F.glsl';
-import { getExtentsInNDC } from '../../lib/THREE_coordinateConversions';
-import { introAnimationLength_S } from '../../lib/animateMeshes';
+import { getExtentsFromOrigin } from '../../lib/THREE_coordinateConversions';
+import { animationSettings } from '../../config/threeSettings';
 
 extend({ InstancedMesh2 });
 
-introAnimationLength_S;
 const instancedMeshTempColor = new Color();
 const isFlatShaded = false;
 
@@ -42,7 +41,7 @@ const InstancedGridMeshFiber = memo(
                 return new PlaneGeometry(instanceWidth, instanceWidth);
             } else {
                 const size = HexGrid.getSizeFromWidth(instanceWidth, instanceFlatTop);
-                const hexGeo = new HexagonalPrismGeometry(size, instanceWidth, instanceFlatTop).rotateX(MathUtils.degToRad(90));
+                const hexGeo = new HexagonalPrismGeometry(size, instanceWidth * 1.5, instanceFlatTop).rotateX(MathUtils.degToRad(90));
                 return hexGeo;
             }
         }, [isSquare, instanceWidth, instanceFlatTop]);
@@ -54,7 +53,7 @@ const InstancedGridMeshFiber = memo(
                 ShaderLib.phong.uniforms,
                 {
                     u_Time_S: { value: 0 },
-                    u_Animation_Length_S: { value: introAnimationLength_S },
+                    u_Animation_Length_S: { value: animationSettings.intro.length_S },
                     u_Instance_Width: { value: instanceWidth },
                     u_Fresnel_Color: { value: instancedMeshTempColor.setHex(currentActivePrimary) },
                     u_HighLight_Color: {
@@ -101,7 +100,7 @@ const InstancedGridMeshFiber = memo(
                     // const merged = GridAnimations.mergeIndicesDistanceLevels(...indicesUnderMenuItems);
                     // const filtered = GridAnimations.filterIndices(merged, true).flat();
 
-                    const [extentX, extentY] = getExtentsInNDC(overallWidth, overallHeight);
+                    const [extentX, extentY] = getExtentsFromOrigin(overallWidth, overallHeight);
 
                     if (mesh.instancesCount) mesh.clearInstances();
 
