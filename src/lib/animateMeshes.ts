@@ -1,7 +1,8 @@
 import { Color, MathUtils, Vector3 } from 'three';
 import { GridData, HexMenuMesh, InstancedGridMesh, PatternSettingsAnimation } from '../types/types';
-import HexagonGeometry from './classes/HexagonGeometry';
+import HexagonGeometry from './classes/HalfHexagonGeometry';
 import { remapRange } from './remapRange';
+import { animationSettings } from '../config/threeSettings';
 
 const defaultOffset = new Vector3(0, 0, -0.1);
 const newOffset = defaultOffset.clone();
@@ -108,16 +109,17 @@ export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridD
     });
 };
 
-export const setMenuAnimation = (hexMeshes: HexMenuMesh[], hexMeshHit: HexMenuMesh) => {
+export const setMenuAnimation = (hexMeshes: HexMenuMesh[], hexMeshHit: HexMenuMesh, gridData: GridData) => {
     hexMeshes.forEach((mesh) => {
         if (mesh === hexMeshHit) {
-            mesh.position.setZ(2);
+            mesh.position.setZ(animationSettings.menu.menuItemOffsetZ * gridData.instanceWidth);
         } else if (mesh.position.z !== 0) {
             mesh.position.setZ(0);
         }
     });
 };
-const getAnimationProgress = (length: number, startTime: number, currentTime: number) => MathUtils.clamp((currentTime - startTime) / length, 0, 1);
+
+export const getAnimationProgress = (length: number, startTime: number, currentTime: number) => MathUtils.clamp((currentTime - startTime) / length, 0, 1);
 
 export const meshAnimations: Record<string, Pick<PatternSettingsAnimation, 'pattern' | 'timeAlpha' | 'endDelay_S'>> = {
     sinWave: {
@@ -133,5 +135,3 @@ export const meshAnimations: Record<string, Pick<PatternSettingsAnimation, 'patt
         timeAlpha: 0.1,
     },
 };
-
-const _returnSinValue = (instanceCount: number) => -0.0008 * instanceCount + 2.1;

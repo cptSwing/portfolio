@@ -42,7 +42,8 @@ const InstancedGridMeshFiber = memo(
                 return new PlaneGeometry(instanceWidth, instanceWidth);
             } else {
                 const size = HexGrid.getSizeFromWidth(instanceWidth, instanceFlatTop);
-                return new HexagonalPrismGeometry(size, instanceWidth, instanceFlatTop).rotateX(MathUtils.degToRad(90)).center();
+                const hexGeo = new HexagonalPrismGeometry(size, instanceWidth, instanceFlatTop).rotateX(MathUtils.degToRad(90));
+                return hexGeo;
             }
         }, [isSquare, instanceWidth, instanceFlatTop]);
 

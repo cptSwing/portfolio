@@ -50,8 +50,8 @@ export class HexGrid extends Grid {
         const newSizeH = this.getSizeFromSpacing(horizontalSpacingNoPadding, true, instanceFlatTop);
         const [width, height] = this.getWidthHeight(newSizeH, instanceFlatTop);
 
-        const numColumns = Math.ceil((overallWidth + adjustedHorizontalPadding) / horizontalSpacing);
-        const numRows = Math.ceil((overallHeight + height / 2) / verticalSpacing);
+        const numColumns = Math.ceil((overallWidth + adjustedHorizontalPadding) / horizontalSpacing) + 1;
+        const numRows = Math.floor((overallHeight + height / 2) / verticalSpacing) + 1;
 
         return {
             ...params,
