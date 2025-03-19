@@ -11,6 +11,7 @@ export class Grid {
         const column = index % numColumns;
         const row = Math.floor(index / numColumns);
 
+        console.log('%c[Grid]', 'color: #70d0ea', `column, row :`, column, row);
         return [column, row] as OffsetCoordinate;
     }
 
@@ -181,6 +182,7 @@ export class HexGrid extends Grid {
         return size;
     }
 
+    // TODO rename me!
     static getXYOffsets(width: number, padding: number, column: number, row: number, flatTop: boolean) {
         const size = this.getSizeFromWidth(width, flatTop);
         const [horizontalSpacing, verticalSpacing] = this.getSpacing(size, flatTop);
@@ -203,7 +205,8 @@ export class HexGrid extends Grid {
             x += ((width + padding * shorterToLongerDimRatio) / 2) * evenOrUneven;
         }
 
-        return [x, y];
+        console.log('%c[Grid]', 'color: #d39ab4', `x,y,column,row :`, x, y, column, row);
+        return [x, y] as [number, number];
     }
 
     static coord_CubeToEvenR([q, r, _s]: CubeCoordinate) {
