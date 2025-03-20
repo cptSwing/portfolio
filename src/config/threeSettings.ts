@@ -2,7 +2,8 @@ import { Vector2, Vector3 } from 'three';
 
 export const animationSettings = {
     menu: {
-        menuItemOffsetZ: 2,
+        menuItemDistanceSize: 2,
+        menuItemOffsetZMultiplier: 2,
     },
     ambient: {
         length_S: 1.5,

@@ -105,7 +105,7 @@ const HexMenuItem = forwardRef<HexMenuMesh, { gridData: GridData; positionIndex:
                 ref={meshRef}
                 geometry={hexMenuGeometry_Memo}
                 material={hexMenuMaterial_Memo}
-                position-z={isSelected && animationSettings.menu.menuItemOffsetZ}
+                position-z={isSelected && instanceWidth * animationSettings.menu.menuItemOffsetZMultiplier}
             >
                 <Html occlude transform position-z={zMax + 0.05}>
                     <div className='size-full cursor-pointer'>{`${isSelected ? 'selected ' : positionIndex}`}</div>

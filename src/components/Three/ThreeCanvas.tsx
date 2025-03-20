@@ -47,7 +47,7 @@ const ThreeCanvas = () => {
                     right={orthoFrustum_Memo.right}
                     top={orthoFrustum_Memo.top}
                     bottom={orthoFrustum_Memo.bottom}
-                    position={[orthoFrustum_Memo.right / 3, 0, Math.max(orthoFrustum_Memo.right, orthoFrustum_Memo.top)]}
+                    position={[orthoFrustum_Memo.right / 4, 0, Math.max(orthoFrustum_Memo.right, orthoFrustum_Memo.top)]}
                     zoom={1}
                     onUpdate={(self) => {
                         self.lookAt(lookAtVector);

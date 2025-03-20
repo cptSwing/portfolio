@@ -32,6 +32,7 @@ export class HexGrid extends Grid {
     static hexAngle = (2 * Math.PI) / 6; // 60 deg
     static hexSine = Math.sin(this.hexAngle);
     static hexCosine = Math.cos(this.hexAngle);
+    static sqrt3 = Math.sqrt(3);
 
     static getInstanceCount = (params: DefaultGridData) => {
         const { gridWidth, gridHeight, instanceFlatTop, instancePadding, gridInstanceCount } = params;
@@ -39,7 +40,7 @@ export class HexGrid extends Grid {
         const overallArea = gridWidth * gridHeight;
         const idealInstanceArea = overallArea / gridInstanceCount;
 
-        const size = Math.sqrt((2 * idealInstanceArea) / (3 * Math.sqrt(3))); // same as radius
+        const size = Math.sqrt((2 * idealInstanceArea) / (3 * this.sqrt3)); // same as radius
         const [horizontalSpacing, verticalSpacing] = this.getSpacing(size, instanceFlatTop); // column width, basically
         const rSin = this.hexSine * size;
 
@@ -80,12 +81,12 @@ export class HexGrid extends Grid {
 
     static getCubeCoordFromInstanceIndex(instanceIndex: number, numColumns: number) {
         const offsetCoord = this.getOffsetCoordFromIndex(instanceIndex, numColumns);
-        return this.coord_EvenRToCube(offsetCoord);
+        return this.coord_OffsetEvenRToCube(offsetCoord);
     }
 
-    static getInstanceIndexFromCubeCoord(cubeCoord: CubeCoordinate, gridColsRows: [number, number], markOutOfBounds: boolean) {
+    static getInstanceIndexFromCubeCoord(cubeCoord: CubeCoordinate, gridColsRows: [number, number], markOutOfBounds: boolean = true) {
         const [numColumns, numRows] = gridColsRows;
-        const offsetCoordinate = this.coord_CubeToEvenR(cubeCoord);
+        const offsetCoordinate = this.coord_CubeToOffsetEvenR(cubeCoord);
         return this.getIndexFromOffsetCoord(offsetCoordinate, numColumns, numRows, markOutOfBounds);
     }
 
@@ -143,12 +144,12 @@ export class HexGrid extends Grid {
 
     static getWidthHeight(size: number, flatTop = true) {
         const sizeTimes2 = size * 2;
-        const sizeTimesSqrt3 = size * Math.sqrt(3);
+        const sizeTimesSqrt3 = size * this.sqrt3;
         return (flatTop ? [sizeTimes2, sizeTimesSqrt3] : [sizeTimesSqrt3, sizeTimes2]) as [number, number];
     }
 
     static getSizeFromWidth(width: number, flatTop = true) {
-        return flatTop ? width / 2 : width / Math.sqrt(3);
+        return flatTop ? width / 2 : width / this.sqrt3;
     }
 
     /** Returns distance between hexagon centers in a grid */
@@ -168,7 +169,7 @@ export class HexGrid extends Grid {
 
     static getSizeFromSpacing(distance: number, horizontal: boolean, flatTop = true) {
         const distanceTimesTwoThirds = distance * (2 / 3);
-        const distanceDivBySqrt3 = distance / Math.sqrt(3);
+        const distanceDivBySqrt3 = distance / this.sqrt3;
 
         let size: number;
         if (horizontal) {
@@ -180,7 +181,6 @@ export class HexGrid extends Grid {
         return size;
     }
 
-    // TODO rename me!
     static getWorldSpaceXYFromOffsetCoord(width: number, padding: number, [column, row]: OffsetCoordinate, flatTop: boolean) {
         const size = this.getSizeFromWidth(width, flatTop);
         const [horizontalSpacing, verticalSpacing] = this.getSpacing(size, flatTop);
@@ -206,17 +206,41 @@ export class HexGrid extends Grid {
         return [x, y] as [number, number];
     }
 
-    static coord_CubeToEvenR([q, r, _s]: CubeCoordinate) {
+    static coord_CubeToOffsetEvenR([q, r, _s]: CubeCoordinate) {
         const column = q + (r + (r & 1)) / 2;
         const row = r;
         return [column, row] as OffsetCoordinate;
     }
 
-    static coord_EvenRToCube([column, row]: OffsetCoordinate) {
+    static coord_OffsetEvenRToCube([column, row]: OffsetCoordinate) {
         const q = column - (row + (row & 1)) / 2;
         const r = row;
         const s = -q - r;
         return [q, r, s] as CubeCoordinate;
+    }
+
+    static coord_CubeToAxial([q, r, _s]: CubeCoordinate) {
+        return [q, r] as [number, number];
+    }
+
+    static coord_AxialToCube([q, r]: [number, number]) {
+        const s = -q - r;
+        return [q, r, s] as CubeCoordinate;
+    }
+
+    // WARN returns pixels in, uh, ndc (center of screen is [0,0]) ?
+    static coord_AxialToPixel([q, r]: [number, number], size: number, [originX, originY]: [number, number], flatTop = false) {
+        let x: number, y: number;
+
+        if (flatTop) {
+            x = size * ((3 / 2) * q);
+            y = size * ((this.sqrt3 / 2) * q + this.sqrt3 * r);
+        } else {
+            x = size * (this.sqrt3 * q + (this.sqrt3 / 2) * r);
+            y = size * ((3 / 2) * r);
+        }
+
+        return [x + originX, y + originY];
     }
 
     static getCoordinateDistanceArray(distance: number) {
@@ -300,6 +324,7 @@ export class HexGrid extends Grid {
         return [q + dirQ, r + dirR, s + dirS] as CubeCoordinate;
     }
 
+    /** Where index 0 is the north-east hex, index1 is the eastern hex, index 2 is south-east, 3 is SW, 4 is west, and 5 is north-west */
     static directionDifferencesCube: [CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate, CubeCoordinate] = [
         [+1, -1, 0],
         [+1, 0, -1],

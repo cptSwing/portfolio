@@ -5,7 +5,7 @@ import { WebGLRenderer, Camera, Vector2, Raycaster, Intersection, Object3D, Orth
 import { setAmbientGridAnimation, setIntroGridAnimation, setMenuAnimation, setMenuHitsAnimation, setSpecificGridHitsAnimation } from '../../lib/animateMeshes';
 import { SquareGrid, HexGrid } from '../../lib/classes/Grid';
 import { GridAnimations } from '../../lib/classes/GridAnimations';
-import { DefaultGridData, InstancedGridMesh, GridData, HexMenuMesh } from '../../types/types';
+import { DefaultGridData, InstancedGridMesh, GridData, HexMenuMesh, CubeCoordinate } from '../../types/types';
 import { ndcFromViewportCoordinates } from '../../lib/THREE_coordinateConversions';
 import { InstancedMesh2 } from '@three.ez/instanced-mesh';
 import InstancedGridMeshFiber from './InstancedGridMeshFiber';
@@ -13,6 +13,7 @@ import HexMenuItem from './HexMenuItem';
 import { getWidthHeightAtDepth } from '../../lib/THREE_cameraHelpers';
 import { useArrayRef } from '../../hooks/useRefArray';
 import { Select } from '@react-three/drei';
+import { animationSettings } from '../../config/threeSettings';
 
 const gridDataDefaults: DefaultGridData = {
     gridWidth: 0,
@@ -55,25 +56,42 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
     //
     // --> Calculate Placement for Menu items
     const hexMenuItemMeshPositions_Memo = useMemo(() => {
-        const { gridColumnCount, gridRowCount } = gridData_Memo;
-        const positions = [
-            getIndexAtPosition(0.35, 0.25, gridColumnCount, gridRowCount),
-            getIndexAtPosition(0.45, 0.4, gridColumnCount, gridRowCount),
-            getIndexAtPosition(0.525, 0.275, gridColumnCount, gridRowCount),
-            getIndexAtPosition(0.625, 0.4, gridColumnCount, gridRowCount),
-        ];
-        return positions;
+        const { gridWidth, gridHeight, gridInstanceCount, gridColumnCount, gridRowCount, instanceWidth } = gridData_Memo;
+        const firstIndex = getIndexAtPosition(0.35, 0.25, gridColumnCount, gridRowCount);
+
+        const middleIndex = getIndexAtPosition(0.5, 0.5, gridColumnCount, gridRowCount);
+        const middleCubeCoord = HexGrid.getCubeCoordFromInstanceIndex(middleIndex, gridColumnCount);
+        const middleAxialCoord = HexGrid.coord_CubeToAxial(middleCubeCoord);
+        const middlePixel = HexGrid.coord_AxialToPixel(middleAxialCoord, HexGrid.getSizeFromWidth(instanceWidth, false), [
+            gridWidth * gridColumnCount,
+            gridHeight * gridColumnCount,
+        ]);
+
+        const ndc = ndcFromViewportCoordinates(middlePixel[0], middlePixel[1], window.innerWidth, window.innerHeight);
+
+        console.log(
+            '%c[BackgroundGrid]',
+            'color: #bde537',
+            `middlePixel, ndc, window.innerWidth, window.innerHeight :`,
+            middlePixel,
+            ndc,
+            window.innerWidth,
+            window.innerHeight,
+        );
+
+        return getDiagonalMenuIndices(firstIndex, animationSettings.menu.menuItemDistanceSize, [gridColumnCount, gridRowCount]);
     }, [gridData_Memo]);
 
+    //
+    // --> Select Grid Instances around Menu Item centers
     const hexMenuGridPositions_Memo = useMemo(() => {
         const { gridColumnCount, gridRowCount } = gridData_Memo;
 
         const gridIds = hexMenuItemMeshPositions_Memo.map((instanceId) => {
-            const shapeIds = GridAnimations.getHexagonShape(instanceId, 2, [gridColumnCount, gridRowCount]);
+            const shapeIds = GridAnimations.getHexagonShape(instanceId, animationSettings.menu.menuItemDistanceSize, [gridColumnCount, gridRowCount]);
             return GridAnimations.filterIndices(shapeIds);
         });
 
-        console.log('%c[BackgroundGrid]', 'color: #c0b023', `gridIds :`, gridIds);
         return gridIds;
     }, [gridData_Memo, hexMenuItemMeshPositions_Memo]);
 
@@ -101,6 +119,16 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
 
                 if (intersection.length) {
                     intersectionHits_Ref.current = getIntersectIndices(intersection, [gridData_Memo.gridColumnCount, gridData_Memo.gridRowCount]);
+                    console.log(
+                        '%c[BackgroundGrid]',
+                        'color: #96fce1',
+                        `clientX, clientY, ndcX, ndcY, intersection[0] :`,
+                        mouseEvent.clientX,
+                        mouseEvent.clientY,
+                        ndcX,
+                        ndcY,
+                        intersection[0],
+                    );
                 }
             }
         },
@@ -144,6 +172,10 @@ const BackgroundGrid: FC<{ isSquare: boolean }> = ({ isSquare }) => {
                 ))}
             </Select>
 
+            <mesh position={[]}>
+                <boxGeometry args={[2, 2, 2]} />
+                <meshNormalMaterial />
+            </mesh>
             <InstancedGridMeshFiber ref={gridMesh_Ref} renderer={renderer} gridData={gridData_Memo} isSquare={isSquare} useFresnel />
         </>
     );
@@ -180,6 +212,27 @@ const animate = (
 
     // 4. --> Set Menu Animations (overwriting the previous)
     setMenuAnimation(gridMesh, gridData, time_S, hexMenuGridIds);
+};
+
+const getDiagonalMenuIndices: (firstIndex: number, menuItemSize: number, gridColsRows: [number, number]) => [number, number, number, number] = (
+    firstIndex,
+    menuItemSize,
+    [gridColumnCount, gridRowCount],
+) => {
+    const menuIndices = [firstIndex];
+    const diagonalDistance = menuItemSize + 1;
+    let cubeCoord = HexGrid.getCubeCoordFromInstanceIndex(firstIndex, gridColumnCount);
+
+    for (let i = 1; i < 4; i++) {
+        const direction = i % 2 === 0 ? 1 : 2;
+        for (let j = 0; j < diagonalDistance; j++) {
+            cubeCoord = HexGrid.getNeighborsCubeCoordinates(cubeCoord, direction, true);
+        }
+        const index = HexGrid.getInstanceIndexFromCubeCoord(cubeCoord, [gridColumnCount, gridRowCount]);
+        menuIndices.push(index);
+    }
+
+    return menuIndices as [number, number, number, number];
 };
 
 let intersected = 0;

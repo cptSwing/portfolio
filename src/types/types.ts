@@ -98,10 +98,10 @@ export type GridData = {
 
 export type DefaultGridData = Omit<GridData, 'instanceWidth'> & { instanceWidth: null };
 
-/** Cube Coordinates as [q, r, s] --> Each element corresponding to offsets on a respective direction radiating outwards of a hex */
+/** Cube Coordinates as [q, r, s] --> Each of the 3 elements describes one the axes passing through a hexagonal shape */
 export type CubeCoordinate = [number, number, number];
 
-/** Where index 0 would contain the center hex's coordinates, index 1 contains coordinates for distance 1, index 2 contains coordinates at distance 2, etc */
+/** Where index 0 would contain the center hex's coordinates, index 1 contains coordinates for a distance 1 further, index 2 contains coordinates at distance 2 further, etc */
 export type CubeCoordinateByDistance = CubeCoordinate[][];
 
 /** Grid Coordinates as [Column #, Row #] */

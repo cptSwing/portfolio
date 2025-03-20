@@ -107,30 +107,33 @@ export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridD
 export const setMenuHitsAnimation = (hexMeshes: HexMenuMesh[], hexMeshHit: HexMenuMesh, gridData: GridData) => {
     hexMeshes.forEach((mesh) => {
         if (mesh === hexMeshHit) {
-            mesh.position.setZ(animationSettings.menu.menuItemOffsetZ * gridData.instanceWidth);
+            mesh.position.setZ(animationSettings.menu.menuItemOffsetZMultiplier * gridData.instanceWidth);
         } else if (mesh.position.z !== 0) {
             mesh.position.setZ(0);
         }
     });
 };
 
+const menuItemColor = new Color(0.75, 0.75, -0.75);
+
 export const setMenuAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, gridIds: number[][][]) => {
     const { instanceWidth } = gridData;
 
     // const highLightColor = mesh.material.uniforms.u_HighLight_Color.value;
-    const highLightColor = tempHighlightColor;
+    const highLightColor = menuItemColor;
 
     gridIds.forEach((menuItemShape) => {
-        menuItemShape.forEach((hits, idx, arr) => {
+        menuItemShape.forEach((hitDistances, idx, arr) => {
             const relativeDistance = idx;
             const fractionAtDistance = (arr.length - relativeDistance) / arr.length;
+            const clampedFraction = Math.max(fractionAtDistance, minimumAtFarthestDistance);
 
-            hits.forEach((instanceId) => {
+            newColor.copy(highLightColor);
+            // newColor.multiplyScalar( clampedFraction );
+
+            hitDistances.forEach((instanceId) => {
                 const instance = mesh.instances[instanceId];
 
-                const clampedFraction = Math.max(fractionAtDistance, minimumAtFarthestDistance);
-
-                newColor.copy(highLightColor).multiplyScalar(clampedFraction);
                 mesh.setColorAt(instanceId, newColor);
 
                 newOffset.setZ(instanceWidth);
