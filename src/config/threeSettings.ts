@@ -15,6 +15,7 @@ export const animationSettings = {
 };
 
 export const cameraSettings = {
+    defaultCameraName: 'jbrandenburg.de_defaultCamera',
     offset: 10,
 };
 

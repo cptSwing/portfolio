@@ -1,4 +1,4 @@
-import { Color, MathUtils, Vector3 } from 'three';
+import { Color, Group, MathUtils, Vector3 } from 'three';
 import { GridData, HexMenuMesh, InstancedGridMesh, PatternSettingsAnimation } from '../types/types';
 import { remapRange } from './remapRange';
 import { animationSettings } from '../config/threeSettings';
@@ -10,12 +10,16 @@ const newColor = new Color();
 
 let maxBackgroundMovement = 0;
 
-export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number) => {
+export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, excludedIndices: number[]) => {
     const { gridHeight, gridColumnCount, instanceWidth } = gridData;
     let hasRunOnce = false;
     newOffset.copy(defaultOffset);
 
     mesh.updateInstances((instance) => {
+        if (excludedIndices.includes(instance.id)) {
+            return;
+        }
+
         const [column] = Grid.getOffsetCoordFromIndex(instance.id, gridColumnCount);
         const animationProgress = getAnimationProgress(animationSettings.intro.length_S, 0, time_S);
 
@@ -72,7 +76,13 @@ export const setSpecificGridHitsAnimation = (mesh: InstancedGridMesh, gridData: 
     });
 };
 
-export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, pattern: PatternSettingsAnimation['pattern'] = 'sin') => {
+export const setAmbientGridAnimation = (
+    mesh: InstancedGridMesh,
+    gridData: GridData,
+    time_S: number,
+    excludedIndices: number[],
+    pattern: PatternSettingsAnimation['pattern'] = 'sin',
+) => {
     const { gridColumnCount } = gridData;
     newOffset.copy(defaultOffset);
 
@@ -85,8 +95,11 @@ export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridD
     // }
 
     mesh.updateInstances((instance) => {
-        const [column, row] = Grid.getOffsetCoordFromIndex(instance.id, gridColumnCount);
+        if (excludedIndices.includes(instance.id)) {
+            return;
+        }
 
+        const [column, row] = Grid.getOffsetCoordFromIndex(instance.id, gridColumnCount);
         switch (pattern) {
             case 'sin':
                 let sinVal = Math.sin(time_S * animationSettings.ambient.timeScale + (row - column) * 0.25);
@@ -104,12 +117,12 @@ export const setAmbientGridAnimation = (mesh: InstancedGridMesh, gridData: GridD
     });
 };
 
-export const setMenuHitsAnimation = (hexMeshes: HexMenuMesh[], hexMeshHit: HexMenuMesh, gridData: GridData) => {
-    hexMeshes.forEach((mesh) => {
-        if (mesh === hexMeshHit) {
-            mesh.position.setZ(animationSettings.menu.menuItemOffsetZMultiplier * gridData.instanceWidth);
-        } else if (mesh.position.z !== 0) {
-            mesh.position.setZ(0);
+export const setMenuHitsAnimation = (menuItems: Group[], wasHit: Group, gridData: GridData) => {
+    menuItems.forEach((item) => {
+        if (item === wasHit) {
+            item.position.setZ(animationSettings.menu.menuItemOffsetZMultiplier * gridData.instanceWidth);
+        } else if (item.position.z !== 0) {
+            item.position.setZ(0);
         }
     });
 };

@@ -4,6 +4,7 @@ import BackgroundGrid from './BackgroundGrid';
 import { Vector3 } from 'three';
 import { useWindowSize } from 'react-use';
 import { useMemo } from 'react';
+import { cameraSettings } from '../../config/threeSettings';
 
 const lookAtVector = new Vector3();
 
@@ -34,6 +35,7 @@ const ThreeCanvas = () => {
             <Canvas gl={{ alpha: true, antialias: true }}>
                 {/* <PerspectiveCameraImpl
                     makeDefault
+                    name={cameraSettings.defaultCameraName}
                     position={[0, 0, cameraSettings.offset]}
                     fov={45}
                     aspect={window.innerWidth / window.innerHeight}
@@ -43,11 +45,12 @@ const ThreeCanvas = () => {
 
                 <OrthographicCameraImpl
                     makeDefault
+                    name={cameraSettings.defaultCameraName}
                     left={orthoFrustum_Memo.left}
                     right={orthoFrustum_Memo.right}
                     top={orthoFrustum_Memo.top}
                     bottom={orthoFrustum_Memo.bottom}
-                    position={[orthoFrustum_Memo.right / 4, 0, Math.max(orthoFrustum_Memo.right, orthoFrustum_Memo.top)]}
+                    position={[orthoFrustum_Memo.right / 3, 0, Math.max(orthoFrustum_Memo.right, orthoFrustum_Memo.top)]}
                     zoom={1}
                     onUpdate={(self) => {
                         self.lookAt(lookAtVector);

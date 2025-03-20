@@ -1,7 +1,7 @@
-import { FC, forwardRef, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { Group, MathUtils, MeshPhongMaterial, MeshPhysicalMaterial, PlaneGeometry, Vector3 } from 'three';
+import { FC, forwardRef, MutableRefObject, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Color, Group, MathUtils, MeshPhongMaterial, MeshPhysicalMaterial, PlaneGeometry, Vector3 } from 'three';
 import HexagonalPrismGeometry from '../../lib/classes/HexagonalPrismGeometry';
-import { GridData, HexMenuMesh } from '../../types/types';
+import { GridData, HexMenuMesh, InstancedGridMesh } from '../../types/types';
 import { HexGrid } from '../../lib/classes/Grid';
 import { getExtentsFromOrigin } from '../../lib/THREE_coordinateConversions';
 import { Html, useSelect } from '@react-three/drei';
@@ -10,111 +10,71 @@ import { easing } from 'maath';
 import useForwardedRef from '../../hooks/useForwardedRef';
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 import HexagonGeometry, { translateXPosition, translateYPosition } from '../../lib/classes/HexagonGeometry';
-import { animationSettings, vectors } from '../../config/threeSettings';
+import { vectors } from '../../config/threeSettings';
 
-const tempVector = new Vector3();
+const HexMenuItem = forwardRef<
+    Group,
+    { gridData: GridData; gridMesh: MutableRefObject<InstancedGridMesh | null>; shapeIndices: number[][]; scaleXZ?: [number, number] }
+>(({ gridData, gridMesh, shapeIndices, scaleXZ }, ref) => {
+    const { gridWidth, gridHeight, gridColumnCount, gridRowCount, instanceWidth, instancePadding, instanceFlatTop } = gridData;
 
-const HexMenuItem = forwardRef<HexMenuMesh, { gridData: GridData; positionIndex: number; scaleXZ?: [number, number] }>(
-    ({ gridData, positionIndex, scaleXZ = [1, 2] }, ref) => {
-        const { gridWidth, gridHeight, gridColumnCount, gridRowCount, instanceWidth, instancePadding, instanceFlatTop } = gridData;
-        const [scaleX, scaleZ] = scaleXZ;
+    const [zMax, setZMax] = useState(0);
+    // const htmlGroup_Ref = useRef<Group | null>();
+    const htmlGroup_Ref = useForwardedRef(ref);
 
-        const [zMax, setZMax] = useState(0);
+    const handleMount = useCallback(
+        (elem: HTMLDivElement | null) => {
+            console.log('%c[HexMenuItem]', 'color: #99d138', `${shapeIndices[0]} --> handleMount() --> elem :`, elem);
 
-        const hexMenuGeometry_Memo = useMemo(() => {
-            const gridInstanceSize = HexGrid.getSizeFromWidth(instanceWidth, !instanceFlatTop);
-            return new HexagonalPrismGeometry(gridInstanceSize * scaleX, gridInstanceSize * scaleZ)
-                .rotateX(MathUtils.degToRad(90))
-                .rotateZ(MathUtils.degToRad(90));
-        }, [instanceWidth, instanceFlatTop, scaleXZ]);
-
-        const refCallback = useCallback(
-            (mesh: HexMenuMesh | null) => {
-                if (mesh) {
+            if (elem) {
+                if (htmlGroup_Ref.current) {
+                    // --> Set Group position to center hex
                     const [extentX, extentY] = getExtentsFromOrigin(gridWidth, gridHeight);
-                    HexGrid.setInstancePosition(mesh, positionIndex, gridColumnCount, [extentX, extentY], instanceWidth, instancePadding, instanceFlatTop);
-
-                    !mesh.geometry.boundingBox && mesh.geometry.computeBoundingBox();
-                    mesh.geometry.boundingBox && setZMax(mesh.geometry.boundingBox.max.z);
-                }
-            },
-            [gridWidth, positionIndex, gridHeight, gridColumnCount, gridRowCount, instanceWidth, instancePadding, instanceFlatTop],
-        );
-
-        const meshRef = useForwardedRef(ref, refCallback);
-
-        const hexMenuMaterial_Memo = useMemo(
-            () =>
-                new MeshPhongMaterial({
-                    // wireframe: true,
-                    flatShading: true,
-                    transparent: true,
-                    opacity: 0.25,
-                    color: 0xaabbee,
-                    visible: false, // The meshes are used for raycasting only atm
-                }),
-            [],
-        );
-
-        const selected = useSelect();
-        const [isSelected, setIsSelected] = useState(false);
-        const [cameraMovement, setCameraMovement] = useState<Vector3 | null>(null);
-        const camera = useThree((state) => state.camera);
-
-        useLayoutEffect(() => {
-            if (selected.length) {
-                if (selected[0].uuid === meshRef.current?.uuid) {
-                    hexMenuMaterial_Memo.opacity = 0.5;
-                    setIsSelected(true);
-                } else {
-                    hexMenuMaterial_Memo.opacity = 0;
-                    setIsSelected(false);
-                }
-
-                tempVector.copy(camera.position);
-                tempVector.x *= -1;
-                setCameraMovement(tempVector);
-            } else {
-                hexMenuMaterial_Memo.opacity = 0.25;
-                setIsSelected(false);
-            }
-        }, [selected]);
-
-        useFrame(({ camera }, delta) => {
-            if (cameraMovement) {
-                const isRunning = easing.damp3(camera.position, cameraMovement, 0.5, delta);
-                camera.lookAt(vectors.zeroVector3);
-
-                if (!isRunning) {
-                    setCameraMovement(null);
+                    HexGrid.setInstancePosition(
+                        htmlGroup_Ref.current,
+                        shapeIndices[0][0],
+                        gridColumnCount,
+                        [extentX, extentY],
+                        instanceWidth,
+                        instancePadding,
+                        instanceFlatTop,
+                    );
                 }
             }
-        });
+        },
+        [gridWidth, shapeIndices, gridMesh, gridHeight, gridColumnCount, gridRowCount, instanceWidth, instancePadding, instanceFlatTop],
+    );
 
-        // const dummyRef = useRef(new Object3D());
-        // useFrame(({ pointer }, delta) => {
-        //     if (isSelected && meshRef.current) {
-        //         pointer.clampScalar(-0.075, 0.075);
-        //         dummyRef.current.lookAt(pointer.x, pointer.y, 1);
-        //         easing.dampQ(meshRef.current.quaternion, dummyRef.current.quaternion, 0.5, delta, 1);
-        //     }
-        // });
+    const [cameraMovement, setCameraMovement] = useState<Vector3 | null>(null);
 
-        return (
-            <mesh
-                ref={meshRef}
-                geometry={hexMenuGeometry_Memo}
-                material={hexMenuMaterial_Memo}
-                position-z={isSelected && instanceWidth * animationSettings.menu.menuItemOffsetZMultiplier}
-            >
-                <Html occlude transform position-z={zMax + 0.05}>
-                    <div className='size-full cursor-pointer'>{`${isSelected ? 'selected ' : positionIndex}`}</div>
-                </Html>
-                {isSelected && <HexMenuContent gridData={gridData} scaleX={scaleX} widthPx={400} htmlZ={zMax} />}
-            </mesh>
-        );
-    },
-);
+    useFrame(({ camera }, delta) => {
+        if (cameraMovement) {
+            const isRunning = easing.damp3(camera.position, cameraMovement, 0.5, delta);
+            camera.lookAt(vectors.zeroVector3);
+
+            if (!isRunning) {
+                setCameraMovement(null);
+            }
+        }
+    });
+
+    return (
+        <Html
+            ref={handleMount}
+            transform
+            distanceFactor={10}
+            // occlude
+            position-z={zMax + 0.05}
+            onUpdate={(self) => {
+                if (htmlGroup_Ref) {
+                    htmlGroup_Ref.current = self;
+                }
+            }}
+        >
+            <div className='size-full cursor-pointer'>{`${shapeIndices[0]}`}</div>
+        </Html>
+    );
+});
 
 export default HexMenuItem;
 
@@ -181,6 +141,70 @@ const HexMenuContent: FC<{ gridData: GridData; scaleX: number; widthPx: number; 
                     original form, accompanied by English versions from the 1914 translation by H. Rackham.
                 </div>
             </Html>
+        </mesh>
+    );
+};
+
+const HexMenuItemMesh: FC<{ children: ReactNode; gridData: GridData; scaleXZ?: [number, number] }> = ({ children, gridData, scaleXZ = [1, 2] }) => {
+    const { gridWidth, gridHeight, gridColumnCount, gridRowCount, instanceWidth, instancePadding, instanceFlatTop } = gridData;
+    const [scaleX, scaleZ] = scaleXZ;
+
+    const hexMenuGeometry_Memo = useMemo(() => {
+        const gridInstanceSize = HexGrid.getSizeFromWidth(instanceWidth, !instanceFlatTop);
+        return new HexagonalPrismGeometry(gridInstanceSize * scaleX, gridInstanceSize * scaleZ).rotateX(MathUtils.degToRad(90)).rotateZ(MathUtils.degToRad(90));
+    }, [instanceWidth, instanceFlatTop, scaleXZ]);
+
+    const hexMenuMaterial_Memo = useMemo(
+        () =>
+            new MeshPhongMaterial({
+                // wireframe: true,
+                flatShading: true,
+                transparent: true,
+                opacity: 0.25,
+                color: 0xaabbee,
+                visible: false, // The meshes are used for raycasting only atm
+            }),
+        [],
+    );
+
+    const selected = useSelect();
+
+    // useLayoutEffect(() => {
+    //     if (selected.length) {
+    //         if (selected[0].uuid === meshRef.current?.uuid) {
+    //             hexMenuMaterial_Memo.opacity = 0.5;
+    //             setIsSelected(true);
+    //         } else {
+    //             hexMenuMaterial_Memo.opacity = 0;
+    //             setIsSelected(false);
+    //         }
+
+    //         tempVector.copy(camera.position);
+    //         tempVector.x *= -1;
+    //         setCameraMovement(tempVector);
+    //     } else {
+    //         hexMenuMaterial_Memo.opacity = 0.25;
+    //         setIsSelected(false);
+    //     }
+    // }, [selected]);
+
+    // const dummyRef = useRef(new Object3D());
+    // useFrame(({ pointer }, delta) => {
+    //     if (isSelected && innerRef.current) {
+    //         pointer.clampScalar(-0.075, 0.075);
+    //         dummyRef.current.lookAt(pointer.x, pointer.y, 1);
+    //         easing.dampQ(innerRef.current.quaternion, dummyRef.current.quaternion, 0.5, delta, 1);
+    //     }
+    // });
+
+    return (
+        <mesh
+            // ref={meshRef}
+            geometry={hexMenuGeometry_Memo}
+            material={hexMenuMaterial_Memo}
+            // position-z={isSelected && instanceWidth * animationSettings.menu.menuItemOffsetZMultiplier}
+        >
+            {children}
         </mesh>
     );
 };

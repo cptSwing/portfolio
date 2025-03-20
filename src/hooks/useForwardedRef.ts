@@ -15,7 +15,7 @@ const useForwardedRef = <T>(ref: ForwardedRef<T>, callback?: (elem: T | null) =>
         }
 
         callback && callback(innerRef.current);
-    });
+    }, [ref, callback]);
 
     return innerRef;
 };

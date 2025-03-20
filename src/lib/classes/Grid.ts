@@ -228,7 +228,7 @@ export class HexGrid extends Grid {
         return [q, r, s] as CubeCoordinate;
     }
 
-    // WARN returns pixels in, uh, ndc (center of screen is [0,0]) ?
+    // WARN untested/unused for now
     static coord_AxialToPixel([q, r]: [number, number], size: number, [originX, originY]: [number, number], flatTop = false) {
         let x: number, y: number;
 

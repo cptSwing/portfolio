@@ -1,4 +1,4 @@
-import { forwardRef, MutableRefObject, useCallback, useLayoutEffect, useMemo, memo, useRef } from 'react';
+import { forwardRef, MutableRefObject, useCallback, useLayoutEffect, useMemo, memo, useRef, useEffect } from 'react';
 import { extend } from '@react-three/fiber';
 import { createRadixSort, InstancedMesh2 } from '@three.ez/instanced-mesh';
 import { GridData, GridShaderMaterial, InstancedGridMesh } from '../../types/types';
@@ -13,6 +13,8 @@ import vertexShader from '../../lib/shading/instancedShader_V.glsl';
 import fragmentShader from '../../lib/shading/instancedShader_F.glsl';
 import { getExtentsFromOrigin } from '../../lib/THREE_coordinateConversions';
 import { animationSettings } from '../../config/threeSettings';
+import { useSelect } from '@react-three/drei';
+import useForwardedRef from '../../hooks/useForwardedRef';
 
 extend({ InstancedMesh2 });
 
@@ -33,7 +35,6 @@ const InstancedGridMeshFiber = memo(
         const { gridWidth, gridHeight, instanceFlatTop, instanceWidth, instancePadding, gridInstanceCount, gridColumnCount, gridRowCount } = gridData;
 
         const themeIndex = useZustand((state) => state.values.themeIndex);
-        const innerRef = useRef<InstancedGridMesh | null>(null);
         const documentIsReady = useIsDocumentReady();
 
         const geometry_Memo = useMemo(() => {
@@ -91,18 +92,17 @@ const InstancedGridMeshFiber = memo(
         const meshRef_Cb = useCallback(
             (mesh: InstancedMesh2 | null) => {
                 if (mesh) {
+                    if (mesh.instancesCount) {
+                        mesh.clearInstances();
+                    }
+
                     console.log(
                         '%c[instancedMesh2]',
                         'color: #b85533',
                         `Creating ${gridInstanceCount} Instances (cols:${gridColumnCount} rows:${gridRowCount}), w:${gridWidth} h:${gridHeight}`,
                     );
-                    // const indicesUnderMenuItems = menuItemPositions.map((menuItemIndex) => GridAnimations.getRingShape(menuItemIndex, 3, [gridColumnCount, gridRowCount]));
-                    // const merged = GridAnimations.mergeIndicesDistanceLevels(...indicesUnderMenuItems);
-                    // const filtered = GridAnimations.filterIndices(merged, true).flat();
 
                     const [extentX, extentY] = getExtentsFromOrigin(gridWidth, gridHeight);
-
-                    if (mesh.instancesCount) mesh.clearInstances();
 
                     mesh.addInstances(gridInstanceCount, (instance) => {
                         if (isSquare) {
@@ -120,23 +120,17 @@ const InstancedGridMeshFiber = memo(
                         }
 
                         Grid.setInstanceColor(instance, instancedMeshTempColor);
-
-                        // if (filtered.includes(instance.id)) {
-                        //     instance.position.setZ(-10);
-                        //     // instance.color.setHex(0x666666);
-                        // }
                     });
 
                     mesh.initUniformsPerInstance({ vertex: { u_Offset: 'vec3', u_Hit_Time_S: 'float' } });
                     mesh.sortObjects = true;
                     mesh.customSort = createRadixSort(mesh);
-
-                    innerRef.current = mesh as InstancedGridMesh;
-                    if (ref) (ref as MutableRefObject<InstancedGridMesh>).current = innerRef.current;
                 }
             },
             [ref, gridWidth, gridHeight, instanceWidth, instancePadding, gridInstanceCount, gridColumnCount, isSquare, instanceFlatTop],
         );
+
+        const innerRef = useForwardedRef(ref, meshRef_Cb);
 
         useLayoutEffect(() => {
             if (documentIsReady && innerRef.current) {
@@ -148,7 +142,12 @@ const InstancedGridMeshFiber = memo(
             }
         }, [themeIndex, documentIsReady]);
 
-        return <instancedMesh2 ref={meshRef_Cb} args={[geometry_Memo, material_Memo, { renderer, createEntities: true }]} />;
+        const selected = useSelect();
+        useEffect(() => {
+            console.log('%c[InstancedGridMeshFiber]', 'color: #321dd7', `selected :`, selected);
+        }, [selected]);
+
+        return <instancedMesh2 ref={innerRef} args={[geometry_Memo, material_Memo, { renderer, createEntities: true }]} />;
     }),
 );
 
