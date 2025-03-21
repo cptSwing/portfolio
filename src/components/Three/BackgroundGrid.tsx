@@ -2,7 +2,13 @@ import { useThree, useFrame } from '@react-three/fiber';
 import { FC, useRef, useMemo, MutableRefObject, useCallback, useState } from 'react';
 import { useEvent } from 'react-use';
 import { WebGLRenderer, Camera, Vector2, Raycaster, Intersection, Group, InstancedMesh } from 'three';
-import { setAmbientGridAnimation, setIntroGridAnimation, setMenuAnimation, setMenuHitsAnimation, setSpecificGridHitsAnimation } from '../../lib/animateMeshes';
+import {
+    setAmbientGridAnimation,
+    setIntroGridAnimation,
+    setMenuAnimation,
+    setMenuMouseHitsAnimation,
+    setBackgroundMouseHitsAnimation,
+} from '../../lib/animateMeshes';
 import { HexGrid } from '../../lib/classes/Grid';
 import { GridAnimations } from '../../lib/classes/GridAnimations';
 import { InstancedGridMesh, GridData, HexMenuMesh } from '../../types/types';
@@ -140,23 +146,23 @@ const animate = (
     // Set current time for shader calculations
     gridMesh.material.uniforms.u_Time_S.value = time_S;
 
-    // 1. --> Background animation
-    setAmbientGridAnimation(gridMesh, gridData, time_S, excludedIndices, 'sin');
-
-    // 2. --> Intro, returns 'true' once animation is over
+    // --> Intro, returns 'true' once animation is over
     if (!hasRunOnce_Ref.current) {
-        hasRunOnce_Ref.current = setIntroGridAnimation(gridMesh, gridData, time_S, excludedIndices);
-    }
+        hasRunOnce_Ref.current = setIntroGridAnimation(gridMesh, gridData, time_S);
+    } else {
+        // 1. --> Background animation
+        setAmbientGridAnimation(gridMesh, gridData, time_S, excludedIndices, 'sin');
 
-    // 3. --> React to Hits (overwriting values from setAmbientGridAnimation())
-    if (intersectionHits_Ref.current) {
-        const [gridHits, wasHit] = intersectionHits_Ref.current;
-        gridHits.length && setSpecificGridHitsAnimation(gridMesh, gridData, time_S, gridHits);
-        // wasHit && setMenuHitsAnimation(menuMeshes, wasHit, gridData);
-    }
+        // 2. --> React to Hits (overwriting values from setAmbientGridAnimation())
+        if (intersectionHits_Ref.current) {
+            const [gridHits, wasHit] = intersectionHits_Ref.current;
+            gridHits.length && setBackgroundMouseHitsAnimation(gridMesh, gridData, time_S, gridHits, excludedIndices);
+            // wasHit && setMenuMouseHitsAnimation(menuMeshes, wasHit, gridData);
+        }
 
-    // 4. --> Set Menu Animations (overwriting the previous)
-    setMenuAnimation(gridMesh, gridData, time_S, menuGridIndices);
+        // 3. --> Set Menu Animations (overwriting the previous)
+        setMenuAnimation(gridMesh, gridData, time_S, menuGridIndices);
+    }
 };
 
 const getDiagonalMenuIndices: (firstIndex: number, menuItemSize: number, gridColsRows: [number, number]) => [number, number, number, number] = (

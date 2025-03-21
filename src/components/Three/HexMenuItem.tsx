@@ -12,11 +12,15 @@ import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js'
 import HexagonGeometry, { translateXPosition, translateYPosition } from '../../lib/classes/HexagonGeometry';
 import { vectors } from '../../config/threeSettings';
 
+const offsetTemp = new Vector3(0, 0, -0.1);
+const menuItemColor = new Color(0.75, 0.75, -0.75);
+
 const HexMenuItem = forwardRef<
     Group,
     { gridData: GridData; gridMesh: MutableRefObject<InstancedGridMesh | null>; shapeIndices: number[][]; scaleXZ?: [number, number] }
 >(({ gridData, gridMesh, shapeIndices, scaleXZ }, ref) => {
     const { gridWidth, gridHeight, gridColumnCount, gridRowCount, instanceWidth, instancePadding, instanceFlatTop } = gridData;
+    const clock = useThree((state) => state.clock);
 
     const [zMax, setZMax] = useState(0);
     // const htmlGroup_Ref = useRef<Group | null>();
@@ -39,6 +43,24 @@ const HexMenuItem = forwardRef<
                         instancePadding,
                         instanceFlatTop,
                     );
+
+                    // if (gridMesh.current) {
+                    //     const mesh = gridMesh.current;
+                    //     shapeIndices.forEach((hitDistances, idx, arr) => {
+                    //         hitDistances.forEach((instanceId) => {
+                    //             const instance = mesh.instances[instanceId];
+
+                    //             // mesh.setColorAt(instanceId, menuItemColor);
+
+                    //             // instance.position.setZ(2);
+                    //             offsetTemp.setZ(instanceWidth * 4);
+                    //             instance.setUniform('u_New_Offset', offsetTemp);
+
+                    //             // instance.setUniform('u_Hit_Time_S', -1);
+                    //             instance.setUniform('u_Hit_Time_S', clock.getElapsedTime());
+                    //         });
+                    //     });
+                    // }
                 }
             }
         },

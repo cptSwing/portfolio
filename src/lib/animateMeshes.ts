@@ -5,20 +5,21 @@ import { animationSettings } from '../config/threeSettings';
 import { Grid } from './classes/Grid';
 
 const defaultOffset = new Vector3(0, 0, -0.1);
+const oldOffset = defaultOffset.clone();
 const newOffset = defaultOffset.clone();
 const newColor = new Color();
 
 let maxBackgroundMovement = 0;
 
-export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, excludedIndices: number[]) => {
+export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number) => {
     const { gridHeight, gridColumnCount, instanceWidth } = gridData;
     let hasRunOnce = false;
-    newOffset.copy(defaultOffset);
+    // newOffset.copy(defaultOffset);
 
     mesh.updateInstances((instance) => {
-        if (excludedIndices.includes(instance.id)) {
-            return;
-        }
+        // if (excludedIndices.includes(instance.id)) {
+        //     return;
+        // }
 
         const [column] = Grid.getOffsetCoordFromIndex(instance.id, gridColumnCount);
         const animationProgress = getAnimationProgress(animationSettings.intro.length_S, 0, time_S);
@@ -38,42 +39,14 @@ export const setIntroGridAnimation = (mesh: InstancedGridMesh, gridData: GridDat
                 sequentialRandomMultiplier = 0.7;
             }
 
-            newOffset.setY(gridHeight * sequentialRandomMultiplier);
-            instance.setUniform('u_Offset', newOffset);
+            oldOffset.setY(gridHeight * sequentialRandomMultiplier);
+            newOffset.lerpVectors(oldOffset, defaultOffset, animationProgress);
+
+            instance.setUniform('u_New_Offset', newOffset);
         }
     });
 
     return hasRunOnce;
-};
-
-const tempHighlightColor = new Color(0.5, 0.75, 0.25);
-const minimumAtFarthestDistance = 0.2;
-export const setSpecificGridHitsAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, gridHits: number[][]) => {
-    const { instanceWidth } = gridData;
-
-    // const highLightColor = mesh.material.uniforms.u_HighLight_Color.value;
-    const highLightColor = tempHighlightColor;
-
-    newOffset.copy(defaultOffset);
-
-    gridHits.forEach((hits, idx, arr) => {
-        const relativeDistance = idx;
-        const fractionAtDistance = (arr.length - relativeDistance) / arr.length;
-
-        hits.forEach((instanceId) => {
-            const instance = mesh.instances[instanceId];
-
-            const clampedFraction = Math.max(fractionAtDistance, minimumAtFarthestDistance);
-
-            newColor.copy(highLightColor).multiplyScalar(clampedFraction);
-            mesh.setColorAt(instanceId, newColor);
-
-            newOffset.setZ(instanceWidth * clampedFraction);
-
-            instance.setUniform('u_Offset', newOffset);
-            instance.setUniform('u_Hit_Time_S', time_S); // set last
-        });
-    });
 };
 
 export const setAmbientGridAnimation = (
@@ -83,9 +56,6 @@ export const setAmbientGridAnimation = (
     excludedIndices: number[],
     pattern: PatternSettingsAnimation['pattern'] = 'sin',
 ) => {
-    const { gridColumnCount } = gridData;
-    newOffset.copy(defaultOffset);
-
     // TODO write more comprehensive animation system --> background patterns (such as sin-wave etc), overlaid/overwritten by actions such as mousevent, raindrop, shake etc etc
     // if (pattern === 'raindrops') {
     //     if (Math.ceil(time_S) % 2 === 0) {
@@ -94,12 +64,16 @@ export const setAmbientGridAnimation = (
     //     }
     // }
 
+    const { gridColumnCount } = gridData;
+    newOffset.copy(defaultOffset);
+
     mesh.updateInstances((instance) => {
-        if (excludedIndices.includes(instance.id)) {
-            return;
-        }
+        // if (excludedIndices.includes(instance.id)) {
+        //     return;
+        // }
 
         const [column, row] = Grid.getOffsetCoordFromIndex(instance.id, gridColumnCount);
+
         switch (pattern) {
             case 'sin':
                 let sinVal = Math.sin(time_S * animationSettings.ambient.timeScale + (row - column) * 0.25);
@@ -113,11 +87,51 @@ export const setAmbientGridAnimation = (
                 break;
         }
 
-        instance.setUniform('u_Offset', newOffset);
+        instance.setUniform('u_New_Offset', newOffset);
     });
 };
 
-export const setMenuHitsAnimation = (menuItems: Group[], wasHit: Group, gridData: GridData) => {
+const tempHighlightColor = new Color(0.5, 0.75, 0.25);
+const minimumAtFarthestDistance = 0.2;
+export const setBackgroundMouseHitsAnimation = (
+    mesh: InstancedGridMesh,
+    gridData: GridData,
+    time_S: number,
+    gridHits: number[][],
+    excludedIndices: number[],
+) => {
+    const { instanceWidth } = gridData;
+
+    // const highLightColor = mesh.material.uniforms.u_HighLight_Color.value;
+    const highLightColor = tempHighlightColor;
+
+    newOffset.copy(defaultOffset);
+
+    gridHits.forEach((hits, idx, arr) => {
+        const relativeDistance = idx;
+        const fractionAtDistance = (arr.length - relativeDistance) / arr.length;
+
+        hits.forEach((instanceId) => {
+            // if (excludedIndices.includes(instanceId)) {
+            //     return;
+            // }
+
+            const instance = mesh.instances[instanceId];
+
+            const clampedFraction = Math.max(fractionAtDistance, minimumAtFarthestDistance);
+
+            newColor.copy(highLightColor).multiplyScalar(clampedFraction);
+            mesh.setColorAt(instanceId, newColor);
+
+            newOffset.setZ(instanceWidth * 4 * clampedFraction);
+            instance.setUniform('u_New_Offset', newOffset);
+
+            instance.setUniform('u_Hit_Time_S', time_S); // set last
+        });
+    });
+};
+
+export const setMenuMouseHitsAnimation = (menuItems: Group[], wasHit: Group, gridData: GridData) => {
     menuItems.forEach((item) => {
         if (item === wasHit) {
             item.position.setZ(animationSettings.menu.menuItemOffsetZMultiplier * gridData.instanceWidth);
@@ -128,6 +142,7 @@ export const setMenuHitsAnimation = (menuItems: Group[], wasHit: Group, gridData
 };
 
 const menuItemColor = new Color(0.75, 0.75, -0.75);
+let menuIntroHasRun = false;
 
 export const setMenuAnimation = (mesh: InstancedGridMesh, gridData: GridData, time_S: number, gridIds: number[][][]) => {
     const { instanceWidth } = gridData;
@@ -135,27 +150,59 @@ export const setMenuAnimation = (mesh: InstancedGridMesh, gridData: GridData, ti
     // const highLightColor = mesh.material.uniforms.u_HighLight_Color.value;
     const highLightColor = menuItemColor;
 
-    gridIds.forEach((menuItemShape) => {
-        menuItemShape.forEach((hitDistances, idx, arr) => {
-            const relativeDistance = idx;
-            const fractionAtDistance = (arr.length - relativeDistance) / arr.length;
-            const clampedFraction = Math.max(fractionAtDistance, minimumAtFarthestDistance);
+    if (!menuIntroHasRun) {
+        // Play after intro
+        if (time_S > animationSettings.intro.length_S) {
+            const animationProgress = getAnimationProgress(animationSettings.intro.length_S, animationSettings.intro.length_S, time_S);
 
-            newColor.copy(highLightColor);
-            // newColor.multiplyScalar( clampedFraction );
+            newColor.copy(highLightColor).multiplyScalar(animationProgress);
 
-            hitDistances.forEach((instanceId) => {
-                const instance = mesh.instances[instanceId];
+            gridIds.forEach((menuItemShape, idx) => {
+                const timeDelay = idx / 10;
 
-                mesh.setColorAt(instanceId, newColor);
+                menuItemShape.forEach((hitDistances, idx, arr) => {
+                    // newColor.multiplyScalar( clampedFraction );
 
-                newOffset.setZ(instanceWidth);
+                    hitDistances.forEach((instanceId) => {
+                        const instance = mesh.instances[instanceId];
 
-                instance.setUniform('u_Offset', newOffset);
-                instance.setUniform('u_Hit_Time_S', time_S); // set last
+                        mesh.setColorAt(instanceId, newColor);
+
+                        newOffset.setZ(instanceWidth * 2);
+                        instance.setUniform('u_New_Offset', newOffset);
+
+                        // instance.setUniform('u_Hit_Time_S', time_S);
+                    });
+                });
+            });
+
+            if (animationProgress >= 1) {
+                menuIntroHasRun = true;
+            }
+        }
+    } else {
+        gridIds.forEach((menuItemShape) => {
+            menuItemShape.forEach((hitDistances, idx, arr) => {
+                const relativeDistance = idx;
+                const fractionAtDistance = (arr.length - relativeDistance) / arr.length;
+                const clampedFraction = Math.max(fractionAtDistance, minimumAtFarthestDistance);
+
+                newColor.copy(highLightColor);
+                // newColor.multiplyScalar( clampedFraction );
+
+                hitDistances.forEach((instanceId) => {
+                    const instance = mesh.instances[instanceId];
+
+                    mesh.setColorAt(instanceId, newColor);
+
+                    newOffset.setZ(instanceWidth * 2);
+                    instance.setUniform('u_New_Offset', newOffset);
+
+                    // instance.setUniform('u_Hit_Time_S', time_S);
+                });
             });
         });
-    });
+    }
 };
 
 export const getAnimationProgress = (length: number, startTime: number, currentTime: number) => MathUtils.clamp((currentTime - startTime) / length, 0, 1);

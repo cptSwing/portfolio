@@ -99,7 +99,7 @@ const InstancedGridMeshFiber = memo(
                     console.log(
                         '%c[instancedMesh2]',
                         'color: #b85533',
-                        `Creating ${gridInstanceCount} Instances (cols:${gridColumnCount} rows:${gridRowCount}), w:${gridWidth} h:${gridHeight}`,
+                        `Instances:${gridInstanceCount} (cols:${gridColumnCount} rows:${gridRowCount}), w:${gridWidth} h:${gridHeight}`,
                     );
 
                     const [extentX, extentY] = getExtentsFromOrigin(gridWidth, gridHeight);
@@ -122,7 +122,12 @@ const InstancedGridMeshFiber = memo(
                         Grid.setInstanceColor(instance, instancedMeshTempColor);
                     });
 
-                    mesh.initUniformsPerInstance({ vertex: { u_Offset: 'vec3', u_Hit_Time_S: 'float' } });
+                    mesh.initUniformsPerInstance({
+                        vertex: {
+                            u_New_Offset: 'vec3', // added to vertex position
+                            u_Hit_Time_S: 'float', // timestamp to derive animation progress. If negative (smaller than 0), animation progress will always be 0.
+                        },
+                    });
                     mesh.sortObjects = true;
                     mesh.customSort = createRadixSort(mesh);
                 }

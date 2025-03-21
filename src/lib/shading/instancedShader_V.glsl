@@ -22,7 +22,7 @@ uniform float u_Animation_Length_S;
 
 // per Instance uniforms
 uniform float u_Hit_Time_S;
-uniform vec3 u_Offset; // xyz: offset values; y: is offset a Hit's offset? 1/0
+uniform vec3 u_New_Offset; // xyz: offset values; y: is offset a Hit's offset? 1/0
 
 uniform vec3 diffuse;   // via ShaderLib.basic.uniforms
 
@@ -66,17 +66,17 @@ void main() {
     vec3 myDiffuse = diffuse;
     vec3 myInstanceVertexColor = vColor;     // per-instance coloring is handled via vColor
 
-    vec3 myHitOffset = u_Offset.xyz;
+    vec3 myHitOffset = u_New_Offset.xyz;
     // ^ In
+
+    // TODO this ternary might turn out to be unnecessary
+    // float animationProgress = u_Hit_Time_S < 0. ? 0. : clamp((u_Time_S - u_Hit_Time_S) / u_Animation_Length_S, 0., 1.);
 
     float animationProgress = clamp((u_Time_S - u_Hit_Time_S) / u_Animation_Length_S, 0., 1.);
 
     vec4 worldPosition = instanceMatrix * modelMatrix * vec4(myPosition, 1.0);
 
-    vec3 currentDistances = getDistanceForEachComponent(myPosition, myPosition + myHitOffset);
-    vec3 myOffset = mix(currentDistances, myHitOffset, animationProgress);
-
-    myPosition += myOffset;
+    myPosition = mix(myPosition, myPosition + myHitOffset, animationProgress);
 
     vec3 rayHighlighted = clamp(myInstanceVertexColor + myDiffuse, 0., 1.);
     vec3 myColor = mix(rayHighlighted, myDiffuse, animationProgress);

@@ -10,7 +10,7 @@ export const animationSettings = {
         timeScale: 0.75,
     },
     intro: {
-        length_S: 0.5,
+        length_S: 1,
     },
 };
 
