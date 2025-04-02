@@ -4,6 +4,7 @@ import Nav from '../components/Nav';
 import { BrowserRouter, Outlet, Route, Routes, useParams } from 'react-router-dom';
 import BarWrapped from '../components/BarWrapped';
 import classNames from '../lib/classNames';
+import { useEffect } from 'react';
 
 const App = () => {
     return (
@@ -13,6 +14,7 @@ const App = () => {
                     <Route path='/:catId?' element={<NavOutlet />}>
                         <Route path='/:catId/:postId' element={<Content />} />
                     </Route>
+                    <Route path='/bundles/:bundlePath' element={<BundleRoutes />} />
                 </Route>
             </Routes>
         </BrowserRouter>
@@ -50,6 +52,17 @@ const RouteOutlet = () => {
             </BarWrapped>
         </div>
     );
+};
+
+const BundleRoutes = () => {
+    const { bundlePath } = useParams();
+
+    useEffect(() => {
+        window.location.href = `https://jbrandenburg.de/bundles/${bundlePath}/index.html`;
+    }, []);
+
+    return <h3> Redirecting.... </h3>;
+    // return <div dangerouslySetInnerHTML={{ __html: loadHTML() }} />;
 };
 
 export default App;
