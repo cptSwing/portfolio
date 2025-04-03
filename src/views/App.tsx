@@ -62,7 +62,6 @@ const BundleRoutes = () => {
     }, []);
 
     return <h3> Redirecting.... </h3>;
-    // return <div dangerouslySetInnerHTML={{ __html: loadHTML() }} />;
 };
 
 export default App;
