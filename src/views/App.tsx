@@ -8,29 +8,20 @@ import { useEffect } from 'react';
 
 const App = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route element={<RouteOutlet />}>
+        <div className='font-mariam-libre relative flex h-dvh w-dvw items-center justify-center overflow-hidden bg-slate-800 text-white'>
+            <BrowserRouter>
+                <Routes>
                     <Route path='/:catId?' element={<NavOutlet />}>
                         <Route path='/:catId/:postId' element={<Content />} />
                     </Route>
                     <Route path='/bundles/:bundlePath' element={<BundleRoutes />} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
+                </Routes>
+            </BrowserRouter>
+        </div>
     );
 };
 
-const NavOutlet = () => {
-    return (
-        <>
-            <Nav />
-            <Outlet />
-        </>
-    );
-};
-
-const RouteOutlet = () => {
+const _RouteOutlet = () => {
     const { postId } = useParams();
 
     return (
@@ -51,6 +42,15 @@ const RouteOutlet = () => {
                 <Outlet />
             </BarWrapped>
         </div>
+    );
+};
+
+const NavOutlet = () => {
+    return (
+        <>
+            <Nav />
+            <Outlet />
+        </>
     );
 };
 

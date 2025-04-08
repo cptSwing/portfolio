@@ -887,60 +887,6 @@
             }
         ]
     },
-    "About": {
-        "id": 2,
-        "categoryTitle": "About",
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/resume/500?grayscale",
-        "categoryBlurb": "So I build websites.\nAnd I build 3D stuff.\n\nAnd sometimes, I combine the two.",
-        "posts": [
-            {
-                "id": 14,
-                "title": "Download Resumé/CV",
-                "date": "2024-11-21",
-                "textBlocks": [
-                    { "text": "Download my CV in [English here](/pdfs/Jens_Brandenburg_WebDev_1-Page_CV_EN.pdf)." },
-                    { "text": "...und hier finden Sie mein [Resumé auf Deutsch](/pdfs/Jens_Brandenburg_WebDev_1-Page-CV_DE.pdf)." }
-                ]
-            },
-            {
-                "id": 15,
-                "title": "And in my spare time, I like..",
-                "date": "2024-09-12",
-                "showCases": [
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/about_1/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/about_2/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/about_3/900/600?grayscale"
-                    },
-                    {
-                        "caption": "ksdkjsdk",
-                        "imgUrl": "https://picsum.photos/seed/about_4/900/600?grayscale"
-                    }
-                ],
-                "textBlocks": [
-                    {
-                        "useShowCaseIndex": 0,
-                        "text": "Sed mattis urna sed semper congue. [Cras ac mauris](http://www.lol.com) ac arcu accumsan placerat et eu **mauris**. Cras placerat scelerisque massa, ultricies facilisis ex posuere ac. Praesent eget magna luctus, accumsan urna a, faucibus quam. In libero urna, finibus in congue id, placerat sed tellus. Nullam nec sagittis massa. Sed vehicula ac lorem et semper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam nunc eros, suscipit in elit eget, convallis tincidunt tellus. Maecenas turpis orci, mollis in sollicitudin sit amet, porttitor quis elit. Sed finibus nisl vitae convallis placerat. Nam vitae sollicitudin urna. Duis commodo purus at elit vestibulum hendrerit et in lacus. Sed tempus mauris massa, vitae fringilla odio vestibulum sed. Mauris turpis turpis, euismod eget quam eu, tincidunt tincidunt sem. Vivamus quis quam convallis, hendrerit nulla non, condimentum nunc."
-                    },
-                    {
-                        "useShowCaseIndex": 1,
-                        "text": "Mauris tortor nisi, volutpat nec aliquet in, eleifend sit amet felis. Sed interdum ullamcorper nibh non bibendum. Ut nec egestas nunc. Nam ut finibus sapien. Aliquam fringilla leo a est aliquet, hendrerit efficitur nulla faucibus. Suspendisse nisl tellus, mattis sit amet bibendum ut, dictum ac diam. Nunc sed est et lacus scelerisque finibus vitae quis dui. Quisque fermentum dolor nisl, a vulputate velit aliquam sed. Nullam tempus scelerisque sollicitudin. Ut porta velit efficitur, consectetur nisi vitae, pretium sapien. Quisque orci orci, tempor id pellentesque vel, aliquet ac nisi. Curabitur rhoncus viverra urna, sit amet ornare libero molestie blandit."
-                    },
-                    {
-                        "useShowCaseIndex": 2,
-                        "text": "Pellentesque congue id massa lobortis semper. Maecenas volutpat facilisis hendrerit. Proin nec finibus magna, ut interdum quam. Sed pellentesque, sem eu lacinia scelerisque, arcu tortor pulvinar lorem, quis tempus sapien massa sit amet quam. Maecenas nunc mauris, aliquam sed tortor ut, facilisis feugiat diam. Phasellus pretium felis id rutrum congue. Vestibulum maximus nulla ex. Quisque quis eros sed odio ultrices vulputate. Quisque ullamcorper libero sed lorem vulputate scelerisque. Maecenas ex justo, faucibus non mattis non, mollis a lacus. Nulla ornare nisi id faucibus finibus. Aenean elementum euismod tellus, id elementum mi dictum id."
-                    }
-                ]
-            }
-        ]
-    },
     "Log": {
         "id": 3,
         "categoryTitle": "Log",

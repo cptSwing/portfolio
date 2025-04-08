@@ -8,74 +8,21 @@
 @layer base {
     :root {
         @apply [--bg-color:--theme-bg-base] [--color-bars-no-post:--theme-secondary-300] [--color-bars-post:--theme-primary-500] [--color-primary-active-cat-bg:--theme-primary-300] [--color-primary-content-bg:--theme-primary-100] [--color-primary-inactive-cat-bg:--theme-primary-600] [--color-secondary-active-cat:--theme-secondary-400] [--color-secondary-inactive-cat:--theme-secondary-600];
-        @apply bg-[--bg-color];
+        @apply scrollbar-track-transparent scrollbar-thumb-neutral-50;
     }
 
     a {
         @apply text-[--theme-secondary-50] visited:text-[--theme-secondary-200] hover:underline;
     }
-
-    h1 {
-        @apply block text-6xl;
-    }
-
-    h2 {
-        @apply relative z-0 block font-semibold [font-size:1.75rem] [line-height:2.125rem] sm:text-5xl;
-    }
-
-    h3 {
-        @apply block text-xl sm:text-2xl;
-    }
-
-    h4 {
-        @apply block text-xl;
-    }
-
-    h5 {
-        @apply relative z-0 inline px-1 pb-0.5 italic leading-none text-[--theme-secondary-600] underline underline-offset-2;
-    }
 }
 
 @layer components {
-    /* Adapted from https://css-tip.com/corner-only-border-image/ : */
-    .nav-card-corners {
-        @apply [--corner-inset-x:theme(spacing.3)] [--corner-inset-y:theme(spacing.3)] [--corner-outline-color:--theme-accent-200] [--corner-size:theme(spacing.2)] [--corner-thickness:theme(spacing[0.5])];
-        @apply [mask:conic-gradient(at_var(--corner-size)_var(--corner-size),_theme(colors.transparent)_75%,_theme(colors.black)_0)_0_0_/_calc(100%-var(--corner-size))_calc(100%-var(--corner-size))];
-        /* Cut bottom left corner: */
-        /* @apply [clip-path:polygon(0_0,_100%_0,_100%_100%,_var(--corner-inset)_100%,_0_var(--corner-inset))]; */
-        @apply absolute bottom-[--corner-inset-y] left-[--corner-inset-x] right-[--corner-inset-x] top-[--corner-inset-y] outline outline-[length:--corner-thickness] outline-offset-[calc(-1*var(--corner-thickness))] outline-[color:--corner-outline-color];
-        @apply hover:[--corner-outline-color:--theme-secondary-400];
-    }
-
-    .fake-border-bg {
-        @apply [--fake-border-color:theme(colors.gray.500/50%)] [--fake-border-width-side:calc(theme(spacing.1)/2)];
-        @apply absolute -bottom-[--fake-border-width-side] -left-[--fake-border-width-side] -right-[--fake-border-width-side] -top-[--fake-border-width-side] bg-gradient-to-r from-[--fake-border-color] to-[--fake-border-color];
-    }
-
-    /* .link-in-content {
-        @apply after:a-svg-mask after:invisible after:-mr-1 after:mb-1 after:inline-block after:size-2 after:bg-current hover:after:visible;
-    } */
-
-    .headline-bg {
-        @apply after:absolute after:left-0 after:-z-10 after:size-full after:bg-neutral-50;
-    }
-
-    .headline-skewed-bg {
-        @apply after:absolute after:left-0 after:-z-10 after:size-full after:-skew-x-6 after:bg-neutral-50;
-    }
-
     .rotate-text {
         @apply writing-mode-vert-lr rotate-180;
     }
 }
 
 @layer utilities {
-    .a-svg-mask {
-        mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" /></svg>');
-        mask-repeat: no-repeat;
-        mask-position: center;
-    }
-
     .writing-mode-vert-lr {
         writing-mode: vertical-lr;
     }
@@ -91,87 +38,19 @@
     .scroll-gutter {
         scrollbar-gutter: stable;
     }
-
-    .perspective-1000px {
-        perspective: 1000px;
-    }
-
-    .parallax-static {
-        transform: translateZ(var(--parallax-translateZ));
-        transform-style: preserve-3d;
-        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
-    }
-
-    .parallax-rotXY {
-        transform: translateZ(var(--parallax-translateZ)) rotate3d(1, 0, 0, var(--parallax-rotateX)) rotate3d(0, 1, 0, var(--parallax-rotateY));
-        transform-style: preserve-3d;
-        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
-    }
-
-    .parallax-rotX {
-        transform: translateZ(var(--parallax-translateZ)) rotate3d(1, 0, 0, var(--parallax-rotateX));
-        transform-style: preserve-3d;
-        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
-    }
-
-    .parallax-rotY {
-        transform: translateZ(var(--parallax-translateZ)) rotate3d(0, 1, 0, var(--parallax-rotateY));
-        transform-style: preserve-3d;
-        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
-    }
-
-    .z-top {
-        z-index: 5000;
-    }
-
-    .text-stroke-outer:before {
-        content: '';
-        position: absolute;
-        display: block;
-        left: 0;
-        top: 0;
-        -webkit-text-stroke-width: 16px;
-        -webkit-text-stroke-color: theme(colors.red.300);
-        z-index: -1;
-    }
 }
-
-#root {
-    @apply w-full overflow-hidden text-left text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50;
-}
-
-/* 
-.nav-unchecked-width {
-    @apply w-[75dvw] sm:w-[66.666667dvw] md:w-[50dvw] lg:w-[33.333333dvw] xl:w-[25dvw];
-}
-
-.nav-checked-width {
-    @apply w-[95dvw] sm:w-[90dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[45dvw];
-} */
-/* 
-.post-width {
-    @apply w-[95dvw] sm:w-[90dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[66.666666dvw];
-} */
 
 /* Conditional Classes */
 
 .mrkdwn > p {
     @apply mb-4 last:mb-0 sm:mb-6;
 }
-/* 
-.mrkdwn > p > a {
-    @apply link-in-content;
-} */
 
 .mrkdwn > h5 {
-    @apply headline-skewed-bg;
+    @apply w-fit;
 }
 
 /* SVG Filters */
-
-.shadow-inner-svg {
-    filter: url(src/assets/filters.svg#shadow2);
-}
 
 .bloom-svg {
     /* filter: saturate(200%) url(src/assets/filters.svg#bloom-svg-filter); */
