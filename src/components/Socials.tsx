@@ -31,7 +31,7 @@ const Socials = () => {
             {/* Name */}
             <div
                 className={classNames(
-                    'absolute -mb-1 hidden whitespace-nowrap text-nowrap font-caveat text-xl tracking-tight text-[--color-secondary-active-cat] transition-[opacity,transform] sm:block sm:translate-y-0 sm:group-hover/app:translate-y-full sm:group-hover/app:opacity-0 sm:hover:translate-y-full',
+                    'absolute -mb-1 hidden whitespace-nowrap text-nowrap text-xl tracking-tight text-[--color-secondary-active-cat] transition-[opacity,transform] sm:block sm:translate-y-0 sm:group-hover/app:translate-y-full sm:group-hover/app:opacity-0 sm:hover:translate-y-full',
                     openMobileMenu ? 'right-0 !mt-2 -mr-1 !block origin-top-right transition-none [transform:rotate(90deg)_translate(100%,0)]' : '',
                 )}
             >

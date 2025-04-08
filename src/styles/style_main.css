@@ -16,23 +16,23 @@
     }
 
     h1 {
-        @apply block font-protest-riot text-6xl;
+        @apply block text-6xl;
     }
 
     h2 {
-        @apply relative z-0 block font-dm-serif font-semibold [font-size:1.75rem] [line-height:2.125rem] sm:text-5xl;
+        @apply relative z-0 block font-semibold [font-size:1.75rem] [line-height:2.125rem] sm:text-5xl;
     }
 
     h3 {
-        @apply block font-besley text-xl sm:text-2xl;
+        @apply block text-xl sm:text-2xl;
     }
 
     h4 {
-        @apply block font-besley text-xl;
+        @apply block text-xl;
     }
 
     h5 {
-        @apply relative z-0 inline px-1 pb-0.5 font-barlow italic leading-none text-[--theme-secondary-600] underline underline-offset-2;
+        @apply relative z-0 inline px-1 pb-0.5 italic leading-none text-[--theme-secondary-600] underline underline-offset-2;
     }
 }
 
@@ -137,7 +137,7 @@
 }
 
 #root {
-    @apply w-full overflow-hidden text-left font-barlow text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50;
+    @apply w-full overflow-hidden text-left text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50;
 }
 
 /* 

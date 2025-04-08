@@ -134,7 +134,7 @@ const CategoryCard: FC<{
                 >
                     <h1
                         className={classNames(
-                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap font-protest-strike text-[length:--category-title-font-size] leading-none transition-[transform,color] duration-[--tab-anim-delay] before:size-full before:transition-[-webkit-text-stroke-color] before:duration-[--tab-anim-delay] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-900] before:[-webkit-text-stroke-width:5px] sm:before:[-webkit-text-stroke-width:4px]',
+                            'text-stroke-outer relative z-20 m-auto transform-gpu select-none whitespace-nowrap text-[length:--category-title-font-size] leading-none transition-[transform,color] duration-[--tab-anim-delay] before:size-full before:transition-[-webkit-text-stroke-color] before:duration-[--tab-anim-delay] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--theme-secondary-900] before:[-webkit-text-stroke-width:5px] sm:before:[-webkit-text-stroke-width:4px]',
                             isThisCategoryOpen
                                 ? 'text-4xl text-[--color-secondary-active-cat]'
                                 : catId
@@ -170,10 +170,7 @@ const CategoryCard: FC<{
                                         : '-translate-x-[200%] delay-0 duration-0',
                                 )}
                             >
-                                <Markdown
-                                    className='mrkdwn text-pretty font-besley text-xs text-[--color-text-testimonial] sm:text-2xl'
-                                    remarkPlugins={[remarkBreaks]}
-                                >
+                                <Markdown className='mrkdwn text-pretty text-xs text-[--color-text-testimonial] sm:text-2xl' remarkPlugins={[remarkBreaks]}>
                                     {categoryBlurb}
                                 </Markdown>
                             </div>

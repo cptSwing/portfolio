@@ -36,7 +36,7 @@ const LogoHeader = () => {
 
             <div
                 className={classNames(
-                    'text-stroke-outer relative z-10 whitespace-pre text-right font-protest-strike leading-[0.875] text-[--theme-accent-300] [font-size:3rem] sm:[font-size:4rem]',
+                    'text-stroke-outer relative z-10 whitespace-pre text-right leading-[0.875] text-[--theme-accent-300] [font-size:3rem] sm:[font-size:4rem]',
                     'before:absolute before:right-0 before:-z-10 before:whitespace-pre before:transition-[-webkit-text-stroke-color,-webkit-text-stroke-width,opacity] before:content-[attr(data-title)] before:[-webkit-text-stroke-color:--bg-color] before:[-webkit-text-stroke-width:5px]',
                     postId ? 'hidden' : '',
                 )}
