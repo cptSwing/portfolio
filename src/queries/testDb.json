@@ -284,7 +284,7 @@
                     },
                     {
                         "useShowCaseIndex": 0,
-                        "text": "Plate-Calculator: I was too lazy to keep doing additions in my head, and since my gym app does not have this functionality, I built it myself.\n\nBasically, it tells me how many weight plates of X kilograms to load on each side of a barbell (or a dumbbell, or..) in order to hit a target weight. It is what it is, and it's saved me quite some time. Using chrome, it can be installed as a PWA on desktop or mobile as well. \n\nFeel free to [clone the repo](https://github.com/cptSwing/plateCalc)\n\n, and I have it running [here](https://www.jbrandenburg.de/bundles/plateCalc)."
+                        "text": "Plate-Calculator: I was too lazy to keep doing additions in my head, and since my gym app does not have this functionality, I built it myself.\n\nBasically, it tells me how many weight plates of X kilograms to load on each side of a barbell (or a dumbbell, or..) in order to hit a target weight. It is what it is, and it's saved me quite some time. Using chrome, it can be installed as a PWA on desktop or mobile as well. \n\nFeel free to [clone the repo](https://github.com/cptSwing/plateCalc), and I have it running [here](https://www.jbrandenburg.de/bundles/plateCalc)."
                     },
                     {
                         "useShowCaseIndex": 1,
