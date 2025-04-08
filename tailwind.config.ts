@@ -34,13 +34,7 @@ export default {
                 168: '42rem',
             },
             fontFamily: {
-                'besley': ['Besley', 'ui-serif', 'serif'],
-                'dm-serif': ['"DM Serif Display"', 'ui-serif', 'serif'],
-                'barlow': ['"Barlow Semi Condensed"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-                'protest-strike': ['"Protest Strike"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-                'protest-riot': ['"Protest Riot"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-                'protest-revolution': ['"Protest Revolution"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-                'caveat': ['Caveat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                'mariam-libre': ['Miriam Libre Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
             },
             fontSize: {
                 '2xs': '0.666rem',
