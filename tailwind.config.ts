@@ -1,5 +1,6 @@
 import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
 import tailwindScrollbar from 'tailwind-scrollbar';
+import plugin from 'tailwindcss/plugin';
 import { tailwindClipInset, tailwindMaskEdges } from 'tailwind-css-plugins/meta';
 
 export default {
@@ -53,5 +54,33 @@ export default {
             },
         },
     },
-    plugins: [tailwindScrollbar, tailwindBreakpointsInspector, tailwindClipInset, tailwindMaskEdges],
+    plugins: [
+        tailwindScrollbar,
+        tailwindBreakpointsInspector,
+        tailwindClipInset,
+        tailwindMaskEdges,
+        plugin(({ addVariant }) => {
+            addVariant('hover-focus', ['&:hover', '&:focus']);
+            addVariant('hover-active', ['&:hover', '&:active']);
+            addVariant('hover-focus-active', ['&:hover', '&:focus', '&:active']);
+        }),
+        plugin(({ matchComponents }) => {
+            matchComponents({
+                'text-crop': (argString) => {
+                    const [cropTop, cropBottom, cropFontSize] = argString.split(' ').map((pxValue) => pxValue.replace(/[^0-9]/g, ''));
+
+                    return {
+                        '&:before,&:after': {
+                            content: '""',
+                            display: 'block',
+                            height: '0',
+                            width: '0',
+                        },
+                        '&:before': { marginBottom: `calc(-1 * (max(${cropTop}em, 0em) / ${cropFontSize})) /* Crop Top */` },
+                        '&:after': { marginTop: `calc(-1 * (max(${cropBottom}em, 0em) / ${cropFontSize})) /* Crop Bottom */` },
+                    };
+                },
+            });
+        }),
+    ],
 };
