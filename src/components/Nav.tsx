@@ -3,7 +3,7 @@ import { FC, useMemo } from 'react';
 import testDb from '../queries/testDb.json';
 import { MENU_CATEGORY } from '../types/enums.ts';
 import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import GetBackgroundSvg from './GetBackgroundSvg.tsx';
 import { useBreakpoint } from '../hooks/useBreakPoint.ts';
@@ -13,6 +13,8 @@ const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
 
 const Nav = () => {
+    const navigate = useNavigate();
+
     return (
         <nav className='relative flex flex-row items-center justify-center gap-x-2'>
             <div className='flex flex-col items-end justify-start gap-y-2'>
@@ -20,7 +22,9 @@ const Nav = () => {
                     <CategoryCard key={cardData.categoryTitle} cardData={cardData} />
                 ))}
 
-                <div className='mt-8 cursor-pointer select-none leading-[0.7]'>about</div>
+                <Link to='/2' className='mt-8 cursor-pointer select-none leading-[0.7] hover:no-underline'>
+                    about
+                </Link>
             </div>
 
             <div className='w-1 self-stretch bg-white' />
@@ -37,7 +41,6 @@ const CategoryCard: FC<{
 
     const [BackgroundSvg] = useMemo(() => GetBackgroundSvg(categoryTitle), [categoryTitle]);
 
-    const navigate = useNavigate();
     const { catId } = useParams();
     const isIndexEven = id % 2 === 0;
 
@@ -53,26 +56,27 @@ const CategoryCard: FC<{
         displayAtStart: false,
     });
 
-    const _isThisCategoryOpen = useMemo(() => (catId ? parseInt(catId) === id : false), [catId, id]);
+    const isThisCategoryOpen = useMemo(() => (catId ? parseInt(catId) === id : false), [catId, id]);
 
     const isDesktop = useBreakpoint('sm');
 
     return (
-        <div
+        <Link
             ref={refCallback}
-            className='cursor-pointer select-none text-4xl font-bold leading-none'
-            onClick={() => {
-                if (catId === id.toString()) {
-                    navigate('/');
-                } else if (!isDesktop) {
-                    setTimeout(() => navigate(`/${id}`), 200);
-                } else {
-                    navigate(`/${id}`);
-                }
-            }}
+            to={`/${id}`}
+            className='cursor-pointer select-none text-4xl font-bold leading-none hover:no-underline'
+            // onClick={() => {
+            //     if (catId === id.toString()) {
+            //         navigate('/');
+            //     } else if (!isDesktop) {
+            //         setTimeout(() => navigate(`/${id}`), 200);
+            //     } else {
+            //         navigate(`/${id}`);
+            //     }
+            // }}
         >
             {categoryTitle}
-        </div>
+        </Link>
     );
 };
 
