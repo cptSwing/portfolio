@@ -14,7 +14,7 @@ const categoriesArray = Object.values(testDbTyped);
 
 const Nav = () => {
     return (
-        <nav className='flex h-fit flex-row items-start justify-center gap-x-2 self-stretch'>
+        <nav className='flex flex-row items-start justify-center gap-x-2'>
             <div className='flex flex-col items-end justify-start gap-y-2'>
                 {categoriesArray.map((cardData) => (
                     <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
@@ -59,7 +59,7 @@ const CategoryTitle: FC<{
     const isDesktop = useBreakpoint('sm');
 
     return (
-        <Link ref={refCallback} to={`/${id}`} className='text-crop-miriam-libre-2xl cursor-pointer select-none text-2xl font-bold hover:no-underline'>
+        <Link ref={refCallback} to={`/${id}`} className='text-crop-miriam-libre-4xl cursor-pointer select-none text-4xl font-bold hover:no-underline'>
             {categoryTitle}
         </Link>
     );
