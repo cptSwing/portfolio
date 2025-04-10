@@ -3,6 +3,71 @@ import tailwindScrollbar from 'tailwind-scrollbar';
 import plugin from 'tailwindcss/plugin';
 import { tailwindClipInset, tailwindMaskEdges } from 'tailwind-css-plugins/meta';
 
+const tailwindHoverActive = plugin(({ addVariant }) => {
+    const states = ['&:hover', '&:active'];
+
+    addVariant('hover-active', states);
+    addVariant('active-hover', states);
+});
+
+type TextCropFontPreset = { topCrop: number; bottomCrop: number; cropFontSize: number; cropLineHeight: number };
+type TextCropOptions = Record<string, TextCropFontPreset>;
+
+const tailwindTextCrop = plugin.withOptions((options: TextCropOptions) => ({ matchComponents, theme }) => {
+    const componentRootName = 'text-crop';
+    const textCropComponents: Parameters<typeof matchComponents<string>>[0] = {};
+
+    for (const fontName in options) {
+        const { topCrop, bottomCrop, cropFontSize, cropLineHeight } = options[fontName];
+        const componentName = `${componentRootName}-${fontName}`;
+
+        textCropComponents[componentName] = (arg: [fontSize: string, { lineHeight: string }] | string) => {
+            let fontSize = '1rem';
+            let lineHeight = '1.5rem';
+            let topAdjustment_Px = '0px';
+            let bottomAdjustment_Px = '0px';
+
+            if (Array.isArray(arg)) {
+                [fontSize, { lineHeight }] = arg;
+            } else if (typeof arg === 'string') {
+                [fontSize, lineHeight, topAdjustment_Px, bottomAdjustment_Px] = arg.split(' ');
+            }
+
+            const fontSizeNum = parseFloat(fontSize.replace('rem', ''));
+
+            let lineHeightNum: number;
+            if (lineHeight.includes('rem')) {
+                lineHeightNum = parseFloat(lineHeight.replace('rem', ''));
+            } else {
+                // '5xl' and higher use ratio value of 1 - others obv possible too. This assumes a "pure" float as string, though
+                lineHeightNum = parseFloat(lineHeight) * fontSizeNum;
+            }
+            const lineHeightRatio = lineHeightNum / fontSizeNum;
+
+            const dynamicTopCrop = Math.max(topCrop + (lineHeightRatio - cropLineHeight) * (cropFontSize / 2), 0) / cropFontSize;
+            const dynamicBottomCrop = Math.max(bottomCrop + (lineHeightRatio - cropLineHeight) * (cropFontSize / 2), 0) / cropFontSize;
+
+            return {
+                '&:before,&:after': {
+                    content: '""',
+                    display: 'block',
+                    height: '0',
+                    width: '0',
+                },
+                '&:before': { marginBottom: `calc(-${dynamicTopCrop}em + ${topAdjustment_Px})` },
+                '&:after': { marginTop: `calc(-${dynamicBottomCrop}em + ${bottomAdjustment_Px})` },
+            };
+        };
+    }
+
+    matchComponents(textCropComponents, {
+        values: {
+            ...theme('fontSize'),
+            DEFAULT: theme('fontSize')!['base'],
+        },
+    });
+});
+
 export default {
     future: {
         hoverOnlyWhenSupported: true,
@@ -38,8 +103,8 @@ export default {
                 'mariam-libre': ['Miriam Libre Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
             },
             fontSize: {
-                '2xs': '0.666rem',
-                '3xs': '0.55rem',
+                '2xs': ['0.666rem', { lineHeight: '0.875rem' }],
+                '3xs': ['0.55rem', { lineHeight: '0.7rem' }],
             },
             boxShadow: {
                 'top-rim-lg': 'inset 0px 10px 4px -10px rgb(0 0 0 / 0.1)',
@@ -59,28 +124,15 @@ export default {
         tailwindBreakpointsInspector,
         tailwindClipInset,
         tailwindMaskEdges,
-        plugin(({ addVariant }) => {
-            addVariant('hover-focus', ['&:hover', '&:focus']);
-            addVariant('hover-active', ['&:hover', '&:active']);
-            addVariant('hover-focus-active', ['&:hover', '&:focus', '&:active']);
-        }),
-        plugin(({ matchComponents }) => {
-            matchComponents({
-                'text-crop': (argString) => {
-                    const [cropTop, cropBottom, cropFontSize] = argString.split(' ').map((pxValue) => pxValue.replace(/[^0-9]/g, ''));
-
-                    return {
-                        '&:before,&:after': {
-                            content: '""',
-                            display: 'block',
-                            height: '0',
-                            width: '0',
-                        },
-                        '&:before': { marginBottom: `calc(-1 * (max(${cropTop}em, 0em) / ${cropFontSize})) /* Crop Top */` },
-                        '&:after': { marginTop: `calc(-1 * (max(${cropBottom}em, 0em) / ${cropFontSize})) /* Crop Bottom */` },
-                    };
-                },
-            });
+        tailwindHoverActive,
+        tailwindTextCrop({
+            // http://text-crop.eightshapes.com and https://github.com/DirectedEdges/text-crop
+            'miriam-libre': {
+                topCrop: 18,
+                bottomCrop: 22,
+                cropFontSize: 50,
+                cropLineHeight: 1.5,
+            },
         }),
     ],
 };
