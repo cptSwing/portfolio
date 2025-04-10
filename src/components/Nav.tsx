@@ -13,16 +13,14 @@ const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
 
 const Nav = () => {
-    const navigate = useNavigate();
-
     return (
-        <nav className='relative flex flex-row items-center justify-center gap-x-2'>
+        <nav className='flex h-fit flex-row items-start justify-center gap-x-2 self-stretch'>
             <div className='flex flex-col items-end justify-start gap-y-2'>
                 {categoriesArray.map((cardData) => (
-                    <CategoryCard key={cardData.categoryTitle} cardData={cardData} />
+                    <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
                 ))}
 
-                <Link to='/2' className='mt-8 cursor-pointer select-none leading-[0.7] hover:no-underline'>
+                <Link to='/2' className='text-crop-miriam-libre mt-8 cursor-pointer select-none hover:no-underline'>
                     about
                 </Link>
             </div>
@@ -34,7 +32,7 @@ const Nav = () => {
 
 export default Nav;
 
-const CategoryCard: FC<{
+const CategoryTitle: FC<{
     cardData: DataBase[MENU_CATEGORY];
 }> = ({ cardData }) => {
     const { id, categoryTitle, posts, categoryBlurb } = cardData;
@@ -61,20 +59,7 @@ const CategoryCard: FC<{
     const isDesktop = useBreakpoint('sm');
 
     return (
-        <Link
-            ref={refCallback}
-            to={`/${id}`}
-            className='cursor-pointer select-none text-4xl font-bold leading-none hover:no-underline'
-            // onClick={() => {
-            //     if (catId === id.toString()) {
-            //         navigate('/');
-            //     } else if (!isDesktop) {
-            //         setTimeout(() => navigate(`/${id}`), 200);
-            //     } else {
-            //         navigate(`/${id}`);
-            //     }
-            // }}
-        >
+        <Link ref={refCallback} to={`/${id}`} className='text-crop-miriam-libre-2xl cursor-pointer select-none text-2xl font-bold hover:no-underline'>
             {categoryTitle}
         </Link>
     );

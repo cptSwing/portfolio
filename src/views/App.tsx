@@ -1,12 +1,14 @@
 import Content from '../components/Content';
 import Nav from '../components/Nav';
-import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { BrowserRouter, Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { MutableRefObject, useEffect, useState } from 'react';
 import Category from '../components/Category';
+import classNames from '../lib/classNames';
+import useOutsideClick from '../hooks/useOutsideClick';
 
 const App = () => {
     return (
-        <div className='relative flex h-dvh w-dvw items-center justify-center overflow-hidden bg-slate-800 font-mariam-libre text-white'>
+        <div className='h-dvh w-dvw overflow-hidden bg-slate-800 font-mariam-libre text-white scrollbar-track-transparent scrollbar-thumb-neutral-50'>
             <BrowserRouter>
                 <Routes>
                     <Route path='/:catId?' element={<NavOutlet />}>
@@ -21,11 +23,35 @@ const App = () => {
 };
 
 const NavOutlet = () => {
+    const { catId } = useParams();
+    const navigate = useNavigate();
+
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    useEffect(() => {
+        if (catId) {
+            setIsExpanded(true);
+        }
+    }, [catId]);
+
+    /* Contract Contact when click outside */
+    const ref = useOutsideClick(() => {
+        navigate('/');
+        setIsExpanded(false);
+    }) as MutableRefObject<HTMLDivElement | null>;
+
     return (
-        <>
+        <div
+            key='content-wrapper'
+            ref={ref}
+            className={classNames(
+                'relative mx-auto grid h-3/4 w-2/3 items-center justify-center transition-[grid-template-columns]',
+                isExpanded ? 'grid-cols-[200px_5fr]' : 'grid-cols-[200px_0fr]',
+            )}
+        >
             <Nav />
             <Category />
-        </>
+        </div>
     );
 };
 
