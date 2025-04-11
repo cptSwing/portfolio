@@ -13,7 +13,7 @@ const Settings = () => {
     }, [themeIndex]);
 
     return (
-        <div className='group/brush size-full rounded-full bg-[--color-bars-no-post] p-1.5 sm:mt-auto sm:p-px' onClick={() => store_cycleTheme()}>
+        <div className='group/brush aspect-square w-1/4 cursor-pointer rounded-md bg-[--color-bars-no-post] p-0.5' onClick={() => store_cycleTheme()}>
             <PaintBrushIcon className='stroke-neutral-700 group-hover/brush:stroke-[--color-bars-post] group-active/brush:stroke-[--color-bars-post]' />
         </div>
     );

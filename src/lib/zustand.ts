@@ -5,7 +5,7 @@ import themes from './themes';
 
 export const useZustand = create<ZustandStore>()(
     immer((set, get) => ({
-        values: { themeIndex: 0 },
+        values: { themeIndex: 3 },
         methods: {
             store_cycleTheme: () => {
                 const current = get().values.themeIndex;
