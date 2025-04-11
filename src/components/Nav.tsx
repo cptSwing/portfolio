@@ -22,7 +22,7 @@ const Nav = () => {
                 ))}
 
                 <Link to='/2' className='text-crop-miriam-libre-xl mt-8 cursor-pointer select-none text-xl !text-[--nav-text] no-underline'>
-                    About
+                    about
                 </Link>
 
                 <Settings />

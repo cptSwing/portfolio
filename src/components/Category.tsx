@@ -32,7 +32,7 @@ const Category = () => {
             <Flipper className='relative -ml-1 self-start bg-[--color-primary-active-cat-bg]' flipKey={cardViewIndex}>
                 <main
                     className={classNames(
-                        'absolute left-0 top-0 grid size-full grid-cols-[0.5fr_1fr_0.5fr] grid-rows-[0px_repeat(3,1fr)]',
+                        'absolute left-0 top-0 grid size-full grid-cols-[0.5fr_1fr_0.5fr] grid-rows-[0px_repeat(3,1fr)] overflow-hidden',
                         categoryData_Memo ? 'gap-2 p-2' : '',
                     )}
                     style={{ gridTemplateAreas: gridTemplate }}
