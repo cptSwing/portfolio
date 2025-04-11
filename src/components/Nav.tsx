@@ -5,9 +5,10 @@ import { MENU_CATEGORY } from '../types/enums.ts';
 import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
-import GetBackgroundSvg from './GetBackgroundSvg.tsx';
-import { useBreakpoint } from '../hooks/useBreakPoint.ts';
 import { bars_totalDuration } from '../lib/animationValues.ts';
+import Settings from './Settings.tsx';
+import classNames from '../lib/classNames.ts';
+import TextStroke from 'react-utilities/components/TextStroke.tsx';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
@@ -15,17 +16,19 @@ const categoriesArray = Object.values(testDbTyped);
 const Nav = () => {
     return (
         <nav className='flex flex-row items-start justify-center gap-x-2'>
-            <div className='flex flex-col items-end justify-start gap-y-2'>
+            <div className='flex flex-col items-end justify-start gap-y-4'>
                 {categoriesArray.map((cardData) => (
                     <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
                 ))}
 
-                <Link to='/2' className='text-crop-miriam-libre mt-8 cursor-pointer select-none hover:no-underline'>
-                    about
+                <Link to='/2' className='text-crop-miriam-libre-xl mt-8 cursor-pointer select-none text-xl !text-[--nav-text] no-underline'>
+                    About
                 </Link>
+
+                <Settings />
             </div>
 
-            <div className='w-1 self-stretch bg-white' />
+            <div className='w-1 self-stretch bg-[--color-primary-active-cat-bg]' />
         </nav>
     );
 };
@@ -35,9 +38,7 @@ export default Nav;
 const CategoryTitle: FC<{
     cardData: DataBase[MENU_CATEGORY];
 }> = ({ cardData }) => {
-    const { id, categoryTitle, posts, categoryBlurb } = cardData;
-
-    const [BackgroundSvg] = useMemo(() => GetBackgroundSvg(categoryTitle), [categoryTitle]);
+    const { id, categoryTitle } = cardData;
 
     const { catId } = useParams();
     const isIndexEven = id % 2 === 0;
@@ -54,13 +55,23 @@ const CategoryTitle: FC<{
         displayAtStart: false,
     });
 
-    const isThisCategoryOpen = useMemo(() => (catId ? parseInt(catId) === id : false), [catId, id]);
-
-    const isDesktop = useBreakpoint('sm');
+    const isThisCategoryOpen_Memo = useMemo(() => (catId ? parseInt(catId) === id : false), [catId, id]);
 
     return (
-        <Link ref={refCallback} to={`/${id}`} className='text-crop-miriam-libre-4xl cursor-pointer select-none text-4xl font-bold hover:no-underline'>
-            {categoryTitle}
+        <Link
+            ref={refCallback}
+            to={`/${id}`}
+            className={classNames(
+                'cursor-pointer select-none text-5xl font-bold no-underline',
+                cardData.categoryTitle === 'Code' ? 'text-crop-miriam-libre-bold-[3rem_3rem_2px_0px]' : 'text-crop-miriam-libre-bold-5xl',
+                isThisCategoryOpen_Memo ? '!text-[--color-primary-active-cat-bg]' : '!text-[--nav-text]',
+            )}
+        >
+            {isThisCategoryOpen_Memo ? (
+                <TextStroke text={categoryTitle} strokeWidth='8px' strokeColor='var(--theme-text)' classNames='before:!top-auto relative z-10' />
+            ) : (
+                categoryTitle
+            )}
         </Link>
     );
 };
