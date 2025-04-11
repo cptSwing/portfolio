@@ -13,36 +13,51 @@ const tailwindHoverActive = plugin(({ addVariant }) => {
 type TextCropFontPreset = { topCrop: number; bottomCrop: number; cropFontSize: number; cropLineHeight: number };
 type TextCropOptions = Record<string, TextCropFontPreset>;
 
-const tailwindTextCrop = plugin.withOptions((options: TextCropOptions) => ({ matchComponents, theme }) => {
+// http://text-crop.eightshapes.com and https://github.com/DirectedEdges/text-crop --> Used values from tailwind's text-5xl here
+// TODO add explicit plugin option to include default presets I guess
+// TODO other popular Google fonts: Montserrat, Open Sans, Poppins, Lato, Raleway, Oswald, Source Sans Pro, Playfair Display, Pathway Gothic One
+const textCropOptionPresets: TextCropOptions = {
+    roboto: {
+        topCrop: 7,
+        bottomCrop: 7,
+        cropFontSize: 48,
+        cropLineHeight: 1,
+    },
+};
+
+const tailwindTextCrop = plugin.withOptions((textCropOptions: TextCropOptions) => ({ matchComponents, theme }) => {
     const componentRootName = 'text-crop';
     const textCropComponents: Parameters<typeof matchComponents<string>>[0] = {};
+    const totalTextCropOptions = { ...textCropOptionPresets, ...textCropOptions };
 
-    for (const fontName in options) {
-        const { topCrop, bottomCrop, cropFontSize, cropLineHeight } = options[fontName];
+    for (const fontName in totalTextCropOptions) {
+        const { topCrop, bottomCrop, cropFontSize, cropLineHeight } = totalTextCropOptions[fontName];
         const componentName = `${componentRootName}-${fontName}`;
 
-        textCropComponents[componentName] = (arg: [fontSize: string, { lineHeight: string }] | string) => {
-            let fontSize = '1rem';
-            let lineHeight = '1.5rem';
+        textCropComponents[componentName] = (arg: [string, { lineHeight: string }] | string) => {
+            let fontSizeRem = '1rem';
+            let lineHeightRemOrUnitless = '1.5rem';
+
             let topAdjustment_Px = '0px';
             let bottomAdjustment_Px = '0px';
 
             if (Array.isArray(arg)) {
-                [fontSize, { lineHeight }] = arg;
+                // We can assume 'rem' as unit for fontSize, 'rem' or unitless (starting at '5xl' fontsize) as unit for lineHeight
+                [fontSizeRem, { lineHeight: lineHeightRemOrUnitless }] = arg;
             } else if (typeof arg === 'string') {
-                [fontSize, lineHeight, topAdjustment_Px, bottomAdjustment_Px] = arg.split(' ');
+                // TODO here we should assume anything from user input, 'rem' | 'px' | 'em' | percent(?). fontsize and lineheight could either be at least assumed to be same value, or we need to convert to and fro
+                [fontSizeRem, lineHeightRemOrUnitless, topAdjustment_Px, bottomAdjustment_Px] = arg.split(' ');
             }
 
-            const fontSizeNum = parseFloat(fontSize.replace('rem', ''));
+            const fontSizeRemToFloat = parseFloat(fontSizeRem.replace('rem', ''));
 
-            let lineHeightNum: number;
-            if (lineHeight.includes('rem')) {
-                lineHeightNum = parseFloat(lineHeight.replace('rem', ''));
+            let lineHeightRemToFloat: number;
+            if (lineHeightRemOrUnitless.includes('rem')) {
+                lineHeightRemToFloat = parseFloat(lineHeightRemOrUnitless.replace('rem', ''));
             } else {
-                // '5xl' and higher use ratio value of 1 - others obv possible too. This assumes a "pure" float as string, though
-                lineHeightNum = parseFloat(lineHeight) * fontSizeNum;
+                lineHeightRemToFloat = parseFloat(lineHeightRemOrUnitless) * fontSizeRemToFloat;
             }
-            const lineHeightRatio = lineHeightNum / fontSizeNum;
+            const lineHeightRatio = lineHeightRemToFloat / fontSizeRemToFloat;
 
             const dynamicTopCrop = Math.max(topCrop + (lineHeightRatio - cropLineHeight) * (cropFontSize / 2), 0) / cropFontSize;
             const dynamicBottomCrop = Math.max(bottomCrop + (lineHeightRatio - cropLineHeight) * (cropFontSize / 2), 0) / cropFontSize;
@@ -54,8 +69,8 @@ const tailwindTextCrop = plugin.withOptions((options: TextCropOptions) => ({ mat
                     height: '0',
                     width: '0',
                 },
-                '&:before': { marginBottom: `calc(-${dynamicTopCrop}em + ${topAdjustment_Px})` },
-                '&:after': { marginTop: `calc(-${dynamicBottomCrop}em + ${bottomAdjustment_Px})` },
+                '&:before': { marginBottom: `calc(-${dynamicTopCrop}em + ${topAdjustment_Px}) /* lineHeight: ${lineHeightRatio} */` },
+                '&:after': { marginTop: `calc(-${dynamicBottomCrop}em + ${bottomAdjustment_Px}) /* lineHeight: ${lineHeightRatio} */` },
             };
         };
     }
@@ -68,7 +83,7 @@ const tailwindTextCrop = plugin.withOptions((options: TextCropOptions) => ({ mat
     });
 });
 
-export default {
+const tailWindTheme = {
     future: {
         hoverOnlyWhenSupported: true,
     },
@@ -100,7 +115,7 @@ export default {
                 168: '42rem',
             },
             fontFamily: {
-                'mariam-libre': ['Miriam Libre Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                'miriam-libre': ['Miriam Libre Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
             },
             fontSize: {
                 '2xs': ['0.666rem', { lineHeight: '0.875rem' }],
@@ -126,13 +141,21 @@ export default {
         tailwindMaskEdges,
         tailwindHoverActive,
         tailwindTextCrop({
-            // http://text-crop.eightshapes.com and https://github.com/DirectedEdges/text-crop
             'miriam-libre': {
-                topCrop: 18,
-                bottomCrop: 22,
-                cropFontSize: 50,
-                cropLineHeight: 1.5,
+                topCrop: 5,
+                bottomCrop: 8,
+                cropFontSize: 48,
+                cropLineHeight: 1,
+            },
+            // weight 700 in the text-crop app
+            'miriam-libre-bold': {
+                topCrop: 4,
+                bottomCrop: 8,
+                cropFontSize: 48,
+                cropLineHeight: 1,
             },
         }),
     ],
 };
+
+export default tailWindTheme;
