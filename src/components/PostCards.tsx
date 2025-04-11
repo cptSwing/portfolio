@@ -5,14 +5,18 @@ import { useNavigate } from 'react-router-dom';
 
 export const SinglePostCard: FC<{
     post: Post;
-    viewIndex: number;
-}> = ({ post, viewIndex }) => {
+    arrayIndex: number;
+    viewIndex: string;
+    flippedProps: object;
+}> = ({ post, arrayIndex, viewIndex, flippedProps }) => {
     const { id, title, titleCardBg, subTitle } = post;
     const navigate = useNavigate();
 
     return (
         <div
-            className='relative cursor-pointer select-none border-4 border-[--color-primary-inactive-cat-bg]'
+            className='relative cursor-pointer select-none border-[--color-primary-inactive-cat-bg]'
+            {...flippedProps}
+            style={{ gridArea: viewIndex }}
             onClick={(e) => {
                 navigate(id.toString());
                 e.stopPropagation();
@@ -20,7 +24,7 @@ export const SinglePostCard: FC<{
         >
             {/* Title: */}
             <h4 className='absolute left-0 top-0 z-10 w-full bg-[--color-primary-inactive-cat-bg] text-center'>
-                {title} {viewIndex}
+                {title} arrIndex:{arrayIndex} {viewIndex}
             </h4>
 
             {/* Image: */}
