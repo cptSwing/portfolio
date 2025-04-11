@@ -1,6 +1,6 @@
 import Content from '../components/Content';
 import Nav from '../components/Nav';
-import { BrowserRouter, Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { MutableRefObject, useEffect, useState } from 'react';
 import Category from '../components/Category';
 import classNames from '../lib/classNames';
@@ -8,7 +8,7 @@ import useOutsideClick from '../hooks/useOutsideClick';
 
 const App = () => {
     return (
-        <div className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-slate-800 font-mariam-libre text-white scrollbar-track-transparent scrollbar-thumb-neutral-50'>
+        <div className='font-miriam-libre flex h-dvh w-dvw items-center justify-center overflow-hidden bg-[--bg-color] text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50'>
             <BrowserRouter>
                 <Routes>
                     <Route path='/:catId?' element={<NavOutlet />}>
@@ -16,6 +16,8 @@ const App = () => {
                     </Route>
 
                     <Route path='/bundles/:bundlePath' element={<BundleRoutes />} />
+
+                    <Route path='*' element={<NoRouteMatched />} />
                 </Routes>
             </BrowserRouter>
         </div>
@@ -45,7 +47,7 @@ const NavOutlet = () => {
             key='content-wrapper'
             ref={ref}
             className={classNames(
-                '*: relative mx-auto grid h-3/4 w-1/2 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-1000',
+                'relative mx-auto grid h-3/4 w-1/2 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-1000',
                 isExpanded ? 'grid-cols-[auto_1fr] *:min-h-full' : 'grid-cols-[auto_0fr] *:min-h-0',
             )}
         >
@@ -57,12 +59,26 @@ const NavOutlet = () => {
 
 const BundleRoutes = () => {
     const { bundlePath } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        window.location.href = `https://jbrandenburg.de/bundles/${bundlePath}/index.html`;
-    }, [bundlePath]);
+        navigate(`/bundles/${bundlePath}/index.html`);
+        // window.location.assign(`${window.location.protocol}//${window.location.host}/bundles/${bundlePath}/index.html`);
+    }, [bundlePath, navigate]);
 
-    return <h3> Redirecting.... </h3>;
+    return <h3> Redirecting to {bundlePath}.... </h3>;
 };
 
 export default App;
+
+// Return 404 ?
+const NoRouteMatched = () => {
+    return (
+        <p className='text-center'>
+            <h3>Uh-oh, no matching route found!</h3>
+
+            <br />
+            <Link to='/'>Home</Link>
+        </p>
+    );
+};
