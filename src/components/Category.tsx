@@ -25,7 +25,7 @@ const Category = () => {
         <>
             <Flipper
                 flipKey={cardAnimationIndex}
-                spring={'veryGentle'}
+                spring={'stiff'}
                 staggerConfig={{
                     default: {
                         speed: 0.0001,
@@ -33,8 +33,8 @@ const Category = () => {
                 }}
                 element={'main'}
                 className={classNames(
-                    'postcards-grid-template relative -ml-[--nav-divider-width] grid w-full grid-cols-5 grid-rows-3 self-start overflow-hidden bg-[--color-primary-active-cat-bg]',
-                    categoryData_Memo ? 'gap-2 p-2' : '',
+                    'postcards-grid-template relative -ml-[--nav-divider-width] grid w-full grid-cols-6 grid-rows-8 self-start overflow-hidden bg-[--color-primary-active-cat-bg]',
+                    categoryData_Memo ? 'gap-4 p-4 shadow-lg' : '',
                 )}
             >
                 {categoryData_Memo &&

@@ -48,7 +48,7 @@ const NavOutlet = () => {
             ref={ref}
             className={classNames(
                 '[--nav-divider-width:theme(spacing.1)]',
-                'relative mx-auto grid h-3/4 w-1/2 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-500',
+                'relative mx-auto grid h-3/4 w-2/3 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-500',
                 isExpanded ? 'grid-cols-[auto_1fr] *:min-h-full' : 'grid-cols-[auto_0fr] *:min-h-0',
             )}
         >
