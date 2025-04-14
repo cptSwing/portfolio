@@ -74,6 +74,27 @@
     }
 }
 
+/* .postcards-grid-template {
+    grid-template-areas:
+        'cell5  cell5   cell5   cell1'
+        'cell5  cell5   cell5   cell2'
+        '.      cell4   cell4   cell3';
+} */
+
+/* .postcards-grid-template {
+    grid-template-areas:
+        '.      cell5   cell5   cell5'
+        'cell4  cell5   cell5   cell5'
+        'cell4  cell3   cell2   cell1';
+} */
+
+.postcards-grid-template {
+    grid-template-areas:
+        'cell5  cell5   cell5   cell5   cell1'
+        'cell5  cell5   cell5   cell5   cell2'
+        'cell4  cell4   cell4   cell3   cell3';
+}
+
 /* Conditional Classes */
 
 .mrkdwn > p {

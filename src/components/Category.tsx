@@ -11,54 +11,49 @@ const categoriesArray = Object.values(testDbTyped);
 
 const Category = () => {
     const { catId } = useParams();
-
-    // start with 1 since grid cells are 1-indexed
-    const [cardViewIndex, setCardViewIndex] = useState<number | null>(null);
+    const [cardAnimationIndex, setCardAnimationIndex] = useState(0);
 
     const categoryData_Memo = useMemo(() => {
         if (catId) {
             const catIdToFloat = parseFloat(catId);
             const category = categoriesArray.find((cat) => catIdToFloat === cat.id);
-
-            if (category) {
-                setCardViewIndex(0);
-                return category;
-            }
+            return category;
         }
     }, [catId]);
 
     return (
         <>
-            <Flipper className='relative -ml-1 self-start bg-[--color-primary-active-cat-bg]' flipKey={cardViewIndex}>
-                <main
-                    className={classNames(
-                        'absolute left-0 top-0 grid size-full grid-cols-[0.5fr_1fr_0.5fr] grid-rows-[0px_repeat(3,1fr)] overflow-hidden',
-                        categoryData_Memo ? 'gap-2 p-2' : '',
-                    )}
-                    style={{ gridTemplateAreas: gridTemplate }}
-                >
-                    {categoryData_Memo &&
-                        cardViewIndex !== null &&
-                        categoryData_Memo.posts.map((post, idx, arr) => (
-                            <Flipped key={post.title + idx} flipId='grid'>
-                                {(flippedProps) => (
-                                    <SinglePostCard
-                                        post={post}
-                                        arrayIndex={idx}
-                                        viewIndex={getViewIndex(cardViewIndex, idx, 5, arr.length)}
-                                        flippedProps={flippedProps}
-                                    />
-                                )}
+            <Flipper
+                flipKey={cardAnimationIndex}
+                spring={'veryGentle'}
+                staggerConfig={{
+                    default: {
+                        speed: 0.0001,
+                    },
+                }}
+                element={'main'}
+                className={classNames(
+                    'postcards-grid-template relative -ml-[--nav-divider-width] grid w-full grid-cols-5 grid-rows-3 self-start overflow-hidden bg-[--color-primary-active-cat-bg]',
+                    categoryData_Memo ? 'gap-2 p-2' : '',
+                )}
+            >
+                {categoryData_Memo &&
+                    categoryData_Memo.posts.map((post, idx, arr) => {
+                        const gridAreaIndex = getGridAreaIndex(cardAnimationIndex, idx, 5, arr.length);
+                        return (
+                            <Flipped key={post.title + idx} flipId={'grid' + idx} transformOrigin='100 0'>
+                                {(flippedProps) => <SinglePostCard post={post} arrayIndex={idx} gridAreaIndex={gridAreaIndex} flippedProps={flippedProps} />}
                             </Flipped>
-                        ))}
-                </main>
+                        );
+                    })}
             </Flipper>
 
-            {categoryData_Memo && cardViewIndex !== null && (
+            {/* Debug! */}
+            {categoryData_Memo && (
                 <div
                     className='fixed left-2 right-full top-2 h-fit !min-h-0 min-w-36 cursor-pointer select-none bg-blue-300 text-center'
                     onClick={() =>
-                        setCardViewIndex((current) => {
+                        setCardAnimationIndex((current) => {
                             return current! >= categoryData_Memo.posts.length - 1 ? 0 : (current! += 1);
                         })
                     }
@@ -67,7 +62,7 @@ const Category = () => {
                     <br />
                     Total: {categoryData_Memo.posts.length}
                     <br />
-                    Current: {cardViewIndex}
+                    Current: {cardAnimationIndex}
                 </div>
             )}
         </>
@@ -76,29 +71,23 @@ const Category = () => {
 
 export default Category;
 
-const gridTemplate = `
-".      .       dump"
-"cell5  cell5   cell1"
-"cell5  cell5   cell2"
-".      cell4   cell3"
-`;
-
-// can I assign "." to move to no cell?
-/* viewIndex >= 1 */
-const getViewIndex = (viewIndex: number, arrayIndex: number, maxCells: number, arrayLength: number) => {
+const getGridAreaIndex: (viewIndex: number, arrayIndex: number, maxCells: number, arrayLength: number) => number = (
+    viewIndex,
+    arrayIndex,
+    maxCells,
+    arrayLength,
+) => {
     const cell: number | string = maxCells - arrayIndex + viewIndex;
 
-    if (cell > arrayLength) {
-        console.log('%c[Category]', 'color: #52aabc', `arrIndex ${arrayIndex} --> returned 'cell1' --> cell :`, cell);
-
-        return 'cell1';
-    } else if (cell > maxCells || cell < 1) {
-        console.log('%c[Category]', 'color: #52aabc', `arrIndex ${arrayIndex} --> returned 'dump' --> cell :`, cell);
-
-        return 'dump';
+    if (cell > maxCells) {
+        if (cell <= arrayLength) {
+            return -1;
+        } else {
+            return cell - arrayLength;
+        }
+    } else if (cell < 1) {
+        return -1;
     } else {
-        console.log('%c[Category]', 'color: #52aabc', `arrIndex ${arrayIndex} --> returned '${'cell' + cell}' --> cell :`, cell);
-
-        return 'cell' + cell;
+        return cell;
     }
 };

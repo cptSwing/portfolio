@@ -28,7 +28,7 @@ const Nav = () => {
                 <Settings />
             </div>
 
-            <div className='w-1 self-stretch bg-[--color-primary-active-cat-bg]' />
+            <div className='w-[--nav-divider-width] self-stretch bg-[--color-primary-active-cat-bg]' />
         </nav>
     );
 };

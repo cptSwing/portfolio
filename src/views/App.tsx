@@ -8,7 +8,7 @@ import useOutsideClick from '../hooks/useOutsideClick';
 
 const App = () => {
     return (
-        <div className='font-miriam-libre flex h-dvh w-dvw items-center justify-center overflow-hidden bg-[--bg-color] text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50'>
+        <div className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-[--bg-color] font-miriam-libre text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50'>
             <BrowserRouter>
                 <Routes>
                     <Route path='/:catId?' element={<NavOutlet />}>
@@ -47,7 +47,8 @@ const NavOutlet = () => {
             key='content-wrapper'
             ref={ref}
             className={classNames(
-                'relative mx-auto grid h-3/4 w-1/2 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-1000',
+                '[--nav-divider-width:theme(spacing.1)]',
+                'relative mx-auto grid h-3/4 w-1/2 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-500',
                 isExpanded ? 'grid-cols-[auto_1fr] *:min-h-full' : 'grid-cols-[auto_0fr] *:min-h-0',
             )}
         >
