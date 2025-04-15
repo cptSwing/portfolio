@@ -15,7 +15,7 @@ export const SinglePostCard: FC<{
 
     return (
         <div
-            className='relative cursor-pointer select-none border-8 border-[--color-primary-inactive-cat-bg]'
+            className='flex cursor-pointer select-none flex-col items-center justify-between border-8 border-[--color-primary-inactive-cat-bg] bg-[--color-primary-inactive-cat-bg]'
             {...flippedProps}
             style={gridAreaIndex === -1 ? { display: 'none', zIndex: gridAreaIndex } : { gridArea, zIndex: gridAreaIndex }}
             onClick={(e) => {
@@ -25,20 +25,20 @@ export const SinglePostCard: FC<{
         >
             {/* Title: */}
             {gridAreaIndex === 5 && (
-                <h4 className='absolute left-0 top-0 z-10 w-full bg-[--color-primary-inactive-cat-bg] text-center'>
+                <h4 className='w-full text-center'>
                     {title} {gridArea} arrIndex:{arrayIndex} z:{gridAreaIndex}
                 </h4>
             )}
 
             {/* Image: */}
             <div
-                className='absolute size-full bg-cover bg-origin-content grayscale-[75%]'
+                className='size-full bg-cover bg-center grayscale-[75%]'
                 style={titleCardBg ? { backgroundImage: `url('${titleCardBg}')` } : { backgroundColor: 'lightgray', opacity: 0.666666 }}
             />
 
             {/* Subtitle: */}
             {gridAreaIndex === 5 && subTitle && (
-                <div className='absolute bottom-0 z-10 w-full select-none bg-[--color-primary-inactive-cat-bg] text-center text-sm'>
+                <div className='w-full select-none text-center text-sm'>
                     <Markdown>{subTitle}</Markdown>
                 </div>
             )}

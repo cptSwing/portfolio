@@ -2,16 +2,26 @@ import testDb from '../queries/testDb.json';
 import { useParams } from 'react-router-dom';
 import { SinglePostCard } from './PostCards';
 import { DataBase } from '../types/types';
-import { useMemo, useState } from 'react';
+import { LegacyRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../lib/classNames';
 import { Flipper, Flipped } from 'react-flip-toolkit';
+import { useMouseWheel } from 'react-use';
+import useMouseWheelDirection from '../hooks/useMouseWheelDirection';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
 
+const loopValues = (value: number, max: number, direction: 'down' | 'up') => {
+    if (direction === 'down') {
+        return value + 1 > max ? 1 : value + 1;
+    } else {
+        return value - 1 < 1 ? max : value - 1;
+    }
+};
+
 const Category = () => {
     const { catId } = useParams();
-    const [cardAnimationIndex, setCardAnimationIndex] = useState(0);
+    const [cardAnimationIndex, setCardAnimationIndex] = useState(1);
 
     const categoryData_Memo = useMemo(() => {
         if (catId) {
@@ -20,6 +30,14 @@ const Category = () => {
             return category;
         }
     }, [catId]);
+
+    const [wheelDirection, wheelDistance] = useMouseWheelDirection();
+
+    useEffect(() => {
+        if (categoryData_Memo && wheelDirection !== null) {
+            setCardAnimationIndex((previous) => loopValues(previous, categoryData_Memo.posts.length, wheelDirection));
+        }
+    }, [categoryData_Memo, wheelDirection, wheelDistance]);
 
     return (
         <>
@@ -33,20 +51,44 @@ const Category = () => {
                 }}
                 element={'main'}
                 className={classNames(
-                    'postcards-grid-template relative -ml-[--nav-divider-width] grid w-full grid-cols-6 grid-rows-8 self-start overflow-hidden bg-[--color-primary-active-cat-bg]',
-                    categoryData_Memo ? 'gap-4 p-4 shadow-lg' : '',
+                    'postcards-grid-template relative -ml-[--nav-divider-width] grid w-full grid-cols-6 grid-rows-8 overflow-hidden bg-[--color-primary-active-cat-bg]',
+                    categoryData_Memo ? 'gap-[--category-padding] p-[--category-padding] shadow-lg' : '',
                 )}
             >
                 {categoryData_Memo &&
                     categoryData_Memo.posts.map((post, idx, arr) => {
                         const gridAreaIndex = getGridAreaIndex(cardAnimationIndex, idx, 5, arr.length);
                         return (
-                            <Flipped key={post.title + idx} flipId={'grid' + idx} transformOrigin='100 0'>
+                            <Flipped
+                                key={post.title + idx}
+                                flipId={'grid' + idx}
+                                // transformOrigin='750px -500px'
+                            >
                                 {(flippedProps) => <SinglePostCard post={post} arrayIndex={idx} gridAreaIndex={gridAreaIndex} flippedProps={flippedProps} />}
                             </Flipped>
                         );
                     })}
             </Flipper>
+
+            <div
+                className={classNames(
+                    'relative -ml-[--nav-divider-width] flex flex-col items-start justify-start bg-[--color-primary-active-cat-bg] transition-[height]',
+                    categoryData_Memo ? 'py-[--category-padding]' : '',
+                )}
+            >
+                {categoryData_Memo &&
+                    categoryData_Memo.posts.map((post, idx) => {
+                        return (
+                            <div
+                                key={`${post.id}_${idx}`}
+                                className={classNames(
+                                    'w-1 flex-1 transition-colors',
+                                    idx === cardAnimationIndex - 1 ? 'bg-[--color-primary-inactive-cat-bg]' : 'bg-transparent',
+                                )}
+                            />
+                        );
+                    })}
+            </div>
 
             {/* Debug! */}
             {categoryData_Memo && (
@@ -63,6 +105,8 @@ const Category = () => {
                     Total: {categoryData_Memo.posts.length}
                     <br />
                     Current: {cardAnimationIndex}
+                    <br />
+                    Array: {cardAnimationIndex - 1}
                 </div>
             )}
         </>
@@ -77,7 +121,7 @@ const getGridAreaIndex: (viewIndex: number, arrayIndex: number, maxCells: number
     maxCells,
     arrayLength,
 ) => {
-    const cell: number | string = maxCells - arrayIndex + viewIndex;
+    const cell: number | string = maxCells - (arrayIndex + 1) + viewIndex;
 
     if (cell > maxCells) {
         if (cell <= arrayLength) {

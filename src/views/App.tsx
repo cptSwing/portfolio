@@ -47,9 +47,9 @@ const NavOutlet = () => {
             key='content-wrapper'
             ref={ref}
             className={classNames(
-                '[--nav-divider-width:theme(spacing.1)]',
-                'relative mx-auto grid h-3/4 w-2/3 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-500',
-                isExpanded ? 'grid-cols-[auto_1fr] *:min-h-full' : 'grid-cols-[auto_0fr] *:min-h-0',
+                '[--category-padding:theme(spacing.4)] [--nav-divider-width:theme(spacing.1)]',
+                'relative mx-auto grid h-3/4 w-2/3 grid-rows-1 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-500',
+                isExpanded ? 'grid-cols-[auto_1fr_var(--nav-divider-width)] *:min-h-full' : 'grid-cols-[auto_0fr_var(--nav-divider-width)] *:min-h-0',
             )}
         >
             <Nav />
