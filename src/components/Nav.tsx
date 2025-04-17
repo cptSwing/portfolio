@@ -1,5 +1,5 @@
 import { DataBase, Post } from '../types/types';
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import testDb from '../queries/testDb.json';
 import { MENU_CATEGORY } from '../types/enums.ts';
 import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
@@ -8,27 +8,51 @@ import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import { bars_totalDuration } from '../lib/animationValues.ts';
 import Settings from './Settings.tsx';
 import classNames from '../lib/classNames.ts';
-import TextStroke from 'react-utilities/components/TextStroke.tsx';
+import themes from '../lib/themes';
+import { useZustand } from '../lib/zustand.ts';
+import { setCssProperties } from '../lib/cssProperties.ts';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
 
 const Nav = () => {
+    const themeIndex = useZustand((state) => state.values.themeIndex);
+    useEffect(() => {
+        setCssProperties(document.documentElement, themes[themeIndex]);
+    }, [themeIndex]);
+
+    const [menuIsOpen, setMenuIsOpen] = useState(false);
+
     return (
-        <nav className='flex flex-row items-start justify-center gap-x-2'>
-            <div className='flex flex-col items-end justify-start gap-y-4'>
+        <nav className='relative flex flex-row items-start justify-center gap-x-[--nav-gap-x]'>
+            <div className='flex flex-col items-end justify-start'>
                 {categoriesArray.map((cardData) => (
                     <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
                 ))}
 
-                <Link to='/2' className='text-crop-miriam-libre-xl mt-8 cursor-pointer select-none text-xl !text-[--nav-text] no-underline'>
-                    about
-                </Link>
-
-                <Settings />
+                <div
+                    className={classNames(
+                        'relative z-0 mt-8 flex aspect-square w-[calc(var(--nav-width)/4)] cursor-pointer flex-col items-center justify-around',
+                        'before:absolute before:-right-[--nav-gap-x] before:z-10 before:h-full before:w-0 before:bg-[--nav-category-common-color-1] before:mix-blend-difference before:transition-[width] before:duration-500',
+                        'hover-active:before:w-[calc(100%+var(--nav-gap-x)*2)]',
+                    )}
+                    onClick={() => setMenuIsOpen((prev) => !prev)}
+                >
+                    <div className='h-0.5 w-full bg-[--nav-text]' />
+                    <div className='h-0.5 w-full bg-[--nav-text]' />
+                    <div className='h-0.5 w-full bg-[--nav-text]' />
+                </div>
             </div>
 
-            <div className='w-[--nav-divider-width] self-stretch bg-[--color-primary-active-cat-bg]' />
+            <div className='-mr-1 w-[--nav-divider-width] self-stretch bg-[--nav-category-common-color-1]' />
+
+            {menuIsOpen && (
+                <div className='absolute left-[calc(100%+var(--nav-gap-x))] w-full'>
+                    <div>about yadda yadda</div>
+
+                    <Settings />
+                </div>
+            )}
         </nav>
     );
 };
@@ -62,16 +86,13 @@ const CategoryTitle: FC<{
             ref={refCallback}
             to={`/${id}`}
             className={classNames(
-                'cursor-pointer select-none text-5xl font-bold no-underline',
-                cardData.categoryTitle === 'Code' ? 'text-crop-miriam-libre-bold-[3rem_3rem_2px_0px]' : 'text-crop-miriam-libre-bold-5xl',
-                isThisCategoryOpen_Memo ? '!text-[--color-primary-active-cat-bg]' : '!text-[--nav-text]',
+                'relative z-0 flex cursor-pointer select-none items-center justify-end py-2 text-5xl font-bold !text-[--nav-text] no-underline',
+                'before:absolute before:-right-[--nav-gap-x] before:z-10 before:h-full before:w-0 before:bg-[--nav-category-common-color-1] before:mix-blend-difference before:transition-[width] before:duration-500',
+                'hover-active:before:w-[--nav-width]',
+                isThisCategoryOpen_Memo ? 'before:w-[--nav-width]' : '',
             )}
         >
-            {isThisCategoryOpen_Memo ? (
-                <TextStroke text={categoryTitle} strokeWidth='8px' strokeColor='var(--theme-text)' classNames='before:!top-auto relative z-10' />
-            ) : (
-                categoryTitle
-            )}
+            {categoryTitle}
         </Link>
     );
 };

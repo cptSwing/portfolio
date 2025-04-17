@@ -51,8 +51,9 @@ const Category = () => {
                 }}
                 element={'main'}
                 className={classNames(
-                    'postcards-grid-template relative -ml-[--nav-divider-width] grid w-full grid-cols-6 grid-rows-8 overflow-hidden bg-[--color-primary-active-cat-bg]',
-                    categoryData_Memo ? 'gap-[--category-padding] p-[--category-padding] shadow-lg' : '',
+                    '',
+                    'postcards-grid-template relative grid w-full transform-gpu grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 overflow-hidden bg-[--nav-category-common-color-1] will-change-transform',
+                    categoryData_Memo ? 'gap-[calc(var(--category-padding)*2)] p-[--category-padding]' : '',
                 )}
             >
                 {categoryData_Memo &&
@@ -68,27 +69,22 @@ const Category = () => {
                             </Flipped>
                         );
                     })}
-            </Flipper>
 
-            <div
-                className={classNames(
-                    'relative -ml-[--nav-divider-width] flex flex-col items-start justify-start bg-[--color-primary-active-cat-bg] transition-[height]',
-                    categoryData_Memo ? 'py-[--category-padding]' : '',
-                )}
-            >
-                {categoryData_Memo &&
-                    categoryData_Memo.posts.map((post, idx) => {
-                        return (
-                            <div
-                                key={`${post.id}_${idx}`}
-                                className={classNames(
-                                    'w-1 flex-1 transition-colors',
-                                    idx === cardAnimationIndex - 1 ? 'bg-[--color-primary-inactive-cat-bg]' : 'bg-transparent',
-                                )}
-                            />
-                        );
-                    })}
-            </div>
+                <div className='flex flex-col items-end justify-between gap-y-2 bg-[--nav-category-common-color-1] [grid-area:tracker]'>
+                    {categoryData_Memo &&
+                        categoryData_Memo.posts.map((post, idx) => {
+                            return (
+                                <div
+                                    key={`${post.id}_${idx}`}
+                                    className={classNames(
+                                        'w-1.5 flex-1 transition-colors duration-300',
+                                        idx === cardAnimationIndex - 1 ? 'bg-[--color-primary-inactive-cat-bg]' : 'bg-black/10',
+                                    )}
+                                />
+                            );
+                        })}
+                </div>
+            </Flipper>
 
             {/* Debug! */}
             {categoryData_Memo && (

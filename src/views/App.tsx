@@ -47,9 +47,12 @@ const NavOutlet = () => {
             key='content-wrapper'
             ref={ref}
             className={classNames(
-                '[--category-padding:theme(spacing.4)] [--nav-divider-width:theme(spacing.1)]',
-                'relative mx-auto grid h-3/4 w-2/3 grid-rows-1 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-500',
-                isExpanded ? 'grid-cols-[auto_1fr_var(--nav-divider-width)] *:min-h-full' : 'grid-cols-[auto_0fr_var(--nav-divider-width)] *:min-h-0',
+                '[--nav-category-common-color-1:theme(colors.gray.700)] [--nav-divider-width:theme(spacing.1)] [--nav-gap-x:theme(spacing.2)] [--nav-width:theme(spacing.32)]',
+                '[--category-padding:theme(spacing.4)]',
+                'mx-auto grid h-3/4 w-2/3 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-500',
+                isExpanded
+                    ? 'grid-cols-[var(--nav-width)_1fr_calc(var(--nav-divider-width)*2)] *:min-h-full'
+                    : 'grid-cols-[var(--nav-width)_0fr_calc(var(--nav-divider-width)*2)] *:min-h-0',
             )}
         >
             <Nav />

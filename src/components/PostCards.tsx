@@ -15,7 +15,7 @@ export const SinglePostCard: FC<{
 
     return (
         <div
-            className='flex cursor-pointer select-none flex-col items-center justify-between border-8 border-[--color-primary-inactive-cat-bg] bg-[--color-primary-inactive-cat-bg]'
+            className='flex cursor-pointer select-none flex-col items-center justify-between bg-[--color-primary-inactive-cat-bg]'
             {...flippedProps}
             style={gridAreaIndex === -1 ? { display: 'none', zIndex: gridAreaIndex } : { gridArea, zIndex: gridAreaIndex }}
             onClick={(e) => {
@@ -24,15 +24,11 @@ export const SinglePostCard: FC<{
             }}
         >
             {/* Title: */}
-            {gridAreaIndex === 5 && (
-                <h4 className='w-full text-center'>
-                    {title} {gridArea} arrIndex:{arrayIndex} z:{gridAreaIndex}
-                </h4>
-            )}
+            {gridAreaIndex === 5 && <h6 className='w-full text-center'>{title}</h6>}
 
             {/* Image: */}
             <div
-                className='size-full bg-cover bg-center grayscale-[75%]'
+                className='size-full bg-cover bg-center'
                 style={titleCardBg ? { backgroundImage: `url('${titleCardBg}')` } : { backgroundColor: 'lightgray', opacity: 0.666666 }}
             />
 
