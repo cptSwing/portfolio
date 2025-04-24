@@ -3,9 +3,11 @@ import { MENU_CATEGORY, ToolsUrls } from './enums';
 export type ZustandStore = {
     values: {
         themeIndex: number;
+        initialPostDimensions: DOMRect | null;
     };
     methods: {
         store_cycleTheme: () => void;
+        store_setInitialPostDimensions: (elementRect: DOMRect) => void;
     };
 };
 

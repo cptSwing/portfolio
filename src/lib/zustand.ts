@@ -5,7 +5,10 @@ import themes from './themes';
 
 export const useZustand = create<ZustandStore>()(
     immer((set, get) => ({
-        values: { themeIndex: 3 },
+        values: {
+            themeIndex: 3,
+            initialPostDimensions: null,
+        },
         methods: {
             store_cycleTheme: () => {
                 const current = get().values.themeIndex;
@@ -13,6 +16,12 @@ export const useZustand = create<ZustandStore>()(
 
                 set((draftState) => {
                     draftState.values.themeIndex = next;
+                });
+            },
+
+            store_setInitialPostDimensions: (elementRect) => {
+                set((draftState) => {
+                    draftState.values.initialPostDimensions = elementRect;
                 });
             },
         },

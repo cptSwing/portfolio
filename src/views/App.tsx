@@ -1,19 +1,17 @@
-import Content from '../components/Content';
 import Nav from '../components/Nav';
 import { BrowserRouter, Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { MutableRefObject, useEffect, useState } from 'react';
 import Category from '../components/Category';
 import classNames from '../lib/classNames';
 import useOutsideClick from '../hooks/useOutsideClick';
+import DisplayPost from '../components/DisplayPost';
 
 const App = () => {
     return (
         <div className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-[--bg-color] font-miriam-libre text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50'>
             <BrowserRouter>
                 <Routes>
-                    <Route path='/:catId?' element={<NavOutlet />}>
-                        <Route path='/:catId/:postId' element={<Content />} />
-                    </Route>
+                    <Route path='/:catId?/:postId?' element={<NavOutlet />} />
 
                     <Route path='/bundles/:bundlePath' element={<BundleRoutes />} />
 
@@ -25,7 +23,7 @@ const App = () => {
 };
 
 const NavOutlet = () => {
-    const { catId } = useParams();
+    const { catId, postId } = useParams();
     const navigate = useNavigate();
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -38,8 +36,11 @@ const NavOutlet = () => {
 
     /* Contract Contact when click outside */
     const ref = useOutsideClick(() => {
-        navigate('/');
-        setIsExpanded(false);
+        // should not trigger when post is displayed
+        if (!postId) {
+            navigate('/');
+            setIsExpanded(false);
+        }
     }) as MutableRefObject<HTMLDivElement | null>;
 
     return (
@@ -47,16 +48,17 @@ const NavOutlet = () => {
             key='content-wrapper'
             ref={ref}
             className={classNames(
-                '[--nav-category-common-color-1:theme(colors.gray.700)] [--nav-divider-width:theme(spacing.1)] [--nav-gap-x:theme(spacing.2)] [--nav-width:theme(spacing.32)]',
+                '[--nav-category-common-color-1:theme(colors.gray.700)] [--nav-divider-width:theme(spacing.1)] [--nav-gap-x:theme(spacing.2)]',
                 '[--category-padding:theme(spacing.4)]',
-                'mx-auto grid h-3/4 w-2/3 items-start justify-center transition-[grid-template-columns] duration-500 *:transition-[min-height] *:duration-500',
-                isExpanded
-                    ? 'grid-cols-[var(--nav-width)_1fr_calc(var(--nav-divider-width)*2)] *:min-h-full'
-                    : 'grid-cols-[var(--nav-width)_0fr_calc(var(--nav-divider-width)*2)] *:min-h-0',
+                'mx-auto grid h-3/4 w-2/3 items-start justify-center transition-[grid-template-columns] duration-500',
+                isExpanded ? 'grid-cols-[auto_1fr_auto] *:min-h-full' : 'grid-cols-[auto_0fr_auto] *:min-h-0',
             )}
         >
             <Nav />
             <Category />
+
+            {/* <Outlet /> */}
+            <DisplayPost />
         </div>
     );
 };

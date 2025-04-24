@@ -2,22 +2,18 @@ import testDb from '../queries/testDb.json';
 import { useParams } from 'react-router-dom';
 import { SinglePostCard } from './PostCards';
 import { DataBase } from '../types/types';
-import { LegacyRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import classNames from '../lib/classNames';
 import { Flipper, Flipped } from 'react-flip-toolkit';
-import { useMouseWheel } from 'react-use';
 import useMouseWheelDirection from '../hooks/useMouseWheelDirection';
+import config from '../config/config.json';
+import { useZustand } from '../lib/zustand.ts';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
+const store_setInitialPostDimensions = useZustand.getState().methods.store_setInitialPostDimensions;
 
-const loopValues = (value: number, max: number, direction: 'down' | 'up') => {
-    if (direction === 'down') {
-        return value + 1 > max ? 1 : value + 1;
-    } else {
-        return value - 1 < 1 ? max : value - 1;
-    }
-};
+const { visibleCellCount } = config.categoryGrid;
 
 const Category = () => {
     const { catId } = useParams();
@@ -49,27 +45,41 @@ const Category = () => {
                         speed: 0.0001,
                     },
                 }}
-                element={'main'}
+                element={'nav'}
                 className={classNames(
-                    '',
+                    'transition-[min-height] duration-500',
                     'postcards-grid-template relative grid w-full transform-gpu grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 overflow-hidden bg-[--nav-category-common-color-1] will-change-transform',
                     categoryData_Memo ? 'gap-[calc(var(--category-padding)*2)] p-[--category-padding]' : '',
                 )}
             >
+                {/* Animated Grid */}
                 {categoryData_Memo &&
                     categoryData_Memo.posts.map((post, idx, arr) => {
-                        const gridAreaIndex = getGridAreaIndex(cardAnimationIndex, idx, 5, arr.length);
+                        const gridAreaIndex = getGridAreaIndex(cardAnimationIndex, idx, visibleCellCount, arr.length);
                         return (
                             <Flipped
                                 key={post.title + idx}
                                 flipId={'grid' + idx}
+                                onComplete={(e) => {
+                                    if (e.style.gridArea === `cell${visibleCellCount}`) store_setInitialPostDimensions(e.getBoundingClientRect());
+                                }}
+
+                                // stagger
                                 // transformOrigin='750px -500px'
                             >
-                                {(flippedProps) => <SinglePostCard post={post} arrayIndex={idx} gridAreaIndex={gridAreaIndex} flippedProps={flippedProps} />}
+                                {(flippedProps) => (
+                                    <SinglePostCard
+                                        post={post}
+                                        gridAreaIndex={gridAreaIndex}
+                                        setToFront={() => setCardAnimationIndex(idx + 1)}
+                                        flippedProps={flippedProps}
+                                    />
+                                )}
                             </Flipped>
                         );
                     })}
 
+                {/* Progress Bar */}
                 <div className='flex flex-col items-end justify-between gap-y-2 bg-[--nav-category-common-color-1] [grid-area:tracker]'>
                     {categoryData_Memo &&
                         categoryData_Memo.posts.map((post, idx) => {
@@ -77,9 +87,13 @@ const Category = () => {
                                 <div
                                     key={`${post.id}_${idx}`}
                                     className={classNames(
-                                        'w-1.5 flex-1 transition-colors duration-300',
-                                        idx === cardAnimationIndex - 1 ? 'bg-[--color-primary-inactive-cat-bg]' : 'bg-black/10',
+                                        'relative w-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',
+                                        'before:absolute before:-left-1 before:h-full before:w-[calc(100%+theme(spacing.2))]',
+                                        idx === cardAnimationIndex - 1
+                                            ? 'bg-[--color-primary-inactive-cat-bg] before:cursor-default'
+                                            : 'bg-black/10 before:cursor-pointer hover-active:bg-[--color-primary-inactive-cat-bg] hover-active:opacity-50',
                                     )}
+                                    onClick={() => setCardAnimationIndex(idx + 1)}
                                 />
                             );
                         })}
@@ -90,11 +104,7 @@ const Category = () => {
             {categoryData_Memo && (
                 <div
                     className='fixed left-2 right-full top-2 h-fit !min-h-0 min-w-36 cursor-pointer select-none bg-blue-300 text-center'
-                    onClick={() =>
-                        setCardAnimationIndex((current) => {
-                            return current! >= categoryData_Memo.posts.length - 1 ? 0 : (current! += 1);
-                        })
-                    }
+                    onClick={() => setCardAnimationIndex((current) => (current! >= categoryData_Memo.posts.length - 1 ? 0 : (current! += 1)))}
                 >
                     Debug: Next Slide
                     <br />
@@ -110,6 +120,14 @@ const Category = () => {
 };
 
 export default Category;
+
+const loopValues = (value: number, max: number, direction: 'down' | 'up') => {
+    if (direction === 'down') {
+        return value + 1 > max ? 1 : value + 1;
+    } else {
+        return value - 1 < 1 ? max : value - 1;
+    }
+};
 
 const getGridAreaIndex: (viewIndex: number, arrayIndex: number, maxCells: number, arrayLength: number) => number = (
     viewIndex,
