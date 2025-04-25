@@ -1,15 +1,15 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { Post } from '../types/types';
+import { Post } from '../types/types.ts';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import config from '../config/config.json';
-import classNames from '../lib/classNames';
+import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
 
 const { visibleCellCount } = config.categoryGrid;
 const store_setInitialPostDimensions = useZustand.getState().methods.store_setInitialPostDimensions;
 
-export const SinglePostCard: FC<{
+const SingleCard: FC<{
     post: Post;
     gridAreaIndex: number;
     setToFront: () => void;
@@ -74,3 +74,5 @@ export const SinglePostCard: FC<{
         </div>
     );
 };
+
+export default SingleCard;
