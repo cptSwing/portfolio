@@ -1,13 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { setCssProperties } from '../lib/cssProperties';
 
-/**
- * Description placeholder
- *
- * @param {string} label
- * @param {(...args: {}) => unknown} buttonCallback
- * @param {number} [count=0]
- * @returns {unknown, count?: number) => void}
- */
 export const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) => void, isActive?: boolean) => void = (
     label,
     buttonCallback,
@@ -16,28 +9,40 @@ export const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) =>
     const createContainer = useCallback((id: string) => {
         const container = document.body.appendChild(document.createElement('div'));
         container.id = id;
-        container.style.setProperty('position', 'fixed');
-        container.style.setProperty('top', '0.5rem');
-        container.style.setProperty('left', '0.5rem');
-        container.style.setProperty('display', 'grid');
-        container.style.setProperty('grid-auto-flow', 'column');
-        container.style.setProperty('column-gap', '0.333rem');
+        setCssProperties(container, {
+            'position': 'fixed',
+            'top': '0.5rem',
+            'left': '0.5rem',
+            'display': 'grid',
+            'grid-auto-flow': 'column',
+            'column-gap': '0.333rem',
+        });
 
         return container;
     }, []);
 
     const createButton = useCallback(() => {
         const button = document.createElement('button');
-        button.onclick = buttonCallback;
+        button.addEventListener('contextmenu', (ev) => {
+            ev.preventDefault();
+        });
+
+        button.addEventListener('mousedown', (ev) => {
+            buttonCallback(ev);
+        });
+
         button.innerHTML = label;
 
-        button.style.setProperty('font-size', '0.6rem');
-        button.style.setProperty('max-width', '5rem');
-        button.style.setProperty('background-color', 'rgb(0,0,255)');
-        button.style.setProperty('color', 'white');
-        button.style.setProperty('border-radius', '0.25rem');
-        button.style.setProperty('padding', '0.25rem');
-        button.style.setProperty('opacity', '0.5');
+        setCssProperties(button, {
+            'font-size': '0.6rem',
+            'max-width': '5rem',
+            'background-color': 'rgb(0,0,255)',
+            'color': 'white',
+            'border-radius': '0.25rem',
+            'padding': '0.25rem',
+            'opacity': '0.5',
+        });
+
         button.onmouseover = () => button.style.setProperty('opacity', '1');
         button.onmouseout = () => button.style.setProperty('opacity', '0.5');
 
