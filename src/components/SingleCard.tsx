@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Post } from '../types/types.ts';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
@@ -24,13 +24,19 @@ const SingleCard: FC<{
     useEffect(() => {
         if (gridAreaIndex === visibleCellCount) {
             setIsAtFront(true);
-            postCardRef.current && store_setInitialPostDimensions(postCardRef.current.getBoundingClientRect());
+            // postCardRef.current && store_setInitialPostDimensions(postCardRef.current.getBoundingClientRect());
         } else {
             setIsAtFront(false);
         }
     }, [gridAreaIndex]);
 
-    const gridArea = 'cell' + gridAreaIndex;
+    const gridCardStyle_Memo = useMemo(() => {
+        if (gridAreaIndex === -1) {
+            return { gridArea: 'cell1', zIndex: gridAreaIndex };
+        } else {
+            return { gridArea: 'cell' + gridAreaIndex, zIndex: gridAreaIndex };
+        }
+    }, [gridAreaIndex]);
 
     return (
         <div
@@ -39,7 +45,7 @@ const SingleCard: FC<{
                 'flex select-none flex-col items-center justify-between overflow-hidden bg-[--nav-category-common-color-1]',
                 isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
             )}
-            style={gridAreaIndex === -1 ? { display: 'none', zIndex: gridAreaIndex } : { gridArea, zIndex: gridAreaIndex }}
+            style={gridCardStyle_Memo}
             onClick={() => {
                 if (isAtFront) {
                     navigate(id.toString());

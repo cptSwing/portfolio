@@ -74,30 +74,16 @@
     }
 }
 
-/* .postcards-grid-template {
-    grid-template-areas:
-        'cell5  cell5   cell5   cell1'
-        'cell5  cell5   cell5   cell2'
-        '.      cell4   cell4   cell3';
-} */
-
-/* .postcards-grid-template {
-    grid-template-areas:
-        '.      cell5   cell5   cell5'
-        'cell4  cell5   cell5   cell5'
-        'cell4  cell3   cell2   cell1';
-} */
-
 .postcards-grid-template {
     grid-template-areas:
-        'cell5  cell5   cell5   cell5   .       .       tracker'
-        'cell5  cell5   cell5   cell5   cell1   cell1   tracker'
-        'cell5  cell5   cell5   cell5   cell1   cell1   tracker'
-        'cell5  cell5   cell5   cell5   cell2   cell2   tracker'
-        'cell5  cell5   cell5   cell5   cell2   cell2   tracker'
-        'cell4  cell4   cell4   cell3   cell3   cell3   tracker'
-        'cell4  cell4   cell4   cell3   cell3   cell3   tracker'
-        'cell4  cell4   cell4   cell3   cell3   cell3   tracker';
+        'cell6  cell6   cell6   cell6   cell1   rest    tracker'
+        'cell6  cell6   cell6   cell6   cell2   cell2   tracker'
+        'cell6  cell6   cell6   cell6   cell2   cell2   tracker'
+        'cell6  cell6   cell6   cell6   cell3   cell3   tracker'
+        'cell6  cell6   cell6   cell6   cell3   cell3   tracker'
+        'cell5  cell5   cell5   cell4   cell4   cell4   tracker'
+        'cell5  cell5   cell5   cell4   cell4   cell4   tracker'
+        'cell5  cell5   cell5   cell4   cell4   cell4   tracker';
 }
 
 /* Conditional Classes */

@@ -1,13 +1,14 @@
 import testDb from '../queries/testDb.json';
 import { useParams } from 'react-router-dom';
-import { SinglePostCard } from './PostCards';
+import SingleCard from './SingleCard.tsx';
 import { DataBase } from '../types/types';
-import { useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import classNames from '../lib/classNames';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../hooks/useMouseWheelDirection';
 import config from '../config/config.json';
 import { useZustand } from '../lib/zustand.ts';
+import { useDebugButton } from '../hooks/useDebugButton.ts';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
@@ -17,6 +18,8 @@ const { visibleCellCount } = config.categoryGrid;
 
 const Category = () => {
     const { catId } = useParams();
+    const postCardRect = useZustand((state) => state.values.initialPostDimensions);
+
     const [cardAnimationIndex, setCardAnimationIndex] = useState(1);
 
     const categoryData_Memo = useMemo(() => {
@@ -47,8 +50,8 @@ const Category = () => {
                 }}
                 element={'nav'}
                 className={classNames(
-                    'transition-[min-height] duration-500',
-                    'postcards-grid-template relative grid w-full transform-gpu grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 overflow-hidden bg-[--nav-category-common-color-1] will-change-transform',
+                    'postcards-grid-template relative grid w-full transform-gpu grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 transition-[min-height] duration-500',
+                    'bg-[--nav-category-common-color-1]',
                     categoryData_Memo ? 'gap-[calc(var(--category-padding)*2)] p-[--category-padding]' : '',
                 )}
             >
@@ -59,16 +62,21 @@ const Category = () => {
                         return (
                             <Flipped
                                 key={post.title + idx}
-                                flipId={'grid' + idx}
+                                flipId={idx}
                                 onComplete={(e) => {
-                                    if (e.style.gridArea === `cell${visibleCellCount}`) store_setInitialPostDimensions(e.getBoundingClientRect());
+                                    if (e.style.gridArea === `cell${visibleCellCount}`) {
+                                        console.log('%c[Category]', 'color: #7caa49', `e.style.gridArea :`, e.style.gridArea);
+                                        store_setInitialPostDimensions(e.getBoundingClientRect());
+                                    }
                                 }}
-
+                                // scale={false}
+                                opacity={false}
                                 // stagger
-                                // transformOrigin='750px -500px'
+                                // transformOrigin='50% 50%'
+                                // transformOrigin={postCardRect ? `${postCardRect.left + postCardRect.width}px ${postCardRect.top}px` : ''}
                             >
                                 {(flippedProps) => (
-                                    <SinglePostCard
+                                    <SingleCard
                                         post={post}
                                         gridAreaIndex={gridAreaIndex}
                                         setToFront={() => setCardAnimationIndex(idx + 1)}
@@ -101,25 +109,31 @@ const Category = () => {
             </Flipper>
 
             {/* Debug! */}
-            {categoryData_Memo && (
-                <div
-                    className='fixed left-2 right-full top-2 h-fit !min-h-0 min-w-36 cursor-pointer select-none bg-blue-300 text-center'
-                    onClick={() => setCardAnimationIndex((current) => (current! >= categoryData_Memo.posts.length - 1 ? 0 : (current! += 1)))}
-                >
-                    Debug: Next Slide
-                    <br />
-                    Total: {categoryData_Memo.posts.length}
-                    <br />
-                    Current: {cardAnimationIndex}
-                    <br />
-                    Array: {cardAnimationIndex - 1}
-                </div>
-            )}
+            {categoryData_Memo && <DebugWrapper category={categoryData_Memo} currentIndex={cardAnimationIndex} setIndex={setCardAnimationIndex} />}
         </>
     );
 };
 
 export default Category;
+
+const DebugWrapper: FC<{
+    category: (typeof categoriesArray)[0];
+    currentIndex: number;
+    setIndex: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ category, currentIndex, setIndex }) => {
+    useDebugButton(`Total: ${category.posts.length} / Current: ${currentIndex} / ArrayIndex: ${currentIndex - 1}`, (ev) => {
+        switch (ev.button) {
+            case 2:
+                setIndex((previous) => loopValues(previous, category.posts.length, 'up'));
+                break;
+            default:
+                setIndex((previous) => loopValues(previous, category.posts.length, 'down'));
+                break;
+        }
+    });
+
+    return <></>;
+};
 
 const loopValues = (value: number, max: number, direction: 'down' | 'up') => {
     if (direction === 'down') {

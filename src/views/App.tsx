@@ -1,4 +1,4 @@
-import Nav from '../components/Nav';
+import Titles from '../components/Titles';
 import { BrowserRouter, Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { MutableRefObject, useEffect, useState } from 'react';
 import Category from '../components/Category';
@@ -48,16 +48,21 @@ const NavOutlet = () => {
             key='content-wrapper'
             ref={ref}
             className={classNames(
-                '[--nav-category-common-color-1:theme(colors.gray.700)] [--nav-divider-width:theme(spacing.1)] [--nav-gap-x:theme(spacing.2)]',
-                '[--category-padding:theme(spacing.4)]',
-                'mx-auto grid h-3/4 w-2/3 items-start justify-center transition-[grid-template-columns] duration-500',
-                isExpanded ? 'grid-cols-[auto_1fr_auto] *:min-h-full' : 'grid-cols-[auto_0fr_auto] *:min-h-0',
+                '[--category-padding:theme(spacing.4)] [--nav-category-common-color-1:theme(colors.gray.700)] [--nav-divider-width:theme(spacing.1)] [--nav-gap-x:theme(spacing.2)]',
+                'mx-auto h-3/4 w-2/3',
             )}
         >
-            <Nav />
-            <Category />
+            <div
+                className={classNames(
+                    'grid size-full items-start justify-center overflow-hidden drop-shadow-xl transition-[grid-template-columns] duration-500',
+                    isExpanded ? 'grid-cols-[auto_1fr_auto] *:min-h-full' : 'grid-cols-[auto_0fr_auto] *:min-h-0',
+                )}
+            >
+                <Titles />
+                <Category />
+            </div>
 
-            {/* <Outlet /> */}
+            {/* Has position:fixed and needs to break out of sibling context (created by 'drop-shadow') */}
             <DisplayPost />
         </div>
     );
