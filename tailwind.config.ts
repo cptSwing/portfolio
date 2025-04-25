@@ -3,11 +3,30 @@ import tailwindScrollbar from 'tailwind-scrollbar';
 import plugin from 'tailwindcss/plugin';
 import { tailwindClipInset, tailwindMaskEdges } from 'tailwind-css-plugins/meta';
 
-const tailwindHoverActive = plugin(({ addVariant }) => {
-    const states = ['&:hover', '&:active'];
+const tailwindHoverActive = plugin(({ addVariant, matchVariant }) => {
+    addVariant('hover-active', ['&:hover', '&:active']);
 
-    addVariant('hover-active', states);
-    addVariant('active-hover', states);
+    /* https://github.com/tailwindlabs/tailwindcss/discussions/9713#discussioncomment-4040990 */
+    matchVariant(
+        'group',
+        (_, { modifier }) =>
+            modifier
+                ? [`:merge(.group\\/${modifier}):hover &`, `:merge(.group\\/${modifier}):active &`]
+                : [`:merge(.group):hover &`, `:merge(.group):active &`],
+        {
+            values: { 'hover-active': 'hover-active' },
+        },
+    );
+    matchVariant(
+        'peer',
+        (_, { modifier }) =>
+            modifier
+                ? [`:merge(.peer\\/${modifier}):hover ~ &`, `:merge(.peer\\/${modifier}):active ~ &`]
+                : [`:merge(.peer):hover ~ &`, `:merge(.peer):active ~ &`],
+        {
+            values: { 'hover-active': 'hover-active' },
+        },
+    );
 });
 
 type TextCropFontPreset = { topCrop: number; bottomCrop: number; cropFontSize: number; cropLineHeight: number };
