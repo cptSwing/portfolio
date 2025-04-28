@@ -19,7 +19,7 @@ export const useZustand = create<ZustandStore>()(
                 });
             },
 
-            store_setInitialPostDimensions: (elementRect) => {
+            store_setPostAnimationStartDimensions: (elementRect) => {
                 set((draftState) => {
                     draftState.values.initialPostDimensions = elementRect;
                 });

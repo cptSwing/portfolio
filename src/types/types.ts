@@ -7,7 +7,7 @@ export type ZustandStore = {
     };
     methods: {
         store_cycleTheme: () => void;
-        store_setInitialPostDimensions: (elementRect: DOMRect) => void;
+        store_setPostAnimationStartDimensions: (elementRect: DOMRect) => void;
     };
 };
 
