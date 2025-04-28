@@ -12,13 +12,12 @@ import { useDebugButton } from '../hooks/useDebugButton.ts';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
-const store_setInitialPostDimensions = useZustand.getState().methods.store_setInitialPostDimensions;
+const store_setPostAnimationStartDimensions = useZustand.getState().methods.store_setPostAnimationStartDimensions;
 
 const { visibleCellCount } = config.categoryGrid;
 
 const Category = () => {
     const { catId } = useParams();
-    const postCardRect = useZustand((state) => state.values.initialPostDimensions);
 
     const [cardAnimationIndex, setCardAnimationIndex] = useState(1);
 
@@ -41,40 +40,29 @@ const Category = () => {
     return (
         <>
             <Flipper
-                flipKey={cardAnimationIndex}
-                spring={'stiff'}
-                staggerConfig={{
-                    default: {
-                        speed: 0.0001,
-                    },
-                }}
                 element={'nav'}
                 className={classNames(
                     'postcards-grid-template relative grid w-full transform-gpu grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 transition-[min-height] duration-500',
                     'bg-[--nav-category-common-color-1]',
                     categoryData_Memo ? 'gap-[calc(var(--category-padding)*2)] p-[--category-padding]' : '',
                 )}
+                flipKey={cardAnimationIndex}
+                spring={{ stiffness: 600, damping: 40 }}
+                onComplete={(e) => {
+                    [...e.children].find((childElem) => {
+                        if ((childElem as HTMLDivElement).style.getPropertyValue('grid-area') === `area${visibleCellCount}`) {
+                            // Set dimensions once all flip animations have completed
+                            store_setPostAnimationStartDimensions(childElem.getBoundingClientRect());
+                        }
+                    });
+                }}
             >
                 {/* Animated Grid */}
                 {categoryData_Memo &&
                     categoryData_Memo.posts.map((post, idx, arr) => {
                         const gridAreaIndex = getGridAreaIndex(cardAnimationIndex, idx, visibleCellCount, arr.length);
                         return (
-                            <Flipped
-                                key={post.title + idx}
-                                flipId={idx}
-                                onComplete={(e) => {
-                                    if (e.style.gridArea === `cell${visibleCellCount}`) {
-                                        console.log('%c[Category]', 'color: #7caa49', `e.style.gridArea :`, e.style.gridArea);
-                                        store_setInitialPostDimensions(e.getBoundingClientRect());
-                                    }
-                                }}
-                                // scale={false}
-                                opacity={false}
-                                // stagger
-                                // transformOrigin='50% 50%'
-                                // transformOrigin={postCardRect ? `${postCardRect.left + postCardRect.width}px ${postCardRect.top}px` : ''}
-                            >
+                            <Flipped key={post.title + idx} flipId={idx} transformOrigin='0px 0px' opacity={false}>
                                 {(flippedProps) => (
                                     <SingleCard
                                         post={post}
@@ -149,17 +137,17 @@ const getGridAreaIndex: (viewIndex: number, arrayIndex: number, maxCells: number
     maxCells,
     arrayLength,
 ) => {
-    const cell: number | string = maxCells - (arrayIndex + 1) + viewIndex;
+    const area: number | string = maxCells - (arrayIndex + 1) + viewIndex;
 
-    if (cell > maxCells) {
-        if (cell <= arrayLength) {
+    if (area > maxCells) {
+        if (area <= arrayLength) {
             return -1;
         } else {
-            return cell - arrayLength;
+            return area - arrayLength;
         }
-    } else if (cell < 1) {
+    } else if (area < 1) {
         return -1;
     } else {
-        return cell;
+        return area;
     }
 };

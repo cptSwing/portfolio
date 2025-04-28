@@ -76,14 +76,14 @@
 
 .postcards-grid-template {
     grid-template-areas:
-        'cell6  cell6   cell6   cell6   cell1   rest    tracker'
-        'cell6  cell6   cell6   cell6   cell2   cell2   tracker'
-        'cell6  cell6   cell6   cell6   cell2   cell2   tracker'
-        'cell6  cell6   cell6   cell6   cell3   cell3   tracker'
-        'cell6  cell6   cell6   cell6   cell3   cell3   tracker'
-        'cell5  cell5   cell5   cell4   cell4   cell4   tracker'
-        'cell5  cell5   cell5   cell4   cell4   cell4   tracker'
-        'cell5  cell5   cell5   cell4   cell4   cell4   tracker';
+        'area6  area6   area6   area6   area1   rest    tracker'
+        'area6  area6   area6   area6   area2   area2   tracker'
+        'area6  area6   area6   area6   area2   area2   tracker'
+        'area6  area6   area6   area6   area3   area3   tracker'
+        'area6  area6   area6   area6   area3   area3   tracker'
+        'area5  area5   area5   area4   area4   area4   tracker'
+        'area5  area5   area5   area4   area4   area4   tracker'
+        'area5  area5   area5   area4   area4   area4   tracker';
 }
 
 /* Conditional Classes */

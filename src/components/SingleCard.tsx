@@ -7,7 +7,7 @@ import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
 
 const { visibleCellCount } = config.categoryGrid;
-const store_setInitialPostDimensions = useZustand.getState().methods.store_setInitialPostDimensions;
+const store_setPostAnimationStartDimensions = useZustand.getState().methods.store_setPostAnimationStartDimensions;
 
 const SingleCard: FC<{
     post: Post;
@@ -17,32 +17,40 @@ const SingleCard: FC<{
 }> = ({ post, gridAreaIndex, setToFront, flippedProps }) => {
     const { id, title, titleCardBg, subTitle } = post;
     const navigate = useNavigate();
-    const postCardRef = useRef<HTMLDivElement | null>(null);
+
+    const gridCardStyle_Memo = useMemo(() => {
+        if (gridAreaIndex === -1) {
+            return { gridArea: 'area1', zIndex: gridAreaIndex };
+        } else {
+            return { gridArea: 'area' + gridAreaIndex, zIndex: gridAreaIndex };
+        }
+    }, [gridAreaIndex]);
 
     const [isAtFront, setIsAtFront] = useState(false);
-
     useEffect(() => {
         if (gridAreaIndex === visibleCellCount) {
             setIsAtFront(true);
-            // postCardRef.current && store_setInitialPostDimensions(postCardRef.current.getBoundingClientRect());
         } else {
             setIsAtFront(false);
         }
     }, [gridAreaIndex]);
 
-    const gridCardStyle_Memo = useMemo(() => {
-        if (gridAreaIndex === -1) {
-            return { gridArea: 'cell1', zIndex: gridAreaIndex };
-        } else {
-            return { gridArea: 'cell' + gridAreaIndex, zIndex: gridAreaIndex };
+    const postCardRef = useRef<HTMLDivElement | null>(null);
+    const postCardRect = useZustand((state) => state.values.initialPostDimensions);
+
+    useEffect(() => {
+        if (isAtFront && !postCardRect) {
+            // Set initial values, further updates are handled in Flipper onComplete
+            postCardRef.current && store_setPostAnimationStartDimensions(postCardRef.current.getBoundingClientRect());
         }
-    }, [gridAreaIndex]);
+    }, [isAtFront, postCardRect]);
 
     return (
         <div
             ref={postCardRef}
             className={classNames(
-                'flex select-none flex-col items-center justify-between overflow-hidden bg-[--nav-category-common-color-1]',
+                '[--title-anim-delay:500ms] [--title-anim-duration:150ms]',
+                'relative flex size-full select-none flex-col items-center justify-between overflow-hidden bg-[--nav-category-common-color-1]',
                 isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
             )}
             style={gridCardStyle_Memo}
@@ -56,7 +64,16 @@ const SingleCard: FC<{
             {...flippedProps}
         >
             {/* Title: */}
-            {isAtFront && <h6 className='w-full bg-[--color-primary-inactive-cat-bg] text-center'>{title}</h6>}
+            <h6
+                className={classNames(
+                    'absolute left-0 top-0 z-10 w-full overflow-hidden bg-[--color-primary-inactive-cat-bg] text-center transition-transform',
+                    isAtFront
+                        ? 'translate-y-0 delay-[--title-anim-delay] duration-[--title-anim-duration] [flex-basis:content]'
+                        : '-translate-y-full delay-0 duration-200 [flex-basis:0]',
+                )}
+            >
+                {title}
+            </h6>
 
             {/* Image: */}
             <div
@@ -72,8 +89,15 @@ const SingleCard: FC<{
             />
 
             {/* Subtitle: */}
-            {isAtFront && subTitle && (
-                <div className='w-full select-none bg-[--color-primary-inactive-cat-bg] text-center text-sm'>
+            {subTitle && (
+                <div
+                    className={classNames(
+                        'absolute bottom-0 left-0 w-full select-none bg-[--color-primary-inactive-cat-bg] text-center text-sm transition-transform',
+                        isAtFront
+                            ? 'translate-y-0 delay-[--title-anim-delay] duration-[--title-anim-duration] [flex-basis:content]'
+                            : 'translate-y-full delay-0 duration-200 [flex-basis:0]',
+                    )}
+                >
                     <Markdown>{subTitle}</Markdown>
                 </div>
             )}
