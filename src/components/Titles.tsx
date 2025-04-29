@@ -24,7 +24,7 @@ const Titles = () => {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     return (
-        <header className='relative flex flex-row items-start justify-center transition-[min-height] duration-500 [--nav-title-animation-duration:500ms]'>
+        <header className='relative flex flex-row items-start justify-center transition-[min-height] duration-500'>
             <div className='mr-[--nav-gap-x] flex flex-col items-end justify-start'>
                 {/* Code, 3D, Log */}
                 {categoriesArray.map((cardData) => (
@@ -89,12 +89,13 @@ const CategoryTitle: FC<{
             to={`/${id}`}
             data-after-text={categoryTitle}
             className={classNames(
-                '[--before-width:calc(100%+var(--nav-gap-x))]',
-                'group/link relative z-0 flex w-full cursor-pointer items-center justify-end py-2 pl-2 no-underline',
-                'before:absolute before:-right-[--nav-gap-x] before:-z-10 before:block before:h-full before:w-0 before:bg-[--nav-category-common-color-1] before:transition-[width] before:duration-[--nav-title-animation-duration]',
-                'hover-active:before:w-[--before-width]',
+                '[--nav-title-animation-duration:300ms] [--nav-title-before-width:calc(100%+var(--nav-gap-x))] [--nav-title-padding-left:theme(spacing.4)]',
+                'group/link relative z-0 flex w-full cursor-pointer items-center justify-end py-2 pl-[--nav-title-padding-left] no-underline',
+                'before:absolute before:-right-[--nav-gap-x] before:-z-10 before:block before:h-full before:w-0 before:rounded-bl-2xl before:bg-[--nav-category-common-color-1] before:transition-[width,filter] before:duration-[--nav-title-animation-duration]',
                 'hover:text-red-500',
-                isThisCategoryOpen_Memo ? 'before:w-[--before-width]' : '',
+                isThisCategoryOpen_Memo
+                    ? 'before:w-[--nav-title-before-width] before:brightness-100 hover-active:before:w-[--nav-title-before-width]'
+                    : 'before:brightness-75 hover-active:before:w-[calc(var(--nav-title-before-width)-(var(--nav-title-padding-left)/2))]',
             )}
         >
             {/* Text-Effects */}

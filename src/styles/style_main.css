@@ -76,7 +76,7 @@
 
 .postcards-grid-template {
     grid-template-areas:
-        'area6  area6   area6   area6   area1   rest    tracker'
+        'area6  area6   area6   area6   rest   area1   tracker'
         'area6  area6   area6   area6   area2   area2   tracker'
         'area6  area6   area6   area6   area2   area2   tracker'
         'area6  area6   area6   area6   area3   area3   tracker'
