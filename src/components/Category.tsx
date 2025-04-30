@@ -4,7 +4,7 @@ import SingleCard from './SingleCard.tsx';
 import { DataBase } from '../types/types';
 import { FC, useEffect, useMemo, useState } from 'react';
 import classNames from '../lib/classNames';
-import { Flipper, Flipped } from 'react-flip-toolkit';
+import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../hooks/useMouseWheelDirection';
 import config from '../config/config.json';
 import { useZustand } from '../lib/zustand.ts';
@@ -42,7 +42,7 @@ const Category = () => {
             <Flipper
                 element={'nav'}
                 className={classNames(
-                    'postcards-grid-template relative grid w-full grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 rounded-2xl rounded-tl-none transition-[min-height] duration-500',
+                    'postcards-grid-template relative grid w-full grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 overflow-hidden rounded-2xl rounded-tl-none transition-[min-height] duration-500',
                     'bg-[--nav-category-common-color-1]',
                     categoryData_Memo ? 'gap-[calc(var(--category-padding)*2)] p-[--category-padding]' : '',
                 )}
