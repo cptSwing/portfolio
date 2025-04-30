@@ -7,11 +7,10 @@ import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
 import remapToRange from '../lib/remapToRange.ts';
 import { Flipped } from 'react-flip-toolkit';
+import MotionBlurImage from './MotionBlurImage.tsx';
 
 const { activeCellCount } = config.categoryGrid;
 const store_setPostAnimationStartDimensions = useZustand.getState().methods.store_setPostAnimationStartDimensions;
-
-const horizontal = false;
 
 const SingleCard: FC<{
     post: Post;
@@ -135,28 +134,7 @@ const SingleCard: FC<{
                         opacity: `${(100 / activeCellCount) * gridAreaIndex + 20}%`,
                     }}
                 >
-                    {/* Blurred Image */}
-                    <div
-                        className={classNames('absolute size-full origin-center', horizontal ? 'scale-x-[4] scale-y-[0.001]' : 'scale-x-[0.001] scale-y-[4]')}
-                        style={{
-                            // filter: `blur(${springValue_Ref.current > 0 ? 12 : 0}px)`,
-                            filter: `blur(${springValue_Ref.current * 12}px)`,
-
-                            // transitionDuration: `${ 500 * ( 1 - springValue_Ref.current ) }ms`
-                        }}
-                    >
-                        <LoadImage
-                            isAtFront={isAtFront}
-                            imgUrl={titleCardBg}
-                            altText={title}
-                            additionalClassNames={classNames(
-                                horizontal ? 'scale-x-[calc(1/4)] scale-y-[1000] clip-inset-x-4' : 'scale-y-[calc(1/4)] scale-x-[1000] clip-inset-y-4',
-                            )}
-                        />
-                    </div>
-
-                    {/* Original Image */}
-                    <LoadImage isAtFront={isAtFront} imgUrl={titleCardBg} altText={title} />
+                    <MotionBlurImage isAtFront={isAtFront} imgUrl={titleCardBg} altText={title} />
                 </div>
 
                 {/* Subtitle: */}
@@ -178,26 +156,3 @@ const SingleCard: FC<{
 };
 
 export default SingleCard;
-
-const LoadImage: FC<{ isAtFront: boolean; imgUrl?: string; altText: string; additionalClassNames?: string }> = ({
-    isAtFront,
-    imgUrl = 'images/utility/1x1.png',
-    altText,
-    additionalClassNames = '',
-}) => {
-    return (
-        <img
-            // TODO add fixed image sizes here?
-            className={classNames(
-                'absolute size-full rounded-[--card-border-radius] object-cover object-center outline outline-1 drop-shadow-md transition-[outline-offset,outline-color] delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]',
-                'hover-active:-outline-offset-1 hover-active:outline-[--color-primary-inactive-cat-bg] hover-active:delay-0 hover-active:duration-[--card-image-anim-duration-hover]',
-                additionalClassNames,
-                isAtFront
-                    ? '-outline-offset-1 outline-[--color-primary-inactive-cat-bg]'
-                    : 'outline-offset-[length:--card-titles-inset-padding] outline-transparent',
-            )}
-            src={imgUrl}
-            alt={altText}
-        />
-    );
-};
