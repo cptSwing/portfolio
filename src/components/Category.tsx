@@ -67,6 +67,7 @@ const Category = () => {
                             totalCount={arr.length}
                             gridAreaIndex={getGridAreaIndex(cardAnimationIndex, idx, activeCellCount, arr.length)}
                             setToFront={() => setCardAnimationIndex(idx + 1)}
+                            scrollDirection={wheelDirection}
                         />
                     ))}
 

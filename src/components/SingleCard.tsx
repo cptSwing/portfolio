@@ -8,6 +8,7 @@ import { useZustand } from '../lib/zustand.ts';
 import remapToRange from '../lib/remapToRange.ts';
 import { Flipped } from 'react-flip-toolkit';
 import MotionBlurImage from './MotionBlurImage.tsx';
+import motionBlurElement from '../lib/motionBlurElement.ts';
 
 const { activeCellCount } = config.categoryGrid;
 const store_setPostAnimationStartDimensions = useZustand.getState().methods.store_setPostAnimationStartDimensions;
@@ -18,7 +19,8 @@ const SingleCard: FC<{
     totalCount: number;
     gridAreaIndex: number;
     setToFront: () => void;
-}> = ({ post, arrayIndex, totalCount, gridAreaIndex, setToFront }) => {
+    scrollDirection: 'down' | 'up' | null;
+}> = ({ post, arrayIndex, totalCount, gridAreaIndex, setToFront, scrollDirection }) => {
     const { id, title, titleCardBg, subTitle } = post;
     const navigate = useNavigate();
 
@@ -78,7 +80,7 @@ const SingleCard: FC<{
         }
     }, [isAtFront, postCardRect]);
 
-    const springValue_Ref = useRef(0);
+    const blurElement_Ref = useRef<HTMLDivElement | null>(null);
 
     return (
         <Flipped
@@ -87,18 +89,21 @@ const SingleCard: FC<{
             opacity
             translate
             scale
-            onSpringUpdate={(springValue) => {
-                console.log('%c[SingleCard]', 'color: #d495de', `gridAreaIndex ${gridAreaIndex} -> 1- springValue :`, 1 - springValue);
-                springValue_Ref.current = 1 - springValue;
+            onAppear={() => {
+                blurElement_Ref.current && motionBlurElement(blurElement_Ref.current, 'start', gridCardStyle_Memo.gridArea, scrollDirection);
             }}
-            // onStartImmediate={() => setAnimationIsComplete(false)}
-            // onComplete={() => setAnimationIsComplete(true)}
+            onStartImmediate={() => {
+                blurElement_Ref.current && motionBlurElement(blurElement_Ref.current, 'start', gridCardStyle_Memo.gridArea, scrollDirection);
+            }}
+            onComplete={() => {
+                blurElement_Ref.current && motionBlurElement(blurElement_Ref.current, 'complete', gridCardStyle_Memo.gridArea, scrollDirection, 200);
+            }}
         >
             <div
                 ref={postCardRef}
                 className={classNames(
                     '[--card-border-radius-lg:theme(borderRadius.lg)] [--card-border-radius-md:theme(borderRadius.md)] [--card-border-radius-xl:theme(borderRadius.xl)] [--card-title-anim-delay:200ms] [--card-title-anim-duration:100ms] [--card-titles-inset-padding:theme(spacing.2)]',
-                    'relative flex size-full select-none flex-col items-center justify-between rounded-[--card-border-radius] border border-[--color-primary-inactive-cat-bg] transition-[border-radius] [transform:matrix(1,0.00001,-0.00001,1,0,0)]',
+                    'relative flex size-full select-none flex-col items-center justify-between rounded-[--card-border-radius] border border-[--color-primary-inactive-cat-bg] transition-[border-radius,border-color,border-width] duration-500 will-change-transform [transform:matrix(1,0.00001,-0.00001,1,0,0)]',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
                 style={gridCardStyle_Memo}
@@ -134,7 +139,7 @@ const SingleCard: FC<{
                         opacity: `${(100 / activeCellCount) * gridAreaIndex + 20}%`,
                     }}
                 >
-                    <MotionBlurImage isAtFront={isAtFront} imgUrl={titleCardBg} altText={title} />
+                    <MotionBlurImage isAtFront={isAtFront} imgUrl={titleCardBg} altText={title} blurElementRef={blurElement_Ref} />
                 </div>
 
                 {/* Subtitle: */}
