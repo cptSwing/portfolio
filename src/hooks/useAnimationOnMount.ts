@@ -44,7 +44,7 @@ const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
 
         element.addEventListener('animationend', () => {
             const animName = element.style.animationName;
-            removeCssProperties(element, animProps);
+            removeCssProperties(element, Object.keys(animProps));
             setHasEnded(animName);
         });
     }, []);
