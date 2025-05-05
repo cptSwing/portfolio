@@ -1,5 +1,8 @@
 {
     "categoryGrid": {
         "activeCellCount": 6
+    },
+    "placeholders": {
+        "cardImage": "images/utility/1x1.png"
     }
 }
