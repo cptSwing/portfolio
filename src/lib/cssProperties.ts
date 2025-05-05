@@ -7,8 +7,5 @@ export const setCssProperties = (element: HTMLElement, styleProperties: Animatio
     }
 };
 
-export const removeCssProperties = (element: HTMLElement, styleProperties: AnimationProperties) => {
-    for (const property in styleProperties) {
-        element.style.removeProperty(property);
-    }
-};
+export const removeCssProperties = (element: HTMLElement, styleProperties: (keyof AnimationProperties)[]) =>
+    styleProperties.forEach((property) => element.style.removeProperty(property));
