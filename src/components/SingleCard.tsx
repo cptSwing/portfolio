@@ -9,8 +9,10 @@ import remapToRange from '../lib/remapToRange.ts';
 import { Flipped } from 'react-flip-toolkit';
 import MotionBlurImage from './MotionBlurImage.tsx';
 import motionBlurElement from '../lib/motionBlurElement.ts';
+import { removeCssProperties, setCssProperties } from '../lib/cssProperties.ts';
 
 const { activeCellCount } = config.categoryGrid;
+const springProgressMultiplier = 0;
 const store_setPostAnimationStartDimensions = useZustand.getState().methods.store_setPostAnimationStartDimensions;
 
 const SingleCard: FC<{
@@ -25,11 +27,6 @@ const SingleCard: FC<{
     const navigate = useNavigate();
 
     const gridCardStyle_Memo = useMemo(() => {
-        const sharedStyles = {
-            gridArea: 'area' + gridAreaIndex,
-            zIndex: gridAreaIndex,
-        };
-
         if (gridAreaIndex < 1) {
             const surplusCells = totalCount - activeCellCount;
             const thisSurplusCell = remapToRange(gridAreaIndex, -surplusCells + 1, 0, surplusCells - 1, 0);
@@ -40,22 +37,20 @@ const SingleCard: FC<{
             const widthPercent = (ratio / total_ratio) * 100;
 
             return {
-                ...sharedStyles,
                 'gridArea': 'rest',
-                'zIndex': 0,
-                '--card-border-radius': 'var(--card-border-radius-md)',
                 'position': 'absolute' as CSSProperties['position'],
                 'width': `calc(${widthPercent}% - 8px)`,
                 'left': `${100 - widthPercent > widthPercent ? 0 : 100 - widthPercent}%`,
+                '--card-border-radius': 'var(--card-border-radius-md)',
             };
         } else if (gridAreaIndex >= activeCellCount - 1) {
             return {
-                ...sharedStyles,
+                'gridArea': 'area' + gridAreaIndex,
                 '--card-border-radius': 'var(--card-border-radius-xl)',
             };
         } else {
             return {
-                ...sharedStyles,
+                'gridArea': 'area' + gridAreaIndex,
                 '--card-border-radius': 'var(--card-border-radius-lg)',
             };
         }
@@ -86,27 +81,37 @@ const SingleCard: FC<{
         <Flipped
             flipId={arrayIndex}
             transformOrigin='0px 0px'
-            opacity
+            // opacity
             translate
             scale
+            onSpringUpdate={(springValue) => {
+                if (blurElement_Ref.current) {
+                    blurElement_Ref.current.style.setProperty('--motion-blur-range', springValue >= 1 ? '0px' : '16px');
+                }
+            }}
             onAppear={() => {
-                blurElement_Ref.current && motionBlurElement(blurElement_Ref.current, 'start', gridCardStyle_Memo.gridArea, scrollDirection);
+                // blurElement_Ref.current && motionBlurElement(blurElement_Ref.current, 'start', gridCardStyle_Memo.gridArea, scrollDirection);
             }}
             onStartImmediate={() => {
                 blurElement_Ref.current && motionBlurElement(blurElement_Ref.current, 'start', gridCardStyle_Memo.gridArea, scrollDirection);
             }}
             onComplete={() => {
-                blurElement_Ref.current && motionBlurElement(blurElement_Ref.current, 'complete', gridCardStyle_Memo.gridArea, scrollDirection, 200);
+                blurElement_Ref.current && motionBlurElement(blurElement_Ref.current, 'complete', gridCardStyle_Memo.gridArea, scrollDirection);
             }}
         >
             <div
                 ref={postCardRef}
                 className={classNames(
-                    '[--card-border-radius-lg:theme(borderRadius.lg)] [--card-border-radius-md:theme(borderRadius.md)] [--card-border-radius-xl:theme(borderRadius.xl)] [--card-title-anim-delay:200ms] [--card-title-anim-duration:100ms] [--card-titles-inset-padding:theme(spacing.2)]',
-                    'relative flex size-full select-none flex-col items-center justify-between rounded-[--card-border-radius] border border-[--color-primary-inactive-cat-bg] transition-[border-radius,border-color,border-width] duration-500 will-change-transform [transform:matrix(1,0.00001,-0.00001,1,0,0)]',
+                    '[--card-animation-blur-multiplier:0] [--card-border-radius-lg:theme(borderRadius.lg)] [--card-border-radius-md:theme(borderRadius.md)] [--card-border-radius-xl:theme(borderRadius.xl)] [--card-title-anim-delay:200ms] [--card-title-anim-duration:100ms] [--card-titles-inset-padding:theme(spacing.2)]',
+                    'relative flex size-full select-none flex-col items-center justify-between rounded-[--card-border-radius] border border-[--color-primary-inactive-cat-bg] transition-[border-color,border-width,filter] duration-500 will-change-transform',
+                    'transform:matrix(1,0.00001,-0.00001,1,0,0)]',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
-                style={gridCardStyle_Memo}
+                style={{
+                    ...gridCardStyle_Memo,
+                    zIndex: Math.max(gridAreaIndex, 0),
+                    // filter: 'blur(calc(40px * var(--card-animation-blur-multiplier)))',
+                }}
                 onClick={() => {
                     if (isAtFront) {
                         navigate(id.toString());

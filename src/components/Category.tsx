@@ -42,9 +42,10 @@ const Category = () => {
             <Flipper
                 element={'nav'}
                 className={classNames(
+                    '[--category-gap:calc(var(--category-padding)*2)]',
                     'postcards-grid-template relative grid w-full grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 overflow-hidden rounded-2xl rounded-tl-none transition-[min-height] duration-500',
                     'bg-[--nav-category-common-color-1]',
-                    categoryData_Memo ? 'gap-[calc(var(--category-padding)*2)] p-[--category-padding]' : '',
+                    categoryData_Memo ? 'gap-[--category-gap] p-[--category-padding]' : '',
                 )}
                 flipKey={cardAnimationIndex}
                 spring={{ stiffness: 600, damping: 40 }}

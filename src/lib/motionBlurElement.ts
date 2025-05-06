@@ -1,64 +1,16 @@
-import { setCssProperties } from './cssProperties';
+import { removeCssProperties, setCssProperties } from './cssProperties';
 
-const motionBlurElement = (elem: HTMLDivElement, state: 'start' | 'complete', gridArea: string, scrollDirection: 'down' | 'up' | null, durationMs = 150) => {
-    const { parentStyle, childStyle } = blurDirectionStylesByGridArea(gridArea, scrollDirection === 'up');
+const motionBlurElement = (elem: HTMLDivElement, state: 'start' | 'complete', gridArea: string, scrollDirection: 'down' | 'up' | null) => {
+    const style = blurDirectionStylesByGridArea(gridArea, scrollDirection === 'up');
 
     if (state === 'start') {
-        const elemChild = elem.children[0] as HTMLImageElement;
-
-        setCssProperties(elem, parentStyle);
-        setCssProperties(elemChild, childStyle);
+        setCssProperties(elem, style);
     } else {
-        setCssProperties(elem, {
-            'filter': 'blur(0px)',
-            'opacity': '0',
-            'transition-duration': `${durationMs}ms`,
-        });
+        removeCssProperties(elem, ['opacity', '--motion-range-opacity-duration']);
     }
 };
 
 export default motionBlurElement;
-
-// Much of the following is hardcoded for now, unfortunately
-const scaleFactorBlurAxis = 1.25;
-const scaleFactorOtherAxis = 1000;
-const clipOffsetPercent = 25;
-
-const parentBlur = 'blur(16px)';
-
-const parentHorizontalScale = `scaleX(${scaleFactorBlurAxis}) scaleY(${1 / scaleFactorOtherAxis})`;
-const childHorizontalScale = `scaleX(${1 / scaleFactorBlurAxis}) scaleY(${scaleFactorOtherAxis})`;
-const childHorizontalClipRight = `inset(0% ${clipOffsetPercent}% 0% 0%)`;
-const childHorizontalClipLeft = `inset(0% 0% 0% ${clipOffsetPercent}%)`;
-
-const parentVerticalScale = `scaleX(${1 / scaleFactorOtherAxis}) scaleY(${scaleFactorBlurAxis}) `;
-const childVerticalScale = `scaleX(${scaleFactorOtherAxis}) scaleY(${1 / scaleFactorBlurAxis})`;
-const childVerticalClipTop = `inset(${clipOffsetPercent}% 0% 0% 0%)`;
-const childVerticalClipBottom = `inset(0% 0% ${clipOffsetPercent}% 0%)`;
-
-const defaultHorizontal = {
-    parentStyle: {
-        'transform': parentHorizontalScale,
-        'filter': parentBlur,
-        'opacity': '1',
-        'transition-duration': `0ms`,
-    },
-    childStyle: {
-        transform: childHorizontalScale,
-    },
-};
-
-const defaultVertical = {
-    parentStyle: {
-        'transform': parentVerticalScale,
-        'filter': parentBlur,
-        'opacity': '1',
-        'transition-duration': `0ms`,
-    },
-    childStyle: {
-        transform: childVerticalScale,
-    },
-};
 
 const blurDirectionStylesByGridArea = (gridArea: string, reverse = false) => {
     switch (gridArea) {
@@ -69,62 +21,116 @@ const blurDirectionStylesByGridArea = (gridArea: string, reverse = false) => {
             return reverse
                 ? {
                       ...defaultHorizontal,
-                      childStyle: { ...defaultHorizontal.childStyle, 'clip-path': childHorizontalClipLeft },
+                      'clip-path': bleedRight,
+                      'transform': 'skew(0, -5deg)',
+                      'transform-origin': 'center right',
                   }
                 : {
                       ...defaultVertical,
-                      childStyle: { ...defaultVertical.childStyle, 'clip-path': childVerticalClipTop },
+                      'clip-path': bleedBottom,
+                      'transform': 'skew(-5deg, 0)',
+                      'transform-origin': 'bottom left',
                   };
         case 'area5':
             // transitions to left, reverse: to bottom
             return reverse
                 ? {
                       ...defaultVertical,
-                      childStyle: { ...defaultVertical.childStyle, 'clip-path': childVerticalClipBottom },
+                      'clip-path': bleedTop,
+                      'transform': 'skew(-10deg, 0)',
+                      'transform-origin': '0 var(--card-border-radius)',
                   }
                 : {
                       ...defaultHorizontal,
-                      childStyle: { ...defaultHorizontal.childStyle, 'clip-path': childHorizontalClipLeft },
+                      'clip-path': bleedRight,
+                      'transform': 'skew(0, 0)',
+                      'transform-origin': '0 0',
                   };
         case 'area4':
             // transitions to bottom, reverse: to right
             return reverse
                 ? {
                       ...defaultHorizontal,
-                      childStyle: { ...defaultHorizontal.childStyle, 'clip-path': childHorizontalClipRight },
+                      'clip-path': bleedLeft,
+                      'transform': 'skew(0, 0)',
+                      'transform-origin': '0 0',
                   }
                 : {
                       ...defaultVertical,
-                      childStyle: { ...defaultVertical.childStyle, 'clip-path': childVerticalClipBottom },
+                      'clip-path': bleedTop,
+                      'transform': 'skew(-10deg, 0)',
+                      'transform-origin': '0 var(--card-border-radius)',
                   };
         case 'area3':
             // transitions to bottom
             return {
                 ...defaultVertical,
-                childStyle: { ...defaultVertical.childStyle, 'clip-path': reverse ? childVerticalClipTop : childVerticalClipBottom },
+                'clip-path': reverse ? bleedBottom : bleedTop,
+                'transform': reverse ? 'skew(-10deg, 0)' : 'skew(0, 0)',
+                'transform-origin': reverse ? 'bottom left' : 'top',
             };
         case 'area2':
             // transitions to bottom,
             return {
                 ...defaultVertical,
-                childStyle: { ...defaultVertical.childStyle, 'clip-path': reverse ? childVerticalClipTop : childVerticalClipBottom },
+                'clip-path': reverse ? bleedBottom : bleedTop,
+                'transform': reverse ? 'skew(0, 0)' : 'skew(-10deg, 0)',
+                'transform-origin': reverse ? 'bottom' : 'top left',
             };
         case 'area1':
             // transitions to bottom; reverse: to left
             return reverse
                 ? {
                       ...defaultVertical,
-                      childStyle: { ...defaultVertical.childStyle, 'clip-path': childVerticalClipTop },
+                      'clip-path': bleedBottom,
                   }
                 : {
                       ...defaultHorizontal,
-                      childStyle: { ...defaultHorizontal.childStyle, 'clip-path': childHorizontalClipRight },
+                      'clip-path': bleedLeft,
                   };
         default:
             // 'rest', transitions to right
             return {
                 ...defaultHorizontal,
-                childStyle: { ...defaultHorizontal.childStyle, 'clip-path': reverse ? childHorizontalClipLeft : childHorizontalClipRight },
+                'clip-path': reverse ? bleedRight : bleedLeft,
             };
     }
+};
+
+// Much of the following is hardcoded for now, unfortunately
+const scaleFactorBlurAxis = 2;
+const scaleFactorOtherAxis = 10;
+
+const parentMainAxis = `${scaleFactorBlurAxis}`;
+const parentPerpAxis = `${1 / scaleFactorOtherAxis}`;
+const childMainAxis = `${1 / scaleFactorBlurAxis}`;
+const childPerpAxis = `${scaleFactorOtherAxis}`;
+
+const bleedTop =
+    'polygon(0 calc(var(--category-gap) * -1), 100% calc(var(--category-gap) * -1), 100% var(--card-border-radius), 0 var(--card-border-radius), 0 100%, 100% 100%, 0 100%)';
+const bleedRight =
+    'polygon(calc(100% + var(--category-gap)) 0, calc(100% + var(--category-gap)) 100%, calc(100% - var(--card-border-radius)) 100%, calc(100% - var(--card-border-radius)) 0, 0 0, 0 100%, 0 0)';
+const bleedBottom =
+    'polygon(0 calc(100% + var(--category-gap)), 100% calc(100% + var(--category-gap)), 100% calc(100% - var(--card-border-radius)), 0 calc(100% - var(--card-border-radius)), 0 0, 0 100%, 0 0)';
+const bleedLeft =
+    'polygon(calc(var(--category-gap) * -1) 0, calc(var(--category-gap) * -1) 100%, var(--card-border-radius) 100%, var(--card-border-radius) 0, 100% 0, 100% 100%, 100% 0)';
+
+const defaultHorizontal = {
+    '--motion-blur-parent-scale-x': parentMainAxis,
+    '--motion-blur-parent-scale-y': parentPerpAxis,
+    '--motion-blur-child-scale-x': childMainAxis,
+    '--motion-blur-child-scale-y': childPerpAxis,
+
+    'opacity': '1',
+    '--motion-range-opacity-duration': 0,
+};
+
+const defaultVertical = {
+    '--motion-blur-parent-scale-x': parentPerpAxis,
+    '--motion-blur-parent-scale-y': parentMainAxis,
+    '--motion-blur-child-scale-x': childPerpAxis,
+    '--motion-blur-child-scale-y': childMainAxis,
+
+    'opacity': '1',
+    '--motion-range-opacity-duration': 0,
 };

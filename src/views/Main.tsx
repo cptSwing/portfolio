@@ -51,19 +51,23 @@ const Main = () => {
 
             {/* Blur test */}
             {/* <div className='fixed left-1/3 top-1/3 h-32 w-96 text-white'>
-                <div className={classNames('absolute blur-lg', 'scale-x-[4] scale-y-[0.001]')}>
+                <div
+                    className={classNames(
+                        'absolute size-full',
+                        'origin-bottom-left skew-y-12',
+                        '[clip-path:polygon(-50%_0,-50%_100%,0_100%,0_0,100%_0,100%_100%,100%_0)]',
+                    )}
+                >
                     <div
                         className={classNames(
-                            'text-7xl',
-                            'scale-x-[calc(1/4)] scale-y-[1000]',
-                            'clip-inset-l-1/4', // works sorta, 1/3 will cut off part of the (l-) content though
+                            'size-full scale-x-[--debug-motion-scale] scale-y-[0.01] blur-lg',
+                            'after:absolute after:size-full after:scale-x-[calc(1/var(--debug-motion-scale))] after:scale-y-[100] after:bg-cover after:bg-center after:[background-image:url("/images/a100/a100_featured_image.jpg")]',
                         )}
-                    >
-                        LOLOLOL
-                    </div>
+                        style={{ '--debug-motion-scale': 3 } as CSSProperties}
+                    ></div>
                 </div>
 
-                <div className='absolute text-7xl outline-dashed outline-2 outline-blue-300'>LOLOLOL</div>
+                <img className='absolute size-full translate-y-full object-cover object-center opacity-60' src='images/a100/a100_featured_image.jpg' />
             </div> */}
         </div>
     );
