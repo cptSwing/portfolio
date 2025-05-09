@@ -12,7 +12,7 @@ import { useDebugButton } from '../hooks/useDebugButton.ts';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
-const store_setPostAnimationStartDimensions = useZustand.getState().methods.store_setPostAnimationStartDimensions;
+const { store_setPostAnimationStartDimensions, store_setDebugValues } = useZustand.getState().methods;
 
 const { activeCellCount } = config.categoryGrid;
 
@@ -43,7 +43,7 @@ const Category = () => {
                 element={'nav'}
                 className={classNames(
                     '[--category-gap:calc(var(--category-padding)*2)]',
-                    'postcards-grid-template relative grid w-full grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 overflow-hidden rounded-2xl rounded-tl-none transition-[min-height] duration-500',
+                    'postcards-grid-template relative grid w-full grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 overflow-hidden rounded-r-2xl transition-[min-height] duration-500',
                     'bg-[--nav-category-common-color-1]',
                     categoryData_Memo ? 'gap-[--category-gap] p-[--category-padding]' : '',
                 )}
@@ -68,7 +68,6 @@ const Category = () => {
                             totalCount={arr.length}
                             gridAreaIndex={getGridAreaIndex(cardAnimationIndex, idx, activeCellCount, arr.length)}
                             setToFront={() => setCardAnimationIndex(idx + 1)}
-                            scrollDirection={wheelDirection}
                         />
                     ))}
 
@@ -138,6 +137,9 @@ const DebugWrapper: FC<{
                 break;
         }
     });
+
+    const applyFlipMotionBlur = useZustand(({ values }) => values.debug.applyFlipMotionBlur);
+    useDebugButton(`Toggle Motion Blur (${applyFlipMotionBlur})`, () => store_setDebugValues({ applyFlipMotionBlur: !applyFlipMotionBlur }));
 
     return <></>;
 };

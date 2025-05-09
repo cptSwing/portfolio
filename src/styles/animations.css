@@ -111,3 +111,50 @@
         stroke-width: 0.1;
     }
 }
+
+@keyframes wipe-card-down-enter {
+    0% {
+        clip-path: inset(0 0 100% 0);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes wipe-card-down-exit {
+    0% {
+        clip-path: inset(0 0 0 0);
+    }
+    100% {
+        clip-path: inset(100% 0 0 0);
+    }
+}
+
+@keyframes wipe-card-left-enter {
+    0% {
+        clip-path: inset(0 0 0 100%);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes wipe-card-left-exit {
+    0% {
+        clip-path: inset(0 0 0 0);
+    }
+    100% {
+        clip-path: inset(0 100% 0 0);
+    }
+}
+
+@keyframes move-up-settle-down {
+    0%,
+    100% {
+        scale: 1;
+    }
+    2%,
+    80% {
+        scale: 1.025;
+    }
+}
