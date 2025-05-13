@@ -1,8 +1,7 @@
-import { DataBase, Post } from '../types/types';
+import { DataBase } from '../types/types';
 import { FC, useEffect, useMemo, useState } from 'react';
 import testDb from '../queries/testDb.json';
 import { MENU_CATEGORY } from '../types/enums.ts';
-import { CodeBracketSquareIcon, XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
 import { Link, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import { bars_totalDuration } from '../lib/animationValues.ts';
@@ -108,68 +107,5 @@ const CategoryTitle: FC<{
                 {categoryTitle}
             </span>
         </Link>
-    );
-};
-
-/** Used in Content.tsx */
-export const MenuOpenedPost: FC<{
-    hasImages: boolean;
-    codeLink: Post['codeLink'];
-    setLightboxTo: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ hasImages, codeLink, setLightboxTo }) => {
-    const { catId } = useParams();
-
-    const [codeRefCb] = useAnimationOnMount({
-        animationProps: {
-            animationName: 'outer-ring',
-            animationDuration: 850,
-            animationDelay: 0,
-            animationFillMode: 'forwards',
-            animationIterationCount: 3,
-        },
-        startDelay: 0,
-        hiddenAtStart: false,
-    });
-
-    return (
-        <div className='pointer-events-auto mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-6 sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
-            {hasImages && (
-                <button
-                    type='button'
-                    className='h-full cursor-pointer px-1.5 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Gallery"] active:before:translate-y-0 active:before:transition-none active:before:content-["Gallery"] sm:px-1 sm:pb-0 sm:before:block sm:before:pt-2'
-                    onClick={() => setLightboxTo(0)}
-                >
-                    <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
-                </button>
-            )}
-
-            {codeLink && (
-                <>
-                    <div className='h-3/5 w-0.5 bg-[--theme-primary-600] sm:-mb-0.5' />
-                    <a
-                        className='group inline-block h-full cursor-pointer px-1.5 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:text-nowrap before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none hover:before:translate-y-0 hover:before:content-["View_Code"] sm:px-1 sm:pb-0 sm:before:block sm:before:pt-2'
-                        href={codeLink.href}
-                        target='_blank'
-                        rel='noreferrer'
-                    >
-                        <CodeBracketSquareIcon
-                            key={codeLink.href}
-                            // @ts-expect-error ...
-                            ref={codeRefCb}
-                            className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]'
-                        />
-                    </a>
-                </>
-            )}
-
-            {/* TODO fade out instead of instantly closing */}
-            {(hasImages || codeLink) && <div className='h-3/5 w-0.5 bg-[--theme-primary-600] sm:-mb-0.5' />}
-            <Link
-                to={`/${catId}`}
-                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:px-0.5 sm:pb-0 sm:before:block sm:before:pt-2'
-            >
-                <XMarkIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
-            </Link>
-        </div>
     );
 };

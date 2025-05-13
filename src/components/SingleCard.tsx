@@ -22,7 +22,7 @@ const SingleCard: FC<{
     gridAreaIndex: number;
     setToFront: () => void;
 }> = ({ post, arrayIndex, totalCount, gridAreaIndex, setToFront }) => {
-    const { id, title, titleCardBg, subTitle } = post;
+    const { id, title, subTitle } = post;
     const navigate = useNavigate();
 
     const gridCardStyle_Memo = useMemo(() => {

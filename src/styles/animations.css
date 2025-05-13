@@ -225,6 +225,34 @@
     animation-fill-mode: forwards;
 }
 
+@keyframes clip-shape-nav-post {
+    0% {
+        clip-path: polygon(
+            0 0,
+            calc(var(--clip-shape-width-nav-contracted) - var(--clip-shape-tan-main-expanded)) 0,
+            var(--clip-shape-width-nav-contracted) 100%,
+            0 100%
+        );
+    }
+    10% {
+        clip-path: polygon(
+            0 0,
+            var(--clip-shape-width-nav-contracted) 0,
+            calc(var(--clip-shape-width-nav-contracted) - var(--clip-shape-tan-main-contracted)) 100%,
+            0% 100%
+        );
+    }
+    100% {
+        clip-path: polygon(0 0, var(--clip-shape-width-nav-post) 0, calc(var(--clip-shape-width-nav-post) - var(--clip-shape-tan-post)) 100%, 0% 100%);
+    }
+}
+
+.animate-clip-shape-nav-post {
+    animation-name: clip-shape-nav-post;
+    animation-duration: calc(var(--clip-shape-animation-duration) * 0.5);
+    animation-fill-mode: forwards;
+}
+
 @keyframes clip-shape-main-expand {
     0% {
         clip-path: polygon(
@@ -287,6 +315,35 @@
 
 .animate-clip-shape-main-contract {
     animation-name: clip-shape-main-contract;
+    /* animation-duration: var(--clip-shape-animation-duration); */
+    animation-duration: calc(var(--clip-shape-animation-duration) * 0.5);
+    animation-fill-mode: forwards;
+}
+
+@keyframes clip-shape-main-post {
+    0% {
+        clip-path: polygon(
+            0 0,
+            var(--clip-shape-width-main-expanded) 0,
+            calc(var(--clip-shape-width-main-expanded) + var(--clip-shape-tan-main-expanded)) 100%,
+            0 100%
+        );
+    }
+    10% {
+        clip-path: polygon(
+            0 0,
+            var(--clip-shape-width-main-contracted) 0,
+            calc(var(--clip-shape-width-main-contracted) - var(--clip-shape-tan-main-contracted)) 100%,
+            0% 100%
+        );
+    }
+    100% {
+        clip-path: polygon(0 0, var(--clip-shape-width-main-post) 0, calc(var(--clip-shape-width-main-post) - var(--clip-shape-tan-post)) 100%, 0% 100%);
+    }
+}
+
+.animate-clip-shape-main-post {
+    animation-name: clip-shape-main-post;
     /* animation-duration: var(--clip-shape-animation-duration); */
     animation-duration: calc(var(--clip-shape-animation-duration) * 0.5);
     animation-fill-mode: forwards;
