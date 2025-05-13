@@ -8,7 +8,7 @@ import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../hooks/useMouseWheelDirection';
 import config from '../config/config.json';
 import { useZustand } from '../lib/zustand.ts';
-import { useDebugButton } from '../hooks/useDebugButton.ts';
+import useDebugButton from '../hooks/useDebugButton.ts';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
@@ -41,11 +41,7 @@ const Category = () => {
         <>
             <Flipper
                 element={'nav'}
-                className={classNames(
-                    '[--category-gap:calc(var(--category-padding)*2)] [--category-padding:theme(spacing.4)]',
-                    'postcards-grid-template relative grid h-3/5 w-full origin-[--clip-shape-skew-origin] skew-x-[--clip-shape-angle-rad] grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 overflow-hidden transition-[transform] delay-200 duration-500',
-                    categoryData_Memo ? 'gap-[--category-gap] p-[--category-padding]' : '',
-                )}
+                className='postcards-grid-template relative grid h-3/5 w-full origin-center skew-x-[--clip-shape-angle-rad] grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--category-gap] overflow-hidden transition-[transform] delay-[--category-skew-anim-delay-duration] duration-[--category-skew-anim-delay-duration] [--category-gap:calc(var(--clip-shape-main-padding)/2)] [--category-skew-anim-delay-duration:calc(var(--clip-shape-animation-duration)-var(--clip-shape-animation-delay-stagger))]'
                 flipKey={cardAnimationIndex}
                 spring={{ stiffness: 600, damping: 40 }}
                 onComplete={(e) => {
@@ -139,6 +135,11 @@ const DebugWrapper: FC<{
 
     const applyFlipMotionBlur = useZustand(({ values }) => values.debug.applyFlipMotionBlur);
     useDebugButton(`Toggle Motion Blur (${applyFlipMotionBlur})`, () => store_setDebugValues({ applyFlipMotionBlur: !applyFlipMotionBlur }));
+
+    const applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
+    useDebugButton(`Toggle Transform Matrix Fix (${applyTransformMatrixFix})`, () =>
+        store_setDebugValues({ applyTransformMatrixFix: !applyTransformMatrixFix }),
+    );
 
     return <></>;
 };

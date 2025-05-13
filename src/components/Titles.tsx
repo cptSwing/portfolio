@@ -11,6 +11,7 @@ import classNames from '../lib/classNames.ts';
 import themes from '../lib/themes';
 import { useZustand } from '../lib/zustand.ts';
 import { setCssProperties } from '../lib/cssProperties.ts';
+import { createPortal } from 'react-dom';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
@@ -24,8 +25,8 @@ const Titles = () => {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     return (
-        <header className='relative origin-[--clip-shape-skew-origin] skew-x-[--clip-shape-angle-rad] transition-transform duration-500'>
-            <div className='relative mr-12 flex w-full flex-col items-end justify-start'>
+        <header className='relative origin-right skew-x-[--clip-shape-angle-rad] transition-transform duration-500'>
+            <div className='relative mr-12 flex w-full flex-col items-end justify-start [--nav-title-animation-duration:300ms] [--nav-title-before-width:calc(100%+theme(spacing.2))] [--nav-title-padding-left:theme(spacing.4)]'>
                 {/* Code, 3D, Log */}
                 {categoriesArray.map((cardData) => (
                     <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
@@ -34,8 +35,8 @@ const Titles = () => {
                 {/* Hamburger Menu */}
                 <div
                     className={classNames(
-                        'relative z-0 mt-8 flex aspect-square w-1/4 cursor-pointer flex-col items-center justify-around',
-                        'before:absolute before:z-10 before:h-full before:w-0 before:bg-[--nav-category-common-color-1] before:mix-blend-difference before:transition-[width] before:duration-500',
+                        'relative z-0 mt-8 flex aspect-square w-1/4 cursor-pointer flex-col items-center justify-around p-2',
+                        'before:absolute before:-z-10 before:h-full before:w-0 before:bg-yellow-800 before:transition-[width] before:duration-500',
                         'hover-active:before:w-full',
                     )}
                     onClick={() => setMenuIsOpen((prev) => !prev)}
@@ -46,13 +47,15 @@ const Titles = () => {
                 </div>
             </div>
 
-            {menuIsOpen && (
-                <div className='absolute left-full w-full'>
-                    <div>about yadda yadda</div>
+            {menuIsOpen &&
+                createPortal(
+                    <div className='absolute left-2/3 top-0'>
+                        <div>about yadda yadda</div>
 
-                    <Settings />
-                </div>
-            )}
+                        <Settings />
+                    </div>,
+                    document.getElementById('layer-below-clip-shape-main')!,
+                )}
         </header>
     );
 };
@@ -86,13 +89,12 @@ const CategoryTitle: FC<{
             ref={refCallback}
             to={`/${id}`}
             className={classNames(
-                '[--nav-title-animation-duration:300ms] [--nav-title-before-width:calc(100%+theme(spacing.2))] [--nav-title-padding-left:theme(spacing.4)]',
                 'group/link relative z-0 flex w-full cursor-pointer items-center justify-end py-2 pl-[--nav-title-padding-left] no-underline',
                 'before:absolute before:-z-10 before:block before:h-full before:w-0 before:rounded-bl-2xl before:bg-yellow-800 before:transition-[width,filter] before:duration-[--nav-title-animation-duration]',
                 'hover:text-red-500',
                 isThisCategoryOpen_Memo
-                    ? 'before:w-[--nav-title-before-width] before:brightness-100 hover-active:before:w-[--nav-title-before-width]'
-                    : 'hover-active:before:w-[--nav-title-before-width]' /* before:brightness-75 */,
+                    ? 'before:w-[--nav-title-before-width] hover-active:before:w-[--nav-title-before-width]'
+                    : 'hover-active:before:w-[--nav-title-before-width]',
             )}
         >
             {/* Text-Effects */}

@@ -5,9 +5,10 @@ import Category from '../components/Category';
 import classNames from '../lib/classNames';
 import useOutsideClick from '../hooks/useOutsideClick';
 import DisplayPost from '../components/DisplayPost';
+import roundNumToDecimal from '../lib/roundNumToDecimal';
 
-const clipShapeAngleRad = 20 * (Math.PI / 180);
-const clipShapeTan = Math.tan(clipShapeAngleRad);
+const clipShapeAngleRad = roundNumToDecimal(20 * (Math.PI / 180), 1);
+const clipShapeTan = roundNumToDecimal(Math.tan(clipShapeAngleRad), 2);
 
 const Main = () => {
     const { catId, postId } = useParams();
@@ -34,37 +35,41 @@ const Main = () => {
         <div
             style={
                 {
-                    '--clip-shape-skew-origin': isExpanded ? 'bottom right' : 'bottom right', // TODO unnecessary
                     '--clip-shape-angle-rad': `${isExpanded ? clipShapeAngleRad / 2 : clipShapeAngleRad * -1}rad`,
-                    '--clip-shape-tan-vh': `${isExpanded ? clipShapeTan * 50 : clipShapeTan * 100}vh`,
-                    '--clip-shape-width-main': isExpanded ? '20vw' : '60vw',
+                    '--clip-shape-tan-main-contracted': `${clipShapeTan * 100}vh`,
+                    '--clip-shape-tan-main-expanded': 'calc(var(--clip-shape-tan-main-contracted) / 2)',
+                    '--clip-shape-width-nav-contracted': '25vw',
+                    '--clip-shape-width-nav-expanded': '60vw',
+                    '--clip-shape-width-main-contracted': 'calc(var(--clip-shape-width-nav-expanded) + 1rem)',
+                    '--clip-shape-width-main-expanded': '75vw',
                     '--clip-shape-animation-duration': '700ms',
+                    '--clip-shape-animation-delay-stagger': '300ms',
                 } as CSSProperties
             }
-            className='size-full [--clip-shape-width-main:70vw] [--nav-category-common-color-1:theme(colors.gray.700)]'
+            className='size-full [--nav-category-common-color-1:theme(colors.gray.700)]'
         >
             <div
-                // key={isExpanded + ''}
                 className={classNames(
-                    'absolute left-0 z-10 flex size-full flex-row items-center justify-end bg-red-800 pr-[calc(100vw-var(--clip-shape-tan-vh))] drop-shadow-2xl transition-[min-height,padding] duration-700 [animation-duration:700ms] [animation-fill-mode:forwards]',
+                    'absolute left-0 z-10 flex size-full flex-row items-center justify-end bg-red-800 drop-shadow-2xl transition-[padding] duration-[--clip-shape-animation-duration]',
                     isExpanded
-                        ? 'animate-clip-shape-main-contract min-h-full' /* [clip-path:polygon(0_0,calc(100%-var(--clip-shape-tan-vh))_0,100%_100%,0_100%)]' */
-                        : 'animate-clip-shape-main-contract-reverse min-h-0',
+                        ? 'animate-clip-shape-nav-contract pr-[calc(100vw-var(--clip-shape-width-nav-contracted)+var(--clip-shape-tan-main-expanded)/2-1px)]'
+                        : 'animate-clip-shape-nav-expand pr-[calc(100vw-var(--clip-shape-width-nav-expanded)+var(--clip-shape-tan-main-contracted)/2-1px)]',
                 )}
             >
                 <Titles />
             </div>
 
             <div
+                id='layer-below-clip-shape-main'
                 ref={ref}
                 className={classNames(
-                    'z-0 size-full transition-[min-height,clip-path] delay-200 duration-500',
+                    'absolute z-0 size-full bg-green-800 delay-200 duration-500',
                     isExpanded
-                        ? 'min-h-full [--clip-shape-flipper-inset:0%] [clip-path:polygon(0_0,calc(100%-(var(--clip-shape-width-main)/2)-var(--clip-shape-tan-vh))_0,calc(100%-var(--clip-shape-width-main)/2)_100%,0_100%)]'
-                        : 'min-h-0 [--clip-shape-flipper-inset:100%] [clip-path:polygon(0_0,80%_0,calc(80%-var(--clip-shape-tan-vh))_100%,0%_100%)]',
+                        ? 'animate-clip-shape-main-expand [--clip-shape-flipper-inset:0%]'
+                        : 'animate-clip-shape-main-contract [--clip-shape-flipper-inset:100%]',
                 )}
             >
-                <div className='flex h-full w-full items-center justify-center bg-yellow-800 pl-[--clip-shape-width-main] pr-[calc(var(--clip-shape-width-main)/2+var(--clip-shape-tan-vh)/2)] transition-[clip-path] duration-[--clip-shape-animation-duration] clip-inset-r-[--clip-shape-flipper-inset]'>
+                <div className='flex size-full items-center justify-center bg-yellow-800 pl-[calc(var(--clip-shape-width-nav-contracted)-var(--clip-shape-main-padding))] pr-[calc(100vw-var(--clip-shape-width-main-expanded)-var(--clip-shape-main-padding))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-b-[--clip-shape-flipper-inset] [--clip-shape-main-padding:theme(spacing.8)]'>
                     <Category />
                 </div>
             </div>

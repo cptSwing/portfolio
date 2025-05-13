@@ -68,11 +68,14 @@ const SingleCard: FC<{
 
     const blurElement_Ref = useRef<HTMLDivElement | null>(null);
 
+    // WARN DEBUG
+    const applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
+
     return (
         <Flipped
             flipId={arrayIndex}
             transformOrigin='0px 0px'
-            // opacity
+            opacity
             translate
             scale
             onSpringUpdate={(springValue) => {
@@ -92,7 +95,7 @@ const SingleCard: FC<{
                 className={classNames(
                     '[--card-animation-blur-multiplier:0] [--card-title-anim-delay:200ms] [--card-title-anim-duration:100ms] [--card-titles-inset-padding:theme(spacing.2)]',
                     'relative flex size-full select-none flex-col items-center justify-between will-change-transform',
-                    'transform:matrix(1,0.00001,-0.00001,1,0,0)]',
+                    applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
                 style={{
