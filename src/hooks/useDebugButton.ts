@@ -94,19 +94,18 @@ const debugButtonStyle = /* css */ `
     max-width: 5rem;
     background-color: lightblue;
     color: white;
-    border-radius: 0.2rem;
     padding: 0.25rem;
     opacity: 0.5;
 }
 
 .__debugButtonClass:first-of-type {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
 }
 
 .__debugButtonClass:last-of-type {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
 }
 
 .__debugButtonClass:hover {

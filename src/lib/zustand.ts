@@ -10,6 +10,7 @@ export const useZustand = create<ZustandStore>()(
             initialPostDimensions: null,
             debug: {
                 applyFlipMotionBlur: false,
+                applyTransformMatrixFix: true,
             },
         },
         methods: {

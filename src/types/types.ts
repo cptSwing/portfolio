@@ -6,6 +6,7 @@ export type ZustandStore = {
         initialPostDimensions: DOMRect | null;
         debug: {
             applyFlipMotionBlur: boolean;
+            applyTransformMatrixFix: boolean;
         };
     };
     methods: {
