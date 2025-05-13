@@ -1,22 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { setCssProperties } from '../lib/cssProperties';
 
-export const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) => void, isActive?: boolean) => void = (
-    label,
-    buttonCallback,
-    isActive = true,
-) => {
+const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) => void, isActive?: boolean) => void = (label, buttonCallback, isActive = true) => {
     const createContainer = useCallback((id: string) => {
         const container = document.body.appendChild(document.createElement('div'));
         container.id = id;
-        setCssProperties(container, {
-            'position': 'fixed',
-            'top': '0.5rem',
-            'left': '0.5rem',
-            'display': 'grid',
-            'grid-auto-flow': 'column',
-            'column-gap': '0.333rem',
-        });
+
+        container.appendChild(debugButtonStyleElement);
 
         return container;
     }, []);
@@ -32,31 +21,18 @@ export const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) =>
         });
 
         button.innerHTML = label;
-
-        setCssProperties(button, {
-            'font-size': '0.6rem',
-            'max-width': '5rem',
-            'background-color': 'rgb(0,0,255)',
-            'color': 'white',
-            'border-radius': '0.25rem',
-            'padding': '0.25rem',
-            'opacity': '0.5',
-        });
-
-        button.onmouseover = () => button.style.setProperty('opacity', '1');
-        button.onmouseout = () => button.style.setProperty('opacity', '0.5');
+        button.classList.add('__debugButtonClass');
 
         return button;
     }, [buttonCallback, label]);
 
+    /* Check for existing debug container */
     const debugWrapper_Ref = useRef<HTMLDivElement | null>(null);
-    const buttonNode_Ref = useRef<HTMLButtonElement | null>(null);
-
     useEffect(() => {
-        const debugContainer = document.getElementById('debug-container') as HTMLDivElement | null;
+        const debugContainer = document.getElementById(debugContainerId) as HTMLDivElement | null;
 
         if (!debugContainer && isActive) {
-            debugWrapper_Ref.current = createContainer('debug-container');
+            debugWrapper_Ref.current = createContainer(debugContainerId);
         } else {
             debugWrapper_Ref.current = debugContainer;
         }
@@ -64,6 +40,8 @@ export const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) =>
         return () => {};
     }, [createContainer, isActive]);
 
+    /* Check wether Button exists */
+    const buttonNode_Ref = useRef<HTMLButtonElement | null>(null);
     useEffect(() => {
         if (debugWrapper_Ref.current && isActive) {
             if (!buttonNode_Ref.current) {
@@ -80,3 +58,74 @@ export const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) =>
         };
     }, [createButton, isActive]);
 };
+
+export default useDebugButton;
+
+const debugContainerId = '__debug-container';
+
+const clipPercentage = '75%';
+
+const debugButtonStyle = /* css */ `
+#${debugContainerId} {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 0.333rem;
+    z-index: 9999;
+    clip-path: inset(0 0 ${clipPercentage} 0);
+    transition: clip-path;
+    transition-duration: 150ms;
+}
+
+#${debugContainerId}:hover {
+    clip-path: inset(0 0 0 0);
+}
+
+#${debugContainerId}:hover .__debugButtonClass:after {
+    height: 100%;
+    border-color: transparent
+}
+
+.__debugButtonClass {
+    position: relative;
+    font-size: 0.6rem;
+    max-width: 5rem;
+    background-color: lightblue;
+    color: white;
+    border-radius: 0.2rem;
+    padding: 0.25rem;
+    opacity: 0.5;
+}
+
+.__debugButtonClass:first-of-type {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.__debugButtonClass:last-of-type {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.__debugButtonClass:hover {
+    opacity: 1;
+}
+
+.__debugButtonClass:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - ${clipPercentage});
+    border-color: gray;
+    border-bottom-width: 2px;
+    transition: height, border-color;
+    transition-duration: 150ms;
+}
+`;
+
+const debugButtonStyleElement = document.createElement('style');
+debugButtonStyleElement.textContent = debugButtonStyle;
