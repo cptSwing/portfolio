@@ -24,8 +24,8 @@ const Titles = () => {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     return (
-        <header className='relative flex flex-row items-start justify-center transition-[min-height] duration-500'>
-            <div className='mr-[--nav-gap-x] flex flex-col items-end justify-start'>
+        <header className='relative origin-[--clip-shape-skew-origin] skew-x-[--clip-shape-angle-rad] transition-transform duration-500'>
+            <div className='relative mr-12 flex w-full flex-col items-end justify-start'>
                 {/* Code, 3D, Log */}
                 {categoriesArray.map((cardData) => (
                     <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
@@ -35,8 +35,8 @@ const Titles = () => {
                 <div
                     className={classNames(
                         'relative z-0 mt-8 flex aspect-square w-1/4 cursor-pointer flex-col items-center justify-around',
-                        'before:absolute before:-right-[--nav-gap-x] before:z-10 before:h-full before:w-0 before:bg-[--nav-category-common-color-1] before:mix-blend-difference before:transition-[width] before:duration-500',
-                        'hover-active:before:w-[calc(100%+var(--nav-gap-x)*2)]',
+                        'before:absolute before:z-10 before:h-full before:w-0 before:bg-[--nav-category-common-color-1] before:mix-blend-difference before:transition-[width] before:duration-500',
+                        'hover-active:before:w-full',
                     )}
                     onClick={() => setMenuIsOpen((prev) => !prev)}
                 >
@@ -46,10 +46,8 @@ const Titles = () => {
                 </div>
             </div>
 
-            <div className='w-[--nav-divider-width] self-stretch bg-[--nav-category-common-color-1]' />
-
             {menuIsOpen && (
-                <div className='absolute left-[calc(100%+var(--nav-gap-x))] w-full'>
+                <div className='absolute left-full w-full'>
                     <div>about yadda yadda</div>
 
                     <Settings />
@@ -87,21 +85,20 @@ const CategoryTitle: FC<{
         <Link
             ref={refCallback}
             to={`/${id}`}
-            data-after-text={categoryTitle}
             className={classNames(
-                '[--nav-title-animation-duration:300ms] [--nav-title-before-width:calc(100%+var(--nav-gap-x))] [--nav-title-padding-left:theme(spacing.4)]',
+                '[--nav-title-animation-duration:300ms] [--nav-title-before-width:calc(100%+theme(spacing.2))] [--nav-title-padding-left:theme(spacing.4)]',
                 'group/link relative z-0 flex w-full cursor-pointer items-center justify-end py-2 pl-[--nav-title-padding-left] no-underline',
-                'before:absolute before:-right-[--nav-gap-x] before:-z-10 before:block before:h-full before:w-0 before:rounded-bl-2xl before:bg-[--nav-category-common-color-1] before:transition-[width,filter] before:duration-[--nav-title-animation-duration]',
+                'before:absolute before:-z-10 before:block before:h-full before:w-0 before:rounded-bl-2xl before:bg-yellow-800 before:transition-[width,filter] before:duration-[--nav-title-animation-duration]',
                 'hover:text-red-500',
                 isThisCategoryOpen_Memo
                     ? 'before:w-[--nav-title-before-width] before:brightness-100 hover-active:before:w-[--nav-title-before-width]'
-                    : 'before:brightness-75 hover-active:before:w-[calc(var(--nav-title-before-width)-(var(--nav-title-padding-left)/2))]',
+                    : 'hover-active:before:w-[--nav-title-before-width]' /* before:brightness-75 */,
             )}
         >
             {/* Text-Effects */}
             <span
                 className={classNames(
-                    'bg-gradient-to-r from-[--nav-text] via-[--nav-text] to-red-500 bg-clip-text text-5xl font-bold !text-transparent transition-[background-position] duration-[--nav-title-animation-duration] [background-position:0%_0%] [background-size:200%_200%]',
+                    'skew-x-[calc(var(--clip-shape-angle-rad)*-1)] bg-gradient-to-r from-[--nav-text] via-[--nav-text] to-red-500 bg-clip-text pr-[--nav-title-padding-left] text-5xl font-bold !text-transparent transition-[background-position,transform] duration-[--nav-title-animation-duration] [background-position:0%_0%] [background-size:200%_200%]',
                     'group-hover-active/link:from-[--nav-text] group-hover-active/link:via-red-500 group-hover-active/link:to-red-500 group-hover-active/link:[background-position:100%_100%]',
                     isThisCategoryOpen_Memo ? 'from-[--nav-text] via-red-500 to-red-500 [background-position:100%_100%]' : '',
                 )}

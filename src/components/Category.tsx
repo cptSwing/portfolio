@@ -42,9 +42,8 @@ const Category = () => {
             <Flipper
                 element={'nav'}
                 className={classNames(
-                    '[--category-gap:calc(var(--category-padding)*2)]',
-                    'postcards-grid-template relative grid w-full grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.px)] grid-rows-8 overflow-hidden rounded-r-2xl transition-[min-height] duration-500',
-                    'bg-[--nav-category-common-color-1]',
+                    '[--category-gap:calc(var(--category-padding)*2)] [--category-padding:theme(spacing.4)]',
+                    'postcards-grid-template relative grid h-3/5 w-full origin-[--clip-shape-skew-origin] skew-x-[--clip-shape-angle-rad] grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 overflow-hidden transition-[transform] delay-200 duration-500',
                     categoryData_Memo ? 'gap-[--category-gap] p-[--category-padding]' : '',
                 )}
                 flipKey={cardAnimationIndex}
@@ -72,14 +71,14 @@ const Category = () => {
                     ))}
 
                 {/* Progress Bar */}
-                <div className='flex flex-col items-end justify-between gap-y-2 bg-[--nav-category-common-color-1] [grid-area:tracker]'>
+                <div className='flex flex-col items-end justify-between gap-y-2 [grid-area:tracker]'>
                     {categoryData_Memo &&
                         categoryData_Memo.posts.map((post, idx) => {
                             return (
                                 <div
                                     key={`${post.id}_${idx}`}
                                     className={classNames(
-                                        'relative w-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300 first:rounded-tr-md last:rounded-br-md',
+                                        'relative w-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',
                                         'before:absolute before:-left-1 before:h-full before:w-[calc(100%+theme(spacing.2))]',
                                         idx === cardAnimationIndex - 1
                                             ? 'bg-[--color-primary-inactive-cat-bg] before:cursor-default'

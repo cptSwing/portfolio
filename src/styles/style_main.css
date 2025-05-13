@@ -72,6 +72,14 @@
     .scroll-gutter {
         scrollbar-gutter: stable;
     }
+
+    .animation-pause {
+        animation-play-state: paused;
+    }
+
+    .animation-run {
+        animation-play-state: running;
+    }
 }
 
 .postcards-grid-template {

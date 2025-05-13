@@ -158,3 +158,41 @@
         scale: 1.025;
     }
 }
+
+@keyframes clip-shape-main-contract {
+    0% {
+        clip-path: polygon(0 0, 60vw 0, calc(60vw - var(--clip-shape-tan-vh)) 100%, 0% 100%);
+    }
+    20% {
+        clip-path: polygon(0 0, calc(60vw - var(--clip-shape-tan-vh)) 0, 60vw 100%, 0 100%);
+
+        /* clip-path: polygon(0 0, 20vw 0, calc(20vw - var(--clip-shape-tan-vh)) 100%, 0% 100%); */
+    }
+    100% {
+        clip-path: polygon(0 0, calc(20vw - var(--clip-shape-tan-vh)) 0, 20vw 100%, 0 100%);
+    }
+}
+
+.animate-clip-shape-main-contract {
+    animation-name: clip-shape-main-contract;
+    animation-duration: var(--clip-shape-animation-duration);
+}
+
+@keyframes clip-shape-main-contract-reverse {
+    0% {
+        clip-path: polygon(0 0, calc(20vw - var(--clip-shape-tan-vh)) 0, 20vw 100%, 0 100%);
+    }
+    10% {
+        /* clip-path: polygon(0 0, calc(60vw - var(--clip-shape-tan-vh)) 0, 60vw 100%, 0 100%); */
+
+        clip-path: polygon(0 0, 20vw 0, calc(20vw - var(--clip-shape-tan-vh)) 100%, 0% 100%);
+    }
+    100% {
+        clip-path: polygon(0 0, 60vw 0, calc(60vw - var(--clip-shape-tan-vh)) 100%, 0% 100%);
+    }
+}
+
+.animate-clip-shape-main-contract-reverse {
+    animation-name: clip-shape-main-contract-reverse;
+    animation-duration: calc(var(--clip-shape-animation-duration) / 2 / 3);
+}

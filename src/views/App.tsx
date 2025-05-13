@@ -4,7 +4,9 @@ import Main from './Main';
 
 const App = () => {
     return (
-        <div className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-[--bg-color] font-miriam-libre text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50'>
+        <div
+            className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-red-900 font-miriam-libre text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50' /* bg-[--bg-color] */
+        >
             <BrowserRouter>
                 <Routes>
                     <Route path='/:catId?/:postId?' element={<Main />} />

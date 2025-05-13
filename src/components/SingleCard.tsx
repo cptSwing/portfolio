@@ -110,7 +110,7 @@ const SingleCard: FC<{
                 {/* Title: */}
                 <h6
                     className={classNames(
-                        'absolute top-[--card-titles-inset-padding] z-10 mx-auto bg-[--color-primary-inactive-cat-bg] text-center drop-shadow transition-[transform,opacity,width]',
+                        'absolute top-[--card-titles-inset-padding] z-10 mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:bg-[--color-primary-inactive-cat-bg]',
                         isAtFront
                             ? 'w-[calc(100%-(var(--card-titles-inset-padding)*2))] translate-y-0 opacity-100 delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]'
                             : 'w-full -translate-y-full opacity-0 delay-0 duration-200',
@@ -126,7 +126,7 @@ const SingleCard: FC<{
                 {subTitle && (
                     <div
                         className={classNames(
-                            'absolute bottom-[--card-titles-inset-padding] mx-auto bg-[--color-primary-inactive-cat-bg] text-center text-sm drop-shadow transition-[transform,opacity,width]',
+                            'absolute bottom-[--card-titles-inset-padding] mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center text-sm transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:bg-[--color-primary-inactive-cat-bg]',
                             isAtFront
                                 ? 'w-[calc(100%-(var(--card-titles-inset-padding)*2))] translate-y-0 opacity-100 delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]'
                                 : 'w-full translate-y-full opacity-0 delay-0 duration-200',
@@ -236,7 +236,7 @@ const SingleCardImage: FC<{
             className={classNames(
                 '[--card-image-anim-duration:250ms] [--card-image-anim-hover-duration:100ms]',
 
-                'relative z-0 size-full transition-transform',
+                'relative z-0 size-full overflow-hidden transition-transform',
                 'hover-active:before:opacity-0 hover-active:before:transition-opacity hover-active:before:duration-[--card-image-anim-hover-duration] hover-active:after:opacity-0 hover-active:after:transition-opacity hover-active:after:duration-[--card-image-anim-hover-duration]',
 
                 isAtFront ? 'animate-[move-up-settle-down] [animation-duration:300ms] hover-active:scale-100' : 'hover-active:scale-[1.025]',
@@ -256,11 +256,11 @@ const SingleCardImage: FC<{
                 } as CSSProperties
             }
         >
-            <div className='fixed left-4 top-1/4 z-50 text-2xs text-red-600'>
+            {/* <div className='fixed left-4 top-1/4 z-50 text-2xs text-red-600'>
                 opacityBefore: {dynamicStyleValues_Memo.opacityBefore}
                 <br />
                 opacityAfter: {dynamicStyleValues_Memo.opacityAfter}
-            </div>
+            </div> */}
             <MotionBlurImage isAtFront={isAtFront} imgUrl={titleCardBg} altText={title} blurElementRef={motionBlurElement} />
         </div>
     );
