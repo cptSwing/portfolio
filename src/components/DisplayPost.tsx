@@ -9,7 +9,6 @@ import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../types/types';
 import testDb from '../queries/testDb.json';
-import { useZustand } from '../lib/zustand';
 import useAnimationOnMount from '../hooks/useAnimationOnMount';
 
 const testDbTyped = testDb as DataBase;
@@ -17,32 +16,6 @@ const testDbTyped = testDb as DataBase;
 const DisplayPost = () => {
     const { catId, postId } = useParams();
     const navigate = useNavigate();
-
-    const postCardRect = useZustand((state) => state.values.initialPostDimensions);
-    const transformScaleValues = useMemo(() => {
-        if (postCardRect) {
-            const { width, height, top, left } = postCardRect;
-
-            const vpWidth = document.body.clientWidth;
-            const vpHeight = document.body.clientHeight;
-
-            const scaleX = width / vpWidth;
-            const scaleY = height / vpHeight;
-
-            const originX = left + width / 2;
-            const originY = top + height / 2;
-
-            const tempSubtractX = 80;
-            const tempSubtractY = 108;
-            // const tempSubtractX = 0;
-            // const tempSubtractY = 0;
-
-            return {
-                scale: `${scaleX} ${scaleY}`,
-                origin: `${originX - tempSubtractX}px ${originY - tempSubtractY}px`,
-            };
-        }
-    }, [postCardRect]);
 
     const activeData_Memo = useMemo(() => {
         const activeCat = Object.values(testDbTyped).find((category) => category.id.toString() === catId);
@@ -89,25 +62,17 @@ const DisplayPost = () => {
         [filteredImages_Memo],
     );
 
-    return transformScaleValues ? (
-        <main
-            style={{
-                transformOrigin: transformScaleValues.origin,
-                scale: postId ? '1' : transformScaleValues.scale,
-            }}
-            className={classNames(
-                'fixed left-[calc(var(--clip-shape-width-nav-post)-var(--clip-shape-tan-post))] right-[calc(100vw-var(--clip-shape-width-main-post))] z-30 flex h-full w-fit flex-col overflow-hidden bg-[--theme-bg-lighter] px-[--clip-shape-tan-post] transition-[opacity,scale] duration-300 [transform-box:fill-box]',
-                postId ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
-            )}
-        >
-            {/* Floating Title: */}
-            <div className='pointer-events-none z-10 mx-auto flex w-full items-end justify-center text-center'>
+    return (
+        <main className='fixed left-[calc(var(--clip-shape-width-nav-post)-var(--clip-shape-tan-post))] right-[calc(100vw-var(--clip-shape-width-main-post))] z-30 flex h-full w-fit flex-col overflow-hidden bg-[--theme-bg-lighter] px-10 transition-[opacity,scale] duration-300'>
+            <header className='pointer-events-none z-10 mx-auto flex w-full items-end justify-center text-center'>
+                {/* Floating Title: */}
                 <h2 className='absolute translate-y-[calc(50%+(var(--bar-height)/2))] select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
                     {title}
                 </h2>
 
-                <MenuOpenedPost hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
+                <Menu hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
 
+                {/* Previous Post */}
                 <div
                     className='group/left pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] -translate-x-full translate-y-1/2 cursor-pointer active:-translate-x-[105%] sm:bottom-1/2 sm:left-[calc((100%-var(--post-width))/2)] sm:right-auto sm:top-1/2 sm:translate-y-0'
                     onClick={() => {
@@ -120,6 +85,7 @@ const DisplayPost = () => {
                 >
                     <ChevronLeftIcon className='h-[--header-height] stroke-[--color-bars-no-post] opacity-50 group-hover/left:opacity-100 group-active/left:opacity-100 sm:h-16 sm:scale-x-75' />
                 </div>
+                {/* Next Post */}
                 <div
                     className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] translate-x-full translate-y-1/2 cursor-pointer active:translate-x-[105%] sm:bottom-1/2 sm:left-auto sm:right-[calc((100%-var(--post-width))/2)] sm:top-1/2 sm:translate-y-0'
                     onClick={() => {
@@ -132,17 +98,17 @@ const DisplayPost = () => {
                 >
                     <ChevronRightIcon className='h-[--header-height] stroke-[--color-bars-no-post] opacity-50 group-hover/right:opacity-100 group-active/right:opacity-100 sm:h-16 sm:scale-x-75' />
                 </div>
-            </div>
+            </header>
 
             {textBlocks ? (
-                /*  transform-gpu --> blurry asf */
-                <div className='scroll-gutter-both relative flex origin-bottom skew-x-[--clip-shape-angle-rad] flex-col overflow-y-auto scrollbar-thin [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] [--scrollbar-thumb:--color-bars-post] sm:py-6 xl:py-12'>
-                    <div className='skew-x-[calc(var(--clip-shape-angle-rad)*-1)]'>
+                // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
+                <div className='scroll-gutter-both origin-center skew-x-[--clip-shape-angle-rad] overflow-y-auto scrollbar-thin [--scrollbar-thumb:--color-bars-post]'>
+                    <div className='relative flex flex-col px-12 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:py-6 xl:py-12'>
                         {/* (Sub-)Header, date, "Built with" */}
                         <div className='flex w-full items-start justify-between pb-2 pt-8 sm:py-8'>
-                            <h4 className='leading-none'>{subTitle}</h4>
+                            <h4 className='skew-x-[calc(var(--clip-shape-angle-rad)*-1)] leading-none'>{subTitle}</h4>
                             <div className='relative mt-1 flex flex-col items-end justify-start'>
-                                <h5 className='headline-bg -mr-0.5 w-fit text-[--bg-color] no-underline'>
+                                <h5 className='headline-bg -mr-0.5 w-fit skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-[--bg-color] no-underline'>
                                     {day && `${day}.`}
                                     {month && `${month}.`}
                                     {year && `${year}`}
@@ -231,10 +197,7 @@ const DisplayPost = () => {
             ) : (
                 <></>
             )}
-            {/* </div> */}
         </main>
-    ) : (
-        <></>
     );
 };
 
@@ -271,7 +234,7 @@ const RemainingImages: FC<{
     );
 };
 
-const MenuOpenedPost: FC<{
+const Menu: FC<{
     hasImages: boolean;
     codeLink: Post['codeLink'];
     setLightboxTo: React.Dispatch<React.SetStateAction<number | null>>;
@@ -291,7 +254,7 @@ const MenuOpenedPost: FC<{
     });
 
     return (
-        <div className='pointer-events-auto mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-6 sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
+        <menu className='pointer-events-auto mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-6 sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
             {hasImages && (
                 <button
                     type='button'
@@ -329,6 +292,6 @@ const MenuOpenedPost: FC<{
             >
                 <XMarkIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
             </Link>
-        </div>
+        </menu>
     );
 };

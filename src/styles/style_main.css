@@ -80,6 +80,14 @@
     .animation-run {
         animation-play-state: running;
     }
+
+    .backface-hidden {
+        backface-visibility: hidden;
+    }
+
+    .backface-visible {
+        backface-visibility: visible;
+    }
 }
 
 .postcards-grid-template {

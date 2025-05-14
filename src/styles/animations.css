@@ -242,6 +242,10 @@
             0% 100%
         );
     }
+    50% {
+        clip-path: polygon(0 0, 49vw 0, calc(49vw - var(--clip-shape-tan-post)) 100%, 0% 100%);
+    }
+
     100% {
         clip-path: polygon(0 0, var(--clip-shape-width-nav-post) 0, calc(var(--clip-shape-width-nav-post) - var(--clip-shape-tan-post)) 100%, 0% 100%);
     }
@@ -249,7 +253,8 @@
 
 .animate-clip-shape-nav-post {
     animation-name: clip-shape-nav-post;
-    animation-duration: calc(var(--clip-shape-animation-duration) * 0.5);
+    animation-duration: var(--clip-shape-animation-duration);
+    /* animation-duration: calc(var(--clip-shape-animation-duration) * 0.5); */
     animation-fill-mode: forwards;
 }
 
@@ -337,6 +342,10 @@
             0% 100%
         );
     }
+    50% {
+        clip-path: polygon(0 0, 51vw 0, calc(51vw - var(--clip-shape-tan-post)) 100%, 0% 100%);
+    }
+
     100% {
         clip-path: polygon(0 0, var(--clip-shape-width-main-post) 0, calc(var(--clip-shape-width-main-post) - var(--clip-shape-tan-post)) 100%, 0% 100%);
     }
@@ -344,7 +353,7 @@
 
 .animate-clip-shape-main-post {
     animation-name: clip-shape-main-post;
-    /* animation-duration: var(--clip-shape-animation-duration); */
-    animation-duration: calc(var(--clip-shape-animation-duration) * 0.5);
+    animation-duration: var(--clip-shape-animation-duration);
+    /* animation-duration: calc(var(--clip-shape-animation-duration) * 0.5); */
     animation-fill-mode: forwards;
 }

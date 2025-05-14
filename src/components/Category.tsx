@@ -12,7 +12,7 @@ import useDebugButton from '../hooks/useDebugButton.ts';
 
 const testDbTyped = testDb as DataBase;
 const categoriesArray = Object.values(testDbTyped);
-const { store_setPostAnimationStartDimensions, store_setDebugValues } = useZustand.getState().methods;
+const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
 
 const { activeCellCount } = config.categoryGrid;
 
@@ -41,17 +41,9 @@ const Category = () => {
         <>
             <Flipper
                 element={'nav'}
-                className='postcards-grid-template relative grid h-3/5 w-full origin-center skew-x-[--clip-shape-angle-rad] grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--category-gap] overflow-hidden transition-[transform] delay-[--category-skew-anim-delay-duration] duration-[--category-skew-anim-delay-duration] [--category-gap:calc(var(--clip-shape-main-padding)/2)] [--category-skew-anim-delay-duration:calc(var(--clip-shape-animation-duration)-var(--clip-shape-animation-delay-stagger))]'
+                className='postcards-grid-template relative grid h-3/5 w-full origin-center skew-x-[--clip-shape-angle-rad] grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--category-gap] overflow-hidden transition-[transform] duration-[--clip-shape-animation-duration] [--category-gap:calc(var(--clip-shape-main-padding)/2)] [--category-skew-anim-delay-duration:calc(var(--clip-shape-animation-duration)-var(--clip-shape-animation-delay-stagger))]'
                 flipKey={cardAnimationIndex}
                 spring={{ stiffness: 600, damping: 40 }}
-                onComplete={(e) => {
-                    [...e.children].find((childElem) => {
-                        if ((childElem as HTMLDivElement).style.getPropertyValue('grid-area') === `area${activeCellCount}`) {
-                            // Set dimensions once all flip animations have completed
-                            store_setPostAnimationStartDimensions(childElem.getBoundingClientRect());
-                        }
-                    });
-                }}
             >
                 {/* Animated Grid */}
                 {categoryData_Memo &&

@@ -1,5 +1,5 @@
 import Titles from '../components/Titles';
-import { CSSProperties, MutableRefObject, useEffect, useState } from 'react';
+import { CSSProperties, MutableRefObject, useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Category from '../components/Category';
 import classNames from '../lib/classNames';
@@ -16,13 +16,15 @@ const Main = () => {
 
     const [expansionState, setExpansionState] = useState<'nav' | 'category' | 'post'>('nav');
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (catId) {
             if (postId) {
                 setExpansionState('post');
             } else {
                 setExpansionState('category');
             }
+        } else {
+            setExpansionState('nav');
         }
     }, [catId, postId]);
 
@@ -74,14 +76,17 @@ const Main = () => {
                 className={classNames(
                     'absolute z-0 size-full bg-green-800 delay-200 duration-500',
                     expansionState === 'nav'
-                        ? 'animate-clip-shape-main-contract [--clip-shape-flipper-inset:100%]'
+                        ? 'animate-clip-shape-main-contract [--clip-shape-flipper-inset:100%] [--clip-shape-post-inset:100%]'
                         : expansionState === 'category'
-                          ? 'animate-clip-shape-main-expand [--clip-shape-flipper-inset:0%]'
-                          : 'animate-clip-shape-main-post [--clip-shape-flipper-inset:-100%]',
+                          ? 'animate-clip-shape-main-expand [--clip-shape-flipper-inset:0%] [--clip-shape-post-inset:100%]'
+                          : 'animate-clip-shape-main-post [--clip-shape-flipper-inset:100%] [--clip-shape-post-inset:0%]',
                 )}
             >
-                <div className='flex size-full items-center justify-center bg-yellow-800 pl-[calc(var(--clip-shape-width-nav-contracted)-var(--clip-shape-main-padding))] pr-[calc(100vw-var(--clip-shape-width-main-expanded)-var(--clip-shape-main-padding))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-b-[--clip-shape-flipper-inset] [--clip-shape-main-padding:theme(spacing.8)]'>
+                <div className='flex size-full items-center justify-center overflow-hidden bg-yellow-800 pl-[calc(var(--clip-shape-width-nav-contracted)-var(--clip-shape-main-padding))] pr-[calc(100vw-var(--clip-shape-width-main-expanded)-var(--clip-shape-main-padding))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-b-[--clip-shape-flipper-inset] [--clip-shape-main-padding:theme(spacing.8)]'>
                     <Category />
+                </div>
+
+                <div className='absolute left-0 top-0 size-full transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-t-[--clip-shape-post-inset]'>
                     <DisplayPost />
                 </div>
             </div>

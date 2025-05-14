@@ -13,7 +13,6 @@ import useMouseWheelDirection from '../hooks/useMouseWheelDirection.ts';
 import useIsCardAtFront from '../hooks/useIsCardAtFront.ts';
 
 const { activeCellCount } = config.categoryGrid;
-const store_setPostAnimationStartDimensions = useZustand.getState().methods.store_setPostAnimationStartDimensions;
 
 const SingleCard: FC<{
     post: Post;
@@ -54,16 +53,6 @@ const SingleCard: FC<{
 
     const isAtFront = useIsCardAtFront(gridAreaIndex);
 
-    const postCardRef = useRef<HTMLDivElement | null>(null);
-    const postCardRect = useZustand((state) => state.values.initialPostDimensions);
-
-    useEffect(() => {
-        if (isAtFront && !postCardRect) {
-            // Set initial values, further updates are handled in Flipper onComplete
-            postCardRef.current && store_setPostAnimationStartDimensions(postCardRef.current.getBoundingClientRect());
-        }
-    }, [isAtFront, postCardRect]);
-
     const [wheelDirection] = useMouseWheelDirection();
 
     const blurElement_Ref = useRef<HTMLDivElement | null>(null);
@@ -91,7 +80,6 @@ const SingleCard: FC<{
             }}
         >
             <div
-                ref={postCardRef}
                 className={classNames(
                     '[--card-animation-blur-multiplier:0] [--card-title-anim-delay:200ms] [--card-title-anim-duration:100ms] [--card-titles-inset-padding:theme(spacing.2)]',
                     'relative flex size-full select-none flex-col items-center justify-between will-change-transform',
@@ -129,7 +117,7 @@ const SingleCard: FC<{
                 {subTitle && (
                     <div
                         className={classNames(
-                            'absolute bottom-[--card-titles-inset-padding] mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center text-sm transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:bg-[--color-primary-inactive-cat-bg]',
+                            'absolute bottom-[--card-titles-inset-padding] mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center text-sm transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:bg-[--color-primary-inactive-cat-bg] before:transition-transform',
                             isAtFront
                                 ? 'w-[calc(100%-(var(--card-titles-inset-padding)*2))] translate-y-0 opacity-100 delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]'
                                 : 'w-full translate-y-full opacity-0 delay-0 duration-200',
