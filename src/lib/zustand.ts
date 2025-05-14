@@ -7,7 +7,6 @@ export const useZustand = create<ZustandStore>()(
     immer((set, get) => ({
         values: {
             themeIndex: 3,
-            initialPostDimensions: null,
             debug: {
                 applyFlipMotionBlur: false,
                 applyTransformMatrixFix: true,
@@ -20,12 +19,6 @@ export const useZustand = create<ZustandStore>()(
 
                 set((draftState) => {
                     draftState.values.themeIndex = next;
-                });
-            },
-
-            store_setPostAnimationStartDimensions: (elementRect) => {
-                set((draftState) => {
-                    draftState.values.initialPostDimensions = elementRect;
                 });
             },
 

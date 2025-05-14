@@ -3,7 +3,6 @@ import { MENU_CATEGORY, ToolsUrls } from './enums';
 export type ZustandStore = {
     values: {
         themeIndex: number;
-        initialPostDimensions: DOMRect | null;
         debug: {
             applyFlipMotionBlur: boolean;
             applyTransformMatrixFix: boolean;
@@ -11,7 +10,6 @@ export type ZustandStore = {
     };
     methods: {
         store_cycleTheme: () => void;
-        store_setPostAnimationStartDimensions: (elementRect: DOMRect) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
 };
