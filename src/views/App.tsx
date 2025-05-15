@@ -5,7 +5,7 @@ import Main from './Main';
 const App = () => {
     return (
         <div
-            className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-red-900 font-miriam-libre text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50' /* bg-[--bg-color] */
+            className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-blue-900 font-miriam-libre text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50' /* bg-[--bg-color] */
         >
             <BrowserRouter>
                 <Routes>

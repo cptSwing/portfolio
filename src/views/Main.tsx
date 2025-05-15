@@ -42,7 +42,8 @@ const Main = () => {
             style={
                 {
                     '--clip-shape-angle-rad': `${expansionState === 'nav' ? clipShapeAngleRad * -1 : expansionState === 'category' ? clipShapeAngleRad / 2 : (clipShapeAngleRad / 4) * -1}rad`,
-                    '--clip-shape-tan-main-contracted': `${clipShapeTan * 100}vh`,
+                    '--clip-shape-tan': clipShapeTan,
+                    '--clip-shape-tan-main-contracted': 'calc(var(--clip-shape-tan) * 100vh)',
                     '--clip-shape-tan-main-expanded': 'calc(var(--clip-shape-tan-main-contracted) / 2)',
                     '--clip-shape-tan-post': 'calc(var(--clip-shape-tan-main-expanded) / 2)',
                     '--clip-shape-width-nav-contracted': '25vw',
@@ -58,6 +59,7 @@ const Main = () => {
             className='size-full [--nav-category-common-color-1:theme(colors.gray.700)]'
         >
             <div
+                id='clip-shape-nav'
                 className={classNames(
                     'absolute left-0 z-10 flex size-full flex-row items-center justify-end bg-red-800 drop-shadow-2xl transition-[padding] duration-[--clip-shape-animation-duration]',
                     expansionState === 'nav'
@@ -71,7 +73,7 @@ const Main = () => {
             </div>
 
             <div
-                id='layer-below-clip-shape-main'
+                id='clip-shape-main'
                 ref={ref}
                 className={classNames(
                     'absolute z-0 size-full bg-green-800 delay-200 duration-500',
@@ -82,11 +84,17 @@ const Main = () => {
                           : 'animate-clip-shape-main-post [--clip-shape-flipper-inset:100%] [--clip-shape-post-inset:0%]',
                 )}
             >
-                <div className='flex size-full items-center justify-center overflow-hidden bg-yellow-800 pl-[calc(var(--clip-shape-width-nav-contracted)-var(--clip-shape-main-padding))] pr-[calc(100vw-var(--clip-shape-width-main-expanded)-var(--clip-shape-main-padding))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-b-[--clip-shape-flipper-inset] [--clip-shape-main-padding:theme(spacing.8)]'>
+                <div
+                    id='clip-shape-main-category'
+                    className='flex size-full items-center justify-center overflow-hidden bg-yellow-800 pl-[calc(var(--clip-shape-width-nav-contracted)-var(--clip-shape-main-padding))] pr-[calc(100vw-var(--clip-shape-width-main-expanded)-var(--clip-shape-main-padding))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-b-[--clip-shape-flipper-inset] [--clip-shape-main-padding:theme(spacing.8)]'
+                >
                     <Category />
                 </div>
 
-                <div className='absolute left-0 top-0 size-full transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-t-[--clip-shape-post-inset]'>
+                <div
+                    id='clip-shape-main-post'
+                    className='absolute left-0 top-0 size-full pl-[calc(var(--clip-shape-width-nav-post)-var(--clip-shape-tan-post))] pr-[calc(100vw-var(--clip-shape-width-main-post))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-t-[--clip-shape-post-inset]'
+                >
                     <DisplayPost />
                 </div>
             </div>

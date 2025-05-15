@@ -41,7 +41,7 @@ const Category = () => {
         <>
             <Flipper
                 element={'nav'}
-                className='postcards-grid-template relative grid h-3/5 w-full origin-center skew-x-[--clip-shape-angle-rad] grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--category-gap] overflow-hidden transition-[transform] duration-[--clip-shape-animation-duration] [--category-gap:calc(var(--clip-shape-main-padding)/2)] [--category-skew-anim-delay-duration:calc(var(--clip-shape-animation-duration)-var(--clip-shape-animation-delay-stagger))]'
+                className='postcards-grid-template relative grid h-3/5 w-full origin-center skew-x-[--clip-shape-angle-rad] transform grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--category-gap] transition-[transform] duration-[--clip-shape-animation-duration] [--category-gap:calc(var(--clip-shape-main-padding)/2)] [--category-skew-anim-delay-duration:calc(var(--clip-shape-animation-duration)-var(--clip-shape-animation-delay-stagger))]'
                 flipKey={cardAnimationIndex}
                 spring={{ stiffness: 600, damping: 40 }}
             >

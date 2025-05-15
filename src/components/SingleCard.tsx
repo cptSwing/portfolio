@@ -82,7 +82,7 @@ const SingleCard: FC<{
             <div
                 className={classNames(
                     '[--card-animation-blur-multiplier:0] [--card-title-anim-delay:200ms] [--card-title-anim-duration:100ms] [--card-titles-inset-padding:theme(spacing.2)]',
-                    'relative flex size-full select-none flex-col items-center justify-between will-change-transform',
+                    'relative flex size-full select-none flex-col items-center justify-between drop-shadow-lg',
                     applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
@@ -101,9 +101,9 @@ const SingleCard: FC<{
                 {/* Title: */}
                 <h6
                     className={classNames(
-                        'absolute top-[--card-titles-inset-padding] z-10 mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:bg-[--color-primary-inactive-cat-bg]',
+                        'absolute top-[--card-titles-inset-padding] z-10 mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:rounded-t-[3rem] before:bg-[--color-primary-inactive-cat-bg]',
                         isAtFront
-                            ? 'w-[calc(100%-(var(--card-titles-inset-padding)*2))] translate-y-0 opacity-100 delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]'
+                            ? 'w-[calc(100%-3rem)] translate-y-0 opacity-100 delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]'
                             : 'w-full -translate-y-full opacity-0 delay-0 duration-200',
                     )}
                 >
@@ -117,9 +117,9 @@ const SingleCard: FC<{
                 {subTitle && (
                     <div
                         className={classNames(
-                            'absolute bottom-[--card-titles-inset-padding] mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center text-sm transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:bg-[--color-primary-inactive-cat-bg] before:transition-transform',
+                            'absolute bottom-[--card-titles-inset-padding] mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center text-sm transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:rounded-b-[3rem] before:bg-[--color-primary-inactive-cat-bg] before:transition-transform',
                             isAtFront
-                                ? 'w-[calc(100%-(var(--card-titles-inset-padding)*2))] translate-y-0 opacity-100 delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]'
+                                ? 'w-[calc(100%-3rem)] translate-y-0 opacity-100 delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]'
                                 : 'w-full translate-y-full opacity-0 delay-0 duration-200',
                         )}
                     >
@@ -153,9 +153,18 @@ const SingleCardImage: FC<{
 
         let axis;
 
+        let borderRadius = '3rem';
+
         switch (gridAreaIndex) {
             case 0:
                 axis = 'horizontal';
+                direction = wheelDirection === 'up' ? 'reverse' : 'normal';
+                fillModeBefore = 'forwards';
+                opacBefore = wheelDirection === 'up' ? 0 : 1;
+                opacAfter = wheelDirection === 'up' ? 1 : 0;
+
+                borderRadius = '1.25rem';
+
                 break;
             case 1:
                 axis = wheelDirection === 'up' ? 'vertical' : 'horizontal';
@@ -164,21 +173,27 @@ const SingleCardImage: FC<{
 
                 opacBefore = wheelDirection === 'up' ? 1 : -1;
                 opacAfter = wheelDirection === 'up' ? 0 : 0;
+                borderRadius = '1.25rem';
+
                 break;
             case 2:
                 axis = 'vertical';
                 opacBefore = wheelDirection === 'up' ? 1 : 0;
                 opacAfter = wheelDirection === 'up' ? 0 : -1;
+                borderRadius = '2.5rem';
                 break;
             case 3:
                 axis = 'vertical';
                 opacBefore = wheelDirection === 'up' ? 1 : 0;
                 opacAfter = wheelDirection === 'up' ? 0 : -1;
+                borderRadius = '2.5rem';
                 break;
             case 4:
                 axis = wheelDirection === 'up' ? 'horizontal' : 'vertical';
                 opacBefore = wheelDirection === 'up' ? 1 : 0;
                 opacAfter = wheelDirection === 'up' ? 0 : -1;
+                borderRadius = '2.75rem';
+
                 break;
             case 5:
                 direction = wheelDirection === 'up' ? 'reverse' : 'reverse';
@@ -188,6 +203,7 @@ const SingleCardImage: FC<{
 
                 fillModeBefore = 'forwards';
                 fillModeAfter = 'forwards';
+                borderRadius = '2.75rem';
 
                 break;
             case 6:
@@ -197,10 +213,14 @@ const SingleCardImage: FC<{
                 fillModeAfter = 'forwards';
                 opacBefore = wheelDirection === 'up' ? 1 : -1;
                 opacAfter = wheelDirection === 'up' ? -1 : 0;
+                borderRadius = '3rem';
+
                 break;
 
             default:
+                // < 0
                 axis = 'horizontal';
+                borderRadius = '1rem';
                 break;
         }
 
@@ -215,6 +235,7 @@ const SingleCardImage: FC<{
             directionFillModeAfter: fillModeAfter,
             opacityBefore,
             opacityAfter,
+            borderRadius,
         };
 
         return values;
@@ -225,15 +246,16 @@ const SingleCardImage: FC<{
             // change key to re-render, meaning the animation runs once each keyswitch
             key={gridAreaIndex + ''}
             className={classNames(
-                '[--card-image-anim-duration:250ms] [--card-image-anim-hover-duration:100ms]',
+                '[--card-image-anim-duration:calc(var(--clip-shape-animation-duration)/1.5)] [--card-image-anim-hover-duration:100ms]',
 
-                'relative z-0 size-full overflow-hidden transition-transform',
+                'relative z-0 size-full overflow-hidden transition-[transform,border-radius]',
+
                 'hover-active:before:opacity-0 hover-active:before:transition-opacity hover-active:before:duration-[--card-image-anim-hover-duration] hover-active:after:opacity-0 hover-active:after:transition-opacity hover-active:after:duration-[--card-image-anim-hover-duration]',
 
                 isAtFront ? 'animate-[move-up-settle-down] [animation-duration:300ms] hover-active:scale-100' : 'hover-active:scale-[1.025]',
 
-                'before:absolute before:-left-px before:-top-px before:z-10 before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:animate-[--card-image-swipe-direction-anim-exit] before:bg-black before:opacity-[--card-image-swipe-opacity-before] before:outline before:outline-2 before:-outline-offset-1 before:outline-[--nav-category-common-color-1] before:[animation-delay:0ms] before:[animation-direction:var(--card-image-swipe-direction)] before:[animation-duration:var(--card-image-anim-duration)] before:[animation-fill-mode:var(--card-image-swipe-direction-fill-mode-before)]',
-                'after:absolute after:-left-px after:-top-px after:z-20 after:h-[calc(100%+2px)] after:w-[calc(100%+2px)] after:animate-[--card-image-swipe-direction-anim-enter] after:bg-black after:opacity-[--card-image-swipe-opacity-after] after:outline after:outline-2 after:-outline-offset-1 after:outline-[--nav-category-common-color-1] after:[animation-delay:0ms] after:[animation-direction:var(--card-image-swipe-direction)] after:[animation-duration:var(--card-image-anim-duration)] after:[animation-fill-mode:var(--card-image-swipe-direction-fill-mode-after)]',
+                'before:absolute before:-left-px before:-top-px before:z-10 before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:animate-[--card-image-swipe-direction-anim-exit] before:bg-black before:opacity-[--card-image-swipe-opacity-before] before:[animation-delay:0ms] before:[animation-direction:var(--card-image-swipe-direction)] before:[animation-duration:var(--card-image-anim-duration)] before:[animation-fill-mode:var(--card-image-swipe-direction-fill-mode-before)]',
+                'after:absolute after:-left-px after:-top-px after:z-20 after:h-[calc(100%+2px)] after:w-[calc(100%+2px)] after:animate-[--card-image-swipe-direction-anim-enter] after:bg-black after:opacity-[--card-image-swipe-opacity-after] after:[animation-delay:0ms] after:[animation-direction:var(--card-image-swipe-direction)] after:[animation-duration:var(--card-image-anim-duration)] after:[animation-fill-mode:var(--card-image-swipe-direction-fill-mode-after)]',
             )}
             style={
                 {
@@ -244,6 +266,7 @@ const SingleCardImage: FC<{
                     '--card-image-swipe-direction-fill-mode-after': dynamicStyleValues_Memo.directionFillModeAfter,
                     '--card-image-swipe-opacity-before': dynamicStyleValues_Memo.opacityBefore,
                     '--card-image-swipe-opacity-after': dynamicStyleValues_Memo.opacityAfter,
+                    'borderRadius': dynamicStyleValues_Memo.borderRadius,
                 } as CSSProperties
             }
         >

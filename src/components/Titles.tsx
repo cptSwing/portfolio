@@ -53,7 +53,7 @@ const Titles = () => {
 
                         <Settings />
                     </div>,
-                    document.getElementById('layer-below-clip-shape-main')!,
+                    document.getElementById('clip-shape-main')!,
                 )}
         </header>
     );

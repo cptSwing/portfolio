@@ -54,6 +54,14 @@
     .rotate-text {
         @apply writing-mode-vert-lr rotate-180;
     }
+
+    .headline-bg {
+        @apply after:absolute after:left-0 after:-z-10 after:size-full after:bg-neutral-50;
+    }
+
+    .headline-skewed-bg {
+        @apply after:absolute after:left-0 after:-z-10 after:size-full after:-skew-x-6 after:bg-neutral-50;
+    }
 }
 
 @layer utilities {
@@ -100,16 +108,6 @@
         'area5  area5   area5   area4   area4   area4   tracker'
         'area5  area5   area5   area4   area4   area4   tracker'
         'area5  area5   area5   area4   area4   area4   tracker';
-}
-
-/* Conditional Classes */
-
-.mrkdwn > p {
-    @apply mb-4 last:mb-0 sm:mb-6;
-}
-
-.mrkdwn > h5 {
-    @apply w-fit;
 }
 
 /* SVG Filters */

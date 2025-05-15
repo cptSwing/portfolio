@@ -1,10 +1,11 @@
 import { ChevronLeftIcon, ChevronRightIcon, CodeBracketSquareIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { CSSProperties, FC, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import remarkBreaks from 'remark-breaks';
 import Lightbox, { SlideImage } from 'yet-another-react-lightbox';
 import { Captions } from 'yet-another-react-lightbox/plugins';
+import 'yet-another-react-lightbox/styles.css';
 import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../types/types';
@@ -58,13 +59,15 @@ const DisplayPost = () => {
 
     /* NOTE Lightbox uses SlideImage Type (see above), so we need to jump through some hoops to pick correct SlideImage index from Post_ShowCase index */
     const setLightBoxSlide_Cb = useCallback(
-        (showCaseIndex: number) => filteredImages_Memo && setLightboxTo(filteredImages_Memo.findIndex((slide) => slide.scIndx === showCaseIndex)),
+        (showCaseIndex: number) => {
+            filteredImages_Memo && setLightboxTo(filteredImages_Memo.findIndex((slide) => slide.scIndx === showCaseIndex));
+        },
         [filteredImages_Memo],
     );
 
     return (
-        <main className='fixed left-[calc(var(--clip-shape-width-nav-post)-var(--clip-shape-tan-post))] right-[calc(100vw-var(--clip-shape-width-main-post))] z-30 flex h-full w-fit flex-col overflow-hidden bg-[--theme-bg-lighter] px-10 transition-[opacity,scale] duration-300'>
-            <header className='pointer-events-none z-10 mx-auto flex w-full items-end justify-center text-center'>
+        <main className='relative flex size-full flex-col overflow-hidden bg-[--theme-bg-lighter] px-[--clip-shape-tan-post] duration-300'>
+            <header className='pointer-events-none relative z-10 mx-auto flex w-full items-end justify-center text-center'>
                 {/* Floating Title: */}
                 <h2 className='absolute translate-y-[calc(50%+(var(--bar-height)/2))] select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
                     {title}
@@ -74,7 +77,7 @@ const DisplayPost = () => {
 
                 {/* Previous Post */}
                 <div
-                    className='group/left pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] -translate-x-full translate-y-1/2 cursor-pointer active:-translate-x-[105%] sm:bottom-1/2 sm:left-[calc((100%-var(--post-width))/2)] sm:right-auto sm:top-1/2 sm:translate-y-0'
+                    className='group/left pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] -translate-x-full translate-y-1/2 cursor-pointer active:-translate-x-[105%] sm:bottom-1/2 sm:left-[--clip-shape-width-nav-post] sm:right-auto sm:top-1/2 sm:translate-y-0'
                     onClick={() => {
                         if (typeof id === 'number') {
                             const currentIndex = postIds_Memo.findIndex((val) => val === id);
@@ -83,11 +86,13 @@ const DisplayPost = () => {
                         }
                     }}
                 >
-                    <ChevronLeftIcon className='h-[--header-height] stroke-[--color-bars-no-post] opacity-50 group-hover/left:opacity-100 group-active/left:opacity-100 sm:h-16 sm:scale-x-75' />
+                    <ChevronLeftIcon
+                        className='h-[--header-height] stroke-green-800 opacity-50 group-hover/left:opacity-100 group-active/left:opacity-100 sm:h-16 sm:scale-x-75' /* stroke-[--color-bars-no-post] */
+                    />
                 </div>
                 {/* Next Post */}
                 <div
-                    className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] translate-x-full translate-y-1/2 cursor-pointer active:translate-x-[105%] sm:bottom-1/2 sm:left-auto sm:right-[calc((100%-var(--post-width))/2)] sm:top-1/2 sm:translate-y-0'
+                    className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] translate-x-full translate-y-1/2 cursor-pointer active:translate-x-[105%] sm:bottom-1/2 sm:left-auto sm:right-[calc(100vw-var(--clip-shape-width-main-post)+var(--clip-shape-tan-post))] sm:top-1/2 sm:translate-y-0'
                     onClick={() => {
                         if (typeof id === 'number') {
                             const currentIndex = postIds_Memo.findIndex((val) => val === id);
@@ -96,93 +101,45 @@ const DisplayPost = () => {
                         }
                     }}
                 >
-                    <ChevronRightIcon className='h-[--header-height] stroke-[--color-bars-no-post] opacity-50 group-hover/right:opacity-100 group-active/right:opacity-100 sm:h-16 sm:scale-x-75' />
+                    <ChevronRightIcon
+                        className='h-[--header-height] stroke-green-800 opacity-50 group-hover/right:opacity-100 group-active/right:opacity-100 sm:h-16 sm:scale-x-75' /* stroke-[--color-bars-no-post] */
+                    />
                 </div>
             </header>
 
             {textBlocks ? (
                 // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
-                <div className='scroll-gutter-both origin-center skew-x-[--clip-shape-angle-rad] overflow-y-auto scrollbar-thin [--scrollbar-thumb:--color-bars-post]'>
-                    <div className='relative flex flex-col px-12 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:py-6 xl:py-12'>
-                        {/* (Sub-)Header, date, "Built with" */}
-                        <div className='flex w-full items-start justify-between pb-2 pt-8 sm:py-8'>
-                            <h4 className='skew-x-[calc(var(--clip-shape-angle-rad)*-1)] leading-none'>{subTitle}</h4>
-                            <div className='relative mt-1 flex flex-col items-end justify-start'>
-                                <h5 className='headline-bg -mr-0.5 w-fit skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-[--bg-color] no-underline'>
+                <div
+                    className='origin-center skew-x-[--clip-shape-angle-rad] overflow-y-auto bg-blue-400/20 scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /* scroll-gutter-both  */
+                >
+                    <div className='relative flex flex-col [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:py-6 xl:py-12'>
+                        <div className='relative size-full'>
+                            {/* (Sub-)Header, date, "Built with" */}
+                            <h4 className='h-fit leading-none'>
+                                <span className='text-left'>{subTitle}</span>
+                                <span className='text-right text-[--bg-color] no-underline'>
                                     {day && `${day}.`}
                                     {month && `${month}.`}
                                     {year && `${year}`}
-                                </h5>
-                                {/* <ToolsUsed tools={toolsUsed} /> */}
-                            </div>
-                        </div>
+                                </span>
+                            </h4>
 
-                        <div className='flex flex-col gap-y-8 sm:gap-y-16'>
                             {/* Text/Image Blocks */}
                             {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
-                                const isBlockIndexEven = idx % 2 === 0;
                                 const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
-
                                 return (
-                                    <div
-                                        key={`${idx}-${isBlockIndexEven}`}
-                                        className='flex h-fit flex-col items-stretch justify-start sm:flex-row sm:items-start sm:justify-between'
-                                    >
-                                        {showCase && (
-                                            <div
-                                                className={classNames(
-                                                    'group relative max-h-48 min-h-[--min-height] w-full cursor-pointer overflow-hidden drop-shadow-md [--min-height:theme(spacing.48)] sm:max-h-64 sm:w-auto sm:basis-2/5 sm:[--min-height:theme(spacing.56)]',
-                                                    isBlockIndexEven
-                                                        ? idx === 0
-                                                            ? 'mt-4 sm:order-2 sm:ml-12 sm:mt-4'
-                                                            : 'mt-4 sm:order-2 sm:ml-12 sm:mt-0'
-                                                        : 'mb-4 sm:order-1 sm:mb-0 sm:mr-12',
-                                                )}
-                                                onClick={() => (showCase as Post_ShowCase_Image).imgUrl && setLightBoxSlide_Cb(useShowCaseIndex!)}
-                                            >
-                                                {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
-                                                    <iframe
-                                                        src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace(
-                                                            'https://www.youtube.com/watch?v=',
-                                                            'https://www.youtube.com/embed/',
-                                                        )}
-                                                        title='YouTube video player'
-                                                        referrerPolicy='strict-origin-when-cross-origin'
-                                                        allowFullScreen
-                                                        className='size-full min-h-[--min-height]'
-                                                    />
-                                                ) : (
-                                                    <img src={(showCase as Post_ShowCase_Image).imgUrl} className='size-full object-cover' />
-                                                )}
-                                                {showCase.caption && (
-                                                    <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] mask-edges-x-2/5 group-hover:bg-neutral-500 group-hover:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:group-hover:max-h-full'>
-                                                        {showCase.caption}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-
-                                        <div
-                                            className={classNames(
-                                                '-mt-1 text-pretty text-justify leading-tight tracking-wide sm:leading-normal',
-                                                showCase ? 'flex-1' : 'mr-auto sm:basis-4/5',
-                                                isBlockIndexEven ? 'order-1' : 'order-2',
-                                                idx === 0
-                                                    ? 'first-letter:-ml-0.5 first-letter:align-text-bottom first-letter:text-[2rem] first-letter:leading-[1.84rem] first-letter:text-[--theme-secondary-400]'
-                                                    : '',
-                                            )}
-                                        >
-                                            <Markdown className='mrkdwn' remarkPlugins={[remarkBreaks]}>
-                                                {text}
-                                            </Markdown>
-                                        </div>
-
-                                        <br />
-                                    </div>
+                                    <TextImageBlock
+                                        key={`${idx}-${useShowCaseIndex}`}
+                                        text={text}
+                                        blockIndex={idx}
+                                        showCase={showCase}
+                                        lightboxCallback={() => typeof useShowCaseIndex === 'number' && setLightBoxSlide_Cb(useShowCaseIndex)}
+                                    />
                                 );
                             })}
                         </div>
 
+                        {/* Gallery below text */}
                         {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
 
                         <Lightbox
@@ -203,6 +160,110 @@ const DisplayPost = () => {
 
 export default DisplayPost;
 
+const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_ShowCase; lightboxCallback: () => void }> = ({
+    text,
+    blockIndex,
+    showCase,
+    lightboxCallback,
+}) => {
+    const blockRef = useRef<HTMLDivElement | null>(null);
+    const showCaseRef = useRef<HTMLDivElement | null>(null);
+    const isBlockIndexEven = blockIndex % 2 === 0;
+
+    const [blockHeight, setBlockHeight] = useState(0);
+    useLayoutEffect(() => {
+        blockRef.current && setBlockHeight(blockRef.current.clientHeight);
+    });
+
+    return (
+        <div
+            ref={blockRef}
+            className='clear-both w-full skew-x-[calc(var(--clip-shape-angle-rad)*-1)]'
+            style={
+                {
+                    '--block-height': `${blockHeight}px`,
+                    '--block-clip-path-offset': 'calc(var(--clip-shape-tan) * var(--block-height) / 4)',
+                } as CSSProperties
+            }
+            // onLoad={({ currentTarget }) => {
+            //     setBlockHeight(currentTarget.clientHeight);
+            // }}
+        >
+            <div className='float-left mr-2 h-[--block-height] w-[--block-clip-path-offset] bg-blue-500 [clip-path:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)] [shape-outside:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)]' />
+            {showCase && (
+                <>
+                    {/* <div
+                        className={classNames(
+                            'h-[--block-height] w-[--block-clip-path-offset] bg-blue-500 [clip-path:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)] [shape-outside:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)]',
+                            isBlockIndexEven ? 'float-left mr-2' : 'float-right ml-2',
+                        )}
+                    /> */}
+
+                    <div
+                        ref={showCaseRef}
+                        style={
+                            {
+                                '--showcase-height': `${showCaseRef.current ? showCaseRef.current.clientHeight : 0}px`,
+                                '--showcase-clip-path-offset': 'calc(var(--clip-shape-tan) * var(--showcase-height) / 4)',
+                            } as CSSProperties
+                        }
+                        className={classNames(
+                            'group relative aspect-video w-2/5 cursor-pointer overflow-hidden drop-shadow-md',
+                            '[clip-path:polygon(var(--showcase-clip-path-offset)_0,100%_0,calc(100%-var(--showcase-clip-path-offset))_100%,0_100%)] [shape-outside:polygon(var(--showcase-clip-path-offset)_0,100%_0,calc(100%-var(--showcase-clip-path-offset))_100%,0_100%)]',
+                            isBlockIndexEven ? 'float-right ml-2' : 'float-left mr-2',
+                        )}
+                        onClick={() => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback()}
+                    >
+                        {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
+                            <iframe
+                                src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace(
+                                    'https://www.youtube.com/watch?v=',
+                                    'https://www.youtube.com/embed/',
+                                )}
+                                title='YouTube video player'
+                                referrerPolicy='strict-origin-when-cross-origin'
+                                allowFullScreen
+                                className='backface-hidden size-full'
+                            />
+                        ) : (
+                            <img src={(showCase as Post_ShowCase_Image).imgUrl} className='size-full object-cover object-top' />
+                        )}
+                        {showCase.caption && (
+                            <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] mask-edges-x-2/5 group-hover-active:bg-neutral-500 group-hover-active:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:group-hover-active:max-h-full'>
+                                {showCase.caption}
+                            </div>
+                        )}
+                    </div>
+                </>
+            )}
+
+            <Markdown
+                components={{
+                    p: ({ children }) => (
+                        <p
+                            className={classNames(
+                                'text-pretty text-justify leading-tight tracking-wide sm:leading-normal' /* skew-x-[calc(var(--clip-shape-angle-rad)*-1)] */,
+                                blockIndex === 0
+                                    ? 'first-of-type:first-letter:-ml-0.5 first-of-type:first-letter:align-text-bottom first-of-type:first-letter:text-[2rem] first-of-type:first-letter:leading-[1.84rem] first-of-type:first-letter:text-red-800'
+                                    : '',
+                            )}
+                        >
+                            {children}
+                        </p>
+                    ),
+                    h5: ({ children }) => <h5 className='w-fit'>{children}</h5>,
+                }}
+                remarkPlugins={[remarkBreaks]}
+            >
+                {text}
+            </Markdown>
+
+            <div className='float-right ml-2 h-[--block-height] w-[--block-clip-path-offset] bg-blue-500 [clip-path:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)] [shape-outside:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)]' />
+            <br />
+        </div>
+    );
+};
+
 const RemainingImages: FC<{
     showCases: Post_ShowCase[];
     textBlocks: Post['textBlocks'];
@@ -222,12 +283,16 @@ const RemainingImages: FC<{
                 const [imageShowCase, imageIndex] = remain || [];
 
                 return imageShowCase && typeof imageIndex === 'number' ? (
-                    <img
+                    <div
                         key={imageShowCase.imgUrl + imageIndex}
-                        src={imageShowCase.imgUrl}
-                        className='max-h-64 w-full cursor-pointer border border-transparent object-cover drop-shadow-sm hover:border-[--color-bars-no-post]'
-                        onClick={() => setLightBoxSlide(imageIndex)}
-                    />
+                        className='max-h-64 w-full overflow-hidden border border-transparent drop-shadow-sm hover-active:border-red-800'
+                    >
+                        <img
+                            src={imageShowCase.imgUrl}
+                            className='skew-x-[calc(var(--clip-shape-angle-rad)*-1)] scale-105 cursor-pointer object-cover'
+                            onClick={() => setLightBoxSlide(imageIndex)}
+                        />
+                    </div>
                 ) : null;
             })}
         </div>
