@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect, useMemo, useRef } from 'react';
+import { CSSProperties, FC, useMemo, useRef } from 'react';
 import { Post } from '../types/types.ts';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
@@ -82,7 +82,7 @@ const SingleCard: FC<{
             <div
                 className={classNames(
                     '[--card-animation-blur-multiplier:0] [--card-title-anim-delay:200ms] [--card-title-anim-duration:100ms] [--card-titles-inset-padding:theme(spacing.2)]',
-                    'relative flex size-full select-none flex-col items-center justify-between drop-shadow-lg',
+                    'relative flex size-full select-none flex-col items-center justify-between drop-shadow-md',
                     applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
@@ -163,7 +163,7 @@ const SingleCardImage: FC<{
                 opacBefore = wheelDirection === 'up' ? 0 : 1;
                 opacAfter = wheelDirection === 'up' ? 1 : 0;
 
-                borderRadius = '1.25rem';
+                borderRadius = '1rem';
 
                 break;
             case 1:
@@ -173,7 +173,7 @@ const SingleCardImage: FC<{
 
                 opacBefore = wheelDirection === 'up' ? 1 : -1;
                 opacAfter = wheelDirection === 'up' ? 0 : 0;
-                borderRadius = '1.25rem';
+                borderRadius = '1.05rem';
 
                 break;
             case 2:
@@ -220,7 +220,7 @@ const SingleCardImage: FC<{
             default:
                 // < 0
                 axis = 'horizontal';
-                borderRadius = '1rem';
+                borderRadius = '0.85rem';
                 break;
         }
 
@@ -248,7 +248,7 @@ const SingleCardImage: FC<{
             className={classNames(
                 '[--card-image-anim-duration:calc(var(--clip-shape-animation-duration)/1.5)] [--card-image-anim-hover-duration:100ms]',
 
-                'relative z-0 size-full overflow-hidden transition-[transform,border-radius]',
+                'relative z-0 size-full overflow-hidden !rounded-tl-sm transition-[transform,border-radius]',
 
                 'hover-active:before:opacity-0 hover-active:before:transition-opacity hover-active:before:duration-[--card-image-anim-hover-duration] hover-active:after:opacity-0 hover-active:after:transition-opacity hover-active:after:duration-[--card-image-anim-hover-duration]',
 

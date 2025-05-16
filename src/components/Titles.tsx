@@ -24,7 +24,7 @@ const Titles = () => {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     return (
-        <header className='relative origin-right skew-x-[--clip-shape-angle-rad] transition-transform duration-500'>
+        <header className='pointer-events-auto relative origin-right skew-x-[--clip-shape-angle-rad] transition-transform duration-500'>
             <div className='relative mr-12 flex w-full flex-col items-end justify-start [--nav-title-animation-duration:300ms] [--nav-title-before-width:calc(100%+theme(spacing.2))] [--nav-title-padding-left:theme(spacing.4)]'>
                 {/* Code, 3D, Log */}
                 {categoriesArray.map((cardData) => (
@@ -35,7 +35,7 @@ const Titles = () => {
                 <div
                     className={classNames(
                         'relative z-0 mt-8 flex aspect-square w-1/4 cursor-pointer flex-col items-center justify-around p-2',
-                        'before:absolute before:-z-10 before:h-full before:w-0 before:bg-yellow-800 before:transition-[width] before:duration-500',
+                        'before:absolute before:-z-10 before:h-full before:w-0 before:bg-blue-800 before:transition-[width] before:duration-500',
                         'hover-active:before:w-full',
                     )}
                     onClick={() => setMenuIsOpen((prev) => !prev)}
@@ -89,7 +89,7 @@ const CategoryTitle: FC<{
             to={`/${id}`}
             className={classNames(
                 'group/link relative z-0 flex w-full cursor-pointer items-center justify-end py-2 pl-[--nav-title-padding-left] no-underline',
-                'before:absolute before:-z-10 before:block before:h-full before:w-0 before:rounded-bl-2xl before:bg-yellow-800 before:transition-[width,filter] before:duration-[--nav-title-animation-duration]',
+                'before:absolute before:-z-10 before:block before:h-full before:w-0 before:rounded-bl-2xl before:bg-blue-800 before:transition-[width,filter] before:duration-[--nav-title-animation-duration]',
                 'hover:text-red-500',
                 isThisCategoryOpen_Memo
                     ? 'before:w-[--nav-title-before-width] hover-active:before:w-[--nav-title-before-width]'

@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon, CodeBracketSquareIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { CSSProperties, FC, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import remarkBreaks from 'remark-breaks';
@@ -77,7 +77,7 @@ const DisplayPost = () => {
 
                 {/* Previous Post */}
                 <div
-                    className='group/left pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] -translate-x-full translate-y-1/2 cursor-pointer active:-translate-x-[105%] sm:bottom-1/2 sm:left-[--clip-shape-width-nav-post] sm:right-auto sm:top-1/2 sm:translate-y-0'
+                    className='group/left pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] -translate-x-full translate-y-1/2 cursor-pointer active:-translate-x-[105%] sm:bottom-1/2 sm:left-[--clip-shape-width-post-left] sm:right-auto sm:top-1/2 sm:translate-y-0'
                     onClick={() => {
                         if (typeof id === 'number') {
                             const currentIndex = postIds_Memo.findIndex((val) => val === id);
@@ -92,7 +92,7 @@ const DisplayPost = () => {
                 </div>
                 {/* Next Post */}
                 <div
-                    className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] translate-x-full translate-y-1/2 cursor-pointer active:translate-x-[105%] sm:bottom-1/2 sm:left-auto sm:right-[calc(100vw-var(--clip-shape-width-main-post)+var(--clip-shape-tan-post))] sm:top-1/2 sm:translate-y-0'
+                    className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] translate-x-full translate-y-1/2 cursor-pointer active:translate-x-[105%] sm:bottom-1/2 sm:left-auto sm:right-[calc(100vw-var(--clip-shape-width-post-right)+var(--clip-shape-tan-post))] sm:top-1/2 sm:translate-y-0'
                     onClick={() => {
                         if (typeof id === 'number') {
                             const currentIndex = postIds_Memo.findIndex((val) => val === id);
@@ -110,7 +110,7 @@ const DisplayPost = () => {
             {textBlocks ? (
                 // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
                 <div
-                    className='origin-center skew-x-[--clip-shape-angle-rad] overflow-y-auto bg-blue-400/20 scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /* scroll-gutter-both  */
+                    className='scroll-gutter-both origin-center skew-x-[--clip-shape-angle-rad] overflow-y-auto bg-blue-400/30 scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /*   */
                 >
                     <div className='relative flex flex-col [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:py-6 xl:py-12'>
                         <div className='relative size-full'>

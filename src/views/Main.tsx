@@ -1,5 +1,5 @@
 import Titles from '../components/Titles';
-import { CSSProperties, MutableRefObject, useEffect, useLayoutEffect, useState } from 'react';
+import { CSSProperties, MutableRefObject, useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Category from '../components/Category';
 import classNames from '../lib/classNames';
@@ -32,8 +32,8 @@ const Main = () => {
     const ref = useOutsideClick(() => {
         if (!postId) {
             // should not trigger when post is displayed
-            navigate('/');
-            setExpansionState('nav');
+            // navigate('/');
+            // setExpansionState('nav');
         }
     }) as MutableRefObject<HTMLDivElement | null>;
 
@@ -41,63 +41,94 @@ const Main = () => {
         <div
             style={
                 {
-                    '--clip-shape-angle-rad': `${expansionState === 'nav' ? clipShapeAngleRad * -1 : expansionState === 'category' ? clipShapeAngleRad / 2 : (clipShapeAngleRad / 4) * -1}rad`,
+                    '--clip-shape-angle-rad': `${expansionState === 'nav' ? clipShapeAngleRad * -1 : expansionState === 'category' ? clipShapeAngleRad / 2 : /* === 'post' */ (clipShapeAngleRad / 4) * -1}rad`,
+
                     '--clip-shape-tan': clipShapeTan,
-                    '--clip-shape-tan-main-contracted': 'calc(var(--clip-shape-tan) * 100vh)',
-                    '--clip-shape-tan-main-expanded': 'calc(var(--clip-shape-tan-main-contracted) / 2)',
-                    '--clip-shape-tan-post': 'calc(var(--clip-shape-tan-main-expanded) / 2)',
-                    '--clip-shape-width-nav-contracted': '25vw',
-                    '--clip-shape-width-nav-expanded': '60vw',
-                    '--clip-shape-width-nav-post': '10vw',
-                    '--clip-shape-width-main-contracted': 'calc(var(--clip-shape-width-nav-expanded) + 1rem)',
-                    '--clip-shape-width-main-expanded': '75vw',
-                    '--clip-shape-width-main-post': '90vw',
-                    '--clip-shape-animation-duration': '700ms',
-                    '--clip-shape-animation-delay-stagger': '300ms',
+                    '--clip-shape-tan-nav': 'calc(var(--clip-shape-tan) * 100vh)',
+                    '--clip-shape-tan-category': 'calc(var(--clip-shape-tan-nav) / 2)',
+                    '--clip-shape-tan-post': 'calc(var(--clip-shape-tan-category) / 2)',
+
+                    '--clip-shape-width-nav-inner-space': '1rem',
+                    '--clip-shape-width-nav-left': '50vw',
+                    '--clip-shape-width-nav-right': 'calc(var(--clip-shape-width-nav-left) + var(--clip-shape-width-nav-inner-space))',
+
+                    '--clip-shape-width-category-left': '20vw',
+                    '--clip-shape-width-category-right': 'calc(100% - var(--clip-shape-width-category-left))',
+
+                    '--clip-shape-width-post-left': '10vw',
+                    '--clip-shape-width-post-right': '90vw',
+
+                    '--clip-shape-animation-duration': '600ms',
+                    '--clip-shape-animation-delay-stagger': '500ms',
+
+                    '--clip-shape-flipper-inset': expansionState === 'nav' ? '100%' : expansionState === 'category' ? '0%' : /* === 'post' */ '100%',
+                    '--clip-shape-post-inset': expansionState === 'nav' ? '100%' : expansionState === 'category' ? '100%' : /* === 'post' */ '0%',
                 } as CSSProperties
             }
             className='size-full [--nav-category-common-color-1:theme(colors.gray.700)]'
         >
             <div
-                id='clip-shape-nav'
+                id='clip-shape-left'
                 className={classNames(
-                    'absolute left-0 z-10 flex size-full flex-row items-center justify-end bg-red-800 drop-shadow-2xl transition-[padding] duration-[--clip-shape-animation-duration]',
+                    'drop-shadow-omni-lg pointer-events-none absolute left-0 top-0 z-20 flex size-full flex-row items-center justify-end transition-[padding]',
+                    'before:absolute before:left-0 before:top-0 before:size-full before:bg-red-800 before:duration-[--clip-shape-animation-duration]',
                     expansionState === 'nav'
-                        ? 'animate-clip-shape-nav-expand pr-[calc(100vw-var(--clip-shape-width-nav-expanded)+var(--clip-shape-tan-main-contracted)/2-1px)]'
+                        ? 'before:animate-clip-shape-left-nav pr-[calc(100vw-var(--clip-shape-width-nav-right)+var(--clip-shape-width-nav-inner-space))]'
                         : expansionState === 'category'
-                          ? 'animate-clip-shape-nav-contract pr-[calc(100vw-var(--clip-shape-width-nav-contracted)+var(--clip-shape-tan-main-expanded)/2-1px)]'
-                          : 'animate-clip-shape-nav-post pr-[calc(100vw-var(--clip-shape-width-nav-post)+var(--clip-shape-tan-post)/2-1px)]',
+                          ? 'before:animate-clip-shape-left-category pr-[calc(100vw-var(--clip-shape-width-category-left)-2px)]'
+                          : // === 'post'
+                            'before:animate-clip-shape-left-post pr-[calc(100vw-var(--clip-shape-width-post-left)-2px)]',
                 )}
             >
                 <Titles />
             </div>
 
-            <div
-                id='clip-shape-main'
-                ref={ref}
-                className={classNames(
-                    'absolute z-0 size-full bg-green-800 delay-200 duration-500',
-                    expansionState === 'nav'
-                        ? 'animate-clip-shape-main-contract [--clip-shape-flipper-inset:100%] [--clip-shape-post-inset:100%]'
-                        : expansionState === 'category'
-                          ? 'animate-clip-shape-main-expand [--clip-shape-flipper-inset:0%] [--clip-shape-post-inset:100%]'
-                          : 'animate-clip-shape-main-post [--clip-shape-flipper-inset:100%] [--clip-shape-post-inset:0%]',
-                )}
-            >
+            <div id='clip-shape-main' className='absolute left-0 top-0 z-0 size-full'>
                 <div
                     id='clip-shape-main-category'
-                    className='flex size-full items-center justify-center overflow-hidden bg-yellow-800 pl-[calc(var(--clip-shape-width-nav-contracted)-var(--clip-shape-main-padding))] pr-[calc(100vw-var(--clip-shape-width-main-expanded)-var(--clip-shape-main-padding))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-b-[--clip-shape-flipper-inset] [--clip-shape-main-padding:theme(spacing.8)]'
+                    className={classNames(
+                        'absolute left-0 right-0 z-0 mx-auto flex h-full w-[calc(var(--clip-shape-width-category-right)-var(--clip-shape-width-category-left)+var(--clip-shape-tan-category))] items-center justify-center overflow-hidden bg-blue-800 px-[calc(var(--clip-shape-main-padding)*1.5)] transition-[clip-path] duration-[--clip-shape-animation-duration] clip-inset-b-[--clip-shape-flipper-inset] [--clip-shape-main-padding:calc(var(--clip-shape-tan-category)/2)]',
+                        expansionState === 'nav'
+                            ? 'delay-0'
+                            : expansionState === 'category'
+                              ? 'delay-[--clip-shape-animation-delay-stagger]'
+                              : // === 'post'
+                                'delay-0',
+                    )}
                 >
                     <Category />
                 </div>
 
                 <div
                     id='clip-shape-main-post'
-                    className='absolute left-0 top-0 size-full pl-[calc(var(--clip-shape-width-nav-post)-var(--clip-shape-tan-post))] pr-[calc(100vw-var(--clip-shape-width-main-post))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-t-[--clip-shape-post-inset]'
+                    className={classNames(
+                        'absolute left-0 top-0 z-10 flex size-full pl-[calc(var(--clip-shape-width-post-left)-(var(--clip-shape-tan-post)/2))] pr-[calc(100vw-(var(--clip-shape-width-post-right)+(var(--clip-shape-tan-post)/2)))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-t-[--clip-shape-post-inset]',
+                        expansionState === 'nav'
+                            ? 'delay-0'
+                            : expansionState === 'category'
+                              ? 'delay-0'
+                              : // === 'post'
+                                'delay-[--clip-shape-animation-delay-stagger]',
+                    )}
                 >
                     <DisplayPost />
                 </div>
             </div>
+
+            <div
+                id='clip-shape-right'
+                ref={ref}
+                className={classNames(
+                    'drop-shadow-omni-lg pointer-events-none absolute left-0 top-0 z-20 size-full',
+                    'before:absolute before:left-0 before:top-0 before:size-full before:bg-green-800',
+                    expansionState === 'nav'
+                        ? 'before:animate-clip-shape-right-nav'
+                        : expansionState === 'category'
+                          ? 'before:animate-clip-shape-right-category'
+                          : // === 'post'
+                            'before:animate-clip-shape-right-post',
+                )}
+            ></div>
         </div>
     );
 };

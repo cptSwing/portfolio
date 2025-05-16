@@ -140,6 +140,10 @@ const tailWindTheme = {
                 '2xs': ['0.666rem', { lineHeight: '0.875rem' }],
                 '3xs': ['0.55rem', { lineHeight: '0.7rem' }],
             },
+            dropShadow: {
+                'omni-md': ['0 0 4px rgb(0 0 0 / 0.1)', '0 0 3px rgb(0 0 0 / 0.2)'],
+                'omni-lg': ['0 0 6px rgb(0 0 0 / 0.2)', '0 0 4px rgb(0 0 0 / 0.4)'],
+            },
             boxShadow: {
                 'top-rim-lg': 'inset 0px 10px 4px -10px rgb(0 0 0 / 0.1)',
                 'with-top-lg': '0px -1px 10px -1px rgb(0 0 0 / 0.1), 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
