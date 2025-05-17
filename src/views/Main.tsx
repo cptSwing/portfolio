@@ -7,6 +7,24 @@ import useOutsideClick from '../hooks/useOutsideClick';
 import DisplayPost from '../components/DisplayPost';
 import roundNumToDecimal from '../lib/roundNumToDecimal';
 
+const _hex = (angleDeg: number) => {
+    const degToRad = (deg: number) => deg * (Math.PI / 180);
+
+    const angleRad = degToRad(angleDeg);
+    const sides = 6;
+
+    let shape = `polygon(`;
+    for (let i = 0; i < sides; i++) {
+        const x = 50 + 50 * Math.cos(angleRad + (i * 2 * Math.PI) / sides);
+        const y = 50 + 50 * Math.sin(angleRad + (i * 2 * Math.PI) / sides);
+        shape += `${+x.toFixed(2)}% ${+y.toFixed(2)}%,`;
+    }
+    shape = shape.slice(0, -1);
+    shape += `)`;
+
+    return shape;
+};
+
 const clipShapeAngleRad = roundNumToDecimal(20 * (Math.PI / 180), 1);
 const clipShapeTan = roundNumToDecimal(Math.tan(clipShapeAngleRad), 2);
 
@@ -70,14 +88,14 @@ const Main = () => {
             <div
                 id='clip-shape-left'
                 className={classNames(
-                    'drop-shadow-omni-lg pointer-events-none absolute left-0 top-0 z-20 flex size-full flex-row items-center justify-end transition-[padding]',
-                    'before:absolute before:left-0 before:top-0 before:size-full before:bg-red-800 before:duration-[--clip-shape-animation-duration]',
+                    'pointer-events-none absolute left-0 top-0 z-20 flex size-full flex-row items-center justify-end drop-shadow-omni-lg transition-[padding]',
+                    'before:absolute before:left-0 before:top-0 before:size-full before:bg-red-800 before:transition-[clip-shape] before:duration-[--clip-shape-animation-duration] after:[clip-path:polygon(0_0,calc(var(--clip-shape-width-nav-left)+var(--clip-shape-tan-nav)/2)_0,calc(var(--clip-shape-width-nav-left)-calc(var(--clip-shape-tan-nav)/2))_100%,0_100%)]',
                     expansionState === 'nav'
                         ? 'before:animate-clip-shape-left-nav pr-[calc(100vw-var(--clip-shape-width-nav-right)+var(--clip-shape-width-nav-inner-space))]'
                         : expansionState === 'category'
-                          ? 'before:animate-clip-shape-left-category pr-[calc(100vw-var(--clip-shape-width-category-left)-2px)]'
+                          ? 'before:animate-clip-shape-left-category pr-[calc(100vw-var(--clip-shape-width-category-left))]'
                           : // === 'post'
-                            'before:animate-clip-shape-left-post pr-[calc(100vw-var(--clip-shape-width-post-left)-2px)]',
+                            'before:animate-clip-shape-left-post pr-[calc(100vw-var(--clip-shape-width-post-left))]',
                 )}
             >
                 <Titles />
@@ -119,7 +137,7 @@ const Main = () => {
                 id='clip-shape-right'
                 ref={ref}
                 className={classNames(
-                    'drop-shadow-omni-lg pointer-events-none absolute left-0 top-0 z-20 size-full',
+                    'pointer-events-none absolute left-0 top-0 z-20 size-full drop-shadow-omni-lg',
                     'before:absolute before:left-0 before:top-0 before:size-full before:bg-green-800',
                     expansionState === 'nav'
                         ? 'before:animate-clip-shape-right-nav'

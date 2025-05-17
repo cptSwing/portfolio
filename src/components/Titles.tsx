@@ -89,11 +89,12 @@ const CategoryTitle: FC<{
             to={`/${id}`}
             className={classNames(
                 'group/link relative z-0 flex w-full cursor-pointer items-center justify-end py-2 pl-[--nav-title-padding-left] no-underline',
-                'before:absolute before:-z-10 before:block before:h-full before:w-0 before:rounded-bl-2xl before:bg-blue-800 before:transition-[width,filter] before:duration-[--nav-title-animation-duration]',
+                'before:absolute before:-z-10 before:-mr-0.5 before:block before:h-full before:rounded-bl-2xl before:bg-blue-800 before:drop-shadow-md before:transition-[width] before:duration-[--nav-title-animation-duration]',
+                'after:absolute after:right-0 after:h-full after:bg-white after:opacity-5 after:blur-sm after:transition-[width] after:duration-[--nav-title-animation-duration] after:clip-inset-0 after:clip-inset-l-[-200%] after:clip-inset-r-[calc(theme(spacing[0.5])*-1)]',
                 'hover:text-red-500',
                 isThisCategoryOpen_Memo
-                    ? 'before:w-[--nav-title-before-width] hover-active:before:w-[--nav-title-before-width]'
-                    : 'hover-active:before:w-[--nav-title-before-width]',
+                    ? 'before:w-[--nav-title-before-width] after:w-1'
+                    : 'before:w-0 after:w-0 hover-active:before:w-[--nav-title-before-width] hover-active:after:w-1',
             )}
         >
             {/* Text-Effects */}
