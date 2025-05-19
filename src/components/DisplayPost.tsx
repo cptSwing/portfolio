@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon, CodeBracketSquareIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { CSSProperties, FC, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import remarkBreaks from 'remark-breaks';
@@ -66,8 +66,8 @@ const DisplayPost = () => {
     );
 
     return (
-        <main className='relative flex size-full flex-col overflow-hidden bg-[--theme-bg-lighter] px-[--clip-shape-tan-post] duration-300'>
-            <header className='pointer-events-none relative z-10 mx-auto flex w-full items-end justify-center text-center'>
+        <main className='relative flex size-full skew-x-[--clip-shape-angle-rad] flex-col overflow-hidden bg-[--theme-bg-lighter] px-[calc(var(--clip-shape-tan-post)-1rem)] duration-300'>
+            <header className='pointer-events-none absolute left-0 right-0 top-0 z-10 mx-auto flex w-full items-end justify-center text-center'>
                 {/* Floating Title: */}
                 <h2 className='absolute translate-y-[calc(50%+(var(--bar-height)/2))] select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
                     {title}
@@ -109,35 +109,31 @@ const DisplayPost = () => {
 
             {textBlocks ? (
                 // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
-                <div
-                    className='scroll-gutter-both origin-center skew-x-[--clip-shape-angle-rad] overflow-y-auto bg-blue-400/30 scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /*   */
-                >
-                    <div className='relative flex flex-col [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:py-6 xl:py-12'>
-                        <div className='relative size-full'>
-                            {/* (Sub-)Header, date, "Built with" */}
-                            <h4 className='h-fit leading-none'>
-                                <span className='text-left'>{subTitle}</span>
-                                <span className='text-right text-[--bg-color] no-underline'>
-                                    {day && `${day}.`}
-                                    {month && `${month}.`}
-                                    {year && `${year}`}
-                                </span>
-                            </h4>
+                <div className='scroll-gutter-both origin-center overflow-y-auto scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /*   */>
+                    <div className='relative flex size-full flex-col px-3 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:py-6 xl:py-8'>
+                        {/* (Sub-)Header, date, "Built with" */}
+                        <h4 className='h-fit leading-none'>
+                            <span className='text-left'>{subTitle}</span>
+                            <span className='text-right text-[--bg-color] no-underline'>
+                                {day && `${day}.`}
+                                {month && `${month}.`}
+                                {year && `${year}`}
+                            </span>
+                        </h4>
 
-                            {/* Text/Image Blocks */}
-                            {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
-                                const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
-                                return (
-                                    <TextImageBlock
-                                        key={`${idx}-${useShowCaseIndex}`}
-                                        text={text}
-                                        blockIndex={idx}
-                                        showCase={showCase}
-                                        lightboxCallback={() => typeof useShowCaseIndex === 'number' && setLightBoxSlide_Cb(useShowCaseIndex)}
-                                    />
-                                );
-                            })}
-                        </div>
+                        {/* Text/Image Blocks */}
+                        {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
+                            const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
+                            return (
+                                <TextImageBlock
+                                    key={`${idx}-${useShowCaseIndex}`}
+                                    text={text}
+                                    blockIndex={idx}
+                                    showCase={showCase}
+                                    lightboxCallback={() => typeof useShowCaseIndex === 'number' && setLightBoxSlide_Cb(useShowCaseIndex)}
+                                />
+                            );
+                        })}
 
                         {/* Gallery below text */}
                         {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
@@ -166,75 +162,35 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
     showCase,
     lightboxCallback,
 }) => {
-    const blockRef = useRef<HTMLDivElement | null>(null);
-    const showCaseRef = useRef<HTMLDivElement | null>(null);
     const isBlockIndexEven = blockIndex % 2 === 0;
 
-    const [blockHeight, setBlockHeight] = useState(0);
-    useLayoutEffect(() => {
-        blockRef.current && setBlockHeight(blockRef.current.clientHeight);
-    });
-
     return (
-        <div
-            ref={blockRef}
-            className='clear-both w-full skew-x-[calc(var(--clip-shape-angle-rad)*-1)]'
-            style={
-                {
-                    '--block-height': `${blockHeight}px`,
-                    '--block-clip-path-offset': 'calc(var(--clip-shape-tan) * var(--block-height) / 4)',
-                } as CSSProperties
-            }
-            // onLoad={({ currentTarget }) => {
-            //     setBlockHeight(currentTarget.clientHeight);
-            // }}
-        >
-            <div className='float-left mr-2 h-[--block-height] w-[--block-clip-path-offset] bg-blue-500 [clip-path:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)] [shape-outside:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)]' />
+        <div className='my-4'>
             {showCase && (
-                <>
-                    {/* <div
-                        className={classNames(
-                            'h-[--block-height] w-[--block-clip-path-offset] bg-blue-500 [clip-path:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)] [shape-outside:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)]',
-                            isBlockIndexEven ? 'float-left mr-2' : 'float-right ml-2',
-                        )}
-                    /> */}
-
-                    <div
-                        ref={showCaseRef}
-                        style={
-                            {
-                                '--showcase-height': `${showCaseRef.current ? showCaseRef.current.clientHeight : 0}px`,
-                                '--showcase-clip-path-offset': 'calc(var(--clip-shape-tan) * var(--showcase-height) / 4)',
-                            } as CSSProperties
-                        }
-                        className={classNames(
-                            'group relative aspect-video w-2/5 cursor-pointer overflow-hidden drop-shadow-md',
-                            '[clip-path:polygon(var(--showcase-clip-path-offset)_0,100%_0,calc(100%-var(--showcase-clip-path-offset))_100%,0_100%)] [shape-outside:polygon(var(--showcase-clip-path-offset)_0,100%_0,calc(100%-var(--showcase-clip-path-offset))_100%,0_100%)]',
-                            isBlockIndexEven ? 'float-right ml-2' : 'float-left mr-2',
-                        )}
-                        onClick={() => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback()}
-                    >
-                        {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
-                            <iframe
-                                src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace(
-                                    'https://www.youtube.com/watch?v=',
-                                    'https://www.youtube.com/embed/',
-                                )}
-                                title='YouTube video player'
-                                referrerPolicy='strict-origin-when-cross-origin'
-                                allowFullScreen
-                                className='backface-hidden size-full'
-                            />
-                        ) : (
-                            <img src={(showCase as Post_ShowCase_Image).imgUrl} className='size-full object-cover object-top' />
-                        )}
-                        {showCase.caption && (
-                            <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] mask-edges-x-2/5 group-hover-active:bg-neutral-500 group-hover-active:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:group-hover-active:max-h-full'>
-                                {showCase.caption}
-                            </div>
-                        )}
-                    </div>
-                </>
+                <div
+                    className={classNames(
+                        'group relative aspect-video max-h-64 w-2/5 cursor-pointer overflow-hidden bg-cover bg-top drop-shadow-md',
+                        isBlockIndexEven ? 'float-right ml-4' : 'float-left mr-4',
+                    )}
+                    onClick={() => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback()}
+                >
+                    {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
+                        <iframe
+                            src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')}
+                            title='YouTube video player'
+                            referrerPolicy='strict-origin-when-cross-origin'
+                            allowFullScreen
+                            className='size-full skew-x-[calc(var(--clip-shape-angle-rad)*-1)] scale-105'
+                        />
+                    ) : (
+                        <img src={(showCase as Post_ShowCase_Image).imgUrl} className='skew-x-[calc(var(--clip-shape-angle-rad)*-1)] scale-105' />
+                    )}
+                    {showCase.caption && (
+                        <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] mask-edges-x-2/5 group-hover-active:bg-neutral-500 group-hover-active:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:group-hover-active:max-h-full'>
+                            {showCase.caption}
+                        </div>
+                    )}
+                </div>
             )}
 
             <Markdown
@@ -257,9 +213,6 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
             >
                 {text}
             </Markdown>
-
-            <div className='float-right ml-2 h-[--block-height] w-[--block-clip-path-offset] bg-blue-500 [clip-path:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)] [shape-outside:polygon(var(--block-clip-path-offset)_0,100%_0,calc(100%-var(--block-clip-path-offset))_100%,0_100%)]' />
-            <br />
         </div>
     );
 };
@@ -278,14 +231,14 @@ const RemainingImages: FC<{
     );
 
     return (
-        <div className='mt-10 grid grid-cols-2 gap-2 sm:mt-20 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 2xl:grid-cols-5'>
+        <div className='grid grid-cols-2 gap-2 pb-5 pt-10 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 2xl:grid-cols-5'>
             {remaining_Memo.map((remain) => {
                 const [imageShowCase, imageIndex] = remain || [];
 
                 return imageShowCase && typeof imageIndex === 'number' ? (
                     <div
                         key={imageShowCase.imgUrl + imageIndex}
-                        className='max-h-64 w-full overflow-hidden border border-transparent drop-shadow-sm hover-active:border-red-800'
+                        className='max-h-48 w-full overflow-hidden border border-transparent drop-shadow-sm hover-active:border-red-800'
                     >
                         <img
                             src={imageShowCase.imgUrl}
