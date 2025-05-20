@@ -81,7 +81,6 @@ const SingleCard: FC<{
         >
             <div
                 className={classNames(
-                    '[--card-animation-blur-multiplier:0] [--card-title-anim-delay:200ms] [--card-title-anim-duration:100ms] [--card-titles-inset-padding:theme(spacing.2)]',
                     'relative flex size-full select-none flex-col items-center justify-between drop-shadow-md',
                     applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
@@ -98,34 +97,8 @@ const SingleCard: FC<{
                     }
                 }}
             >
-                {/* Title: */}
-                <h6
-                    className={classNames(
-                        'absolute top-[--card-titles-inset-padding] z-10 mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:rounded-t-[3rem] before:bg-[--color-primary-inactive-cat-bg]',
-                        isAtFront
-                            ? 'w-[calc(100%-3rem)] translate-y-0 opacity-100 delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]'
-                            : 'w-full -translate-y-full opacity-0 delay-0 duration-200',
-                    )}
-                >
-                    {title}
-                </h6>
-
                 {/* Image Wrapper: */}
                 <SingleCardImage post={post} gridAreaIndex={gridAreaIndex} isAtFront={isAtFront} motionBlurElement={blurElement_Ref} />
-
-                {/* Subtitle: */}
-                {subTitle && (
-                    <div
-                        className={classNames(
-                            'absolute bottom-[--card-titles-inset-padding] mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center text-sm transition-[transform,opacity,width] before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:skew-x-[--clip-shape-angle-rad] before:rounded-b-[3rem] before:bg-[--color-primary-inactive-cat-bg] before:transition-transform',
-                            isAtFront
-                                ? 'w-[calc(100%-3rem)] translate-y-0 opacity-100 delay-[--card-title-anim-delay] duration-[--card-title-anim-duration]'
-                                : 'w-full translate-y-full opacity-0 delay-0 duration-200',
-                        )}
-                    >
-                        <Markdown>{subTitle}</Markdown>
-                    </div>
-                )}
             </div>
         </Flipped>
     );
@@ -139,7 +112,7 @@ const SingleCardImage: FC<{
     isAtFront: boolean;
     motionBlurElement: React.MutableRefObject<HTMLDivElement | null>;
 }> = ({ post, gridAreaIndex, isAtFront, motionBlurElement }) => {
-    const { title, titleCardBg } = post;
+    const { title, titleCardBg, subTitle } = post;
 
     const [wheelDirection] = useMouseWheelDirection();
 
@@ -270,12 +243,31 @@ const SingleCardImage: FC<{
                 } as CSSProperties
             }
         >
-            {/* <div className='fixed left-4 top-1/4 z-50 text-2xs text-red-600'>
-                opacityBefore: {dynamicStyleValues_Memo.opacityBefore}
-                <br />
-                opacityAfter: {dynamicStyleValues_Memo.opacityAfter}
-            </div> */}
+            {/* Title: */}
+            <h6
+                className={classNames(
+                    'absolute top-[--card-titles-inset-padding] z-10 mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center',
+                    'before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:bg-[--color-primary-inactive-cat-bg]',
+                    isAtFront ? 'w-full opacity-100' : 'size-0 opacity-0',
+                )}
+            >
+                {title}
+            </h6>
+
             <MotionBlurImage isAtFront={isAtFront} imgUrl={titleCardBg} altText={title} blurElementRef={motionBlurElement} />
+
+            {/* Subtitle: */}
+            {subTitle && (
+                <div
+                    className={classNames(
+                        'absolute bottom-[--card-titles-inset-padding] mx-auto skew-x-[calc(var(--clip-shape-angle-rad)*-1)] text-center text-sm',
+                        'before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:bg-[--color-primary-inactive-cat-bg]',
+                        isAtFront ? 'w-full opacity-100' : 'size-0 opacity-0',
+                    )}
+                >
+                    <Markdown>{subTitle}</Markdown>
+                </div>
+            )}
         </div>
     );
 };

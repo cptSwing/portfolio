@@ -64,19 +64,28 @@ const Main = () => {
                     '--clip-shape-tan': clipShapeTan,
                     '--clip-shape-tan-nav': 'calc(var(--clip-shape-tan) * 100vh)',
                     '--clip-shape-tan-category': 'calc(var(--clip-shape-tan-nav) / 2)',
-                    '--clip-shape-tan-post': 'calc(var(--clip-shape-tan-category) / 2)',
+                    '--clip-shape-tan-post': 'calc(var(--clip-shape-tan-nav) / 4)',
 
                     '--clip-shape-width-nav-inner-space': '1rem',
                     '--clip-shape-width-nav-left': '50vw',
                     '--clip-shape-width-nav-right': 'calc(var(--clip-shape-width-nav-left) + var(--clip-shape-width-nav-inner-space))',
 
                     '--clip-shape-width-category-left': '20vw',
-                    '--clip-shape-width-category-right': 'calc(100% - var(--clip-shape-width-category-left))',
+                    '--clip-shape-width-category-right': '80vw',
 
-                    '--clip-shape-width-post-left': '10vw',
-                    '--clip-shape-width-post-right': '90vw',
+                    '--clip-shape-width-post-left': '15vw',
+                    '--clip-shape-width-post-right': '85vw',
 
-                    '--clip-shape-animation-duration': '600ms',
+                    '--clip-shape-tan-nav-offset': 'calc(var(--clip-shape-tan-nav) / 2)',
+                    '--clip-shape-tan-nav-offset-inverted': 'calc(var(--clip-shape-tan-nav) / 2 * -1)',
+
+                    '--clip-shape-tan-category-offset': 'calc(var(--clip-shape-tan-category) / 2)',
+                    '--clip-shape-tan-category-offset-inverted': 'calc(var(--clip-shape-tan-category) / 2 * -1)',
+
+                    '--clip-shape-tan-post-offset': 'calc(var(--clip-shape-tan-post) / 2)',
+                    '--clip-shape-tan-post-offset-inverted': 'calc(var(--clip-shape-tan-post) / 2 * -1)',
+
+                    '--clip-shape-animation-duration': '500ms',
                     '--clip-shape-animation-delay-stagger': '500ms',
 
                     '--clip-shape-flipper-inset': expansionState === 'nav' ? '100%' : expansionState === 'category' ? '0%' : /* === 'post' */ '100%',
@@ -89,7 +98,8 @@ const Main = () => {
                 id='clip-shape-left'
                 className={classNames(
                     'pointer-events-none absolute left-0 top-0 z-20 flex size-full flex-row items-center justify-end drop-shadow-omni-lg transition-[padding]',
-                    'before:absolute before:left-0 before:top-0 before:size-full before:bg-red-800 before:transition-[clip-shape] before:duration-[--clip-shape-animation-duration] after:[clip-path:polygon(0_0,calc(var(--clip-shape-width-nav-left)+var(--clip-shape-tan-nav)/2)_0,calc(var(--clip-shape-width-nav-left)-calc(var(--clip-shape-tan-nav)/2))_100%,0_100%)]',
+                    'before:absolute before:left-0 before:top-0 before:size-full before:bg-red-800',
+                    // 'before:transition-[clip-shape] before:duration-[--clip-shape-animation-duration] before:[clip-path:polygon(25%_0%,30%_25%,27.5%_30%,27.5%_72%,25%_75%,25%_100%,0%_100%,0_0)]',
                     expansionState === 'nav'
                         ? 'before:animate-clip-shape-left-nav pr-[calc(100vw-var(--clip-shape-width-nav-right)+var(--clip-shape-width-nav-inner-space))]'
                         : expansionState === 'category'

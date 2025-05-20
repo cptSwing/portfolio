@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon, CodeBracketSquareIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { FC, useCallback, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams, useNavigate, Link } from 'react-router-dom';
@@ -10,7 +10,6 @@ import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../types/types';
 import testDb from '../queries/testDb.json';
-import useAnimationOnMount from '../hooks/useAnimationOnMount';
 
 const testDbTyped = testDb as DataBase;
 
@@ -66,14 +65,21 @@ const DisplayPost = () => {
     );
 
     return (
-        <main className='relative flex size-full skew-x-[--clip-shape-angle-rad] flex-col overflow-hidden bg-[--theme-bg-lighter] px-[calc(var(--clip-shape-tan-post)-1rem)] duration-300'>
-            <header className='pointer-events-none absolute left-0 right-0 top-0 z-10 mx-auto flex w-full items-end justify-center text-center'>
+        <>
+            <header className='absolute left-0 top-0 z-10 flex size-full items-start justify-center text-center'>
                 {/* Floating Title: */}
-                <h2 className='absolute translate-y-[calc(50%+(var(--bar-height)/2))] select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
+                <h2 className='translate-y-[calc(50%+(var(--bar-height)/2))] select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
                     {title}
                 </h2>
 
-                <Menu hasImages={showCases ? true : false} codeLink={codeLink} setLightboxTo={setLightboxTo} />
+                <menu className='absolute left-[calc(var(--clip-shape-width-post-right)+(var(--clip-shape-tan-post-offset)+0*(var(--clip-shape-tan-post-offset-inverted)-var(--clip-shape-tan-post-offset))/100)+1rem)] aspect-square h-8 origin-top-right -translate-x-full skew-x-[--clip-shape-angle-rad] bg-green-800'>
+                    <Link
+                        to={`/${catId}`}
+                        className='h-8 cursor-pointer py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:pb-0 sm:before:block sm:before:pt-2'
+                    >
+                        <XMarkIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
+                    </Link>
+                </menu>
 
                 {/* Previous Post */}
                 <div
@@ -107,50 +113,52 @@ const DisplayPost = () => {
                 </div>
             </header>
 
-            {textBlocks ? (
-                // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
-                <div className='scroll-gutter-both origin-center overflow-y-auto scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /*   */>
-                    <div className='relative flex size-full flex-col px-3 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:py-6 xl:py-8'>
-                        {/* (Sub-)Header, date, "Built with" */}
-                        <h4 className='h-fit leading-none'>
-                            <span className='text-left'>{subTitle}</span>
-                            <span className='text-right text-[--bg-color] no-underline'>
-                                {day && `${day}.`}
-                                {month && `${month}.`}
-                                {year && `${year}`}
-                            </span>
-                        </h4>
+            <main className='flex skew-x-[--clip-shape-angle-rad] flex-col overflow-hidden bg-[--theme-bg-lighter] px-[calc(var(--clip-shape-tan-post)-var(--clip-shape-width-nav-inner-space))] duration-300'>
+                {textBlocks ? (
+                    // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
+                    <div className='scroll-gutter-both origin-center overflow-y-auto scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /*   */>
+                        <div className='flex flex-col px-3 [--image-outline-width:theme(outlineWidth[2])] [--image-transition-duration:theme(transitionDuration.500)] sm:py-6 xl:py-8'>
+                            {/* (Sub-)Header, date, "Built with" */}
+                            <h4 className='h-fit leading-none'>
+                                <span className='text-left'>{subTitle}</span>
+                                <span className='text-right text-[--bg-color] no-underline'>
+                                    {day && `${day}.`}
+                                    {month && `${month}.`}
+                                    {year && `${year}`}
+                                </span>
+                            </h4>
 
-                        {/* Text/Image Blocks */}
-                        {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
-                            const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
-                            return (
-                                <TextImageBlock
-                                    key={`${idx}-${useShowCaseIndex}`}
-                                    text={text}
-                                    blockIndex={idx}
-                                    showCase={showCase}
-                                    lightboxCallback={() => typeof useShowCaseIndex === 'number' && setLightBoxSlide_Cb(useShowCaseIndex)}
-                                />
-                            );
-                        })}
+                            {/* Text/Image Blocks */}
+                            {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
+                                const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
+                                return (
+                                    <TextImageBlock
+                                        key={`${idx}-${useShowCaseIndex}`}
+                                        text={text}
+                                        blockIndex={idx}
+                                        showCase={showCase}
+                                        lightboxCallback={() => typeof useShowCaseIndex === 'number' && setLightBoxSlide_Cb(useShowCaseIndex)}
+                                    />
+                                );
+                            })}
 
-                        {/* Gallery below text */}
-                        {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
+                            {/* Gallery below text */}
+                            {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
 
-                        <Lightbox
-                            open={Number.isInteger(lightboxTo)}
-                            index={lightboxTo ?? 0}
-                            close={() => setLightboxTo(null)}
-                            slides={filteredImages_Memo}
-                            plugins={[Captions]}
-                        />
+                            <Lightbox
+                                open={Number.isInteger(lightboxTo)}
+                                index={lightboxTo ?? 0}
+                                close={() => setLightboxTo(null)}
+                                slides={filteredImages_Memo}
+                                plugins={[Captions]}
+                            />
+                        </div>
                     </div>
-                </div>
-            ) : (
-                <></>
-            )}
-        </main>
+                ) : (
+                    <></>
+                )}
+            </main>
+        </>
     );
 };
 
@@ -249,67 +257,5 @@ const RemainingImages: FC<{
                 ) : null;
             })}
         </div>
-    );
-};
-
-const Menu: FC<{
-    hasImages: boolean;
-    codeLink: Post['codeLink'];
-    setLightboxTo: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ hasImages, codeLink, setLightboxTo }) => {
-    const { catId } = useParams();
-
-    const [codeRefCb] = useAnimationOnMount({
-        animationProps: {
-            animationName: 'outer-ring',
-            animationDuration: 850,
-            animationDelay: 0,
-            animationFillMode: 'forwards',
-            animationIterationCount: 3,
-        },
-        startDelay: 0,
-        hiddenAtStart: false,
-    });
-
-    return (
-        <menu className='pointer-events-auto mb-2 ml-auto flex h-8 items-center justify-end rounded-tl bg-transparent sm:mb-0 sm:h-6 sm:rounded-tl-sm sm:rounded-tr-sm sm:bg-[--color-bars-post]'>
-            {hasImages && (
-                <button
-                    type='button'
-                    className='h-full cursor-pointer px-1.5 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Gallery"] active:before:translate-y-0 active:before:transition-none active:before:content-["Gallery"] sm:px-1 sm:pb-0 sm:before:block sm:before:pt-2'
-                    onClick={() => setLightboxTo(0)}
-                >
-                    <PhotoIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
-                </button>
-            )}
-
-            {codeLink && (
-                <>
-                    <div className='h-3/5 w-0.5 bg-[--theme-primary-600] sm:-mb-0.5' />
-                    <a
-                        className='group inline-block h-full cursor-pointer px-1.5 py-0.5 transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:text-nowrap before:pt-2 before:text-sm before:uppercase before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 after:content-none hover:before:translate-y-0 hover:before:content-["View_Code"] sm:px-1 sm:pb-0 sm:before:block sm:before:pt-2'
-                        href={codeLink.href}
-                        target='_blank'
-                        rel='noreferrer'
-                    >
-                        <CodeBracketSquareIcon
-                            key={codeLink.href}
-                            // @ts-expect-error ...
-                            ref={codeRefCb}
-                            className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]'
-                        />
-                    </a>
-                </>
-            )}
-
-            {/* TODO fade out instead of instantly closing */}
-            {(hasImages || codeLink) && <div className='h-3/5 w-0.5 bg-[--theme-primary-600] sm:-mb-0.5' />}
-            <Link
-                to={`/${catId}`}
-                className='h-full cursor-pointer px-1 py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:px-0.5 sm:pb-0 sm:before:block sm:before:pt-2'
-            >
-                <XMarkIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
-            </Link>
-        </menu>
     );
 };
