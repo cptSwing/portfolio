@@ -66,13 +66,13 @@ const DisplayPost = () => {
 
     return (
         <>
-            <header className='absolute left-0 top-0 z-10 flex size-full items-start justify-center text-center'>
+            <header className='pointer-events-none absolute left-0 top-0 z-10 flex size-full items-start justify-center text-center'>
                 {/* Floating Title: */}
                 <h2 className='translate-y-[calc(50%+(var(--bar-height)/2))] select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
                     {title}
                 </h2>
 
-                <menu className='absolute left-[calc(var(--clip-shape-width-post-right)+(var(--clip-shape-tan-post-offset)+0*(var(--clip-shape-tan-post-offset-inverted)-var(--clip-shape-tan-post-offset))/100)+1rem)] aspect-square h-8 origin-top-right -translate-x-full skew-x-[--clip-shape-angle-rad] bg-green-800'>
+                <menu className='pointer-events-auto absolute left-[calc(var(--clip-shape-width-post-right)+(var(--clip-shape-tan-post-offset)+0*(var(--clip-shape-tan-post-offset-inverted)-var(--clip-shape-tan-post-offset))/100)+1rem)] aspect-square h-8 origin-top-right -translate-x-full skew-x-[--clip-shape-angle-rad] bg-green-800'>
                     <Link
                         to={`/${catId}`}
                         className='h-8 cursor-pointer py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:pb-0 sm:before:block sm:before:pt-2'
@@ -113,7 +113,7 @@ const DisplayPost = () => {
                 </div>
             </header>
 
-            <main className='flex skew-x-[--clip-shape-angle-rad] flex-col overflow-hidden bg-[--theme-bg-lighter] px-[calc(var(--clip-shape-tan-post)-var(--clip-shape-width-nav-inner-space))] duration-300'>
+            <main className='flex skew-x-[--clip-shape-angle-rad] flex-col overflow-hidden bg-[--theme-bg-lighter] px-[calc(var(--clip-shape-tan-post)-var(--clip-shape-width-home-inner-space))] duration-300'>
                 {textBlocks ? (
                     // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
                     <div className='scroll-gutter-both origin-center overflow-y-auto scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /*   */>
