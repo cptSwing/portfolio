@@ -4,17 +4,15 @@ import Main from './Main';
 
 const App = () => {
     return (
-        <div className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-[--bg-color] font-miriam-libre text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50'>
-            <BrowserRouter>
-                <Routes>
-                    <Route path='/:catId?/:postId?' element={<Main />} />
+        <BrowserRouter>
+            <Routes>
+                <Route path='/:catId?/:postId?' element={<Main />} />
 
-                    <Route path='/bundles/:bundlePath' element={<BundleRoutes />} />
+                <Route path='/bundles/:bundlePath' element={<BundleRoutes />} />
 
-                    <Route path='*' element={<NoRouteMatched />} />
-                </Routes>
-            </BrowserRouter>
-        </div>
+                <Route path='*' element={<NoRouteMatched />} />
+            </Routes>
+        </BrowserRouter>
     );
 };
 
