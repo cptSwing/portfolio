@@ -72,7 +72,7 @@ const DisplayPost = () => {
                     {title}
                 </h2>
 
-                <menu className='pointer-events-auto absolute left-[calc(var(--clip-shape-width-post-right)+(var(--clip-shape-tan-post-offset)+0*(var(--clip-shape-tan-post-offset-inverted)-var(--clip-shape-tan-post-offset))/100)+1rem)] aspect-square h-8 origin-top-right -translate-x-full skew-x-[--clip-shape-angle-rad] bg-green-800'>
+                <menu className='pointer-events-auto absolute left-[calc(var(--clip-shape-width-post-right)+(var(--clip-shape-tan-post-offset)+0*(var(--clip-shape-tan-post-offset-inverted)-var(--clip-shape-tan-post-offset))/100)+1rem)] aspect-square h-8 origin-top-right -translate-x-full skew-x-[--clip-shape-skew-angle] bg-green-800'>
                     <Link
                         to={`/${catId}`}
                         className='h-8 cursor-pointer py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:pb-0 sm:before:block sm:before:pt-2'
@@ -113,7 +113,7 @@ const DisplayPost = () => {
                 </div>
             </header>
 
-            <main className='flex skew-x-[--clip-shape-angle-rad] flex-col overflow-hidden bg-[--theme-bg-lighter] px-[calc(var(--clip-shape-tan-post)-var(--clip-shape-width-home-inner-space))] duration-300'>
+            <main className='flex skew-x-[--clip-shape-skew-angle] flex-col overflow-hidden bg-[--theme-bg-lighter] px-[calc(var(--clip-shape-tan-post)-var(--clip-shape-width-home-inner-space))] duration-300'>
                 {textBlocks ? (
                     // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
                     <div className='scroll-gutter-both origin-center overflow-y-auto scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /*   */>
@@ -188,10 +188,10 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                             title='YouTube video player'
                             referrerPolicy='strict-origin-when-cross-origin'
                             allowFullScreen
-                            className='size-full skew-x-[calc(var(--clip-shape-angle-rad)*-1)] scale-105'
+                            className='size-full skew-x-[calc(var(--clip-shape-skew-angle)*-1)] scale-105'
                         />
                     ) : (
-                        <img src={(showCase as Post_ShowCase_Image).imgUrl} className='skew-x-[calc(var(--clip-shape-angle-rad)*-1)] scale-105' />
+                        <img src={(showCase as Post_ShowCase_Image).imgUrl} className='skew-x-[calc(var(--clip-shape-skew-angle)*-1)] scale-105' />
                     )}
                     {showCase.caption && (
                         <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] mask-edges-x-2/5 group-hover-active:bg-neutral-500 group-hover-active:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:group-hover-active:max-h-full'>
@@ -206,7 +206,7 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                     p: ({ children }) => (
                         <p
                             className={classNames(
-                                'text-pretty text-justify leading-tight tracking-wide sm:leading-normal' /* skew-x-[calc(var(--clip-shape-angle-rad)*-1)] */,
+                                'text-pretty text-justify leading-tight tracking-wide sm:leading-normal' /* skew-x-[calc(var(--clip-shape-skew-angle)*-1)] */,
                                 blockIndex === 0
                                     ? 'first-of-type:first-letter:-ml-0.5 first-of-type:first-letter:align-text-bottom first-of-type:first-letter:text-[2rem] first-of-type:first-letter:leading-[1.84rem] first-of-type:first-letter:text-red-800'
                                     : '',
@@ -250,7 +250,7 @@ const RemainingImages: FC<{
                     >
                         <img
                             src={imageShowCase.imgUrl}
-                            className='skew-x-[calc(var(--clip-shape-angle-rad)*-1)] scale-105 cursor-pointer object-cover'
+                            className='skew-x-[calc(var(--clip-shape-skew-angle)*-1)] scale-105 cursor-pointer object-cover'
                             onClick={() => setLightBoxSlide(imageIndex)}
                         />
                     </div>

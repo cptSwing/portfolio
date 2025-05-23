@@ -64,9 +64,16 @@ const Main = () => {
             <div
                 style={
                     {
-                        '--clip-shape-angle-rad': `${expansionState === 'home' ? clipShapeAngleRad * -1 : expansionState === 'category' ? clipShapeAngleRad / 2 : /* === 'post' */ (clipShapeAngleRad / 4) * -1}rad`,
+                        '--clip-shape-angle': '20deg',
+                        '--clip-shape-skew-angle':
+                            expansionState === 'home'
+                                ? 'calc(var(--clip-shape-angle) * -1)'
+                                : expansionState === 'category'
+                                  ? 'calc(var(--clip-shape-angle) / 2)'
+                                  : /* === 'post' */ 'calc(var(--clip-shape-angle) / 4 * -1)',
 
-                        '--clip-shape-tan': clipShapeTan,
+                        '--clip-shape-tan': 'round(tan(var(--clip-shape-angle)), 0.05)',
+
                         '--clip-shape-tan-home': 'calc(var(--clip-shape-tan) * 100vh)',
                         '--clip-shape-tan-category': 'calc(var(--clip-shape-tan-home) / 2)',
                         '--clip-shape-tan-post': 'calc(var(--clip-shape-tan-home) / 4)',
@@ -105,7 +112,7 @@ const Main = () => {
                         'pointer-events-none absolute left-0 top-0 z-20 flex size-full flex-row items-center justify-end drop-shadow-omni-lg transition-[padding] duration-[--clip-shape-animation-duration]',
                         'before:absolute before:left-0 before:top-0 before:size-full before:bg-red-800',
                         expansionState === 'home'
-                            ? `pr-[calc(100vw-var(--clip-shape-width-home-right)+var(--clip-shape-width-home-inner-space))] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category before:![animation-direction:reverse] before:![animation-duration:15s]' : 'before:animate-clip-shape-left-nav'}`
+                            ? `pr-[calc(100vw-var(--clip-shape-width-home-right)+var(--clip-shape-width-home-inner-space))] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
                             : expansionState === 'category'
                               ? `pr-[calc(100vw-var(--clip-shape-width-category-left))] ${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
                               : // === 'post'
@@ -154,7 +161,9 @@ const Main = () => {
                         'pointer-events-none absolute left-0 top-0 z-20 size-full drop-shadow-omni-lg',
                         'before:absolute before:left-0 before:top-0 before:size-full before:bg-green-800',
                         expansionState === 'home'
-                            ? 'before:animate-clip-shape-right-nav'
+                            ? formerExpansionState === 'category'
+                                ? 'before:animate-clip-shape-right-category-reversed'
+                                : 'before:animate-clip-shape-right-home'
                             : expansionState === 'category'
                               ? formerExpansionState === 'post'
                                   ? 'before:animate-clip-shape-right-post-reversed'
