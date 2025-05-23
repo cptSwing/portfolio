@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { FC, useCallback, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import remarkBreaks from 'remark-breaks';
 import Lightbox, { SlideImage } from 'yet-another-react-lightbox';
 import { Captions } from 'yet-another-react-lightbox/plugins';
@@ -15,12 +15,11 @@ const testDbTyped = testDb as DataBase;
 
 const DisplayPost = () => {
     const { catId, postId } = useParams();
-    const navigate = useNavigate();
 
     const activeData_Memo = useMemo(() => {
         const activeCat = Object.values(testDbTyped).find((category) => category.id.toString() === catId);
         let activePost: Post | undefined = undefined;
-        const allPostIds = activeCat?.posts.map((post) => {
+        const postIds = activeCat?.posts.map((post) => {
             if (post.id.toString() === postId) {
                 activePost = post;
             }
@@ -28,7 +27,7 @@ const DisplayPost = () => {
             return post.id;
         });
 
-        return [activePost, allPostIds] as [Post | undefined, number[]];
+        return [activePost, postIds] as [Post | undefined, number[]];
     }, [catId, postId]);
 
     const [activePost_Memo, postIds_Memo] = activeData_Memo;
@@ -64,56 +63,55 @@ const DisplayPost = () => {
         [filteredImages_Memo],
     );
 
-    return (
+    return postIds_Memo ? (
         <>
-            <header className='pointer-events-none absolute left-0 top-0 z-10 flex size-full items-start justify-center text-center'>
+            <header className='pointer-events-none absolute left-0 right-0 top-0 z-10 flex items-start justify-center text-center'>
                 {/* Floating Title: */}
-                <h2 className='translate-y-[calc(50%+(var(--bar-height)/2))] select-none px-3.5 text-[--theme-primary-50] drop-shadow-sm before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-b-[5%] before:clip-inset-t-[0.65rem] sm:translate-y-1/3 sm:px-8 sm:drop-shadow-lg sm:before:w-full sm:before:clip-inset-b-[0%] sm:before:clip-inset-t-[30%]'>
+                <h2 className='mx-auto select-none px-[--close-post-button-height] text-[length:--close-post-button-height] text-[--theme-primary-50] drop-shadow-lg before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-[--color-secondary-active-cat] before:clip-inset-t-1/3'>
                     {title}
                 </h2>
 
-                <menu className='pointer-events-auto absolute left-[calc(var(--clip-shape-width-post-right)+(var(--clip-shape-tan-post-offset)+0*(var(--clip-shape-tan-post-offset-inverted)-var(--clip-shape-tan-post-offset))/100)+1rem)] aspect-square h-8 origin-top-right -translate-x-full skew-x-[--clip-shape-skew-angle] bg-green-800'>
-                    <Link
-                        to={`/${catId}`}
-                        className='h-8 cursor-pointer py-0.5 text-sm uppercase transition-colors duration-75 before:absolute before:-top-full before:right-0 before:-z-10 before:hidden before:translate-y-full before:pt-2 before:leading-none before:text-[--theme-secondary-50] before:transition-transform before:duration-100 hover:before:translate-y-0 hover:before:content-["Close"] sm:pb-0 sm:before:block sm:before:pt-2'
-                    >
-                        <XMarkIcon className='aspect-square h-full stroke-[--color-bars-no-post] hover:stroke-[--theme-accent-800] active:stroke-[--theme-accent-800]' />
-                    </Link>
-                </menu>
+                <nav className='pointer-events-auto absolute right-[calc(100%-var(--clip-shape-width-post-right)-var(--clip-shape-tan-post-offset)-var(--clip-shape-width-home-inner-space))] flex origin-left'>
+                    {/* Previous Post */}
+                    <button>
+                        <Link
+                            to={(() => {
+                                const currentIndex = postIds_Memo.findIndex((val) => val === id);
+                                const previousInArray = postIds_Memo[currentIndex - 1 >= 0 ? currentIndex - 1 : postIds_Memo.length - 1];
+                                return `/${catId}/${previousInArray}`;
+                            })()}
+                        >
+                            <ChevronLeftIcon
+                                className='h-[--close-post-button-height] scale-75 cursor-pointer stroke-green-800 opacity-50 transition-[stroke,opacity] duration-75 hover-active:stroke-green-700 hover-active:opacity-100' /* stroke-[--color-bars-no-post] */
+                            />
+                        </Link>
+                    </button>
 
-                {/* Previous Post */}
-                <div
-                    className='group/left pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] -translate-x-full translate-y-1/2 cursor-pointer active:-translate-x-[105%] sm:bottom-1/2 sm:left-[--clip-shape-width-post-left] sm:right-auto sm:top-1/2 sm:translate-y-0'
-                    onClick={() => {
-                        if (typeof id === 'number') {
-                            const currentIndex = postIds_Memo.findIndex((val) => val === id);
-                            const previousInArray = postIds_Memo[currentIndex - 1 >= 0 ? currentIndex - 1 : postIds_Memo.length - 1];
-                            navigate(`/${catId}/${previousInArray}`);
-                        }
-                    }}
-                >
-                    <ChevronLeftIcon
-                        className='h-[--header-height] stroke-green-800 opacity-50 group-hover/left:opacity-100 group-active/left:opacity-100 sm:h-16 sm:scale-x-75' /* stroke-[--color-bars-no-post] */
-                    />
-                </div>
-                {/* Next Post */}
-                <div
-                    className='group/right pointer-events-auto fixed top-[calc(var(--content-height)+var(--header-height))] translate-x-full translate-y-1/2 cursor-pointer active:translate-x-[105%] sm:bottom-1/2 sm:left-auto sm:right-[calc(100vw-var(--clip-shape-width-post-right)+var(--clip-shape-tan-post))] sm:top-1/2 sm:translate-y-0'
-                    onClick={() => {
-                        if (typeof id === 'number') {
-                            const currentIndex = postIds_Memo.findIndex((val) => val === id);
-                            const nextInArray = postIds_Memo[currentIndex + 1 < postIds_Memo.length ? currentIndex + 1 : 0];
-                            navigate(`/${catId}/${nextInArray}`);
-                        }
-                    }}
-                >
-                    <ChevronRightIcon
-                        className='h-[--header-height] stroke-green-800 opacity-50 group-hover/right:opacity-100 group-active/right:opacity-100 sm:h-16 sm:scale-x-75' /* stroke-[--color-bars-no-post] */
-                    />
-                </div>
+                    {/* Next Post */}
+                    <button>
+                        <Link
+                            to={(() => {
+                                const currentIndex = postIds_Memo.findIndex((val) => val === id);
+                                const nextInArray = postIds_Memo[currentIndex + 1 < postIds_Memo.length ? currentIndex + 1 : 0];
+                                return `/${catId}/${nextInArray}`;
+                            })()}
+                        >
+                            <ChevronRightIcon
+                                className='h-[--close-post-button-height] scale-75 cursor-pointer stroke-green-800 opacity-50 transition-[stroke,opacity] duration-75 hover-active:stroke-green-700 hover-active:opacity-100' /* stroke-[--color-bars-no-post] */
+                            />
+                        </Link>
+                    </button>
+
+                    {/* Close */}
+                    <button>
+                        <Link to={`/${catId}`}>
+                            <XMarkIcon className='h-[--close-post-button-height] cursor-pointer stroke-green-800 transition-[stroke] duration-75 hover-active:stroke-green-700' />
+                        </Link>
+                    </button>
+                </nav>
             </header>
 
-            <main className='flex skew-x-[--clip-shape-skew-angle] flex-col overflow-hidden bg-[--theme-bg-lighter] px-[calc(var(--clip-shape-tan-post)-var(--clip-shape-width-home-inner-space))] duration-300'>
+            <main className='flex origin-center skew-x-[--clip-shape-skew-angle] flex-col overflow-hidden bg-[--theme-bg-lighter] px-[calc(var(--clip-shape-tan-post)-var(--clip-shape-width-home-inner-space))] pt-[calc(var(--close-post-button-height))] duration-300'>
                 {textBlocks ? (
                     // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
                     <div className='scroll-gutter-both origin-center overflow-y-auto scrollbar-thin [--scrollbar-thumb:--color-bars-post]' /*   */>
@@ -159,6 +157,8 @@ const DisplayPost = () => {
                 )}
             </main>
         </>
+    ) : (
+        <></>
     );
 };
 

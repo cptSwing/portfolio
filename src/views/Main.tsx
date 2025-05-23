@@ -7,9 +7,20 @@ import useOutsideClick from '../hooks/useOutsideClick';
 import DisplayPost from '../components/DisplayPost';
 import roundNumToDecimal from '../lib/roundNumToDecimal';
 
-const _hex = (angleDeg: number) => {
-    const degToRad = (deg: number) => deg * (Math.PI / 180);
+const degToRad = (deg: number) => deg * (Math.PI / 180);
 
+const outerRadius = 6.77;
+const innerRadius = outerRadius * Math.sin(degToRad(60));
+const radiusDifference = outerRadius - innerRadius;
+const percentageOfTotal = (radiusDifference / (outerRadius * 2)) * 100;
+console.log(
+    '%c[Main]',
+    'color: #ddbe6a',
+    `outerRadius: 5, innerRadius: outerRadius * sin(60deg), radiusDifference: outerRadius - innerRadius, percentageOfTotal: radiusDifference / (outerRadius * 2) * 100:`,
+    roundNumToDecimal(percentageOfTotal, 2),
+);
+
+const _hex = (angleDeg = 0) => {
     const angleRad = degToRad(angleDeg);
     const sides = 6;
 
@@ -25,8 +36,16 @@ const _hex = (angleDeg: number) => {
     return shape;
 };
 
-const clipShapeAngleRad = roundNumToDecimal(20 * (Math.PI / 180), 1);
-const clipShapeTan = roundNumToDecimal(Math.tan(clipShapeAngleRad), 2);
+/* https://css-tip.com/hexagon-shape/ */
+const simpleHexClip = (flatTop = true) => {
+    const aspectRatio = flatTop ? '1 / cos(30deg)' : 'cos(30deg)';
+    const clipPath = flatTop ? 'polygon(50% -50%,100% 50%,50% 150%,0 50%)' : 'polygon(-50% 50%,50% 100%,150% 50%,50% 0)';
+
+    return {
+        aspectRatio,
+        clipPath,
+    };
+};
 
 const Main = () => {
     const { catId, postId } = useParams();
@@ -55,16 +74,13 @@ const Main = () => {
         }
     }) as MutableRefObject<HTMLDivElement | null>;
 
-    useLayoutEffect(() => {
-        console.log('%c[Main]', 'color: #c8031a', `expansionState, formerExpansionState :`, expansionState, formerExpansionState);
-    }, [expansionState, formerExpansionState]);
-
     return (
         <div className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-[--bg-color] font-miriam-libre text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50'>
             <div
                 style={
                     {
-                        '--clip-shape-angle': '20deg',
+                        '--clip-shape-overall-height': '100vh',
+                        '--clip-shape-angle': '15deg',
                         '--clip-shape-skew-angle':
                             expansionState === 'home'
                                 ? 'calc(var(--clip-shape-angle) * -1)'
@@ -72,21 +88,20 @@ const Main = () => {
                                   ? 'calc(var(--clip-shape-angle) / 2)'
                                   : /* === 'post' */ 'calc(var(--clip-shape-angle) / 4 * -1)',
 
-                        '--clip-shape-tan': 'round(tan(var(--clip-shape-angle)), 0.05)',
-
-                        '--clip-shape-tan-home': 'calc(var(--clip-shape-tan) * 100vh)',
+                        '--clip-shape-tan': 'tan(var(--clip-shape-angle))',
+                        '--clip-shape-tan-home': 'calc(var(--clip-shape-tan) * var(--clip-shape-overall-height))',
                         '--clip-shape-tan-category': 'calc(var(--clip-shape-tan-home) / 2)',
                         '--clip-shape-tan-post': 'calc(var(--clip-shape-tan-home) / 4)',
 
                         '--clip-shape-width-home-inner-space': '1rem',
-                        '--clip-shape-width-home-left': '50vw',
+                        '--clip-shape-width-home-left': '50%',
                         '--clip-shape-width-home-right': 'calc(var(--clip-shape-width-home-left) + var(--clip-shape-width-home-inner-space))',
 
-                        '--clip-shape-width-category-left': '20vw',
-                        '--clip-shape-width-category-right': '80vw',
+                        '--clip-shape-width-category-left': '20%',
+                        '--clip-shape-width-category-right': '80%',
 
-                        '--clip-shape-width-post-left': '15vw',
-                        '--clip-shape-width-post-right': '85vw',
+                        '--clip-shape-width-post-left': '15%',
+                        '--clip-shape-width-post-right': '85%',
 
                         '--clip-shape-tan-home-offset': 'calc(var(--clip-shape-tan-home) / 2)',
                         '--clip-shape-tan-home-offset-inverted': 'calc(var(--clip-shape-tan-home) / 2 * -1)',
@@ -102,9 +117,12 @@ const Main = () => {
 
                         '--clip-shape-flipper-inset': expansionState === 'home' ? '100%' : expansionState === 'category' ? '0%' : /* === 'post' */ '100%',
                         '--clip-shape-post-inset': expansionState === 'home' ? '100%' : expansionState === 'category' ? '100%' : /* === 'post' */ '0%',
+
+                        // 'clipPath': _hex(),
+                        // ...simpleHexClip(),
                     } as CSSProperties
                 }
-                className='size-full [--nav-category-common-color-1:theme(colors.gray.700)]'
+                className='relative h-[--clip-shape-overall-height] w-full [--nav-category-common-color-1:theme(colors.gray.700)]'
             >
                 <div
                     id='clip-shape-left'
@@ -112,11 +130,11 @@ const Main = () => {
                         'pointer-events-none absolute left-0 top-0 z-20 flex size-full flex-row items-center justify-end drop-shadow-omni-lg transition-[padding] duration-[--clip-shape-animation-duration]',
                         'before:absolute before:left-0 before:top-0 before:size-full before:bg-red-800',
                         expansionState === 'home'
-                            ? `pr-[calc(100vw-var(--clip-shape-width-home-right)+var(--clip-shape-width-home-inner-space))] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
+                            ? `pr-[calc(100%-var(--clip-shape-width-home-right)+var(--clip-shape-width-home-inner-space))] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
                             : expansionState === 'category'
-                              ? `pr-[calc(100vw-var(--clip-shape-width-category-left))] ${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
+                              ? `pr-[calc(100%-var(--clip-shape-width-category-left))] ${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
                               : // === 'post'
-                                'before:animate-clip-shape-left-post pr-[calc(100vw-var(--clip-shape-width-post-left))]',
+                                'before:animate-clip-shape-left-post pr-[calc(100%-var(--clip-shape-width-post-left))]',
                     )}
                 >
                     <Titles />
@@ -141,7 +159,7 @@ const Main = () => {
                     <div
                         id='clip-shape-main-post'
                         className={classNames(
-                            'absolute left-0 top-0 z-10 flex size-full pl-[calc(var(--clip-shape-width-post-left)-(var(--clip-shape-tan-post)/2))] pr-[calc(100vw-(var(--clip-shape-width-post-right)+(var(--clip-shape-tan-post)/2)))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-t-[--clip-shape-post-inset]',
+                            'absolute left-0 top-0 z-10 flex size-full pl-[calc(var(--clip-shape-width-post-left)-(var(--clip-shape-tan-post)/2))] pr-[calc(100%-(var(--clip-shape-width-post-right)+(var(--clip-shape-tan-post)/2)))] transition-[clip-path] delay-[--clip-shape-animation-delay-stagger] duration-[--clip-shape-animation-duration] clip-inset-t-[--clip-shape-post-inset] [--close-post-button-height:theme(spacing.8)]',
                             expansionState === 'home'
                                 ? 'delay-0'
                                 : expansionState === 'category'
