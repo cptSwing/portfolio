@@ -1,14 +1,24 @@
 import { PaintBrushIcon } from '@heroicons/react/24/outline';
 import { useZustand } from '../lib/zustand';
-
-const store_cycleTheme = useZustand.getState().methods.store_cycleTheme;
+import { useEffect } from 'react';
 
 const Settings = () => {
-    return (
-        <div className='group/brush aspect-square w-1/4 cursor-pointer rounded-md bg-[--color-bars-no-post] p-0.5' onClick={() => store_cycleTheme()}>
-            <PaintBrushIcon className='stroke-neutral-700 group-hover/brush:stroke-[--color-bars-post] group-active/brush:stroke-[--color-bars-post]' />
-        </div>
-    );
+    return <SwitchTheme />;
 };
 
 export default Settings;
+
+const store_cycleTheme = useZustand.getState().methods.store_cycleTheme;
+
+const SwitchTheme = () => {
+    const theme = useZustand((state) => state.values.theme);
+    useEffect(() => {
+        document.body.dataset.theme = theme;
+    }, [theme]);
+
+    return (
+        <div className='group/brush bg-theme-primary aspect-square w-1/4 cursor-pointer rounded-md p-0.5' onClick={() => store_cycleTheme()}>
+            <PaintBrushIcon className='stroke-theme-secondary group-hover-active/brush:stroke-theme-secondary-lighter' />
+        </div>
+    );
+};

@@ -1,0 +1,59 @@
+body[data-theme='yellow'] {
+    --theme-primary: 254 210 67; /* 500 */
+    --theme-primary-lighter: 255 237 180 /* 100 */;
+    --theme-primary-darker: 146 113 3 /* 900 */;
+
+    --theme-secondary: 42 166 182;
+    --theme-secondary-lighter: 146 232 244;
+    --theme-secondary-darker: 3 72 81;
+
+    --theme-accent: 204 55 35; /* 500 */
+    --theme-text: 239 239 239;
+    --theme-text-background: 64 64 64;
+    --theme-root-background: 23 23 23;
+}
+
+body[data-theme='pink'] {
+    --theme-primary: 191 91 148; /* 500 */
+    --theme-primary-lighter: 252 227 241 /* 100 */;
+    --theme-primary-darker: 79 18 53 /* 900 */;
+
+    --theme-secondary: 214 198 133;
+    --theme-secondary-lighter: 254 251 239;
+    --theme-secondary-darker: 75 67 35;
+
+    --theme-accent: 20 157 242; /* 500 */
+    --theme-text: 64 64 64;
+    --theme-text-background: 241 237 247;
+    --theme-root-background: 27 19 42;
+}
+
+body[data-theme='orange'] {
+    --theme-primary: 215 203 181; /* 500 */
+    --theme-primary-lighter: 249 239 223 /* 100 */;
+    --theme-primary-darker: 132 116 88 /* 900 */;
+
+    --theme-secondary: 211 99 16;
+    --theme-secondary-lighter: 247 143 65;
+    --theme-secondary-darker: 92 40 1;
+
+    --theme-accent: 88 180 96; /* 500 */
+    --theme-text: 243 251 248;
+    --theme-text-background: 30 47 41;
+    --theme-root-background: 20 26 23;
+}
+
+body[data-theme='bw'] {
+    --theme-primary: 206 206 206; /* 500 */
+    --theme-primary-lighter: 184 184 184 /* 100 */;
+    --theme-primary-darker: 233 233 233 /* 900 */;
+
+    --theme-secondary: 198 198 198;
+    --theme-secondary-lighter: 253 253 253;
+    --theme-secondary-darker: 33 33 33;
+
+    --theme-accent: 255 255 255; /* 500 */
+    --theme-text: 18 18 18;
+    --theme-text-background: 255 255 255;
+    --theme-root-background: 40 40 40;
+}

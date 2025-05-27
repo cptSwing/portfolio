@@ -168,16 +168,13 @@
     animation-fill-mode: forwards;
     animation-duration: var(--clip-shape-animation-duration);
 
-    --hex-outer-radius: calc(var(--clip-shape-overall-height) / 2);
+    --hex-outer-radius: calc(var(--anim-overall-height) / 2);
     --hex-half-outer-radius: calc(var(--hex-outer-radius) / 2); /* r*cos60 */
     --hex-inner-radius: calc(var(--hex-outer-radius) * sin(60deg)); /* r*sin60 */
 
     --hex-top-position: calc(var(--hex-outer-radius) - var(--hex-inner-radius));
     --hex-bottom-position: calc(100% - var(--hex-top-position));
-    --percentage-of-hex-top-to-100vh: 6.7;
-    --100-minus-percentage-of-hex-top: calc(100 - var(--percentage-of-hex-top-to-100vh));
-
-    --inner-margin: 1rem; /* TODO calc this */
+    --100-minus-percentage-of-hex-top: calc(100 - var(--anim-percentage-of-hex-top-to-100vh));
 }
 
 /** Remap function:
@@ -195,17 +192,17 @@
         calc(
                 var(--clip-shape-width-home-left) +
                     (
-                        var(--clip-shape-tan-home-offset) + var(--percentage-of-hex-top-to-100vh) *
+                        var(--clip-shape-tan-home-offset) + var(--anim-percentage-of-hex-top-to-100vh) *
                             (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100
                     ) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             var(--hex-top-position) /* Top Right */,
 
         calc(
                 var(--clip-shape-width-home-left) +
                     (var(--clip-shape-tan-home-offset) + 28 * (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             28% /* Start Bulge */,
 
@@ -224,7 +221,7 @@
         calc(
                 var(--clip-shape-width-home-left) +
                     (var(--clip-shape-tan-home-offset) + 75 * (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             75% /* End Bulge */,
 
@@ -234,7 +231,7 @@
                         var(--clip-shape-tan-home-offset) + var(--100-minus-percentage-of-hex-top) *
                             (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100
                     ) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             var(--hex-bottom-position) /* Bottom Right */,
 
@@ -249,22 +246,22 @@
         calc(
                 var(--clip-shape-width-category-left) +
                     (
-                        var(--clip-shape-tan-category-offset-inverted) + var(--percentage-of-hex-top-to-100vh) *
+                        var(--clip-shape-tan-category-offset-inverted) + var(--anim-percentage-of-hex-top-to-100vh) *
                             (var(--clip-shape-tan-category-offset) - var(--clip-shape-tan-category-offset-inverted)) / 100
                     ) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             var(--hex-top-position) /* Top Right */,
 
         calc(
                 var(--clip-shape-width-category-left) +
                     (
-                        var(--clip-shape-tan-category-offset-inverted) + 18 *
+                        var(--clip-shape-tan-category-offset-inverted) + 17 *
                             (var(--clip-shape-tan-category-offset) - var(--clip-shape-tan-category-offset-inverted)) / 100
                     ) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
-            18% /* Start Bulge */,
+            17% /* Start Bulge */,
 
         calc(
                 var(--clip-shape-width-category-left) +
@@ -290,7 +287,7 @@
                         var(--clip-shape-tan-category-offset-inverted) + 82 *
                             (var(--clip-shape-tan-category-offset) - var(--clip-shape-tan-category-offset-inverted)) / 100
                     ) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             82% /* End Bulge */,
 
@@ -300,7 +297,7 @@
                         var(--clip-shape-tan-category-offset-inverted) + var(--100-minus-percentage-of-hex-top) *
                             (var(--clip-shape-tan-category-offset) - var(--clip-shape-tan-category-offset-inverted)) / 100
                     ) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             var(--hex-bottom-position) /* Bottom Right */,
 
@@ -315,40 +312,40 @@
         calc(
                 var(--clip-shape-width-post-left) +
                     (var(--clip-shape-tan-post-offset) + 1 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
-                    var(--clip-shape-width-home-inner-space)
+                    var(--anim-inner-margin)
             )
             1% /* Top Right */,
 
         calc(
                 var(--clip-shape-width-post-left) +
-                    (var(--clip-shape-tan-post-offset) + 10 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
-                    var(--clip-shape-width-home-inner-space)
+                    (var(--clip-shape-tan-post-offset) + 5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
+                    var(--anim-inner-margin)
             )
-            10% /* Start Bulge */,
+            5% /* Start Bulge */,
 
         calc(
                 var(--clip-shape-width-post-left) +
-                    (var(--clip-shape-tan-post-offset) + 12.5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100)
+                    (var(--clip-shape-tan-post-offset) + 7.5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100)
             )
-            12.5% /* Top of Bulge */,
+            7.5% /* Top of Bulge */,
 
         calc(
                 var(--clip-shape-width-post-left) +
-                    (var(--clip-shape-tan-post-offset) + 87.5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100)
+                    (var(--clip-shape-tan-post-offset) + 92.5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100)
             )
-            87.5% /* Bottom of Bulge */,
+            92.5% /* Bottom of Bulge */,
 
         calc(
                 var(--clip-shape-width-post-left) +
-                    (var(--clip-shape-tan-post-offset) + 90 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
-                    var(--clip-shape-width-home-inner-space)
+                    (var(--clip-shape-tan-post-offset) + 95 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
+                    var(--anim-inner-margin)
             )
-            90% /* End Bulge */,
+            95% /* End Bulge */,
 
         calc(
                 var(--clip-shape-width-post-left) +
                     (var(--clip-shape-tan-post-offset) + 99 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
-                    var(--clip-shape-width-home-inner-space)
+                    var(--anim-inner-margin)
             )
             99% /* Bottom Right */,
 
@@ -367,24 +364,24 @@
         calc(
                 var(--clip-shape-width-home-right) +
                     (
-                        var(--clip-shape-tan-home-offset) + var(--percentage-of-hex-top-to-100vh) *
+                        var(--clip-shape-tan-home-offset) + var(--anim-percentage-of-hex-top-to-100vh) *
                             (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100
                     ) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             var(--hex-top-position) /* Top Left */,
 
         calc(
                 var(--clip-shape-width-home-right) +
-                    (var(--clip-shape-tan-home-offset) + 29 * (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100) +
-                    var(--inner-margin)
+                    (var(--clip-shape-tan-home-offset) + 28.5 * (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100) +
+                    var(--anim-inner-margin)
             )
-            29% /* Begin Bulge */,
+            28.5% /* Begin Bulge */,
         calc(
                 var(--clip-shape-width-home-right) +
-                    (var(--clip-shape-tan-home-offset) + 32.5 * (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100)
+                    (var(--clip-shape-tan-home-offset) + 32 * (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100)
             )
-            32.5% /* Top of Bulge */,
+            32% /* Top of Bulge */,
         calc(
                 var(--clip-shape-width-home-right) +
                     (var(--clip-shape-tan-home-offset) + 70 * (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100)
@@ -393,7 +390,7 @@
         calc(
                 var(--clip-shape-width-home-right) +
                     (var(--clip-shape-tan-home-offset) + 75 * (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             75% /* End Bulge */,
 
@@ -403,7 +400,7 @@
                         var(--clip-shape-tan-home-offset) + var(--100-minus-percentage-of-hex-top) *
                             (var(--clip-shape-tan-home-offset-inverted) - var(--clip-shape-tan-home-offset)) / 100
                     ) +
-                    var(--inner-margin)
+                    var(--anim-inner-margin)
             )
             var(--hex-bottom-position) /* Bottom Left */,
 
@@ -416,30 +413,30 @@
         calc(
                 var(--clip-shape-width-category-right) +
                     (
-                        var(--clip-shape-tan-category-offset-inverted) + var(--percentage-of-hex-top-to-100vh) *
+                        var(--clip-shape-tan-category-offset-inverted) + var(--anim-percentage-of-hex-top-to-100vh) *
                             (var(--clip-shape-tan-category-offset) - var(--clip-shape-tan-category-offset-inverted)) / 100
-                    ) +
-                    var(--inner-margin)
+                    ) -
+                    var(--anim-inner-margin)
             )
             var(--hex-top-position) /* Top left */,
 
         calc(
                 var(--clip-shape-width-category-right) +
                     (
-                        var(--clip-shape-tan-category-offset-inverted) + 18 *
+                        var(--clip-shape-tan-category-offset-inverted) + 17 *
                             (var(--clip-shape-tan-category-offset) - var(--clip-shape-tan-category-offset-inverted)) / 100
-                    ) +
-                    var(--inner-margin)
+                    ) -
+                    var(--anim-inner-margin)
             )
-            18% /* Start Bulge */,
+            17% /* Start Bulge */,
         calc(
                 var(--clip-shape-width-category-right) +
                     (
-                        var(--clip-shape-tan-category-offset-inverted) + 20 *
+                        var(--clip-shape-tan-category-offset-inverted) + 19 *
                             (var(--clip-shape-tan-category-offset) - var(--clip-shape-tan-category-offset-inverted)) / 100
                     )
             )
-            20% /* Top of Bulge */,
+            19% /* Top of Bulge */,
         calc(
                 var(--clip-shape-width-category-right) +
                     (
@@ -453,8 +450,8 @@
                     (
                         var(--clip-shape-tan-category-offset-inverted) + 82 *
                             (var(--clip-shape-tan-category-offset) - var(--clip-shape-tan-category-offset-inverted)) / 100
-                    ) +
-                    var(--inner-margin)
+                    ) -
+                    var(--anim-inner-margin)
             )
             82% /* End Bulge */,
 
@@ -463,8 +460,8 @@
                     (
                         var(--clip-shape-tan-category-offset-inverted) + var(--100-minus-percentage-of-hex-top) *
                             (var(--clip-shape-tan-category-offset) - var(--clip-shape-tan-category-offset-inverted)) / 100
-                    ) +
-                    var(--inner-margin)
+                    ) -
+                    var(--anim-inner-margin)
             )
             var(--hex-bottom-position) /* Bottom left */,
 
@@ -476,41 +473,41 @@
     --path-right-post: polygon(
         calc(
                 var(--clip-shape-width-post-right) +
-                    (var(--clip-shape-tan-post-offset) + 1 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
-                    var(--clip-shape-width-home-inner-space)
+                    (var(--clip-shape-tan-post-offset) + 1 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) -
+                    var(--anim-inner-margin)
             )
             1% /* Top Left */,
 
         calc(
                 var(--clip-shape-width-post-right) +
-                    (var(--clip-shape-tan-post-offset) + 10 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
-                    var(--clip-shape-width-home-inner-space)
+                    (var(--clip-shape-tan-post-offset) + 5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) -
+                    var(--anim-inner-margin)
             )
-            10% /* Start Bulge */,
+            5% /* Start Bulge */,
 
         calc(
                 var(--clip-shape-width-post-right) +
-                    (var(--clip-shape-tan-post-offset) + 12.5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100)
+                    (var(--clip-shape-tan-post-offset) + 7.5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100)
             )
-            12.5% /* Top of Bulge */,
+            7.5% /* Top of Bulge */,
 
         calc(
                 var(--clip-shape-width-post-right) +
-                    (var(--clip-shape-tan-post-offset) + 87.5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100)
+                    (var(--clip-shape-tan-post-offset) + 92.5 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100)
             )
-            87.5% /* Bottom of Bulge */,
+            92.5% /* Bottom of Bulge */,
 
         calc(
                 var(--clip-shape-width-post-right) +
-                    (var(--clip-shape-tan-post-offset) + 90 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
-                    var(--clip-shape-width-home-inner-space)
+                    (var(--clip-shape-tan-post-offset) + 95 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) -
+                    var(--anim-inner-margin)
             )
-            90% /* End Bulge */,
+            95% /* End Bulge */,
 
         calc(
                 var(--clip-shape-width-post-right) +
-                    (var(--clip-shape-tan-post-offset) + 99 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
-                    var(--clip-shape-width-home-inner-space)
+                    (var(--clip-shape-tan-post-offset) + 99 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) -
+                    var(--anim-inner-margin)
             )
             99% /* Bottom Left */,
 
@@ -592,7 +589,7 @@
 .before\:animate-clip-shape-left-category-reversed::before {
     @apply animate-clip-shape-left-variables;
     animation-name: clip-shape-left-category-reversed;
-    animation-duration: calc(var(--clip-shape-animation-duration) / 2);
+    /* animation-duration: calc(var(--clip-shape-animation-duration) / 2); */
 }
 
 @keyframes clip-shape-left-category-reversed {
@@ -623,7 +620,7 @@
 .before\:animate-clip-shape-right-category-reversed::before {
     @apply animate-clip-shape-right-variables;
     animation-name: clip-shape-right-category-reversed;
-    animation-duration: calc(var(--clip-shape-animation-duration) / 2);
+    /* animation-duration: calc(var(--clip-shape-animation-duration) / 2); */
 }
 
 @keyframes clip-shape-right-category-reversed {
@@ -648,6 +645,15 @@
         clip-path: var(--path-left-category);
     }
 
+    /* 25% {
+        clip-path: var(--path-left-home);
+    }
+
+    60%,
+    65% {
+        clip-path: var(--path-left-category);
+    } */
+
     100% {
         clip-path: var(--path-left-post);
     }
@@ -656,13 +662,22 @@
 .before\:animate-clip-shape-left-post-reversed::before {
     @apply animate-clip-shape-left-variables;
     animation-name: clip-shape-left-post-reversed;
-    animation-duration: calc(var(--clip-shape-animation-duration) / 2);
+    /* animation-duration: calc(var(--clip-shape-animation-duration) / 2); */
 }
 
 @keyframes clip-shape-left-post-reversed {
     0% {
         clip-path: var(--path-left-post);
     }
+
+    /* 25% {
+        clip-path: var(--path-left-category);
+    }
+
+    60%,
+    65% {
+        clip-path: var(--path-left-home);
+    } */
 
     100% {
         clip-path: var(--path-left-category);
@@ -679,6 +694,15 @@
         clip-path: var(--path-right-category);
     }
 
+    /* 25% {
+        clip-path: var(--path-right-home);
+    }
+
+    60%,
+    65% {
+        clip-path: var(--path-right-category);
+    } */
+
     100% {
         clip-path: var(--path-right-post);
     }
@@ -687,13 +711,22 @@
 .before\:animate-clip-shape-right-post-reversed::before {
     @apply animate-clip-shape-right-variables;
     animation-name: clip-shape-right-post-reversed;
-    animation-duration: calc(var(--clip-shape-animation-duration) / 2);
+    /* animation-duration: calc(var(--clip-shape-animation-duration) / 2); */
 }
 
 @keyframes clip-shape-right-post-reversed {
     0% {
         clip-path: var(--path-right-post);
     }
+
+    /* 25% {
+        clip-path: var(--path-right-category);
+    }
+
+    60%,
+    65% {
+        clip-path: var(--path-right-home);
+    } */
 
     100% {
         clip-path: var(--path-right-category);

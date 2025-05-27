@@ -1,3 +1,4 @@
+@import './themes.css';
 @import './fonts.css';
 @import './animations.css';
 
@@ -6,12 +7,6 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        @apply [--bg-color:--theme-bg-base] [--color-bars-no-post:--theme-secondary-300] [--color-bars-post:--theme-primary-500] [--color-primary-active-cat-bg:--theme-primary-300] [--color-primary-content-bg:--theme-primary-100] [--color-primary-inactive-cat-bg:--theme-primary-600] [--color-secondary-active-cat:--theme-secondary-400] [--color-secondary-inactive-cat:--theme-secondary-600];
-        /* @apply [--nav-text:--theme-bg-lighter]; */
-        @apply [--nav-text:--theme-primary-600];
-    }
-
     a {
         @apply text-[--theme-secondary-50] underline decoration-white/25 visited:text-[--theme-secondary-200];
     }

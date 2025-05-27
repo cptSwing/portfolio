@@ -155,6 +155,20 @@ const tailWindTheme = {
             willChange: {
                 filter: 'filter',
             },
+            colors: {
+                theme: {
+                    'primary': 'rgb(var(--theme-primary))',
+                    'primary-lighter': 'rgb(var(--theme-primary-lighter))',
+                    'primary-darker': 'rgb(var(--theme-primary-darker))',
+                    'secondary': 'rgb(var(--theme-secondary))',
+                    'secondary-lighter': 'rgb(var(--theme-secondary-lighter))',
+                    'secondary-darker': 'rgb(var(--theme-secondary-darker))',
+                    'accent': 'rgb(var(--theme-accent))',
+                    'text': 'rgb(var(--theme-text))',
+                    'text-background': 'rgb(var(--theme-text-background))',
+                    'root-background': 'rgb(var(--theme-root-background))',
+                },
+            },
         },
     },
     plugins: [

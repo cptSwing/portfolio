@@ -2,7 +2,7 @@ import { MENU_CATEGORY, ToolsUrls } from './enums';
 
 export type ZustandStore = {
     values: {
-        themeIndex: number;
+        theme: 'yellow' | 'pink' | 'orange' | 'bw';
         debug: {
             applyFlipMotionBlur: boolean;
             applyTransformMatrixFix: boolean;

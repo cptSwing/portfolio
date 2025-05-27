@@ -246,7 +246,7 @@ const SingleCardImage: FC<{
             {/* Title: */}
             <h6
                 className={classNames(
-                    'absolute top-[--card-titles-inset-padding] z-10 mx-auto skew-x-[calc(var(--clip-shape-skew-angle)*-1)] text-center',
+                    'absolute top-[--card-titles-inset-padding] z-10 mx-auto skew-x-[calc(var(--clip-shape-skew-angle-category)*-1)] text-center',
                     'before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:bg-[--color-primary-inactive-cat-bg]',
                     isAtFront ? 'w-full opacity-100' : 'size-0 opacity-0',
                 )}
@@ -260,7 +260,7 @@ const SingleCardImage: FC<{
             {subTitle && (
                 <div
                     className={classNames(
-                        'absolute bottom-[--card-titles-inset-padding] mx-auto skew-x-[calc(var(--clip-shape-skew-angle)*-1)] text-center text-sm',
+                        'absolute bottom-[--card-titles-inset-padding] mx-auto skew-x-[calc(var(--clip-shape-skew-angle-category)*-1)] text-center text-sm',
                         'before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:bg-[--color-primary-inactive-cat-bg]',
                         isAtFront ? 'w-full opacity-100' : 'size-0 opacity-0',
                     )}

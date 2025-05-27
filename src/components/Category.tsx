@@ -42,9 +42,9 @@ const Category = () => {
             <Flipper
                 element={'nav'}
                 className={
-                    '[--card-animation-blur-multiplier:0] [--card-title-anim-delay:200ms] [--card-title-anim-duration:100ms] [--card-titles-inset-padding:theme(spacing.2)] [--category-gap:calc(var(--clip-shape-main-padding)/2)] [--category-skew-anim-delay-duration:calc(var(--clip-shape-animation-duration)-var(--clip-shape-animation-delay-stagger))]' +
+                    '[--card-titles-inset-padding:theme(spacing.2)] [--clip-shape-main-padding-left:calc(var(--clip-shape-main-padding-right)*1.5)] [--clip-shape-main-padding-right:calc(var(--anim-inner-margin)*1.25)]' +
                     ' ' +
-                    'postcards-grid-template relative grid h-3/5 w-full origin-center skew-x-[--clip-shape-skew-angle] transform grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--category-gap] transition-[transform] duration-[--clip-shape-animation-duration]'
+                    'postcards-grid-template bg-theme-primary/50 absolute left-0 top-0 grid size-full origin-center skew-x-[--clip-shape-skew-angle-category] transform grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--clip-shape-main-padding-left] overflow-hidden bg-opacity-50 pb-[calc((var(--anim-overall-height)/100)*12)] pl-[--clip-shape-main-padding-left] pr-[--clip-shape-main-padding-right] pt-[calc((var(--anim-overall-height)/100)*11)] backdrop-blur-sm transition-[transform,padding,clip-path] delay-[calc(var(--clip-shape-animation-duration)/2-var(--wipe-delay))] duration-[--clip-shape-animation-duration] clip-inset-l-[calc(100%-var(--wipe-clip-inset))]'
                 }
                 flipKey={cardAnimationIndex}
                 spring={{ stiffness: 600, damping: 40 }}
@@ -73,8 +73,8 @@ const Category = () => {
                                         'relative w-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',
                                         'before:absolute before:-left-1 before:h-full before:w-[calc(100%+theme(spacing.2))]',
                                         idx === cardAnimationIndex - 1
-                                            ? 'bg-[--color-primary-inactive-cat-bg] before:cursor-default'
-                                            : 'bg-black/10 before:cursor-pointer hover-active:bg-[--color-primary-inactive-cat-bg] hover-active:opacity-50',
+                                            ? 'bg-theme-primary-lighter before:cursor-default'
+                                            : 'hover-active:bg-theme-primary bg-black/15 before:cursor-pointer hover-active:opacity-50',
                                     )}
                                     onClick={() => setCardAnimationIndex(idx + 1)}
                                 />
