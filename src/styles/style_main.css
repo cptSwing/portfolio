@@ -105,9 +105,35 @@
         'area5  area5   area5   area4   area4   area4   tracker';
 }
 
+.pixelate {
+    backdrop-filter: url(/svg/filters.svg#pixelate);
+    /* backdrop-filter: blur(10px); */
+}
+
+.pixelate-pseudo {
+    @apply pixelate;
+    content: '';
+    opacity: 0.4;
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
+.before\:pixelate::before {
+    @apply pixelate-pseudo;
+}
+
+.after\:pixelate::after {
+    @apply pixelate-pseudo;
+}
+
 /* SVG Filters */
 
 .bloom-svg {
     /* filter: saturate(200%) url(src/assets/filters.svg#bloom-svg-filter); */
-    @apply [filter:saturate(200%)_url(src/assets/filters.svg#bloom-svg-filter)];
+    @apply [filter:saturate(200%)_url(/svg/filters.svg#bloom-svg-filter)];
 }

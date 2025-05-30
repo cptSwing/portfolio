@@ -63,7 +63,17 @@ const Main = () => {
     }) as MutableRefObject<HTMLDivElement | null>;
 
     return (
-        <div className='bg-theme-root-background text-theme-text flex h-dvh w-dvw items-center justify-center overflow-hidden font-miriam-libre scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary)]'>
+        <div className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-miriam-libre text-theme-text scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary)]'>
+            <svg className='invisible fixed left-0 top-0'>
+                <filter id='pixelate' x='0' y='0'>
+                    <feFlood x='0' y='0' width='1' height='1' />
+                    <feComposite id='composite1' width='40' height='40' />
+                    <feTile result='a' />
+                    <feComposite in='SourceGraphic' in2='a' operator='in' />
+                    <feMorphology id='morphology' operator='dilate' radius='16' />
+                </filter>
+            </svg>
+
             <div
                 style={
                     {
@@ -118,25 +128,39 @@ const Main = () => {
                 className='relative h-[--anim-overall-height] w-full [--nav-category-common-color-1:theme(colors.gray.700)]'
             >
                 <div
-                    id='clip-shape-left'
+                    id='clip-shape-titles'
                     className={classNames(
-                        'peer pointer-events-none absolute left-0 top-0 z-20 flex size-full flex-row items-center justify-end drop-shadow-omni-lg transition-[transform,padding] duration-[--clip-shape-animation-duration]',
-                        'before:bg-theme-primary before:absolute before:left-0 before:top-0 before:size-full',
+                        'peer pointer-events-none absolute left-0 top-0 z-20 flex size-full flex-row items-center justify-end transition-[transform,padding] duration-[--clip-shape-animation-duration]',
                         expansionState === 'home'
-                            ? `-translate-x-[calc(var(--anim-inner-margin)/2)] pr-[calc(100%-var(--clip-shape-width-home-right))] hover-active:-translate-x-[--anim-inner-margin] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
+                            ? '-translate-x-[calc(var(--anim-inner-margin)/2)] pr-[calc(100%-var(--clip-shape-width-home-right))] hover-active:-translate-x-[--anim-inner-margin]'
                             : expansionState === 'category'
-                              ? `pr-[calc(100%-var(--clip-shape-width-category-left))] ${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
+                              ? 'pr-[calc(100%-var(--clip-shape-width-category-left))]'
                               : // === 'post'
-                                'before:animate-clip-shape-left-post pr-[calc(100%-var(--clip-shape-width-post-left))]',
+                                'pr-[calc(100%-var(--clip-shape-width-post-left))]',
                     )}
                 >
                     <Titles />
                 </div>
 
                 <div
+                    id='clip-shape-left'
+                    className={classNames(
+                        'pointer-events-none absolute left-0 top-0 z-10 size-full drop-shadow-omni-lg transition-[transform] duration-[--clip-shape-animation-duration]',
+                        'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary/50',
+                        'after:pixelate after:![backdrop-filter:url(#pixelate)]',
+                        expansionState === 'home'
+                            ? `-translate-x-[calc(var(--anim-inner-margin)/2)] peer-hover-active:-translate-x-[--anim-inner-margin] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
+                            : expansionState === 'category'
+                              ? `${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
+                              : // === 'post'
+                                'before:animate-clip-shape-left-post',
+                    )}
+                ></div>
+
+                <div
                     id='clip-shape-main'
                     className={classNames(
-                        'absolute left-0 right-0 top-[calc(var(--top-margin)+0.5%)] z-0 mx-auto h-[calc(var(--anim-overall-height)-(2*var(--top-margin))-1%)] transition-[top,transform,width,height] duration-[--clip-shape-animation-duration] [--post-close-button-height:4vh] [--top-margin:calc(var(--anim-overall-height)*(var(--anim-percentage-of-hex-top-to-100vh)/100))] [--wipe-clip-inset:100%] [--wipe-delay:calc(var(--clip-shape-animation-duration)/2)]',
+                        'pointer-events-auto absolute left-0 right-0 top-[calc(var(--top-margin)+0.5%)] z-0 mx-auto h-[calc(var(--anim-overall-height)-(2*var(--top-margin))-1%)] transition-[top,transform,width,height] duration-[--clip-shape-animation-duration] [--post-close-button-height:4vh] [--top-margin:calc(var(--anim-overall-height)*(var(--anim-percentage-of-hex-top-to-100vh)/100))] [--wipe-clip-inset:100%] [--wipe-delay:calc(var(--clip-shape-animation-duration)/2)]',
                         expansionState === 'home'
                             ? 'w-[calc(var(--anim-inner-margin)*4)] skew-x-[--clip-shape-skew-angle-home]'
                             : expansionState === 'category'
@@ -153,8 +177,9 @@ const Main = () => {
                     id='clip-shape-right'
                     ref={ref}
                     className={classNames(
-                        'pointer-events-none absolute left-0 top-0 z-10 size-full drop-shadow-omni-lg transition-transform',
-                        'before:bg-theme-primary before:absolute before:left-0 before:top-0 before:size-full',
+                        'z-00 pointer-events-none absolute left-0 top-0 size-full drop-shadow-omni-lg transition-transform',
+                        'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary',
+                        'after:pixelate after:![backdrop-filter:url(#pixelate)]',
                         expansionState === 'home'
                             ? formerExpansionState === 'category'
                                 ? 'before:animate-clip-shape-right-category-reversed peer-hover-active:translate-x-[--anim-inner-margin]'
