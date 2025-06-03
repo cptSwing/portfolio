@@ -106,20 +106,19 @@
 }
 
 .pixelate {
-    backdrop-filter: url(/svg/filters.svg#pixelate);
+    /* backdrop-filter: url(/svg/filters.svg#pixelate); */
+    /* backdrop-filter: url(#pixelate-tile); */
+    /* backdrop-filter: url(#pixelate-displacement); */
+    /* backdrop-filter: url(#pixelate-dilate-erode); */
+    backdrop-filter: url(#pixelate-v2);
+
     /* backdrop-filter: blur(10px); */
 }
 
 .pixelate-pseudo {
     @apply pixelate;
     content: '';
-    opacity: 0.4;
     pointer-events: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
     z-index: 999;
 }
 
