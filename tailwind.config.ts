@@ -142,7 +142,7 @@ const tailWindTheme = {
             },
             dropShadow: {
                 'omni-md': ['0 0 4px rgb(0 0 0 / 0.1)', '0 0 3px rgb(0 0 0 / 0.2)'],
-                'omni-lg': ['0 0 6px rgb(0 0 0 / 0.2)', '0 0 4px rgb(0 0 0 / 0.4)'],
+                'omni-lg': ['0 0 6px rgb(0 0 0 / 0.2)', '0 0 4px rgb(0 0 0 / 0.4)', '0 0 1px black'],
             },
             boxShadow: {
                 'top-rim-lg': 'inset 0px 10px 4px -10px rgb(0 0 0 / 0.1)',

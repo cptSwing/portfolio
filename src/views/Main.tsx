@@ -65,8 +65,8 @@ const Main = () => {
     return (
         <div
             className={
-                'flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-miriam-libre text-theme-text scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary)]'
-                // + ' [background-image:url("http://uploads2.wikiart.org/images/vincent-van-gogh/the-starry-night-1889(1).jpg")]'
+                'flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-miriam-libre text-theme-text scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary)]' +
+                ' [background-image:url("http://uploads2.wikiart.org/images/vincent-van-gogh/the-starry-night-1889(1).jpg")]'
             }
         >
             <svg className='invisible fixed left-0 top-0'>
@@ -188,16 +188,15 @@ const Main = () => {
                     id='clip-shape-left'
                     className={classNames(
                         'pointer-events-none absolute left-0 top-0 z-10 size-full drop-shadow-omni-lg transition-[transform] duration-[--clip-shape-animation-duration]',
-                        'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary',
-                        // 'after:[background-image:url("http://uploads2.wikiart.org/images/vincent-van-gogh/the-starry-night-1889(1).jpg")]',
+                        'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary before:transition-[mask-position,mask-size] before:duration-1000 before:[mask-image:url(/images/utility/hex.png)] before:[mask-repeat:no-repeat] before:[mask-type:alpha]',
                         // 'after:bg-theme-primary',
-                        'after:pixelate after:absolute after:left-0 after:top-0 after:size-full after:opacity-75 after:clip-inset-r-[55%]',
+                        // 'after:pixelate after:absolute after:left-0 after:top-0 after:size-full after:opacity-75 after:clip-inset-r-[55%]',
                         expansionState === 'home'
-                            ? `-translate-x-[calc(var(--anim-inner-margin)/2)] peer-hover-active:-translate-x-[--anim-inner-margin] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
+                            ? `-translate-x-[calc(var(--anim-inner-margin)/2)] before:[mask-position:calc(50vw-var(--hex-outer-radius))] before:[mask-size:auto_calc(100vh-(2*var(--hex-top-position)))] peer-hover-active:-translate-x-[--anim-inner-margin] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
                             : expansionState === 'category'
-                              ? `${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
+                              ? `before:[mask-position:2vw] before:[mask-size:auto_120vh] ${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
                               : // === 'post'
-                                'before:animate-clip-shape-left-post',
+                                'before:animate-clip-shape-left-post before:[mask-position:1vw] before:![mask-size:auto_98vh]',
                     )}
                 ></div>
 

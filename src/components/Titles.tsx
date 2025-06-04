@@ -26,14 +26,14 @@ const Titles = () => {
             <div
                 className={classNames(
                     'absolute right-0 top-[calc(100%+theme(spacing.2))] flex aspect-square w-1/4 cursor-pointer flex-col items-center justify-around p-2',
-                    'before:bg-theme-primary-lighter before:absolute before:-z-10 before:h-full before:w-0 before:transition-[width] before:duration-500',
+                    'before:absolute before:-z-10 before:h-full before:w-0 before:bg-theme-secondary-lighter before:transition-[width] before:duration-500',
                     'hover-active:before:w-full',
                 )}
                 onClick={() => setMenuIsOpen((prev) => !prev)}
             >
-                <div className='h-0.5 w-full bg-[--nav-text]' />
-                <div className='h-0.5 w-full bg-[--nav-text]' />
-                <div className='h-0.5 w-full bg-[--nav-text]' />
+                <div className='h-0.5 w-full bg-theme-primary-darker' />
+                <div className='h-0.5 w-full bg-theme-primary-darker' />
+                <div className='h-0.5 w-full bg-theme-primary-darker' />
             </div>
 
             {menuIsOpen &&
@@ -79,7 +79,7 @@ const CategoryTitle: FC<{
             to={`/${id}`}
             className={classNames(
                 'group/link relative z-0 flex w-full cursor-pointer items-center justify-end no-underline',
-                'before:bg-theme-primary-darker before:absolute before:-z-10 before:block before:h-full before:rounded-bl-2xl before:drop-shadow-md before:transition-[width] before:duration-[--nav-title-animation-duration]',
+                'before:absolute before:-z-10 before:block before:h-full before:rounded-bl-2xl before:bg-theme-primary-darker before:drop-shadow-md before:transition-[width] before:duration-[--nav-title-animation-duration]',
                 'after:absolute after:right-0 after:h-full after:bg-white after:opacity-10 after:blur-sm after:clip-inset-0 after:clip-inset-l-[-200%] after:clip-inset-r-[calc(theme(spacing[0.5])*-1)]',
                 isThisCategoryOpen_Memo ? 'before:w-full after:w-1' : 'before:w-0 after:w-0 hover-active:before:w-full hover-active:after:w-1',
             )}
