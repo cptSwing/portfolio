@@ -65,55 +65,57 @@ const Main = () => {
     return (
         <div
             className={
-                'flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-miriam-libre text-theme-text scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary)]' +
-                ' [background-image:url("http://uploads2.wikiart.org/images/vincent-van-gogh/the-starry-night-1889(1).jpg")]'
+                'flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-miriam-libre text-theme-text scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary)]'
+                // + ' [background-image:url("http://uploads2.wikiart.org/images/vincent-van-gogh/the-starry-night-1889(1).jpg")]'
             }
         >
-            <svg className='invisible fixed left-0 top-0'>
-                <filter id='pixelate-tile' x='0' y='0'>
-                    <feFlood x='0' y='0' width='32' height='32' />
-                    <feComposite id='composite1' width='48' height='48' />
-                    <feTile result='a' />
-                    <feComposite in='SourceGraphic' in2='a' operator='in' />
-                    <feMorphology id='morphology' operator='dilate' radius='4' />
-                </filter>
+            <svg id='svg-hex' className='invisible fixed left-0 top-0' width='100' height='100'>
+                <defs>
+                    <filter id='pixelate-tile' x='0' y='0'>
+                        <feFlood x='0' y='0' width='32' height='32' />
+                        <feComposite id='composite1' width='48' height='48' />
+                        <feTile result='a' />
+                        <feComposite in='SourceGraphic' in2='a' operator='in' />
+                        <feMorphology id='morphology' operator='dilate' radius='4' />
+                    </filter>
 
-                <filter id='pixelate-displacement'>
-                    {/* https://stackoverflow.com/a/37451883/11016647 */}
-                    <feGaussianBlur stdDeviation='4' in='SourceGraphic' result='smoothed' />
-                    <feImage
-                        width='25%'
-                        height='25%'
-                        // xlink:href
-                        xlinkHref='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWSURBVAgdY1ywgOEDAwKxgJhIgFQ+AP/vCNK2s+8LAAAAAElFTkSuQmCC'
-                        result='displacement-map'
-                    />
-                    <feTile in='displacement-map' result='pixelate-map' />
-                    <feDisplacementMap in='smoothed' in2='pixelate-map' xChannelSelector='R' yChannelSelector='G' scale='150%' result='pre-final' />
-                    {/* <feOffset in='pre-final' dx='-25%' dy='-25%' /> */}
+                    <filter id='pixelate-displacement'>
+                        {/* https://stackoverflow.com/a/37451883/11016647 */}
+                        <feGaussianBlur stdDeviation='4' in='SourceGraphic' result='smoothed' />
+                        <feImage
+                            width='25%'
+                            height='25%'
+                            // xlink:href
+                            xlinkHref='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWSURBVAgdY1ywgOEDAwKxgJhIgFQ+AP/vCNK2s+8LAAAAAElFTkSuQmCC'
+                            result='displacement-map'
+                        />
+                        <feTile in='displacement-map' result='pixelate-map' />
+                        <feDisplacementMap in='smoothed' in2='pixelate-map' xChannelSelector='R' yChannelSelector='G' scale='150' result='pre-final' />
+                        {/* <feOffset in='pre-final' dx='-25%' dy='-25%' /> */}
 
-                    {/* <feComposite operator='in' in2='SourceGraphic' /> */}
-                    <feComposite operator='in' in='SourceGraphic' />
-                </filter>
+                        {/* <feComposite operator='in' in2='SourceGraphic' /> */}
+                        <feComposite operator='in' in='SourceGraphic' />
+                    </filter>
 
-                <filter id='pixelate-dilate-erode'>
-                    {/* https://codepen.io/yuanchuan/pen/BabyagP/9530d59b717d31a29d91e7d8eab20714?editors=1000 */}
-                    <feFlood x='4' y='4' height='2' width='2' />
-                    <feComposite width='4' height='4' />
-                    <feTile result='tiles' />
-                    <feComposite in2='SourceGraphic' in='tiles' operator='xor' />
-                    <feMorphology operator='dilate' radius='1.55' />
-                    <feMorphology operator='erode' radius='1.5' />
-                </filter>
+                    <filter id='pixelate-dilate-erode'>
+                        {/* https://codepen.io/yuanchuan/pen/BabyagP/9530d59b717d31a29d91e7d8eab20714?editors=1000 */}
+                        <feFlood x='4' y='4' height='2' width='2' />
+                        <feComposite width='4' height='4' />
+                        <feTile result='tiles' />
+                        <feComposite in2='SourceGraphic' in='tiles' operator='xor' />
+                        <feMorphology operator='dilate' radius='1.55' />
+                        <feMorphology operator='erode' radius='1.5' />
+                    </filter>
 
-                <filter id='pixelate-v2' x='0' y='0' height='100%' width='100%'>
-                    <feOffset dx='0' dy='0' result='box-blur' />
-                    <feFlood x='0' y='0' height='4' width='4' />
-                    <feComposite width='68' height='68' />
-                    <feTile result='tiles' />
-                    <feComposite in='box-blur' operator='in' />
-                    <feMorphology operator='dilate' radius='32' />
-                </filter>
+                    <filter id='pixelate-v2' x='0' y='0' height='100%' width='100%'>
+                        <feOffset dx='0' dy='0' result='box-blur' />
+                        <feFlood x='0' y='0' height='4' width='4' />
+                        <feComposite width='68' height='68' />
+                        <feTile result='tiles' />
+                        <feComposite in='box-blur' operator='in' />
+                        <feMorphology operator='dilate' radius='32' />
+                    </filter>
+                </defs>
             </svg>
 
             <div
@@ -188,15 +190,16 @@ const Main = () => {
                     id='clip-shape-left'
                     className={classNames(
                         'pointer-events-none absolute left-0 top-0 z-10 size-full drop-shadow-omni-lg transition-[transform] duration-[--clip-shape-animation-duration]',
-                        'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary before:transition-[mask-position,mask-size] before:duration-1000 before:[mask-image:url(/images/utility/hex.png)] before:[mask-repeat:no-repeat] before:[mask-type:alpha]',
+                        'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary before:[mask-image:url("/svg/hexagon-mask.svg")] before:[mask-repeat:repeat]',
+                        'before:[mask-composite:exclude]',
                         // 'after:bg-theme-primary',
                         // 'after:pixelate after:absolute after:left-0 after:top-0 after:size-full after:opacity-75 after:clip-inset-r-[55%]',
                         expansionState === 'home'
-                            ? `-translate-x-[calc(var(--anim-inner-margin)/2)] before:[mask-position:calc(50vw-var(--hex-outer-radius))] before:[mask-size:auto_calc(100vh-(2*var(--hex-top-position)))] peer-hover-active:-translate-x-[--anim-inner-margin] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
+                            ? `-translate-x-[calc(var(--anim-inner-margin)/2)] peer-hover-active:-translate-x-[--anim-inner-margin] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
                             : expansionState === 'category'
-                              ? `before:[mask-position:2vw] before:[mask-size:auto_120vh] ${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
+                              ? `${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
                               : // === 'post'
-                                'before:animate-clip-shape-left-post before:[mask-position:1vw] before:![mask-size:auto_98vh]',
+                                'before:animate-clip-shape-left-post',
                     )}
                 ></div>
 

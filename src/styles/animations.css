@@ -188,7 +188,7 @@
 .animate-clip-shape-left-variables {
     @apply animate-clip-shape-variables;
 
-    --path-left-home: polygon(
+    --left-path-home: polygon(
         calc(
                 var(--clip-shape-width-home-left) +
                     (
@@ -242,7 +242,7 @@
         calc(50% - var(--hex-half-outer-radius)) var(--hex-top-position) /* Top Left */
     );
 
-    --path-left-category: polygon(
+    --left-path-category: polygon(
         calc(
                 var(--clip-shape-width-category-left) +
                     (
@@ -308,7 +308,7 @@
         calc(2% + var(--hex-half-outer-radius)) var(--hex-top-position) /* Top Left */
     );
 
-    --path-left-post: polygon(
+    --left-path-post: polygon(
         calc(
                 var(--clip-shape-width-post-left) +
                     (var(--clip-shape-tan-post-offset) + 1 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) +
@@ -355,12 +355,23 @@
 
         calc(1% + var(--clip-shape-tan-post-offset)) 1% /* Top Left */
     );
+
+    /* --left-mask-size-home: 8.66rem 10rem; */
+    --left-mask-size-home: 10rem;
+
+    --left-mask-position-home: calc(50vw - var(--hex-outer-radius));
+
+    --left-mask-size-category: auto 120%;
+    --left-mask-position-category: 2vw;
+
+    --left-mask-size-post: auto 98%;
+    --left-mask-position-post: 1vw;
 }
 
 .animate-clip-shape-right-variables {
     @apply animate-clip-shape-variables;
 
-    --path-right-home: polygon(
+    --right-path-home: polygon(
         calc(
                 var(--clip-shape-width-home-right) +
                     (
@@ -409,7 +420,7 @@
         calc(50% + var(--hex-half-outer-radius)) var(--hex-top-position) /* Top Right */
     );
 
-    --path-right-category: polygon(
+    --right-path-category: polygon(
         calc(
                 var(--clip-shape-width-category-right) +
                     (
@@ -470,7 +481,7 @@
         calc(98% - var(--hex-half-outer-radius)) var(--hex-top-position) /* Top Right */
     );
 
-    --path-right-post: polygon(
+    --right-path-post: polygon(
         calc(
                 var(--clip-shape-width-post-right) +
                     (var(--clip-shape-tan-post-offset) + 1 * (var(--clip-shape-tan-post-offset-inverted) - var(--clip-shape-tan-post-offset)) / 100) -
@@ -537,10 +548,14 @@
             40% 50% /* Absolute Left */,
             45% 25% /* Top Left */
         );
+        /* mask-size: auto 50%; */
+        mask-position: 40%;
     }
 
     100% {
-        clip-path: var(--path-left-home);
+        clip-path: var(--left-path-home);
+        mask-size: var(--left-mask-size-home);
+        mask-position: var(--left-mask-position-home);
     }
 }
 
@@ -565,7 +580,7 @@
     }
 
     100% {
-        clip-path: var(--path-right-home);
+        clip-path: var(--right-path-home);
     }
 }
 
@@ -578,27 +593,34 @@
 
 @keyframes clip-shape-left-category {
     0% {
-        clip-path: var(--path-left-home);
+        clip-path: var(--left-path-home);
+        mask-size: var(--left-mask-size-home);
+        mask-position: var(--left-mask-position-home);
     }
 
     100% {
-        clip-path: var(--path-left-category);
+        clip-path: var(--left-path-category);
+        mask-size: var(--left-mask-size-category);
+        mask-position: var(--left-mask-position-category);
     }
 }
 
 .before\:animate-clip-shape-left-category-reversed::before {
     @apply animate-clip-shape-left-variables;
     animation-name: clip-shape-left-category-reversed;
-    /* animation-duration: calc(var(--clip-shape-animation-duration) / 2); */
 }
 
 @keyframes clip-shape-left-category-reversed {
     0% {
-        clip-path: var(--path-left-category);
+        clip-path: var(--left-path-category);
+        mask-size: var(--left-mask-size-category);
+        mask-position: var(--left-mask-position-category);
     }
 
     100% {
-        clip-path: var(--path-left-home);
+        clip-path: var(--left-path-home);
+        mask-size: var(--left-mask-size-home);
+        mask-position: var(--left-mask-position-home);
     }
 }
 
@@ -609,11 +631,11 @@
 
 @keyframes clip-shape-right-category {
     0% {
-        clip-path: var(--path-right-home);
+        clip-path: var(--right-path-home);
     }
 
     100% {
-        clip-path: var(--path-right-category);
+        clip-path: var(--right-path-category);
     }
 }
 
@@ -625,11 +647,11 @@
 
 @keyframes clip-shape-right-category-reversed {
     0% {
-        clip-path: var(--path-right-category);
+        clip-path: var(--right-path-category);
     }
 
     100% {
-        clip-path: var(--path-right-home);
+        clip-path: var(--right-path-home);
     }
 }
 
@@ -642,45 +664,34 @@
 
 @keyframes clip-shape-left-post {
     0% {
-        clip-path: var(--path-left-category);
+        clip-path: var(--left-path-category);
+        mask-size: var(--left-mask-size-category);
+        mask-position: var(--left-mask-position-category);
     }
-
-    /* 25% {
-        clip-path: var(--path-left-home);
-    }
-
-    60%,
-    65% {
-        clip-path: var(--path-left-category);
-    } */
 
     100% {
-        clip-path: var(--path-left-post);
+        clip-path: var(--left-path-post);
+        mask-size: var(--left-mask-size-post);
+        mask-position: var(--left-mask-position-post);
     }
 }
 
 .before\:animate-clip-shape-left-post-reversed::before {
     @apply animate-clip-shape-left-variables;
     animation-name: clip-shape-left-post-reversed;
-    /* animation-duration: calc(var(--clip-shape-animation-duration) / 2); */
 }
 
 @keyframes clip-shape-left-post-reversed {
     0% {
-        clip-path: var(--path-left-post);
+        clip-path: var(--left-path-post);
+        mask-size: var(--left-mask-size-post);
+        mask-position: var(--left-mask-position-post);
     }
-
-    /* 25% {
-        clip-path: var(--path-left-category);
-    }
-
-    60%,
-    65% {
-        clip-path: var(--path-left-home);
-    } */
 
     100% {
-        clip-path: var(--path-left-category);
+        clip-path: var(--left-path-category);
+        mask-size: var(--left-mask-size-category);
+        mask-position: var(--left-mask-position-category);
     }
 }
 
@@ -691,20 +702,20 @@
 
 @keyframes clip-shape-right-post {
     0% {
-        clip-path: var(--path-right-category);
+        clip-path: var(--right-path-category);
     }
 
     /* 25% {
-        clip-path: var(--path-right-home);
+        clip-path: var(--right-path-home);
     }
 
     60%,
     65% {
-        clip-path: var(--path-right-category);
+        clip-path: var(--right-path-category);
     } */
 
     100% {
-        clip-path: var(--path-right-post);
+        clip-path: var(--right-path-post);
     }
 }
 
@@ -716,19 +727,19 @@
 
 @keyframes clip-shape-right-post-reversed {
     0% {
-        clip-path: var(--path-right-post);
+        clip-path: var(--right-path-post);
     }
 
     /* 25% {
-        clip-path: var(--path-right-category);
+        clip-path: var(--right-path-category);
     }
 
     60%,
     65% {
-        clip-path: var(--path-right-home);
+        clip-path: var(--right-path-home);
     } */
 
     100% {
-        clip-path: var(--path-right-category);
+        clip-path: var(--right-path-category);
     }
 }
