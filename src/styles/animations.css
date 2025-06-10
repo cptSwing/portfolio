@@ -361,10 +361,10 @@
 
     --left-mask-position-home: calc(50vw - var(--hex-outer-radius));
 
-    --left-mask-size-category: auto 120%;
+    --left-mask-size-category: 10rem;
     --left-mask-position-category: 2vw;
 
-    --left-mask-size-post: auto 98%;
+    --left-mask-size-post: 10rem;
     --left-mask-position-post: 1vw;
 }
 

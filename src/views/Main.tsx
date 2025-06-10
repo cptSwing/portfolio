@@ -191,7 +191,6 @@ const Main = () => {
                     className={classNames(
                         'pointer-events-none absolute left-0 top-0 z-10 size-full drop-shadow-omni-lg transition-[transform] duration-[--clip-shape-animation-duration]',
                         'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary before:[mask-image:url("/svg/hexagon-mask.svg")] before:[mask-repeat:repeat]',
-                        'before:[mask-composite:exclude]',
                         // 'after:bg-theme-primary',
                         // 'after:pixelate after:absolute after:left-0 after:top-0 after:size-full after:opacity-75 after:clip-inset-r-[55%]',
                         expansionState === 'home'
