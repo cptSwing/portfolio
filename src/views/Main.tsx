@@ -5,6 +5,8 @@ import Category from '../components/Category';
 import classNames from '../lib/classNames';
 import useOutsideClick from '../hooks/useOutsideClick';
 import DisplayPost from '../components/DisplayPost';
+import hexagonPattern from '../public/svg/hexagon-pattern.svg';
+import HexagonMask from '../components/HexagonMask';
 
 const degToRad = (deg: number) => deg * (Math.PI / 180);
 
@@ -69,62 +71,13 @@ const Main = () => {
                 // + ' [background-image:url("http://uploads2.wikiart.org/images/vincent-van-gogh/the-starry-night-1889(1).jpg")]'
             }
         >
-            <svg id='svg-hex' className='invisible fixed left-0 top-0' width='100' height='100'>
-                <defs>
-                    <filter id='pixelate-tile' x='0' y='0'>
-                        <feFlood x='0' y='0' width='32' height='32' />
-                        <feComposite id='composite1' width='48' height='48' />
-                        <feTile result='a' />
-                        <feComposite in='SourceGraphic' in2='a' operator='in' />
-                        <feMorphology id='morphology' operator='dilate' radius='4' />
-                    </filter>
-
-                    <filter id='pixelate-displacement'>
-                        {/* https://stackoverflow.com/a/37451883/11016647 */}
-                        <feGaussianBlur stdDeviation='4' in='SourceGraphic' result='smoothed' />
-                        <feImage
-                            width='25%'
-                            height='25%'
-                            // xlink:href
-                            xlinkHref='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWSURBVAgdY1ywgOEDAwKxgJhIgFQ+AP/vCNK2s+8LAAAAAElFTkSuQmCC'
-                            result='displacement-map'
-                        />
-                        <feTile in='displacement-map' result='pixelate-map' />
-                        <feDisplacementMap in='smoothed' in2='pixelate-map' xChannelSelector='R' yChannelSelector='G' scale='150' result='pre-final' />
-                        {/* <feOffset in='pre-final' dx='-25%' dy='-25%' /> */}
-
-                        {/* <feComposite operator='in' in2='SourceGraphic' /> */}
-                        <feComposite operator='in' in='SourceGraphic' />
-                    </filter>
-
-                    <filter id='pixelate-dilate-erode'>
-                        {/* https://codepen.io/yuanchuan/pen/BabyagP/9530d59b717d31a29d91e7d8eab20714?editors=1000 */}
-                        <feFlood x='4' y='4' height='2' width='2' />
-                        <feComposite width='4' height='4' />
-                        <feTile result='tiles' />
-                        <feComposite in2='SourceGraphic' in='tiles' operator='xor' />
-                        <feMorphology operator='dilate' radius='1.55' />
-                        <feMorphology operator='erode' radius='1.5' />
-                    </filter>
-
-                    <filter id='pixelate-v2' x='0' y='0' height='100%' width='100%'>
-                        <feOffset dx='0' dy='0' result='box-blur' />
-                        <feFlood x='0' y='0' height='4' width='4' />
-                        <feComposite width='68' height='68' />
-                        <feTile result='tiles' />
-                        <feComposite in='box-blur' operator='in' />
-                        <feMorphology operator='dilate' radius='32' />
-                    </filter>
-                </defs>
-            </svg>
-
             <div
                 style={
                     {
-                        '--anim-overall-height': 'min(100vw / 1.33, 100vh)',
+                        '--anim-overall-width': 'min(100vw / 1.33, 100vh)',
 
                         '--anim-percentage-of-hex-top-to-100vh': 6.7,
-                        '--anim-inner-margin': 'calc(var(--anim-overall-height) / 100 * 1.5)',
+                        '--anim-inner-margin': 'calc(var(--anim-overall-width) / 100 * 1.5)',
 
                         '--clip-shape-angle': '15deg',
 
@@ -140,7 +93,7 @@ const Main = () => {
                                   : /* === 'post' */ 'var(--clip-shape-skew-angle-post)',
 
                         '--clip-shape-tan': 'tan(var(--clip-shape-angle))',
-                        '--clip-shape-tan-home': 'calc(var(--clip-shape-tan) * var(--anim-overall-height))',
+                        '--clip-shape-tan-home': 'calc(var(--clip-shape-tan) * var(--anim-overall-width))',
                         '--clip-shape-tan-category': 'calc(var(--clip-shape-tan-home) / 2)',
                         '--clip-shape-tan-post': 'calc(var(--clip-shape-tan-home) / 4)',
 
@@ -167,9 +120,16 @@ const Main = () => {
 
                         '--clip-shape-flipper-inset': expansionState === 'home' ? '40%' : expansionState === 'category' ? '0%' : /* === 'post' */ '0%',
                         '--clip-shape-post-inset': expansionState === 'home' ? '100%' : expansionState === 'category' ? '100%' : /* === 'post' */ '0%',
+
+                        // Test
+                        '--flat-hex-outer-radius': 'calc(var(--anim-overall-width) / 2)',
+                        '--flat-hex-inner-radius': 'calc(var(--flat-hex-outer-radius) * sin(60deg))' /* r*sin60 */,
+                        '--flat-hex-margin-top': 'calc(var(--flat-hex-outer-radius) - var(--flat-hex-inner-radius))',
+                        '--flat-hex-margin-bottom': 'calc(100% - var(--flat-hex-margin-top))',
+                        '--flat-hex-height': 'calc(100% - 2 * var(--flat-hex-margin-top))',
                     } as CSSProperties
                 }
-                className='relative h-[--anim-overall-height] w-full [--nav-category-common-color-1:theme(colors.gray.700)]'
+                className='relative size-full [--nav-category-common-color-1:theme(colors.gray.700)]'
             >
                 <div
                     id='clip-shape-titles'
@@ -186,15 +146,17 @@ const Main = () => {
                     <Titles />
                 </div>
 
+                <HexagonMask classNames='absolute left-1/2 top-[--flat-hex-margin-top] z-50 h-[--flat-hex-height] w-[--anim-overall-width] -translate-x-[--flat-hex-outer-radius]' />
+
                 <div
                     id='clip-shape-left'
                     className={classNames(
                         'pointer-events-none absolute left-0 top-0 z-10 size-full drop-shadow-omni-lg transition-[transform] duration-[--clip-shape-animation-duration]',
-                        'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary before:[mask-image:url("/svg/hexagon-mask.svg")] before:[mask-repeat:repeat]',
+                        'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary',
                         // 'after:bg-theme-primary',
                         // 'after:pixelate after:absolute after:left-0 after:top-0 after:size-full after:opacity-75 after:clip-inset-r-[55%]',
                         expansionState === 'home'
-                            ? `-translate-x-[calc(var(--anim-inner-margin)/2)] peer-hover-active:-translate-x-[--anim-inner-margin] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
+                            ? `peer-hover-active:-translate-x-[--anim-inner-margin] ${formerExpansionState === 'category' ? 'before:animate-clip-shape-left-category-reversed' : 'before:animate-clip-shape-left-home'}`
                             : expansionState === 'category'
                               ? `${formerExpansionState === 'post' ? 'before:animate-clip-shape-left-post-reversed' : 'before:animate-clip-shape-left-category'}`
                               : // === 'post'
@@ -205,7 +167,7 @@ const Main = () => {
                 <div
                     id='clip-shape-main'
                     className={classNames(
-                        'pointer-events-auto absolute left-0 right-0 top-[calc(var(--top-margin)+0.5%)] z-0 mx-auto h-[calc(var(--anim-overall-height)-(2*var(--top-margin))-1%)] transition-[top,transform,width,height] duration-[--clip-shape-animation-duration] [--post-close-button-height:4vh] [--top-margin:calc(var(--anim-overall-height)*(var(--anim-percentage-of-hex-top-to-100vh)/100))] [--wipe-clip-inset:100%] [--wipe-delay:calc(var(--clip-shape-animation-duration)/2)]',
+                        'pointer-events-auto absolute left-0 right-0 top-[calc(var(--top-margin)+0.5%)] z-0 mx-auto h-[calc(var(--anim-overall-width)-(2*var(--top-margin))-1%)] transition-[top,transform,width,height] duration-[--clip-shape-animation-duration] [--post-close-button-height:4vh] [--top-margin:calc(var(--anim-overall-width)*(var(--anim-percentage-of-hex-top-to-100vh)/100))] [--wipe-clip-inset:100%] [--wipe-delay:calc(var(--clip-shape-animation-duration)/2)]',
                         expansionState === 'home'
                             ? 'w-[calc(var(--anim-inner-margin)*4)] skew-x-[--clip-shape-skew-angle-home]'
                             : expansionState === 'category'

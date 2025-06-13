@@ -168,7 +168,7 @@
     animation-fill-mode: forwards;
     animation-duration: var(--clip-shape-animation-duration);
 
-    --hex-outer-radius: calc(var(--anim-overall-height) / 2);
+    --hex-outer-radius: calc(var(--anim-overall-width) / 2);
     --hex-half-outer-radius: calc(var(--hex-outer-radius) / 2); /* r*cos60 */
     --hex-inner-radius: calc(var(--hex-outer-radius) * sin(60deg)); /* r*sin60 */
 

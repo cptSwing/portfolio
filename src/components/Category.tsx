@@ -44,7 +44,7 @@ const Category = () => {
                 className={
                     '[--card-titles-inset-padding:theme(spacing.2)] [--clip-shape-main-padding-left:calc(var(--clip-shape-main-padding-right)*1.5)] [--clip-shape-main-padding-right:calc(var(--anim-inner-margin)*1.25)]' +
                     ' ' +
-                    'postcards-grid-template bg-theme-primary/50 absolute left-0 top-0 grid size-full origin-center skew-x-[--clip-shape-skew-angle-category] transform grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--clip-shape-main-padding-left] overflow-hidden bg-opacity-50 pb-[calc((var(--anim-overall-height)/100)*12)] pl-[--clip-shape-main-padding-left] pr-[--clip-shape-main-padding-right] pt-[calc((var(--anim-overall-height)/100)*11)] backdrop-blur-sm transition-[transform,padding,clip-path] delay-[calc(var(--clip-shape-animation-duration)/2-var(--wipe-delay))] duration-[--clip-shape-animation-duration] clip-inset-l-[calc(100%-var(--wipe-clip-inset))]'
+                    'postcards-grid-template absolute left-0 top-0 grid size-full origin-center skew-x-[--clip-shape-skew-angle-category] transform grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--clip-shape-main-padding-left] overflow-hidden bg-theme-primary/50 bg-opacity-50 pb-[calc((var(--anim-overall-width)/100)*12)] pl-[--clip-shape-main-padding-left] pr-[--clip-shape-main-padding-right] pt-[calc((var(--anim-overall-width)/100)*11)] backdrop-blur-sm transition-[transform,padding,clip-path] delay-[calc(var(--clip-shape-animation-duration)/2-var(--wipe-delay))] duration-[--clip-shape-animation-duration] clip-inset-l-[calc(100%-var(--wipe-clip-inset))]'
                 }
                 flipKey={cardAnimationIndex}
                 spring={{ stiffness: 600, damping: 40 }}
@@ -74,7 +74,7 @@ const Category = () => {
                                         'before:absolute before:-left-1 before:h-full before:w-[calc(100%+theme(spacing.2))]',
                                         idx === cardAnimationIndex - 1
                                             ? 'bg-theme-primary-lighter before:cursor-default'
-                                            : 'hover-active:bg-theme-primary bg-black/15 before:cursor-pointer hover-active:opacity-50',
+                                            : 'bg-black/15 before:cursor-pointer hover-active:bg-theme-primary hover-active:opacity-50',
                                     )}
                                     onClick={() => setCardAnimationIndex(idx + 1)}
                                 />
