@@ -67,7 +67,7 @@ const Main = () => {
     return (
         <div
             className={
-                'flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-miriam-libre text-theme-text scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary)]'
+                'flex h-dvh w-dvw items-center justify-center bg-theme-root-background font-miriam-libre text-theme-text scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary)]'
                 // + ' [background-image:url("http://uploads2.wikiart.org/images/vincent-van-gogh/the-starry-night-1889(1).jpg")]'
             }
         >
