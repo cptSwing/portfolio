@@ -5,37 +5,7 @@ import Category from '../components/Category';
 import classNames from '../lib/classNames';
 import useOutsideClick from '../hooks/useOutsideClick';
 import DisplayPost from '../components/DisplayPost';
-import hexagonPattern from '../public/svg/hexagon-pattern.svg';
-import HexagonMask from '../components/HexagonMask';
-
-const degToRad = (deg: number) => deg * (Math.PI / 180);
-
-const _hex = (angleDeg = 0) => {
-    const angleRad = degToRad(angleDeg);
-    const sides = 6;
-
-    let shape = `polygon(`;
-    for (let i = 0; i < sides; i++) {
-        const x = 50 + 50 * Math.cos(angleRad + (i * 2 * Math.PI) / sides);
-        const y = 50 + 50 * Math.sin(angleRad + (i * 2 * Math.PI) / sides);
-        shape += `${+x.toFixed(2)}% ${+y.toFixed(2)}%,`;
-    }
-    shape = shape.slice(0, -1);
-    shape += `)`;
-
-    return shape;
-};
-
-/* https://css-tip.com/hexagon-shape/ */
-const _simpleHexClip = (flatTop = true) => {
-    const aspectRatio = flatTop ? '1 / cos(30deg)' : 'cos(30deg)';
-    const clipPath = flatTop ? 'polygon(50% -50%,100% 50%,50% 150%,0 50%)' : 'polygon(-50% 50%,50% 100%,150% 50%,50% 0)';
-
-    return {
-        aspectRatio,
-        clipPath,
-    };
-};
+import HexagonTiles from '../components/HexagonTiles';
 
 const Main = () => {
     const { catId, postId } = useParams();
@@ -131,12 +101,24 @@ const Main = () => {
                 }
                 className='relative size-full [--nav-category-common-color-1:theme(colors.gray.700)]'
             >
+                <HexagonTiles
+                    extraClassNames={classNames(
+                        'overflow-visible absolute left-1/2 top-[--flat-hex-margin-top] z-0 h-[--flat-hex-height] w-[--anim-overall-width] -translate-x-[--flat-hex-outer-radius]',
+                        expansionState === 'home'
+                            ? '[--hex-translate-x:0.25rem]'
+                            : expansionState === 'category'
+                              ? '[--hex-translate-x:12rem]'
+                              : // === 'post'
+                                '[--hex-translate-x:20rem]',
+                    )}
+                />
+
                 <div
                     id='clip-shape-titles'
                     className={classNames(
-                        'peer pointer-events-none absolute left-0 top-0 z-20 flex size-full flex-row items-center justify-end transition-[transform,padding] duration-[--clip-shape-animation-duration]',
+                        'peer pointer-events-auto absolute left-0 right-0 top-0 z-20 mx-auto',
                         expansionState === 'home'
-                            ? '-translate-x-[calc(var(--anim-inner-margin)/2)] pr-[calc(100%-var(--clip-shape-width-home-right))] hover-active:-translate-x-[--anim-inner-margin]'
+                            ? ''
                             : expansionState === 'category'
                               ? 'pr-[calc(100%-var(--clip-shape-width-category-left))]'
                               : // === 'post'
@@ -146,9 +128,7 @@ const Main = () => {
                     <Titles />
                 </div>
 
-                <HexagonMask classNames='absolute left-1/2 top-[--flat-hex-margin-top] z-50 h-[--flat-hex-height] w-[--anim-overall-width] -translate-x-[--flat-hex-outer-radius]' />
-
-                <div
+                {/* <div
                     id='clip-shape-left'
                     className={classNames(
                         'pointer-events-none absolute left-0 top-0 z-10 size-full drop-shadow-omni-lg transition-[transform] duration-[--clip-shape-animation-duration]',
@@ -162,7 +142,7 @@ const Main = () => {
                               : // === 'post'
                                 'before:animate-clip-shape-left-post',
                     )}
-                ></div>
+                ></div> */}
 
                 <div
                     id='clip-shape-main'
@@ -180,7 +160,7 @@ const Main = () => {
                     <DisplayPost />
                 </div>
 
-                <div
+                {/* <div
                     id='clip-shape-right'
                     ref={ref}
                     className={classNames(
@@ -198,7 +178,7 @@ const Main = () => {
                               : // === 'post'
                                 'before:animate-clip-shape-right-post',
                     )}
-                />
+                /> */}
             </div>
         </div>
     );

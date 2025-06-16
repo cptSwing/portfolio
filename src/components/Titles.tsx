@@ -16,7 +16,7 @@ const Titles = () => {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     return (
-        <header className='pointer-events-auto -mr-0.5 flex origin-right skew-x-[--clip-shape-skew-angle] flex-col items-end justify-center transition-transform duration-500 [--nav-title-animation-duration:300ms]'>
+        <header className='pointer-events-auto flex w-1/4 flex-col items-end justify-center transition-transform duration-500 [--nav-title-animation-duration:300ms]'>
             {/* Code, 3D, Log */}
             {categoriesArray.map((cardData) => (
                 <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
@@ -25,7 +25,7 @@ const Titles = () => {
             {/* Hamburger Menu */}
             <div
                 className={classNames(
-                    'absolute right-0 top-[calc(100%+theme(spacing.2))] flex aspect-square w-1/4 cursor-pointer flex-col items-center justify-around p-2',
+                    'absolute right-0 top-[calc(100%+theme(spacing.2))] flex aspect-square cursor-pointer flex-col items-center justify-around p-2',
                     'before:absolute before:-z-10 before:h-full before:w-0 before:bg-theme-secondary-lighter before:transition-[width] before:duration-500',
                     'hover-active:before:w-full',
                 )}
@@ -78,7 +78,7 @@ const CategoryTitle: FC<{
             ref={refCallback}
             to={`/${id}`}
             className={classNames(
-                'group/link relative z-0 flex w-full cursor-pointer items-center justify-end no-underline',
+                'group/link relative z-0 flex cursor-pointer items-center justify-end no-underline',
                 'before:absolute before:-z-10 before:block before:h-full before:rounded-bl-2xl before:bg-theme-primary-darker before:drop-shadow-md before:transition-[width] before:duration-[--nav-title-animation-duration]',
                 'after:absolute after:right-0 after:h-full after:bg-white after:opacity-10 after:blur-sm after:clip-inset-0 after:clip-inset-l-[-200%] after:clip-inset-r-[calc(theme(spacing[0.5])*-1)]',
                 isThisCategoryOpen_Memo ? 'before:w-full after:w-1' : 'before:w-0 after:w-0 hover-active:before:w-full hover-active:after:w-1',
@@ -87,7 +87,7 @@ const CategoryTitle: FC<{
             {/* Text-Effects */}
             <span
                 className={classNames(
-                    'skew-x-[calc(var(--clip-shape-skew-angle)*-1)] bg-gradient-to-l via-50% bg-clip-text py-2 pl-10 pr-4 text-5xl font-bold !text-transparent transition-[background-position,transform] duration-[--nav-title-animation-duration] [background-size:200%_200%]',
+                    'bg-gradient-to-l via-50% bg-clip-text py-2 pl-10 pr-4 text-5xl font-bold !text-transparent transition-[background-position,transform] duration-[--nav-title-animation-duration] [background-size:200%_200%]',
                     'group-hover-active/link:from-theme-primary-darker group-hover-active/link:via-theme-secondary-lighter group-hover-active/link:to-theme-secondary-lighter group-hover-active/link:[background-position:0%_0%]',
                     isThisCategoryOpen_Memo
                         ? 'from-theme-primary-darker via-theme-secondary-lighter to-theme-secondary-lighter [background-position:0%_0%]'
