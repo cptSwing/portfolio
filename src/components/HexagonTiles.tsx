@@ -12,27 +12,16 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
     return (
         <svg
             className={
-                '[--hex-left-translate-x:0] [--hex-right-translate-x:0] has-[.left:hover]:[--hex-left-translate-x:-2%] has-[.right:hover]:[--hex-right-translate-x:2%] hover:[--hex-left-translate-x:-1%] hover:[--hex-right-translate-x:1%] ' +
+                '[--hex-left-translate-x:0] [--hex-right-translate-x:0] has-[.center:hover]:![--hex-center-scale:1.05] has-[.left:hover]:[--hex-left-translate-x:-2%] has-[.right:hover]:[--hex-right-translate-x:2%] hover:[--hex-left-translate-x:-1%] hover:[--hex-right-translate-x:1%] [&_.center]:has-[.center:hover]:!origin-[50%_50%] ' +
                 extraClassNames
             }
             viewBox={`0 0 ${hexWithPadding} ${hexWithPadding * hexHeight}`}
-            style={{} as CSSProperties}
+            style={
+                {
+                    '--hex-center-scale': 1 - strokeWidth,
+                } as CSSProperties
+            }
         >
-            <style>
-                {`
-                    
-
-                    .center {
-                        fill: rgb(190,190,190);
-                        pointer-events: auto;
-
-                    }
-                    
-                    .center:hover {
-                        fill: rgb(100,100,100);
-                    }
-                    `}
-            </style>
             <defs>
                 <polygon
                     id='flat-top-hex'
@@ -182,11 +171,23 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
                 className='left pointer-events-auto z-0 translate-x-[--hex-left-translate-x] fill-theme-primary/75 transition-[transform,fill] hover-active:z-10 hover-active:fill-theme-primary'
                 {...getOffsetsAndScale(1, 5, strokeWidth)}
             />
+
             <use
                 href='#flat-top-hex'
-                className='pointer-events-auto z-0 translate-x-0 fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-110 hover-active:fill-white'
+                className='peer/code center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!origin-[10%_30%] hover-active:!scale-125 hover-active:fill-white'
                 {...getOffsetsAndScale(2, 5, strokeWidth)}
             />
+            <text
+                className='pointer-events-none translate-x-0 select-none fill-red-500 text-center text-[3%] peer-hover-active/code:!scale-110'
+                {...getOffsetsAndScale(2, 5, strokeWidth)}
+                x='3'
+                y='38%'
+                textLength='1'
+                lengthAdjust='spacingAndGlyphs'
+            >
+                Code
+            </text>
+
             <use
                 href='#flat-top-hex'
                 className='right pointer-events-auto z-0 translate-x-[--hex-right-translate-x] fill-theme-primary-darker/75 transition-[transform,fill] hover-active:z-10 hover-active:fill-theme-primary-darker'
@@ -211,12 +212,12 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
             />
             <use
                 href='#flat-top-hex'
-                className='pointer-events-auto z-0 translate-x-0 fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-110 hover-active:fill-white'
+                className='center pointer-events-auto z-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:fill-white'
                 {...getOffsetsAndScale(1, 6, strokeWidth)}
             />
             <use
                 href='#flat-top-hex'
-                className='pointer-events-auto z-0 translate-x-0 fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-110 hover-active:fill-white'
+                className='center pointer-events-auto z-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:fill-white'
                 {...getOffsetsAndScale(2, 6, strokeWidth)}
             />
             <use
@@ -238,9 +239,20 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
             />
             <use
                 href='#flat-top-hex'
-                className='pointer-events-auto z-0 translate-x-0 fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-110 hover-active:fill-white'
+                className='peer/3d center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-125 hover-active:fill-white'
                 {...getOffsetsAndScale(2, 7, strokeWidth)}
             />
+            <text
+                className='pointer-events-none translate-x-0 select-none fill-red-500 text-center text-[3%] peer-hover-active/3d:!scale-110'
+                {...getOffsetsAndScale(2, 5, strokeWidth)}
+                x='3'
+                y='54%'
+                textLength='1'
+                lengthAdjust='spacingAndGlyphs'
+            >
+                3D
+            </text>
+
             <use
                 href='#flat-top-hex'
                 className='right pointer-events-auto z-0 translate-x-[--hex-right-translate-x] fill-theme-primary-darker/75 transition-[transform,fill] hover-active:z-10 hover-active:fill-theme-primary-darker'
@@ -260,12 +272,12 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
             />
             <use
                 href='#flat-top-hex'
-                className='pointer-events-auto z-0 translate-x-0 fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-110 hover-active:fill-white'
+                className='center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:fill-white'
                 {...getOffsetsAndScale(1, 8, strokeWidth)}
             />
             <use
                 href='#flat-top-hex'
-                className='pointer-events-auto z-0 translate-x-0 fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-110 hover-active:fill-white'
+                className='center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:fill-white'
                 {...getOffsetsAndScale(2, 8, strokeWidth)}
             />
             <use
@@ -292,9 +304,20 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
             />
             <use
                 href='#flat-top-hex'
-                className='pointer-events-auto z-0 translate-x-0 fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-110 hover-active:fill-white'
+                className='peer/log center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-125 hover-active:fill-white'
                 {...getOffsetsAndScale(2, 9, strokeWidth)}
             />
+            <text
+                className='pointer-events-none translate-x-0 select-none fill-red-500 text-center text-[3%] peer-hover-active/log:!scale-125'
+                {...getOffsetsAndScale(2, 5, strokeWidth)}
+                x='3'
+                y='68%'
+                textLength='1'
+                lengthAdjust='spacingAndGlyphs'
+            >
+                Log
+            </text>
+
             <use
                 href='#flat-top-hex'
                 className='right pointer-events-auto z-0 translate-x-[--hex-right-translate-x] fill-theme-primary-darker/75 transition-[transform,fill] hover-active:z-10 hover-active:fill-theme-primary-darker'
@@ -437,10 +460,10 @@ const getOffsetsAndScale = (column: number, row: number, strokeWidth: number, ex
         x: xValue,
         y: yValue,
         style: {
-            ...extraStyles,
             'transformOrigin': `${((xValue + 0.5) / 7) * 100}% ${((yValue + 0.433) / 6.062) * 100}%`,
             '--tw-scale-x': `${1 - strokeWidth}`,
             '--tw-scale-y': `${1 - strokeWidth}`,
+            ...extraStyles,
         },
     };
 };

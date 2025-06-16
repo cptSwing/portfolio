@@ -103,7 +103,7 @@ const Main = () => {
             >
                 <HexagonTiles
                     extraClassNames={classNames(
-                        'overflow-visible absolute left-1/2 top-[--flat-hex-margin-top] z-0 h-[--flat-hex-height] w-[--anim-overall-width] -translate-x-[--flat-hex-outer-radius]',
+                        'overflow-visible absolute left-1/2 top-[--flat-hex-margin-top] z-10 h-[--flat-hex-height] w-[--anim-overall-width] -translate-x-[--flat-hex-outer-radius]',
                         expansionState === 'home'
                             ? '[--hex-translate-x:0.25rem]'
                             : expansionState === 'category'
