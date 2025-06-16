@@ -1,5 +1,0 @@
-<!-- viewBox aspect: X = 5 / 2 (because element is only half width?), Y = 5 * 0.866 -->
-<svg xmlns="http://www.w3.org/2000/svg">
-    <!-- <rect id="right" width="100%" height="100%" fill="black" mask="url(hexagon-pattern.svg#cut-hex-mask)" transform="translate(1 0) scale(-1 1)" /> -->
-    <use href="hexagon-pattern.svg#left" />
-</svg>
