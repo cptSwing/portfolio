@@ -16,7 +16,7 @@ const Titles = () => {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     return (
-        <header className='pointer-events-auto flex w-1/4 flex-col items-end justify-center transition-transform duration-500 [--nav-title-animation-duration:300ms]'>
+        <header className='pointer-events-auto transition-transform duration-500 [--nav-title-animation-duration:300ms]'>
             {/* Code, 3D, Log */}
             {categoriesArray.map((cardData) => (
                 <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
@@ -78,7 +78,7 @@ const CategoryTitle: FC<{
             ref={refCallback}
             to={`/${id}`}
             className={classNames(
-                'group/link relative z-0 flex cursor-pointer items-center justify-end no-underline',
+                'group/link relative z-0 flex h-[14.286%] cursor-pointer items-center justify-center no-underline',
                 'before:absolute before:-z-10 before:block before:h-full before:rounded-bl-2xl before:bg-theme-primary-darker before:drop-shadow-md before:transition-[width] before:duration-[--nav-title-animation-duration]',
                 'after:absolute after:right-0 after:h-full after:bg-white after:opacity-10 after:blur-sm after:clip-inset-0 after:clip-inset-l-[-200%] after:clip-inset-r-[calc(theme(spacing[0.5])*-1)]',
                 isThisCategoryOpen_Memo ? 'before:w-full after:w-1' : 'before:w-0 after:w-0 hover-active:before:w-full hover-active:after:w-1',
@@ -87,7 +87,7 @@ const CategoryTitle: FC<{
             {/* Text-Effects */}
             <span
                 className={classNames(
-                    'bg-gradient-to-l via-50% bg-clip-text py-2 pl-10 pr-4 text-5xl font-bold !text-transparent transition-[background-position,transform] duration-[--nav-title-animation-duration] [background-size:200%_200%]',
+                    'bg-gradient-to-l via-50% bg-clip-text px-2 py-2 text-5xl font-bold !text-transparent transition-[background-position,transform] duration-[--nav-title-animation-duration] [background-size:200%_200%]',
                     'group-hover-active/link:from-theme-primary-darker group-hover-active/link:via-theme-secondary-lighter group-hover-active/link:to-theme-secondary-lighter group-hover-active/link:[background-position:0%_0%]',
                     isThisCategoryOpen_Memo
                         ? 'from-theme-primary-darker via-theme-secondary-lighter to-theme-secondary-lighter [background-position:0%_0%]'

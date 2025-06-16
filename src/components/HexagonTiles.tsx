@@ -12,7 +12,7 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
     return (
         <svg
             className={
-                '[--hex-left-translate-x:0] [--hex-right-translate-x:0] has-[.center:hover]:![--hex-center-scale:1.05] has-[.left:hover]:[--hex-left-translate-x:-2%] has-[.right:hover]:[--hex-right-translate-x:2%] hover:[--hex-left-translate-x:-1%] hover:[--hex-right-translate-x:1%] [&_.center]:has-[.center:hover]:!origin-[50%_50%] ' +
+                '[--hex-left-translate-x:0] [--hex-right-translate-x:0] has-[.center:hover]:![--hex-center-scale:1.05] has-[.right:hover]:[--hex-left-translate-x:-1%] has-[.center:hover]:[--hex-left-translate-x:-2%] has-[.left:hover]:[--hex-left-translate-x:-2%] has-[.left:hover]:[--hex-right-translate-x:1%] has-[.center:hover]:[--hex-right-translate-x:2%] has-[.right:hover]:[--hex-right-translate-x:2%] [&_.center]:has-[.center:hover]:!origin-[50%_50%] ' +
                 extraClassNames
             }
             viewBox={`0 0 ${hexWithPadding} ${hexWithPadding * hexHeight}`}
@@ -174,7 +174,7 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
 
             <use
                 href='#flat-top-hex'
-                className='peer/code center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!origin-[10%_30%] hover-active:!scale-125 hover-active:fill-white'
+                className='peer/code center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!origin-[10%_30%] hover-active:!scale-110 hover-active:fill-white'
                 {...getOffsetsAndScale(2, 5, strokeWidth)}
             />
             <text
@@ -239,7 +239,7 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
             />
             <use
                 href='#flat-top-hex'
-                className='peer/3d center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-125 hover-active:fill-white'
+                className='peer/3d center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-110 hover-active:fill-white'
                 {...getOffsetsAndScale(2, 7, strokeWidth)}
             />
             <text
@@ -304,7 +304,7 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
             />
             <use
                 href='#flat-top-hex'
-                className='peer/log center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-125 hover-active:fill-white'
+                className='peer/log center pointer-events-auto z-0 translate-x-0 !scale-[--hex-center-scale] fill-white/50 transition-[transform,fill] hover-active:z-10 hover-active:!scale-110 hover-active:fill-white'
                 {...getOffsetsAndScale(2, 9, strokeWidth)}
             />
             <text

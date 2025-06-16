@@ -103,7 +103,7 @@ const Main = () => {
             >
                 <HexagonTiles
                     extraClassNames={classNames(
-                        'overflow-visible absolute left-1/2 top-[--flat-hex-margin-top] z-10 h-[--flat-hex-height] w-[--anim-overall-width] -translate-x-[--flat-hex-outer-radius]',
+                        'overflow-visible absolute left-0 right-0 mx-auto top-[--flat-hex-margin-top] z-10 h-[--flat-hex-height] w-[--anim-overall-width] ',
                         expansionState === 'home'
                             ? '[--hex-translate-x:0.25rem]'
                             : expansionState === 'category'
@@ -116,13 +116,13 @@ const Main = () => {
                 <div
                     id='clip-shape-titles'
                     className={classNames(
-                        'peer pointer-events-auto absolute left-0 right-0 top-0 z-20 mx-auto',
+                        'peer pointer-events-auto absolute left-0 right-0 z-20 mx-auto flex h-[--flat-hex-height] w-[--anim-overall-width] flex-col items-center justify-center',
                         expansionState === 'home'
                             ? ''
                             : expansionState === 'category'
-                              ? 'pr-[calc(100%-var(--clip-shape-width-category-left))]'
+                              ? ''
                               : // === 'post'
-                                'pr-[calc(100%-var(--clip-shape-width-post-left))]',
+                                '',
                     )}
                 >
                     <Titles />
