@@ -113,7 +113,7 @@ const Main = () => {
                     )}
                 />
 
-                <div
+                {/* <div
                     id='clip-shape-titles'
                     className={classNames(
                         'peer pointer-events-auto absolute left-0 right-0 z-20 mx-auto flex h-[--flat-hex-height] w-[--anim-overall-width] flex-col items-center justify-center',
@@ -126,7 +126,7 @@ const Main = () => {
                     )}
                 >
                     <Titles />
-                </div>
+                </div> */}
 
                 {/* <div
                     id='clip-shape-left'
