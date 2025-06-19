@@ -4,5 +4,9 @@
     },
     "placeholders": {
         "cardImage": "images/utility/1x1.png"
+    },
+    "hexMenu": {
+        "columns": 3,
+        "strokeWidth": 0.025
     }
 }
