@@ -186,4 +186,4 @@ const Main = () => {
 
 export default Main;
 
-type NavigationExpansionState = 'home' | 'category' | 'post';
+export type NavigationExpansionState = 'home' | 'category' | 'post';

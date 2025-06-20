@@ -1,8 +1,9 @@
-import { CSSProperties, FC, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { CSSProperties, FC, memo, useLayoutEffect, useMemo, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { getNumberedArrayOfLength } from '../lib/getNumberedArrayOfLength';
 import classNames from '../lib/classNames';
 import configJSON from '../config/config.json';
+import { NavigationExpansionState } from '../views/Main';
 
 const {
     hexMenu: { columns, strokeWidth },
@@ -46,8 +47,25 @@ const linkClasses = centerStub + /* tw */ 'pointer-events-auto fill-[url(#myGrad
 const linkTextClasses =
     centerStub + /* tw */ 'text pointer-events-none select-none fill-red-500 text-[40px] font-bold tracking-tight group-hover-active:scale-110';
 
+const hiddenClasses = /* tw */ 'opacity-0 transition-opacity duration-500';
+
 const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => {
+    const { catId, postId } = useParams();
+    const [[expansionState, formerExpansionState], setExpansionState] = useState<[NavigationExpansionState, NavigationExpansionState]>(['home', 'home']);
     const [hoverState, setHoverState] = useState<'code' | '3d' | 'log' | null>(null);
+
+    useLayoutEffect(() => {
+        if (catId) {
+            if (postId) {
+                setExpansionState(([stale, _obsolete]) => ['post', stale]);
+            } else {
+                setExpansionState(([stale, _obsolete]) => ['category', stale]);
+            }
+            setHoverState(null);
+        } else {
+            setExpansionState(([stale, _obsolete]) => ['home', stale]);
+        }
+    }, [catId, postId]);
 
     return (
         <svg
@@ -58,7 +76,14 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
                 '[&_.right]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.right]:has-[.left:hover]:scale-95 [&_.right]:has-[.right:hover]:scale-[0.85]',
                 '[&_.center:not(.text)]:has-[.left:hover,.right:hover]:scale-95',
 
-                hoverState === 'code' ? 'rotate-[60deg]' : hoverState === '3d' ? 'rotate-[-60deg]' : hoverState === 'log' ? 'rotate-[180deg]' : '',
+                hoverState === 'code' ? 'rotate-[60deg]' : hoverState === '3d' ? 'rotate-[-60deg]' : hoverState === 'log' ? 'rotate-[180deg]' : 'rotate-0',
+                // expansionState === 'category' ? '*:scale-75 *:transition-transform *:duration-1000 ' : '',
+                expansionState === 'category'
+                    ? '[--hex-scale-exp-state:0.75] [&_.center]:-translate-x-1/4 [&_.left]:-translate-x-1/4 [&_.right]:translate-x-1/4'
+                    : expansionState === 'post'
+                      ? '[--hex-scale-exp-state:0.5]'
+                      : '[--hex-scale-exp-state:1]',
+
                 extraClassNames,
             )}
             viewBox={`0 0 ${totalWidthAtCenter} ${totalHeight}`}
@@ -96,75 +121,113 @@ const HexagonTiles: FC<{ extraClassNames?: string }> = ({ extraClassNames }) => 
                     <stop offset='100%' stopColor='var(--hex-gradient-color-2)' />
                 </linearGradient>
             </defs>
-            {Object.values(rowsData[columns].cells).map((cellData, rowIndex) => getHexagonsPerRow(rowIndex, cellData))}
+
+            <HexagonRows rowsData={rowsDataSet[expansionState]} />
 
             {/* Links drawn last (no z-index in svg) */}
-            {Object.values(rowsData[columns].links).map((linkData) => getHexagonLinks(linkData, setHoverState))}
+            <HexagonLinks linksData={rowsDataSet[expansionState].links} expansionState={expansionState} setHoverState={setHoverState} />
         </svg>
     );
 };
 
 export default HexagonTiles;
 
-const getHexagonsPerRow = (row: number, cellData: CellData) => {
-    const { count, leftIndices, borderRotationDeg, centerIndices, xOffset } = cellData;
-
-    return getNumberedArrayOfLength(count, xOffset).map((colCount, idx, arr) => {
-        const column = colCount - 1; // getNumberedArrayOfLength(n, offset) returns array of numbers starting at 1, so for correct offsets etc we subtract 1 again
-        const isHalfPolygon =
-            typeof borderRotationDeg === 'number' && (idx === 0 || idx === arr.length - 1 || borderRotationDeg === 0 || borderRotationDeg === 180);
-        const classes = leftIndices?.includes(column) ? leftClasses : centerIndices?.includes(column) ? centerClasses : rightClasses;
-        const isLink = rowsData[columns].links.findIndex(({ rowCol: [linkRow, linkCol] }) => row === linkRow && column === linkCol) >= 0;
-
-        return !isLink ? (
-            <use
-                id={`hex-row-${row}-column-${column}`}
-                key={`hex-row-${row}-column-${column}`}
-                className={classes}
-                href={isHalfPolygon ? '#flat-top-hex-half' : '#flat-top-hex'}
-                {...getOffsetsAndScale(
-                    column,
-                    row,
-                    strokeWidth,
-                    isHalfPolygon ? ({ '--tw-rotate': `${idx === 0 ? -borderRotationDeg : borderRotationDeg}deg` } as CSSProperties) : undefined,
-                )}
-            />
-        ) : null;
-    });
-};
-
-const getHexagonLinks = (linkData: LinkData, setHoverState: React.Dispatch<React.SetStateAction<'code' | '3d' | 'log' | null>>) => {
-    const {
-        name,
-        url,
-        rowCol: [linkRow, linkColumn],
-        rotationDeg,
-    } = linkData;
-
-    const offsetsAndScale = getOffsetsAndScale(linkColumn, linkRow, strokeWidth, { '--tw-rotate': `${rotationDeg}deg` } as CSSProperties);
+const HexagonRows: FC<{ rowsData: RowData }> = memo(({ rowsData }) => {
+    const { cells, links } = rowsData;
+    const linksRowCols = links.map(({ rowCol }) => rowCol);
 
     return (
-        <Link key={`hex-row-${linkRow}-column-${linkColumn}`} to={url} className='group no-underline'>
-            <use
-                id={`hex-row-${linkRow}-column-${linkColumn}`}
-                href='#flat-top-hex'
-                className={linkClasses + ` class-${name}`}
-                {...offsetsAndScale}
-                onMouseEnter={() => setHoverState(name)}
-            />
-            <text
-                x={offsetsAndScale.x + hexHalfWidth}
-                y={offsetsAndScale.y + hexHalfHeight}
-                textAnchor='middle'
-                alignmentBaseline='central'
-                className={linkTextClasses}
-                style={offsetsAndScale.style}
-            >
-                {name}
-            </text>
-        </Link>
+        <>
+            {cells.map((cellData, rowIndex) => (
+                <HexagonRow cellData={cellData} rowIndex={rowIndex} linksRowCols={linksRowCols} />
+            ))}
+        </>
     );
+});
+
+const HexagonRow: FC<{ cellData: CellData; rowIndex: number; linksRowCols: [number, number][] }> = ({ cellData, rowIndex, linksRowCols }) => {
+    const { count, leftIndices, centerIndices, hiddenIndices, rotationDeg, xIndexOffset } = cellData;
+
+    const arrayOfHexagons_Memo = useMemo(() => {
+        const numberedArray = getNumberedArrayOfLength(count, xIndexOffset);
+
+        return numberedArray.map((offsetColumn, idx, arr) => {
+            const columnIndex = offsetColumn - 1; // getNumberedArrayOfLength(n, offset) returns array of numbers starting at 1, so for correct offsets etc we subtract 1 again
+            const isHalfPolygon = typeof rotationDeg === 'number' && (idx === 0 || idx === arr.length - 1 || rotationDeg === 0 || rotationDeg === 180);
+            const isLink = linksRowCols.findIndex(([linkRowIndex, linkColIndex]) => rowIndex === linkRowIndex && columnIndex === linkColIndex) >= 0;
+
+            const classes = leftIndices?.includes(columnIndex)
+                ? leftClasses
+                : centerIndices?.includes(columnIndex)
+                  ? centerClasses
+                  : hiddenIndices?.includes(columnIndex)
+                    ? hiddenClasses
+                    : rightClasses;
+
+            return !isLink ? (
+                <use
+                    id={`hex-row-${rowIndex}-column-${columnIndex}`}
+                    key={`hex-row-${rowIndex}-column-${columnIndex}`}
+                    className={classes}
+                    href={isHalfPolygon ? '#flat-top-hex-half' : '#flat-top-hex'}
+                    {...getOffsetsAndScale(
+                        columnIndex,
+                        rowIndex,
+                        strokeWidth,
+                        isHalfPolygon ? ({ '--tw-rotate': `${idx === 0 ? -rotationDeg : rotationDeg}deg` } as CSSProperties) : undefined,
+                    )}
+                />
+            ) : null;
+        });
+    }, [count, xIndexOffset, rotationDeg, leftIndices, centerIndices, hiddenIndices, linksRowCols, rowIndex]);
+
+    return <>{arrayOfHexagons_Memo.map((useElement) => useElement)}</>;
 };
+
+const HexagonLinks: FC<{
+    linksData: [LinkData, LinkData, LinkData];
+    expansionState: NavigationExpansionState;
+    setHoverState: React.Dispatch<React.SetStateAction<'code' | '3d' | 'log' | null>>;
+}> = memo(({ linksData, expansionState, setHoverState }) => {
+    return (
+        <>
+            {linksData.map((linkData) => {
+                const {
+                    name,
+                    url,
+                    rowCol: [linkRow, linkColumn],
+                    rotationDeg,
+                } = linkData;
+
+                const offsetsAndScale = getOffsetsAndScale(linkColumn, linkRow, strokeWidth, {
+                    '--tw-rotate': `${expansionState === 'home' ? rotationDeg : 0}deg`,
+                } as CSSProperties);
+
+                return (
+                    <Link key={`hex-row-${linkRow}-column-${linkColumn}`} to={url} className='group no-underline'>
+                        <use
+                            id={`hex-row-${linkRow}-column-${linkColumn}`}
+                            href='#flat-top-hex'
+                            className={linkClasses + ` class-${name}`}
+                            {...offsetsAndScale}
+                            onMouseEnter={() => setHoverState(expansionState === 'home' ? name : null)}
+                        />
+                        <text
+                            x={offsetsAndScale.x + hexHalfWidth}
+                            y={offsetsAndScale.y + hexHalfHeight}
+                            textAnchor='middle'
+                            alignmentBaseline='central'
+                            className={linkTextClasses}
+                            style={offsetsAndScale.style}
+                        >
+                            {name}
+                        </text>
+                    </Link>
+                );
+            })}
+        </>
+    );
+});
 
 const getOffsetsAndScale = (column: number, row: number, strokeWidth: number, extraStyles: CSSProperties = {}) => {
     const shouldAdjustGlobalXOffset = ((columns * 3 - 1) / 2) % 2 == 0;
@@ -179,96 +242,260 @@ const getOffsetsAndScale = (column: number, row: number, strokeWidth: number, ex
         y: yValue,
         style: {
             'transformOrigin': `${((xValue + hexHalfWidth) / totalWidthAtCenter) * 100}% ${((yValue + hexHalfHeight) / totalHeight) * 100}%`,
-            '--hex-scale-stroked': `${1 - strokeWidth}`,
+            '--hex-scale-stroked': `calc(${1 - strokeWidth} * var(--hex-scale-exp-state))`,
             ...extraStyles,
         },
     };
 };
 
-const rowsData: Record<number, RowData> = {
+const rowsData: Record<number, Record<NavigationExpansionState, RowData>> = {
     3: {
-        cells: [
-            { count: 1, leftIndices: [1], borderRotationDeg: 0, xOffset: 1 },
-            { count: 2, leftIndices: [1], xOffset: 1 },
-            { count: 3, leftIndices: [0], borderRotationDeg: 60 },
-            { count: 2, leftIndices: [1], xOffset: 1 },
+        home: {
+            cells: [
+                { count: 1, leftIndices: [1], rotationDeg: 0, xIndexOffset: 1 },
+                { count: 2, leftIndices: [1], xIndexOffset: 1 },
+                { count: 3, leftIndices: [0], rotationDeg: 60 },
+                { count: 2, leftIndices: [1], xIndexOffset: 1 },
 
-            { count: 3, leftIndices: [0], centerIndices: [1] },
+                { count: 3, leftIndices: [0], centerIndices: [1] },
 
-            { count: 2, leftIndices: [1], xOffset: 1 },
-            { count: 3, leftIndices: [0], borderRotationDeg: 120 },
-            { count: 2, leftIndices: [1], xOffset: 1 },
-            { count: 1, leftIndices: [1], borderRotationDeg: 180, xOffset: 1 },
-        ],
-        links: [
-            { name: 'code', url: '/0', rowCol: [3, 1], rotationDeg: -60 },
-            { name: '3d', url: '/1', rowCol: [3, 2], rotationDeg: 60 },
-            { name: 'log', url: '/3', rowCol: [6, 1], rotationDeg: 180 },
-        ],
+                { count: 2, leftIndices: [1], xIndexOffset: 1 },
+                { count: 3, leftIndices: [0], rotationDeg: 120 },
+                { count: 2, leftIndices: [1], xIndexOffset: 1 },
+                { count: 1, leftIndices: [1], rotationDeg: 180, xIndexOffset: 1 },
+            ],
+            links: [
+                { name: 'code', url: '/0', rowCol: [3, 1], rotationDeg: -60 },
+                { name: '3d', url: '/1', rowCol: [3, 2], rotationDeg: 60 },
+                { name: 'log', url: '/3', rowCol: [6, 1], rotationDeg: 180 },
+            ],
+        },
+        category: {
+            cells: [
+                { count: 3, leftIndices: [0], hiddenIndices: [1], rotationDeg: 60, xIndexOffset: 0 },
+                { count: 2, leftIndices: [1], hiddenIndices: [2], rotationDeg: -60, xIndexOffset: 1 },
+                { count: 3, leftIndices: [0], hiddenIndices: [1] },
+                { count: 2, leftIndices: [1], hiddenIndices: [1, 2], xIndexOffset: 1 },
+
+                { count: 3, leftIndices: [0], hiddenIndices: [1] },
+
+                { count: 2, leftIndices: [1], hiddenIndices: [2], xIndexOffset: 1 },
+                { count: 3, leftIndices: [0], hiddenIndices: [1] },
+                { count: 2, leftIndices: [1], hiddenIndices: [2], rotationDeg: -120, xIndexOffset: 1 },
+                { count: 3, leftIndices: [0], hiddenIndices: [1], rotationDeg: 120, xIndexOffset: 0 },
+            ],
+            links: [
+                { name: 'code', url: '/0', rowCol: [3, 1], rotationDeg: -60 },
+                { name: '3d', url: '/1', rowCol: [5, 1], rotationDeg: 60 },
+                { name: 'log', url: '/3', rowCol: [6, 0], rotationDeg: 180 },
+            ],
+        },
+        post: {
+            cells: [
+                { count: 1, leftIndices: [1], rotationDeg: 0, xIndexOffset: 1 },
+                { count: 2, leftIndices: [1], xIndexOffset: 1 },
+                { count: 3, leftIndices: [0], rotationDeg: 60 },
+                { count: 2, leftIndices: [1], xIndexOffset: 1 },
+
+                { count: 3, leftIndices: [0], centerIndices: [1] },
+
+                { count: 2, leftIndices: [1], xIndexOffset: 1 },
+                { count: 3, leftIndices: [0], rotationDeg: 120 },
+                { count: 2, leftIndices: [1], xIndexOffset: 1 },
+                { count: 1, leftIndices: [1], rotationDeg: 180, xIndexOffset: 1 },
+            ],
+            links: [
+                { name: 'code', url: '/0', rowCol: [3, 1], rotationDeg: -60 },
+                { name: '3d', url: '/1', rowCol: [3, 2], rotationDeg: 60 },
+                { name: 'log', url: '/3', rowCol: [6, 1], rotationDeg: 180 },
+            ],
+        },
     },
 
     5: {
-        cells: [
-            { count: 2, leftIndices: [1, 2], borderRotationDeg: 0, xOffset: 1 },
-            { count: 3, leftIndices: [1, 2, 3], xOffset: 1 },
-            { count: 4, leftIndices: [0, 1, 2], borderRotationDeg: 60 },
-            { count: 3, leftIndices: [1, 2], xOffset: 1 },
-            { count: 4, leftIndices: [0, 1, 2] },
-            { count: 5, leftIndices: [0, 1], borderRotationDeg: 60, centerIndices: [2] },
-            { count: 4, leftIndices: [0], centerIndices: [1, 2] },
+        home: {
+            cells: [
+                { count: 2, leftIndices: [1, 2], rotationDeg: 0, xIndexOffset: 1 },
+                { count: 3, leftIndices: [1, 2, 3], xIndexOffset: 1 },
+                { count: 4, leftIndices: [0, 1, 2], rotationDeg: 60 },
+                { count: 3, leftIndices: [1, 2], xIndexOffset: 1 },
+                { count: 4, leftIndices: [0, 1, 2] },
+                { count: 5, leftIndices: [0, 1], rotationDeg: 60, centerIndices: [2] },
+                { count: 4, leftIndices: [0], centerIndices: [1, 2] },
 
-            { count: 5, leftIndices: [0, 1], centerIndices: [2] },
+                { count: 5, leftIndices: [0, 1], centerIndices: [2] },
 
-            { count: 4, leftIndices: [0], centerIndices: [1, 2] },
-            { count: 5, leftIndices: [0, 1], borderRotationDeg: 120, centerIndices: [2] },
-            { count: 4, leftIndices: [0, 1] },
-            { count: 3, leftIndices: [1], xOffset: 1 },
-            { count: 4, leftIndices: [0], borderRotationDeg: 120 },
-            { count: 3, leftIndices: [1], xOffset: 1 },
-            { count: 2, leftIndices: [], borderRotationDeg: 180, xOffset: 1 },
-        ],
-        links: [
-            { name: 'code', url: '/0', rowCol: [6, 1], rotationDeg: 60 },
-            { name: '3d', url: '/1', rowCol: [6, 2], rotationDeg: 60 },
-            { name: 'log', url: '/3', rowCol: [9, 2], rotationDeg: 60 },
-        ],
+                { count: 4, leftIndices: [0], centerIndices: [1, 2] },
+                { count: 5, leftIndices: [0, 1], rotationDeg: 120, centerIndices: [2] },
+                { count: 4, leftIndices: [0, 1] },
+                { count: 3, leftIndices: [1], xIndexOffset: 1 },
+                { count: 4, leftIndices: [0], rotationDeg: 120 },
+                { count: 3, leftIndices: [1], xIndexOffset: 1 },
+                { count: 2, leftIndices: [], rotationDeg: 180, xIndexOffset: 1 },
+            ],
+            links: [
+                { name: 'code', url: '/0', rowCol: [6, 1], rotationDeg: 60 },
+                { name: '3d', url: '/1', rowCol: [6, 2], rotationDeg: 60 },
+                { name: 'log', url: '/3', rowCol: [9, 2], rotationDeg: 60 },
+            ],
+        },
+        category: {
+            cells: [
+                { count: 2, leftIndices: [1, 2], rotationDeg: 0, xIndexOffset: 1 },
+                { count: 3, leftIndices: [1, 2, 3], xIndexOffset: 1 },
+                { count: 4, leftIndices: [0, 1, 2], rotationDeg: 60 },
+                { count: 3, leftIndices: [1, 2], xIndexOffset: 1 },
+                { count: 4, leftIndices: [0, 1, 2] },
+                { count: 5, leftIndices: [0, 1], rotationDeg: 60, centerIndices: [2] },
+                { count: 4, leftIndices: [0], centerIndices: [1, 2] },
+
+                { count: 5, leftIndices: [0, 1], centerIndices: [2] },
+
+                { count: 4, leftIndices: [0], centerIndices: [1, 2] },
+                { count: 5, leftIndices: [0, 1], rotationDeg: 120, centerIndices: [2] },
+                { count: 4, leftIndices: [0, 1] },
+                { count: 3, leftIndices: [1], xIndexOffset: 1 },
+                { count: 4, leftIndices: [0], rotationDeg: 120 },
+                { count: 3, leftIndices: [1], xIndexOffset: 1 },
+                { count: 2, leftIndices: [], rotationDeg: 180, xIndexOffset: 1 },
+            ],
+            links: [
+                { name: 'code', url: '/0', rowCol: [6, 1], rotationDeg: 60 },
+                { name: '3d', url: '/1', rowCol: [6, 2], rotationDeg: 60 },
+                { name: 'log', url: '/3', rowCol: [9, 2], rotationDeg: 60 },
+            ],
+        },
+        post: {
+            cells: [
+                { count: 2, leftIndices: [1, 2], rotationDeg: 0, xIndexOffset: 1 },
+                { count: 3, leftIndices: [1, 2, 3], xIndexOffset: 1 },
+                { count: 4, leftIndices: [0, 1, 2], rotationDeg: 60 },
+                { count: 3, leftIndices: [1, 2], xIndexOffset: 1 },
+                { count: 4, leftIndices: [0, 1, 2] },
+                { count: 5, leftIndices: [0, 1], rotationDeg: 60, centerIndices: [2] },
+                { count: 4, leftIndices: [0], centerIndices: [1, 2] },
+
+                { count: 5, leftIndices: [0, 1], centerIndices: [2] },
+
+                { count: 4, leftIndices: [0], centerIndices: [1, 2] },
+                { count: 5, leftIndices: [0, 1], rotationDeg: 120, centerIndices: [2] },
+                { count: 4, leftIndices: [0, 1] },
+                { count: 3, leftIndices: [1], xIndexOffset: 1 },
+                { count: 4, leftIndices: [0], rotationDeg: 120 },
+                { count: 3, leftIndices: [1], xIndexOffset: 1 },
+                { count: 2, leftIndices: [], rotationDeg: 180, xIndexOffset: 1 },
+            ],
+            links: [
+                { name: 'code', url: '/0', rowCol: [6, 1], rotationDeg: 60 },
+                { name: '3d', url: '/1', rowCol: [6, 2], rotationDeg: 60 },
+                { name: 'log', url: '/3', rowCol: [9, 2], rotationDeg: 60 },
+            ],
+        },
     },
 
     7: {
-        cells: [
-            { count: 3, leftIndices: [2], borderRotationDeg: 0, xOffset: 2 },
-            { count: 4, leftIndices: [2, 3], xOffset: 2 },
-            { count: 5, leftIndices: [1, 2], borderRotationDeg: 60, xOffset: 1 },
-            { count: 4, leftIndices: [2, 3], xOffset: 2 },
-            { count: 5, leftIndices: [1, 2], xOffset: 1 },
-            { count: 6, leftIndices: [1, 2, 3], borderRotationDeg: 60, xOffset: 1 },
-            { count: 5, leftIndices: [1, 2], xOffset: 1, centerIndices: [3] },
-            { count: 6, leftIndices: [1, 2], xOffset: 1, centerIndices: [3, 4] },
-            { count: 7, leftIndices: [0, 1], borderRotationDeg: 60, centerIndices: [2, 3, 4] },
-            { count: 6, leftIndices: [1, 2], xOffset: 1, centerIndices: [3, 4] },
+        home: {
+            cells: [
+                { count: 3, leftIndices: [2], rotationDeg: 0, xIndexOffset: 2 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 5, leftIndices: [1, 2], rotationDeg: 60, xIndexOffset: 1 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1 },
+                { count: 6, leftIndices: [1, 2, 3], rotationDeg: 60, xIndexOffset: 1 },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3] },
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+                { count: 7, leftIndices: [0, 1], rotationDeg: 60, centerIndices: [2, 3, 4] },
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
 
-            { count: 7, leftIndices: [0, 1], centerIndices: [2, 3, 4] },
+                { count: 7, leftIndices: [0, 1], centerIndices: [2, 3, 4] },
 
-            { count: 6, leftIndices: [1, 2], xOffset: 1, centerIndices: [3, 4] },
-            { count: 7, leftIndices: [0, 1], borderRotationDeg: 120, centerIndices: [2, 3, 4] },
-            { count: 6, leftIndices: [1, 2], xOffset: 1, centerIndices: [3, 4] },
-            { count: 5, leftIndices: [1, 2], xOffset: 1, centerIndices: [3] },
-            { count: 6, leftIndices: [1, 2, 3], borderRotationDeg: 120, xOffset: 1 },
-            { count: 5, leftIndices: [1, 2], xOffset: 1 },
-            { count: 4, leftIndices: [2, 3], xOffset: 2 },
-            { count: 5, leftIndices: [1, 2], borderRotationDeg: 120, xOffset: 1 },
-            { count: 4, leftIndices: [2, 3], xOffset: 2 },
-            { count: 3, leftIndices: [2], borderRotationDeg: 180, xOffset: 2 },
-        ],
-        links: [
-            { name: 'code', url: '/0', rowCol: [9, 3], rotationDeg: 60 },
-            { name: '3d', url: '/1', rowCol: [9, 4], rotationDeg: 60 },
-            { name: 'log', url: '/3', rowCol: [12, 3], rotationDeg: 60 },
-        ],
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+                { count: 7, leftIndices: [0, 1], rotationDeg: 120, centerIndices: [2, 3, 4] },
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3] },
+                { count: 6, leftIndices: [1, 2, 3], rotationDeg: 120, xIndexOffset: 1 },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 5, leftIndices: [1, 2], rotationDeg: 120, xIndexOffset: 1 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 3, leftIndices: [2], rotationDeg: 180, xIndexOffset: 2 },
+            ],
+            links: [
+                { name: 'code', url: '/0', rowCol: [9, 3], rotationDeg: 60 },
+                { name: '3d', url: '/1', rowCol: [9, 4], rotationDeg: 60 },
+                { name: 'log', url: '/3', rowCol: [12, 3], rotationDeg: 60 },
+            ],
+        },
+        category: {
+            cells: [
+                { count: 3, leftIndices: [2], rotationDeg: 0, xIndexOffset: 2 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 5, leftIndices: [1, 2], rotationDeg: 60, xIndexOffset: 1 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1 },
+                { count: 6, leftIndices: [1, 2, 3], rotationDeg: 60, xIndexOffset: 1 },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3] },
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+                { count: 7, leftIndices: [0, 1], rotationDeg: 60, centerIndices: [2, 3, 4] },
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+
+                { count: 7, leftIndices: [0, 1], centerIndices: [2, 3, 4] },
+
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+                { count: 7, leftIndices: [0, 1], rotationDeg: 120, centerIndices: [2, 3, 4] },
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3] },
+                { count: 6, leftIndices: [1, 2, 3], rotationDeg: 120, xIndexOffset: 1 },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 5, leftIndices: [1, 2], rotationDeg: 120, xIndexOffset: 1 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 3, leftIndices: [2], rotationDeg: 180, xIndexOffset: 2 },
+            ],
+            links: [
+                { name: 'code', url: '/0', rowCol: [9, 3], rotationDeg: 60 },
+                { name: '3d', url: '/1', rowCol: [9, 4], rotationDeg: 60 },
+                { name: 'log', url: '/3', rowCol: [12, 3], rotationDeg: 60 },
+            ],
+        },
+        post: {
+            cells: [
+                { count: 3, leftIndices: [2], rotationDeg: 0, xIndexOffset: 2 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 5, leftIndices: [1, 2], rotationDeg: 60, xIndexOffset: 1 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1 },
+                { count: 6, leftIndices: [1, 2, 3], rotationDeg: 60, xIndexOffset: 1 },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3] },
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+                { count: 7, leftIndices: [0, 1], rotationDeg: 60, centerIndices: [2, 3, 4] },
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+
+                { count: 7, leftIndices: [0, 1], centerIndices: [2, 3, 4] },
+
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+                { count: 7, leftIndices: [0, 1], rotationDeg: 120, centerIndices: [2, 3, 4] },
+                { count: 6, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3, 4] },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1, centerIndices: [3] },
+                { count: 6, leftIndices: [1, 2, 3], rotationDeg: 120, xIndexOffset: 1 },
+                { count: 5, leftIndices: [1, 2], xIndexOffset: 1 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 5, leftIndices: [1, 2], rotationDeg: 120, xIndexOffset: 1 },
+                { count: 4, leftIndices: [2, 3], xIndexOffset: 2 },
+                { count: 3, leftIndices: [2], rotationDeg: 180, xIndexOffset: 2 },
+            ],
+            links: [
+                { name: 'code', url: '/0', rowCol: [9, 3], rotationDeg: 60 },
+                { name: '3d', url: '/1', rowCol: [9, 4], rotationDeg: 60 },
+                { name: 'log', url: '/3', rowCol: [12, 3], rotationDeg: 60 },
+            ],
+        },
     },
 };
 
+const rowsDataSet = rowsData[columns];
+
 /* Types */
-type CellData = { count: number; leftIndices: number[]; borderRotationDeg?: number; centerIndices?: number[]; xOffset?: number };
+type CellData = { count: number; leftIndices: number[]; rotationDeg?: number; centerIndices?: number[]; hiddenIndices?: number[]; xIndexOffset?: number };
 type LinkData = { name: 'code' | '3d' | 'log'; url: string; rowCol: [number, number]; rotationDeg: number };
 type RowData = { cells: CellData[]; links: [LinkData, LinkData, LinkData] };
