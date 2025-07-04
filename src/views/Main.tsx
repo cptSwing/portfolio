@@ -101,17 +101,7 @@ const Main = () => {
                 }
                 className='relative size-full [--nav-category-common-color-1:theme(colors.gray.700)]'
             >
-                <HexagonTiles
-                    extraClassNames={classNames(
-                        'overflow-visible absolute left-0 right-0 mx-auto top-[--flat-hex-margin-top] z-10 h-[--flat-hex-height] w-[--anim-overall-width] ',
-                        expansionState === 'home'
-                            ? '[--hex-translate-x:0.25rem]'
-                            : expansionState === 'category'
-                              ? '[--hex-translate-x:12rem]'
-                              : // === 'post'
-                                '[--hex-translate-x:20rem]',
-                    )}
-                />
+                <HexagonTiles />
 
                 {/* <div
                     id='clip-shape-titles'

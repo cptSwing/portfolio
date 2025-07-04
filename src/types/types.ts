@@ -55,3 +55,7 @@ export type DataBase = {
         categoryBackgroundColor?: string;
     };
 };
+
+export type MenuLinks = 'code' | '3d' | 'log';
+export type HexagonData = { position: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; origin?: 'string' };
+export type HexagonLink = { title?: MenuLinks; url?: string };

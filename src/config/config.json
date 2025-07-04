@@ -7,6 +7,7 @@
     },
     "hexMenu": {
         "columns": 3,
-        "strokeWidth": 0.025
+        "strokeWidth": 0.025,
+        "scaleUp": 100
     }
 }
