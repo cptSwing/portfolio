@@ -28,11 +28,7 @@ const MotionBlurImage: FC<{
             )}
 
             {/* Original Image */}
-            <img
-                className='absolute size-full skew-x-[calc(var(--clip-shape-skew-angle-category)*-1)] scale-110 object-cover object-center drop-shadow-md transition-transform'
-                src={imgUrl}
-                alt={altText}
-            />
+            <img className='absolute size-full scale-110 object-cover object-center drop-shadow-md transition-transform' src={imgUrl} alt={altText} />
         </>
     );
 };

@@ -56,6 +56,6 @@ export type DataBase = {
     };
 };
 
-export type MenuLinks = 'code' | '3d' | 'log';
-export type HexagonData = { position: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; origin?: 'string' };
+export type MenuLinks = 'code' | '3d' | 'log' | 'mnu';
+export type HexagonData = { position: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; offsets?: { x: number; y: number } };
 export type HexagonLink = { title?: MenuLinks; url?: string };

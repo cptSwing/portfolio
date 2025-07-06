@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import classNames from '../lib/classNames';
 import configJSON from '../config/config.json';
 import { NavigationExpansionState } from '../views/Main';
-import { HexagonData, HexagonLink } from '../types/types';
+import { HexagonData, HexagonLink, MenuLinks } from '../types/types';
 import hexShape, { staticValues } from '../config/hexagonData';
 
 const {
@@ -17,10 +17,12 @@ const hexHeight = staticValues.heightAspectRatio.flatTop * scaleUp;
 const hexHalfHeight = hexHeight / 2;
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 
+const debug = true;
+
 const HexagonTiles = () => {
     const { catId, postId } = useParams();
     const [[expansionState, formerExpansionState], setExpansionState] = useState<[NavigationExpansionState, NavigationExpansionState]>(['home', 'home']);
-    const [hoverState, setHoverState] = useState<'code' | '3d' | 'log' | null>(null);
+    const [hoverState, setHoverState] = useState<MenuLinks | null>(null);
 
     useLayoutEffect(() => {
         if (catId) {
@@ -40,10 +42,16 @@ const HexagonTiles = () => {
             className={classNames(
                 '[--hex-gradient-color-1:theme(colors.theme.primary)] [--hex-gradient-color-2:theme(colors.theme.secondary)]',
                 'pointer-events-none absolute left-0 right-0 top-[--flat-hex-margin-top] z-10 mx-auto h-[--flat-hex-height] w-[--anim-overall-width] overflow-visible transition-transform delay-100 duration-1000',
-                // '[&_.left]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.left]:has-[.left:hover]:scale-[0.85] [&_.left]:has-[.right:hover]:scale-95',
-                // '[&_.right]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.right]:has-[.left:hover]:scale-95 [&_.right]:has-[.right:hover]:scale-[0.85]',
-                hoverState === 'code' ? 'rotate-[60deg]' : hoverState === '3d' ? 'rotate-[-60deg]' : hoverState === 'log' ? 'rotate-[180deg]' : 'rotate-0',
-                expansionState === 'home' ? '' : expansionState === 'category' ? '' /* [&_.left]:-translate-x-1/4 */ : expansionState === 'post' ? '' : '',
+                // '[&_.left-class]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.left-class]:has-[.left-class:hover]:scale-[0.85] [&_.left-class]:has-[.right:hover]:scale-95',
+                // '[&_.right]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.right]:has-[.left-class:hover]:scale-95 [&_.right]:has-[.right:hover]:scale-[0.85]',
+                hoverState === 'code' ? 'rotate-[60deg]' : hoverState === '3d' ? 'rotate-[-60deg]' : hoverState === 'log' ? 'rotate-[180deg]' : ':rotate-0',
+                expansionState === 'home'
+                    ? ''
+                    : expansionState === 'category'
+                      ? 'duration-0' /* [&_.left-class]:-translate-x-1/4 */
+                      : expansionState === 'post'
+                        ? ''
+                        : '',
             )}
             viewBox={`0 0 ${totalWidthAtCenter} ${totalHeight}`}
             style={
@@ -81,11 +89,7 @@ const HexagonTiles = () => {
                 </linearGradient>
             </defs>
 
-            {/* <HexagonRows rowsData={rowsDataSet[expansionState]} /> */}
-            <Hexagons expansionState={expansionState} />
-
-            {/* Links drawn last (no z-index in svg) */}
-            <HexagonLinks expansionState={expansionState} setHoverState={setHoverState} />
+            <Hexagons expansionState={expansionState} setHoverState={setHoverState} />
         </svg>
     );
 };
@@ -94,100 +98,102 @@ export default HexagonTiles;
 
 const Hexagons: FC<{
     expansionState: NavigationExpansionState;
-}> = ({ expansionState }) => {
+    setHoverState: React.Dispatch<React.SetStateAction<MenuLinks | null>>;
+}> = ({ expansionState, setHoverState }) => {
     const hexagons_Memo = useMemo(() => {
         const hexArray = [];
+        const hexLinkArray = [];
 
         for (let i = 0; i < hexShape.length; i++) {
             for (let j = 0; j < hexShape[i].length; j++) {
-                const shapeData = hexShape[i][j];
-                if (shapeData && !shapeData.title) {
-                    const { position, rotation, scale, isHalf } = hexShape[i][j]![expansionState];
-                    hexArray.push(
-                        <use
-                            id={`hex-row-${i}-column-${j}`}
-                            key={`hex-row-${i}-column-${j}`}
-                            x={0}
-                            y={0}
-                            className={classNames(
-                                'left pointer-events-auto origin-[12.5%_12.5%] translate-x-0 fill-theme-primary-darker/75 transition-[transform,fill,clip-path] duration-1000 hover-active:fill-theme-primary',
-                                isHalf ? 'clip-inset-t-1/2' : 'clip-inset-0',
-                                '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
-                            )}
-                            href='#flat-top-hex'
-                            style={
-                                {
-                                    '--hex-scale-stroked': (1 - strokeWidth) * scale,
-                                    '--tw-rotate': `${rotation}deg`,
-                                    '--tw-translate-x': `${(position.x / totalWidthAtCenter) * 100}%`,
-                                    '--tw-translate-y': `${(position.y / totalHeight) * 100}%`,
-                                } as CSSProperties
-                            }
-                        />,
-                    );
+                // Weed out empty positions in grid
+                if (hexShape[i][j]) {
+                    const shapeData = hexShape[i][j] as Record<NavigationExpansionState, HexagonData> & HexagonLink;
+                    const { position, rotation, scale, isHalf, offsets } = shapeData[expansionState];
+
+                    const cssVariables = {
+                        '--tw-translate-x': `${(position.x / totalWidthAtCenter) * 100 + (offsets?.x ?? 0)}%`,
+                        '--tw-translate-y': `${(position.y / totalHeight) * 100 + (offsets?.y ?? 0)}%`,
+                        '--tw-rotate': `${rotation}deg`,
+                        '--hex-scale-stroked': (1 - strokeWidth) * scale,
+                    } as CSSProperties;
+
+                    // Add hexes
+                    if (!shapeData.title) {
+                        hexArray.push(
+                            <use
+                                id={`hex-row-${i}-column-${j}`}
+                                key={`hex-row-${i}-column-${j}`}
+                                x={0}
+                                y={0}
+                                className={classNames(
+                                    '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
+                                    'left-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 fill-theme-primary-darker drop-shadow-omni-md transition-[transform,fill,clip-path] delay-300 duration-1000 hover-active:fill-theme-primary hover-active:delay-0 hover-active:duration-500',
+                                    isHalf ? 'clip-inset-t-1/2' : 'clip-inset-0',
+                                )}
+                                href='#flat-top-hex'
+                                style={cssVariables}
+                            />,
+                            debug && (
+                                <text
+                                    key={`debug-hex-row-${i}-column-${j}`}
+                                    x={hexHalfWidth}
+                                    y={hexHalfHeight}
+                                    textAnchor='middle'
+                                    alignmentBaseline='central'
+                                    className='origin-[12.5%_12.5%] translate-x-0 text-2xs [--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]'
+                                    style={cssVariables}
+                                >
+                                    row: {i} col: {j}
+                                </text>
+                            ),
+                        );
+                    }
+                    // Add links
+                    else if (shapeData.title) {
+                        const { title, url } = shapeData;
+                        hexLinkArray.push(
+                            <Link
+                                key={`hex-link-${title}`}
+                                to={`/${url!}`}
+                                className={classNames(
+                                    '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
+                                    'link-class group block origin-[12.5%_12.5%] translate-x-0 no-underline transition-transform duration-1000',
+                                    isHalf ? 'clip-inset-t-1/2' : 'clip-inset-0',
+                                )}
+                                style={cssVariables}
+                            >
+                                <use
+                                    id={`hex-link-${title}`}
+                                    href='#flat-top-hex'
+                                    x={0}
+                                    y={0}
+                                    className='pointer-events-auto origin-[12.5%_12.5%] fill-[url(#myGradient)] transition-[fill] group-hover-active:scale-110 group-hover-active:fill-theme-primary'
+                                    onMouseEnter={() => setHoverState(expansionState === 'home' ? title! : null)}
+                                />
+                                <text
+                                    x={hexHalfWidth}
+                                    y={hexHalfHeight}
+                                    textAnchor='middle'
+                                    alignmentBaseline='central'
+                                    className='text pointer-events-none origin-[12.5%_12.5%] select-none fill-red-500 text-[40px] font-bold tracking-tight group-hover-active:scale-110'
+                                >
+                                    {title}
+                                </text>
+                            </Link>,
+                        );
+                    }
                 }
             }
         }
 
+        // Add Links as last elements to draw last (no z-index within SVG's)
+        hexArray.push(...hexLinkArray);
+
         return hexArray;
-    }, [expansionState]);
-
-    return <>{hexagons_Memo.map((useElem) => useElem)}</>;
-};
-
-const HexagonLinks: FC<{
-    expansionState: NavigationExpansionState;
-    setHoverState: React.Dispatch<React.SetStateAction<'code' | '3d' | 'log' | null>>;
-}> = ({ expansionState, setHoverState }) => {
-    const hexagonLinks_Memo = useMemo(() => {
-        const hexLinks = linkMenuHexShapes.map((linkHex) => {
-            const { title, url } = linkHex;
-            const { position, rotation, scale, isHalf, origin } = linkHex[expansionState];
-
-            return (
-                <Link
-                    key={`hex-link-${title}`}
-                    to={`/${url!}`}
-                    className={classNames(
-                        'group block origin-[12.5%_12.5%] translate-x-0 no-underline transition-transform',
-                        '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
-                        isHalf ? 'clip-inset-t-1/2' : 'clip-inset-0',
-                    )}
-                    style={
-                        {
-                            '--tw-translate-x': `${(position.x / totalWidthAtCenter) * 100}%`,
-                            '--tw-translate-y': `${(position.y / totalHeight) * 100}%`,
-                            '--tw-rotate': `${rotation}deg`,
-                            '--hex-scale-stroked': (1 - strokeWidth) * scale,
-                            'transformOrigin': origin ?? undefined,
-                        } as CSSProperties
-                    }
-                >
-                    <use
-                        id={`hex-link-${title}`}
-                        href='#flat-top-hex'
-                        x={0}
-                        y={0}
-                        className='pointer-events-auto origin-[12.5%_12.5%] fill-[url(#myGradient)] transition-[fill] group-hover-active:scale-110 group-hover-active:fill-theme-primary'
-                        onMouseEnter={() => setHoverState(expansionState === 'home' ? title! : null)}
-                    />
-                    <text
-                        x={hexHalfWidth}
-                        y={hexHalfHeight}
-                        textAnchor='middle'
-                        alignmentBaseline='central'
-                        className='text pointer-events-none origin-[12.5%_12.5%] select-none fill-red-500 text-[40px] font-bold tracking-tight group-hover-active:scale-110'
-                    >
-                        {title}
-                    </text>
-                </Link>
-            );
-        });
-
-        return hexLinks;
     }, [expansionState, setHoverState]);
 
-    return hexagonLinks_Memo.map((useElem) => useElem);
+    return <>{hexagons_Memo.map((useElem) => useElem)}</>;
 };
 
 /**
@@ -204,7 +210,3 @@ Possibly:
 - Get rid of two-tone coloring of hexes, gradually transition all hexes colors to that of category (so 3 colors all together)
 
 */
-
-const linkMenuHexShapes = hexShape.flat().filter((hexElem) => hexElem?.title) as (Record<NavigationExpansionState, HexagonData> & HexagonLink)[];
-
-/* Types */
