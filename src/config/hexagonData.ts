@@ -75,7 +75,7 @@ const hexShape: ((Record<NavigationExpansionState, HexagonData> & HexagonLink) |
     [
         {
             home: { position: allOffsets[2][0], rotation: -60, isHalf: true, scale: 1 },
-            category: { position: allOffsets[0][2], rotation: 0, isHalf: true, scale: 0.5, offsets: { x: 12.5, y: -3.125 } },
+            category: { position: allOffsets[0][2], rotation: -120, isHalf: true, scale: 0.8, offsets: { x: 20.35, y: 6.75 } },
             post: { position: allOffsets[2][0], rotation: -60, isHalf: true, scale: 1 },
         },
         {
@@ -85,7 +85,7 @@ const hexShape: ((Record<NavigationExpansionState, HexagonData> & HexagonLink) |
         },
         {
             home: { position: allOffsets[2][2], rotation: 60, isHalf: true, scale: 1 },
-            category: { position: allOffsets[2][2], rotation: -120, isHalf: true, scale: 1 },
+            category: { position: allOffsets[1][3], rotation: -60, isHalf: true, scale: 0.65, offsets: { x: -1.9, y: 4.55 } },
             post: { position: allOffsets[2][2], rotation: 60, isHalf: true, scale: 1 },
         },
     ],
@@ -119,15 +119,14 @@ const hexShape: ((Record<NavigationExpansionState, HexagonData> & HexagonLink) |
         },
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 1 },
-
+            category: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.5, offsets: { x: 11.75, y: 3.125 } },
             post: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 1 },
             title: 'mnu',
             url: 'menu',
         },
         {
             home: { position: allOffsets[4][2], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[3][3], rotation: 0, isHalf: false, scale: 0.75 },
+            category: { position: allOffsets[3][3], rotation: 0, isHalf: false, scale: 1, offsets: { x: 0, y: 0.2 } },
             post: { position: allOffsets[4][2], rotation: 0, isHalf: false, scale: 1 },
         },
     ],
@@ -142,7 +141,7 @@ const hexShape: ((Record<NavigationExpansionState, HexagonData> & HexagonLink) |
         },
         {
             home: { position: allOffsets[5][2], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[4][2], rotation: 0, isHalf: false, scale: 0.65, offsets: { x: 18, y: 5.5 } },
+            category: { position: allOffsets[4][2], rotation: 0, isHalf: false, scale: 0.55, offsets: { x: 21.25, y: 7.1 } },
             post: { position: allOffsets[5][2], rotation: 0, isHalf: false, scale: 1 },
         },
         null,
@@ -164,7 +163,7 @@ const hexShape: ((Record<NavigationExpansionState, HexagonData> & HexagonLink) |
         },
         {
             home: { position: allOffsets[6][2], rotation: 120, isHalf: true, scale: 1 },
-            category: { position: allOffsets[5][3], rotation: 120, isHalf: true, scale: 0.625, offsets: { x: -0.75, y: 9.25 } },
+            category: { position: allOffsets[5][3], rotation: 120, isHalf: true, scale: 0.55, offsets: { x: 2.5, y: 8.5 } },
             post: { position: allOffsets[6][2], rotation: 120, isHalf: true, scale: 1 },
         },
     ],
@@ -179,7 +178,7 @@ const hexShape: ((Record<NavigationExpansionState, HexagonData> & HexagonLink) |
         },
         {
             home: { position: allOffsets[7][2], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[6][2], rotation: -60, isHalf: true, scale: 1, offsets: { x: 16.4, y: 1.4 } },
+            category: { position: allOffsets[6][2], rotation: -60, isHalf: true, scale: 1, offsets: { x: 19.125, y: 1.5 } },
             post: { position: allOffsets[7][2], rotation: 0, isHalf: false, scale: 1 },
         },
         null,
@@ -190,7 +189,7 @@ const hexShape: ((Record<NavigationExpansionState, HexagonData> & HexagonLink) |
         null,
         {
             home: { position: allOffsets[8][1], rotation: 180, isHalf: true, scale: 1 },
-            category: { position: allOffsets[8][2], rotation: 0, isHalf: false, scale: 0.6, offsets: { x: 13.7, y: -3.35 } },
+            category: { position: allOffsets[8][2], rotation: 0, isHalf: false, scale: 0.6, offsets: { x: 16.5, y: -3.35 } },
             post: { position: allOffsets[8][1], rotation: 180, isHalf: true, scale: 1 },
         },
         null,
