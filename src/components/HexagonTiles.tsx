@@ -17,7 +17,7 @@ const hexHeight = staticValues.heightAspectRatio.flatTop * scaleUp;
 const hexHalfHeight = hexHeight / 2;
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 
-const debug = true;
+const debug = false;
 
 const HexagonTiles = () => {
     const { catId, postId } = useParams();
@@ -45,7 +45,11 @@ const HexagonTiles = () => {
                 // '[&_.left-class]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.left-class]:has-[.left-class:hover]:scale-[0.85] [&_.left-class]:has-[.right:hover]:scale-95',
                 // '[&_.right]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.right]:has-[.left-class:hover]:scale-95 [&_.right]:has-[.right:hover]:scale-[0.85]',
                 hoverState === 'code' ? 'rotate-[60deg]' : hoverState === '3d' ? 'rotate-[-60deg]' : hoverState === 'log' ? 'rotate-[180deg]' : 'rotate-0',
-                expansionState === 'home' ? '' : expansionState === 'category' ? '' /* [&_.left-class]:-translate-x-1/4 */ : 'stroke-theme-text-background',
+                expansionState === 'home'
+                    ? 'fill-theme-primary stroke-theme-text-background/0 *:drop-shadow-omni-md'
+                    : expansionState === 'category'
+                      ? 'fill-theme-primary stroke-theme-text-background/0 *:drop-shadow-none' /* [&_.left-class]:-translate-x-1/4 */
+                      : 'fill-theme-text-background stroke-theme-text-background/100 *:drop-shadow-none',
             )}
             viewBox={`0 0 ${totalWidthAtCenter} ${totalHeight}`}
             style={
@@ -133,10 +137,11 @@ const Hexagons: FC<{
                                 y={0}
                                 className={classNames(
                                     '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
-                                    'left-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 fill-theme-primary drop-shadow-omni-md transition-[transform,fill,clip-path] delay-300 duration-500 hover-active:fill-theme-primary hover-active:delay-0 hover-active:duration-500',
+                                    'left-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 transition-[transform,fill,clip-path,stroke] delay-300 duration-500',
                                     isHalf ? 'clip-inset-t-1/2' : 'clip-inset-0',
                                 )}
                                 href='#flat-top-hex'
+                                strokeWidth={12}
                                 style={cssVariables}
                             />,
                             debug && (

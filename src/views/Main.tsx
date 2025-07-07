@@ -36,8 +36,8 @@ const Main = () => {
     return (
         <div
             className={classNames(
-                'relative aspect-[1/0.866] font-miriam-libre text-theme-text transition-[width,height] duration-500 scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary)]',
-                expansionState === 'home' ? 'h-[70vh]' : expansionState === 'category' ? 'h-[80vh]' /* [&_.left-class]:-translate-x-1/4 */ : 'h-[90vh]',
+                'relative aspect-[1/0.866] font-miriam-libre text-theme-text transition-[width,height] duration-500 scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary-darker)]',
+                expansionState === 'home' ? 'h-[70vh]' : expansionState === 'category' ? 'h-[85vh]' /* [&_.left-class]:-translate-x-1/4 */ : 'h-[90vh]',
             )}
             style={
                 {
@@ -54,8 +54,12 @@ const Main = () => {
 
             <div
                 className={classNames(
-                    'relative size-full transition-[opacity,clip-path] delay-500 duration-300',
-                    expansionState === 'home' ? 'opacity-0 clip-inset-x-1/2' : expansionState === 'category' ? 'opacity-100 clip-inset-x-0' : 'opacity-100',
+                    'relative flex size-full items-start justify-start transition-[opacity,clip-path] delay-500 duration-300',
+                    expansionState === 'home'
+                        ? 'opacity-100 [--clip-category:100%] [--clip-post:100%]'
+                        : expansionState === 'category'
+                          ? 'opacity-100 [--clip-category:0%] [--clip-post:100%]'
+                          : 'opacity-100 [--clip-category:100%] [--clip-post:0%]',
                 )}
             >
                 <Category />

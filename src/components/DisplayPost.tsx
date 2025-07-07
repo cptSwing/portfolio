@@ -63,8 +63,8 @@ const DisplayPost = () => {
         [filteredImages_Memo],
     );
 
-    return activePost_Memo ? (
-        <div className='absolute left-0 top-0 size-full bg-theme-text-background px-[9%] pb-4 pt-12 text-theme-text transition-[clip-path] delay-[--wipe-delay] duration-[--clip-shape-animation-duration]'>
+    return postIds_Memo ? (
+        <div className='absolute left-0 top-0 size-full bg-theme-text-background px-[6%] pb-4 pt-12 text-theme-text transition-[clip-path] clip-inset-r-[--clip-post] clip-inset-t-[-10%]'>
             <header className='pointer-events-none absolute -top-5 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center'>
                 {/* Floating Title: */}
                 <h2 className='select-none px-4 text-3xl text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary before:clip-inset-t-[30%]'>

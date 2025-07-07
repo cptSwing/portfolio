@@ -41,41 +41,39 @@ const Category = () => {
         <>
             <Flipper
                 element={'nav'}
-                className='postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[repeat(8,minmax(0,1fr))_1vh] gap-[2vh] overflow-hidden px-[8vh] py-[4vh] transition-transform' /* bg-theme-primary/10 */
+                className='postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[repeat(8,minmax(0,1fr))_1vh] gap-[2vh] overflow-hidden bg-theme-primary/10 px-[8vh] py-[4vh] transition-[transform,clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%]'
                 flipKey={cardAnimationIndex}
                 spring={{ stiffness: 600, damping: 40 }}
             >
                 {/* Animated Grid */}
-                {categoryData_Memo &&
-                    categoryData_Memo.posts.map((post, idx, arr) => (
-                        <SingleCard
-                            key={post.title + idx}
-                            post={post}
-                            arrayIndex={idx}
-                            totalCount={arr.length}
-                            gridAreaIndex={getGridAreaIndex(cardAnimationIndex, idx, activeCellCount, arr.length)}
-                            setToFront={() => setCardAnimationIndex(idx + 1)}
-                        />
-                    ))}
+                {categoryData_Memo?.posts.map((post, idx, arr) => (
+                    <SingleCard
+                        key={post.title + idx}
+                        post={post}
+                        arrayIndex={idx}
+                        totalCount={arr.length}
+                        gridAreaIndex={getGridAreaIndex(cardAnimationIndex, idx, activeCellCount, arr.length)}
+                        setToFront={() => setCardAnimationIndex(idx + 1)}
+                    />
+                ))}
 
                 {/* Progress Bar */}
                 <div className='mx-auto flex w-[91.34%] items-center justify-between gap-x-2 [grid-area:tracker]'>
-                    {categoryData_Memo &&
-                        categoryData_Memo.posts.map((post, idx) => {
-                            return (
-                                <div
-                                    key={`${post.id}_${idx}`}
-                                    className={classNames(
-                                        'relative h-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',
-                                        'before:absolute before:-left-1 before:h-[calc(100%+theme(spacing.2))] before:w-full',
-                                        idx === cardAnimationIndex - 1
-                                            ? 'bg-theme-primary-lighter before:cursor-default'
-                                            : 'bg-black/15 before:cursor-pointer hover-active:bg-theme-primary hover-active:opacity-50',
-                                    )}
-                                    onClick={() => setCardAnimationIndex(idx + 1)}
-                                />
-                            );
-                        })}
+                    {categoryData_Memo?.posts.map((post, idx) => {
+                        return (
+                            <div
+                                key={`${post.id}_${idx}`}
+                                className={classNames(
+                                    'relative h-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',
+                                    'before:absolute before:-left-1 before:h-[calc(100%+theme(spacing.2))] before:w-full',
+                                    idx === cardAnimationIndex - 1
+                                        ? 'bg-theme-primary-lighter before:cursor-default'
+                                        : 'bg-black/15 before:cursor-pointer hover-active:bg-theme-primary hover-active:opacity-50',
+                                )}
+                                onClick={() => setCardAnimationIndex(idx + 1)}
+                            />
+                        );
+                    })}
                 </div>
             </Flipper>
 

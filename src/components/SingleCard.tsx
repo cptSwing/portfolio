@@ -7,7 +7,6 @@ import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
 import remapToRange from '../lib/remapToRange.ts';
 import { Flipped } from 'react-flip-toolkit';
-import MotionBlurImage from './MotionBlurImage.tsx';
 import motionBlurElement from '../lib/motionBlurElement.ts';
 import useMouseWheelDirection from '../hooks/useMouseWheelDirection.ts';
 import useIsCardAtFront from '../hooks/useIsCardAtFront.ts';
@@ -21,7 +20,7 @@ const SingleCard: FC<{
     gridAreaIndex: number;
     setToFront: () => void;
 }> = ({ post, arrayIndex, totalCount, gridAreaIndex, setToFront }) => {
-    const { id, title, subTitle } = post;
+    const { id } = post;
     const navigate = useNavigate();
 
     const gridCardStyle_Memo = useMemo(() => {
@@ -98,7 +97,7 @@ const SingleCard: FC<{
                 }}
             >
                 {/* Image Wrapper: */}
-                <SingleCardImage post={post} gridAreaIndex={gridAreaIndex} isAtFront={isAtFront} motionBlurElement={blurElement_Ref} />
+                <SingleCardImage post={post} gridAreaIndex={gridAreaIndex} isAtFront={isAtFront} />
             </div>
         </Flipped>
     );
@@ -110,8 +109,7 @@ const SingleCardImage: FC<{
     post: Post;
     gridAreaIndex: number;
     isAtFront: boolean;
-    motionBlurElement: React.MutableRefObject<HTMLDivElement | null>;
-}> = ({ post, gridAreaIndex, isAtFront, motionBlurElement }) => {
+}> = ({ post, gridAreaIndex, isAtFront }) => {
     const { title, titleCardBg, subTitle } = post;
 
     const [wheelDirection] = useMouseWheelDirection();
@@ -233,23 +231,23 @@ const SingleCardImage: FC<{
             {/* Title: */}
             <h6
                 className={classNames(
-                    'absolute top-[--card-titles-inset-padding] z-10 mx-auto text-center',
-                    'before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:bg-[--color-primary-inactive-cat-bg]',
-                    isAtFront ? 'w-full opacity-100' : 'size-0 opacity-0',
+                    'absolute left-1/2 top-[2%] z-10 max-w-[84%] -translate-x-1/2 items-center justify-center text-center text-theme-secondary-lighter',
+                    'before:absolute before:left-[-15%] before:-z-10 before:h-full before:w-[130%] before:bg-theme-primary-darker/90 before:pl-[10%] before:[clip-path:polygon(0_50%,6px_0,calc(100%-6px)_0,100%_50%,calc(100%-6px)_100%,6px_100%)]',
+                    isAtFront ? 'flex w-fit' : 'hidden size-0',
                 )}
             >
                 {title}
             </h6>
 
-            <MotionBlurImage isAtFront={isAtFront} imgUrl={titleCardBg} altText={title} blurElementRef={motionBlurElement} />
+            <img className='size-full object-cover object-center' src={titleCardBg} alt={title} />
 
             {/* Subtitle: */}
             {subTitle && (
                 <div
                     className={classNames(
-                        'absolute bottom-[--card-titles-inset-padding] mx-auto text-center text-sm',
-                        'before:absolute before:left-0 before:-z-10 before:mx-auto before:size-full before:bg-[--color-primary-inactive-cat-bg]',
-                        isAtFront ? 'w-full opacity-100' : 'size-0 opacity-0',
+                        'absolute bottom-[2%] left-1/2 z-10 max-w-[84%] -translate-x-1/2 items-center justify-center text-nowrap text-center text-sm text-theme-secondary-lighter',
+                        'before:absolute before:left-[-5%] before:-z-10 before:h-full before:w-[110%] before:bg-theme-primary/70 before:pl-[10%] before:[clip-path:polygon(0_50%,5px_0,calc(100%-5px)_0,100%_50%,calc(100%-5px)_100%,5px_100%)]',
+                        isAtFront ? 'flex w-fit' : 'hidden size-0',
                     )}
                 >
                     <Markdown>{subTitle}</Markdown>
