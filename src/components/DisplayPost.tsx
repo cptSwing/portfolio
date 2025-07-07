@@ -31,7 +31,7 @@ const DisplayPost = () => {
     }, [catId, postId]);
 
     const [activePost_Memo, postIds_Memo] = activeData_Memo;
-    const { title, subTitle, /* toolsUsed, */ showCases, textBlocks, codeLink, date, id } = activePost_Memo ?? {};
+    const { title, subTitle, /* toolsUsed, */ showCases, textBlocks, date, id } = activePost_Memo ?? {};
 
     const filteredImages_Memo = useMemo(
         () =>
@@ -63,15 +63,15 @@ const DisplayPost = () => {
         [filteredImages_Memo],
     );
 
-    return postIds_Memo ? (
-        <div className='bg-theme-text-background text-theme-text absolute left-0 top-0 size-full skew-x-[--clip-shape-skew-angle-post] py-[--post-close-button-height] transition-[clip-path] delay-[--wipe-delay] duration-[--clip-shape-animation-duration] clip-inset-r-[--wipe-clip-inset]'>
-            <header className='pointer-events-none absolute left-0 right-0 top-0 z-10 mx-auto flex skew-x-[calc(var(--clip-shape-skew-angle)*-1)] items-start justify-center text-center'>
+    return activePost_Memo ? (
+        <div className='absolute left-0 top-0 size-full bg-theme-text-background px-[9%] pb-4 pt-12 text-theme-text transition-[clip-path] delay-[--wipe-delay] duration-[--clip-shape-animation-duration]'>
+            <header className='pointer-events-none absolute -top-5 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center'>
                 {/* Floating Title: */}
-                <h2 className='text-theme-text before:bg-theme-secondary/75 select-none px-[--post-close-button-height] text-[length:--post-close-button-height] drop-shadow-lg before:absolute before:left-0 before:top-0 before:-z-10 before:h-full before:w-full before:clip-inset-t-1/3'>
+                <h2 className='select-none px-4 text-3xl text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary before:clip-inset-t-[30%]'>
                     {title}
                 </h2>
 
-                <nav className='pointer-events-auto absolute right-[calc(100%-var(--clip-shape-width-post-right)+var(--anim-inner-margin))] flex origin-left'>
+                <nav className='pointer-events-auto absolute right-0 flex'>
                     {/* Previous Post */}
                     <button>
                         <Link
@@ -82,7 +82,7 @@ const DisplayPost = () => {
                             })()}
                         >
                             <ChevronLeftIcon
-                                className='h-[--post-close-button-height] scale-75 cursor-pointer stroke-green-800 opacity-50 transition-[stroke,opacity] duration-75 hover-active:stroke-green-700 hover-active:opacity-100' /* stroke-[--color-bars-no-post] */
+                                className='h-6 scale-75 cursor-pointer stroke-green-400 opacity-50 transition-[stroke,opacity] duration-75 hover-active:stroke-green-700 hover-active:opacity-100' /* stroke-[--color-bars-no-post] */
                             />
                         </Link>
                     </button>
@@ -97,7 +97,7 @@ const DisplayPost = () => {
                             })()}
                         >
                             <ChevronRightIcon
-                                className='h-[--post-close-button-height] scale-75 cursor-pointer stroke-green-800 opacity-50 transition-[stroke,opacity] duration-75 hover-active:stroke-green-700 hover-active:opacity-100' /* stroke-[--color-bars-no-post] */
+                                className='h-6 scale-75 cursor-pointer stroke-green-400 opacity-50 transition-[stroke,opacity] duration-75 hover-active:stroke-green-700 hover-active:opacity-100' /* stroke-[--color-bars-no-post] */
                             />
                         </Link>
                     </button>
@@ -105,52 +105,49 @@ const DisplayPost = () => {
                     {/* Close */}
                     <button>
                         <Link to={`/${catId}`}>
-                            <XMarkIcon className='h-[--post-close-button-height] cursor-pointer stroke-green-800 transition-[stroke] duration-75 hover-active:stroke-green-700' />
+                            <XMarkIcon className='h-6 cursor-pointer stroke-green-400 transition-[stroke] duration-75 hover-active:stroke-green-700' />
                         </Link>
                     </button>
                 </nav>
             </header>
 
-            <main className='scroll-gutter-both flex max-h-full origin-center flex-col overflow-y-scroll px-[--anim-inner-margin] duration-300 scrollbar-thin'>
+            <main className='scroll-gutter-both flex h-full origin-center flex-col overflow-y-scroll pl-[2%] pr-[3%] duration-300 scrollbar-thin'>
                 {textBlocks ? (
-                    // Skew Wrapper for skewed scroll-bar  [-webkit-font-smoothing:subpixel-antialiased]
-                    <div className='origin-center' /*   */>
-                        <div className='flex flex-col px-3 sm:py-6 xl:py-8'>
-                            {/* (Sub-)Header, date, "Built with" */}
-                            <h4 className='h-fit leading-none'>
-                                <span className='text-left'>{subTitle}</span>
-                                <span className='text-right text-[--bg-color] no-underline'>
-                                    {day && `${day}.`}
-                                    {month && `${month}.`}
-                                    {year && `${year}`}
-                                </span>
-                            </h4>
+                    <div className='flex flex-col'>
+                        {/* (Sub-)Header, date, "Built with" */}
+                        <h4 className='h-fit leading-none'>
+                            <span className='text-left'>{subTitle}</span>
+                            <span className='text-right text-[--bg-color] no-underline'>
+                                {day && `${day}.`}
+                                {month && `${month}.`}
+                                {year && `${year}`}
+                            </span>
+                        </h4>
 
-                            {/* Text/Image Blocks */}
-                            {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
-                                const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
-                                return (
-                                    <TextImageBlock
-                                        key={`${idx}-${useShowCaseIndex}`}
-                                        text={text}
-                                        blockIndex={idx}
-                                        showCase={showCase}
-                                        lightboxCallback={() => typeof useShowCaseIndex === 'number' && setLightBoxSlide_Cb(useShowCaseIndex)}
-                                    />
-                                );
-                            })}
+                        {/* Text/Image Blocks */}
+                        {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
+                            const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
+                            return (
+                                <TextImageBlock
+                                    key={`${idx}-${useShowCaseIndex}`}
+                                    text={text}
+                                    blockIndex={idx}
+                                    showCase={showCase}
+                                    lightboxCallback={() => typeof useShowCaseIndex === 'number' && setLightBoxSlide_Cb(useShowCaseIndex)}
+                                />
+                            );
+                        })}
 
-                            {/* Gallery below text */}
-                            {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
+                        {/* Gallery below text */}
+                        {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
 
-                            <Lightbox
-                                open={Number.isInteger(lightboxTo)}
-                                index={lightboxTo ?? 0}
-                                close={() => setLightboxTo(null)}
-                                slides={filteredImages_Memo}
-                                plugins={[Captions]}
-                            />
-                        </div>
+                        <Lightbox
+                            open={Number.isInteger(lightboxTo)}
+                            index={lightboxTo ?? 0}
+                            close={() => setLightboxTo(null)}
+                            slides={filteredImages_Memo}
+                            plugins={[Captions]}
+                        />
                     </div>
                 ) : (
                     <></>

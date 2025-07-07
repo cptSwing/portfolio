@@ -41,11 +41,7 @@ const Category = () => {
         <>
             <Flipper
                 element={'nav'}
-                className={
-                    '[--card-titles-inset-padding:theme(spacing.2)] [--clip-shape-main-padding-left:calc(var(--clip-shape-main-padding-right)*1.5)] [--clip-shape-main-padding-right:calc(var(--anim-inner-margin)*1.25)]' +
-                    ' ' +
-                    'postcards-grid-template absolute left-0 top-0 grid size-full origin-center transform grid-cols-[repeat(6,minmax(0,1fr))_theme(spacing.2)] grid-rows-8 gap-[--clip-shape-main-padding-left] overflow-hidden bg-theme-primary/50 bg-opacity-50 pb-[calc((var(--anim-overall-width)/100)*12)] pl-[--clip-shape-main-padding-left] pr-[--clip-shape-main-padding-right] pt-[calc((var(--anim-overall-width)/100)*11)] backdrop-blur-sm transition-[transform,padding,clip-path] delay-[calc(var(--clip-shape-animation-duration)/2-var(--wipe-delay))] duration-[--clip-shape-animation-duration] clip-inset-l-[calc(100%-var(--wipe-clip-inset))]'
-                }
+                className='postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[repeat(8,minmax(0,1fr))_1vh] gap-[2vh] overflow-hidden px-[8vh] py-[4vh] transition-transform' /* bg-theme-primary/10 */
                 flipKey={cardAnimationIndex}
                 spring={{ stiffness: 600, damping: 40 }}
             >
@@ -63,15 +59,15 @@ const Category = () => {
                     ))}
 
                 {/* Progress Bar */}
-                <div className='flex flex-col items-end justify-between gap-y-2 [grid-area:tracker]'>
+                <div className='mx-auto flex w-[91.34%] items-center justify-between gap-x-2 [grid-area:tracker]'>
                     {categoryData_Memo &&
                         categoryData_Memo.posts.map((post, idx) => {
                             return (
                                 <div
                                     key={`${post.id}_${idx}`}
                                     className={classNames(
-                                        'relative w-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',
-                                        'before:absolute before:-left-1 before:h-full before:w-[calc(100%+theme(spacing.2))]',
+                                        'relative h-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',
+                                        'before:absolute before:-left-1 before:h-[calc(100%+theme(spacing.2))] before:w-full',
                                         idx === cardAnimationIndex - 1
                                             ? 'bg-theme-primary-lighter before:cursor-default'
                                             : 'bg-black/15 before:cursor-pointer hover-active:bg-theme-primary hover-active:opacity-50',

@@ -21,7 +21,7 @@ const debug = true;
 
 const HexagonTiles = () => {
     const { catId, postId } = useParams();
-    const [[expansionState, formerExpansionState], setExpansionState] = useState<[NavigationExpansionState, NavigationExpansionState]>(['home', 'home']);
+    const [[expansionState, _formerExpansionState], setExpansionState] = useState<[NavigationExpansionState, NavigationExpansionState]>(['home', 'home']);
     const [hoverState, setHoverState] = useState<MenuLinks | null>(null);
 
     useLayoutEffect(() => {
@@ -40,18 +40,12 @@ const HexagonTiles = () => {
     return (
         <svg
             className={classNames(
-                '[--hex-gradient-color-1:theme(colors.theme.primary)] [--hex-gradient-color-2:theme(colors.theme.secondary)]',
-                'pointer-events-none absolute left-0 right-0 top-[--flat-hex-margin-top] z-10 mx-auto h-[--flat-hex-height] w-[--anim-overall-width] overflow-visible transition-transform delay-100 duration-1000',
+                '[--hex-gradient-color-1:theme(colors.theme.primary)] [--hex-gradient-color-2:theme(colors.theme.primary-darker)]',
+                'pointer-events-none absolute top-[--flat-hex-margin-top] z-10 size-full overflow-visible transition-transform delay-100 duration-500',
                 // '[&_.left-class]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.left-class]:has-[.left-class:hover]:scale-[0.85] [&_.left-class]:has-[.right:hover]:scale-95',
                 // '[&_.right]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.right]:has-[.left-class:hover]:scale-95 [&_.right]:has-[.right:hover]:scale-[0.85]',
-                hoverState === 'code' ? 'rotate-[60deg]' : hoverState === '3d' ? 'rotate-[-60deg]' : hoverState === 'log' ? 'rotate-[180deg]' : ':rotate-0',
-                expansionState === 'home'
-                    ? ''
-                    : expansionState === 'category'
-                      ? 'duration-0' /* [&_.left-class]:-translate-x-1/4 */
-                      : expansionState === 'post'
-                        ? ''
-                        : '',
+                hoverState === 'code' ? 'rotate-[60deg]' : hoverState === '3d' ? 'rotate-[-60deg]' : hoverState === 'log' ? 'rotate-[180deg]' : 'rotate-0',
+                expansionState === 'home' ? '' : expansionState === 'category' ? '' /* [&_.left-class]:-translate-x-1/4 */ : 'stroke-theme-text-background',
             )}
             viewBox={`0 0 ${totalWidthAtCenter} ${totalHeight}`}
             style={
@@ -83,11 +77,22 @@ const HexagonTiles = () => {
                             `}
                 />
 
-                <linearGradient id='myGradient' x1='0%' y1='0%' x2='0%' y2='100%'>
+                <linearGradient id='myGradient' x1='0%' y1='100%' x2='0%' y2='0%'>
                     <stop offset='0%' stopColor='var(--hex-gradient-color-1)' />
                     <stop offset='100%' stopColor='var(--hex-gradient-color-2)' />
                 </linearGradient>
             </defs>
+
+            {/* <use
+                id='bg-hex'
+                x={200 - hexHalfWidth}
+                y={173.2 - hexHalfHeight}
+                href='#flat-top-hex'
+                className={classNames(
+                    'origin-center fill-none transition-[transform,fill] duration-1000 [animation-duration:2s]',
+                    expansionState === 'home' ? '' : expansionState === 'category' ? 'animate-scale-hex-bg' : 'animate-scale-hex-bg',
+                )}
+            /> */}
 
             <Hexagons expansionState={expansionState} setHoverState={setHoverState} />
         </svg>
@@ -128,7 +133,7 @@ const Hexagons: FC<{
                                 y={0}
                                 className={classNames(
                                     '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
-                                    'left-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 fill-theme-primary-darker drop-shadow-omni-md transition-[transform,fill,clip-path] delay-300 duration-1000 hover-active:fill-theme-primary hover-active:delay-0 hover-active:duration-500',
+                                    'left-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 fill-theme-primary drop-shadow-omni-md transition-[transform,fill,clip-path] delay-300 duration-500 hover-active:fill-theme-primary hover-active:delay-0 hover-active:duration-500',
                                     isHalf ? 'clip-inset-t-1/2' : 'clip-inset-0',
                                 )}
                                 href='#flat-top-hex'
@@ -141,7 +146,7 @@ const Hexagons: FC<{
                                     y={hexHalfHeight}
                                     textAnchor='middle'
                                     alignmentBaseline='central'
-                                    className='origin-[12.5%_12.5%] translate-x-0 text-2xs [--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]'
+                                    className='origin-[12.5%_12.5%] translate-x-0 stroke-none text-2xs [--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]'
                                     style={cssVariables}
                                 >
                                     row: {i} col: {j}
@@ -158,10 +163,12 @@ const Hexagons: FC<{
                                 to={`/${url!}`}
                                 className={classNames(
                                     '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
-                                    'link-class group block origin-[12.5%_12.5%] translate-x-0 no-underline transition-transform duration-1000',
+                                    'group block origin-[12.5%_12.5%] translate-x-0 stroke-none no-underline transition-transform duration-1000',
+                                    `link-class link-class-${title}`,
                                     isHalf ? 'clip-inset-t-1/2' : 'clip-inset-0',
                                 )}
                                 style={cssVariables}
+                                onMouseEnter={() => setHoverState(expansionState === 'home' ? title! : null)}
                             >
                                 <use
                                     id={`hex-link-${title}`}
@@ -169,14 +176,13 @@ const Hexagons: FC<{
                                     x={0}
                                     y={0}
                                     className='pointer-events-auto origin-[12.5%_12.5%] fill-[url(#myGradient)] transition-[fill] group-hover-active:scale-110 group-hover-active:fill-theme-primary'
-                                    onMouseEnter={() => setHoverState(expansionState === 'home' ? title! : null)}
                                 />
                                 <text
                                     x={hexHalfWidth}
                                     y={hexHalfHeight}
                                     textAnchor='middle'
                                     alignmentBaseline='central'
-                                    className='text pointer-events-none origin-[12.5%_12.5%] select-none fill-red-500 text-[40px] font-bold tracking-tight group-hover-active:scale-110'
+                                    className='text pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary text-[40px] font-bold tracking-tight group-hover-active:scale-110'
                                 >
                                     {title}
                                 </text>

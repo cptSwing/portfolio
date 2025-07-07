@@ -126,8 +126,6 @@ const SingleCardImage: FC<{
 
         let axis;
 
-        let borderRadius = '3rem';
-
         switch (gridAreaIndex) {
             case 0:
                 axis = 'horizontal';
@@ -135,8 +133,6 @@ const SingleCardImage: FC<{
                 fillModeBefore = 'forwards';
                 opacBefore = wheelDirection === 'up' ? 0 : 1;
                 opacAfter = wheelDirection === 'up' ? 1 : 0;
-
-                borderRadius = '1rem';
 
                 break;
             case 1:
@@ -146,26 +142,22 @@ const SingleCardImage: FC<{
 
                 opacBefore = wheelDirection === 'up' ? 1 : -1;
                 opacAfter = wheelDirection === 'up' ? 0 : 0;
-                borderRadius = '1.05rem';
 
                 break;
             case 2:
                 axis = 'vertical';
                 opacBefore = wheelDirection === 'up' ? 1 : 0;
                 opacAfter = wheelDirection === 'up' ? 0 : -1;
-                borderRadius = '2.5rem';
                 break;
             case 3:
                 axis = 'vertical';
                 opacBefore = wheelDirection === 'up' ? 1 : 0;
                 opacAfter = wheelDirection === 'up' ? 0 : -1;
-                borderRadius = '2.5rem';
                 break;
             case 4:
                 axis = wheelDirection === 'up' ? 'horizontal' : 'vertical';
                 opacBefore = wheelDirection === 'up' ? 1 : 0;
                 opacAfter = wheelDirection === 'up' ? 0 : -1;
-                borderRadius = '2.75rem';
 
                 break;
             case 5:
@@ -176,7 +168,6 @@ const SingleCardImage: FC<{
 
                 fillModeBefore = 'forwards';
                 fillModeAfter = 'forwards';
-                borderRadius = '2.75rem';
 
                 break;
             case 6:
@@ -186,14 +177,12 @@ const SingleCardImage: FC<{
                 fillModeAfter = 'forwards';
                 opacBefore = wheelDirection === 'up' ? 1 : -1;
                 opacAfter = wheelDirection === 'up' ? -1 : 0;
-                borderRadius = '3rem';
 
                 break;
 
             default:
                 // < 0
                 axis = 'horizontal';
-                borderRadius = '0.85rem';
                 break;
         }
 
@@ -208,7 +197,6 @@ const SingleCardImage: FC<{
             directionFillModeAfter: fillModeAfter,
             opacityBefore,
             opacityAfter,
-            borderRadius,
         };
 
         return values;
@@ -221,7 +209,7 @@ const SingleCardImage: FC<{
             className={classNames(
                 '[--card-image-anim-duration:calc(var(--clip-shape-animation-duration)/1.5)] [--card-image-anim-hover-duration:100ms]',
 
-                'relative z-0 size-full overflow-hidden !rounded-tl-sm transition-[transform,border-radius]',
+                'relative z-0 size-full overflow-hidden transition-[transform] [clip-path:polygon(0_10%,4.33%_0,95.67%_0,100%_10%,100%_90%,95.67%_100%,4.33%_100%,0_90%)]',
 
                 'hover-active:before:opacity-0 hover-active:before:transition-opacity hover-active:before:duration-[--card-image-anim-hover-duration] hover-active:after:opacity-0 hover-active:after:transition-opacity hover-active:after:duration-[--card-image-anim-hover-duration]',
 
@@ -239,7 +227,6 @@ const SingleCardImage: FC<{
                     '--card-image-swipe-direction-fill-mode-after': dynamicStyleValues_Memo.directionFillModeAfter,
                     '--card-image-swipe-opacity-before': dynamicStyleValues_Memo.opacityBefore,
                     '--card-image-swipe-opacity-after': dynamicStyleValues_Memo.opacityAfter,
-                    'borderRadius': dynamicStyleValues_Memo.borderRadius,
                 } as CSSProperties
             }
         >
