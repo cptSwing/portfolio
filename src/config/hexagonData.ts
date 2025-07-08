@@ -45,7 +45,7 @@ const allOffsets = Array.from({ length: 9 }).map((_, rowIndex) =>
     Array.from({ length: rowIndex % 2 === 0 ? 3 : 4 }).map((_, colIndex) => getOffsetsAndScale(colIndex, rowIndex)),
 );
 
-const hexShape: ((Record<NavigationExpansionState, HexagonData> & HexagonLink) | null)[][] = [
+const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<NavigationExpansionState, HexagonData> & HexagonLink) | null)[][] = [
     // 0
     [
         null,
@@ -59,22 +59,22 @@ const hexShape: ((Record<NavigationExpansionState, HexagonData> & HexagonLink) |
         {
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
             category: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
-            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 2.2, y: 3.375 } },
-            title: '<',
+            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 2.2, y: 4.15 } },
+            title: '&lt;',
             target: () => store_setPostNavState('prev'),
         },
         {
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
             category: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
-            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 5.9, y: 1 } },
-            title: 'x',
+            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 5.9, y: 1.75 } },
+            title: '&#10005;',
             target: () => store_setPostNavState('close'),
         },
         {
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
             category: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
-            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 9.6, y: 3.375 } },
-            title: '>',
+            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 9.6, y: 4.15 } },
+            title: '&gt;',
             target: () => store_setPostNavState('next'),
         },
     ],
