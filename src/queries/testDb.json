@@ -159,7 +159,7 @@
             {
                 "id": 3,
                 "title": "Brotherland",
-                "subTitle": "Interviews and portraits of ex \"contract workers\" in post-GDR east Germany",
+                "subTitle": "The lives of \"contract workers\" in the former GDR",
                 "titleCardBg": "/images/brotherland/brotherland_small.jpg",
                 "date": "2023-06",
                 "codeLink": {
@@ -206,7 +206,7 @@
             {
                 "id": 4,
                 "title": "Scrollmersives",
-                "subTitle": "Scroll through various 3D experiences",
+                "subTitle": "Scroll through 3D experiences",
                 "titleCardBg": "/images/scrollmersives/scrollmersives_featured.jpg",
                 "date": "2022",
                 "toolsUsed": ["three.js", "3ds Max"],

@@ -93,7 +93,7 @@ const DisplayPost = () => {
                 </h2>
             </header>
 
-            <main className='scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pl-[2%] pr-[3%] scrollbar-thin'>
+            <main className='scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pr-[1.5%] scrollbar-thin'>
                 {/* (Sub-)Header, date, "Built with"  */}
                 <h4 className='leading-none'>
                     <span className='text-left'>{subTitle}</span>

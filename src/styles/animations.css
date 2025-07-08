@@ -147,14 +147,3 @@
         clip-path: inset(0 100% 0 0);
     }
 }
-
-@keyframes move-up-settle-down {
-    0%,
-    100% {
-        scale: 1;
-    }
-    2%,
-    80% {
-        scale: 1.025;
-    }
-}
