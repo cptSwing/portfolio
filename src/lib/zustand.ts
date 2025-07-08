@@ -6,6 +6,9 @@ export const useZustand = create<ZustandStore>()(
     immer((set, get) => ({
         values: {
             theme: 'pink',
+            expansionState: 'home',
+            menuState: null,
+            postNavState: null,
             debug: {
                 applyFlipMotionBlur: false,
                 applyTransformMatrixFix: true,
@@ -33,6 +36,27 @@ export const useZustand = create<ZustandStore>()(
 
                 set((draftState) => {
                     draftState.values.theme = next;
+                });
+            },
+
+            store_setExpansionState: (newState) => {
+                set((draftState) => {
+                    draftState.values.expansionState = newState;
+                });
+            },
+
+            store_toggleMenu: (menuName) => {
+                const current = get().values.menuState;
+                const newValue = menuName === current ? null : menuName;
+
+                set((draftState) => {
+                    draftState.values.menuState = newValue;
+                });
+            },
+
+            store_setPostNavState: (postNavState) => {
+                set((draftState) => {
+                    draftState.values.postNavState = postNavState;
                 });
             },
 

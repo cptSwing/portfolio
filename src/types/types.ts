@@ -3,6 +3,9 @@ import { MENU_CATEGORY, ToolsUrls } from './enums';
 export type ZustandStore = {
     values: {
         theme: 'yellow' | 'pink' | 'orange' | 'bw';
+        expansionState: NavigationExpansionState;
+        menuState: 'settings' | 'socials' | null;
+        postNavState: 'next' | 'prev' | 'close' | null;
         debug: {
             applyFlipMotionBlur: boolean;
             applyTransformMatrixFix: boolean;
@@ -10,9 +13,14 @@ export type ZustandStore = {
     };
     methods: {
         store_cycleTheme: () => void;
+        store_setExpansionState: (expansionState: NavigationExpansionState) => void;
+        store_toggleMenu: (menuName: 'settings' | 'socials' | null) => void;
+        store_setPostNavState: (postNavState: 'next' | 'prev' | 'close' | null) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
 };
+
+export type NavigationExpansionState = 'home' | 'category' | 'post';
 
 type Post_ShowCase_Base = {
     caption?: string;
@@ -56,6 +64,6 @@ export type DataBase = {
     };
 };
 
-export type MenuLinks = 'code' | '3d' | 'log' | 'mnu' | 'soc';
+export type MenuLinks = 'code' | '3d' | 'log' | 'set' | 'soc' | '<' | '>' | 'x';
 export type HexagonData = { position: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; offsets?: { x: number; y: number } };
-export type HexagonLink = { title?: MenuLinks; url?: string };
+export type HexagonLink = { title?: MenuLinks; target?: string | (() => void) };

@@ -1,29 +1,32 @@
-import { CSSProperties, MutableRefObject, useLayoutEffect, useState } from 'react';
+import { CSSProperties, MutableRefObject, useLayoutEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Category from '../components/Category';
 import classNames from '../lib/classNames';
 import useOutsideClick from '../hooks/useOutsideClick';
 import DisplayPost from '../components/DisplayPost';
 import HexagonTiles from '../components/HexagonTiles';
+import MenuToggle from '../components/MenuToggle';
+import { useZustand } from '../lib/zustand';
+
+const store_setExpansionState = useZustand.getState().methods.store_setExpansionState;
 
 const Main = () => {
     const { catId, postId } = useParams();
-    const _navigate = useNavigate();
-
-    const [[expansionState, _formerExpansionState], setExpansionState] = useState<[NavigationExpansionState, NavigationExpansionState]>(['home', 'home']);
+    const expansionState = useZustand((store) => store.values.expansionState);
 
     useLayoutEffect(() => {
         if (catId) {
             if (postId) {
-                setExpansionState(([stale, _obsolete]) => ['post', stale]);
+                store_setExpansionState('post');
             } else {
-                setExpansionState(([stale, _obsolete]) => ['category', stale]);
+                store_setExpansionState('category');
             }
         } else {
-            setExpansionState(([stale, _obsolete]) => ['home', stale]);
+            store_setExpansionState('home');
         }
     }, [catId, postId]);
 
+    const _navigate = useNavigate();
     /* Contract <Category> when click outside */
     const _ref = useOutsideClick(() => {
         if (!postId) {
@@ -37,7 +40,7 @@ const Main = () => {
         <div
             className={classNames(
                 'relative aspect-[1/0.866] font-miriam-libre text-theme-text transition-[width,height] duration-500 scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary-darker)]',
-                expansionState === 'home' ? 'h-[70vh]' : expansionState === 'category' ? 'h-[85vh]' /* [&_.left-class]:-translate-x-1/4 */ : 'h-[90vh]',
+                expansionState === 'home' ? 'h-[70vh]' : expansionState === 'category' ? 'h-[85vh]' /* [&_.left-class]:-translate-x-1/4 */ : 'h-[95vh]',
             )}
             style={
                 {
@@ -65,10 +68,10 @@ const Main = () => {
                 <Category />
                 <DisplayPost />
             </div>
+
+            <MenuToggle />
         </div>
     );
 };
 
 export default Main;
-
-export type NavigationExpansionState = 'home' | 'category' | 'post';
