@@ -1,7 +1,6 @@
-import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import remarkBreaks from 'remark-breaks';
 import Lightbox, { SlideImage } from 'yet-another-react-lightbox';
 import { Captions } from 'yet-another-react-lightbox/plugins';
@@ -10,28 +9,50 @@ import classNames from '../lib/classNames';
 import parseDateString from '../lib/parseDateString';
 import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../types/types';
 import testDb from '../queries/testDb.json';
+import { useZustand } from '../lib/zustand';
 
 const testDbTyped = testDb as DataBase;
+const store_setPostNavState = useZustand.getState().methods.store_setPostNavState;
 
 const DisplayPost = () => {
     const { catId, postId } = useParams();
+    const navigate = useNavigate();
 
-    const activeData_Memo = useMemo(() => {
-        const activeCat = Object.values(testDbTyped).find((category) => category.id.toString() === catId);
-        let activePost: Post | undefined = undefined;
-        const postIds = activeCat?.posts.map((post) => {
-            if (post.id.toString() === postId) {
-                activePost = post;
-            }
+    const activeCategory_Memo = useMemo(() => Object.values(testDbTyped).find((category) => category.id.toString() === catId), [catId]);
+    const activePost_Memo = useMemo(
+        () => activeCategory_Memo && activeCategory_Memo.posts.find((post) => post.id.toString() === postId),
+        [activeCategory_Memo, postId],
+    );
 
-            return post.id;
-        });
-
-        return [activePost, postIds] as [Post | undefined, number[]];
-    }, [catId, postId]);
-
-    const [activePost_Memo, postIds_Memo] = activeData_Memo;
     const { title, subTitle, /* toolsUsed, */ showCases, textBlocks, date, id } = activePost_Memo ?? {};
+
+    /* Nav menu logic */
+    const postNavState = useZustand((store) => store.values.postNavState);
+    useEffect(() => {
+        if (postNavState && typeof id === 'number' && activeCategory_Memo?.posts.length) {
+            const postIds = activeCategory_Memo.posts.map((post) => post.id);
+            const currentIndex = postIds.findIndex((val) => val === id);
+            const previousInArray = postIds[currentIndex - 1 >= 0 ? currentIndex - 1 : postIds.length - 1];
+            const nextInArray = postIds[currentIndex + 1 < postIds.length ? currentIndex + 1 : 0];
+
+            switch (postNavState) {
+                case 'prev':
+                    store_setPostNavState(null);
+                    navigate(`/${catId}/${previousInArray}`);
+                    break;
+                case 'next':
+                    store_setPostNavState(null);
+                    navigate(`/${catId}/${nextInArray}`);
+                    break;
+                case 'close':
+                    store_setPostNavState(null);
+                    navigate(`/${catId}`);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [activeCategory_Memo, catId, id, navigate, postNavState]);
 
     const filteredImages_Memo = useMemo(
         () =>
@@ -63,67 +84,28 @@ const DisplayPost = () => {
         [filteredImages_Memo],
     );
 
-    return postIds_Memo ? (
+    return (
         <div className='absolute left-0 top-0 size-full bg-theme-text-background px-[6%] pb-4 pt-12 text-theme-text transition-[clip-path] clip-inset-r-[--clip-post] clip-inset-t-[-10%]'>
-            <header className='pointer-events-none absolute -top-5 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center'>
+            <header className='pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center'>
                 {/* Floating Title: */}
-                <h2 className='select-none px-4 text-3xl text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary before:clip-inset-t-[30%]'>
+                <h2 className='select-none px-4 text-3xl leading-none text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary before:clip-inset-t-[25%]'>
                     {title}
                 </h2>
-
-                <nav className='pointer-events-auto absolute right-0 flex'>
-                    {/* Previous Post */}
-                    <button>
-                        <Link
-                            to={(() => {
-                                const currentIndex = postIds_Memo.findIndex((val) => val === id);
-                                const previousInArray = postIds_Memo[currentIndex - 1 >= 0 ? currentIndex - 1 : postIds_Memo.length - 1];
-                                return `/${catId}/${previousInArray}`;
-                            })()}
-                        >
-                            <ChevronLeftIcon
-                                className='h-6 scale-75 cursor-pointer stroke-green-400 opacity-50 transition-[stroke,opacity] duration-75 hover-active:stroke-green-700 hover-active:opacity-100' /* stroke-[--color-bars-no-post] */
-                            />
-                        </Link>
-                    </button>
-
-                    {/* Next Post */}
-                    <button>
-                        <Link
-                            to={(() => {
-                                const currentIndex = postIds_Memo.findIndex((val) => val === id);
-                                const nextInArray = postIds_Memo[currentIndex + 1 < postIds_Memo.length ? currentIndex + 1 : 0];
-                                return `/${catId}/${nextInArray}`;
-                            })()}
-                        >
-                            <ChevronRightIcon
-                                className='h-6 scale-75 cursor-pointer stroke-green-400 opacity-50 transition-[stroke,opacity] duration-75 hover-active:stroke-green-700 hover-active:opacity-100' /* stroke-[--color-bars-no-post] */
-                            />
-                        </Link>
-                    </button>
-
-                    {/* Close */}
-                    <button>
-                        <Link to={`/${catId}`}>
-                            <XMarkIcon className='h-6 cursor-pointer stroke-green-400 transition-[stroke] duration-75 hover-active:stroke-green-700' />
-                        </Link>
-                    </button>
-                </nav>
             </header>
 
-            <main className='scroll-gutter-both flex h-full origin-center flex-col overflow-y-scroll pl-[2%] pr-[3%] duration-300 scrollbar-thin'>
-                {textBlocks ? (
-                    <div className='flex flex-col'>
-                        {/* (Sub-)Header, date, "Built with" */}
-                        <h4 className='h-fit leading-none'>
-                            <span className='text-left'>{subTitle}</span>
-                            <span className='text-right text-[--bg-color] no-underline'>
-                                {day && `${day}.`}
-                                {month && `${month}.`}
-                                {year && `${year}`}
-                            </span>
-                        </h4>
+            <main className='scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pl-[2%] pr-[3%] scrollbar-thin'>
+                {/* (Sub-)Header, date, "Built with"  */}
+                <h4 className='leading-none'>
+                    <span className='text-left'>{subTitle}</span>
+                    <span className='text-right text-theme-primary-darker no-underline'>
+                        {day && `${day}.`}
+                        {month && `${month}.`}
+                        {year && `${year}`}
+                    </span>
+                </h4>
 
+                {textBlocks && (
+                    <>
                         {/* Text/Image Blocks */}
                         {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
                             const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
@@ -137,25 +119,20 @@ const DisplayPost = () => {
                                 />
                             );
                         })}
-
                         {/* Gallery below text */}
                         {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
-
-                        <Lightbox
-                            open={Number.isInteger(lightboxTo)}
-                            index={lightboxTo ?? 0}
-                            close={() => setLightboxTo(null)}
-                            slides={filteredImages_Memo}
-                            plugins={[Captions]}
-                        />
-                    </div>
-                ) : (
-                    <></>
+                    </>
                 )}
+
+                <Lightbox
+                    open={Number.isInteger(lightboxTo)}
+                    index={lightboxTo ?? 0}
+                    close={() => setLightboxTo(null)}
+                    slides={filteredImages_Memo}
+                    plugins={[Captions]}
+                />
             </main>
         </div>
-    ) : (
-        <></>
     );
 };
 
@@ -174,10 +151,9 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
             {showCase && (
                 <div
                     className={classNames(
-                        'group relative aspect-video max-h-64 w-2/5 cursor-pointer overflow-hidden bg-cover bg-top drop-shadow-md',
+                        'group relative aspect-video max-h-64 w-2/5 cursor-pointer drop-shadow-md',
                         isBlockIndexEven ? 'float-right ml-4' : 'float-left mr-4',
                     )}
-                    onClick={() => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback()}
                 >
                     {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
                         <iframe
@@ -185,13 +161,17 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                             title='YouTube video player'
                             referrerPolicy='strict-origin-when-cross-origin'
                             allowFullScreen
-                            className='size-full skew-x-[calc(var(--clip-shape-skew-angle)*-1)] scale-105'
+                            className='size-full'
                         />
                     ) : (
-                        <img src={(showCase as Post_ShowCase_Image).imgUrl} className='skew-x-[calc(var(--clip-shape-skew-angle)*-1)] scale-105' />
+                        <img
+                            src={(showCase as Post_ShowCase_Image).imgUrl}
+                            className='size-full object-cover'
+                            onClick={() => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback()}
+                        />
                     )}
                     {showCase.caption && (
-                        <div className='absolute bottom-0 max-h-full w-full bg-neutral-500/60 px-4 text-center text-sm text-neutral-50 transition-[background-color,max-height,padding] mask-edges-x-2/5 group-hover-active:bg-neutral-500 group-hover-active:py-2 sm:max-h-0 sm:pb-0 sm:pt-2 sm:group-hover-active:max-h-full'>
+                        <div className='pointer-events-none absolute bottom-0 max-h-full w-full bg-neutral-400 p-1 text-center text-xs text-neutral-50 opacity-30 transition-[background-color,max-height,padding] group-hover-active:opacity-100'>
                             {showCase.caption}
                         </div>
                     )}
@@ -203,9 +183,9 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                     p: ({ children }) => (
                         <p
                             className={classNames(
-                                'text-pretty text-justify leading-tight tracking-wide sm:leading-normal' /* skew-x-[calc(var(--clip-shape-skew-angle)*-1)] */,
+                                'text-pretty text-justify text-sm leading-relaxed tracking-normal',
                                 blockIndex === 0
-                                    ? 'first-of-type:first-letter:-ml-0.5 first-of-type:first-letter:align-text-bottom first-of-type:first-letter:text-[2rem] first-of-type:first-letter:leading-[1.84rem] first-of-type:first-letter:text-red-800'
+                                    ? 'first-of-type:first-letter:-ml-0.5 first-of-type:first-letter:align-text-bottom first-of-type:first-letter:text-[1.5rem] first-of-type:first-letter:leading-[1.475rem] first-of-type:first-letter:text-red-800'
                                     : '',
                             )}
                         >

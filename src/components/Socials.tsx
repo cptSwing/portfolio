@@ -1,7 +1,7 @@
 import { ChevronDoubleRightIcon, EnvelopeIcon, UserIcon } from '@heroicons/react/24/outline';
 import { Link, useParams } from 'react-router-dom';
-import GithubLogo from '../assets/svg/logo_github.svg?react';
-import LinkedInLogo from '../assets/svg/logo_linkedin.svg?react';
+import GithubLogo from '../../public/svg/logo_github.svg?react';
+import LinkedInLogo from '../../public/svg/logo_linkedin.svg?react';
 import classNames from '../lib/classNames';
 import { useBreakpoint } from '../hooks/useBreakPoint';
 import { useState } from 'react';

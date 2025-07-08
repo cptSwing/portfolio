@@ -1,10 +1,10 @@
-import { CSSProperties, FC, useLayoutEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { CSSProperties, FC, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import classNames from '../lib/classNames';
 import configJSON from '../config/config.json';
-import { NavigationExpansionState } from '../views/Main';
-import { HexagonData, HexagonLink, MenuLinks } from '../types/types';
+import { HexagonData, HexagonLink, MenuLinks, NavigationExpansionState } from '../types/types';
 import hexShape, { staticValues } from '../config/hexagonData';
+import { useZustand } from '../lib/zustand';
 
 const {
     hexMenu: { columns, strokeWidth, scaleUp },
@@ -20,22 +20,8 @@ const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scale
 const debug = false;
 
 const HexagonTiles = () => {
-    const { catId, postId } = useParams();
-    const [[expansionState, _formerExpansionState], setExpansionState] = useState<[NavigationExpansionState, NavigationExpansionState]>(['home', 'home']);
+    const expansionState = useZustand((store) => store.values.expansionState);
     const [hoverState, setHoverState] = useState<MenuLinks | null>(null);
-
-    useLayoutEffect(() => {
-        if (catId) {
-            if (postId) {
-                setExpansionState(([stale, _obsolete]) => ['post', stale]);
-            } else {
-                setExpansionState(([stale, _obsolete]) => ['category', stale]);
-            }
-            setHoverState(null);
-        } else {
-            setExpansionState(([stale, _obsolete]) => ['home', stale]);
-        }
-    }, [catId, postId]);
 
     return (
         <svg
@@ -44,12 +30,21 @@ const HexagonTiles = () => {
                 'pointer-events-none absolute top-[--flat-hex-margin-top] z-10 size-full overflow-visible transition-transform delay-100 duration-500',
                 // '[&_.left-class]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.left-class]:has-[.left-class:hover]:scale-[0.85] [&_.left-class]:has-[.right:hover]:scale-95',
                 // '[&_.right]:has-[.class-code:hover,.class-3d:hover,.class-log:hover]:pointer-events-none [&_.right]:has-[.left-class:hover]:scale-95 [&_.right]:has-[.right:hover]:scale-[0.85]',
-                hoverState === 'code' ? 'rotate-[60deg]' : hoverState === '3d' ? 'rotate-[-60deg]' : hoverState === 'log' ? 'rotate-[180deg]' : 'rotate-0',
+
                 expansionState === 'home'
-                    ? 'fill-theme-primary stroke-theme-text-background/0 *:drop-shadow-omni-md'
+                    ? 'fill-theme-primary stroke-theme-text-background/0' +
+                          ' ' +
+                          (hoverState === 'code'
+                              ? 'rotate-[60deg]'
+                              : hoverState === '3d'
+                                ? 'rotate-[-60deg]'
+                                : hoverState === 'log'
+                                  ? 'rotate-[180deg]'
+                                  : 'rotate-0')
                     : expansionState === 'category'
-                      ? 'fill-theme-primary stroke-theme-text-background/0 *:drop-shadow-none' /* [&_.left-class]:-translate-x-1/4 */
-                      : 'fill-theme-text-background stroke-theme-text-background/100 *:drop-shadow-none',
+                      ? 'fill-theme-primary stroke-theme-text-background/0' /* [&_.left-class]:-translate-x-1/4 */
+                      : /* post */
+                        'fill-theme-text-background stroke-theme-text-background/100',
             )}
             viewBox={`0 0 ${totalWidthAtCenter} ${totalHeight}`}
             style={
@@ -98,7 +93,7 @@ const HexagonTiles = () => {
                 )}
             /> */}
 
-            <Hexagons expansionState={expansionState} setHoverState={setHoverState} />
+            <Hexagons setHoverState={setHoverState} />
         </svg>
     );
 };
@@ -106,9 +101,10 @@ const HexagonTiles = () => {
 export default HexagonTiles;
 
 const Hexagons: FC<{
-    expansionState: NavigationExpansionState;
     setHoverState: React.Dispatch<React.SetStateAction<MenuLinks | null>>;
-}> = ({ expansionState, setHoverState }) => {
+}> = ({ setHoverState }) => {
+    const expansionState = useZustand((store) => store.values.expansionState);
+
     const hexagons_Memo = useMemo(() => {
         const hexArray = [];
         const hexLinkArray = [];
@@ -161,19 +157,21 @@ const Hexagons: FC<{
                     }
                     // Add links
                     else if (shapeData.title) {
-                        const { title, url } = shapeData;
+                        const { title, target } = shapeData;
+
                         hexLinkArray.push(
                             <Link
                                 key={`hex-link-${title}`}
-                                to={`/${url!}`}
+                                to={typeof target === 'string' ? `/${target!}` : ''}
                                 className={classNames(
                                     '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
-                                    'group block origin-[12.5%_12.5%] translate-x-0 stroke-none no-underline transition-transform duration-1000',
+                                    'group block origin-[12.5%_12.5%] translate-x-0 stroke-none no-underline drop-shadow-omni-md transition-transform duration-1000',
                                     `link-class link-class-${title}`,
                                     isHalf ? 'clip-inset-t-1/2' : 'clip-inset-0',
                                 )}
                                 style={cssVariables}
                                 onMouseEnter={() => setHoverState(expansionState === 'home' ? title! : null)}
+                                onClick={typeof target === 'function' ? () => target!() : undefined}
                             >
                                 <use
                                     id={`hex-link-${title}`}
@@ -204,7 +202,7 @@ const Hexagons: FC<{
         return hexArray;
     }, [expansionState, setHoverState]);
 
-    return <>{hexagons_Memo.map((useElem) => useElem)}</>;
+    return hexagons_Memo.map((useElem) => useElem);
 };
 
 /**

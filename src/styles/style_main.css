@@ -97,16 +97,12 @@
     @apply flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background;
 }
 
+.hexagon-clip {
+    aspect-ratio: 1 / 0.866; /* cos(30deg) */
+    clip-path: polygon(50% -50%, 100% 50%, 50% 150%, 0 50%);
+}
+
 .postcards-grid-template {
-    /* grid-template-areas:
-        'area6  area6   area6   area6   rest   area1   tracker'
-        'area6  area6   area6   area6   area2   area2   tracker'
-        'area6  area6   area6   area6   area2   area2   tracker'
-        'area6  area6   area6   area6   area3   area3   tracker'
-        'area6  area6   area6   area6   area3   area3   tracker'
-        'area5  area5   area5   area4   area4   area4   tracker'
-        'area5  area5   area5   area4   area4   area4   tracker'
-        'area5  area5   area5   area4   area4   area4   tracker'; */
     grid-template-areas:
         'area6  area6   area6   area6   rest   area1 '
         'area6  area6   area6   area6   area2   area2 '
