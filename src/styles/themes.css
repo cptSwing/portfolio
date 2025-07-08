@@ -1,11 +1,11 @@
 body[data-theme='yellow'] {
     --theme-primary: 254 210 67; /* 500 */
-    --theme-primary-lighter: 255 237 180 /* 100 */;
-    --theme-primary-darker: 146 113 3 /* 900 */;
+    --theme-primary-lighter: 255 227 136 /* 200 */;
+    --theme-primary-darker: 189 147 10 /* 800 */;
 
-    --theme-secondary: 42 166 182;
-    --theme-secondary-lighter: 146 232 244;
-    --theme-secondary-darker: 3 72 81;
+    --theme-secondary: 42 166 182; /* 500 */
+    --theme-secondary-lighter: 113 218 232; /* 200 */
+    --theme-secondary-darker: 8 98 110 /* 800 */;
 
     --theme-accent: 204 55 35; /* 500 */
     --theme-text: 239 239 239;
@@ -15,12 +15,12 @@ body[data-theme='yellow'] {
 
 body[data-theme='pink'] {
     --theme-primary: 191 91 148; /* 500 */
-    --theme-primary-lighter: 252 227 241 /* 100 */;
-    --theme-primary-darker: 79 18 53 /* 900 */;
+    --theme-primary-lighter: 240 191 219 /* 200 */;
+    --theme-primary-darker: 114 33 79 /* 800 */;
 
-    --theme-secondary: 214 198 133;
-    --theme-secondary-lighter: 254 251 239;
-    --theme-secondary-darker: 75 67 35;
+    --theme-secondary: 214 198 133; /* 500 */
+    --theme-secondary-lighter: 251 246 222; /* 200 */
+    --theme-secondary-darker: 119 107 55; /* 800 */
 
     --theme-accent: 20 157 242; /* 500 */
     --theme-text: 64 64 64;
@@ -30,12 +30,12 @@ body[data-theme='pink'] {
 
 body[data-theme='orange'] {
     --theme-primary: 215 203 181; /* 500 */
-    --theme-primary-lighter: 249 239 223 /* 100 */;
-    --theme-primary-darker: 132 116 88 /* 900 */;
+    --theme-primary-lighter: 242 232 213 /* 200 */;
+    --theme-primary-darker: 171 155 126 /* 800 */;
 
     --theme-secondary: 211 99 16;
-    --theme-secondary-lighter: 247 143 65;
-    --theme-secondary-darker: 92 40 1;
+    --theme-secondary-lighter: 244 132 48; /* 200 */
+    --theme-secondary-darker: 128 55 1; /* 800 */
 
     --theme-accent: 88 180 96; /* 500 */
     --theme-text: 243 251 248;

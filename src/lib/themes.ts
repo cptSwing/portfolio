@@ -41,6 +41,7 @@ export default [
         '--theme-bg-base': '#171717',
     },
 
+    // pink
     {
         '--theme-accent-950': '#010F18',
         '--theme-accent-900': '#03304B',
