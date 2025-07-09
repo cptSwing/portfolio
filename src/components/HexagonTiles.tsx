@@ -194,13 +194,13 @@ const AnimatedHexagon: FC<{
                 className={classNames(
                     'left-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 transition-[fill,transform,stroke,stroke-width] [--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
                     expansionState === 'home'
-                        ? 'fill-theme-primary/50 stroke-theme-text-background/25 hover-active:fill-theme-primary/55'
+                        ? 'fill-theme-primary/50 stroke-theme-primary-lighter/25 hover-active:fill-theme-primary/55 hover-active:stroke-theme-primary-lighter/20'
                         : expansionState === 'category'
-                          ? 'fill-theme-primary stroke-theme-text-background/25 hover-active:fill-theme-primary/95'
+                          ? 'fill-theme-primary/95 stroke-theme-primary-lighter/50 hover-active:fill-theme-primary hover-active:stroke-theme-primary-lighter/45'
                           : /* post */
-                            'fill-theme-text-background stroke-theme-text-background/100',
+                            'fill-theme-text-background stroke-theme-text-background',
                 )}
-                style={{ ...cssVariables_Memo, transitionDuration: `100ms, ${svgTransitionDurationMs}ms` }}
+                style={{ ...cssVariables_Memo, transitionDuration: `50ms, ${svgTransitionDurationMs}ms` }}
                 strokeWidth={expansionState === 'home' ? `${8 / scale}` : expansionState === 'category' ? `${4 / scale}` : /* post */ '50'}
                 clipPath={`url(#${keyId}-clip)`}
             >

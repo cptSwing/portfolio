@@ -202,7 +202,8 @@ const SingleCardImage: FC<{
     }, [gridAreaIndex, wheelDirection]);
 
     return (
-        <div className='group relative size-full bg-theme-primary-darker [clip-path:polygon(0_10%,4.33%_0,95.67%_0,100%_10%,100%_90%,95.67%_100%,4.33%_100%,0_90%)] hover-active:scale-[1.025]'>
+        // Mock border by clipping parent and child, and insetting child
+        <div className='group relative size-full bg-theme-secondary-lighter/90 [clip-path:polygon(0_10%,4.33%_0,95.67%_0,100%_10%,100%_90%,95.67%_100%,4.33%_100%,0_90%)] hover-active:scale-[1.025]'>
             <div
                 // change key to re-render, meaning the animation runs once each keyswitch
                 key={gridAreaIndex + ''}
