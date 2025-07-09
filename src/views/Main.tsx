@@ -39,8 +39,8 @@ const Main = () => {
     return (
         <div
             className={classNames(
-                'relative aspect-[1/0.866] font-miriam-libre text-theme-text transition-[width,height] duration-500 scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary-darker)]',
-                expansionState === 'home' ? 'h-[70vh]' : expansionState === 'category' ? 'h-[85vh]' /* [&_.left-class]:-translate-x-1/4 */ : 'h-[95vh]',
+                'relative aspect-[1/0.866] font-miriam-libre text-theme-text transition-[width,height] scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary-darker)]',
+                expansionState === 'category' ? 'w-[45vw]' : expansionState === 'post' ? 'w-[55vw]' : 'w-[50vw]',
             )}
             style={
                 {

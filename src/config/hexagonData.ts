@@ -52,7 +52,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[0][1], rotation: 0, isHalf: true, scale: 1 },
             category: { position: allOffsets[1][0], rotation: 120, isHalf: true, scale: 0.9, offsets: { x: 2.325, y: -5.65 } },
-            post: { position: allOffsets[0][0], rotation: -30, isHalf: false, scale: 0.35, offsets: { x: -12.5, y: 4 } },
+            post: { position: allOffsets[1][0], rotation: 30, isHalf: true, scale: 0, offsets: { x: 2.325, y: -5.65 } },
         },
 
         // DisplayPost controls, only available in that component
@@ -85,12 +85,12 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[1][1], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[1][0], rotation: -60, isHalf: true, scale: 0.975, offsets: { x: 0.1, y: 0.3 } },
-            post: { position: allOffsets[1][0], rotation: 90, isHalf: false, scale: 0, offsets: { x: 5, y: 6.25 } },
+            post: { position: allOffsets[1][0], rotation: 90, isHalf: true, scale: 0, offsets: { x: 0.1, y: 0.3 } },
         },
         {
             home: { position: allOffsets[1][2], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[3][0], rotation: 120, isHalf: false, scale: 1 },
-            post: { position: allOffsets[1][3], rotation: 30, isHalf: false, scale: 0, offsets: { x: -5.5, y: 6.25 } },
+            post: { position: allOffsets[7][3], rotation: 30, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: 8.5 } }, // Bottom right
         },
         null,
     ],
@@ -100,17 +100,17 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[2][0], rotation: -60, isHalf: true, scale: 1 },
             category: { position: allOffsets[0][2], rotation: -120, isHalf: true, scale: 0.8, offsets: { x: 20.35, y: 6.75 } },
-            post: { position: allOffsets[2][0], rotation: 30, isHalf: false, scale: 0, offsets: { x: -15.5, y: 6.25 } },
+            post: { position: allOffsets[0][2], rotation: 30, isHalf: true, scale: 0, offsets: { x: 20.35, y: 6.75 } },
         },
         {
             home: { position: allOffsets[2][1], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[2][0], rotation: 120, isHalf: false, scale: 0.5, offsets: { x: -28.35, y: -6.4 } },
-            post: { position: allOffsets[0][2], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 4 } },
+            post: { position: allOffsets[0][2], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 4 } }, // Top right
         },
         {
             home: { position: allOffsets[2][2], rotation: 60, isHalf: true, scale: 1 },
             category: { position: allOffsets[1][3], rotation: -60, isHalf: true, scale: 0.65, offsets: { x: -1.9, y: 4.55 } },
-            post: { position: allOffsets[2][2], rotation: 90, isHalf: false, scale: 0, offsets: { x: 15.5, y: 6.25 } },
+            post: { position: allOffsets[1][3], rotation: 90, isHalf: true, scale: 0, offsets: { x: -1.9, y: 4.55 } },
         },
     ],
 
@@ -139,14 +139,14 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[4][0], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[0][0], rotation: 60, isHalf: true, scale: 0.35, offsets: { x: -8.15, y: 0.25 } },
-            post: { position: allOffsets[4][0], rotation: -90, isHalf: false, scale: 0, offsets: { x: -13.75, y: 6.25 } },
+            post: { position: allOffsets[0][0], rotation: -90, isHalf: true, scale: 0, offsets: { x: -8.15, y: 0.25 } },
         },
 
         // Three on top of each other at center
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[0][2], rotation: 180, isHalf: false, scale: 0.5, offsets: { x: 11.75, y: 3.1 } },
-            post: { position: allOffsets[3][0], rotation: 30, isHalf: false, scale: 0, offsets: { x: 5, y: 6.25 } },
+            post: { position: allOffsets[0][2], rotation: 30, isHalf: false, scale: 0, offsets: { x: 11.75, y: 3.1 } },
         },
         {
             home: { position: allOffsets[4][1], rotation: -90, isHalf: false, scale: 0.25, offsets: { x: -3.125, y: 0 } },
@@ -166,7 +166,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[4][2], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[3][3], rotation: 120, isHalf: false, scale: 1, offsets: { x: 0, y: 0.2 } },
-            post: { position: allOffsets[4][2], rotation: -90, isHalf: false, scale: 0, offsets: { x: 13.75, y: 6.25 } },
+            post: { position: allOffsets[7][0], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 6.25, y: 8.5 } }, // Bottom Left
         },
     ],
 
@@ -176,12 +176,12 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[5][1], rotation: 60, isHalf: false, scale: 1 },
             category: { position: allOffsets[4][0], rotation: 0, isHalf: true, scale: 0.35, offsets: { x: -26.75, y: 0.35 } },
-            post: { position: allOffsets[5][0], rotation: 150, isHalf: false, scale: 0, offsets: { x: 5, y: 6.25 } },
+            post: { position: allOffsets[4][0], rotation: 150, isHalf: true, scale: 0, offsets: { x: -26.75, y: 0.35 } },
         },
         {
             home: { position: allOffsets[5][2], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[4][2], rotation: 60, isHalf: false, scale: 0.55, offsets: { x: 16, y: 7.1 } },
-            post: { position: allOffsets[5][3], rotation: -90, isHalf: false, scale: 0, offsets: { x: -5, y: 6.25 } },
+            post: { position: allOffsets[4][2], rotation: -90, isHalf: false, scale: 0, offsets: { x: 16, y: 7.1 } },
         },
         null,
     ],
@@ -191,7 +191,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[6][0], rotation: -120, isHalf: true, scale: 1 },
             category: { position: allOffsets[4][0], rotation: 60, isHalf: true, scale: 0.47, offsets: { x: -28.5, y: -6.1 } },
-            post: { position: allOffsets[6][0], rotation: -90, isHalf: false, scale: 0, offsets: { x: -13.75, y: 6.25 } },
+            post: { position: allOffsets[4][0], rotation: -90, isHalf: true, scale: 0, offsets: { x: -28.5, y: -6.1 } },
         },
         {
             home: { position: allOffsets[6][1], rotation: 180, isHalf: false, scale: 1 },
@@ -203,7 +203,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[6][2], rotation: 120, isHalf: true, scale: 1 },
             category: { position: allOffsets[5][3], rotation: 120, isHalf: true, scale: 0.55, offsets: { x: -2.75, y: 8.5 } },
-            post: { position: allOffsets[6][2], rotation: -90, isHalf: false, scale: 0, offsets: { x: 13.75, y: 6.25 } },
+            post: { position: allOffsets[5][3], rotation: -90, isHalf: true, scale: 0, offsets: { x: -2.75, y: 8.5 } },
         },
     ],
 
@@ -213,12 +213,12 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[7][1], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[5][0], rotation: -60, isHalf: false, scale: 0.75, offsets: { x: 1.45, y: -3 } },
-            post: { position: allOffsets[7][0], rotation: 90, isHalf: false, scale: 0.35, offsets: { x: 6.25, y: 8.5 } },
+            post: { position: allOffsets[5][0], rotation: 60, isHalf: false, scale: 0, offsets: { x: 1.45, y: -3 } },
         },
         {
             home: { position: allOffsets[7][2], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[6][2], rotation: -60, isHalf: true, scale: 1, offsets: { x: 13.9, y: 1.5 } },
-            post: { position: allOffsets[7][3], rotation: 30, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: 8.5 } },
+            post: { position: allOffsets[6][2], rotation: 30, isHalf: true, scale: 0, offsets: { x: 13.9, y: 1.5 } },
         },
         null,
     ],
@@ -229,7 +229,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[8][1], rotation: 180, isHalf: true, scale: 1 },
             category: { position: allOffsets[8][2], rotation: 0, isHalf: false, scale: 0.6, offsets: { x: 11.25, y: -3.35 } },
-            post: { position: allOffsets[3][3], rotation: -90, isHalf: false, scale: 0, offsets: { x: -5, y: 6.25 } },
+            post: { position: allOffsets[0][0], rotation: -30, isHalf: false, scale: 0.35, offsets: { x: -12.5, y: 4 } },
         },
         null,
     ],
