@@ -26,20 +26,7 @@ export const staticValues = {
 const hexHeightAspectRatio = staticValues.heightAspectRatio.flatTop;
 const hexHeight = hexHeightAspectRatio * scaleUp;
 const hexHalfHeight = hexHeight / 2;
-
-const getOffsetsAndScale = (column: number, row: number) => {
-    const shouldAdjustGlobalXOffset = ((columns * 3 - 1) / 2) % 2 == 0;
-    const xOffsetPerRow = row % 2 === 0 ? (shouldAdjustGlobalXOffset ? 0 : 0.75) : shouldAdjustGlobalXOffset ? -0.75 : 0;
-    const xValue = (1.5 * column + xOffsetPerRow) * scaleUp;
-
-    const yOffsetPerRow = hexHalfHeight;
-    const yValue = (row - 1) * yOffsetPerRow;
-
-    return {
-        x: xValue,
-        y: yValue,
-    };
-};
+const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 
 const allOffsets = Array.from({ length: 9 }).map((_, rowIndex) =>
     Array.from({ length: rowIndex % 2 === 0 ? 3 : 4 }).map((_, colIndex) => getOffsetsAndScale(colIndex, rowIndex)),
@@ -58,7 +45,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         // DisplayPost controls, only available in that component
         {
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
-            category: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
+            category: { position: allOffsets[1][2], rotation: 0, isHalf: false, scale: 0 },
             post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 2.2, y: 4.15 } },
             title: '&lt;',
             target: () => store_setPostNavState('prev'),
@@ -72,7 +59,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         },
         {
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
-            category: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
+            category: { position: allOffsets[3][3], rotation: 0, isHalf: false, scale: 0 },
             post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 9.6, y: 4.15 } },
             title: '&gt;',
             target: () => store_setPostNavState('next'),
@@ -122,14 +109,14 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.8, offsets: { x: 1.35, y: -6.5 } }, // "Active" position
             post: { position: allOffsets[5][0], rotation: 0, isHalf: false, scale: 0.45, offsets: { x: 6.25, y: 1 } },
             title: 'code',
-            target: '0',
+            target: '/0',
         },
         {
             home: { position: allOffsets[3][2], rotation: 60, isHalf: false, scale: 1 },
             category: { position: allOffsets[8][0], rotation: 0, isHalf: false, scale: 0.5, offsets: { x: -15.575, y: -2.5 } },
             post: { position: allOffsets[6][0], rotation: 0, isHalf: false, scale: 0.45, offsets: { x: -12.5, y: 0 } },
             title: '3d',
-            target: '1',
+            target: '/1',
         },
         null,
     ],
@@ -142,31 +129,42 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             post: { position: allOffsets[0][0], rotation: -90, isHalf: true, scale: 0, offsets: { x: -8.15, y: 0.25 } },
         },
 
-        // Three on top of each other at center
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[0][2], rotation: 180, isHalf: false, scale: 0.5, offsets: { x: 11.75, y: 3.1 } },
             post: { position: allOffsets[0][2], rotation: 30, isHalf: false, scale: 0, offsets: { x: 11.75, y: 3.1 } },
-        },
-        {
-            home: { position: allOffsets[4][1], rotation: -90, isHalf: false, scale: 0.25, offsets: { x: -3.125, y: 0 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6, y: 1.9 } },
-            post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 0 } },
-            title: 'set',
-            target: () => store_toggleMenu('settings'),
-        },
-        {
-            home: { position: allOffsets[4][1], rotation: 90, isHalf: false, scale: 0.25, offsets: { x: 3.125, y: 0 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: -12.5, y: 6.125 } },
-            post: { position: allOffsets[7][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: -3.5 } },
-            title: 'soc',
-            target: () => store_toggleMenu('socials'),
         },
 
         {
             home: { position: allOffsets[4][2], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[3][3], rotation: 120, isHalf: false, scale: 1, offsets: { x: 0, y: 0.2 } },
             post: { position: allOffsets[7][0], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 6.25, y: 8.5 } }, // Bottom Left
+        },
+
+        // Three on top of each other at center
+        {
+            home: { position: allOffsets[4][1], rotation: 180, isHalf: false, scale: 0, offsets: { x: -3.125, y: 0 } },
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: -1.2, y: -2.7 } },
+            post: { position: allOffsets[5][3], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -6.25, y: 4.8 } },
+            title: 'home',
+            svg: '/svg/HomeOutline.svg',
+            target: '/',
+        },
+        {
+            home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -3.125, y: 0 } },
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6, y: 1.9 } },
+            post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 0 } },
+            title: 'settings',
+            svg: '/svg/Cog6ToothOutline.svg',
+            target: () => store_toggleMenu('settings'),
+        },
+        {
+            home: { position: allOffsets[4][1], rotation: 90, isHalf: false, scale: 0.25, offsets: { x: 3.125, y: 0 } },
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: -12.5, y: 6.125 } },
+            post: { position: allOffsets[7][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: -3.5 } },
+            title: 'socials',
+            svg: '/svg/UserIconOutline.svg',
+            target: () => store_toggleMenu('socials'),
         },
     ],
 
@@ -198,7 +196,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.37, offsets: { x: 11.3, y: 3.575 } },
             post: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.45, offsets: { x: 6.25, y: -1 } },
             title: 'log',
-            target: '3',
+            target: '/3',
         },
         {
             home: { position: allOffsets[6][2], rotation: 120, isHalf: true, scale: 1 },
@@ -235,4 +233,103 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     ],
 ];
 
-export default hexShape;
+export const nonLinkHexes: Record<NavigationExpansionState, HexagonData>[] = [];
+export const linkHexes: (Record<NavigationExpansionState, HexagonData> & HexagonLink)[] = [];
+
+hexShape.forEach((hexRow) =>
+    hexRow.forEach((hexCol) => {
+        if (hexCol) {
+            if ((hexCol as Record<NavigationExpansionState, HexagonData> & HexagonLink).title) {
+                linkHexes.push(hexCol as Record<NavigationExpansionState, HexagonData> & HexagonLink);
+            } else {
+                nonLinkHexes.push(hexCol);
+            }
+        }
+    }),
+);
+
+export const roundedHexagonPath = getHexagonPathData(hexHalfWidth, 5);
+export const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, 5, true);
+
+/* Local functions */
+
+function getOffsetsAndScale(column: number, row: number) {
+    const shouldAdjustGlobalXOffset = ((columns * 3 - 1) / 2) % 2 == 0;
+    const xOffsetPerRow = row % 2 === 0 ? (shouldAdjustGlobalXOffset ? 0 : 0.75) : shouldAdjustGlobalXOffset ? -0.75 : 0;
+    const xValue = (1.5 * column + xOffsetPerRow) * scaleUp;
+
+    const yOffsetPerRow = hexHalfHeight;
+    const yValue = (row - 1) * yOffsetPerRow;
+
+    return {
+        x: xValue,
+        y: yValue,
+    };
+}
+
+function getHexagonPathData(sideLength = 1, cornerRadius = 8, isHalf = false) {
+    const points: { x: number; y: number }[] = [];
+    const moveZeroPoint = 180;
+    const centerX = sideLength;
+    const centerY = sideLength * staticValues.heightAspectRatio.flatTop;
+
+    for (let i = 0; i < 6; i++) {
+        const angle_deg = 60 * i + moveZeroPoint;
+        const x = centerX + sideLength * cos(angle_deg);
+        const y = centerY + sideLength * sin(angle_deg);
+        points.push({ x, y });
+    }
+
+    const cornerSinOffset = cornerRadius * sin(30);
+    const cornerCosOffset = cornerRadius * cos(30);
+
+    return isHalf
+        ? ` M ${points[0].x + cornerSinOffset},${points[0].y + cornerCosOffset}   \
+            Q ${points[0].x},${points[0].y} ${points[0].x + cornerSinOffset * 2},${points[0].y}   \
+            \
+            L ${points[1].x + cornerSinOffset},${points[0].y} \
+            Q ${points[1].x},${points[0].y} ${points[1].x + cornerSinOffset * 2},${points[0].y}   \
+            \
+            L ${points[2].x - cornerSinOffset * 2},${points[3].y} \
+            Q ${points[2].x},${points[3].y} ${points[2].x + cornerSinOffset},${points[3].y}   \
+            \
+            L ${points[3].x - cornerSinOffset * 2},${points[3].y} \
+            Q ${points[3].x},${points[0].y} ${points[3].x - cornerSinOffset},${points[3].y + cornerCosOffset} \
+            \
+            L ${points[4].x + cornerSinOffset},${points[4].y - cornerCosOffset}   \
+            Q ${points[4].x},${points[4].y} ${points[4].x - cornerSinOffset * 2},${points[4].y}   \
+            \
+            L ${points[5].x + cornerSinOffset * 2},${points[5].y} \
+            Q ${points[5].x},${points[5].y} ${points[5].x - cornerSinOffset},${points[5].y - cornerCosOffset} \
+            \
+            Z`
+        : ` M ${points[0].x + cornerSinOffset},${points[0].y + cornerCosOffset} \
+            Q ${points[0].x},${points[0].y} ${points[0].x + cornerSinOffset},${points[0].y - cornerCosOffset} \
+            \
+            L ${points[1].x - cornerSinOffset},${points[1].y + cornerCosOffset} \
+            Q ${points[1].x},${points[1].y} ${points[1].x + cornerSinOffset * 2},${points[1].y} \
+            \
+            L ${points[2].x - cornerSinOffset * 2},${points[2].y} \
+            Q ${points[2].x},${points[2].y} ${points[2].x + cornerSinOffset},${points[2].y + cornerCosOffset} \
+            \
+            L ${points[3].x - cornerSinOffset},${points[3].y - cornerCosOffset} \
+            Q ${points[3].x},${points[3].y} ${points[3].x - cornerSinOffset},${points[3].y + cornerCosOffset} \
+            \
+            L ${points[4].x + cornerSinOffset},${points[4].y - cornerCosOffset} \
+            Q ${points[4].x},${points[4].y} ${points[4].x - cornerSinOffset * 2},${points[4].y} \
+            \
+            L ${points[5].x + cornerSinOffset * 2},${points[5].y} \
+            Q ${points[5].x},${points[5].y} ${points[5].x - cornerSinOffset},${points[5].y - cornerCosOffset} \
+            \
+            Z`;
+
+    function degToRad(deg: number) {
+        return (Math.PI / 180) * deg;
+    }
+    function sin(deg: number) {
+        return Math.sin(degToRad(deg));
+    }
+    function cos(deg: number) {
+        return Math.cos(degToRad(deg));
+    }
+}

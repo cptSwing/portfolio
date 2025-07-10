@@ -1,4 +1,4 @@
-import { CSSProperties, MutableRefObject, useLayoutEffect } from 'react';
+import { MutableRefObject, useLayoutEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Category from '../components/Category';
 import classNames from '../lib/classNames';
@@ -39,19 +39,9 @@ const Main = () => {
     return (
         <div
             className={classNames(
-                'relative aspect-[1/0.866] font-miriam-libre text-theme-text transition-[width,height] scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary-darker)]',
+                'aspect-hex-flat relative font-miriam-libre text-theme-text transition-[width,height] scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary-darker)]',
                 expansionState === 'category' ? 'w-[45vw]' : expansionState === 'post' ? 'w-[55vw]' : 'w-[50vw]',
             )}
-            style={
-                {
-                    // Test
-                    '--flat-hex-outer-radius': 'calc(var(--anim-overall-width) / 2)',
-                    '--flat-hex-inner-radius': 'calc(var(--flat-hex-outer-radius) * sin(60deg))' /* r*sin60 */,
-                    '--flat-hex-margin-top': 'calc(var(--flat-hex-outer-radius) - var(--flat-hex-inner-radius))',
-                    '--flat-hex-margin-bottom': 'calc(100% - var(--flat-hex-margin-top))',
-                    '--flat-hex-height': 'calc(100% - 2 * var(--flat-hex-margin-top))',
-                } as CSSProperties
-            }
         >
             <HexagonTiles />
 

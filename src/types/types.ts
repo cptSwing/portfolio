@@ -64,6 +64,7 @@ export type DataBase = {
     };
 };
 
-export type MenuLinks = 'code' | '3d' | 'log' | 'set' | 'soc' | '&lt;' | '&gt;' | '&#10005;';
+export type MenuLinks = 'code' | '3d' | 'log' | 'settings' | 'socials' | 'home' | '&lt;' | '&gt;' | '&#10005;';
+export type NavLinks = Pick<MenuLinks, 'code' & 'log' & '3d'>;
 export type HexagonData = { position: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; offsets?: { x: number; y: number } };
-export type HexagonLink = { title: MenuLinks; target: string | (() => void) };
+export type HexagonLink = { title: MenuLinks; svg?: string; target: string | (() => void) };

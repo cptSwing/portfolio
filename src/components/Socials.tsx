@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 // TODO replace with useClickAway ?
 import useOutsideClick from '../hooks/useOutsideClick';
+import RoundedHexagonSVG from './RoundedHexagonSVG';
 
 const Socials = () => {
     const isDesktop = useBreakpoint('sm');
@@ -17,7 +18,7 @@ const Socials = () => {
         <nav
             ref={clickRef}
             className={classNames(
-                'fixed left-1/2 right-0 top-0 z-50 flex items-center justify-start gap-1 pl-0.5 pt-2',
+                'fixed left-1/2 right-0 top-0 z-50 flex items-center justify-start pl-0.5 pt-2',
                 mobileMenuIsOpen ? 'pointer-events-auto !fixed h-screen !w-fit flex-col !items-start bg-gray-500/95' : '',
             )}
         >
@@ -32,7 +33,7 @@ const Socials = () => {
 
             {/* Menu Icon */}
             <div
-                className={classNames('group flex items-center justify-center gap-1')}
+                className={classNames('group flex items-center justify-center')}
                 onClick={() => {
                     if (!isDesktop) {
                         setMobileMenuIsOpen(true);
@@ -46,34 +47,25 @@ const Socials = () => {
                     )}
                 />
 
-                <Link
-                    className={classNames(
-                        'aspect-square w-10 cursor-pointer rounded-sm bg-theme-secondary p-0.5 transition-[colors,width,padding] sm:block sm:group-hover:w-[1.75rem] sm:group-hover:p-1',
-                        mobileMenuIsOpen ? '!block !size-12 !p-2' : '',
-                    )}
-                    to='https://www.linkedin.com/in/jensbrandenburg'
-                >
-                    <div className='size-full bg-theme-primary [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%]' />
+                {/* Linkedin */}
+                <Link className={classNames('aspect-hex-flat relative w-12 translate-y-1/2 cursor-pointer')} to='https://www.linkedin.com/in/jensbrandenburg'>
+                    <RoundedHexagonSVG classNames='absolute left-0 top-0 fill-theme-secondary -z-50 h-auto' />
+                    <div className='size-full bg-theme-primary [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:55%]' />
                 </Link>
 
-                <Link
-                    className={classNames(
-                        'aspect-square w-10 cursor-pointer rounded-sm bg-theme-secondary p-0.5 transition-[colors,width,padding] sm:block sm:group-hover:w-[1.75rem] sm:group-hover:p-1',
-                        mobileMenuIsOpen ? '!block !size-12 !p-2' : '',
-                    )}
-                    to='https://github.com/cptSwing'
-                >
-                    <div className='size-full bg-theme-primary [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%]' />
+                {/* github */}
+                <Link className={classNames('aspect-hex-flat relative w-12 cursor-pointer')} to='https://github.com/cptSwing'>
+                    <RoundedHexagonSVG classNames='absolute left-0 top-0 fill-theme-secondary -z-50 h-auto' />
+                    <div className='size-full bg-theme-primary [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%]' />
                 </Link>
 
+                {/* email */}
                 <Link
-                    className={classNames(
-                        'hidden aspect-square w-10 cursor-pointer rounded-sm bg-theme-secondary p-0.5 transition-[colors,width,padding] active:*:stroke-[--theme-primary-400] sm:block sm:group-hover:w-[1.75rem] sm:group-hover:p-0.5 sm:hover:*:stroke-[--theme-primary-400]',
-                        mobileMenuIsOpen ? '!block !size-12 !p-2' : '',
-                    )}
+                    className={classNames('aspect-hex-flat relative flex w-12 translate-y-1/2 cursor-pointer items-center justify-center')}
                     to='mailto:jens@jbrandenburg.de'
                 >
-                    <EnvelopeIcon className='h-fit w-full max-w-20 stroke-theme-primary stroke-[length:2px]' />
+                    <RoundedHexagonSVG classNames='absolute left-0 top-0 fill-theme-secondary -z-50 h-auto' />
+                    <EnvelopeIcon className='w-2/3 stroke-theme-primary stroke-[length:2]' />
                 </Link>
 
                 <div className='peer hidden aspect-square w-0 cursor-pointer p-0 transition-[colors,width,padding] delay-[calc(var(--delay)/2)] sm:block sm:group-hover:w-6 sm:group-hover:delay-500'>
