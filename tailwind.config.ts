@@ -109,6 +109,9 @@ const tailWindTheme = {
     content: ['./index.html', './src/**/*.{js,ts,tsx}'],
     theme: {
         extend: {
+            aspectRatio: {
+                'hex-flat': '1 / 0.866',
+            },
             spacing: {
                 84: '21rem',
                 88: '22rem',
