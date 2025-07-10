@@ -17,8 +17,8 @@ const SwitchTheme = () => {
     }, [theme]);
 
     return (
-        <div className='group/brush hexagon-clip flex h-full cursor-pointer items-center justify-center bg-theme-secondary' onClick={() => store_cycleTheme()}>
-            <PaintBrushIcon className='h-3/4 stroke-theme-primary group-hover-active/brush:stroke-theme-primary-lighter' />
+        <div className='hexagon-clip group flex h-full cursor-pointer items-center justify-center bg-theme-secondary' onClick={() => store_cycleTheme()}>
+            <PaintBrushIcon className='h-3/4 stroke-theme-primary group-hover-active:stroke-theme-primary-lighter' />
         </div>
     );
 };
