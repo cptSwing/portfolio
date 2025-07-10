@@ -35,6 +35,7 @@ export default tsEslint.config(
             'no-console': 'warn',
             'no-unused-vars': 'off',
             'no-unused-expressions': 'off',
+            'no-unreachable': 'warn',
 
             '@typescript-eslint/no-unused-vars': [
                 'warn',
