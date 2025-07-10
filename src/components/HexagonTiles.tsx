@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, Fragment, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from '../lib/classNames';
 import configJSON from '../config/config.json';
@@ -18,21 +18,6 @@ const hexHeight = staticValues.heightAspectRatio.flatTop * scaleUp;
 const hexHalfHeight = hexHeight / 2;
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 const svgTransitionDurationMs = 500;
-
-const nonLinkHexes: Record<NavigationExpansionState, HexagonData>[] = [];
-const linkHexes: (Record<NavigationExpansionState, HexagonData> & HexagonLink)[] = [];
-
-hexShape.forEach((hexRow) =>
-    hexRow.forEach((hexCol) => {
-        if (hexCol) {
-            if ((hexCol as Record<NavigationExpansionState, HexagonData> & HexagonLink).title) {
-                linkHexes.push(hexCol as Record<NavigationExpansionState, HexagonData> & HexagonLink);
-            } else {
-                nonLinkHexes.push(hexCol);
-            }
-        }
-    }),
-);
 
 const HexagonTiles = () => {
     const expansionState = useZustand((store) => store.values.expansionState);
@@ -93,17 +78,6 @@ const HexagonTiles = () => {
                 </radialGradient>
             </defs>
 
-            {/* <use
-                id='bg-hex'
-                x={200 - hexHalfWidth}
-                y={173.2 - hexHalfHeight}
-                href='#flat-top-hex'
-                className={classNames(
-                    'origin-center fill-none transition-[transform,fill] duration-1000 [animation-duration:2s]',
-                    expansionState === 'home' ? '' : expansionState === 'category' ? 'animate-scale-hex-bg' : 'animate-scale-hex-bg',
-                )}
-            /> */}
-
             {nonLinkHexes.map((hexData, idx) => (
                 <AnimatedHexagon shapeData={hexData} expansionState={expansionState} arrayIndex={idx} />
             ))}
@@ -123,76 +97,29 @@ const HexagonTiles = () => {
 
 export default HexagonTiles;
 
-const polygonPoints = {
-    from: `
-            0,${0.433 * scaleUp}
-            ${0.25 * scaleUp},0
-            ${0.75 * scaleUp},0
-            ${1 * scaleUp},${0.433 * scaleUp}
-            ${0.75 * scaleUp},${0.866 * scaleUp}
-            ${0.25 * scaleUp},${0.866 * scaleUp}
-        `,
-    to: `
-            0,${0.433 * scaleUp}
-            ${0.1 * scaleUp},${0.433 * scaleUp}
-            ${0.9 * scaleUp},${0.433 * scaleUp}
-            ${1 * scaleUp},${0.433 * scaleUp}
-            ${0.75 * scaleUp},${0.866 * scaleUp}
-            ${0.25 * scaleUp},${0.866 * scaleUp}
-    `,
-};
-
 const AnimatedHexagon: FC<{
     shapeData: Record<NavigationExpansionState, HexagonData>;
     expansionState: NavigationExpansionState;
     arrayIndex: number;
 }> = ({ shapeData, expansionState, arrayIndex }) => {
-    const keyId = `hex-index-${arrayIndex}`;
-
     const localShapeData_Memo = useMemo(() => shapeData[expansionState], [expansionState, shapeData]);
     const { position, rotation, scale, isHalf, offsets } = localShapeData_Memo;
     const cssVariables_Memo = useMemo(() => calcCSSVariables(position, rotation, scale, offsets), [offsets, position, rotation, scale]);
+    const path_Memo = useMemo(() => (isHalf ? halfRoundedHexagonPath : roundedHexagonPath), [isHalf]);
 
-    const animPoly_Ref = useRef<SVGAnimateElement | null>(null);
-    const animClip_Ref = useRef<SVGAnimateElement | null>(null);
-
-    const [wasHalved, setWasHalved] = useState(false);
-    useEffect(() => {
-        if (expansionState !== 'post') {
-            if (isHalf) {
-                animPoly_Ref.current?.beginElement();
-                animClip_Ref.current?.beginElement();
-                setWasHalved(true);
-            } else if (wasHalved) {
-                animPoly_Ref.current?.beginElement();
-                animClip_Ref.current?.beginElement();
-                setWasHalved(false);
-            }
-        }
-    }, [isHalf, wasHalved, expansionState]);
+    const keyId = `hex-index-${arrayIndex}`;
 
     return (
-        <>
+        <Fragment key={keyId}>
             <clipPath id={`${keyId}-clip`}>
-                <polygon id={`${keyId}-clip-polygon`} points={polygonPoints.from}>
-                    <animate
-                        ref={animClip_Ref}
-                        attributeName='points'
-                        from={wasHalved ? polygonPoints.from : polygonPoints.to}
-                        to={wasHalved ? polygonPoints.to : polygonPoints.from}
-                        dur={`${svgTransitionDurationMs}ms`}
-                        begin='indefinite'
-                        fill='freeze'
-                    />
-                </polygon>
+                <path d={path_Memo} className='transition-[d]' style={{ transitionDuration: `${svgTransitionDurationMs}ms` }} />
             </clipPath>
 
-            <polygon
+            <path
                 id={keyId}
-                key={keyId}
-                points={polygonPoints.from}
+                d={path_Memo}
                 className={classNames(
-                    'left-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 transition-[fill,transform,stroke,stroke-width] [--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
+                    'left-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 transition-[fill,transform,stroke,stroke-width,d] delay-75 [--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
                     expansionState === 'home'
                         ? 'fill-theme-primary/50 stroke-theme-primary-lighter/25 hover-active:fill-theme-primary/55 hover-active:stroke-theme-primary-lighter/20'
                         : expansionState === 'category'
@@ -200,21 +127,14 @@ const AnimatedHexagon: FC<{
                           : /* post */
                             'fill-theme-text-background stroke-theme-text-background',
                 )}
-                style={{ ...cssVariables_Memo, transitionDuration: `50ms, ${svgTransitionDurationMs}ms` }}
+                style={{
+                    ...cssVariables_Memo,
+                    transitionDuration: `50ms, ${svgTransitionDurationMs}ms`,
+                }}
                 strokeWidth={expansionState === 'home' ? `${8 / scale}` : expansionState === 'category' ? `${4 / scale}` : /* post */ '50'}
                 clipPath={`url(#${keyId}-clip)`}
-            >
-                <animate
-                    ref={animPoly_Ref}
-                    attributeName='points'
-                    from={wasHalved ? polygonPoints.from : polygonPoints.to}
-                    to={wasHalved ? polygonPoints.to : polygonPoints.from}
-                    dur={`${svgTransitionDurationMs}ms`}
-                    begin='indefinite'
-                    fill='freeze'
-                />
-            </polygon>
-        </>
+            />
+        </Fragment>
     );
 };
 
@@ -268,8 +188,8 @@ const LinkHexagon: FC<{
                 `link-class link-class-${title}`,
             )}
         >
-            <polygon
-                points={polygonPoints.from}
+            <path
+                d={roundedHexagonPath}
                 className='peer pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[transform,fill,filter] duration-300 [filter:url(#light-inner)] hover-active:scale-110 hover-active:[filter:url(#lighter-inner)]' /* fill-[url(#linearGradient)] */
             />
             <text
@@ -284,7 +204,10 @@ const LinkHexagon: FC<{
     );
 };
 
-/* Local functions */
+/* Local Values */
+
+const nonLinkHexes: Record<NavigationExpansionState, HexagonData>[] = [];
+const linkHexes: (Record<NavigationExpansionState, HexagonData> & HexagonLink)[] = [];
 
 const calcCSSVariables = (
     position: { x: number; y: number },
@@ -301,3 +224,99 @@ const calcCSSVariables = (
         '--tw-rotate': `${rotation}deg`,
         '--hex-scale-stroked': (1 - strokeWidth) * scale,
     }) as CSSProperties;
+
+hexShape.forEach((hexRow) =>
+    hexRow.forEach((hexCol) => {
+        if (hexCol) {
+            if ((hexCol as Record<NavigationExpansionState, HexagonData> & HexagonLink).title) {
+                linkHexes.push(hexCol as Record<NavigationExpansionState, HexagonData> & HexagonLink);
+            } else {
+                nonLinkHexes.push(hexCol);
+            }
+        }
+    }),
+);
+
+const roundedHexagonPath = getHexagonPathData(hexHalfWidth, 5);
+const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, 5, true);
+
+/* Local functions */
+
+function getHexagonPathData(sideLength = 1, cornerRadius = 8, isHalf = false) {
+    const points: { x: number; y: number }[] = [];
+    const moveZeroPoint = 180;
+    const centerX = sideLength;
+    const centerY = sideLength * staticValues.heightAspectRatio.flatTop;
+
+    for (let i = 0; i < 6; i++) {
+        const angle_deg = 60 * i + moveZeroPoint;
+        const x = centerX + sideLength * cos(angle_deg);
+        const y = centerY + sideLength * sin(angle_deg);
+        points.push({ x, y });
+    }
+
+    const cornerSinOffset = cornerRadius * sin(30);
+    const cornerCosOffset = cornerRadius * cos(30);
+
+    return isHalf
+        ? `
+        M ${points[0].x + cornerSinOffset},${points[0].y + cornerCosOffset}
+        Q ${points[0].x},${points[0].y} ${points[0].x + cornerSinOffset * 2},${points[0].y}
+
+        L ${points[1].x + cornerSinOffset},${points[0].y}
+        Q ${points[1].x},${points[0].y} ${points[1].x + cornerSinOffset * 2},${points[0].y}
+        
+
+        L ${points[2].x - cornerSinOffset * 2},${points[3].y}
+        Q ${points[2].x},${points[3].y} ${points[2].x + cornerSinOffset},${points[3].y}
+        
+
+        L ${points[3].x - cornerSinOffset * 2},${points[3].y}
+        Q ${points[3].x},${points[0].y} ${points[3].x - cornerSinOffset},${points[3].y + cornerCosOffset}
+        
+        
+        L ${points[4].x + cornerSinOffset},${points[4].y - cornerCosOffset}
+        Q ${points[4].x},${points[4].y} ${points[4].x - cornerSinOffset * 2},${points[4].y}
+        
+        
+        L ${points[5].x + cornerSinOffset * 2},${points[5].y}
+        Q ${points[5].x},${points[5].y} ${points[5].x - cornerSinOffset},${points[5].y - cornerCosOffset}
+        
+        Z
+      `
+        : `
+        M ${points[0].x + cornerSinOffset},${points[0].y + cornerCosOffset}
+        Q ${points[0].x},${points[0].y} ${points[0].x + cornerSinOffset},${points[0].y - cornerCosOffset}
+
+        L ${points[1].x - cornerSinOffset},${points[1].y + cornerCosOffset}
+        Q ${points[1].x},${points[1].y} ${points[1].x + cornerSinOffset * 2},${points[1].y}
+        
+
+        L ${points[2].x - cornerSinOffset * 2},${points[2].y}
+        Q ${points[2].x},${points[2].y} ${points[2].x + cornerSinOffset},${points[2].y + cornerCosOffset}
+        
+
+        L ${points[3].x - cornerSinOffset},${points[3].y - cornerCosOffset}
+        Q ${points[3].x},${points[3].y} ${points[3].x - cornerSinOffset},${points[3].y + cornerCosOffset}
+        
+        
+        L ${points[4].x + cornerSinOffset},${points[4].y - cornerCosOffset}
+        Q ${points[4].x},${points[4].y} ${points[4].x - cornerSinOffset * 2},${points[4].y}
+        
+        
+        L ${points[5].x + cornerSinOffset * 2},${points[5].y}
+        Q ${points[5].x},${points[5].y} ${points[5].x - cornerSinOffset},${points[5].y - cornerCosOffset}
+        
+        Z
+      `;
+
+    function degToRad(deg: number) {
+        return (Math.PI / 180) * deg;
+    }
+    function sin(deg: number) {
+        return Math.sin(degToRad(deg));
+    }
+    function cos(deg: number) {
+        return Math.cos(degToRad(deg));
+    }
+}
