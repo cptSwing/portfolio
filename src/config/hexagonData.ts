@@ -147,15 +147,18 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: -1.2, y: -2.7 } },
             post: { position: allOffsets[5][3], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -6.25, y: 4.8 } },
             title: 'home',
-            svg: '/svg/HomeOutline.svg',
-            target: '/',
+            svgPath: '/svg/HomeOutline.svg',
+            target: () => {
+                store_toggleMenu(null);
+                return '/';
+            },
         },
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -3.125, y: 0 } },
             category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6, y: 1.9 } },
             post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 0 } },
             title: 'settings',
-            svg: '/svg/Cog6ToothOutline.svg',
+            svgPath: '/svg/Cog6ToothOutline.svg',
             target: () => store_toggleMenu('settings'),
         },
         {
@@ -163,7 +166,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: -12.5, y: 6.125 } },
             post: { position: allOffsets[7][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: -3.5 } },
             title: 'socials',
-            svg: '/svg/UserIconOutline.svg',
+            svgPath: '/svg/UserIconOutline.svg',
             target: () => store_toggleMenu('socials'),
         },
     ],

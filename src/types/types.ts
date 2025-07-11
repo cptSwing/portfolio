@@ -58,13 +58,15 @@ export type DataBase = {
         categoryTitle: MENU_CATEGORY;
         posts: Post[];
         categoryCardBackgroundImage: string;
-        categoryBackgroundSvg: 'code' | '3D' | 'about' | 'log';
+        categoryBackgroundSvg: CategoryLinks;
         categoryBlurb: string;
         categoryBackgroundColor?: string;
     };
 };
 
-export type MenuLinks = 'code' | '3d' | 'log' | 'settings' | 'socials' | 'home' | '&lt;' | '&gt;' | '&#10005;';
-export type NavLinks = Pick<MenuLinks, 'code' & 'log' & '3d'>;
+export type CategoryLinks = 'code' | 'log' | '3d';
+type OtherMenuTitles = 'settings' | 'socials' | 'home' | '&lt;' | '&gt;' | '&#10005;';
+export type MenuLinks = CategoryLinks | OtherMenuTitles;
+
 export type HexagonData = { position: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; offsets?: { x: number; y: number } };
-export type HexagonLink = { title: MenuLinks; svg?: string; target: string | (() => void) };
+export type HexagonLink = { title: MenuLinks; svgPath?: string; target: string | (() => void | string) };

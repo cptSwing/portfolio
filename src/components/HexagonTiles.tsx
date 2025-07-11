@@ -1,8 +1,8 @@
-import { CSSProperties, FC, Fragment, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { CSSProperties, FC, memo, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames';
 import configJSON from '../config/config.json';
-import { HexagonData, HexagonLink, MenuLinks, NavigationExpansionState } from '../types/types';
+import { HexagonData, HexagonLink, MenuLinks, NavigationExpansionState, CategoryLinks } from '../types/types';
 import { halfRoundedHexagonPath, linkHexes, nonLinkHexes, roundedHexagonPath, staticValues } from '../config/hexagonData';
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
@@ -19,41 +19,45 @@ const hexHalfHeight = hexHeight / 2;
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 const svgTransitionDurationMs = 400;
 
+const navRotationValues: Record<CategoryLinks, number> = {
+    'code': 60,
+    '3d': -60,
+    'log': 180,
+};
+
 const HexagonTiles = () => {
+    const menuTransitionStateUpdates = useState<[CategoryLinks | null, boolean]>([null, true]);
+    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
+
     const expansionState = useZustand((store) => store.values.expansionState);
-
-    const canSetNewHoverState_Ref = useRef(true); // Prevent prematurely rotating again, and again, and again
-
-    const [menuHoverState, setMenuHoverState] = useState<MenuLinks | null>(null);
-    const [svgRotationDeg, setSvgRotationDeg] = useState(0);
 
     useEffect(() => {
         if (expansionState !== 'home') {
-            setMenuHoverState(null);
+            setMenuTransitionStates([null, true]);
         }
-    }, [expansionState]);
+    }, [expansionState, setMenuTransitionStates]);
 
-    const navHoverClasses_Memo = useMemo(() => {
-        switch (menuHoverState) {
+    const navMenuTransitionClasses_Memo = useMemo(() => {
+        switch (menuTransitionTarget) {
             case 'code':
-                return /* tw */ `rotate-[60deg] [&_.link-class-code]:stroke-blue-500 ${svgRotationDeg === 60 && '[&_.left-class]:has-[.link-class-code:hover]:!scale-90 [&_.left-class]:has-[.link-class-code:hover]:!delay-0 [&_.left-class]:has-[.link-class-code:hover]:!duration-150 [&_.link-class-code]:scale-90'}`;
+                return /* tw */ `rotate-[60deg] [&_.hex-link-class-code]:stroke-blue-500 ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!duration-150 [&_.hex-link-class-code]:scale-90'}`;
 
             case '3d':
-                return /* tw */ `rotate-[-60deg] [&_.link-class-3d]:stroke-blue-500 ${svgRotationDeg === -60 && '[&_.left-class]:has-[.link-class-3d:hover]:!scale-90 [&_.left-class]:has-[.link-class-3d:hover]:!delay-0 [&_.left-class]:has-[.link-class-3d:hover]:!duration-150'}`;
+                return /* tw */ `rotate-[-60deg] [&_.hex-link-class-3d]:stroke-blue-500 ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!duration-150'}`;
 
             case 'log':
-                return /* tw */ `rotate-[180deg] [&_.link-class-log]:stroke-blue-500 ${svgRotationDeg === 180 && '[&_.left-class]:has-[.link-class-log:hover]:!scale-90 [&_.left-class]:has-[.link-class-log:hover]:!delay-0 [&_.left-class]:has-[.link-class-log:hover]:!duration-150'}`;
+                return /* tw */ `rotate-[180deg] [&_.hex-link-class-log]:stroke-blue-500 ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!duration-150'}`;
 
             default:
-                break;
+                return /* tw */ 'rotate-0';
         }
-    }, [menuHoverState, svgRotationDeg]);
+    }, [menuTransitionTarget, menuTransitionTargetReached]);
 
     return (
         <svg
             className={classNames(
                 'pointer-events-none absolute top-[--flat-hex-margin-top] z-10 size-full overflow-visible transition-transform',
-                expansionState === 'home' ? navHoverClasses_Memo : 'rotate-0',
+                expansionState === 'home' ? navMenuTransitionClasses_Memo : '',
             )}
             viewBox={`0 0 ${totalWidthAtCenter} ${totalHeight}`}
             style={
@@ -61,9 +65,17 @@ const HexagonTiles = () => {
                     transitionDuration: `${svgTransitionDurationMs}ms`,
                 } as CSSProperties
             }
-            onTransitionEnd={
-                (ev) => ev.target === ev.currentTarget && setSvgRotationDeg(elementGetCurrentRotation(ev.currentTarget)) // Cut out bubbled child events
-            }
+            onTransitionEnd={({ target, currentTarget }) => {
+                if (target === currentTarget) {
+                    // ^^^  condition filters out bubbled child events
+
+                    const elementRotation = elementGetCurrentRotation(currentTarget);
+                    if (menuTransitionTarget && navRotationValues[menuTransitionTarget] === elementRotation) {
+                        // Set transition target as reached:
+                        setMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
+                    }
+                }
+            }}
         >
             <defs>
                 <filter id='light-inner'>
@@ -92,16 +104,15 @@ const HexagonTiles = () => {
             </defs>
 
             {nonLinkHexes.map((hexData, idx) => (
-                <AnimatedHexagon shapeData={hexData} expansionState={expansionState} arrayIndex={idx} />
+                <AnimatedHexagon shapeData={hexData} expansionState={expansionState} key={`hex-regular-index-${idx}`} />
             ))}
 
             {linkHexes.map((hexData, idx) => (
                 <LinkHexagon
                     shapeData={hexData}
                     expansionState={expansionState}
-                    setMenuHoverState={setMenuHoverState}
-                    canSetNewHoverState={canSetNewHoverState_Ref}
-                    arrayIndex={idx}
+                    menuTransitionStateUpdates={menuTransitionStateUpdates}
+                    key={`hex-link-index-${idx}`}
                 />
             ))}
         </svg>
@@ -113,8 +124,7 @@ export default HexagonTiles;
 const AnimatedHexagon: FC<{
     shapeData: Record<NavigationExpansionState, HexagonData>;
     expansionState: NavigationExpansionState;
-    arrayIndex: number;
-}> = memo(({ shapeData, expansionState, arrayIndex }) => {
+}> = memo(({ shapeData, expansionState }) => {
     const localShapeData_Memo = useMemo(() => shapeData[expansionState], [expansionState, shapeData]);
     const { position, rotation, scale, isHalf, offsets } = localShapeData_Memo;
 
@@ -122,11 +132,10 @@ const AnimatedHexagon: FC<{
     const cssVariables_Memo = useMemo(() => calcCSSVariables(position, rotation, scale, offsets), [offsets, position, rotation, scale]);
 
     const randomDelay_Memo = useMemo(() => svgTransitionDurationMs * Math.random(), []);
-    const keyId = `hex-index-${arrayIndex}`;
 
     return (
-        <Fragment key={keyId}>
-            <clipPath id={`${keyId}-clipPath`}>
+        <>
+            <clipPath id={`${randomDelay_Memo}-clipPath`}>
                 <path
                     d={path_Memo}
                     className='transition-[d]'
@@ -137,7 +146,7 @@ const AnimatedHexagon: FC<{
             <path
                 d={path_Memo}
                 className={classNames(
-                    'left-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 transition-[fill,transform,stroke,stroke-width,d] [--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
+                    'hex-regular-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 transition-[fill,transform,stroke,stroke-width,d] [--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
                     expansionState === 'home'
                         ? 'fill-theme-primary/50 stroke-theme-primary-lighter/25 hover-active:fill-theme-primary/55 hover-active:stroke-theme-primary-lighter/20'
                         : expansionState === 'category'
@@ -151,74 +160,69 @@ const AnimatedHexagon: FC<{
                     transitionDelay: `0ms, ${randomDelay_Memo}ms`,
                     strokeWidth: expansionState === 'home' ? `${8 / scale}` : expansionState === 'category' ? `${4 / scale}` : /* post */ '50',
                 }}
-                clipPath={`url(#${keyId}-clipPath)`}
+                clipPath={`url(#${randomDelay_Memo}-clipPath)`}
             />
-        </Fragment>
+        </>
     );
 });
 
 const LinkHexagon: FC<{
     shapeData: Record<NavigationExpansionState, HexagonData> & HexagonLink;
     expansionState: NavigationExpansionState;
-    setMenuHoverState: React.Dispatch<React.SetStateAction<MenuLinks | null>>;
-    canSetNewHoverState: React.MutableRefObject<boolean>;
-    arrayIndex: number;
-}> = memo(({ shapeData, expansionState, setMenuHoverState, canSetNewHoverState, arrayIndex }) => {
-    const localShapeData_Memo = useMemo(() => shapeData[expansionState], [expansionState, shapeData]);
+    menuTransitionStateUpdates: [[CategoryLinks | null, boolean], React.Dispatch<React.SetStateAction<[CategoryLinks | null, boolean]>>];
+}> = memo(({ shapeData, expansionState, menuTransitionStateUpdates }) => {
+    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
 
-    const { title, svg, target } = shapeData;
+    const localShapeData_Memo = useMemo(() => shapeData[expansionState], [expansionState, shapeData]);
+    const { title, svgPath, target } = shapeData;
     const { position, rotation, scale, offsets } = localShapeData_Memo;
 
     const cssVariables_Memo = useMemo(() => calcCSSVariables(position, rotation, scale, offsets), [offsets, position, rotation, scale]);
     const randomDelay_Memo = useMemo(() => svgTransitionDurationMs * Math.random(), []);
+    const isCategoryLink_Memo = useMemo(() => isCategoryLink(title), [title]);
 
-    const linkRef = useRef<HTMLAnchorElement | null>(null);
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        let targetResult = target;
+        if (typeof targetResult !== 'string') {
+            targetResult = (target as () => void | string)() ?? '';
+        }
+        navigate(targetResult);
+    };
+
+    const handleMouseEnter =
+        isCategoryLink_Memo && expansionState === 'home' && menuTransitionTarget !== title && menuTransitionTargetReached
+            ? //  Prevent parent from prematurely rotating again, and again, and again:          ^^^
+              () => setMenuTransitionStates([title as CategoryLinks, false])
+            : undefined;
 
     return (
-        <Link
-            key={`hex-link-${title}-index-${arrayIndex}`}
-            id={`hex-link-${title}-index-${arrayIndex}`}
-            ref={linkRef}
-            /* Overridden by `onClick` if a function is supplied in `target`: */
-            to={typeof target === 'string' ? target : ''}
-            onClick={typeof target === 'function' ? () => target() : undefined}
-            onMouseEnter={
-                expansionState === 'home' && isCategoryLink(title)
-                    ? () => {
-                          if (canSetNewHoverState.current) {
-                              canSetNewHoverState.current = false;
-                              setMenuHoverState(title);
-
-                              const timer = setTimeout(() => {
-                                  canSetNewHoverState.current = true;
-                                  clearTimeout(timer);
-                              }, svgTransitionDurationMs);
-                          }
-                      }
-                    : undefined
-            }
+        <g
             className={classNames(
                 '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
-                'group pointer-events-none origin-[12.5%_12.5%] translate-x-0 no-underline transition-[transform,stroke] duration-700',
+                'group block origin-[12.5%_12.5%] translate-x-0 cursor-pointer no-underline transition-[transform,stroke] duration-700',
                 expansionState === 'home' ? 'stroke-red-500' : expansionState === 'category' ? 'stroke-green-500' : 'stroke-theme-text-background',
-                `link-class link-class-${title}`,
+                `hex-link-class hex-link-class-${title}`,
             )}
             style={{
                 ...cssVariables_Memo,
                 transitionDelay: `${randomDelay_Memo}ms`,
                 strokeWidth: expansionState === 'home' ? `${8 / scale}` : expansionState === 'category' ? `${4 / scale}` : /* post */ `${2 / scale}`,
             }}
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
         >
             <path
                 d={roundedHexagonPath}
                 className='pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[transform,fill,filter] duration-300 [filter:url(#light-inner)] group-hover-active:scale-105 group-hover-active:[filter:url(#lighter-inner)]' /* fill-[url(#linearGradient)] */
                 style={{ clipPath: `view-box path("${roundedHexagonPath}")` }}
             />
-            {svg ? (
+            {svgPath ? (
                 <foreignObject x='0' y='0' width='100' height='86.66'>
                     <div
                         className='size-full bg-theme-secondary [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-secondary-lighter'
-                        style={{ maskImage: `url(${svg})` }}
+                        style={{ maskImage: `url(${svgPath})` }}
                     />
                 </foreignObject>
             ) : (
@@ -231,7 +235,7 @@ const LinkHexagon: FC<{
                     dangerouslySetInnerHTML={{ __html: title }}
                 />
             )}
-        </Link>
+        </g>
     );
 });
 
