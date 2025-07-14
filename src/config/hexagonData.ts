@@ -1,5 +1,5 @@
 import configJSON from './config.json';
-import { HexagonData, HexagonLink, NavigationExpansionState } from '../types/types';
+import { HexagonData, HexagonLink, NavigationExpansionState, ZustandStore } from '../types/types';
 import { useZustand } from '../lib/zustand';
 
 const { store_toggleMenu, store_setPostNavState } = useZustand.getState().methods;
@@ -151,7 +151,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             post: { position: allOffsets[7][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: -3.5 } },
             title: 'contact',
             svgPath: '/svg/ChatBubbleLeftRightOutline.svg',
-            target: () => store_toggleMenu('contact'),
+            target: (ev) => store_toggleMenu({ menuName: 'contact', position: ev && getMenuButtonPosition(ev) }),
         },
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -5.5, y: 1.5 } },
@@ -159,7 +159,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 0 } },
             title: 'settings',
             svgPath: '/svg/AdjustmentsHorizontalOutline.svg',
-            target: () => store_toggleMenu('settings'),
+            target: (ev) => store_toggleMenu({ menuName: 'settings', position: ev && getMenuButtonPosition(ev) }),
         },
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: 5.5, y: 1.5 } },
@@ -178,7 +178,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             title: 'gohome',
             svgPath: '/svg/HomeOutline.svg',
             target: () => {
-                store_toggleMenu(null);
+                store_toggleMenu({ menuName: null });
                 return '/';
             },
         },
@@ -349,3 +349,9 @@ function getHexagonPathData(sideLength = 1, cornerRadius = 8, isHalf = false) {
         return Math.cos(degToRad(deg));
     }
 }
+
+const getMenuButtonPosition = (ev: React.MouseEvent<SVGGElement, MouseEvent>) => {
+    const { left, width, top, height } = ev.currentTarget.getBoundingClientRect();
+    const position: ZustandStore['values']['menuState']['position'] = { x: left, y: top, width, height };
+    return position;
+};

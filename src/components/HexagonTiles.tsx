@@ -182,10 +182,10 @@ const LinkHexagon: FC<{
 
     const navigate = useNavigate();
 
-    const handleClick = () => {
+    const handleClick = (ev: React.MouseEvent<SVGGElement, MouseEvent>) => {
         let targetResult = target;
         if (typeof targetResult !== 'string') {
-            targetResult = (target as () => void | string)() ?? '';
+            targetResult = (target as (ev: React.MouseEvent<SVGGElement, MouseEvent>) => void | string)(ev) ?? '';
         }
         navigate(targetResult);
     };
@@ -210,7 +210,7 @@ const LinkHexagon: FC<{
                 strokeWidth:
                     expansionState === 'home' ? `${8 / scale / 2}` : expansionState === 'category' ? `${4 / scale / 2}` : /* post */ `${4 / scale / 2}`,
             }}
-            onClick={handleClick}
+            onClick={(ev) => handleClick(ev)}
             onMouseEnter={handleMouseEnter}
         >
             <path
