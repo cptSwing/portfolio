@@ -2,7 +2,7 @@ import { CSSProperties, FC, memo, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames';
 import configJSON from '../config/config.json';
-import { HexagonData, HexagonLink, MenuLinks, NavigationExpansionState, CategoryLinks } from '../types/types';
+import { CategoryLink, HexagonData, HexagonLink, NavigationExpansionState, UIButton } from '../types/types';
 import { halfRoundedHexagonPath, linkHexes, nonLinkHexes, roundedHexagonPath, staticValues } from '../config/hexagonData';
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
@@ -19,14 +19,14 @@ const hexHalfHeight = hexHeight / 2;
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 const svgTransitionDurationMs = 400;
 
-const navRotationValues: Record<CategoryLinks, number> = {
+const navRotationValues: Record<CategoryLink, number> = {
     'code': 60,
     '3d': -60,
     'log': 180,
 };
 
 const HexagonTiles = () => {
-    const menuTransitionStateUpdates = useState<[CategoryLinks | null, boolean]>([null, true]);
+    const menuTransitionStateUpdates = useState<[CategoryLink | null, boolean]>([null, true]);
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
 
     const expansionState = useZustand((store) => store.values.expansionState);
@@ -40,13 +40,13 @@ const HexagonTiles = () => {
     const navMenuTransitionClasses_Memo = useMemo(() => {
         switch (menuTransitionTarget) {
             case 'code':
-                return /* tw */ `rotate-[60deg] [&_.hex-link-class-code]:stroke-blue-500 ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!duration-150 [&_.hex-link-class-code]:scale-90'}`;
+                return /* tw */ `rotate-[60deg] [&_.hex-link-class-code]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-60deg] [&_.hex-link-class-settings]:![--tw-rotate:-60deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:-60deg] [&_.hex-link-class-contact]:![--tw-translate-x:35.8%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:35.75%] [&_.hex-link-class-settings]:![--tw-translate-y:43.5%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:41.25%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:32.5%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!duration-150 [&_.hex-link-class-code]:scale-90'}`;
 
             case '3d':
-                return /* tw */ `rotate-[-60deg] [&_.hex-link-class-3d]:stroke-blue-500 ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!duration-150'}`;
+                return /* tw */ `rotate-[-60deg] [&_.hex-link-class-3d]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:60deg] [&_.hex-link-class-settings]:![--tw-rotate:60deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:60deg] [&_.hex-link-class-contact]:![--tw-translate-x:39.35%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:33.7%] [&_.hex-link-class-settings]:![--tw-translate-y:32.6%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:39.3%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:43.6%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!duration-150'}`;
 
             case 'log':
-                return /* tw */ `rotate-[180deg] [&_.hex-link-class-log]:stroke-blue-500 ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!duration-150'}`;
+                return /* tw */ `rotate-[180deg] [&_.hex-link-class-log]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-180deg] [&_.hex-link-class-settings]:![--tw-rotate:-180deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:-180deg] [&_.hex-link-class-contact]:![--tw-translate-y:39.75%] [&_.hex-link-class-settings]:![--tw-translate-x:43%] [&_.hex-link-class-settings]:![--tw-translate-y:36%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:32%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:36%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!duration-150'}`;
 
             default:
                 return /* tw */ 'rotate-0';
@@ -68,7 +68,6 @@ const HexagonTiles = () => {
             onTransitionEnd={({ target, currentTarget }) => {
                 if (target === currentTarget) {
                     // ^^^  condition filters out bubbled child events
-
                     const elementRotation = elementGetCurrentRotation(currentTarget);
                     if (menuTransitionTarget && navRotationValues[menuTransitionTarget] === elementRotation) {
                         // Set transition target as reached:
@@ -169,7 +168,7 @@ const AnimatedHexagon: FC<{
 const LinkHexagon: FC<{
     shapeData: Record<NavigationExpansionState, HexagonData> & HexagonLink;
     expansionState: NavigationExpansionState;
-    menuTransitionStateUpdates: [[CategoryLinks | null, boolean], React.Dispatch<React.SetStateAction<[CategoryLinks | null, boolean]>>];
+    menuTransitionStateUpdates: [[CategoryLink | null, boolean], React.Dispatch<React.SetStateAction<[CategoryLink | null, boolean]>>];
 }> = memo(({ shapeData, expansionState, menuTransitionStateUpdates }) => {
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
 
@@ -193,8 +192,8 @@ const LinkHexagon: FC<{
 
     const handleMouseEnter =
         isCategoryLink_Memo && expansionState === 'home' && menuTransitionTarget !== title && menuTransitionTargetReached
-            ? //  Prevent parent from prematurely rotating again, and again, and again:          ^^^
-              () => setMenuTransitionStates([title as CategoryLinks, false])
+            ? //  Prevent parent from prematurely rotating again, and again, and again: --------- ^^^
+              () => setMenuTransitionStates([title as CategoryLink, false])
             : undefined;
 
     return (
@@ -208,7 +207,8 @@ const LinkHexagon: FC<{
             style={{
                 ...cssVariables_Memo,
                 transitionDelay: `${randomDelay_Memo}ms`,
-                strokeWidth: expansionState === 'home' ? `${8 / scale}` : expansionState === 'category' ? `${4 / scale}` : /* post */ `${2 / scale}`,
+                strokeWidth:
+                    expansionState === 'home' ? `${8 / scale / 2}` : expansionState === 'category' ? `${4 / scale / 2}` : /* post */ `${4 / scale / 2}`,
             }}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
@@ -219,6 +219,7 @@ const LinkHexagon: FC<{
                 style={{ clipPath: `view-box path("${roundedHexagonPath}")` }}
             />
             {svgPath ? (
+                // SVG image from external source
                 <foreignObject x='0' y='0' width='100' height='86.66'>
                     <div
                         className='size-full bg-theme-secondary [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-secondary-lighter'
@@ -259,4 +260,4 @@ const calcCSSVariables = (
         '--hex-scale-stroked': (1 - strokeWidth) * scale,
     }) as CSSProperties;
 
-const isCategoryLink = (title: MenuLinks) => title === 'code' || title === '3d' || title === 'log';
+const isCategoryLink = (title: UIButton) => title === 'code' || title === '3d' || title === 'log';

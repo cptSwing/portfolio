@@ -47,21 +47,24 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
             category: { position: allOffsets[1][2], rotation: 0, isHalf: false, scale: 0 },
             post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 2.2, y: 4.15 } },
-            title: '&lt;',
+            title: 'previous',
+            svgPath: '/svg/ChevronLeftOutline.svg',
             target: () => store_setPostNavState('prev'),
         },
         {
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
             category: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
             post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 5.9, y: 1.75 } },
-            title: '&#10005;',
+            title: 'close',
+            svgPath: '/svg/XMarkOutline.svg',
             target: () => store_setPostNavState('close'),
         },
         {
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
             category: { position: allOffsets[3][3], rotation: 0, isHalf: false, scale: 0 },
             post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 9.6, y: 4.15 } },
-            title: '&gt;',
+            title: 'next',
+            svgPath: '/svg/ChevronRightOutline.svg',
             target: () => store_setPostNavState('next'),
         },
     ],
@@ -141,33 +144,43 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             post: { position: allOffsets[7][0], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 6.25, y: 8.5 } }, // Bottom Left
         },
 
-        // Three on top of each other at center
+        // Further UI:
+        {
+            home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: 0, y: -2.25 } },
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: -12.5, y: 6.125 } },
+            post: { position: allOffsets[7][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: -3.5 } },
+            title: 'contact',
+            svgPath: '/svg/ChatBubbleLeftRightOutline.svg',
+            target: () => store_toggleMenu('contact'),
+        },
+        {
+            home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -5.5, y: 1.5 } },
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6, y: 1.9 } },
+            post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 0 } },
+            title: 'settings',
+            svgPath: '/svg/AdjustmentsHorizontalOutline.svg',
+            target: () => store_toggleMenu('settings'),
+        },
+        {
+            home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: 5.5, y: 1.5 } },
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0, offsets: { x: -6, y: 1.9 } },
+            post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0, offsets: { x: 12.5, y: 0 } },
+            title: 'controlpanel',
+            svgPath: '/svg/UserIconOutline.svg',
+            target: () => {},
+        },
+
+        // Appears only in 'category' and 'post' expansionState:
         {
             home: { position: allOffsets[4][1], rotation: 180, isHalf: false, scale: 0, offsets: { x: -3.125, y: 0 } },
             category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: -1.2, y: -2.7 } },
             post: { position: allOffsets[5][3], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -6.25, y: 4.8 } },
-            title: 'home',
+            title: 'gohome',
             svgPath: '/svg/HomeOutline.svg',
             target: () => {
                 store_toggleMenu(null);
                 return '/';
             },
-        },
-        {
-            home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -3.125, y: 0 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6, y: 1.9 } },
-            post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 0 } },
-            title: 'settings',
-            svgPath: '/svg/Cog6ToothOutline.svg',
-            target: () => store_toggleMenu('settings'),
-        },
-        {
-            home: { position: allOffsets[4][1], rotation: 90, isHalf: false, scale: 0.25, offsets: { x: 3.125, y: 0 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: -12.5, y: 6.125 } },
-            post: { position: allOffsets[7][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: -3.5 } },
-            title: 'socials',
-            svgPath: '/svg/UserIconOutline.svg',
-            target: () => store_toggleMenu('socials'),
         },
     ],
 

@@ -5,7 +5,7 @@ export type ZustandStore = {
         theme: 'yellow' | 'pink' | 'orange' | 'bw';
         expansionState: NavigationExpansionState;
         menuState: MenuLink | null;
-        postNavState: Omit<NavButton, 'home'> | null;
+        postNavState: Omit<NavButton, 'gohome'> | null;
         debug: {
             applyFlipMotionBlur: boolean;
             applyTransformMatrixFix: boolean;
