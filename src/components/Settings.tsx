@@ -4,7 +4,12 @@ import { useEffect } from 'react';
 import RoundedHexagonSVG from './RoundedHexagonSVG';
 
 const Settings = () => {
-    return <SwitchTheme />;
+    return (
+        <div className='flex flex-col gap-y-3'>
+            <SwitchTheme />
+            <Admin />
+        </div>
+    );
 };
 
 export default Settings;
@@ -18,13 +23,18 @@ const SwitchTheme = () => {
     }, [theme]);
 
     return (
-        <div
-            className='aspect-hex-flat group relative flex w-12 cursor-pointer items-center justify-center' // bg-theme-secondary [clip-path:url(#hex-link-clip-path)]
-            style={{ clipPath: `url(#svgtest)` }}
-            onClick={() => store_cycleTheme()}
-        >
+        <div className='group relative flex aspect-hex-flat w-12 cursor-pointer items-center justify-center' onClick={() => store_cycleTheme()}>
+            <RoundedHexagonSVG classNames='absolute left-0 top-0 fill-theme-secondary group-hover-active:fill-theme-secondary-darker transition-[fill] duration-300 -z-50' />
+            <PaintBrushIcon className='w-2/3 stroke-theme-primary transition-[stroke] duration-300 group-hover-active:stroke-theme-primary-lighter' />
+        </div>
+    );
+};
+
+const Admin = () => {
+    return (
+        <div className='group relative flex aspect-hex-flat w-12 cursor-pointer items-center justify-center text-sm'>
             <RoundedHexagonSVG classNames='absolute left-0 top-0 fill-theme-secondary -z-50' />
-            <PaintBrushIcon className='w-2/3 stroke-theme-primary group-hover-active:stroke-theme-primary-lighter' />
+            Login
         </div>
     );
 };
