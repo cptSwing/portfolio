@@ -80,7 +80,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[1][2], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[3][0], rotation: 120, isHalf: false, scale: 1 },
-            post: { position: allOffsets[7][3], rotation: 30, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: 8.5 } }, // Bottom right
+            post: { position: allOffsets[7][3], rotation: 30, isHalf: false, scale: 0.35, offsets: { x: -6.75, y: 9 } }, // Bottom right
         },
         null,
     ],
@@ -95,7 +95,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[2][1], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[2][0], rotation: 120, isHalf: false, scale: 0.5, offsets: { x: -28.35, y: -6.4 } },
-            post: { position: allOffsets[0][2], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 4 } }, // Top right
+            post: { position: allOffsets[0][2], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 12, y: 3.5 } }, // Top right
         },
         {
             home: { position: allOffsets[2][2], rotation: 60, isHalf: true, scale: 1 },
@@ -141,7 +141,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[4][2], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[3][3], rotation: 120, isHalf: false, scale: 1, offsets: { x: 0, y: 0.2 } },
-            post: { position: allOffsets[7][0], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 6.25, y: 8.5 } }, // Bottom Left
+            post: { position: allOffsets[7][0], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 6.75, y: 9 } }, // Bottom Left
         },
 
         // Further UI:
@@ -151,7 +151,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             post: { position: allOffsets[7][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: -3.5 } },
             title: 'contact',
             svgPath: '/svg/ChatBubbleLeftRightOutline.svg',
-            target: (ev) => store_toggleMenu({ menuName: 'contact', position: ev && getMenuButtonPosition(ev) }),
+            target: (ev) => store_toggleMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -5.5, y: 1.5 } },
@@ -159,7 +159,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 0 } },
             title: 'settings',
             svgPath: '/svg/AdjustmentsHorizontalOutline.svg',
-            target: (ev) => store_toggleMenu({ menuName: 'settings', position: ev && getMenuButtonPosition(ev) }),
+            target: (ev) => store_toggleMenu({ name: 'settings', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: 5.5, y: 1.5 } },
@@ -178,7 +178,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             title: 'gohome',
             svgPath: '/svg/HomeOutline.svg',
             target: () => {
-                store_toggleMenu({ menuName: null });
+                store_toggleMenu({ name: null });
                 return '/';
             },
         },
@@ -243,7 +243,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[8][1], rotation: 180, isHalf: true, scale: 1 },
             category: { position: allOffsets[8][2], rotation: 0, isHalf: false, scale: 0.6, offsets: { x: 11.25, y: -3.35 } },
-            post: { position: allOffsets[0][0], rotation: -30, isHalf: false, scale: 0.35, offsets: { x: -12.5, y: 4 } },
+            post: { position: allOffsets[0][0], rotation: -30, isHalf: false, scale: 0.35, offsets: { x: -12, y: 3.5 } }, // Top right
         },
         null,
     ],
@@ -352,6 +352,6 @@ function getHexagonPathData(sideLength = 1, cornerRadius = 8, isHalf = false) {
 
 const getMenuButtonPosition = (ev: React.MouseEvent<SVGGElement, MouseEvent>) => {
     const { left, width, top, height } = ev.currentTarget.getBoundingClientRect();
-    const position: ZustandStore['values']['menuState']['position'] = { x: left, y: top, width, height };
+    const position: ZustandStore['values']['activeMenuButton']['positionAndSize'] = { x: left, y: top, width, height };
     return position;
 };

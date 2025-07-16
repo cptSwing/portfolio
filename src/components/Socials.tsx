@@ -1,136 +1,198 @@
-import { ChevronDoubleUpIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
-import classNames from '../lib/classNames';
 import { useBreakpoint } from '../hooks/useBreakPoint';
-import { CSSProperties, FC, useCallback, useState } from 'react';
-
-const store_toggleMenu = useZustand.getState().methods.store_toggleMenu;
-
-// TODO replace with useClickAway ?
-import useOutsideClick from '../hooks/useOutsideClick';
+import { CSSProperties, useCallback, useState } from 'react';
 import RoundedHexagonSVG from './RoundedHexagonSVG';
-import { ZustandStore } from '../types/types';
 import { useZustand } from '../lib/zustand';
+import useOutsideClick from '../hooks/useOutsideClick'; // TODO replace with useClickAway ?
+import { CloseSubMenu } from './MenuToggle';
+import classNames from '../lib/classNames';
 
-const Socials: FC<{ position?: ZustandStore['values']['menuState']['position'] }> = ({ position }) => {
-    const [socialsSize, setSocialsSize] = useState({ width: 0, height: 0 });
+const NUM_SUBMENU_ITEMS = 4;
+const _shouldRotate = NUM_SUBMENU_ITEMS % 2 === 0;
 
-    const isDesktop = useBreakpoint('sm');
-    const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
+const Socials = () => {
+    const menuButtonPosAndSize = useZustand((store) => store.values.activeMenuButton.positionAndSize);
 
+    const [hasMounted, setHasMounted] = useState(false);
+
+    const _isDesktop = useBreakpoint('sm');
+    const [_mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
     const clickRef = useOutsideClick(() => setMobileMenuIsOpen(false));
 
     const refCallback = useCallback(
         (elem: HTMLDivElement | null) => {
             if (elem) {
                 clickRef.current = elem;
-                const { width, height } = elem.getBoundingClientRect();
-                setSocialsSize({ width, height });
+
+                /* delaying for one tick so <nav>'s transition takes place */
+                const timer = setTimeout(() => {
+                    setHasMounted(true);
+                    clearTimeout(timer);
+                }, 0);
             }
         },
         [clickRef],
     );
 
+    /* style icons dynamically */
+    const subMenuButtonsMargin = menuButtonPosAndSize ? menuButtonPosAndSize.width * 0.1 : 0;
+
     return (
         <nav
             ref={refCallback}
             className={classNames(
-                'pointer-events-auto absolute flex -translate-x-1/2 flex-col items-center justify-start',
-                mobileMenuIsOpen ? 'pointer-events-auto !fixed h-screen !w-fit flex-col !items-start bg-gray-500/95' : '',
+                'pointer-events-auto absolute aspect-hex-flat origin-center transition-transform delay-75 duration-300',
+                hasMounted ? 'rotate-90' : 'rotate-0',
             )}
             style={
-                position && {
-                    left: `${position.x + position.width / 2}px`,
-                    top: `calc(${position.y - socialsSize.height}px - ${position.height * 0.25}px)`,
-                }
+                menuButtonPosAndSize &&
+                ({
+                    width: menuButtonPosAndSize.width,
+                    left: menuButtonPosAndSize.x,
+                    bottom: `calc(100% - ${menuButtonPosAndSize.y + menuButtonPosAndSize.height}px)`,
+                } as CSSProperties)
             }
         >
-            {/* Menu Icons */}
-            <div
-                className={classNames('group flex items-center justify-center')}
-                onClick={() => {
-                    if (!isDesktop) {
-                        setMobileMenuIsOpen(true);
-                    }
-                }}
+            {/* Linkedin */}
+            <Link
+                className='group/linkedin peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
+                data-title='LinkedIn'
+                style={
+                    hasMounted
+                        ? ({
+                              '--tw-translate-x': `${0}%`,
+                              '--tw-translate-y': `calc(${100}% + ${subMenuButtonsMargin}px)`,
+                              // '--tw-scale-x': '1.2',
+                              // '--tw-scale-y': '1.2',
+                          } as CSSProperties)
+                        : undefined
+                }
+                to='https://www.linkedin.com/in/jensbrandenburg'
             >
-                {/* Linkedin */}
-                <Link
-                    className={classNames('group/linkedin relative aspect-hex-flat translate-x-[0.5vw] translate-y-1/2 cursor-pointer')}
-                    style={{ width: position ? `${position.width * 1.2}px` : '4vw' }}
-                    to='https://www.linkedin.com/in/jensbrandenburg'
-                >
-                    <RoundedHexagonSVG
-                        classNames='absolute stroke-theme-secondary-lighter/50 left-0 top-0 fill-theme-secondary group-hover-active/linkedin:fill-theme-secondary-darker transition-[fill] duration-300 -z-50 h-auto'
-                        style={position && { strokeWidth: socialsSize.height * 0.125 }}
-                    />
-                    <div className='size-full bg-theme-primary transition-[background-color] duration-300 [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active/linkedin:bg-theme-primary-lighter' />
-                </Link>
-
-                {/* github */}
-                <Link
-                    className={classNames('group/github relative aspect-hex-flat cursor-pointer')}
-                    to='https://github.com/cptSwing'
-                    style={{ width: position ? `${position.width * 1.2}px` : '4vw' }}
-                >
-                    <RoundedHexagonSVG
-                        classNames='absolute stroke-theme-secondary-lighter/50 left-0 top-0  fill-theme-secondary group-hover-active/github:fill-theme-secondary-darker transition-[fill] duration-300 -z-50 h-auto'
-                        style={position && { strokeWidth: socialsSize.height * 0.125 }}
-                    />
-                    <div className='size-full bg-theme-primary transition-[background-color] duration-300 [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active/github:bg-theme-primary-lighter' />
-                </Link>
-
-                {/* email */}
-                <Link
-                    className={classNames(
-                        'group/email relative flex aspect-hex-flat translate-x-[-0.5vw] translate-y-1/2 cursor-pointer items-center justify-center',
-                    )}
-                    style={{ width: position ? `${position.width * 1.2}px` : '4vw' }}
-                    to='mailto:jens@jbrandenburg.de'
-                >
-                    <RoundedHexagonSVG
-                        classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active/email:fill-theme-secondary-darker transition-[fill] duration-300 -z-50 h-auto'
-                        style={position && { strokeWidth: socialsSize.height * 0.125 }}
-                    />
-                    <EnvelopeIcon
-                        className='w-3/5 stroke-theme-primary stroke-[length:2] transition-[stroke] duration-300 group-hover-active/email:stroke-theme-primary-lighter'
-                        style={{ strokeWidth: socialsSize.height * 0.025 }}
-                    />
-                </Link>
-
-                <div className='peer absolute bottom-full left-1/2 mb-[0.333vw] hidden aspect-square w-0 -translate-x-1/2 cursor-pointer transition-[colors,width,padding] delay-[calc(var(--delay)/2)] sm:block sm:group-hover-active:w-[2vw] sm:group-hover-active:delay-500'>
-                    <ChevronDoubleUpIcon className='aspect-square h-full stroke-theme-primary-darker stroke-[length:2px] sm:hover:!stroke-theme-primary' />
-                </div>
-
+                <RoundedHexagonSVG
+                    classNames='absolute stroke-theme-secondary-lighter/50 left-0 top-0 fill-theme-secondary group-hover-active/linkedin:fill-theme-secondary-darker transition-[fill] -z-50 h-auto'
+                    strokeWidth={subMenuButtonsMargin}
+                />
+                {/* logo */}
                 <div
                     className={classNames(
-                        'group/threed absolute bottom-[calc(100%+2vw)] left-1/2 mb-[0.333vw] hidden w-auto -translate-x-1/2 transform-gpu flex-col items-start gap-y-0.5 text-center text-2xs leading-none text-gray-100/20 transition-[column-gap,clip-path,padding] duration-300 clip-inset-0 sm:flex sm:w-0 sm:flex-row sm:items-center sm:gap-x-0 sm:clip-inset-t-full sm:peer-hover:w-auto sm:peer-hover:gap-x-1.5 sm:peer-hover:clip-inset-0 sm:hover:w-auto sm:hover:gap-x-1.5 sm:hover:clip-inset-0',
-
-                        mobileMenuIsOpen ? '!flex' : '',
+                        'size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active/linkedin:bg-theme-primary-lighter',
+                        hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
-                >
-                    {mobileMenuIsOpen && <div className='mb-1 mt-4 text-[--theme-text]'>3D Portals:</div>}
+                />
+            </Link>
+
+            {/* github */}
+            <Link
+                className='group/github peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
+                to='https://github.com/cptSwing'
+                data-title='GitHub'
+                style={
+                    hasMounted
+                        ? ({
+                              '--tw-translate-x': `calc(${-75}% - ${subMenuButtonsMargin * 0.866}px)`,
+                              '--tw-translate-y': `calc(${50}% + ${subMenuButtonsMargin / 2}px)`,
+                              // '--tw-scale-x': '1.2',
+                              // '--tw-scale-y': '1.2',
+                          } as CSSProperties)
+                        : undefined
+                }
+            >
+                <RoundedHexagonSVG
+                    classNames='absolute stroke-theme-secondary-lighter/50 left-0 top-0  fill-theme-secondary group-hover-active/github:fill-theme-secondary-darker transition-[fill] -z-50 h-auto'
+                    strokeWidth={subMenuButtonsMargin}
+                />
+
+                {/* logo */}
+                <div
+                    className={classNames(
+                        'size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active/github:bg-theme-primary-lighter',
+                        hasMounted ? '-rotate-90' : 'rotate-0',
+                    )}
+                />
+            </Link>
+
+            {/* email */}
+            <Link
+                className='group/email peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
+                style={
+                    hasMounted
+                        ? ({
+                              '--tw-translate-x': `calc(${-75}% - ${subMenuButtonsMargin * 0.866}px)`,
+                              '--tw-translate-y': `calc(${-50}% - ${subMenuButtonsMargin / 2}px)`,
+                              // '--tw-scale-x': '1.2',
+                              // '--tw-scale-y': '1.2',
+                          } as CSSProperties)
+                        : undefined
+                }
+                data-title='Email'
+                to='mailto:jens@jbrandenburg.de'
+            >
+                <RoundedHexagonSVG
+                    classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active/email:fill-theme-secondary-darker transition-[fill]  -z-50 h-auto'
+                    strokeWidth={subMenuButtonsMargin}
+                />
+
+                {/* logo */}
+                <div
+                    className={classNames(
+                        'size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active/email:bg-theme-primary-lighter',
+                        hasMounted ? '-rotate-90' : 'rotate-0',
+                    )}
+                />
+            </Link>
+
+            {/* 3D Stores */}
+            <div
+                className='group/stores peer absolute size-full translate-x-0 translate-y-0 transition-transform duration-500'
+                style={
+                    hasMounted
+                        ? ({
+                              '--tw-translate-x': `${0}%`,
+                              '--tw-translate-y': `calc(${-100}% - ${subMenuButtonsMargin}px)`,
+                              // '--tw-scale-x': '1.2',
+                              // '--tw-scale-y': '1.2',
+                          } as CSSProperties)
+                        : undefined
+                }
+                data-title='Stores'
+            >
+                <RoundedHexagonSVG
+                    classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active/stores:fill-theme-secondary-darker transition-[fill]  -z-50 h-auto'
+                    strokeWidth={subMenuButtonsMargin}
+                />
+
+                {/* logo */}
+                <div
+                    className={classNames(
+                        'size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/CubeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active/stores:bg-theme-primary-lighter',
+                        hasMounted ? '-rotate-90' : 'rotate-0',
+                    )}
+                />
+
+                {/* list of Stores */}
+                <div className='absolute top-1/2 size-full -translate-y-1/2 text-xs text-theme-secondary opacity-0 hover-active:opacity-100 group-hover-active/stores:opacity-100'>
                     <Link
                         to='https://www.cgtrader.com/designers/cptswing'
-                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:ml-1 sm:px-1 sm:hover:text-theme-secondary'
+                        className='absolute block translate-x-[-90%] translate-y-[-62.5%] rotate-[-150deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter group-hover-active/stores:clip-inset-0'
                     >
                         CGTrader
                     </Link>
                     <Link
                         to='https://www.turbosquid.com/Search/Artists/cptSwing'
-                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:px-1 sm:hover:text-theme-secondary'
+                        className='absolute block translate-x-[-1%] translate-y-[-208%] rotate-[-90deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter group-hover-active/stores:clip-inset-0'
                     >
                         TurboSquid
                     </Link>
                     <Link
                         to='https://www.printables.com/@cptSwing_2552270'
-                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:px-1 sm:hover:text-theme-secondary'
+                        className='absolute block translate-x-[102.5%] translate-y-[-66%] rotate-[-30deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter group-hover-active/stores:clip-inset-0'
                     >
                         Printables
                     </Link>
                     <Link
                         to='https://www.thingiverse.com/cptswing/designs'
-                        className='w-full cursor-pointer rounded-sm bg-neutral-600 px-3 py-1.5 transition-colors sm:px-1 sm:hover:text-theme-secondary'
+                        className='absolute block translate-x-[90%] translate-y-[192.5%] rotate-[210deg] transform-gpu rounded-l-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-l-full hover-active:text-theme-primary-lighter group-hover-active/stores:clip-inset-0'
                     >
                         Thingiverse
                     </Link>
@@ -138,34 +200,17 @@ const Socials: FC<{ position?: ZustandStore['values']['menuState']['position'] }
             </div>
 
             {/* Close */}
-            <div
-                className='group absolute bottom-0 left-1/2 flex aspect-hex-flat w-[4vw] -translate-x-1/2 cursor-pointer items-center justify-center'
-                style={
-                    position &&
-                    ({
-                        'width': `${position.width}px`,
-                        '--tw-translate-y': `calc(100% + ${position.height * 0.25}px)`,
-                    } as CSSProperties)
-                }
-                onClick={() => store_toggleMenu({ menuName: null })}
-            >
-                <RoundedHexagonSVG
-                    classNames='absolute left-0 top-0 stroke-theme-primary-darker fill-theme-secondary/10 group-hover-active:fill-theme-secondary-darker/50 transition-[fill] duration-300 -z-50'
-                    style={position && { strokeWidth: socialsSize.height * 0.125 }}
-                />
-                <div className='size-full bg-theme-primary transition-[background-color] duration-300 [mask-image:url(/svg/XMarkOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:55%] group-hover-active:bg-theme-primary-lighter' />
-            </div>
+            <CloseSubMenu />
 
-            {/* Name */}
+            {/* Title */}
             <div
                 className={classNames(
-                    'absolute select-none italic text-theme-secondary-lighter after:absolute after:left-[-5%] after:top-[-1%] after:-z-10 after:h-[102%] after:w-[110%] after:bg-theme-primary/50 after:p-2',
-                    mobileMenuIsOpen ? 'right-0 !mt-2 -mr-1 !block origin-top-right transition-none [transform:rotate(90deg)_translate(100%,0)]' : '',
+                    'before:peer-hover-active:peer-data-[title=Email]:content-["Email"] before:peer-hover-active:peer-data-[title=GitHub]:content-["GitHub"] before:peer-hover-active:peer-data-[title=LinkedIn]:content-["LinkedIn"] before:peer-hover-active:peer-data-[title=Stores]:content-["Stores"]',
+                    'before:absolute before:top-1/2 before:z-10 before:w-full before:-translate-y-1/2 before:select-none before:text-center before:text-sm before:leading-none before:text-theme-secondary-lighter',
+                    'pointer-events-none absolute size-full transform-gpu',
+                    hasMounted ? '-rotate-90' : 'rotate-0',
                 )}
-                style={position && { top: `calc(100% + ${position.height}px + ${0.666 * 4}vw)` }}
-            >
-                jens brandenburg
-            </div>
+            />
         </nav>
     );
 };

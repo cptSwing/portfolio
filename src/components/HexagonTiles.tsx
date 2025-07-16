@@ -43,10 +43,10 @@ const HexagonTiles = () => {
                 return /* tw */ `rotate-[60deg] [&_.hex-link-class-code]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-60deg] [&_.hex-link-class-settings]:![--tw-rotate:-60deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:-60deg] [&_.hex-link-class-contact]:![--tw-translate-x:35.8%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:35.75%] [&_.hex-link-class-settings]:![--tw-translate-y:43.5%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:41.25%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:32.5%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!duration-150 [&_.hex-link-class-code]:scale-90'}`;
 
             case '3d':
-                return /* tw */ `rotate-[-60deg] [&_.hex-link-class-3d]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:60deg] [&_.hex-link-class-settings]:![--tw-rotate:60deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:60deg] [&_.hex-link-class-contact]:![--tw-translate-x:39.35%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:33.7%] [&_.hex-link-class-settings]:![--tw-translate-y:32.6%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:39.3%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:43.6%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!duration-150'}`;
+                return /* tw */ `rotate-[-60deg] [&_.hex-link-class-3d]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:60deg] [&_.hex-link-class-settings]:![--tw-rotate:60deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:60deg] [&_.hex-link-class-contact]:![--tw-translate-x:39.35%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:33.7%] [&_.hex-link-class-settings]:![--tw-translate-y:32.6%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:39.3%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:43.6%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!duration-150 [&_.hex-link-class-3d]:scale-90'}`;
 
             case 'log':
-                return /* tw */ `rotate-[180deg] [&_.hex-link-class-log]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-180deg] [&_.hex-link-class-settings]:![--tw-rotate:-180deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:-180deg] [&_.hex-link-class-contact]:![--tw-translate-y:39.75%] [&_.hex-link-class-settings]:![--tw-translate-x:43%] [&_.hex-link-class-settings]:![--tw-translate-y:36%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:32%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:36%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!duration-150'}`;
+                return /* tw */ `rotate-[180deg] [&_.hex-link-class-log]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-180deg] [&_.hex-link-class-settings]:![--tw-rotate:-180deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:-180deg] [&_.hex-link-class-contact]:![--tw-translate-y:39.75%] [&_.hex-link-class-settings]:![--tw-translate-x:43%] [&_.hex-link-class-settings]:![--tw-translate-y:36%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:32%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:36%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!duration-150 [&_.hex-link-class-log]:scale-90'}`;
 
             default:
                 return /* tw */ 'rotate-0';
@@ -210,13 +210,18 @@ const LinkHexagon: FC<{
                 strokeWidth:
                     expansionState === 'home' ? `${8 / scale / 2}` : expansionState === 'category' ? `${4 / scale / 2}` : /* post */ `${4 / scale / 2}`,
             }}
-            onClick={(ev) => handleClick(ev)}
+            onClick={handleClick}
             onMouseEnter={handleMouseEnter}
         >
             <path
                 d={roundedHexagonPath}
                 className='pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[transform,fill,filter] duration-300 [filter:url(#light-inner)] group-hover-active:scale-105 group-hover-active:[filter:url(#lighter-inner)]' /* fill-[url(#linearGradient)] */
                 style={{ clipPath: `view-box path("${roundedHexagonPath}")` }}
+                // TODO set as options in Settings ?
+                shapeRendering='geometricPrecision'
+                // shapeRendering='crispEdges'
+                // shapeRendering='optimizeSpeed'
+                // paintOrder='stroke'
             />
             {svgPath ? (
                 // SVG image from external source
@@ -233,8 +238,9 @@ const LinkHexagon: FC<{
                     textAnchor='middle'
                     alignmentBaseline='central'
                     className='text pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary stroke-none text-[40px] font-semibold leading-none tracking-tight group-hover-active:fill-theme-secondary-lighter'
-                    dangerouslySetInnerHTML={{ __html: title }}
-                />
+                >
+                    {title}
+                </text>
             )}
         </g>
     );

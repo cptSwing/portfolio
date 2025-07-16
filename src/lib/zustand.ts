@@ -7,7 +7,7 @@ export const useZustand = create<ZustandStore>()(
         values: {
             theme: 'pink',
             expansionState: 'home',
-            menuState: { menuName: null },
+            activeMenuButton: { name: null },
             postNavState: null,
             debug: {
                 applyFlipMotionBlur: false,
@@ -46,11 +46,11 @@ export const useZustand = create<ZustandStore>()(
             },
 
             store_toggleMenu: (newMenuState) => {
-                const { menuName, position } = get().values.menuState;
-                const newValue = newMenuState.menuName === menuName ? null : newMenuState.menuName;
+                const { name, positionAndSize } = get().values.activeMenuButton;
+                const newValue = newMenuState.name === name ? null : newMenuState.name;
 
                 set((draftState) => {
-                    draftState.values.menuState = { menuName: newValue, position: newMenuState.position ?? position };
+                    draftState.values.activeMenuButton = { name: newValue, positionAndSize: newMenuState.positionAndSize ?? positionAndSize };
                 });
             },
 

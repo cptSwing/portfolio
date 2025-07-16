@@ -4,7 +4,7 @@ export type ZustandStore = {
     values: {
         theme: 'yellow' | 'pink' | 'orange' | 'bw';
         expansionState: NavigationExpansionState;
-        menuState: { menuName: MenuLink | null; position?: { x: number; y: number; width: number; height: number } };
+        activeMenuButton: { name: MenuLink | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
         postNavState: Omit<NavButton, 'gohome'> | null;
         debug: {
             applyFlipMotionBlur: boolean;
@@ -14,7 +14,7 @@ export type ZustandStore = {
     methods: {
         store_cycleTheme: () => void;
         store_setExpansionState: (expansionState: NavigationExpansionState) => void;
-        store_toggleMenu: (newMenuState: ZustandStore['values']['menuState']) => void;
+        store_toggleMenu: (newMenuState: ZustandStore['values']['activeMenuButton']) => void;
         store_setPostNavState: (postNavState: Omit<NavButton, 'home'> | null) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
