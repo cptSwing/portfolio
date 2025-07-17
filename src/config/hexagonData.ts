@@ -264,8 +264,9 @@ hexShape.forEach((hexRow) =>
     }),
 );
 
-export const roundedHexagonPath = getHexagonPathData(hexHalfWidth, 5);
-export const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, 5, true);
+export const roundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 10);
+export const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 10, true);
+export const svgObjectBoundingBoxHexagonPath = getHexagonPathData(0.5, 0.05);
 
 /* Local functions */
 

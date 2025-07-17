@@ -10,7 +10,6 @@ export const useZustand = create<ZustandStore>()(
             activeMenuButton: { name: null },
             postNavState: null,
             debug: {
-                applyFlipMotionBlur: false,
                 applyTransformMatrixFix: true,
             },
         },

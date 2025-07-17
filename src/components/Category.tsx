@@ -11,7 +11,7 @@ import { useZustand } from '../lib/zustand.ts';
 import useDebugButton from '../hooks/useDebugButton.ts';
 
 const testDbTyped = testDb as DataBase;
-const categoriesArray = Object.values(testDbTyped);
+const categories = Object.values(testDbTyped);
 const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
 
 const { activeCellCount } = config.categoryGrid;
@@ -21,13 +21,7 @@ const Category = () => {
 
     const [cardAnimationIndex, setCardAnimationIndex] = useState(1);
 
-    const categoryData_Memo = useMemo(() => {
-        if (catId) {
-            const catIdToFloat = parseFloat(catId);
-            const category = categoriesArray.find((cat) => catIdToFloat === cat.id);
-            return category;
-        }
-    }, [catId]);
+    const categoryData_Memo = useMemo(() => (catId ? categories.find((category) => parseInt(catId) === category.id) : undefined), [catId]);
 
     const [wheelDirection, wheelDistance] = useMouseWheelDirection();
 
@@ -108,7 +102,7 @@ const getGridAreaIndex: (viewIndex: number, arrayIndex: number, maxCells: number
 };
 
 const DebugWrapper: FC<{
-    category: (typeof categoriesArray)[0];
+    category: (typeof categories)[0];
     currentIndex: number;
     setIndex: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ category, currentIndex, setIndex }) => {
@@ -122,9 +116,6 @@ const DebugWrapper: FC<{
                 break;
         }
     });
-
-    const applyFlipMotionBlur = useZustand(({ values }) => values.debug.applyFlipMotionBlur);
-    useDebugButton(`Toggle Motion Blur (${applyFlipMotionBlur})`, () => store_setDebugValues({ applyFlipMotionBlur: !applyFlipMotionBlur }));
 
     const applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
     useDebugButton(`Toggle Transform Matrix Fix (${applyTransformMatrixFix})`, () =>

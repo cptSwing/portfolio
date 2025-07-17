@@ -7,7 +7,6 @@ export type ZustandStore = {
         activeMenuButton: { name: MenuLink | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
         postNavState: Omit<NavButton, 'gohome'> | null;
         debug: {
-            applyFlipMotionBlur: boolean;
             applyTransformMatrixFix: boolean;
         };
     };
