@@ -2,71 +2,34 @@ import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
 import { Post } from '../types/types.ts';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
-import config from '../config/config.json';
 import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
-import remapToRange from '../lib/remapToRange.ts';
 import { Flipped } from 'react-flip-toolkit';
 import useIsCardAtFront from '../hooks/useIsCardAtFront.ts';
 import { svgObjectBoundingBoxHexagonPath } from '../config/hexagonData.ts';
 
-const { activeCellCount } = config.categoryGrid;
-
 const SingleCard: FC<{
     post: Post;
-    arrayIndex: number;
-    totalCount: number;
-    gridAreaIndex: number;
+    index: number;
+    gridAreaStyle: CSSProperties;
     setToFront: () => void;
-}> = ({ post, arrayIndex, totalCount, gridAreaIndex, setToFront }) => {
+}> = ({ post, index, gridAreaStyle, setToFront }) => {
     const { id } = post;
     const navigate = useNavigate();
 
-    const gridCardStyle_Memo = useMemo(() => {
-        const brightnessPercentage = 1 / activeCellCount;
-
-        if (gridAreaIndex < 1) {
-            const surplusCells = totalCount - activeCellCount;
-            const thisSurplusCell = remapToRange(gridAreaIndex, -surplusCells + 1, 0, surplusCells - 1, 0);
-            const r = 2; // ratio
-
-            const total_ratio = (Math.pow(r, surplusCells) - 1) / (r - 1);
-            const ratio = Math.pow(r, surplusCells - 1 - thisSurplusCell);
-            const widthPercent = (ratio / total_ratio) * 100;
-
-            return {
-                gridArea: 'rest',
-                position: 'absolute' as CSSProperties['position'],
-                width: `calc(${widthPercent}% - 8px)`,
-                left: `${100 - widthPercent > widthPercent ? 0 : 100 - widthPercent}%`,
-                filter: `brightness(${brightnessPercentage / 2}) grayscale(${1 - brightnessPercentage / 2})`,
-            };
-        } else {
-            return {
-                gridArea: 'area' + gridAreaIndex,
-                filter: `brightness(${gridAreaIndex * brightnessPercentage}) grayscale(${1 - gridAreaIndex * brightnessPercentage})`,
-            };
-        }
-    }, [gridAreaIndex, totalCount]);
-
     const [widthHeight, setWidthHeight] = useState<[number, number]>([1, 0.5]);
+    const isAtFront = useIsCardAtFront(gridAreaStyle.zIndex as number);
 
-    const isAtFront = useIsCardAtFront(gridAreaIndex);
+    useEffect(() => {
+        console.log('%c[SingleCard]', 'color: #f7e0bb', `index, gridAreaStyle :`, index, gridAreaStyle);
+    }, [index, gridAreaStyle]);
 
     // WARN DEBUG
     const applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
 
-    useEffect(() => {
-        console.log('%c[SingleCard]', 'color: #9da2fd', `gridArea ${gridAreaIndex} mount`);
-
-        return () => {
-            console.log('%c[SingleCard]', 'color: #9da2fd', `gridArea ${gridAreaIndex} unmount`);
-        };
-    }, [gridAreaIndex]);
-
     return (
         <Flipped
-            flipId={arrayIndex}
+            flipId={index}
             transformOrigin='0px 0px'
             opacity
             translate
@@ -78,14 +41,11 @@ const SingleCard: FC<{
         >
             <div
                 className={classNames(
-                    'absolute left-[-5%] top-[-5%] flex size-[110%] select-none flex-col items-center justify-between drop-shadow-md transition-[filter] duration-500 [clip-path:url(#test-clip-path)] hover-active:!filter-none',
+                    'absolute left-[-5%] top-[-5%] flex size-[110%] select-none flex-col items-center justify-between drop-shadow-md transition-[filter] duration-500 hover-active:!filter-none',
                     applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
-                style={{
-                    ...gridCardStyle_Memo,
-                    zIndex: Math.max(gridAreaIndex, 0),
-                }}
+                style={gridAreaStyle}
                 onClick={() => {
                     if (isAtFront) {
                         navigate(id.toString());
@@ -94,7 +54,7 @@ const SingleCard: FC<{
                     }
                 }}
             >
-                <SVGClipPath parentWidthHeight={widthHeight} />
+                <SVGClipPath parentWidthHeight={widthHeight} index={index} />
                 <SingleCardImage post={post} isAtFront={isAtFront} />
             </div>
         </Flipped>
@@ -149,22 +109,22 @@ const SingleCardImage: FC<{
 const divisor = 5;
 
 // TODO wtf why is this not updating the defs??
-const SVGClipPath: FC<{ parentWidthHeight: [number, number] }> = ({ parentWidthHeight }) => {
-    const [width, height] = parentWidthHeight;
-
+const SVGClipPath: FC<{ parentWidthHeight: [number, number]; index: number }> = ({ parentWidthHeight, index }) => {
     const transforms_Memo = useMemo(() => {
+        const [width, height] = parentWidthHeight;
+
         const aspectRatioWidth = width / height;
         const scaleX = 1 / divisor;
         const scaleY = scaleX * aspectRatioWidth;
         const verticalStep = scaleY * 0.866;
 
         return { scaleX, scaleY, verticalStep, aspectRatioWidth };
-    }, [width, height]);
+    }, [parentWidthHeight]);
 
     return (
-        <svg xmlns='http://www.w3.org/2000/svg' className='absolute size-full' data-aspect={width / height}>
+        <svg xmlns='http://www.w3.org/2000/svg' className='absolute' data-aspect={`${parentWidthHeight[0]} ${parentWidthHeight[1]}`}>
             <defs>
-                <clipPath id='test-clip-path' clipPathUnits='objectBoundingBox'>
+                <clipPath id={`test-clip-path-${index}`} clipPathUnits='objectBoundingBox'>
                     <rect x='0.05' y='0.05' width='0.9' height='0.9' />
 
                     <path d={svgObjectBoundingBoxHexagonPath} transform={`translate(0 0) scale(${transforms_Memo.scaleX} ${transforms_Memo.scaleY})`} />

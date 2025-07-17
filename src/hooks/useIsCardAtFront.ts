@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import config from '../config/config.json';
-const activeCellCount = config.categoryGrid.activeCellCount;
+const cellCount = config.categoryGrid.cellCount;
 
-const useIsCardAtFront = (gridAreaIndex: number) => {
+const useIsCardAtFront = (zIndex: number) => {
     const [isAtFront, setIsAtFront] = useState(false);
 
     useEffect(() => {
-        if (gridAreaIndex === activeCellCount) {
+        if (zIndex === cellCount) {
             setIsAtFront(true);
         } else {
             setIsAtFront(false);
         }
-    }, [gridAreaIndex]);
+    }, [zIndex]);
 
     return isAtFront;
 };

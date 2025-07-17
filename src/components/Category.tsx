@@ -2,54 +2,101 @@ import testDb from '../queries/testDb.json';
 import { useParams } from 'react-router-dom';
 import SingleCard from './SingleCard.tsx';
 import { DataBase } from '../types/types';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
 import classNames from '../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../hooks/useMouseWheelDirection';
 import config from '../config/config.json';
 import { useZustand } from '../lib/zustand.ts';
 import useDebugButton from '../hooks/useDebugButton.ts';
+import remapToRange from '../lib/remapToRange.ts';
 
 const testDbTyped = testDb as DataBase;
 const categories = Object.values(testDbTyped);
 const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
 
-const { activeCellCount } = config.categoryGrid;
+const { cellCount } = config.categoryGrid;
 
 const Category = () => {
     const { catId } = useParams();
-
-    const [cardAnimationIndex, setCardAnimationIndex] = useState(1);
 
     const categoryData_Memo = useMemo(() => (catId ? categories.find((category) => parseInt(catId) === category.id) : undefined), [catId]);
 
     const [wheelDirection, wheelDistance] = useMouseWheelDirection();
 
+    const [flipIndex, setFlipIndex] = useState(0);
+
     useEffect(() => {
         if (categoryData_Memo && wheelDirection !== null) {
-            setCardAnimationIndex((previous) => loopValues(previous, categoryData_Memo.posts.length, wheelDirection));
+            setFlipIndex((previous) => loopFlipValues(previous, categoryData_Memo.posts.length, wheelDirection));
         }
-    }, [categoryData_Memo, wheelDirection, wheelDistance]);
+    }, [categoryData_Memo, wheelDirection, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
+
+    useEffect(() => {
+        console.log('%c[Category]', 'color: #67fb29', `flipIndex :`, flipIndex);
+    }, [flipIndex]);
+
+    const gridAreaStyles_Memo = useMemo(() => {
+        if (categoryData_Memo) {
+            const brightnessPercentage = 1 / cellCount;
+
+            const gridStyles = categoryData_Memo.posts.map((_, idx, arr) => {
+                const numGridArea = getGridAreaNumber(idx, cellCount, arr.length);
+
+                const baseStyle = {
+                    zIndex: Math.max(numGridArea, 0),
+                    clipPath: `url(#test-clip-path-${idx})`,
+                };
+
+                if (numGridArea < 1) {
+                    const surplusCells = arr.length - cellCount;
+                    const thisSurplusCell = remapToRange(numGridArea, -surplusCells + 1, 0, surplusCells - 1, 0);
+                    const r = 2; // ratio
+
+                    const total_ratio = (Math.pow(r, surplusCells) - 1) / (r - 1);
+                    const ratio = Math.pow(r, surplusCells - 1 - thisSurplusCell);
+                    const widthPercent = (ratio / total_ratio) * 100;
+
+                    return {
+                        ...baseStyle,
+                        gridArea: 'rest',
+                        position: 'absolute',
+                        width: `calc(${widthPercent}% - 8px)`,
+                        left: `${100 - widthPercent > widthPercent ? 0 : 100 - widthPercent}%`,
+                        filter: `brightness(${brightnessPercentage / 2}) grayscale(${1 - brightnessPercentage / 2})`,
+                    } as CSSProperties;
+                } else {
+                    return {
+                        ...baseStyle,
+                        gridArea: 'area' + numGridArea,
+                        filter: `brightness(${numGridArea * brightnessPercentage}) grayscale(${1 - numGridArea * brightnessPercentage})`,
+                    } as CSSProperties;
+                }
+            });
+
+            return gridStyles;
+        }
+    }, [categoryData_Memo]);
 
     return (
         <>
             <Flipper
                 element={'nav'}
                 className='postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[repeat(8,minmax(0,1fr))_1vh] gap-x-[2.5%] gap-y-[5%] overflow-hidden bg-theme-primary/10 px-[8vh] py-[4vh] transition-[transform,clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%]'
-                flipKey={cardAnimationIndex}
+                flipKey={flipIndex}
                 spring={{ stiffness: 600, damping: 40 }}
             >
                 {/* Animated Grid */}
-                {categoryData_Memo?.posts.map((post, idx, arr) => (
-                    <SingleCard
-                        key={post.title + idx}
-                        post={post}
-                        arrayIndex={idx}
-                        totalCount={arr.length}
-                        gridAreaIndex={getGridAreaIndex(cardAnimationIndex, idx, activeCellCount, arr.length)}
-                        setToFront={() => setCardAnimationIndex(idx + 1)}
-                    />
-                ))}
+                {gridAreaStyles_Memo &&
+                    categoryData_Memo?.posts.map((post, idx) => (
+                        <SingleCard
+                            key={post.title + idx}
+                            post={post}
+                            index={idx}
+                            gridAreaStyle={gridAreaStyles_Memo[idx]}
+                            setToFront={() => setFlipIndex(idx)}
+                        />
+                    ))}
 
                 {/* Progress Bar */}
                 <div className='mx-auto flex w-[91.34%] items-center justify-between gap-x-2 [grid-area:tracker]'>
@@ -60,11 +107,11 @@ const Category = () => {
                                 className={classNames(
                                     'relative h-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',
                                     'before:absolute before:-left-1 before:h-[calc(100%+theme(spacing.2))] before:w-full',
-                                    idx === cardAnimationIndex - 1
+                                    idx === flipIndex
                                         ? 'bg-theme-primary-lighter before:cursor-default'
                                         : 'bg-black/15 before:cursor-pointer hover-active:bg-theme-primary hover-active:opacity-50',
                                 )}
-                                onClick={() => setCardAnimationIndex(idx + 1)}
+                                onClick={() => setFlipIndex(idx)}
                             />
                         );
                     })}
@@ -72,47 +119,48 @@ const Category = () => {
             </Flipper>
 
             {/* Debug! */}
-            {categoryData_Memo && <DebugWrapper category={categoryData_Memo} currentIndex={cardAnimationIndex} setIndex={setCardAnimationIndex} />}
+            {categoryData_Memo && <DebugWrapper category={categoryData_Memo} flipIndex={flipIndex} setIndex={setFlipIndex} />}
         </>
     );
 };
 
 export default Category;
 
-const loopValues = (value: number, max: number, direction: 'down' | 'up') => {
+const loopFlipValues = (value: number, max: number, direction: 'down' | 'up') => {
     if (direction === 'down') {
-        return value + 1 > max ? 1 : value + 1;
+        const nextValue = value + 1;
+        console.log('%c[Category]', 'color: #4561c2', `down :`, nextValue >= max ? 0 : nextValue);
+        return nextValue >= max ? 0 : nextValue;
     } else {
-        return value - 1 < 1 ? max : value - 1;
+        const previousValue = value - 1;
+        console.log('%c[Category]', 'color: #4561c2', `up :`, previousValue < 0 ? max - 1 : previousValue);
+        return previousValue < 0 ? max - 1 : previousValue;
     }
 };
 
-const getGridAreaIndex: (viewIndex: number, arrayIndex: number, maxCells: number, arrayLength: number) => number = (
-    viewIndex,
-    arrayIndex,
-    maxCells,
-    arrayLength,
-) => {
-    let area = maxCells - (arrayIndex + 1) + viewIndex;
+const getGridAreaNumber: (index: number, maxCells: number, arrayLength: number) => number = (index, maxCells, arrayLength) => {
+    let numGridArea = maxCells - index;
 
-    if (area > maxCells) {
-        area = area - arrayLength;
+    if (numGridArea > maxCells) {
+        numGridArea = numGridArea - arrayLength;
     }
-    return area;
+
+    console.log('%c[Category]', 'color: #bebd87', `gridArea ${numGridArea} showing card index:`, index);
+    return numGridArea;
 };
 
 const DebugWrapper: FC<{
     category: (typeof categories)[0];
-    currentIndex: number;
+    flipIndex: number;
     setIndex: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ category, currentIndex, setIndex }) => {
-    useDebugButton(`ArrayLength: ${category.posts.length} ViewIndex: ${currentIndex} ArrayIndex: ${currentIndex - 1}`, (ev) => {
+}> = ({ category, flipIndex, setIndex }) => {
+    useDebugButton(`array.length: ${category.posts.length} flipIndex: ${flipIndex} arrayIndex: ${flipIndex}`, (ev) => {
         switch (ev.button) {
             case 2:
-                setIndex((previous) => loopValues(previous, category.posts.length, 'up'));
+                setIndex((previous) => loopFlipValues(previous, category.posts.length, 'up'));
                 break;
             default:
-                setIndex((previous) => loopValues(previous, category.posts.length, 'down'));
+                setIndex((previous) => loopFlipValues(previous, category.posts.length, 'down'));
                 break;
         }
     });
