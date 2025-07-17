@@ -1,60 +1,73 @@
-import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useCallback, useMemo } from 'react';
 import { Post } from '../types/types.ts';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
 import { Flipped } from 'react-flip-toolkit';
-import useIsCardAtFront from '../hooks/useIsCardAtFront.ts';
 import { svgObjectBoundingBoxHexagonPath } from '../config/hexagonData.ts';
+import stripSpaces from '../lib/stripSpaces.ts';
 
 const SingleCard: FC<{
     post: Post;
-    index: number;
-    gridAreaStyle: CSSProperties;
-    setToFront: () => void;
-}> = ({ post, index, gridAreaStyle, setToFront }) => {
-    const { id } = post;
+    cardIndex: number;
+    flipIndex: number;
+    cardCount: number;
+    gridAreaStyles: CSSProperties[];
+    gridAreaSizes: React.MutableRefObject<
+        {
+            width: number;
+            height: number;
+        }[]
+    >;
+    setFlipIndex: (value: React.SetStateAction<number>) => void;
+}> = ({ post, cardIndex, flipIndex, cardCount, gridAreaStyles, gridAreaSizes, setFlipIndex }) => {
     const navigate = useNavigate();
 
-    const [widthHeight, setWidthHeight] = useState<[number, number]>([1, 0.5]);
-    const isAtFront = useIsCardAtFront(gridAreaStyle.zIndex as number);
+    const styleIndex = getStyleIndex(flipIndex, cardIndex, cardCount);
+    const gridAreaStyle = gridAreaStyles[styleIndex];
 
-    useEffect(() => {
-        console.log('%c[SingleCard]', 'color: #f7e0bb', `index, gridAreaStyle :`, index, gridAreaStyle);
-    }, [index, gridAreaStyle]);
+    const mountCallback_Cb = useCallback(
+        (elem: HTMLDivElement | null) => {
+            /* Store various areas' sizes on mount, the earlier the better */
+            // TODO should update on resize
+            if (elem) {
+                const { width, height } = elem.getBoundingClientRect();
+                if (!gridAreaSizes.current[styleIndex]) gridAreaSizes.current[styleIndex] = { width, height };
+            }
+        },
+        [gridAreaSizes, styleIndex],
+    );
+
+    const isAtFront = styleIndex === 0;
+
+    const idSuffix = sanitizeString(post.id + post.title);
 
     // WARN DEBUG
     const applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
 
     return (
-        <Flipped
-            flipId={index}
-            transformOrigin='0px 0px'
-            opacity
-            translate
-            scale
-            onComplete={(flippedElement) => {
-                const { width, height } = flippedElement.getBoundingClientRect();
-                setWidthHeight([width, height]);
-            }}
-        >
+        <Flipped flipId={post.id} transformOrigin='0px 0px' opacity translate scale>
             <div
+                ref={mountCallback_Cb}
                 className={classNames(
                     'absolute left-[-5%] top-[-5%] flex size-[110%] select-none flex-col items-center justify-between drop-shadow-md transition-[filter] duration-500 hover-active:!filter-none',
                     applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
-                style={gridAreaStyle}
+                style={{
+                    ...gridAreaStyle,
+                    clipPath: `url(#test-clip-path-${idSuffix})`,
+                }}
                 onClick={() => {
                     if (isAtFront) {
-                        navigate(id.toString());
+                        navigate(post.id.toString());
                     } else {
-                        setToFront();
+                        setFlipIndex(cardIndex);
                     }
                 }}
             >
-                <SVGClipPath parentWidthHeight={widthHeight} index={index} />
+                {gridAreaSizes.current[styleIndex] && <SVGClipPath parentWidthHeight={gridAreaSizes.current[styleIndex]} idSuffix={idSuffix} />}
                 <SingleCardImage post={post} isAtFront={isAtFront} />
             </div>
         </Flipped>
@@ -108,10 +121,15 @@ const SingleCardImage: FC<{
 
 const divisor = 5;
 
-// TODO wtf why is this not updating the defs??
-const SVGClipPath: FC<{ parentWidthHeight: [number, number]; index: number }> = ({ parentWidthHeight, index }) => {
+const SVGClipPath: FC<{
+    parentWidthHeight: {
+        width: number;
+        height: number;
+    };
+    idSuffix: string;
+}> = ({ parentWidthHeight, idSuffix }) => {
     const transforms_Memo = useMemo(() => {
-        const [width, height] = parentWidthHeight;
+        const { width, height } = parentWidthHeight;
 
         const aspectRatioWidth = width / height;
         const scaleX = 1 / divisor;
@@ -122,9 +140,9 @@ const SVGClipPath: FC<{ parentWidthHeight: [number, number]; index: number }> = 
     }, [parentWidthHeight]);
 
     return (
-        <svg xmlns='http://www.w3.org/2000/svg' className='absolute' data-aspect={`${parentWidthHeight[0]} ${parentWidthHeight[1]}`}>
+        <svg xmlns='http://www.w3.org/2000/svg' className='absolute'>
             <defs>
-                <clipPath id={`test-clip-path-${index}`} clipPathUnits='objectBoundingBox'>
+                <clipPath id={`test-clip-path-${idSuffix}`} clipPathUnits='objectBoundingBox'>
                     <rect x='0.05' y='0.05' width='0.9' height='0.9' />
 
                     <path d={svgObjectBoundingBoxHexagonPath} transform={`translate(0 0) scale(${transforms_Memo.scaleX} ${transforms_Memo.scaleY})`} />
@@ -146,3 +164,21 @@ const SVGClipPath: FC<{ parentWidthHeight: [number, number]; index: number }> = 
         </svg>
     );
 };
+
+/* Local Functions */
+
+/** Match the flipIndex to the correct style preset */
+function getStyleIndex(flipIndex: number, cardIndex: number, cardCount: number) {
+    if (flipIndex > cardIndex) {
+        return cardCount + (cardIndex - flipIndex);
+    } else if (flipIndex < cardIndex) {
+        return cardIndex - flipIndex;
+    } else {
+        // flipIndex === cardIndex
+        return 0;
+    }
+}
+
+function sanitizeString(str: string) {
+    return stripSpaces(str).replace(/[\])}[{(]/g, '_');
+}

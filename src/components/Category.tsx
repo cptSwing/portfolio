@@ -2,7 +2,7 @@ import testDb from '../queries/testDb.json';
 import { useParams } from 'react-router-dom';
 import SingleCard from './SingleCard.tsx';
 import { DataBase } from '../types/types';
-import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../hooks/useMouseWheelDirection';
@@ -19,22 +19,22 @@ const { cellCount } = config.categoryGrid;
 
 const Category = () => {
     const { catId } = useParams();
-
-    const categoryData_Memo = useMemo(() => (catId ? categories.find((category) => parseInt(catId) === category.id) : undefined), [catId]);
-
-    const [wheelDirection, wheelDistance] = useMouseWheelDirection();
-
     const [flipIndex, setFlipIndex] = useState(0);
 
+    const categoryData_Memo = useMemo(() => {
+        if (catId) {
+            const category = categories.find((category) => parseInt(catId) === category.id);
+            category && setFlipIndex(0); // reset on category change;
+            return category;
+        }
+    }, [catId]);
+
+    const [wheelDirection, wheelDistance] = useMouseWheelDirection();
     useEffect(() => {
         if (categoryData_Memo && wheelDirection !== null) {
             setFlipIndex((previous) => loopFlipValues(previous, categoryData_Memo.posts.length, wheelDirection));
         }
     }, [categoryData_Memo, wheelDirection, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
-
-    useEffect(() => {
-        console.log('%c[Category]', 'color: #67fb29', `flipIndex :`, flipIndex);
-    }, [flipIndex]);
 
     const gridAreaStyles_Memo = useMemo(() => {
         if (categoryData_Memo) {
@@ -45,7 +45,6 @@ const Category = () => {
 
                 const baseStyle = {
                     zIndex: Math.max(numGridArea, 0),
-                    clipPath: `url(#test-clip-path-${idx})`,
                 };
 
                 if (numGridArea < 1) {
@@ -78,6 +77,10 @@ const Category = () => {
         }
     }, [categoryData_Memo]);
 
+    const gridAreaSizes = useRef<{ width: number; height: number }[]>([]);
+
+    if (!categoryData_Memo) return null;
+
     return (
         <>
             <Flipper
@@ -88,19 +91,22 @@ const Category = () => {
             >
                 {/* Animated Grid */}
                 {gridAreaStyles_Memo &&
-                    categoryData_Memo?.posts.map((post, idx) => (
+                    categoryData_Memo.posts.map((post, idx, arr) => (
                         <SingleCard
                             key={post.title + idx}
                             post={post}
-                            index={idx}
-                            gridAreaStyle={gridAreaStyles_Memo[idx]}
-                            setToFront={() => setFlipIndex(idx)}
+                            flipIndex={flipIndex}
+                            cardIndex={idx}
+                            cardCount={arr.length}
+                            gridAreaStyles={gridAreaStyles_Memo}
+                            gridAreaSizes={gridAreaSizes}
+                            setFlipIndex={setFlipIndex}
                         />
                     ))}
 
                 {/* Progress Bar */}
                 <div className='mx-auto flex w-[91.34%] items-center justify-between gap-x-2 [grid-area:tracker]'>
-                    {categoryData_Memo?.posts.map((post, idx) => {
+                    {categoryData_Memo.posts.map((post, idx) => {
                         return (
                             <div
                                 key={`${post.id}_${idx}`}
@@ -119,7 +125,7 @@ const Category = () => {
             </Flipper>
 
             {/* Debug! */}
-            {categoryData_Memo && <DebugWrapper category={categoryData_Memo} flipIndex={flipIndex} setIndex={setFlipIndex} />}
+            {<DebugWrapper category={categoryData_Memo} flipIndex={flipIndex} setIndex={setFlipIndex} />}
         </>
     );
 };
@@ -129,11 +135,9 @@ export default Category;
 const loopFlipValues = (value: number, max: number, direction: 'down' | 'up') => {
     if (direction === 'down') {
         const nextValue = value + 1;
-        console.log('%c[Category]', 'color: #4561c2', `down :`, nextValue >= max ? 0 : nextValue);
         return nextValue >= max ? 0 : nextValue;
     } else {
         const previousValue = value - 1;
-        console.log('%c[Category]', 'color: #4561c2', `up :`, previousValue < 0 ? max - 1 : previousValue);
         return previousValue < 0 ? max - 1 : previousValue;
     }
 };
@@ -145,7 +149,6 @@ const getGridAreaNumber: (index: number, maxCells: number, arrayLength: number) 
         numGridArea = numGridArea - arrayLength;
     }
 
-    console.log('%c[Category]', 'color: #bebd87', `gridArea ${numGridArea} showing card index:`, index);
     return numGridArea;
 };
 
@@ -154,7 +157,7 @@ const DebugWrapper: FC<{
     flipIndex: number;
     setIndex: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ category, flipIndex, setIndex }) => {
-    useDebugButton(`array.length: ${category.posts.length} flipIndex: ${flipIndex} arrayIndex: ${flipIndex}`, (ev) => {
+    useDebugButton(`array.length: ${category.posts.length} flipIndex: ${flipIndex}`, (ev) => {
         switch (ev.button) {
             case 2:
                 setIndex((previous) => loopFlipValues(previous, category.posts.length, 'up'));
