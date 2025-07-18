@@ -2,9 +2,6 @@
 // TODO Ideas for Swipe: https://codesandbox.io/p/sandbox/react-swipe-hook-w77ui?file=%2Fsrc%2FuseSwipe.js ; https://medium.com/@serhanelmali/how-to-implement-swipe-functionality-in-react-with-the-useswipe-hook-5ead46025370
 
 import { useEffect, useRef, useState } from 'react';
-import GlobalEventHandler from '../classes/GlobalEventHandler';
-
-const globalEventHandlers = new GlobalEventHandler();
 
 // From github.com/streamich/react-use/blob/master/src/useMouseWheel.ts
 const useMouseWheel = () => {
@@ -15,10 +12,10 @@ const useMouseWheel = () => {
             setMouseWheelScrolled((currentState) => e.deltaY + currentState);
         };
 
-        globalEventHandlers.add({ type: 'wheel', listener: updateScroll });
+        window.addEventListener('wheel', updateScroll);
 
         return () => {
-            globalEventHandlers.remove({ type: 'wheel', listener: updateScroll });
+            window.removeEventListener('wheel', updateScroll);
         };
     }, []);
 
