@@ -51,7 +51,7 @@ const SingleCard: FC<{
             <div
                 ref={mountCallback_Cb}
                 className={classNames(
-                    'absolute left-[-5%] top-[-5%] flex size-[110%] select-none flex-col items-center justify-between drop-shadow-md transition-[filter] duration-500 hover-active:!filter-none',
+                    'absolute flex size-full select-none flex-col items-center justify-between drop-shadow-md transition-[filter] duration-500 hover-active:!filter-none',
                     applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
@@ -84,11 +84,7 @@ const SingleCardImage: FC<{
 
     return (
         <>
-            <div
-                // change key to re-render, meaning the animation runs once each keyswitch
-                // key={String(gridAreaIndex)}
-                className='group relative size-full overflow-hidden'
-            >
+            <div className='group relative size-full overflow-hidden'>
                 {/* Title: */}
                 <h6
                     className={classNames(
@@ -119,7 +115,7 @@ const SingleCardImage: FC<{
     );
 };
 
-const divisor = 5;
+const divisor = 3.5;
 
 const SVGClipPath: FC<{
     parentWidthHeight: {
@@ -143,21 +139,13 @@ const SVGClipPath: FC<{
         <svg xmlns='http://www.w3.org/2000/svg' className='absolute'>
             <defs>
                 <clipPath id={`test-clip-path-${idSuffix}`} clipPathUnits='objectBoundingBox'>
-                    <rect x='0.05' y='0.05' width='0.9' height='0.9' />
+                    <polygon points='0,0.155 0.1,0 1,0 1,0.85 0.9,1 0,1' />
 
-                    <path d={svgObjectBoundingBoxHexagonPath} transform={`translate(0 0) scale(${transforms_Memo.scaleX} ${transforms_Memo.scaleY})`} />
-                    <path
-                        d={svgObjectBoundingBoxHexagonPath}
-                        transform={`translate(${1 - transforms_Memo.scaleX} 0) scale(${transforms_Memo.scaleX} ${transforms_Memo.scaleY})`}
-                    />
-                    <path
-                        d={svgObjectBoundingBoxHexagonPath}
-                        transform={`translate(${1 - transforms_Memo.scaleX} ${1 - transforms_Memo.verticalStep}) scale(${transforms_Memo.scaleX} ${transforms_Memo.scaleY})`}
-                    />
+                    <path d={svgObjectBoundingBoxHexagonPath} transform={`translate(${0} ${0}) scale(${transforms_Memo.scaleX} ${transforms_Memo.scaleY})`} />
 
                     <path
                         d={svgObjectBoundingBoxHexagonPath}
-                        transform={`translate(0 ${1 - transforms_Memo.verticalStep}) scale(${transforms_Memo.scaleX} ${transforms_Memo.scaleY})`}
+                        transform={`translate(${0.72} ${1 - transforms_Memo.verticalStep}) scale(${transforms_Memo.scaleX} ${transforms_Memo.scaleY})`}
                     />
                 </clipPath>
             </defs>
