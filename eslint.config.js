@@ -36,7 +36,6 @@ export default tsEslint.config(
             },
         },
         rules: {
-            ...reactHooksEslint.configs.recommended.rules,
             'react-hooks/rules-of-hooks': 'warn',
             'react-hooks/exhaustive-deps': 'warn',
 
@@ -61,6 +60,9 @@ export default tsEslint.config(
             '@typescript-eslint/no-unused-expressions': ['error', { allowTernary: true, allowShortCircuit: true }],
 
             'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+
+            'react/prop-types': 'off', // currently bugs out when using React.FC, see https://github.com/jsx-eslint/eslint-plugin-react/issues/3873
+            'react/display-name': ['off'], // In most cases you don't need to set the displayName as it's inferred from the function/class name.
         },
     },
 );
