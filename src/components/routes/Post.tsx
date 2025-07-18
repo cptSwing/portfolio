@@ -167,7 +167,7 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                         />
                     ) : (
                         <button onClick={handleClick}>
-                            <img src={(showCase as Post_ShowCase_Image).imgUrl} alt={showCase.caption} className='size-full object-cover' />
+                            <img src={constructThumbsUrl((showCase as Post_ShowCase_Image).imgUrl)} alt={showCase.caption} className='size-full object-cover' />
                         </button>
                     )}
                     {showCase.caption && (
@@ -222,7 +222,9 @@ const RemainingImages: FC<{
             {remaining_Memo.map((remain) => {
                 const [showCase, imageIndex] = remain || [];
 
-                return showCase && typeof imageIndex === 'number' ? (
+                if (!showCase || typeof imageIndex != 'number') return;
+
+                return (
                     <button
                         key={showCase.imgUrl + imageIndex}
                         className='max-h-48 w-full overflow-hidden drop-shadow-sm hover-active:brightness-125'
@@ -230,13 +232,18 @@ const RemainingImages: FC<{
                         onKeyDown={() => handleClick(imageIndex)}
                     >
                         <img
-                            src={showCase.imgUrl}
+                            src={constructThumbsUrl(showCase.imgUrl)}
                             alt={showCase.caption}
                             className='skew-x-[calc(var(--clip-shape-skew-angle)*-1)] scale-105 cursor-pointer object-cover'
                         />
                     </button>
-                ) : null;
+                );
             })}
         </div>
     );
 };
+
+function constructThumbsUrl(url: string) {
+    const splitStrings = url.split('.');
+    return splitStrings[0] + '_thumb.' + splitStrings[1];
+}
