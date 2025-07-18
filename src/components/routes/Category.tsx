@@ -1,15 +1,15 @@
-import testDb from '../queries/testDb.json';
+import testDb from '../../queries/testDb.json';
 import { useParams } from 'react-router-dom';
-import SingleCard from './SingleCard.tsx';
-import { DataBase } from '../types/types';
+import SingleCard from '../SingleCard.tsx';
+import { DataBase } from '../../types/types';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
-import classNames from '../lib/classNames';
+import classNames from '../../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
-import useMouseWheelDirection from '../hooks/useMouseWheelDirection';
-import config from '../config/config.json';
-import { useZustand } from '../lib/zustand.ts';
-import useDebugButton from '../hooks/useDebugButton.ts';
-import remapToRange from '../lib/remapToRange.ts';
+import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
+import config from '../../config/config.json';
+import { useZustand } from '../../lib/zustand.ts';
+import useDebugButton from '../../hooks/useDebugButton.ts';
+import remapToRange from '../../lib/remapToRange.ts';
 
 const testDbTyped = testDb as DataBase;
 const categories = Object.values(testDbTyped);

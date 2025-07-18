@@ -5,11 +5,11 @@ import remarkBreaks from 'remark-breaks';
 import Lightbox, { SlideImage } from 'yet-another-react-lightbox';
 import { Captions } from 'yet-another-react-lightbox/plugins';
 import 'yet-another-react-lightbox/styles.css';
-import classNames from '../lib/classNames';
-import parseDateString from '../lib/parseDateString';
-import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../types/types';
-import testDb from '../queries/testDb.json';
-import { useZustand } from '../lib/zustand';
+import classNames from '../../lib/classNames';
+import parseDateString from '../../lib/parseDateString';
+import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
+import testDb from '../../queries/testDb.json';
+import { useZustand } from '../../lib/zustand';
 
 const testDbTyped = testDb as DataBase;
 const store_setPostNavState = useZustand.getState().methods.store_setPostNavState;

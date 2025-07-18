@@ -1,12 +1,12 @@
 import { MutableRefObject, useLayoutEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Category from '../components/Category';
-import classNames from '../lib/classNames';
-import useOutsideClick from '../hooks/useOutsideClick';
-import DisplayPost from '../components/DisplayPost';
-import HexagonTiles from '../components/HexagonTiles';
-import MenuToggle from '../components/MenuToggle';
-import { useZustand } from '../lib/zustand';
+import Category from './Category';
+import classNames from '../../lib/classNames';
+import useOutsideClick from '../../hooks/useOutsideClick';
+import DisplayPost from './Post';
+import HexagonTiles from '../HexagonTiles';
+import MenuToggle from '../MenuToggle';
+import { useZustand } from '../../lib/zustand';
 
 const store_setExpansionState = useZustand.getState().methods.store_setExpansionState;
 

@@ -1,6 +1,6 @@
 import { BrowserRouter, Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import Main from './Main';
+import Main from '../components/routes/Home';
 
 const App = () => {
     return (
