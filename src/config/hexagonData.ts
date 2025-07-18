@@ -339,16 +339,6 @@ function getHexagonPathData(sideLength = 1, cornerRadius = 8, isHalf = false) {
             Q ${points[5].x},${points[5].y} ${points[5].x - cornerSinOffset},${points[5].y - cornerCosOffset} \
             \
             Z`;
-
-    function degToRad(deg: number) {
-        return (Math.PI / 180) * deg;
-    }
-    function sin(deg: number) {
-        return Math.sin(degToRad(deg));
-    }
-    function cos(deg: number) {
-        return Math.cos(degToRad(deg));
-    }
 }
 
 const getMenuButtonPosition = (ev: React.MouseEvent<SVGGElement, MouseEvent>) => {
@@ -356,3 +346,13 @@ const getMenuButtonPosition = (ev: React.MouseEvent<SVGGElement, MouseEvent>) =>
     const position: ZustandStore['values']['activeMenuButton']['positionAndSize'] = { x: left, y: top, width, height };
     return position;
 };
+
+export function degToRad(deg: number) {
+    return (Math.PI / 180) * deg;
+}
+function sin(deg: number) {
+    return Math.sin(degToRad(deg));
+}
+function cos(deg: number) {
+    return Math.cos(degToRad(deg));
+}

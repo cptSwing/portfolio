@@ -58,17 +58,19 @@ const Category = () => {
 
                     return {
                         ...baseStyle,
-                        gridArea: 'rest',
-                        position: 'absolute',
-                        width: `calc(${widthPercent}% - 8px)`,
-                        left: `${100 - widthPercent > widthPercent ? 0 : 100 - widthPercent}%`,
-                        filter: `brightness(${brightnessPercentage / 2}) grayscale(${1 - brightnessPercentage / 2})`,
+                        'gridArea': 'rest',
+                        'position': 'absolute',
+                        'width': `calc(${widthPercent}% - 8px)`,
+                        'left': `${100 - widthPercent > widthPercent ? 0 : 100 - widthPercent}%`,
+                        '--tw-brightness': `brightness(${brightnessPercentage / 2})`,
+                        '--tw-grayscale': `grayscale(${1 - brightnessPercentage / 2})`,
                     } as CSSProperties;
                 } else {
                     return {
                         ...baseStyle,
-                        gridArea: 'area' + numGridArea,
-                        filter: `brightness(${numGridArea * brightnessPercentage}) grayscale(${1 - numGridArea * brightnessPercentage})`,
+                        'gridArea': 'area' + numGridArea,
+                        '--tw-brightness': `brightness(${numGridArea * brightnessPercentage})`,
+                        '--tw-grayscale': `grayscale(${1 - numGridArea * brightnessPercentage})`,
                     } as CSSProperties;
                 }
             });

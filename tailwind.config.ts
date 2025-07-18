@@ -144,6 +144,11 @@ const tailWindTheme = {
                 '3xs': ['0.55rem', { lineHeight: '0.7rem' }],
             },
             dropShadow: {
+                'border': [
+                    '0 0 1px rgb(var(--theme-primary-darker) / 0.5)',
+                    '0 0 2px rgb(var(--theme-primary-darker) / 0.25)',
+                    '0 0 4px rgb(var(--theme-primary-darker) / 0.25)',
+                ],
                 'omni-md': ['0 0 4px rgb(0 0 0 / 0.1)', '0 0 3px rgb(0 0 0 / 0.2)'],
                 'omni-lg': ['0 0 6px rgb(0 0 0 / 0.2)', '0 0 4px rgb(0 0 0 / 0.4)', '0 0 1px black'],
             },
