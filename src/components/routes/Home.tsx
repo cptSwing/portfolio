@@ -5,7 +5,7 @@ import classNames from '../../lib/classNames';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import DisplayPost from './Post';
 import HexagonTiles from '../HexagonTiles';
-import MenuToggle from '../MenuToggle';
+import MenuModal from '../MenuModal';
 import { useZustand } from '../../lib/zustand';
 
 const store_setExpansionState = useZustand.getState().methods.store_setExpansionState;
@@ -59,7 +59,7 @@ const Main = () => {
                 <DisplayPost />
             </div>
 
-            <MenuToggle />
+            <MenuModal />
         </div>
     );
 };

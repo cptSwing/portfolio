@@ -107,7 +107,7 @@ const HexagonTiles = () => {
             ))}
 
             {linkHexes.map((hexData, idx) => (
-                <LinkHexagon
+                <ButtonHexagon
                     shapeData={hexData}
                     expansionState={expansionState}
                     menuTransitionStateUpdates={menuTransitionStateUpdates}
@@ -165,7 +165,7 @@ const AnimatedHexagon: FC<{
     );
 });
 
-const LinkHexagon: FC<{
+const ButtonHexagon: FC<{
     shapeData: Record<NavigationExpansionState, HexagonData> & HexagonLink;
     expansionState: NavigationExpansionState;
     menuTransitionStateUpdates: [[CategoryLink | null, boolean], React.Dispatch<React.SetStateAction<[CategoryLink | null, boolean]>>];
@@ -210,6 +210,7 @@ const LinkHexagon: FC<{
                 strokeWidth:
                     expansionState === 'home' ? `${8 / scale / 2}` : expansionState === 'category' ? `${4 / scale / 2}` : /* post */ `${4 / scale / 2}`,
             }}
+            role='button'
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
         >

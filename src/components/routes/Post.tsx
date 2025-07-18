@@ -146,6 +146,8 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
 }) => {
     const isBlockIndexEven = blockIndex % 2 === 0;
 
+    const handleClick = () => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback();
+
     return (
         <div className='my-4'>
             {showCase && (
@@ -164,11 +166,9 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                             className='size-full'
                         />
                     ) : (
-                        <img
-                            src={(showCase as Post_ShowCase_Image).imgUrl}
-                            className='size-full object-cover'
-                            onClick={() => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback()}
-                        />
+                        <button onClick={handleClick}>
+                            <img src={(showCase as Post_ShowCase_Image).imgUrl} alt={showCase.caption} className='size-full object-cover' />
+                        </button>
                     )}
                     {showCase.caption && (
                         <div className='pointer-events-none absolute bottom-0 max-h-full w-full bg-neutral-400 p-1 text-center text-xs text-neutral-50 opacity-30 transition-[background-color,max-height,padding] group-hover-active:opacity-100'>
@@ -215,22 +215,26 @@ const RemainingImages: FC<{
         [showCases, textBlocks],
     );
 
+    const handleClick = (imageIndex: number) => setLightBoxSlide(imageIndex);
+
     return (
         <div className='grid grid-cols-2 gap-2 pb-5 pt-10 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 2xl:grid-cols-5'>
             {remaining_Memo.map((remain) => {
-                const [imageShowCase, imageIndex] = remain || [];
+                const [showCase, imageIndex] = remain || [];
 
-                return imageShowCase && typeof imageIndex === 'number' ? (
-                    <div
-                        key={imageShowCase.imgUrl + imageIndex}
-                        className='max-h-48 w-full overflow-hidden border border-transparent drop-shadow-sm hover-active:border-red-800'
+                return showCase && typeof imageIndex === 'number' ? (
+                    <button
+                        key={showCase.imgUrl + imageIndex}
+                        className='max-h-48 w-full overflow-hidden drop-shadow-sm hover-active:brightness-125'
+                        onClick={() => handleClick(imageIndex)}
+                        onKeyDown={() => handleClick(imageIndex)}
                     >
                         <img
-                            src={imageShowCase.imgUrl}
+                            src={showCase.imgUrl}
+                            alt={showCase.caption}
                             className='skew-x-[calc(var(--clip-shape-skew-angle)*-1)] scale-105 cursor-pointer object-cover'
-                            onClick={() => setLightBoxSlide(imageIndex)}
                         />
-                    </div>
+                    </button>
                 ) : null;
             })}
         </div>

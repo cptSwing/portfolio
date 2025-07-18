@@ -1,4 +1,4 @@
-import { usePrevious } from "./usePrevious";
+import { usePrevious } from './usePrevious';
 
 /* Returns `true` if argument's value is different than previously stored value */
 export const useCompare = <T>(val: T): boolean => {

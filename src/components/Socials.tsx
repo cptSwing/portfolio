@@ -4,7 +4,7 @@ import { CSSProperties, useCallback, useState } from 'react';
 import RoundedHexagonSVG from './RoundedHexagonSVG';
 import { useZustand } from '../lib/zustand';
 import useOutsideClick from '../hooks/useOutsideClick'; // TODO replace with useClickAway ?
-import { CloseSubMenu } from './MenuToggle';
+import { CloseSubMenu } from './MenuModal';
 import classNames from '../lib/classNames';
 
 const NUM_SUBMENU_ITEMS = 4;
@@ -54,9 +54,10 @@ const Socials = () => {
             }
         >
             {/* Linkedin */}
-            <Link
-                className='group/linkedin peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
+            <button
+                className='group/linkedin duration-500-none peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform'
                 data-title='LinkedIn'
+                title='LinkedIn'
                 style={
                     hasMounted
                         ? ({
@@ -67,7 +68,7 @@ const Socials = () => {
                           } as CSSProperties)
                         : undefined
                 }
-                to='https://www.linkedin.com/in/jensbrandenburg'
+                onClick={() => (window.location.href = 'https://www.linkedin.com/in/jensbrandenburg')}
             >
                 <RoundedHexagonSVG
                     classNames='absolute stroke-theme-secondary-lighter/50 left-0 top-0 fill-theme-secondary group-hover-active/linkedin:fill-theme-secondary-darker transition-[fill] -z-50 h-auto'
@@ -80,13 +81,13 @@ const Socials = () => {
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
-            </Link>
+            </button>
 
             {/* github */}
-            <Link
+            <button
                 className='group/github peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
-                to='https://github.com/cptSwing'
                 data-title='GitHub'
+                title='GitHub'
                 style={
                     hasMounted
                         ? ({
@@ -97,6 +98,7 @@ const Socials = () => {
                           } as CSSProperties)
                         : undefined
                 }
+                onClick={() => (window.location.href = 'https://github.com/cptSwing')}
             >
                 <RoundedHexagonSVG
                     classNames='absolute stroke-theme-secondary-lighter/50 left-0 top-0  fill-theme-secondary group-hover-active/github:fill-theme-secondary-darker transition-[fill] -z-50 h-auto'
@@ -110,10 +112,10 @@ const Socials = () => {
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
-            </Link>
+            </button>
 
             {/* email */}
-            <Link
+            <button
                 className='group/email peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
                 style={
                     hasMounted
@@ -126,7 +128,8 @@ const Socials = () => {
                         : undefined
                 }
                 data-title='Email'
-                to='mailto:jens@jbrandenburg.de'
+                title='Email'
+                onClick={() => (window.location.href = 'mailto:jens@jbrandenburg.de')}
             >
                 <RoundedHexagonSVG
                     classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active/email:fill-theme-secondary-darker transition-[fill]  -z-50 h-auto'
@@ -140,11 +143,13 @@ const Socials = () => {
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
-            </Link>
+            </button>
 
             {/* 3D Stores */}
-            <div
-                className='group/stores peer absolute size-full translate-x-0 translate-y-0 transition-transform duration-500'
+
+            <label
+                htmlFor='menu-stores-input'
+                className='group/stores peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
                 style={
                     hasMounted
                         ? ({
@@ -170,34 +175,36 @@ const Socials = () => {
                     )}
                 />
 
+                <input id='menu-stores-input' type='checkbox' className='peer/stores-input group/stores-input-group hidden' />
+
                 {/* list of Stores */}
-                <div className='absolute top-1/2 size-full -translate-y-1/2 text-xs text-theme-secondary opacity-0 hover-active:opacity-100 group-hover-active/stores:opacity-100'>
+                <div className='absolute top-1/2 size-full -translate-y-1/2 text-xs text-theme-secondary opacity-0 transition-opacity peer-checked/stores-input:opacity-100 peer-checked/stores-input:*:clip-inset-0'>
                     <Link
                         to='https://www.cgtrader.com/designers/cptswing'
-                        className='absolute block translate-x-[-90%] translate-y-[-62.5%] rotate-[-150deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter group-hover-active/stores:clip-inset-0'
+                        className='absolute block translate-x-[-90%] translate-y-[-62.5%] rotate-[-150deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter'
                     >
                         CGTrader
                     </Link>
                     <Link
                         to='https://www.turbosquid.com/Search/Artists/cptSwing'
-                        className='absolute block translate-x-[-1%] translate-y-[-208%] rotate-[-90deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter group-hover-active/stores:clip-inset-0'
+                        className='absolute block translate-x-[-1%] translate-y-[-208%] rotate-[-90deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter'
                     >
                         TurboSquid
                     </Link>
                     <Link
                         to='https://www.printables.com/@cptSwing_2552270'
-                        className='absolute block translate-x-[102.5%] translate-y-[-66%] rotate-[-30deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter group-hover-active/stores:clip-inset-0'
+                        className='absolute block translate-x-[102.5%] translate-y-[-66%] rotate-[-30deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter'
                     >
                         Printables
                     </Link>
                     <Link
                         to='https://www.thingiverse.com/cptswing/designs'
-                        className='absolute block translate-x-[90%] translate-y-[192.5%] rotate-[210deg] transform-gpu rounded-l-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-l-full hover-active:text-theme-primary-lighter group-hover-active/stores:clip-inset-0'
+                        className='absolute block translate-x-[90%] translate-y-[192.5%] rotate-[210deg] transform-gpu rounded-l-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-l-full hover-active:text-theme-primary-lighter'
                     >
                         Thingiverse
                     </Link>
                 </div>
-            </div>
+            </label>
 
             {/* Close */}
             <CloseSubMenu />

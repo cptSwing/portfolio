@@ -23,7 +23,7 @@ const Titles = () => {
             ))}
 
             {/* Hamburger Menu */}
-            <div
+            <button
                 className={classNames(
                     'absolute right-0 top-[calc(100%+theme(spacing.2))] flex aspect-square cursor-pointer flex-col items-center justify-around p-2',
                     'before:absolute before:-z-10 before:h-full before:w-0 before:bg-theme-secondary-lighter before:transition-[width] before:duration-500',
@@ -34,7 +34,7 @@ const Titles = () => {
                 <div className='h-0.5 w-full bg-theme-primary-darker' />
                 <div className='h-0.5 w-full bg-theme-primary-darker' />
                 <div className='h-0.5 w-full bg-theme-primary-darker' />
-            </div>
+            </button>
 
             {menuIsOpen &&
                 createPortal(

@@ -1,7 +1,7 @@
 import { useZustand } from '../lib/zustand';
 import { CSSProperties, useCallback, useEffect, useState } from 'react';
 import RoundedHexagonSVG from './RoundedHexagonSVG';
-import { CloseSubMenu } from './MenuToggle';
+import { CloseSubMenu } from './MenuModal';
 
 const store_cycleTheme = useZustand.getState().methods.store_cycleTheme;
 
@@ -43,7 +43,7 @@ const Settings = () => {
             }
         >
             {/* empty */}
-            <div
+            <button
                 className='group peer absolute size-full rotate-0 cursor-pointer items-center justify-center transition-transform'
                 style={
                     hasMounted
@@ -56,18 +56,16 @@ const Settings = () => {
                         : undefined
                 }
                 data-title='1'
+                title='1'
             >
                 <RoundedHexagonSVG
                     classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active:fill-theme-secondary-darker transition-[fill] -z-50'
                     strokeWidth={subMenuButtonsMargin}
                 />
-
-                {/* logo */}
-                {/* <div className='size-full bg-theme-primary transition-[background-color] [mask-image:url(/svg/PaintBrushOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active/linkedin:bg-theme-primary-lighter' /> */}
-            </div>
+            </button>
 
             {/* Theme Settings */}
-            <div
+            <button
                 className='group peer absolute size-full rotate-0 cursor-pointer items-center justify-center transition-transform'
                 style={
                     hasMounted
@@ -80,6 +78,7 @@ const Settings = () => {
                         : undefined
                 }
                 data-title='Theme'
+                title='Theme'
                 onClick={() => store_cycleTheme()}
             >
                 <RoundedHexagonSVG
@@ -89,10 +88,10 @@ const Settings = () => {
 
                 {/* logo */}
                 <div className='size-full bg-theme-primary transition-[background-color] [mask-image:url(/svg/PaintBrushOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active/linkedin:bg-theme-primary-lighter' />
-            </div>
+            </button>
 
             {/* empty */}
-            <div
+            <button
                 className='group peer absolute size-full rotate-0 cursor-pointer items-center justify-center transition-transform'
                 style={
                     hasMounted
@@ -105,15 +104,13 @@ const Settings = () => {
                         : undefined
                 }
                 data-title='2'
+                title='2'
             >
                 <RoundedHexagonSVG
                     classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active:fill-theme-secondary-darker transition-[fill] -z-50'
                     strokeWidth={subMenuButtonsMargin}
                 />
-
-                {/* logo */}
-                {/* <div className='size-full bg-theme-primary transition-[background-color] [mask-image:url(/svg/PaintBrushOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active/linkedin:bg-theme-primary-lighter' /> */}
-            </div>
+            </button>
 
             {/* Close */}
             <CloseSubMenu />

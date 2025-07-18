@@ -108,7 +108,7 @@ const Category = () => {
                 <div className='mx-auto flex w-[91.34%] items-center justify-between gap-x-2 [grid-area:tracker]'>
                     {categoryData_Memo.posts.map((post, idx) => {
                         return (
-                            <div
+                            <button
                                 key={`${post.id}_${idx}`}
                                 className={classNames(
                                     'relative h-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',

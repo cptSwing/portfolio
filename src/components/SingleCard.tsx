@@ -28,7 +28,7 @@ const SingleCard: FC<{
     const gridAreaStyle = gridAreaStyles[styleIndex];
 
     const mountCallback_Cb = useCallback(
-        (elem: HTMLDivElement | null) => {
+        (elem: HTMLButtonElement | null) => {
             /* Store various areas' sizes on mount, the earlier the better */
             // TODO should update on resize
             if (elem) {
@@ -43,12 +43,20 @@ const SingleCard: FC<{
 
     const idSuffix = sanitizeString(post.id + post.title);
 
+    const handleClick = () => {
+        if (isAtFront) {
+            navigate(post.id.toString());
+        } else {
+            setFlipIndex(cardIndex);
+        }
+    };
+
     // WARN DEBUG
     const applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
 
     return (
         <Flipped flipId={post.id} transformOrigin='0px 0px' opacity translate scale>
-            <div
+            <button
                 ref={mountCallback_Cb}
                 className={classNames(
                     'absolute flex size-full select-none flex-col items-center justify-between drop-shadow-md transition-[filter] duration-500 hover-active:!filter-none',
@@ -59,17 +67,11 @@ const SingleCard: FC<{
                     ...gridAreaStyle,
                     clipPath: `url(#test-clip-path-${idSuffix})`,
                 }}
-                onClick={() => {
-                    if (isAtFront) {
-                        navigate(post.id.toString());
-                    } else {
-                        setFlipIndex(cardIndex);
-                    }
-                }}
+                onClick={handleClick}
             >
                 {gridAreaSizes.current[styleIndex] && <SVGClipPath parentWidthHeight={gridAreaSizes.current[styleIndex]} idSuffix={idSuffix} />}
                 <SingleCardImage post={post} isAtFront={isAtFront} />
-            </div>
+            </button>
         </Flipped>
     );
 };
