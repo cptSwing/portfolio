@@ -70,3 +70,11 @@ export type UIButton = CategoryLink | MenuLink | NavButton;
 
 export type HexagonData = { position: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; offsets?: { x: number; y: number } };
 export type HexagonLink = { title: UIButton; svgPath?: string; target: string | ((ev?: React.MouseEvent<SVGGElement, MouseEvent>) => void | string) };
+
+export type ClipAreaSize = {
+    width: number;
+    height: number;
+    aspectRatio: number;
+    backgroundShapePath: string;
+    hexagonPathTransforms: { scale: number; x: number; y: number }[];
+};

@@ -1,13 +1,12 @@
-import { CSSProperties, FC, useCallback, useMemo } from 'react';
-import { Post } from '../types/types.ts';
+import { CSSProperties, FC, useCallback } from 'react';
+import { ClipAreaSize, Post } from '../types/types.ts';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
 import { Flipped } from 'react-flip-toolkit';
-import { degToRad, svgObjectBoundingBoxHexagonPath } from '../config/hexagonData.ts';
+import { degToRad, staticValues, svgObjectBoundingBoxHexagonPath } from '../config/hexagonData.ts';
 import stripSpaces from '../lib/stripSpaces.ts';
-import remapToRange from '../lib/remapToRange.ts';
 
 const SingleCard: FC<{
     post: Post;
@@ -15,30 +14,37 @@ const SingleCard: FC<{
     flipIndex: number;
     cardCount: number;
     gridAreaStyles: CSSProperties[];
-    gridAreaSizes: React.MutableRefObject<
-        {
-            width: number;
-            height: number;
-        }[]
-    >;
+    clipAreaSizes: React.MutableRefObject<ClipAreaSize[]>;
     setFlipIndex: (value: React.SetStateAction<number>) => void;
-}> = ({ post, cardIndex, flipIndex, cardCount, gridAreaStyles, gridAreaSizes, setFlipIndex }) => {
+}> = ({ post, cardIndex, flipIndex, cardCount, gridAreaStyles, clipAreaSizes, setFlipIndex }) => {
     const navigate = useNavigate();
 
     const styleIndex = getStyleIndex(flipIndex, cardIndex, cardCount);
-    const gridAreaStyle = gridAreaStyles[styleIndex];
 
+    /* Store various areas' sizes on mount, the earlier the better */
     const mountCallback_Cb = useCallback(
         (elem: HTMLButtonElement | null) => {
-            /* Store various areas' sizes on mount, the earlier the better */
-            // TODO should update on resize
             if (elem) {
                 const { width, height } = elem.getBoundingClientRect();
-                if (!gridAreaSizes.current[styleIndex]) gridAreaSizes.current[styleIndex] = { width, height };
+                const aspectRatio = width / height;
+                const { backgroundShapePath, hexagonPathTransforms } = getShapePaths(styleIndex, aspectRatio);
+
+                if (!clipAreaSizes.current[styleIndex])
+                    // TODO should update on resize
+                    clipAreaSizes.current[styleIndex] = {
+                        width,
+                        height,
+                        aspectRatio,
+                        backgroundShapePath,
+                        hexagonPathTransforms,
+                    };
             }
         },
-        [gridAreaSizes, styleIndex],
+        [clipAreaSizes, styleIndex],
     );
+
+    const gridAreaStyle = gridAreaStyles[styleIndex];
+    const clipAreaSize = clipAreaSizes.current[styleIndex];
 
     const isAtFront = styleIndex === 0;
 
@@ -53,21 +59,27 @@ const SingleCard: FC<{
     };
 
     // WARN DEBUG
-    const applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
+    const debug_applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
 
     return (
         <Flipped flipId={post.id} transformOrigin='0px 0px' opacity translate scale>
             <button
                 ref={mountCallback_Cb}
                 className={classNames(
-                    'drop-shadow-border absolute flex size-full select-none flex-col items-center justify-between transition-[filter] hover-active:![--tw-brightness:_brightness(1)] hover-active:![--tw-grayscale:_grayscale(0)]',
-                    applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
+                    'group/button absolute flex size-full select-none flex-col items-center justify-between bg-theme-primary-darker/50 brightness-0 grayscale-0 transition-[filter,background-color] hover-active:bg-theme-primary-darker/10 hover-active:![--tw-brightness:_brightness(1)] hover-active:![--tw-grayscale:_grayscale(0)]',
+                    debug_applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
-                style={gridAreaStyle}
+                style={{
+                    ...gridAreaStyle,
+                    clipPath: `url(#test-clip-path-${idSuffix})`,
+                }}
                 onClick={handleClick}
             >
-                {gridAreaSizes.current[styleIndex] && <SVGClipPath parentWidthHeight={gridAreaSizes.current[styleIndex]} idSuffix={idSuffix} />}
+                {/* Clip Path SVG */}
+                {clipAreaSize && <SVGClipPath clipAreaSize={clipAreaSize} idSuffix={idSuffix} />}
+
+                {/* Image */}
                 <SingleCardImage post={post} isAtFront={isAtFront} idSuffix={idSuffix} />
             </button>
         </Flipped>
@@ -84,14 +96,24 @@ const SingleCardImage: FC<{
     const { title, titleCardBg, subTitle } = post;
 
     return (
-        <div className='group relative size-full overflow-hidden' style={{ clipPath: `url(#test-clip-path-${idSuffix})` }}>
+        <div
+            className='group absolute inset-[--inset-on-hover] overflow-hidden transition-[inset] group-hover-active/button:![--inset-on-hover:0vw]'
+            style={
+                {
+                    'clipPath': `url(#test-clip-path-${idSuffix})`,
+                    '--inset-on-hover': '0.12vw',
+                } as CSSProperties
+            }
+        >
             {/* Title: */}
             <h6
                 className={classNames(
                     'absolute left-1/2 top-[2%] z-10 max-w-[84%] -translate-x-1/2 items-center justify-center text-center text-theme-secondary-lighter',
-                    'before:absolute before:left-[-15%] before:-z-10 before:h-full before:w-[130%] before:bg-theme-primary-darker/90 before:pl-[10%] before:[clip-path:polygon(0_50%,6px_0,calc(100%-6px)_0,100%_50%,calc(100%-6px)_100%,6px_100%)]',
+                    'before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-theme-primary-darker/90 before:pl-[10%] before:[clip-path:--title-clip-path]',
                     isAtFront ? 'flex w-fit' : 'hidden size-0',
                 )}
+                // style={{ '--title-clip-path': `url(#test-clip-path-${idSuffix})` } as CSSProperties}
+                style={{ '--title-clip-path': `path(${getShapePaths(6, 8, true).backgroundShapePath})` } as CSSProperties}
             >
                 {title}
             </h6>
@@ -114,62 +136,26 @@ const SingleCardImage: FC<{
     );
 };
 
-const divisor = 3.5;
-
 const SVGClipPath: FC<{
-    parentWidthHeight: {
-        width: number;
-        height: number;
-    };
+    clipAreaSize: ClipAreaSize;
     idSuffix: string;
-}> = ({ parentWidthHeight, idSuffix }) => {
-    const { width, height } = parentWidthHeight;
-    const tan60 = Math.tan(degToRad(60));
-
-    const widthNormalized = remapToRange(width, 0, width, 0, 1);
-    const heightNormalized = remapToRange(height, 0, height, 0, 1);
-    const oneTenthHeight = heightNormalized / 10;
-
-    const transforms_Memo = useMemo(() => {
-        const aspectRatioWidth = width / height;
-        const scaleX = 1 / divisor;
-        const scaleY = scaleX * aspectRatioWidth;
-
-        return { scaleX, scaleY, aspectRatioWidth };
-    }, [width, height]);
+}> = ({ clipAreaSize, idSuffix }) => {
+    const { width, height, aspectRatio, backgroundShapePath, hexagonPathTransforms } = clipAreaSize;
 
     return (
-        <svg xmlns='http://www.w3.org/2000/svg' className='absolute' style={{ width, height }}>
+        <svg xmlns='http://www.w3.org/2000/svg' style={{ width, height }}>
             <defs>
                 <clipPath id={`test-clip-path-${idSuffix}`} clipPathUnits='objectBoundingBox'>
-                    <polygon
-                        points={`0,${oneTenthHeight * 1.5} ${(oneTenthHeight * 1.5) / tan60 / transforms_Memo.aspectRatioWidth},0 ${1 - (oneTenthHeight * 3) / tan60 / transforms_Memo.aspectRatioWidth},0 1,${oneTenthHeight * 3} 1,${oneTenthHeight * 8.5} ${widthNormalized - (heightNormalized - oneTenthHeight * 8.5) / transforms_Memo.aspectRatioWidth / tan60},1 ${1 - (widthNormalized - (heightNormalized - oneTenthHeight * 7) / tan60 / transforms_Memo.aspectRatioWidth)},1 0,${oneTenthHeight * 7}`}
-                    />
+                    <path className='transition-[d] duration-300' d={backgroundShapePath} />
 
-                    <path
-                        d={svgObjectBoundingBoxHexagonPath}
-                        transform={`translate(${0} ${oneTenthHeight * 6.425}) scale(${(oneTenthHeight * 3.5) / transforms_Memo.aspectRatioWidth} ${oneTenthHeight * 3.5})`}
-                    />
-
-                    <path
-                        d={svgObjectBoundingBoxHexagonPath}
-                        transform={`translate(${1 - (oneTenthHeight * 3.5) / transforms_Memo.aspectRatioWidth} ${oneTenthHeight * 0.55}) scale(${(oneTenthHeight * 3.5) / transforms_Memo.aspectRatioWidth} ${oneTenthHeight * 3.5})`}
-                    />
-
-                    <path
-                        d={svgObjectBoundingBoxHexagonPath}
-                        transform={`translate(${0} ${oneTenthHeight * 0.4}) scale(${(oneTenthHeight * 1) / transforms_Memo.aspectRatioWidth} ${oneTenthHeight * 1})`}
-                    />
-
-                    {/* <path
-                        d={svgObjectBoundingBoxHexagonPath}
-                        transform={`translate(${-0.005} ${oneTenthHeight * 7.95}) scale(${oneTenthHeight / 1.15 / transforms_Memo.aspectRatioWidth} ${oneTenthHeight / 1.15})`}
-                    /> */}
-
-                    {/* <path
-                        d={svgObjectBoundingBoxHexagonPath}
-                        transform={`translate(${oneTenthHeight / 5 / transforms_Memo.aspectRatioWidth} ${oneTenthHeight * 8.75}) scale(${oneTenthHeight / transforms_Memo.aspectRatioWidth} ${oneTenthHeight})`}
-                    /> */}
+                    {hexagonPathTransforms.map(({ scale, x, y }, idx) => (
+                        <path
+                            key={idSuffix + idx}
+                            className='transition-transform'
+                            d={svgObjectBoundingBoxHexagonPath}
+                            transform={getHexagonPathOffsetAndScale(aspectRatio, scale, x, y)}
+                        />
+                    ))}
                 </clipPath>
             </defs>
         </svg>
@@ -192,4 +178,177 @@ function getStyleIndex(flipIndex: number, cardIndex: number, cardCount: number) 
 
 function sanitizeString(str: string) {
     return stripSpaces(str).replace(/[\])}[{(]/g, '_');
+}
+
+const hexAspectRatio = staticValues.heightAspectRatio.flatTop;
+
+function getHexagonPathOffsetAndScale(aspectRatio: number, scale: number, xPos: number, yPos: number) {
+    const scaleY = scale / hexAspectRatio;
+    const scaleX = scaleY / aspectRatio;
+
+    const offsetX = scaleX / 2;
+    const offsetY = offsetX * hexAspectRatio * aspectRatio;
+
+    return `translate(${xPos - offsetX} ${yPos - offsetY}) scale(${scaleX} ${scaleY})`;
+}
+
+const tan60 = Math.tan(degToRad(60));
+
+function getShapePaths(styleIndex: number, aspectRatio: number, addPercentUnit = false) {
+    let backgroundShapePath;
+    const hexagonPathTransforms = [];
+
+    switch (styleIndex) {
+        // isFirst
+        case 0:
+        case 5:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.1} 
+                    L${0.1 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.25 / aspectRatio / tan60},0 
+                    L1,${0.25} 
+
+                    L1,${1 - 0.3} 
+                    L${1 - 0.3 / aspectRatio / tan60},1 
+                    
+                    L${0.15 / aspectRatio / tan60},1 
+                    L0,${1 - 0.15}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.2, x: 0.9, y: 0.1 }, { scale: 0.25, x: 0.875, y: 0.815 }, { scale: 0.1, x: 0.05, y: 0.95 });
+            break;
+
+        case 1:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.15} 
+                    L${0.15 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.25 / aspectRatio / tan60},0 
+                    L1,${0.25} 
+
+                    L1,${1 - 0.1} 
+                    L${1 - 0.1 / aspectRatio / tan60},1 
+                    
+                    L${0.3 / aspectRatio / tan60},1 
+                    L0,${1 - 0.3}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.2, x: 0.9, y: 0.1 }, { scale: 0.1, x: 0.05, y: 0.05 }, { scale: 0.25, x: 0.0875, y: 0.815 });
+            break;
+
+        case 2:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.15} 
+                    L${0.15 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.3 / aspectRatio / tan60},0 
+                    L1,${0.3} 
+
+                    L1,${1 - 0.1} 
+                    L${1 - 0.1 / aspectRatio / tan60},1 
+                    
+                    L${0.25 / aspectRatio / tan60},1 
+                    L0,${1 - 0.25}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.1, x: 0.035, y: 0.085 }, { scale: 0.2, x: 0.925, y: 0.1 }, { scale: 0.25, x: 0.0875, y: 0.975 });
+            break;
+
+        case 3:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.3} 
+                    L${0.3 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.1 / aspectRatio / tan60},0 
+                    L1,${0.1} 
+
+                    L1,${1 - 0.15} 
+                    L${1 - 0.15 / aspectRatio / tan60},1 
+                    
+                    L${0.25 / aspectRatio / tan60},1 
+                    L0,${1 - 0.25}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.3, x: 0.1, y: 0.03 }, { scale: 0.2, x: 0.5, y: 0.5 }, { scale: 0.25, x: 0.085, y: 0.825 });
+            break;
+
+        case 4:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.25} 
+                    L${0.25 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.5 / aspectRatio / tan60},0 
+                    L1,${0.5} 
+
+                    L1,${1 - 0.15} 
+                    L${1 - 0.15 / aspectRatio / tan60},1 
+                    
+                    L${0.1 / aspectRatio / tan60},1 
+                    L0,${1 - 0.1}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.2, x: 0.075, y: 0.1 }, { scale: 0.2, x: 0.84, y: 0.1 }, { scale: 0.1, x: 0.5, y: 0.5 });
+            break;
+
+        case 6:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = addPercentUnit
+                ? `
+                    M0%,${0.2 * 100}% 
+                    L${(0.2 * 100) / aspectRatio / tan60}%,0% 
+                    
+                    L${((1 - 0.2) * 100) / aspectRatio / tan60}%,0% 
+                    L100%,${0.2 * 100}% 
+
+                    L100%,${(1 - 0.2) * 100}% 
+                    L${((1 - 0.2) * 100) / aspectRatio / tan60}%,100% 
+                    
+                    L${(0.2 * 100) / aspectRatio / tan60}%,100% 
+                    L0%,${(1 - 0.2) * 100}%
+                    Z`
+                : `
+                    M0,${0.2} 
+                    L${0.2 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.2 / aspectRatio / tan60},0 
+                    L1,${0.2} 
+
+                    L1,${1 - 0.2} 
+                    L${1 - 0.2 / aspectRatio / tan60},1 
+                    
+                    L${0.2 / aspectRatio / tan60},1 
+                    L0,${1 - 0.2}
+                    Z`;
+            break;
+
+        case 7:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.2} 
+                    L${0.2 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.2 / aspectRatio / tan60},0 
+                    L1,${0.2} 
+
+                    L1,${1 - 0.2} 
+                    L${1 - 0.2 / aspectRatio / tan60},1 
+                    
+                    L${0.2 / aspectRatio / tan60},1 
+                    L0,${1 - 0.2}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.1, x: 0.5, y: 0.5 }, { scale: 0.1, x: 0.5, y: 0.5 }, { scale: 0.1, x: 0.5, y: 0.5 });
+            break;
+
+        default:
+            backgroundShapePath = 'M0,0 L1,0 L1,1 L0,1 Z';
+    }
+
+    return { backgroundShapePath, hexagonPathTransforms };
 }

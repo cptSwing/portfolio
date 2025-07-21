@@ -1,7 +1,7 @@
 import testDb from '../../queries/testDb.json';
 import { useParams } from 'react-router-dom';
 import SingleCard from '../SingleCard.tsx';
-import { DataBase } from '../../types/types';
+import { DataBase, ClipAreaSize } from '../../types/types';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
@@ -79,7 +79,7 @@ const Category = () => {
         }
     }, [categoryData_Memo]);
 
-    const gridAreaSizes = useRef<{ width: number; height: number }[]>([]);
+    const clipAreaSizes = useRef<ClipAreaSize[]>([]);
 
     if (!categoryData_Memo) return null;
 
@@ -101,7 +101,7 @@ const Category = () => {
                             cardIndex={idx}
                             cardCount={arr.length}
                             gridAreaStyles={gridAreaStyles_Memo}
-                            gridAreaSizes={gridAreaSizes}
+                            clipAreaSizes={clipAreaSizes}
                             setFlipIndex={setFlipIndex}
                         />
                     ))}
