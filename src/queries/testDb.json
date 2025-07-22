@@ -10,7 +10,7 @@
                 "id": 0,
                 "title": "Design Your Ring",
                 "titleCardBg": "/images/hd_dyr/hd_dyr_card.jpg",
-                "toolsUsed": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
+                "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
                 "subTitle": "Customizable Wedding-Rings in 3D",
                 "date": "2024-09-12",
                 "showCases": [
@@ -80,10 +80,10 @@
                 "id": 1,
                 "title": "This site!",
                 "titleCardBg": "/images/portfolio/portfolio_featured.jpg",
-                "toolsUsed": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
+                "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
                 "subTitle": "Rebuilt Portfolio from Scratch",
                 "date": "2024-07-30",
-                "codeLink": {
+                "viewSource": {
                     "alt": "This website @ Github",
                     "href": "https://github.com/cptSwing/portfolio"
                 },
@@ -98,11 +98,24 @@
                 "title": "Mediaverse: Fader360",
                 "subTitle": "Open-source 360° Media Authoring Tool",
                 "titleCardBg": "/images/fader/mediaverse_fader_logo.jpg",
-                "codeLink": {
+                "viewSource": {
                     "alt": "fader360-frontend (Github)",
                     "href": "https://github.com/VRagments/fader360-frontend"
                 },
-                "toolsUsed": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
+                "clients": [{ "abbreviation": "DW", "name": "Deutsche Welle" }],
+                "stack": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
+                "viewLive": [
+                    {
+                        "url": "https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2",
+                        "title": "NYC Woman's March (Deutsche Welle Showcase)",
+                        "description": ""
+                    },
+                    {
+                        "url": "https://fader360.vrgmnts.net/users/login",
+                        "title": "Fader360 Instance",
+                        "description": "login with \"jens@jbrandenburg.de\", password \"!$V2&;+'i-EzrfF\""
+                    }
+                ],
                 "date": "2023-08-11",
                 "showCases": [
                     {
@@ -162,7 +175,7 @@
                 "subTitle": "The lives of \"contract workers\" in the former GDR",
                 "titleCardBg": "/images/brotherland/brotherland_small.jpg",
                 "date": "2023-06",
-                "codeLink": {
+                "viewSource": {
                     "alt": "brotherland on github.com",
                     "href": "https://github.com/cptSwing/brotherland"
                 },
@@ -201,7 +214,7 @@
                         "text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
                     }
                 ],
-                "toolsUsed": ["parcel", "posthtml", "tailwindcss"]
+                "stack": ["parcel", "posthtml", "tailwindcss"]
             },
             {
                 "id": 4,
@@ -209,7 +222,8 @@
                 "subTitle": "Scroll through 3D experiences",
                 "titleCardBg": "/images/scrollmersives/scrollmersives_featured.jpg",
                 "date": "2022",
-                "toolsUsed": ["three.js", "3ds Max"],
+                "stack": ["three.js", "3ds Max"],
+
                 "showCases": [
                     {
                         "caption": "electric scooter, early proof of concept",
@@ -517,8 +531,8 @@
                 "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
                 "titleCardBg": "/images/stadtmitte/usm_featured_image.jpg",
                 "date": "2016",
-                "toolsUsed": ["Unity Engine", "3ds Max", "Substance Designer"],
-                "codeLink": {
+                "stack": ["Unity Engine", "3ds Max", "Substance Designer"],
+                "viewSource": {
                     "href": "https://github.com/VRagments/StadtmitteVR"
                 },
                 "showCases": [

@@ -44,8 +44,10 @@ export type Post = {
     showCases?: Post_ShowCase[];
     subTitle?: string;
     titleCardBg?: string;
-    toolsUsed?: (keyof typeof ToolsUrls)[];
-    codeLink?: {
+    clients?: { abbreviation: string; svgUrl?: string; name: string }[];
+    stack?: (keyof typeof ToolsUrls)[];
+    viewLive?: { url: string; title: string; description: string }[];
+    viewSource?: {
         href: string;
         alt: string;
     };

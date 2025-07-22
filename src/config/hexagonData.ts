@@ -23,10 +23,12 @@ export const staticValues = {
     },
 };
 
-const hexHeightAspectRatio = staticValues.heightAspectRatio.flatTop;
-const hexHeight = hexHeightAspectRatio * scaleUp;
+const hexAspectRatio = staticValues.heightAspectRatio.flatTop;
+const hexHeight = hexAspectRatio * scaleUp;
 const hexHalfHeight = hexHeight / 2;
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
+
+const tan60 = Math.tan(degToRad(60));
 
 const allOffsets = Array.from({ length: 9 }).map((_, rowIndex) =>
     Array.from({ length: rowIndex % 2 === 0 ? 3 : 4 }).map((_, colIndex) => getOffsetsAndScale(colIndex, rowIndex)),
@@ -110,14 +112,14 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[3][1], rotation: -60, isHalf: false, scale: 1 },
             category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.8, offsets: { x: 1.35, y: -6.5 } }, // "Active" position
-            post: { position: allOffsets[5][0], rotation: 0, isHalf: false, scale: 0.45, offsets: { x: 6.25, y: 1 } },
+            post: { position: allOffsets[5][1], rotation: 0, isHalf: false, scale: 0, offsets: { x: 6.25, y: 1 } },
             title: 'code',
             target: '/0',
         },
         {
             home: { position: allOffsets[3][2], rotation: 60, isHalf: false, scale: 1 },
             category: { position: allOffsets[8][0], rotation: 0, isHalf: false, scale: 0.5, offsets: { x: -15.575, y: -2.5 } },
-            post: { position: allOffsets[6][0], rotation: 0, isHalf: false, scale: 0.45, offsets: { x: -12.5, y: 0 } },
+            post: { position: allOffsets[6][1], rotation: 0, isHalf: false, scale: 0, offsets: { x: -12.5, y: 0 } },
             title: '3d',
             target: '/1',
         },
@@ -148,7 +150,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: 0, y: -2.25 } },
             category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: -12.5, y: 6.125 } },
-            post: { position: allOffsets[7][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6.25, y: -3.5 } },
+            post: { position: allOffsets[6][0], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -12.5, y: 6.25 } },
             title: 'contact',
             svgPath: '/svg/ChatBubbleLeftRightOutline.svg',
             target: (ev) => store_toggleMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
@@ -156,7 +158,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -5.5, y: 1.5 } },
             category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6, y: 1.9 } },
-            post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: 12.5, y: 0 } },
+            post: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 6.25, y: 0 } },
             title: 'settings',
             svgPath: '/svg/AdjustmentsHorizontalOutline.svg',
             target: (ev) => store_toggleMenu({ name: 'settings', positionAndSize: ev && getMenuButtonPosition(ev) }),
@@ -174,7 +176,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[4][1], rotation: 180, isHalf: false, scale: 0, offsets: { x: -3.125, y: 0 } },
             category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: -1.2, y: -2.7 } },
-            post: { position: allOffsets[5][3], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -6.25, y: 4.8 } },
+            post: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.15, offsets: { x: -6.25, y: -1.5625 } },
             title: 'gohome',
             svgPath: '/svg/HomeOutline.svg',
             target: () => {
@@ -210,7 +212,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[6][1], rotation: 180, isHalf: false, scale: 1 },
             category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.37, offsets: { x: 11.3, y: 3.575 } },
-            post: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.45, offsets: { x: 6.25, y: -1 } },
+            post: { position: allOffsets[7][1], rotation: 0, isHalf: false, scale: 0, offsets: { x: 6.25, y: -1 } },
             title: 'log',
             target: '/3',
         },
@@ -267,6 +269,167 @@ hexShape.forEach((hexRow) =>
 export const roundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 10);
 export const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 10, true);
 export const svgObjectBoundingBoxHexagonPath = getHexagonPathData(0.5, 0.05);
+
+export function getHexagonPathOffsetAndScale(aspectRatio: number, scale: number, xPos: number, yPos: number) {
+    const scaleY = scale / hexAspectRatio;
+    const scaleX = scaleY / aspectRatio;
+
+    const offsetX = scaleX / 2;
+    const offsetY = offsetX * hexAspectRatio * aspectRatio;
+
+    return `translate(${xPos - offsetX} ${yPos - offsetY}) scale(${scaleX} ${scaleY})`;
+}
+
+export function getShapePaths(styleIndex: number, aspectRatio: number) {
+    let backgroundShapePath;
+    const hexagonPathTransforms = [];
+
+    switch (styleIndex) {
+        // isFirst
+        case 0:
+        case 5:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.1} 
+                    L${0.1 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.25 / aspectRatio / tan60},0 
+                    L1,${0.25} 
+
+                    L1,${1 - 0.3} 
+                    L${1 - 0.3 / aspectRatio / tan60},1 
+                    
+                    L${0.15 / aspectRatio / tan60},1 
+                    L0,${1 - 0.15}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.2, x: 0.9, y: 0.1 }, { scale: 0.25, x: 0.875, y: 0.815 }, { scale: 0.1, x: 0.05, y: 0.95 });
+            break;
+
+        case 1:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.15} 
+                    L${0.15 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.25 / aspectRatio / tan60},0 
+                    L1,${0.25} 
+
+                    L1,${1 - 0.1} 
+                    L${1 - 0.1 / aspectRatio / tan60},1 
+                    
+                    L${0.3 / aspectRatio / tan60},1 
+                    L0,${1 - 0.3}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.2, x: 0.9, y: 0.1 }, { scale: 0.1, x: 0.05, y: 0.05 }, { scale: 0.25, x: 0.0875, y: 0.815 });
+            break;
+
+        case 2:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.15} 
+                    L${0.15 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.3 / aspectRatio / tan60},0 
+                    L1,${0.3} 
+
+                    L1,${1 - 0.1} 
+                    L${1 - 0.1 / aspectRatio / tan60},1 
+                    
+                    L${0.25 / aspectRatio / tan60},1 
+                    L0,${1 - 0.25}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.1, x: 0.035, y: 0.085 }, { scale: 0.2, x: 0.925, y: 0.1 }, { scale: 0.25, x: 0.0875, y: 0.975 });
+            break;
+
+        case 3:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.3} 
+                    L${0.3 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.1 / aspectRatio / tan60},0 
+                    L1,${0.1} 
+
+                    L1,${1 - 0.15} 
+                    L${1 - 0.15 / aspectRatio / tan60},1 
+                    
+                    L${0.25 / aspectRatio / tan60},1 
+                    L0,${1 - 0.25}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.3, x: 0.1, y: 0.03 }, { scale: 0.2, x: 0.5, y: 0.5 }, { scale: 0.25, x: 0.085, y: 0.825 });
+            break;
+
+        case 4:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.25} 
+                    L${0.25 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.5 / aspectRatio / tan60},0 
+                    L1,${0.5} 
+
+                    L1,${1 - 0.15} 
+                    L${1 - 0.15 / aspectRatio / tan60},1 
+                    
+                    L${0.1 / aspectRatio / tan60},1 
+                    L0,${1 - 0.1}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.2, x: 0.075, y: 0.1 }, { scale: 0.2, x: 0.84, y: 0.1 }, { scale: 0.1, x: 0.5, y: 0.5 });
+            break;
+
+        case 6:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.2} 
+                    L${0.2 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.2 / aspectRatio / tan60},0 
+                    L1,${0.2} 
+
+                    L1,${1 - 0.2} 
+                    L${1 - 0.2 / aspectRatio / tan60},1 
+                    
+                    L${0.2 / aspectRatio / tan60},1 
+                    L0,${1 - 0.2}
+                    Z`;
+            break;
+
+        case 7:
+            // top left; top right; bottom right; bottom left
+            backgroundShapePath = `
+                    M0,${0.2} 
+                    L${0.2 / aspectRatio / tan60},0 
+                    
+                    L${1 - 0.2 / aspectRatio / tan60},0 
+                    L1,${0.2} 
+
+                    L1,${1 - 0.2} 
+                    L${1 - 0.2 / aspectRatio / tan60},1 
+                    
+                    L${0.2 / aspectRatio / tan60},1 
+                    L0,${1 - 0.2}
+                    Z`;
+
+            hexagonPathTransforms.push({ scale: 0.1, x: 0.5, y: 0.5 }, { scale: 0.1, x: 0.5, y: 0.5 }, { scale: 0.1, x: 0.5, y: 0.5 });
+            break;
+
+        default:
+            backgroundShapePath = 'M0,0 L1,0 L1,1 L0,1 Z';
+    }
+
+    return { backgroundShapePath, hexagonPathTransforms };
+}
+
+export function getHexagonalTitleClipPath(yAxisPoint: number) {
+    const xAxisPoint = yAxisPoint / tan60;
+
+    return `polygon(0% ${yAxisPoint}vh, ${xAxisPoint}vh 0%, calc(100% - ${xAxisPoint}vh) 0%, 100% ${yAxisPoint}vh, calc(100% - ${xAxisPoint}vh) 100%, ${xAxisPoint}vh 100%)`;
+}
 
 /* Local functions */
 
@@ -347,7 +510,7 @@ const getMenuButtonPosition = (ev: React.MouseEvent<SVGGElement, MouseEvent>) =>
     return position;
 };
 
-export function degToRad(deg: number) {
+function degToRad(deg: number) {
     return (Math.PI / 180) * deg;
 }
 function sin(deg: number) {

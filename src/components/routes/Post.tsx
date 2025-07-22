@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams, useNavigate } from 'react-router-dom';
 import remarkBreaks from 'remark-breaks';
@@ -12,6 +12,8 @@ import parseDateString from '../../lib/parseDateString';
 import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
 import testDb from '../../queries/testDb.json';
 import { useZustand } from '../../lib/zustand';
+import { getHexagonalTitleClipPath } from '../../config/hexagonData';
+import { ToolsUrls } from '../../types/enums';
 
 const testDbTyped = testDb as DataBase;
 const store_setPostNavState = useZustand.getState().methods.store_setPostNavState;
@@ -26,7 +28,7 @@ const DisplayPost = () => {
         [activeCategory_Memo, postId],
     );
 
-    const { title, subTitle, /* toolsUsed, */ showCases, textBlocks, date, id } = activePost_Memo ?? {};
+    const { title, subTitle, stack, clients, viewLive, viewSource, showCases, textBlocks, date, id } = activePost_Memo ?? {};
 
     /* Nav menu logic */
     const postNavState = useZustand((store) => store.values.postNavState);
@@ -90,21 +92,31 @@ const DisplayPost = () => {
         <div className='absolute left-0 top-0 size-full bg-theme-text-background px-[6%] pb-4 pt-12 text-theme-text transition-[clip-path] clip-inset-r-[--clip-post] clip-inset-t-[-10%]'>
             <header className='pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center'>
                 {/* Floating Title: */}
-                <h2 className='select-none px-4 text-3xl leading-none text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-0 before:-z-10 before:h-full before:w-full before:bg-theme-secondary before:clip-inset-t-[25%]'>
+                <span
+                    className='select-none px-6 text-[3vh] font-bold leading-none text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-[0.75vh] before:-z-10 before:h-[2.5vh] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path]'
+                    style={
+                        {
+                            '--post-title-clip-path': getHexagonalTitleClipPath(1.25),
+                        } as CSSProperties
+                    }
+                >
                     {title}
-                </h2>
+                </span>
             </header>
 
             <main className='scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pr-[1.5%] scrollbar-thin'>
                 {/* (Sub-)Header, date, "Built with"  */}
-                <h4 className='leading-none'>
-                    <span className='text-left'>{subTitle}</span>
-                    <span className='text-right text-theme-primary-darker no-underline'>
-                        {day && `${day}.`}
-                        {month && `${month}.`}
-                        {year && `${year}`}
-                    </span>
-                </h4>
+                <div>
+                    <span className='block text-2xl'>{subTitle}</span>
+                    <div className='mt-2 flex flex-wrap items-center justify-between gap-y-1'>
+                        <span className='block bg-theme-primary-lighter px-2 py-1 text-sm font-semibold leading-none text-theme-primary-darker'>
+                            {day && `${day}.`}
+                            {month && `${month}.`}
+                            {year && `${year}`}
+                        </span>
+                        <StackAndViewInfos stack={stack} clients={clients} viewLive={viewLive} viewSource={viewSource} />
+                    </div>
+                </div>
 
                 {textBlocks && (
                     <>
@@ -121,6 +133,7 @@ const DisplayPost = () => {
                                 />
                             );
                         })}
+
                         {/* Gallery below text */}
                         {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
                     </>
@@ -140,6 +153,149 @@ const DisplayPost = () => {
 };
 
 export default DisplayPost;
+
+const StackAndViewInfos: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive: Post['viewLive']; viewSource: Post['viewSource'] }> = ({
+    stack,
+    clients,
+    viewLive,
+    viewSource,
+}) => {
+    const [content, setContent] = useState<JSX.Element | null>(null);
+
+    useEffect(() => () => setContent(null), []);
+
+    return (
+        <>
+            <div className='flex items-start justify-end gap-x-2 leading-none'>
+                {stack && (
+                    <SingleStackBlock
+                        title={'Stack'}
+                        jsx={
+                            <div id='stack-content-parent' className='flex items-start justify-start gap-x-4'>
+                                {stack.map((tool, idx) => (
+                                    <a key={idx} href={ToolsUrls[tool]} className='block bg-theme-text-background px-1 py-0.5'>
+                                        {tool}
+                                    </a>
+                                ))}
+                            </div>
+                        }
+                        content={content}
+                        setContent={setContent}
+                    />
+                )}
+
+                {clients && (
+                    <SingleStackBlock
+                        title={'Clients'}
+                        jsx={
+                            <div id='clients-content-parent' className='flex flex-col items-start justify-start gap-y-2'>
+                                {clients.map(({ abbreviation, name, svgUrl }, idx) => (
+                                    <div
+                                        key={idx}
+                                        className='group relative flex aspect-square h-10 select-none items-center justify-center rounded-full bg-theme-text-background text-center text-2xs'
+                                    >
+                                        {abbreviation}
+                                        <div className='absolute top-[calc(100%+theme(spacing.2)+1px)] z-10 h-full w-full text-2xs text-theme-text opacity-0 group-hover-active:opacity-100'>
+                                            {name}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        }
+                        content={content}
+                        setContent={setContent}
+                    />
+                )}
+
+                {viewLive && (
+                    <SingleStackBlock
+                        title={'View Live'}
+                        jsx={
+                            <div id='view-live-content-parent' className='flex flex-col items-start justify-start gap-y-2'>
+                                {viewLive.map(({ url, title, description }, idx) => (
+                                    <div key={idx} className='bg-theme-text-background px-1 py-0.5'>
+                                        <a href={url}>{title}</a>
+                                        <div className='text-theme-text'>{description}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        }
+                        content={content}
+                        setContent={setContent}
+                    />
+                )}
+
+                {viewSource && (
+                    <SingleStackBlock
+                        title={'View Source'}
+                        jsx={
+                            <div id='view-source-content-parent' className='flex flex-col items-start justify-start gap-y-2'>
+                                <div className='bg-theme-text-background px-1 py-0.5'>
+                                    <a href={viewSource.href}>{viewSource.alt}</a>
+                                </div>
+                            </div>
+                        }
+                        content={content}
+                        setContent={setContent}
+                    />
+                )}
+            </div>
+
+            {/* Line Break in flexbox */}
+            <div className='size-0 basis-full' />
+
+            <div
+                className={classNames(
+                    'ml-auto mr-0 w-fit bg-theme-primary-lighter/50 p-2 text-xs text-theme-primary transition-[clip-path,margin]',
+                    content ? 'p-2 clip-inset-l-0' : 'p-0 clip-inset-l-full',
+                )}
+            >
+                {content}
+            </div>
+        </>
+    );
+};
+
+const SingleStackBlock: FC<{
+    title: string;
+    jsx: JSX.Element;
+    content: JSX.Element | null;
+    setContent: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
+}> = ({ title, jsx, content, setContent }) => {
+    const isThisContent = content?.props.id === jsx.props.id;
+
+    return (
+        <button
+            className={classNames(
+                'group flex cursor-pointer items-center justify-end p-1 pl-2 hover-active:bg-theme-primary',
+                isThisContent ? 'bg-theme-primary' : 'bg-theme-primary-lighter',
+            )}
+            onClick={() => {
+                if (!content || !isThisContent) {
+                    setContent(jsx);
+                } else {
+                    setContent(null);
+                }
+            }}
+        >
+            <div
+                className={classNames(
+                    'inline-block pt-0.5 text-2xs font-semibold uppercase leading-none group-hover-active:text-theme-text-background',
+                    isThisContent ? 'text-theme-text-background' : 'text-theme-primary-darker',
+                )}
+            >
+                {title}
+            </div>
+            {/* ChevronDown */}
+            <div
+                className={classNames(
+                    'ml-1 inline-block aspect-square h-3 transition-transform [mask-image:url(/svg/ChevronDownOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%] group-hover-active:bg-theme-text-background',
+                    isThisContent ? 'rotate-0 bg-theme-text-background' : '-rotate-180 bg-theme-primary-darker',
+                )}
+            />
+        </button>
+    );
+};
 
 const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_ShowCase; lightboxCallback: () => void }> = ({
     text,

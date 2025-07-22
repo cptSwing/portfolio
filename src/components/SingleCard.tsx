@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
 import { Flipped } from 'react-flip-toolkit';
-import { degToRad, staticValues, svgObjectBoundingBoxHexagonPath } from '../config/hexagonData.ts';
+import { getHexagonalTitleClipPath, getHexagonPathOffsetAndScale, getShapePaths, svgObjectBoundingBoxHexagonPath } from '../config/hexagonData.ts';
 import stripSpaces from '../lib/stripSpaces.ts';
 
 const SingleCard: FC<{
@@ -88,12 +88,6 @@ const SingleCard: FC<{
 
 export default SingleCard;
 
-function getTitleClipPath(yAxisPoint: number) {
-    const xAxisPoint = yAxisPoint / tan60;
-
-    return `polygon(0% ${yAxisPoint}vh, ${xAxisPoint}vh 0%, calc(100% - ${xAxisPoint}vh) 0%, 100% ${yAxisPoint}vh, calc(100% - ${xAxisPoint}vh) 100%, ${xAxisPoint}vh 100%)`;
-}
-
 const SingleCardImage: FC<{
     post: Post;
     styleIndex: number;
@@ -125,7 +119,7 @@ const SingleCardImage: FC<{
                 )}
                 style={
                     {
-                        '--title-clip-path': getTitleClipPath(isAtFront ? 1.25 : 0.875),
+                        '--title-clip-path': getHexagonalTitleClipPath(isAtFront ? 1.25 : 0.875),
                     } as CSSProperties
                 }
             >
@@ -148,7 +142,7 @@ const SingleCardImage: FC<{
                     )}
                     style={
                         {
-                            '--subtitle-clip-path': getTitleClipPath(isAtFront ? 1.125 : 0.875),
+                            '--subtitle-clip-path': getHexagonalTitleClipPath(isAtFront ? 1.125 : 0.875),
                         } as CSSProperties
                     }
                 >
@@ -201,163 +195,4 @@ function getStyleIndex(flipIndex: number, cardIndex: number, cardCount: number) 
 
 function sanitizeString(str: string) {
     return stripSpaces(str).replace(/[\])}[{(]/g, '_');
-}
-
-const hexAspectRatio = staticValues.heightAspectRatio.flatTop;
-
-function getHexagonPathOffsetAndScale(aspectRatio: number, scale: number, xPos: number, yPos: number) {
-    const scaleY = scale / hexAspectRatio;
-    const scaleX = scaleY / aspectRatio;
-
-    const offsetX = scaleX / 2;
-    const offsetY = offsetX * hexAspectRatio * aspectRatio;
-
-    return `translate(${xPos - offsetX} ${yPos - offsetY}) scale(${scaleX} ${scaleY})`;
-}
-
-const tan60 = Math.tan(degToRad(60));
-
-function getShapePaths(styleIndex: number, aspectRatio: number) {
-    let backgroundShapePath;
-    const hexagonPathTransforms = [];
-
-    switch (styleIndex) {
-        // isFirst
-        case 0:
-        case 5:
-            // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.1} 
-                    L${0.1 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.25 / aspectRatio / tan60},0 
-                    L1,${0.25} 
-
-                    L1,${1 - 0.3} 
-                    L${1 - 0.3 / aspectRatio / tan60},1 
-                    
-                    L${0.15 / aspectRatio / tan60},1 
-                    L0,${1 - 0.15}
-                    Z`;
-
-            hexagonPathTransforms.push({ scale: 0.2, x: 0.9, y: 0.1 }, { scale: 0.25, x: 0.875, y: 0.815 }, { scale: 0.1, x: 0.05, y: 0.95 });
-            break;
-
-        case 1:
-            // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.15} 
-                    L${0.15 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.25 / aspectRatio / tan60},0 
-                    L1,${0.25} 
-
-                    L1,${1 - 0.1} 
-                    L${1 - 0.1 / aspectRatio / tan60},1 
-                    
-                    L${0.3 / aspectRatio / tan60},1 
-                    L0,${1 - 0.3}
-                    Z`;
-
-            hexagonPathTransforms.push({ scale: 0.2, x: 0.9, y: 0.1 }, { scale: 0.1, x: 0.05, y: 0.05 }, { scale: 0.25, x: 0.0875, y: 0.815 });
-            break;
-
-        case 2:
-            // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.15} 
-                    L${0.15 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.3 / aspectRatio / tan60},0 
-                    L1,${0.3} 
-
-                    L1,${1 - 0.1} 
-                    L${1 - 0.1 / aspectRatio / tan60},1 
-                    
-                    L${0.25 / aspectRatio / tan60},1 
-                    L0,${1 - 0.25}
-                    Z`;
-
-            hexagonPathTransforms.push({ scale: 0.1, x: 0.035, y: 0.085 }, { scale: 0.2, x: 0.925, y: 0.1 }, { scale: 0.25, x: 0.0875, y: 0.975 });
-            break;
-
-        case 3:
-            // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.3} 
-                    L${0.3 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.1 / aspectRatio / tan60},0 
-                    L1,${0.1} 
-
-                    L1,${1 - 0.15} 
-                    L${1 - 0.15 / aspectRatio / tan60},1 
-                    
-                    L${0.25 / aspectRatio / tan60},1 
-                    L0,${1 - 0.25}
-                    Z`;
-
-            hexagonPathTransforms.push({ scale: 0.3, x: 0.1, y: 0.03 }, { scale: 0.2, x: 0.5, y: 0.5 }, { scale: 0.25, x: 0.085, y: 0.825 });
-            break;
-
-        case 4:
-            // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.25} 
-                    L${0.25 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.5 / aspectRatio / tan60},0 
-                    L1,${0.5} 
-
-                    L1,${1 - 0.15} 
-                    L${1 - 0.15 / aspectRatio / tan60},1 
-                    
-                    L${0.1 / aspectRatio / tan60},1 
-                    L0,${1 - 0.1}
-                    Z`;
-
-            hexagonPathTransforms.push({ scale: 0.2, x: 0.075, y: 0.1 }, { scale: 0.2, x: 0.84, y: 0.1 }, { scale: 0.1, x: 0.5, y: 0.5 });
-            break;
-
-        case 6:
-            // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.2} 
-                    L${0.2 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.2 / aspectRatio / tan60},0 
-                    L1,${0.2} 
-
-                    L1,${1 - 0.2} 
-                    L${1 - 0.2 / aspectRatio / tan60},1 
-                    
-                    L${0.2 / aspectRatio / tan60},1 
-                    L0,${1 - 0.2}
-                    Z`;
-            break;
-
-        case 7:
-            // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.2} 
-                    L${0.2 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.2 / aspectRatio / tan60},0 
-                    L1,${0.2} 
-
-                    L1,${1 - 0.2} 
-                    L${1 - 0.2 / aspectRatio / tan60},1 
-                    
-                    L${0.2 / aspectRatio / tan60},1 
-                    L0,${1 - 0.2}
-                    Z`;
-
-            hexagonPathTransforms.push({ scale: 0.1, x: 0.5, y: 0.5 }, { scale: 0.1, x: 0.5, y: 0.5 }, { scale: 0.1, x: 0.5, y: 0.5 });
-            break;
-
-        default:
-            backgroundShapePath = 'M0,0 L1,0 L1,1 L0,1 Z';
-    }
-
-    return { backgroundShapePath, hexagonPathTransforms };
 }
