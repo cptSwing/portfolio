@@ -66,7 +66,7 @@ const SingleCard: FC<{
             <button
                 ref={mountCallback_Cb}
                 className={classNames(
-                    'group/button absolute flex size-full select-none flex-col items-center justify-between bg-theme-primary-darker/50 brightness-0 grayscale-0 transition-[filter,background-color] hover-active:bg-theme-primary-darker/10 hover-active:![--tw-brightness:_brightness(1)] hover-active:![--tw-grayscale:_grayscale(0)]',
+                    'group absolute flex size-full select-none flex-col items-center justify-between bg-theme-primary-darker/70 brightness-0 grayscale-0 transition-[filter,background-color] hover-active:bg-theme-primary-darker/0 hover-active:![--tw-brightness:_brightness(1)] hover-active:![--tw-grayscale:_grayscale(0)]',
                     debug_applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
@@ -80,7 +80,7 @@ const SingleCard: FC<{
                 {clipAreaSize && <SVGClipPath clipAreaSize={clipAreaSize} idSuffix={idSuffix} />}
 
                 {/* Image */}
-                <SingleCardImage post={post} isAtFront={isAtFront} idSuffix={idSuffix} />
+                <SingleCardImage post={post} styleIndex={styleIndex} isAtFront={isAtFront} idSuffix={idSuffix} />
             </button>
         </Flipped>
     );
@@ -88,16 +88,23 @@ const SingleCard: FC<{
 
 export default SingleCard;
 
+function getTitleClipPath(yAxisPoint: number) {
+    const xAxisPoint = yAxisPoint / tan60;
+
+    return `polygon(0% ${yAxisPoint}vh, ${xAxisPoint}vh 0%, calc(100% - ${xAxisPoint}vh) 0%, 100% ${yAxisPoint}vh, calc(100% - ${xAxisPoint}vh) 100%, ${xAxisPoint}vh 100%)`;
+}
+
 const SingleCardImage: FC<{
     post: Post;
+    styleIndex: number;
     isAtFront: boolean;
     idSuffix: string;
-}> = ({ post, isAtFront, idSuffix }) => {
+}> = ({ post, styleIndex, isAtFront, idSuffix }) => {
     const { title, titleCardBg, subTitle } = post;
 
     return (
         <div
-            className='group absolute inset-[--inset-on-hover] overflow-hidden transition-[inset] group-hover-active/button:![--inset-on-hover:0vw]'
+            className='group absolute inset-[--inset-on-hover] overflow-hidden transition-[inset] group-hover-active:![--inset-on-hover:0vw]'
             style={
                 {
                     'clipPath': `url(#test-clip-path-${idSuffix})`,
@@ -106,17 +113,24 @@ const SingleCardImage: FC<{
             }
         >
             {/* Title: */}
-            <h6
+            <span
                 className={classNames(
-                    'absolute left-1/2 top-[2%] z-10 max-w-[84%] -translate-x-1/2 items-center justify-center text-center text-theme-secondary-lighter',
-                    'before:absolute before:left-0 before:-z-10 before:h-full before:w-full before:bg-theme-primary-darker/90 before:pl-[10%] before:[clip-path:--title-clip-path]',
-                    isAtFront ? 'flex w-fit' : 'hidden size-0',
+                    'absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-center font-semibold text-theme-primary-darker transition-transform',
+                    'before:absolute before:left-[-10%] before:top-1/2 before:-z-10 before:w-[120%] before:-translate-y-1/2 before:bg-theme-secondary-lighter/80 before:[clip-path:--title-clip-path]',
+                    styleIndex === 0
+                        ? 'top-[2vh] translate-y-0 text-[2vh] before:h-[2.5vh]'
+                        : styleIndex < 5
+                          ? 'top-[1.5vh] -translate-y-[4vh] text-[1.25vh] before:h-[1.75vh] group-hover-active:translate-y-0'
+                          : 'hidden',
                 )}
-                // style={{ '--title-clip-path': `url(#test-clip-path-${idSuffix})` } as CSSProperties}
-                style={{ '--title-clip-path': `path(${getShapePaths(6, 8, true).backgroundShapePath})` } as CSSProperties}
+                style={
+                    {
+                        '--title-clip-path': getTitleClipPath(isAtFront ? 1.25 : 0.875),
+                    } as CSSProperties
+                }
             >
                 {title}
-            </h6>
+            </span>
 
             <img className='size-full object-cover object-center' src={titleCardBg} alt={title} />
 
@@ -124,10 +138,19 @@ const SingleCardImage: FC<{
             {subTitle && (
                 <div
                     className={classNames(
-                        'absolute bottom-[2%] left-1/2 z-10 max-w-[84%] -translate-x-1/2 items-center justify-center text-nowrap text-center text-sm text-theme-secondary-lighter',
-                        'before:absolute before:left-[-5%] before:-z-10 before:h-full before:w-[110%] before:bg-theme-primary/70 before:pl-[10%] before:[clip-path:polygon(0_50%,5px_0,calc(100%-5px)_0,100%_50%,calc(100%-5px)_100%,5px_100%)]',
-                        isAtFront ? 'flex w-fit' : 'hidden size-0',
+                        'absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-center font-semibold text-theme-primary-darker transition-transform',
+                        'before:absolute before:left-[-2.5%] before:top-1/2 before:-z-10 before:w-[105%] before:-translate-y-1/2 before:bg-theme-primary-lighter/80 before:[clip-path:--subtitle-clip-path]',
+                        styleIndex === 0
+                            ? 'bottom-[2vh] translate-y-0 text-[1.25vh] before:h-[2.25vh]'
+                            : styleIndex < 5
+                              ? 'bottom-[1.5vh] translate-y-[4vh] text-[1vh] before:h-[1.75vh] group-hover-active:translate-y-0'
+                              : 'hidden',
                     )}
+                    style={
+                        {
+                            '--subtitle-clip-path': getTitleClipPath(isAtFront ? 1.125 : 0.875),
+                        } as CSSProperties
+                    }
                 >
                     <Markdown>{subTitle}</Markdown>
                 </div>
@@ -146,7 +169,7 @@ const SVGClipPath: FC<{
         <svg xmlns='http://www.w3.org/2000/svg' style={{ width, height }}>
             <defs>
                 <clipPath id={`test-clip-path-${idSuffix}`} clipPathUnits='objectBoundingBox'>
-                    <path className='transition-[d] duration-300' d={backgroundShapePath} />
+                    <path className='transition-[d] delay-75' d={backgroundShapePath} />
 
                     {hexagonPathTransforms.map(({ scale, x, y }, idx) => (
                         <path
@@ -194,7 +217,7 @@ function getHexagonPathOffsetAndScale(aspectRatio: number, scale: number, xPos: 
 
 const tan60 = Math.tan(degToRad(60));
 
-function getShapePaths(styleIndex: number, aspectRatio: number, addPercentUnit = false) {
+function getShapePaths(styleIndex: number, aspectRatio: number) {
     let backgroundShapePath;
     const hexagonPathTransforms = [];
 
@@ -298,21 +321,7 @@ function getShapePaths(styleIndex: number, aspectRatio: number, addPercentUnit =
 
         case 6:
             // top left; top right; bottom right; bottom left
-            backgroundShapePath = addPercentUnit
-                ? `
-                    M0%,${0.2 * 100}% 
-                    L${(0.2 * 100) / aspectRatio / tan60}%,0% 
-                    
-                    L${((1 - 0.2) * 100) / aspectRatio / tan60}%,0% 
-                    L100%,${0.2 * 100}% 
-
-                    L100%,${(1 - 0.2) * 100}% 
-                    L${((1 - 0.2) * 100) / aspectRatio / tan60}%,100% 
-                    
-                    L${(0.2 * 100) / aspectRatio / tan60}%,100% 
-                    L0%,${(1 - 0.2) * 100}%
-                    Z`
-                : `
+            backgroundShapePath = `
                     M0,${0.2} 
                     L${0.2 / aspectRatio / tan60},0 
                     
