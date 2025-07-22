@@ -3,8 +3,10 @@ import Markdown from 'react-markdown';
 import { useParams, useNavigate } from 'react-router-dom';
 import remarkBreaks from 'remark-breaks';
 import Lightbox, { SlideImage } from 'yet-another-react-lightbox';
-import { Captions } from 'yet-another-react-lightbox/plugins';
+import { Captions, Counter } from 'yet-another-react-lightbox/plugins';
 import 'yet-another-react-lightbox/styles.css';
+import 'yet-another-react-lightbox/plugins/captions.css';
+import 'yet-another-react-lightbox/plugins/counter.css';
 import classNames from '../../lib/classNames';
 import parseDateString from '../../lib/parseDateString';
 import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
@@ -61,8 +63,8 @@ const DisplayPost = () => {
                 .map((showCase, idx) => {
                     if ('imgUrl' in showCase) {
                         return {
-                            src: `${showCase.imgUrl}`,
-                            title: showCase.caption,
+                            src: showCase.imgUrl,
+                            title: <div style={{ textAlign: 'center' }}>{showCase.caption}</div>,
                             scIndx: idx,
                         };
                     }
@@ -129,7 +131,8 @@ const DisplayPost = () => {
                     index={lightboxTo ?? 0}
                     close={() => setLightboxTo(null)}
                     slides={filteredImages_Memo}
-                    plugins={[Captions]}
+                    plugins={[Captions, Counter]}
+                    captions={{ descriptionTextAlign: 'center' }}
                 />
             </main>
         </div>
