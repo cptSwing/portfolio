@@ -36,7 +36,7 @@ export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
 /* NOTE Easy, if non-generic, method to build a Type that has EITHER key1 OR key2. Mind the "?"" in the key to be excluded in the helper types above. */
 export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
-export type Post = {
+export type PostType = {
     id: number;
     title: string;
     date: string | string[];
@@ -57,7 +57,7 @@ export type DataBase = {
     [key in MENU_CATEGORY]: {
         id: number;
         categoryTitle: MENU_CATEGORY;
-        posts: Post[];
+        posts: PostType[];
         categoryCardBackgroundImage: string;
         categoryBackgroundSvg: CategoryLink;
         categoryBlurb: string;
