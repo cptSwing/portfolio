@@ -44,7 +44,7 @@ const Settings = () => {
         >
             {/* empty */}
             <button
-                className='group peer absolute size-full rotate-0 cursor-pointer items-center justify-center transition-transform'
+                className='group peer absolute size-full rotate-0 cursor-pointer items-center justify-center transition-transform [clip-path:url(#svgRoundedHexagonClipPath-default)]'
                 style={
                     hasMounted
                         ? ({
@@ -59,14 +59,14 @@ const Settings = () => {
                 title='1'
             >
                 <RoundedHexagonSVG
-                    classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active:fill-theme-secondary-darker transition-[fill] -z-50'
-                    strokeWidth={subMenuButtonsMargin}
+                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active:fill-theme-secondary-darker'
+                    strokeWidth={subMenuButtonsMargin / 50}
                 />
             </button>
 
             {/* Theme Settings */}
             <button
-                className='group peer absolute size-full rotate-0 cursor-pointer items-center justify-center transition-transform'
+                className='group peer absolute size-full rotate-0 cursor-pointer items-center justify-center transition-transform [clip-path:url(#svgRoundedHexagonClipPath-default)]'
                 style={
                     hasMounted
                         ? ({
@@ -82,8 +82,8 @@ const Settings = () => {
                 onClick={() => store_cycleTheme()}
             >
                 <RoundedHexagonSVG
-                    classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active:fill-theme-secondary-darker transition-[fill] -z-50'
-                    strokeWidth={subMenuButtonsMargin}
+                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active:fill-theme-secondary-darker'
+                    strokeWidth={subMenuButtonsMargin / 50}
                 />
 
                 {/* logo */}
@@ -92,7 +92,7 @@ const Settings = () => {
 
             {/* empty */}
             <button
-                className='group peer absolute size-full rotate-0 cursor-pointer items-center justify-center transition-transform'
+                className='group peer absolute size-full rotate-0 cursor-pointer items-center justify-center transition-transform [clip-path:url(#svgRoundedHexagonClipPath-default)]'
                 style={
                     hasMounted
                         ? ({
@@ -107,8 +107,8 @@ const Settings = () => {
                 title='2'
             >
                 <RoundedHexagonSVG
-                    classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active:fill-theme-secondary-darker transition-[fill] -z-50'
-                    strokeWidth={subMenuButtonsMargin}
+                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active:fill-theme-secondary-darker'
+                    strokeWidth={subMenuButtonsMargin / 50}
                 />
             </button>
 

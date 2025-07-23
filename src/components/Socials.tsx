@@ -41,7 +41,7 @@ const Socials = () => {
         <nav
             ref={refCallback}
             className={classNames(
-                'pointer-events-auto absolute aspect-hex-flat origin-center transition-transform delay-75 duration-300',
+                'pointer-events-auto absolute aspect-hex-flat transition-transform delay-75 duration-300',
                 hasMounted ? 'rotate-90' : 'rotate-0',
             )}
             style={
@@ -55,7 +55,7 @@ const Socials = () => {
         >
             {/* Linkedin */}
             <button
-                className='group/linkedin duration-500-none peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform'
+                className='group/linkedin duration-500-none peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform [clip-path:url(#svgRoundedHexagonClipPath-default)]'
                 data-title='LinkedIn'
                 title='LinkedIn'
                 style={
@@ -71,13 +71,14 @@ const Socials = () => {
                 onClick={() => (window.location.href = 'https://www.linkedin.com/in/jensbrandenburg')}
             >
                 <RoundedHexagonSVG
-                    classNames='absolute stroke-theme-secondary-lighter/50 left-0 top-0 fill-theme-secondary group-hover-active/linkedin:fill-theme-secondary-darker transition-[fill] -z-50 h-auto'
-                    strokeWidth={subMenuButtonsMargin}
+                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active/linkedin:fill-theme-secondary-darker'
+                    strokeWidth={subMenuButtonsMargin / 50}
                 />
+
                 {/* logo */}
                 <div
                     className={classNames(
-                        'size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active/linkedin:bg-theme-primary-lighter',
+                        'absolute left-0 top-0 size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active/linkedin:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -85,7 +86,7 @@ const Socials = () => {
 
             {/* github */}
             <button
-                className='group/github peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
+                className='group/github peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500 [clip-path:url(#svgRoundedHexagonClipPath-default)]'
                 data-title='GitHub'
                 title='GitHub'
                 style={
@@ -101,14 +102,14 @@ const Socials = () => {
                 onClick={() => (window.location.href = 'https://github.com/cptSwing')}
             >
                 <RoundedHexagonSVG
-                    classNames='absolute stroke-theme-secondary-lighter/50 left-0 top-0  fill-theme-secondary group-hover-active/github:fill-theme-secondary-darker transition-[fill] -z-50 h-auto'
-                    strokeWidth={subMenuButtonsMargin}
+                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active/github:fill-theme-secondary-darker'
+                    strokeWidth={subMenuButtonsMargin / 50}
                 />
 
                 {/* logo */}
                 <div
                     className={classNames(
-                        'size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active/github:bg-theme-primary-lighter',
+                        'absolute left-0 top-0 size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active/github:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -116,7 +117,7 @@ const Socials = () => {
 
             {/* email */}
             <button
-                className='group/email peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
+                className='group/email peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500 [clip-path:url(#svgRoundedHexagonClipPath-default)]'
                 style={
                     hasMounted
                         ? ({
@@ -132,8 +133,8 @@ const Socials = () => {
                 onClick={() => (window.location.href = 'mailto:jens@jbrandenburg.de')}
             >
                 <RoundedHexagonSVG
-                    classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active/email:fill-theme-secondary-darker transition-[fill]  -z-50 h-auto'
-                    strokeWidth={subMenuButtonsMargin}
+                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active/email:fill-theme-secondary-darker'
+                    strokeWidth={subMenuButtonsMargin / 50}
                 />
 
                 {/* logo */}
@@ -146,10 +147,9 @@ const Socials = () => {
             </button>
 
             {/* 3D Stores */}
-
             <label
                 htmlFor='menu-stores-input'
-                className='group/stores peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500'
+                className='group/stores peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500 [clip-path:url(#svgRoundedHexagonClipPath-default)]'
                 style={
                     hasMounted
                         ? ({
@@ -163,8 +163,8 @@ const Socials = () => {
                 data-title='Stores'
             >
                 <RoundedHexagonSVG
-                    classNames='absolute left-0 top-0 fill-theme-secondary stroke-theme-secondary-lighter/50 group-hover-active/stores:fill-theme-secondary-darker transition-[fill]  -z-50 h-auto'
-                    strokeWidth={subMenuButtonsMargin}
+                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active/stores:fill-theme-secondary-darker'
+                    strokeWidth={subMenuButtonsMargin / 50}
                 />
 
                 {/* logo */}

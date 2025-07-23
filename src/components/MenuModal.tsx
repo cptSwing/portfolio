@@ -2,7 +2,6 @@ import { useZustand } from '../lib/zustand';
 import Settings from './Settings';
 import Socials from './Socials';
 import { useEffect, useRef } from 'react';
-import RoundedHexagonSVG from './RoundedHexagonSVG';
 
 const store_toggleMenu = useZustand.getState().methods.store_toggleMenu;
 
@@ -14,7 +13,7 @@ const MenuModal = () => {
         if (dialogRef.current) {
             if (name) {
                 dialogRef.current.showModal();
-                dialogRef.current.style.setProperty('--tw-bg-opacity', '0.9');
+                dialogRef.current.style.setProperty('--tw-bg-opacity', '0.95');
             } else {
                 dialogRef.current.close();
                 dialogRef.current.style.removeProperty('--tw-bg-opacity');
@@ -29,7 +28,7 @@ const MenuModal = () => {
             className='size-full bg-gray-950 bg-opacity-0 transition-[background-color]' // backdrop-blur-md
             onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleMenu({ name: null })}
         >
-            {name === 'settings' ? <Settings /> : <Socials />}
+            {name && (name === 'settings' ? <Settings /> : <Socials />)}
         </dialog>
     );
 };
@@ -39,14 +38,11 @@ export default MenuModal;
 /* Used in child components: */
 export const CloseSubMenu = () => {
     const menuButtonPosAndSize = useZustand((store) => store.values.activeMenuButton.positionAndSize);
-
-    const subMenuButtonsMargin = menuButtonPosAndSize ? menuButtonPosAndSize.width * 0.1 : 0;
-
     const handleClick = () => store_toggleMenu({ name: null });
 
     return (
         <button
-            className='group absolute aspect-hex-flat cursor-pointer peer-hover-active:[--x-mark-opacity:0]'
+            className='group absolute aspect-hex-flat cursor-pointer bg-theme-secondary-darker brightness-[0.4] [clip-path:url(#svgRoundedHexagonClipPath-default)] hover-active:brightness-100 peer-hover-active:[--x-mark-opacity:0]'
             style={
                 menuButtonPosAndSize && {
                     width: menuButtonPosAndSize.width,
@@ -54,13 +50,8 @@ export const CloseSubMenu = () => {
             }
             onClick={handleClick}
         >
-            <RoundedHexagonSVG
-                classNames='absolute left-0 top-0 stroke-theme-primary-darker fill-theme-secondary/10 group-hover-active:fill-theme-secondary/50 transition-[fill] -z-50'
-                strokeWidth={subMenuButtonsMargin}
-            />
-
             {/* XMark */}
-            <div className='size-full bg-theme-primary opacity-[--x-mark-opacity] transition-[background-color,opacity] [mask-image:url(/svg/XMarkOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:55%] group-hover-active:bg-theme-primary-lighter' />
+            <div className='size-full bg-theme-primary-lighter/50 opacity-[--x-mark-opacity] transition-[background-color,opacity] [mask-image:url(/svg/XMarkOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:55%] group-hover-active:bg-theme-primary-lighter' />
         </button>
     );
 };
