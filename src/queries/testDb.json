@@ -102,18 +102,22 @@
                     "alt": "fader360-frontend (Github)",
                     "href": "https://github.com/VRagments/fader360-frontend"
                 },
-                "clients": [{ "abbreviation": "DW", "name": "Deutsche Welle" }],
+                "clients": [
+                    { "abbreviation": "DW", "name": "Deutsche Welle" },
+                    { "abbreviation": "DW", "name": "Deutsche Welle" },
+                    { "abbreviation": "DW", "name": "Deutsche Welle" }
+                ],
                 "stack": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
                 "viewLive": [
                     {
                         "url": "https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2",
-                        "title": "NYC Woman's March (Deutsche Welle Showcase)",
-                        "description": ""
+                        "title": "NYC Woman's March",
+                        "description": "(Deutsche Welle Showcase)"
                     },
                     {
                         "url": "https://fader360.vrgmnts.net/users/login",
                         "title": "Fader360 Instance",
-                        "description": "login with \"jens@jbrandenburg.de\", password \"!$V2&;+'i-EzrfF\""
+                        "description": "login: jens@jbrandenburg.de \npassword: !$V2&;+'i-EzrfF"
                     }
                 ],
                 "date": "2023-08-11",

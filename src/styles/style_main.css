@@ -113,6 +113,7 @@ button :focus-visible {
 
 .postcards-grid-template {
     grid-template-areas:
+        'info info info info info info'
         'area6  area6   area6   area6   rest   area1 '
         'area6  area6   area6   area6   area2   area2 '
         'area6  area6   area6   area6   area2   area2 '

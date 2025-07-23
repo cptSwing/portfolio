@@ -1,6 +1,5 @@
 import testDb from '../../queries/testDb.json';
 import { useParams } from 'react-router-dom';
-import SingleCard from '../SingleCard.tsx';
 import { DataBase, ClipAreaSize } from '../../types/types';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../../lib/classNames';
@@ -10,6 +9,7 @@ import config from '../../config/config.json';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
 import remapToRange from '../../lib/remapToRange.ts';
+import CategoryCard from '../CategoryCard.tsx';
 
 const testDbTyped = testDb as DataBase;
 const categories = Object.values(testDbTyped);
@@ -60,8 +60,8 @@ const Category = () => {
                         ...baseStyle,
                         'gridArea': 'rest',
                         'position': 'absolute',
-                        'width': `calc(${widthPercent}% - 8px)`,
-                        'left': `${100 - widthPercent > widthPercent ? 0 : 100 - widthPercent}%`,
+                        'width': `${widthPercent * 0.9}%`,
+                        'left': `${100 - widthPercent > widthPercent ? 0 : 100 - widthPercent + widthPercent * 0.1}%`,
                         '--tw-brightness': `brightness(${brightnessPercentage / 2})`,
                         '--tw-grayscale': `grayscale(${1 - brightnessPercentage / 2})`,
                     } as CSSProperties;
@@ -81,20 +81,34 @@ const Category = () => {
 
     const clipAreaSizes = useRef<ClipAreaSize[]>([]);
 
+    const [{ title, subTitle }, setInfoContent] = useState({ title: 'jens Brandenburg', subTitle: 'webdev and 3d art' });
+
     if (!categoryData_Memo) return null;
 
     return (
         <>
             <Flipper
                 element={'nav'}
-                className='postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[repeat(8,minmax(0,1fr))_1vh] gap-x-[2.5%] gap-y-[5%] overflow-hidden bg-theme-primary/10 px-[8vh] py-[4vh] transition-[transform,clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%]'
+                className='postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[4vh_repeat(8,minmax(0,1fr))_1vh] gap-x-6 gap-y-6 overflow-hidden bg-theme-primary/10 px-[8vh] py-3 transition-[transform,clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%]'
                 flipKey={flipIndex}
                 spring={{ stiffness: 600, damping: 40 }}
             >
+                {/* Info */}
+                <div className='flex items-start justify-between [grid-area:info]'>
+                    <div>
+                        <div className='text-xl text-theme-secondary-lighter'>{title}</div>
+                        <div className='text-sm text-theme-text-background'>{subTitle}</div>
+                    </div>
+                    <div className='select-none text-right text-theme-primary/75'>
+                        <div className='text-lg leading-snug'>jens Brandenburg</div>
+                        <div className='text-sm leading-snug'>webdev & 3d art</div>
+                    </div>
+                </div>
+
                 {/* Animated Grid */}
                 {gridAreaStyles_Memo &&
                     categoryData_Memo.posts.map((post, idx, arr) => (
-                        <SingleCard
+                        <CategoryCard
                             key={post.title + idx}
                             post={post}
                             flipIndex={flipIndex}
@@ -103,11 +117,12 @@ const Category = () => {
                             gridAreaStyles={gridAreaStyles_Memo}
                             clipAreaSizes={clipAreaSizes}
                             setFlipIndex={setFlipIndex}
+                            setInfoContent={setInfoContent}
                         />
                     ))}
 
                 {/* Progress Bar */}
-                <div className='mx-auto flex w-[91.34%] items-center justify-between gap-x-2 [grid-area:tracker]'>
+                <div className='mx-auto -mt-3 flex w-[90%] items-center justify-between gap-x-2 [grid-area:tracker]'>
                     {categoryData_Memo.posts.map((post, idx) => {
                         return (
                             <button

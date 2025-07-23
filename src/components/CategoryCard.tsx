@@ -1,11 +1,10 @@
-import { CSSProperties, FC, useCallback } from 'react';
+import { CSSProperties, FC, useCallback, useEffect } from 'react';
 import { ClipAreaSize, PostType } from '../types/types.ts';
-import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
 import { Flipped } from 'react-flip-toolkit';
-import { getHexagonalTitleClipPath, getHexagonPathOffsetAndScale, getShapePaths, svgObjectBoundingBoxHexagonPath } from '../config/hexagonData.ts';
+import { getShapePaths } from '../config/hexagonData.ts';
 import stripSpaces from '../lib/stripSpaces.ts';
 
 const CategoryCard: FC<{
@@ -16,7 +15,13 @@ const CategoryCard: FC<{
     gridAreaStyles: CSSProperties[];
     clipAreaSizes: React.MutableRefObject<ClipAreaSize[]>;
     setFlipIndex: (value: React.SetStateAction<number>) => void;
-}> = ({ post, cardIndex, flipIndex, cardCount, gridAreaStyles, clipAreaSizes, setFlipIndex }) => {
+    setInfoContent: React.Dispatch<
+        React.SetStateAction<{
+            title: string;
+            subTitle: string;
+        }>
+    >;
+}> = ({ post, cardIndex, flipIndex, cardCount, gridAreaStyles, clipAreaSizes, setFlipIndex, setInfoContent }) => {
     const navigate = useNavigate();
 
     const styleIndex = getStyleIndex(flipIndex, cardIndex, cardCount);
@@ -27,16 +32,14 @@ const CategoryCard: FC<{
             if (elem) {
                 const { width, height } = elem.getBoundingClientRect();
                 const aspectRatio = width / height;
-                const { backgroundShapePath, hexagonPathTransforms } = getShapePaths(styleIndex, aspectRatio);
+                const backgroundShapePath = getShapePaths(styleIndex, aspectRatio);
 
                 if (!clipAreaSizes.current[styleIndex])
                     // TODO should update on resize
                     clipAreaSizes.current[styleIndex] = {
                         width,
                         height,
-                        aspectRatio,
                         backgroundShapePath,
-                        hexagonPathTransforms,
                     };
             }
         },
@@ -47,6 +50,12 @@ const CategoryCard: FC<{
     const clipAreaSize = clipAreaSizes.current[styleIndex];
 
     const isAtFront = styleIndex === 0;
+
+    useEffect(() => {
+        if (isAtFront) {
+            setInfoContent({ title: post.title, subTitle: post.subTitle ?? '' });
+        }
+    }, [isAtFront, post, setInfoContent]);
 
     const idSuffix = sanitizeString(post.id + post.title);
 
@@ -66,21 +75,18 @@ const CategoryCard: FC<{
             <button
                 ref={mountCallback_Cb}
                 className={classNames(
-                    'group absolute flex size-full select-none flex-col items-center justify-between bg-theme-primary-darker/70 brightness-0 grayscale-0 transition-[filter,background-color] hover-active:bg-theme-primary-darker/0 hover-active:![--tw-brightness:_brightness(1)] hover-active:![--tw-grayscale:_grayscale(0)]',
+                    'group absolute flex size-full brightness-0 drop-shadow-omni-md grayscale-0 transition-[filter,background-color] hover-active:![--tw-brightness:_brightness(1)] hover-active:![--tw-grayscale:_grayscale(0)]',
                     debug_applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
                 )}
-                style={{
-                    ...gridAreaStyle,
-                    clipPath: `url(#test-clip-path-${idSuffix})`,
-                }}
+                style={gridAreaStyle}
                 onClick={handleClick}
             >
                 {/* Clip Path SVG */}
                 {clipAreaSize && <SVGClipPath clipAreaSize={clipAreaSize} idSuffix={idSuffix} />}
 
                 {/* Image */}
-                <CategoryCardImage post={post} styleIndex={styleIndex} isAtFront={isAtFront} idSuffix={idSuffix} />
+                <CategoryCardImage post={post} idSuffix={idSuffix} />
             </button>
         </Flipped>
     );
@@ -90,65 +96,20 @@ export default CategoryCard;
 
 const CategoryCardImage: FC<{
     post: PostType;
-    styleIndex: number;
-    isAtFront: boolean;
     idSuffix: string;
-}> = ({ post, styleIndex, isAtFront, idSuffix }) => {
-    const { title, titleCardBg, subTitle } = post;
+}> = ({ post, idSuffix }) => {
+    const { title, titleCardBg } = post;
 
     return (
         <div
-            className='group absolute inset-[--inset-on-hover] overflow-hidden transition-[inset] group-hover-active:![--inset-on-hover:0vw]'
+            className='group relative size-full overflow-hidden bg-theme-primary-darker/70 hover-active:scale-[1.03]'
             style={
                 {
-                    'clipPath': `url(#test-clip-path-${idSuffix})`,
-                    '--inset-on-hover': '0.12vw',
+                    clipPath: `url(#svg-hexagon-clip-path-${idSuffix})`,
                 } as CSSProperties
             }
         >
-            {/* Title: */}
-            <span
-                className={classNames(
-                    'absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-center font-semibold text-theme-primary-darker transition-transform',
-                    'before:absolute before:left-[-10%] before:top-1/2 before:-z-10 before:w-[120%] before:-translate-y-1/2 before:bg-theme-secondary-lighter/80 before:[clip-path:--title-clip-path]',
-                    styleIndex === 0
-                        ? 'top-[2vh] translate-y-0 text-[2vh] before:h-[2.5vh]'
-                        : styleIndex < 5
-                          ? 'top-[1.5vh] -translate-y-[4vh] text-[1.25vh] before:h-[1.75vh] group-hover-active:translate-y-0'
-                          : 'hidden',
-                )}
-                style={
-                    {
-                        '--title-clip-path': getHexagonalTitleClipPath(isAtFront ? 1.25 : 0.875),
-                    } as CSSProperties
-                }
-            >
-                {title}
-            </span>
-
             <img className='size-full object-cover object-center' src={titleCardBg} alt={title} />
-
-            {/* Subtitle: */}
-            {subTitle && (
-                <div
-                    className={classNames(
-                        'absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-center font-semibold text-theme-primary-darker transition-transform',
-                        'before:absolute before:left-[-2.5%] before:top-1/2 before:-z-10 before:w-[105%] before:-translate-y-1/2 before:bg-theme-primary-lighter/80 before:[clip-path:--subtitle-clip-path]',
-                        styleIndex === 0
-                            ? 'bottom-[2vh] translate-y-0 text-[1.25vh] before:h-[2.25vh]'
-                            : styleIndex < 5
-                              ? 'bottom-[1.5vh] translate-y-[4vh] text-[1vh] before:h-[1.75vh] group-hover-active:translate-y-0'
-                              : 'hidden',
-                    )}
-                    style={
-                        {
-                            '--subtitle-clip-path': getHexagonalTitleClipPath(isAtFront ? 1.125 : 0.875),
-                        } as CSSProperties
-                    }
-                >
-                    <Markdown>{subTitle}</Markdown>
-                </div>
-            )}
         </div>
     );
 };
@@ -157,22 +118,13 @@ const SVGClipPath: FC<{
     clipAreaSize: ClipAreaSize;
     idSuffix: string;
 }> = ({ clipAreaSize, idSuffix }) => {
-    const { width, height, aspectRatio, backgroundShapePath, hexagonPathTransforms } = clipAreaSize;
+    const { width, height, backgroundShapePath } = clipAreaSize;
 
     return (
-        <svg xmlns='http://www.w3.org/2000/svg' style={{ width, height }}>
+        <svg xmlns='http://www.w3.org/2000/svg' className='pointer-events-none absolute' style={{ width, height }}>
             <defs>
-                <clipPath id={`test-clip-path-${idSuffix}`} clipPathUnits='objectBoundingBox'>
+                <clipPath id={`svg-hexagon-clip-path-${idSuffix}`} clipPathUnits='objectBoundingBox'>
                     <path className='transition-[d] delay-75' d={backgroundShapePath} />
-
-                    {hexagonPathTransforms.map(({ scale, x, y }, idx) => (
-                        <path
-                            key={idSuffix + idx}
-                            className='transition-transform'
-                            d={svgObjectBoundingBoxHexagonPath}
-                            transform={getHexagonPathOffsetAndScale(aspectRatio, scale, x, y)}
-                        />
-                    ))}
                 </clipPath>
             </defs>
         </svg>

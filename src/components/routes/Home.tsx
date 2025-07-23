@@ -7,6 +7,7 @@ import DisplayPost from './Post';
 import HexagonTiles from '../HexagonTiles';
 import MenuModal from '../MenuModal';
 import { useZustand } from '../../lib/zustand';
+import RoundedHexagonSVG from '../RoundedHexagonSVG';
 
 const store_setExpansionState = useZustand.getState().methods.store_setExpansionState;
 
@@ -43,6 +44,9 @@ const Main = () => {
                 expansionState === 'category' ? 'w-[45vw]' : expansionState === 'post' ? 'w-[55vw]' : 'w-[50vw]',
             )}
         >
+            {/* Used as clip-shape multiple times down the line */}
+            <RoundedHexagonSVG showPath={false} useClipPath idSuffix='-default' />
+
             <HexagonTiles />
 
             <div

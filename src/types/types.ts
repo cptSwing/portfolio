@@ -76,7 +76,5 @@ export type HexagonLink = { title: UIButton; svgPath?: string; target: string | 
 export type ClipAreaSize = {
     width: number;
     height: number;
-    aspectRatio: number;
     backgroundShapePath: string;
-    hexagonPathTransforms: { scale: number; x: number; y: number }[];
 };
