@@ -1,5 +1,5 @@
 import { CSSProperties, FC, useCallback } from 'react';
-import { ClipAreaSize, Post } from '../types/types.ts';
+import { ClipAreaSize, PostType } from '../types/types.ts';
 import Markdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames.ts';
@@ -8,8 +8,8 @@ import { Flipped } from 'react-flip-toolkit';
 import { getHexagonalTitleClipPath, getHexagonPathOffsetAndScale, getShapePaths, svgObjectBoundingBoxHexagonPath } from '../config/hexagonData.ts';
 import stripSpaces from '../lib/stripSpaces.ts';
 
-const SingleCard: FC<{
-    post: Post;
+const CategoryCard: FC<{
+    post: PostType;
     cardIndex: number;
     flipIndex: number;
     cardCount: number;
@@ -80,16 +80,16 @@ const SingleCard: FC<{
                 {clipAreaSize && <SVGClipPath clipAreaSize={clipAreaSize} idSuffix={idSuffix} />}
 
                 {/* Image */}
-                <SingleCardImage post={post} styleIndex={styleIndex} isAtFront={isAtFront} idSuffix={idSuffix} />
+                <CategoryCardImage post={post} styleIndex={styleIndex} isAtFront={isAtFront} idSuffix={idSuffix} />
             </button>
         </Flipped>
     );
 };
 
-export default SingleCard;
+export default CategoryCard;
 
-const SingleCardImage: FC<{
-    post: Post;
+const CategoryCardImage: FC<{
+    post: PostType;
     styleIndex: number;
     isAtFront: boolean;
     idSuffix: string;
