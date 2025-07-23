@@ -9,16 +9,16 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/counter.css';
 import classNames from '../../lib/classNames';
 import parseDateString from '../../lib/parseDateString';
-import { DataBase, Post, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
+import { DataBase, PostType, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
 import testDb from '../../queries/testDb.json';
 import { useZustand } from '../../lib/zustand';
 import { getHexagonalTitleClipPath } from '../../config/hexagonData';
-import { ToolsUrls } from '../../types/enums';
+import PostDetails from '../PostDetails';
 
 const testDbTyped = testDb as DataBase;
 const store_setPostNavState = useZustand.getState().methods.store_setPostNavState;
 
-const DisplayPost = () => {
+const Post = () => {
     const { catId, postId } = useParams();
     const navigate = useNavigate();
 
@@ -108,13 +108,13 @@ const DisplayPost = () => {
                 {/* (Sub-)Header, date, "Built with"  */}
                 <div>
                     <span className='block text-2xl'>{subTitle}</span>
-                    <div className='mt-2 flex flex-wrap items-center justify-between gap-y-1'>
+                    <div className='my-2 flex flex-wrap items-center justify-between gap-y-1'>
                         <span className='block bg-theme-primary-lighter px-2 py-1 text-sm font-semibold leading-none text-theme-primary-darker'>
                             {day && `${day}.`}
                             {month && `${month}.`}
                             {year && `${year}`}
                         </span>
-                        <StackAndViewInfos stack={stack} clients={clients} viewLive={viewLive} viewSource={viewSource} />
+                        <PostDetails stack={stack} clients={clients} viewLive={viewLive} viewSource={viewSource} />
                     </div>
                 </div>
 
@@ -152,150 +152,7 @@ const DisplayPost = () => {
     );
 };
 
-export default DisplayPost;
-
-const StackAndViewInfos: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive: Post['viewLive']; viewSource: Post['viewSource'] }> = ({
-    stack,
-    clients,
-    viewLive,
-    viewSource,
-}) => {
-    const [content, setContent] = useState<JSX.Element | null>(null);
-
-    useEffect(() => () => setContent(null), []);
-
-    return (
-        <>
-            <div className='flex items-start justify-end gap-x-2 leading-none'>
-                {stack && (
-                    <SingleStackBlock
-                        title={'Stack'}
-                        jsx={
-                            <div id='stack-content-parent' className='flex items-start justify-start gap-x-4'>
-                                {stack.map((tool, idx) => (
-                                    <a key={idx} href={ToolsUrls[tool]} className='block bg-theme-text-background px-1 py-0.5'>
-                                        {tool}
-                                    </a>
-                                ))}
-                            </div>
-                        }
-                        content={content}
-                        setContent={setContent}
-                    />
-                )}
-
-                {clients && (
-                    <SingleStackBlock
-                        title={'Clients'}
-                        jsx={
-                            <div id='clients-content-parent' className='flex flex-col items-start justify-start gap-y-2'>
-                                {clients.map(({ abbreviation, name, svgUrl }, idx) => (
-                                    <div
-                                        key={idx}
-                                        className='group relative flex aspect-square h-10 select-none items-center justify-center rounded-full bg-theme-text-background text-center text-2xs'
-                                    >
-                                        {abbreviation}
-                                        <div className='absolute top-[calc(100%+theme(spacing.2)+1px)] z-10 h-full w-full text-2xs text-theme-text opacity-0 group-hover-active:opacity-100'>
-                                            {name}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        }
-                        content={content}
-                        setContent={setContent}
-                    />
-                )}
-
-                {viewLive && (
-                    <SingleStackBlock
-                        title={'View Live'}
-                        jsx={
-                            <div id='view-live-content-parent' className='flex flex-col items-start justify-start gap-y-2'>
-                                {viewLive.map(({ url, title, description }, idx) => (
-                                    <div key={idx} className='bg-theme-text-background px-1 py-0.5'>
-                                        <a href={url}>{title}</a>
-                                        <div className='text-theme-text'>{description}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        }
-                        content={content}
-                        setContent={setContent}
-                    />
-                )}
-
-                {viewSource && (
-                    <SingleStackBlock
-                        title={'View Source'}
-                        jsx={
-                            <div id='view-source-content-parent' className='flex flex-col items-start justify-start gap-y-2'>
-                                <div className='bg-theme-text-background px-1 py-0.5'>
-                                    <a href={viewSource.href}>{viewSource.alt}</a>
-                                </div>
-                            </div>
-                        }
-                        content={content}
-                        setContent={setContent}
-                    />
-                )}
-            </div>
-
-            {/* Line Break in flexbox */}
-            <div className='size-0 basis-full' />
-
-            <div
-                className={classNames(
-                    'ml-auto mr-0 w-fit bg-theme-primary-lighter/50 p-2 text-xs text-theme-primary transition-[clip-path,margin]',
-                    content ? 'p-2 clip-inset-l-0' : 'p-0 clip-inset-l-full',
-                )}
-            >
-                {content}
-            </div>
-        </>
-    );
-};
-
-const SingleStackBlock: FC<{
-    title: string;
-    jsx: JSX.Element;
-    content: JSX.Element | null;
-    setContent: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
-}> = ({ title, jsx, content, setContent }) => {
-    const isThisContent = content?.props.id === jsx.props.id;
-
-    return (
-        <button
-            className={classNames(
-                'group flex cursor-pointer items-center justify-end p-1 pl-2 hover-active:bg-theme-primary',
-                isThisContent ? 'bg-theme-primary' : 'bg-theme-primary-lighter',
-            )}
-            onClick={() => {
-                if (!content || !isThisContent) {
-                    setContent(jsx);
-                } else {
-                    setContent(null);
-                }
-            }}
-        >
-            <div
-                className={classNames(
-                    'inline-block pt-0.5 text-2xs font-semibold uppercase leading-none group-hover-active:text-theme-text-background',
-                    isThisContent ? 'text-theme-text-background' : 'text-theme-primary-darker',
-                )}
-            >
-                {title}
-            </div>
-            {/* ChevronDown */}
-            <div
-                className={classNames(
-                    'ml-1 inline-block aspect-square h-3 transition-transform [mask-image:url(/svg/ChevronDownOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%] group-hover-active:bg-theme-text-background',
-                    isThisContent ? 'rotate-0 bg-theme-text-background' : '-rotate-180 bg-theme-primary-darker',
-                )}
-            />
-        </button>
-    );
-};
+export default Post;
 
 const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_ShowCase; lightboxCallback: () => void }> = ({
     text,
@@ -304,35 +161,41 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
     lightboxCallback,
 }) => {
     const isBlockIndexEven = blockIndex % 2 === 0;
-
     const handleClick = () => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback();
 
     return (
-        <div className='my-4'>
+        <div className='my-4 first-of-type:mt-0'>
             {showCase && (
-                <div
-                    className={classNames(
-                        'group relative aspect-video max-h-64 w-2/5 cursor-pointer drop-shadow-md',
-                        isBlockIndexEven ? 'float-right ml-4' : 'float-left mr-4',
-                    )}
-                >
+                <div className={classNames('group max-h-64 w-full max-w-[40%]', isBlockIndexEven ? 'float-right ml-4' : 'float-left mr-4')}>
                     {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
                         <iframe
                             src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')}
                             title='YouTube video player'
                             referrerPolicy='strict-origin-when-cross-origin'
                             allowFullScreen
-                            className='size-full'
+                            className='aspect-video size-full shadow-md shadow-theme-primary-darker/10 transition-[box-shadow] duration-75 group-hover-active:shadow-theme-primary-darker/20'
                         />
                     ) : (
-                        <button onClick={handleClick}>
-                            <img src={constructThumbsUrl((showCase as Post_ShowCase_Image).imgUrl)} alt={showCase.caption} className='size-full object-cover' />
+                        <button
+                            onClick={handleClick}
+                            className='relative shadow-md shadow-theme-primary-darker/10 transition-[box-shadow] duration-75 group-hover-active:shadow-theme-primary-darker/20'
+                        >
+                            <img
+                                src={constructThumbsUrl((showCase as Post_ShowCase_Image).imgUrl)}
+                                alt={showCase.caption}
+                                className='size-full object-cover transition-transform duration-75 hover-active:scale-[1.01]'
+                            />
+                            {showCase.caption && (
+                                <div
+                                    className={classNames(
+                                        'pointer-events-none absolute top-full w-full p-1 text-xs text-neutral-600 opacity-50',
+                                        isBlockIndexEven ? 'text-right' : 'text-left',
+                                    )}
+                                >
+                                    {showCase.caption}
+                                </div>
+                            )}
                         </button>
-                    )}
-                    {showCase.caption && (
-                        <div className='pointer-events-none absolute bottom-0 max-h-full w-full bg-neutral-400 p-1 text-center text-xs text-neutral-50 opacity-30 transition-[background-color,max-height,padding] group-hover-active:opacity-100'>
-                            {showCase.caption}
-                        </div>
                     )}
                 </div>
             )}
@@ -342,7 +205,7 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                     p: ({ children }) => (
                         <p
                             className={classNames(
-                                'text-pretty text-justify text-sm leading-relaxed tracking-normal',
+                                'mb-3 text-pretty text-justify text-sm leading-relaxed tracking-normal',
                                 blockIndex === 0
                                     ? 'first-of-type:first-letter:-ml-0.5 first-of-type:first-letter:align-text-bottom first-of-type:first-letter:text-[1.5rem] first-of-type:first-letter:leading-[1.475rem] first-of-type:first-letter:text-red-800'
                                     : '',
@@ -363,7 +226,7 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
 
 const RemainingImages: FC<{
     showCases: Post_ShowCase[];
-    textBlocks: Post['textBlocks'];
+    textBlocks: PostType['textBlocks'];
     setLightBoxSlide: (showCaseIndex: number) => void;
 }> = ({ showCases, textBlocks, setLightBoxSlide }) => {
     const remaining_Memo = useMemo(
@@ -377,26 +240,24 @@ const RemainingImages: FC<{
     const handleClick = (imageIndex: number) => setLightBoxSlide(imageIndex);
 
     return (
-        <div className='grid grid-cols-2 gap-2 pb-5 pt-10 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 2xl:grid-cols-5'>
+        <div className='grid grid-cols-5 items-start gap-3 pb-5 pt-10'>
             {remaining_Memo.map((remain) => {
                 const [showCase, imageIndex] = remain || [];
 
-                if (!showCase || typeof imageIndex != 'number') return;
-
-                return (
-                    <button
-                        key={showCase.imgUrl + imageIndex}
-                        className='max-h-48 w-full overflow-hidden drop-shadow-sm hover-active:brightness-125'
-                        onClick={() => handleClick(imageIndex)}
-                        onKeyDown={() => handleClick(imageIndex)}
-                    >
-                        <img
-                            src={constructThumbsUrl(showCase.imgUrl)}
-                            alt={showCase.caption}
-                            className='skew-x-[calc(var(--clip-shape-skew-angle)*-1)] scale-105 cursor-pointer object-cover'
-                        />
-                    </button>
-                );
+                if (!showCase || typeof imageIndex != 'number') {
+                    return null;
+                } else {
+                    return (
+                        <button
+                            key={showCase.imgUrl + imageIndex}
+                            className='group max-h-48 w-full overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.03] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110'
+                            onClick={() => handleClick(imageIndex)}
+                            onKeyDown={() => handleClick(imageIndex)}
+                        >
+                            <img src={constructThumbsUrl(showCase.imgUrl)} alt={showCase.caption} className='object-cover' />
+                        </button>
+                    );
+                }
             })}
         </div>
     );
