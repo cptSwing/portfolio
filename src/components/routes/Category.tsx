@@ -81,7 +81,7 @@ const Category = () => {
 
     const clipAreaSizes = useRef<ClipAreaSize[]>([]);
 
-    const [{ title, subTitle }, setInfoContent] = useState({ title: 'jens Brandenburg', subTitle: 'webdev and 3d art' });
+    const [infoContent, setInfoContent] = useState({ title: 'jens Brandenburg', subTitle: 'webdev and 3d art' });
 
     if (!categoryData_Memo) return null;
 
@@ -94,10 +94,7 @@ const Category = () => {
                 spring={{ stiffness: 600, damping: 40 }}
             >
                 {/* Info */}
-                <div className='[grid-area:info]'>
-                    <div className='text-xl text-theme-secondary-lighter'>{title}</div>
-                    <div className='text-sm text-theme-text-background'>{subTitle}</div>
-                </div>
+                <CardTitles infoContent={infoContent} />
 
                 {/* Brand */}
                 <div className='[grid-area:brand]'>
@@ -150,6 +147,43 @@ const Category = () => {
 };
 
 export default Category;
+
+const transitionDuration_MS = 150;
+
+const CardTitles: FC<{
+    infoContent: {
+        title: string;
+        subTitle: string;
+    };
+}> = ({ infoContent }) => {
+    const { title, subTitle } = infoContent;
+    const [isSwitching, setIsSwitching] = useState(false);
+
+    useEffect(() => {
+        setIsSwitching(true);
+
+        const timer = setTimeout(() => {
+            setIsSwitching(false);
+        }, transitionDuration_MS);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [title, subTitle]);
+
+    return (
+        <div
+            className={classNames(
+                'absolute flex flex-col gap-y-1 p-1 py-1.5 transition-[clip-path] clip-inset-l-[-100%] [grid-area:info] before:absolute before:left-[-50%] before:top-0 before:-z-10 before:h-full before:w-[calc(150%+theme(spacing.6))] before:bg-theme-primary-darker/35',
+                isSwitching ? 'clip-inset-r-full' : 'clip-inset-r-[calc(0%-theme(spacing.6))]',
+            )}
+            style={{ transitionDuration: `${isSwitching ? transitionDuration_MS : transitionDuration_MS * 3}ms` }}
+        >
+            <div className='text-xl leading-none text-theme-secondary-lighter'>{title}</div>
+            <div className='text-sm leading-none text-theme-text-background'>{subTitle}</div>
+        </div>
+    );
+};
 
 const loopFlipValues = (value: number, max: number, direction: 'down' | 'up') => {
     if (direction === 'down') {
