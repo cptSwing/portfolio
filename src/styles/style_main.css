@@ -113,8 +113,8 @@ button :focus-visible {
 
 .postcards-grid-template {
     grid-template-areas:
-        'info info info info info info'
-        'area6  area6   area6   area6   rest   area1 '
+        'info   info    info    info    brand   brand'
+        'area6  area6   area6   area6   rest    area1 '
         'area6  area6   area6   area6   area2   area2 '
         'area6  area6   area6   area6   area2   area2 '
         'area6  area6   area6   area6   area3   area3 '
@@ -122,32 +122,7 @@ button :focus-visible {
         'area5  area5   area5   area4   area4   area4 '
         'area5  area5   area5   area4   area4   area4 '
         'area5  area5   area5   area4   area4   area4 '
-        'tracker tracker tracker tracker tracker tracker';
-}
-
-.pixelate {
-    /* backdrop-filter: url(/svg/filters.svg#pixelate); */
-    /* backdrop-filter: url(#pixelate-tile); */
-    /* backdrop-filter: url(#pixelate-displacement); */
-    /* backdrop-filter: url(#pixelate-dilate-erode); */
-    backdrop-filter: url(#pixelate-v2);
-
-    /* backdrop-filter: blur(10px); */
-}
-
-.pixelate-pseudo {
-    @apply pixelate;
-    content: '';
-    pointer-events: none;
-    z-index: 999;
-}
-
-.before\:pixelate::before {
-    @apply pixelate-pseudo;
-}
-
-.after\:pixelate::after {
-    @apply pixelate-pseudo;
+        'track  track   track   track   track   track';
 }
 
 /* SVG Filters */

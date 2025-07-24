@@ -94,11 +94,13 @@ const Category = () => {
                 spring={{ stiffness: 600, damping: 40 }}
             >
                 {/* Info */}
-                <div className='flex items-start justify-between [grid-area:info]'>
-                    <div>
-                        <div className='text-xl text-theme-secondary-lighter'>{title}</div>
-                        <div className='text-sm text-theme-text-background'>{subTitle}</div>
-                    </div>
+                <div className='[grid-area:info]'>
+                    <div className='text-xl text-theme-secondary-lighter'>{title}</div>
+                    <div className='text-sm text-theme-text-background'>{subTitle}</div>
+                </div>
+
+                {/* Brand */}
+                <div className='[grid-area:brand]'>
                     <div className='select-none text-right text-theme-primary/75'>
                         <div className='text-lg leading-snug'>jens Brandenburg</div>
                         <div className='text-sm leading-snug'>webdev & 3d art</div>
@@ -122,7 +124,7 @@ const Category = () => {
                     ))}
 
                 {/* Progress Bar */}
-                <div className='mx-auto -mt-3 flex w-[90%] items-center justify-between gap-x-2 [grid-area:tracker]'>
+                <div className='mx-auto -mt-3 flex w-[90%] items-center justify-between gap-x-2 [grid-area:track]'>
                     {categoryData_Memo.posts.map((post, idx) => {
                         return (
                             <button
