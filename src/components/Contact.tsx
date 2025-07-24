@@ -10,7 +10,7 @@ import classNames from '../lib/classNames';
 const NUM_SUBMENU_ITEMS = 4;
 const _shouldRotate = NUM_SUBMENU_ITEMS % 2 === 0;
 
-const Socials = () => {
+const Contact = () => {
     const menuButtonPosAndSize = useZustand((store) => store.values.activeMenuButton.positionAndSize);
 
     const [hasMounted, setHasMounted] = useState(false);
@@ -222,4 +222,4 @@ const Socials = () => {
     );
 };
 
-export default Socials;
+export default Contact;

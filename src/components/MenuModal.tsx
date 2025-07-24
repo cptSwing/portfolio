@@ -1,6 +1,6 @@
 import { useZustand } from '../lib/zustand';
 import Settings from './Settings';
-import Socials from './Socials';
+import Contact from './Contact';
 import { useEffect, useRef } from 'react';
 
 const store_toggleMenu = useZustand.getState().methods.store_toggleMenu;
@@ -28,7 +28,7 @@ const MenuModal = () => {
             className='size-full bg-gray-950 bg-opacity-0 transition-[background-color]' // backdrop-blur-md
             onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleMenu({ name: null })}
         >
-            {name && (name === 'settings' ? <Settings /> : <Socials />)}
+            {name && (name === 'settings' ? <Settings /> : <Contact />)}
         </dialog>
     );
 };
