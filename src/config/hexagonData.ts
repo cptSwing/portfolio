@@ -282,7 +282,6 @@ export function getHexagonPathOffsetAndScale(aspectRatio: number, scale: number,
 
 export function getShapePaths(styleIndex: number, aspectRatio: number) {
     let backgroundShapePath;
-
     switch (styleIndex) {
         // isFirst
         case 0:
@@ -301,7 +300,6 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
                     L0,${1 - 0.05}
                     Z`;
 
-            // hexagonPathTransforms.push({ scale: 0.2, x: 0.9, y: 0.1 }, { scale: 0.25, x: 0.875, y: 0.815 }, { scale: 0.1, x: 0.05, y: 0.95 });
             break;
 
         case 1:
@@ -320,7 +318,6 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
                     L0,${1 - 0.375}
                     Z`;
 
-            // hexagonPathTransforms.push({ scale: 0.2, x: 0.9, y: 0.1 }, { scale: 0.1, x: 0.05, y: 0.05 }, { scale: 0, x: 0.5, y: 0.5 });
             break;
 
         case 2:
@@ -339,7 +336,6 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
                     L0,${1 - 0.08}
                     Z`;
 
-            // hexagonPathTransforms.push({ scale: 0.1, x: 0.035, y: 0.085 }, { scale: 0.2, x: 0.925, y: 0.1 }, { scale: 0.25, x: 0.0875, y: 0.975 });
             break;
 
         case 3:
@@ -358,7 +354,6 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
                     L0,${1 - 0.15}
                     Z`;
 
-            // hexagonPathTransforms.push({ scale: 0.3, x: 0.1, y: 0.03 }, { scale: 0.2, x: 0.5, y: 0.5 }, { scale: 0.25, x: 0.085, y: 0.825 });
             break;
 
         case 4:
@@ -377,7 +372,6 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
                     L0,${1 - 0.15}
                     Z`;
 
-            // hexagonPathTransforms.push({ scale: 0.2, x: 0.075, y: 0.1 }, { scale: 0.2, x: 0.84, y: 0.1 }, { scale: 0.1, x: 0.5, y: 0.5 });
             break;
 
         case 5:
@@ -396,7 +390,6 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
                     L0,${1 - 0.25}
                     Z`;
 
-            // hexagonPathTransforms.push({ scale: 0.2, x: 0.5, y: 0.5 }, { scale: 0.25, x: 0.875, y: 0.815 }, { scale: 0.1, x: 0.05, y: 0.95 });
             break;
 
         case 6:
@@ -432,7 +425,6 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
                     L0,${1 - 0.2}
                     Z`;
 
-            // hexagonPathTransforms.push({ scale: 0.1, x: 0.5, y: 0.5 }, { scale: 0.1, x: 0.5, y: 0.5 }, { scale: 0.1, x: 0.5, y: 0.5 });
             break;
 
         default:
@@ -442,10 +434,35 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
     return backgroundShapePath;
 }
 
-export function getHexagonalTitleClipPath(yAxisPoint: number) {
-    const xAxisPoint = yAxisPoint / tan60;
+export function getHexagonalClipPath(
+    y_NormalizedPercent: number,
+    parentSize: { width: number; height: number },
+    options?: {
+        multipliers?: { x?: number; y?: number };
+        shape?: 'full' | 'top-right' | 'bottom';
+    },
+) {
+    const { multipliers, shape } = options ?? {};
 
-    return `polygon(0% ${yAxisPoint}vh, ${xAxisPoint}vh 0%, calc(100% - ${xAxisPoint}vh) 0%, 100% ${yAxisPoint}vh, calc(100% - ${xAxisPoint}vh) 100%, ${xAxisPoint}vh 100%)`;
+    const width = parentSize.width * (multipliers?.x ?? 1);
+    const height = parentSize.height * (multipliers?.y ?? 1);
+    const aspectRatio = width / height;
+
+    const y_Percent = y_NormalizedPercent * 100;
+    const x_Percent = y_Percent / aspectRatio / tan60;
+
+    const actualShape = shape ?? 'full';
+
+    switch (actualShape) {
+        case 'full':
+            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, calc(100% - ${x_Percent}%) 0%, 100% ${y_Percent}%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, ${x_Percent}% 100%, 0% calc(100% - ${y_Percent}%))`;
+
+        case 'top-right':
+            return `polygon(0% 0%, calc(100% - ${x_Percent}%) 0%, 100% ${y_Percent}%, 100% 100%, 0% 100%)`;
+
+        case 'bottom':
+            return `polygon(0% 0%, 100% 0%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, ${x_Percent}% 100%, 0% calc(100% - ${y_Percent}%))`;
+    }
 }
 
 /* Local functions */

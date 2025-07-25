@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams, useNavigate } from 'react-router-dom';
 import remarkBreaks from 'remark-breaks';
@@ -12,8 +12,10 @@ import parseDateString from '../../lib/parseDateString';
 import { DataBase, PostType, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
 import testDb from '../../queries/testDb.json';
 import { useZustand } from '../../lib/zustand';
-import { getHexagonalTitleClipPath } from '../../config/hexagonData';
+import { getHexagonalClipPath } from '../../config/hexagonData';
 import PostDetails from '../PostDetails';
+import GetChildSize from '../GetChildSize';
+import GetChildSizeContext from '../../contexts/GetChildSizeContext';
 
 const testDbTyped = testDb as DataBase;
 const store_setPostNavState = useZustand.getState().methods.store_setPostNavState;
@@ -29,6 +31,7 @@ const Post = () => {
     );
 
     const { title, subTitle, stack, clients, viewLive, viewSource, showCases, textBlocks, date, id } = activePost_Memo ?? {};
+    const date_Memo = useMemo(() => parseDateString(date ?? ''), [date]);
 
     /* Nav menu logic */
     const postNavState = useZustand((store) => store.values.postNavState);
@@ -75,9 +78,6 @@ const Post = () => {
         [showCases],
     );
 
-    const date_Memo = useMemo(() => parseDateString(date ?? ''), [date]);
-    const { year, month, day } = date_Memo;
-
     const [lightboxTo, setLightboxTo] = useState<number | null>(null);
 
     /* NOTE Lightbox uses SlideImage Type (see above), so we need to jump through some hoops to pick correct SlideImage index from Post_ShowCase index */
@@ -91,17 +91,9 @@ const Post = () => {
     return (
         <div className='absolute left-0 top-0 size-full bg-theme-text-background px-[6%] pb-4 pt-12 text-theme-text transition-[clip-path] clip-inset-r-[--clip-post] clip-inset-t-[-10%]'>
             <header className='pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center'>
-                {/* Floating Title: */}
-                <span
-                    className='select-none px-6 text-[3vh] font-bold leading-none text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-[0.75vh] before:-z-10 before:h-[2.5vh] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path]'
-                    style={
-                        {
-                            '--post-title-clip-path': getHexagonalTitleClipPath(1.25),
-                        } as CSSProperties
-                    }
-                >
-                    {title}
-                </span>
+                <GetChildSize Context={GetChildSizeContext}>
+                    <FloatingHeader title={title} />
+                </GetChildSize>
             </header>
 
             <main className='scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pr-[1.5%] scrollbar-thin'>
@@ -109,11 +101,9 @@ const Post = () => {
                 <div>
                     <span className='block text-2xl'>{subTitle}</span>
                     <div className='my-2 flex flex-wrap items-center justify-between gap-y-1'>
-                        <span className='block bg-theme-primary-lighter px-2 py-1 text-sm font-semibold leading-none text-theme-primary-darker'>
-                            {day && `${day}.`}
-                            {month && `${month}.`}
-                            {year && `${year}`}
-                        </span>
+                        <GetChildSize Context={GetChildSizeContext}>
+                            <PostDate date={date_Memo} />
+                        </GetChildSize>
                         <PostDetails stack={stack} clients={clients} viewLive={viewLive} viewSource={viewSource} />
                     </div>
                 </div>
@@ -154,6 +144,40 @@ const Post = () => {
 
 export default Post;
 
+const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
+    const parentSize = useContext(GetChildSizeContext);
+    const clipPath_Memo = useMemo(() => getHexagonalClipPath(0.6, parentSize, { multipliers: { y: 0.8 }, shape: 'bottom' }), [parentSize]);
+
+    return (
+        <span
+            className='select-none px-6 text-[3vh] font-bold leading-none text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-[0.75vh] before:-z-10 before:h-4/5 before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path]'
+            style={
+                {
+                    '--post-title-clip-path': clipPath_Memo,
+                } as CSSProperties
+            }
+        >
+            {title}
+        </span>
+    );
+};
+
+const PostDate: FC<{ date: { year?: string; month?: string; day?: string } }> = ({ date: { year, month, day } }) => {
+    const parentSize = useContext(GetChildSizeContext);
+    const clipPath_Memo = useMemo(() => getHexagonalClipPath(1, parentSize, { shape: 'top-right' }), [parentSize]);
+
+    return (
+        <span
+            className='block bg-theme-primary-lighter py-1 pl-2 pr-4 text-sm font-semibold leading-none text-theme-primary-darker'
+            style={{ clipPath: clipPath_Memo }}
+        >
+            {day && `${day}.`}
+            {month && `${month}.`}
+            {year && `${year}`}
+        </span>
+    );
+};
+
 const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_ShowCase; lightboxCallback: () => void }> = ({
     text,
     blockIndex,
@@ -172,6 +196,7 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                             src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')}
                             title='YouTube video player'
                             referrerPolicy='strict-origin-when-cross-origin'
+                            loading='lazy'
                             allowFullScreen
                             className='aspect-video size-full shadow-md shadow-theme-primary-darker/10 transition-[box-shadow] duration-75 group-hover-active:shadow-theme-primary-darker/20'
                         />

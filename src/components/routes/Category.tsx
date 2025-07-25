@@ -1,7 +1,7 @@
 import testDb from '../../queries/testDb.json';
 import { useParams } from 'react-router-dom';
 import { DataBase, ClipAreaSize } from '../../types/types';
-import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
@@ -10,6 +10,9 @@ import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
 import remapToRange from '../../lib/remapToRange.ts';
 import CategoryCard from '../CategoryCard.tsx';
+import GetChildSize from '../GetChildSize.tsx';
+import GetChildSizeContext from '../../contexts/GetChildSizeContext.ts';
+import { getHexagonalClipPath } from '../../config/hexagonData.ts';
 
 const testDbTyped = testDb as DataBase;
 const categories = Object.values(testDbTyped);
@@ -94,7 +97,9 @@ const Category = () => {
                 spring={{ stiffness: 600, damping: 40 }}
             >
                 {/* Info */}
-                <CardTitles infoContent={infoContent} />
+                <GetChildSize Context={GetChildSizeContext}>
+                    <CardTitles infoContent={infoContent} />
+                </GetChildSize>
 
                 {/* Brand */}
                 <div className='[grid-area:brand]'>
@@ -148,7 +153,7 @@ const Category = () => {
 
 export default Category;
 
-const transitionDuration_MS = 150;
+const transitionDuration_MS = 250;
 
 const CardTitles: FC<{
     infoContent: {
@@ -157,6 +162,10 @@ const CardTitles: FC<{
     };
 }> = ({ infoContent }) => {
     const { title, subTitle } = infoContent;
+
+    const parentSize = useContext(GetChildSizeContext);
+    const clipPath_Memo = useMemo(() => getHexagonalClipPath(0.8, parentSize, { multipliers: { x: 1.5 }, shape: 'top-right' }), [parentSize]);
+
     const [isSwitching, setIsSwitching] = useState(false);
 
     useEffect(() => {
@@ -164,7 +173,7 @@ const CardTitles: FC<{
 
         const timer = setTimeout(() => {
             setIsSwitching(false);
-        }, transitionDuration_MS);
+        }, transitionDuration_MS / 2);
 
         return () => {
             clearTimeout(timer);
@@ -174,13 +183,19 @@ const CardTitles: FC<{
     return (
         <div
             className={classNames(
-                'absolute flex flex-col gap-y-1 p-1 py-1.5 transition-[clip-path] clip-inset-l-[-100%] [grid-area:info] before:absolute before:left-[-50%] before:top-0 before:-z-10 before:h-full before:w-[calc(150%+theme(spacing.6))] before:bg-theme-primary-darker/35',
-                isSwitching ? 'clip-inset-r-full' : 'clip-inset-r-[calc(0%-theme(spacing.6))]',
+                'before:absolute before:left-[-50%] before:top-0 before:-z-10 before:h-full before:w-[150%] before:bg-theme-primary-darker/35 before:[clip-path:--category-card-title-clip-path]',
+                'absolute flex flex-col gap-y-1 py-1.5 pl-1 pr-6 transition-[clip-path] clip-inset-l-[-100%] [grid-area:info]',
+                isSwitching ? 'clip-inset-r-[125%]' : 'clip-inset-r-0',
             )}
-            style={{ transitionDuration: `${isSwitching ? transitionDuration_MS : transitionDuration_MS * 3}ms` }}
+            style={
+                {
+                    'transitionDuration': `${isSwitching ? 0 : transitionDuration_MS}ms`,
+                    '--category-card-title-clip-path': clipPath_Memo,
+                } as CSSProperties
+            }
         >
-            <div className='text-xl leading-none text-theme-secondary-lighter'>{title}</div>
-            <div className='text-sm leading-none text-theme-text-background'>{subTitle}</div>
+            <div className='text-nowrap text-xl leading-none text-theme-secondary-lighter'>{title}</div>
+            <div className='text-nowrap text-xs leading-none text-theme-text-background'>{subTitle}</div>
         </div>
     );
 };
