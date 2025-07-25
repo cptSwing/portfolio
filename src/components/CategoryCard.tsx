@@ -30,17 +30,18 @@ const CategoryCard: FC<{
     const mountCallback_Cb = useCallback(
         (elem: HTMLButtonElement | null) => {
             if (elem) {
-                const { width, height } = elem.getBoundingClientRect();
-                const aspectRatio = width / height;
-                const backgroundShapePath = getShapePaths(styleIndex, aspectRatio);
+                // TODO should update on resize
+                if (!clipAreaSizes.current[styleIndex]) {
+                    const { width, height } = elem.getBoundingClientRect();
+                    const aspectRatio = width / height;
+                    const backgroundShapePath = getShapePaths(styleIndex, aspectRatio);
 
-                if (!clipAreaSizes.current[styleIndex])
-                    // TODO should update on resize
                     clipAreaSizes.current[styleIndex] = {
                         width,
                         height,
                         backgroundShapePath,
                     };
+                }
             }
         },
         [clipAreaSizes, styleIndex],
