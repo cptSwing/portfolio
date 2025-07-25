@@ -48,7 +48,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
             category: { position: allOffsets[1][2], rotation: 0, isHalf: false, scale: 0 },
-            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 2.2, y: 4.15 } },
+            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 2.1, y: 4.25 } },
             title: 'previous',
             svgPath: '/svg/ChevronLeftOutline.svg',
             target: () => store_setPostNavState('prev'),
@@ -64,7 +64,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
             category: { position: allOffsets[3][3], rotation: 0, isHalf: false, scale: 0 },
-            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: 9.6, y: 4.15 } },
+            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 9.7, y: 4.25 } },
             title: 'next',
             svgPath: '/svg/ChevronRightOutline.svg',
             target: () => store_setPostNavState('next'),
@@ -150,14 +150,14 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: 0, y: -2.25 } },
             category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: -12.5, y: 6.125 } },
-            post: { position: allOffsets[6][0], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -12.5, y: 6.25 } },
+            post: { position: allOffsets[6][0], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -12.5, y: 5 } },
             title: 'contact',
             svgPath: '/svg/ChatBubbleLeftRightOutline.svg',
             target: (ev) => store_toggleMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -5.5, y: 1.5 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.35, offsets: { x: -6, y: 1.9 } },
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -6, y: 1.9 } },
             post: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 6.25, y: 0 } },
             title: 'settings',
             svgPath: '/svg/AdjustmentsHorizontalOutline.svg',
@@ -167,7 +167,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: 5.5, y: 1.5 } },
             category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0, offsets: { x: -6, y: 1.9 } },
             post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0, offsets: { x: 12.5, y: 0 } },
-            title: 'controlpanel',
+            title: 'login',
             svgPath: '/svg/UserIconOutline.svg',
             target: () => {},
         },
@@ -175,9 +175,9 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         // Appears only in 'category' and 'post' expansionState:
         {
             home: { position: allOffsets[4][1], rotation: 180, isHalf: false, scale: 0, offsets: { x: -3.125, y: 0 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: -1.2, y: -2.7 } },
-            post: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.15, offsets: { x: -6.25, y: -1.5625 } },
-            title: 'gohome',
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.225, offsets: { x: -1.2, y: -2.7 } },
+            post: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: -6.25, y: -1.5625 } },
+            title: 'home',
             svgPath: '/svg/HomeOutline.svg',
             target: () => {
                 store_toggleMenu({ name: null });

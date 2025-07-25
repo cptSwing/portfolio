@@ -66,8 +66,8 @@ export type DataBase = {
 };
 
 export type CategoryLink = 'code' | 'log' | '3d';
-type MenuLink = 'settings' | 'contact' | 'controlpanel';
-type NavButton = 'gohome' | 'previous' | 'next' | 'close';
+type MenuLink = 'settings' | 'contact' | 'login';
+type NavButton = 'home' | 'previous' | 'next' | 'close';
 export type UIButton = CategoryLink | MenuLink | NavButton;
 
 export type HexagonData = { position: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; offsets?: { x: number; y: number } };

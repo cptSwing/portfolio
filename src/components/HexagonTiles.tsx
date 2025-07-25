@@ -40,13 +40,13 @@ const HexagonTiles = () => {
     const navMenuTransitionClasses_Memo = useMemo(() => {
         switch (menuTransitionTarget) {
             case 'code':
-                return /* tw */ `rotate-[60deg] [&_.hex-link-class-code]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-60deg] [&_.hex-link-class-settings]:![--tw-rotate:-60deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:-60deg] [&_.hex-link-class-contact]:![--tw-translate-x:35.8%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:35.75%] [&_.hex-link-class-settings]:![--tw-translate-y:43.5%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:41.25%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:32.5%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!duration-150 [&_.hex-link-class-code]:scale-90'}`;
+                return /* tw */ `rotate-[60deg] [&_.hex-link-class-code]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-60deg] [&_.hex-link-class-settings]:![--tw-rotate:-60deg] [&_.hex-link-class-login]:![--tw-rotate:-60deg] [&_.hex-link-class-contact]:![--tw-translate-x:35.8%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:35.75%] [&_.hex-link-class-settings]:![--tw-translate-y:43.5%] [&_.hex-link-class-login]:![--tw-translate-x:41.25%] [&_.hex-link-class-login]:![--tw-translate-y:32.5%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!duration-150 [&_.hex-link-class-code]:scale-90'}`;
 
             case '3d':
-                return /* tw */ `rotate-[-60deg] [&_.hex-link-class-3d]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:60deg] [&_.hex-link-class-settings]:![--tw-rotate:60deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:60deg] [&_.hex-link-class-contact]:![--tw-translate-x:39.35%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:33.7%] [&_.hex-link-class-settings]:![--tw-translate-y:32.6%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:39.3%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:43.6%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!duration-150 [&_.hex-link-class-3d]:scale-90'}`;
+                return /* tw */ `rotate-[-60deg] [&_.hex-link-class-3d]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:60deg] [&_.hex-link-class-settings]:![--tw-rotate:60deg] [&_.hex-link-class-login]:![--tw-rotate:60deg] [&_.hex-link-class-contact]:![--tw-translate-x:39.35%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:33.7%] [&_.hex-link-class-settings]:![--tw-translate-y:32.6%] [&_.hex-link-class-login]:![--tw-translate-x:39.3%] [&_.hex-link-class-login]:![--tw-translate-y:43.6%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!duration-150 [&_.hex-link-class-3d]:scale-90'}`;
 
             case 'log':
-                return /* tw */ `rotate-[180deg] [&_.hex-link-class-log]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-180deg] [&_.hex-link-class-settings]:![--tw-rotate:-180deg] [&_.hex-link-class-controlpanel]:![--tw-rotate:-180deg] [&_.hex-link-class-contact]:![--tw-translate-y:39.75%] [&_.hex-link-class-settings]:![--tw-translate-x:43%] [&_.hex-link-class-settings]:![--tw-translate-y:36%] [&_.hex-link-class-controlpanel]:![--tw-translate-x:32%] [&_.hex-link-class-controlpanel]:![--tw-translate-y:36%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!duration-150 [&_.hex-link-class-log]:scale-90'}`;
+                return /* tw */ `rotate-[180deg] [&_.hex-link-class-log]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-180deg] [&_.hex-link-class-settings]:![--tw-rotate:-180deg] [&_.hex-link-class-login]:![--tw-rotate:-180deg] [&_.hex-link-class-contact]:![--tw-translate-y:39.75%] [&_.hex-link-class-settings]:![--tw-translate-x:43%] [&_.hex-link-class-settings]:![--tw-translate-y:36%] [&_.hex-link-class-login]:![--tw-translate-x:32%] [&_.hex-link-class-login]:![--tw-translate-y:36%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!duration-150 [&_.hex-link-class-log]:scale-90'}`;
 
             default:
                 return /* tw */ 'rotate-0';
@@ -216,7 +216,7 @@ const ButtonHexagon: FC<{
         >
             <path
                 d={roundedHexagonPath}
-                className='pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[transform,fill,filter] duration-300 [filter:url(#light-inner)] group-hover-active:scale-105 group-hover-active:[filter:url(#lighter-inner)]' /* fill-[url(#linearGradient)] */
+                className='pointer-events-auto fill-theme-primary transition-[transform,fill,filter] duration-300 [filter:url(#light-inner)] group-hover-active:scale-105 group-hover-active:[filter:url(#lighter-inner)]' /* fill-[url(#linearGradient)] */
                 style={{ clipPath: `view-box path("${roundedHexagonPath}")` }}
                 // TODO set as options in Settings ?
                 shapeRendering='geometricPrecision'
@@ -226,11 +226,27 @@ const ButtonHexagon: FC<{
             />
             {svgPath ? (
                 // SVG image from external source
-                <foreignObject x='0' y='0' width='100' height='86.66'>
-                    <div
-                        className='size-full bg-theme-secondary [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-secondary-lighter'
-                        style={{ maskImage: `url(${svgPath})` }}
-                    />
+                // <foreignObject x='0' y='-21.665' width='100' height='129.99'>
+                // width='100%' height='100%'
+                <foreignObject x='0' y='0' width='100' height='86.66' overflow='visible'>
+                    <div className='relative size-full'>
+                        <div
+                            className='size-full bg-theme-secondary [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-secondary-lighter'
+                            style={{ maskImage: `url(${svgPath})` }}
+                        />
+                        <span
+                            className={classNames(
+                                'absolute left-1/2 top-full -translate-x-1/2 text-lg font-semibold capitalize',
+                                expansionState === 'home'
+                                    ? 'mt-px text-theme-secondary-lighter/50 group-hover-active:text-theme-secondary-lighter'
+                                    : expansionState === 'category'
+                                      ? 'mt-px text-theme-primary/50 group-hover-active:text-theme-primary'
+                                      : 'mt-0 text-theme-text/75 group-hover-active:text-theme-text',
+                            )}
+                        >
+                            {title}
+                        </span>
+                    </div>
                 </foreignObject>
             ) : (
                 <text

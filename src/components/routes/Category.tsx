@@ -98,7 +98,7 @@ const Category = () => {
 
                 {/* Brand */}
                 <div className='[grid-area:brand]'>
-                    <div className='select-none text-right text-theme-primary/75'>
+                    <div className='select-none text-right text-theme-primary/50'>
                         <div className='text-lg leading-snug'>jens Brandenburg</div>
                         <div className='text-sm leading-snug'>webdev & 3d art</div>
                     </div>
