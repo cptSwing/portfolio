@@ -21,7 +21,7 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
                 className={
                     '[--stack-button-clip-path-polygon-last:polygon(0_var(--stack-button-height),calc(var(--stack-button-height)/var(--stack-button-clip-path-tan-sixty))_0,100%_0,100%_var(--stack-button-height))] [--stack-button-clip-path-polygon:polygon(0_var(--stack-button-height),calc(var(--stack-button-height)/var(--stack-button-clip-path-tan-sixty))_0,100%_0,calc(100%-var(--stack-button-height)/var(--stack-button-clip-path-tan-sixty))_var(--stack-button-height))] [--stack-button-clip-path-tan-sixty:1.73205] [--stack-button-height:1vw]' +
                     ' ' +
-                    'flex items-start justify-end leading-none'
+                    'flex items-start justify-end font-lato leading-none'
                 }
             >
                 {stack && (
@@ -130,7 +130,7 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
 
             <div
                 className={classNames(
-                    'relative ml-auto mr-0 text-xs text-theme-primary transition-[clip-path] clip-inset-b-[-100%]',
+                    'relative ml-auto mr-0 font-lato text-xs text-theme-primary transition-[clip-path] clip-inset-b-[-100%]',
                     content ? 'clip-inset-l-0' : 'clip-inset-l-full',
                 )}
             >

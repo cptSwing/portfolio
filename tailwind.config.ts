@@ -38,7 +38,9 @@ const tailWindTheme = {
                 168: '42rem',
             },
             fontFamily: {
-                'miriam-libre': ['Miriam Libre Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                'lato': ['Lato', 'sans-serif'], // small lettering
+                'fjalla-one': ['Fjalla One', 'sans-serif'], // headlines etc
+                'merriweather': ['Merriweather', 'serif'], // post text
             },
             fontSize: {
                 '2xs': ['0.666rem', { lineHeight: '0.875rem' }],

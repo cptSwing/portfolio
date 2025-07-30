@@ -145,7 +145,7 @@ const AnimatedHexagon: FC<{
             <path
                 d={path_Memo}
                 className={classNames(
-                    'hex-regular-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 transition-[fill,transform,stroke,stroke-width,d] [--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
+                    'hex-regular-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 transition-[fill,transform,stroke,stroke-width,d]',
                     expansionState === 'home'
                         ? 'fill-theme-primary/50 stroke-theme-primary-lighter/25 hover-active:fill-theme-primary/55 hover-active:stroke-theme-primary-lighter/20'
                         : expansionState === 'category'
@@ -199,8 +199,7 @@ const ButtonHexagon: FC<{
     return (
         <g
             className={classNames(
-                '[--tw-scale-x:--hex-scale-stroked] [--tw-scale-y:--hex-scale-stroked]',
-                'group block origin-[12.5%_12.5%] translate-x-0 cursor-pointer no-underline transition-[transform,stroke] duration-700',
+                'group origin-[12.5%_12.5%] translate-x-0 cursor-pointer no-underline transition-[transform,stroke] duration-700',
                 expansionState === 'home' ? 'stroke-red-500' : expansionState === 'category' ? 'stroke-green-500' : 'stroke-theme-text-background',
                 `hex-link-class hex-link-class-${title}`,
             )}
@@ -216,7 +215,7 @@ const ButtonHexagon: FC<{
         >
             <path
                 d={roundedHexagonPath}
-                className='pointer-events-auto fill-theme-primary transition-[transform,fill,filter] duration-300 [filter:url(#light-inner)] group-hover-active:scale-105 group-hover-active:[filter:url(#lighter-inner)]' /* fill-[url(#linearGradient)] */
+                className='pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[fill,filter] duration-300 [filter:url(#light-inner)] group-hover-active:scale-105 group-hover-active:[filter:url(#lighter-inner)]'
                 style={{ clipPath: `view-box path("${roundedHexagonPath}")` }}
                 // TODO set as options in Settings ?
                 shapeRendering='geometricPrecision'
@@ -225,28 +224,23 @@ const ButtonHexagon: FC<{
                 // paintOrder='stroke'
             />
             {svgPath ? (
-                // SVG image from external source
-                // <foreignObject x='0' y='-21.665' width='100' height='129.99'>
-                // width='100%' height='100%'
                 <foreignObject x='0' y='0' width='100' height='86.66' overflow='visible'>
-                    <div className='relative size-full'>
-                        <div
-                            className='size-full bg-theme-secondary [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-secondary-lighter'
-                            style={{ maskImage: `url(${svgPath})` }}
-                        />
-                        <span
-                            className={classNames(
-                                'absolute left-1/2 top-full -translate-x-1/2 text-lg font-semibold capitalize',
-                                expansionState === 'home'
-                                    ? 'mt-px text-theme-secondary-lighter/50 group-hover-active:text-theme-secondary-lighter'
-                                    : expansionState === 'category'
-                                      ? 'mt-px text-theme-primary/50 group-hover-active:text-theme-primary'
-                                      : 'mt-0 text-theme-text/75 group-hover-active:text-theme-text',
-                            )}
-                        >
-                            {title}
-                        </span>
-                    </div>
+                    <div
+                        className='size-full origin-[12.5%_12.5%] bg-theme-secondary [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter'
+                        style={{ maskImage: `url(${svgPath})` }}
+                    />
+                    <span
+                        className={classNames(
+                            'absolute left-1/2 top-full -translate-x-1/2 font-lato text-sm uppercase',
+                            expansionState === 'home'
+                                ? 'mt-px text-theme-secondary-lighter/25 group-hover-active:text-theme-secondary-lighter'
+                                : expansionState === 'category'
+                                  ? 'mt-1 text-theme-primary/25 group-hover-active:text-theme-primary'
+                                  : 'mt-px text-theme-text group-hover-active:text-theme-text',
+                        )}
+                    >
+                        {title}
+                    </span>
                 </foreignObject>
             ) : (
                 <text
@@ -254,7 +248,7 @@ const ButtonHexagon: FC<{
                     y={hexHalfHeight}
                     textAnchor='middle'
                     alignmentBaseline='central'
-                    className='text pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary stroke-none text-[40px] font-semibold leading-none tracking-tight group-hover-active:fill-theme-secondary-lighter'
+                    className='font-fjalla-one pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary stroke-none text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter'
                 >
                     {title}
                 </text>
@@ -280,7 +274,8 @@ const calcCSSVariables = (
         '--tw-translate-x': `${(position.x / totalWidthAtCenter) * 100 + (offsets?.x ?? 0)}%`,
         '--tw-translate-y': `${(position.y / totalHeight) * 100 + (offsets?.y ?? 0)}%`,
         '--tw-rotate': `${rotation}deg`,
-        '--hex-scale-stroked': (1 - strokeWidth) * scale,
+        '--tw-scale-x': (1 - strokeWidth) * scale,
+        '--tw-scale-y': (1 - strokeWidth) * scale,
     }) as CSSProperties;
 
 const isCategoryLink = (title: UIButton) => title === 'code' || title === '3d' || title === 'log';

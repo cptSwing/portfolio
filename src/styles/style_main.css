@@ -103,7 +103,7 @@ button :focus-visible {
 }
 
 #root {
-    @apply flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background;
+    @apply font-merriweather flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background;
 }
 
 .hexagon-clip {

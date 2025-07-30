@@ -40,7 +40,7 @@ const Main = () => {
     return (
         <div
             className={classNames(
-                'relative aspect-hex-flat font-miriam-libre text-theme-text transition-[width,height] scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary-darker)]',
+                'relative aspect-hex-flat text-theme-text transition-[width,height] scrollbar-track-transparent [--scrollbar-thumb:theme(colors.theme.primary-darker)]',
                 expansionState === 'category' ? 'w-[45vw]' : expansionState === 'post' ? 'w-[55vw]' : 'w-[50vw]',
             )}
         >

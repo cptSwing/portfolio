@@ -183,8 +183,8 @@ const CardTitles: FC<{
     return (
         <div
             className={classNames(
-                'before:absolute before:left-[-50%] before:top-0 before:-z-10 before:h-full before:w-[150%] before:bg-theme-primary-darker/35 before:[clip-path:--category-card-title-clip-path]',
-                'absolute flex flex-col gap-y-1 py-1.5 pl-1 pr-6 transition-[clip-path] clip-inset-l-[-100%] [grid-area:info]',
+                // 'before:absolute before:left-[-50%] before:top-0 before:-z-10 before:h-full before:w-[150%] before:bg-theme-primary-darker/35 before:[clip-path:--category-card-title-clip-path]',
+                'absolute flex flex-col gap-y-0.5 pb-1 pr-6 transition-[clip-path] clip-inset-l-[-100%] [grid-area:info]',
                 isSwitching ? 'clip-inset-r-[125%]' : 'clip-inset-r-0',
             )}
             style={
@@ -194,8 +194,8 @@ const CardTitles: FC<{
                 } as CSSProperties
             }
         >
-            <div className='text-nowrap text-xl leading-none text-theme-secondary-lighter'>{title}</div>
-            <div className='text-nowrap text-xs leading-none text-theme-text-background'>{subTitle}</div>
+            <div className='font-fjalla-one text-nowrap text-2xl text-theme-secondary-lighter'>{title}</div>
+            <div className='text-nowrap font-lato text-sm italic leading-none text-theme-text-background'>{subTitle}</div>
         </div>
     );
 };

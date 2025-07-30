@@ -146,11 +146,11 @@ export default Post;
 
 const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
     const parentSize = useContext(GetChildSizeContext);
-    const clipPath_Memo = useMemo(() => getHexagonalClipPath(0.6, parentSize, { multipliers: { y: 0.8 }, shape: 'bottom' }), [parentSize]);
+    const clipPath_Memo = useMemo(() => getHexagonalClipPath(0.6, parentSize, { multipliers: { y: 0.9 }, shape: 'bottom' }), [parentSize]);
 
     return (
         <span
-            className='select-none px-6 text-[3vh] font-bold leading-none text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-[0.75vh] before:-z-10 before:h-4/5 before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path]'
+            className='font-fjalla-one select-none px-6 text-3xl font-semibold tracking-wide text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-1.5 before:-z-10 before:h-[90%] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path]'
             style={
                 {
                     '--post-title-clip-path': clipPath_Memo,
@@ -168,7 +168,7 @@ const PostDate: FC<{ date: { year?: string; month?: string; day?: string } }> = 
 
     return (
         <span
-            className='block bg-theme-primary-lighter py-1 pl-2 pr-4 text-sm font-semibold leading-none text-theme-primary-darker'
+            className='block bg-theme-primary-lighter py-1 pl-2 pr-4 font-lato text-sm leading-none text-theme-primary-darker'
             style={{ clipPath: clipPath_Memo }}
         >
             {day && `${day}.`}
