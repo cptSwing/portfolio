@@ -150,7 +150,7 @@ const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
 
     return (
         <span
-            className='font-fjalla-one select-none px-6 text-3xl font-semibold tracking-wide text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-1.5 before:-z-10 before:h-[90%] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path]'
+            className='select-none px-6 font-fjalla-one text-3xl font-semibold tracking-wide text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-1.5 before:-z-10 before:h-[90%] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path]'
             style={
                 {
                     '--post-title-clip-path': clipPath_Memo,

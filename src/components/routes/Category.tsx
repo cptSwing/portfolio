@@ -194,7 +194,7 @@ const CardTitles: FC<{
                 } as CSSProperties
             }
         >
-            <div className='font-fjalla-one text-nowrap text-2xl text-theme-secondary-lighter'>{title}</div>
+            <div className='text-nowrap font-fjalla-one text-2xl text-theme-secondary-lighter'>{title}</div>
             <div className='text-nowrap font-lato text-sm italic leading-none text-theme-text-background'>{subTitle}</div>
         </div>
     );

@@ -248,7 +248,7 @@ const ButtonHexagon: FC<{
                     y={hexHalfHeight}
                     textAnchor='middle'
                     alignmentBaseline='central'
-                    className='font-fjalla-one pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary stroke-none text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter'
+                    className='pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter'
                 >
                     {title}
                 </text>
