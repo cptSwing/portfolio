@@ -11,37 +11,8 @@
         @apply text-[--theme-secondary-50] underline decoration-white/25 visited:text-[--theme-secondary-200];
     }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply font-bold;
-    }
-
-    h1 {
-        @apply text-5xl;
-    }
-
-    h2 {
-        @apply text-4xl;
-    }
-
-    h3 {
-        @apply text-3xl;
-    }
-
-    h4 {
-        @apply text-2xl;
-    }
-
-    h5 {
-        @apply text-xl;
-    }
-
-    h6 {
-        @apply text-lg;
+    dialog {
+        @apply max-h-full max-w-full;
     }
 }
 
@@ -93,23 +64,11 @@
     }
 }
 
-dialog {
-    @apply max-h-full max-w-full border-none p-0;
-}
-
+/* 
 button :focus-visible {
     outline: 2px solid transparent;
     outline-offset: 2px;
-}
-
-#root {
-    @apply font-merriweather flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background;
-}
-
-.hexagon-clip {
-    aspect-ratio: 1 / 0.866; /* cos(30deg) */
-    clip-path: polygon(50% -50%, 100% 50%, 50% 150%, 0 50%);
-}
+} */
 
 .postcards-grid-template {
     grid-template-areas:
