@@ -11,7 +11,9 @@ const tailWindTheme = {
     theme: {
         extend: {
             aspectRatio: {
+                'portrait': '9 / 16',
                 'hex-flat': '1 / 0.866',
+                'hex-pointy': '0.866 / 1',
             },
             spacing: {
                 84: '21rem',

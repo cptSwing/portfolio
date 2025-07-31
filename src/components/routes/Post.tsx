@@ -89,18 +89,18 @@ const Post = () => {
     );
 
     return (
-        <div className='absolute left-0 top-0 size-full bg-theme-text-background px-[6%] pb-4 pt-12 text-theme-text transition-[clip-path] clip-inset-r-[--clip-post] clip-inset-t-[-10%]'>
+        <div className='absolute left-0 top-0 size-full bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] clip-inset-r-[--clip-post] clip-inset-t-[-10%] sm:pt-10 lg:pt-12 xl:px-[6%]'>
             <header className='pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center'>
                 <GetChildSize Context={GetChildSizeContext}>
                     <FloatingHeader title={title} />
                 </GetChildSize>
             </header>
 
-            <main className='scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pr-[1.5%] scrollbar-thin'>
+            <main className='scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll scrollbar-thin sm:pr-[2%] xl:pr-[1.5%]'>
                 {/* (Sub-)Header, date, "Built with"  */}
                 <div>
-                    <span className='block text-2xl'>{subTitle}</span>
-                    <div className='my-2 flex flex-wrap items-center justify-between gap-y-1'>
+                    <span className='block sm:text-lg md:text-xl lg:text-2xl'>{subTitle}</span>
+                    <div className='flex flex-wrap items-center justify-between sm:my-1 sm:gap-y-0.5 lg:my-2 lg:gap-y-1'>
                         <GetChildSize Context={GetChildSizeContext}>
                             <PostDate date={date_Memo} />
                         </GetChildSize>
@@ -150,7 +150,7 @@ const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
 
     return (
         <span
-            className='select-none px-6 font-fjalla-one text-3xl font-semibold tracking-wide text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-1.5 before:-z-10 before:h-[90%] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path]'
+            className='select-none px-[4%] font-fjalla-one font-semibold text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-1.5 before:-z-10 before:h-[90%] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path] sm:text-2xl sm:tracking-wider lg:text-3xl lg:tracking-wide'
             style={
                 {
                     '--post-title-clip-path': clipPath_Memo,
@@ -188,9 +188,11 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
     const handleClick = () => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback();
 
     return (
-        <div className='my-4 first-of-type:mt-0'>
+        <div className='first-of-type:mt-0 sm:my-3 sm:text-xs md:my-5 md:text-sm'>
             {showCase && (
-                <div className={classNames('group max-h-64 w-full max-w-[40%]', isBlockIndexEven ? 'float-right ml-4' : 'float-left mr-4')}>
+                <div
+                    className={classNames('group max-h-64 w-full max-w-[40%]', isBlockIndexEven ? 'float-right sm:ml-4 md:ml-5' : 'float-left sm:mr-4 md:mr-5')}
+                >
                     {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
                         <iframe
                             src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')}
@@ -230,7 +232,7 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                     p: ({ children }) => (
                         <p
                             className={classNames(
-                                'mb-3 text-pretty text-justify text-sm leading-relaxed tracking-normal',
+                                'text-pretty text-justify sm:mb-4 md:mb-5',
                                 blockIndex === 0
                                     ? 'first-of-type:first-letter:-ml-0.5 first-of-type:first-letter:align-text-bottom first-of-type:first-letter:text-[1.5rem] first-of-type:first-letter:leading-[1.475rem] first-of-type:first-letter:text-red-800'
                                     : '',
@@ -265,7 +267,7 @@ const RemainingImages: FC<{
     const handleClick = (imageIndex: number) => setLightBoxSlide(imageIndex);
 
     return (
-        <div className='grid grid-cols-5 items-start gap-3 pb-5 pt-10'>
+        <div className='grid items-start gap-3 pb-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
             {remaining_Memo.map((remain) => {
                 const [showCase, imageIndex] = remain || [];
 

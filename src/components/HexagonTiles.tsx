@@ -1,18 +1,19 @@
 import { CSSProperties, FC, memo, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames';
-import configJSON from '../config/config.json';
 import { CategoryLink, HexagonData, HexagonLink, NavigationExpansionState, UIButton } from '../types/types';
 import { halfRoundedHexagonPath, linkHexes, nonLinkHexes, roundedHexagonPath, staticValues } from '../config/hexagonData';
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
+import { useBreakpoint } from '../hooks/useBreakPoint';
 
-const {
-    hexMenu: { columns, strokeWidth, scaleUp },
-} = configJSON;
+const columns = 3;
+const strokeWidth = 0.025;
+const scaleUp = 100;
 
 const hexPaddingFactor = staticValues.tilingMultiplierHorizontal.flatTop;
-const totalWidthAtCenter = (columns * hexPaddingFactor - (hexPaddingFactor - 1)) * scaleUp;
+const totalWidthAtCenter = (columns * hexPaddingFactor - (hexPaddingFactor - 1)) * 100;
+
 const totalHeight = totalWidthAtCenter * staticValues.heightAspectRatio.flatTop;
 const hexHeight = staticValues.heightAspectRatio.flatTop * scaleUp;
 const hexHalfHeight = hexHeight / 2;
@@ -25,8 +26,14 @@ const navRotationValues: Record<CategoryLink, number> = {
     'log': 180,
 };
 
+const viewBoxes = {
+    square: `0 0 ${totalWidthAtCenter} ${totalWidthAtCenter}`,
+    hexFlat: `0 0 ${totalWidthAtCenter} ${totalHeight}`,
+    hexPointy: `0 0 ${totalHeight} ${totalWidthAtCenter}`,
+};
+
 const HexagonTiles = () => {
-    const menuTransitionStateUpdates = useState<[CategoryLink | null, boolean]>([null, true]);
+    const menuTransitionStateUpdates = useState<[CategoryLink | null, TransitionTargetReached]>([null, true]);
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
 
     const expansionState = useZustand((store) => store.values.expansionState);
@@ -36,6 +43,8 @@ const HexagonTiles = () => {
             setMenuTransitionStates([null, true]);
         }
     }, [expansionState, setMenuTransitionStates]);
+
+    const isXlBreakpoint = useBreakpoint('xl');
 
     const navMenuTransitionClasses_Memo = useMemo(() => {
         switch (menuTransitionTarget) {
@@ -56,10 +65,18 @@ const HexagonTiles = () => {
     return (
         <svg
             className={classNames(
-                'pointer-events-none absolute top-[--flat-hex-margin-top] z-10 size-full overflow-visible transition-transform',
+                'pointer-events-none absolute z-10 overflow-visible transition-transform',
                 expansionState === 'home' ? navMenuTransitionClasses_Memo : '',
             )}
-            viewBox={`0 0 ${totalWidthAtCenter} ${totalHeight}`}
+            viewBox={
+                expansionState === 'category'
+                    ? viewBoxes['square']
+                    : expansionState === 'post'
+                      ? isXlBreakpoint
+                          ? viewBoxes['hexFlat']
+                          : viewBoxes['hexPointy']
+                      : viewBoxes['hexFlat']
+            }
             style={
                 {
                     transitionDuration: `${svgTransitionDurationMs}ms`,
@@ -257,8 +274,6 @@ const ButtonHexagon: FC<{
     );
 });
 
-/* Local Values */
-
 // export const getRoundedHexagon
 
 const calcCSSVariables = (
@@ -279,3 +294,7 @@ const calcCSSVariables = (
     }) as CSSProperties;
 
 const isCategoryLink = (title: UIButton) => title === 'code' || title === '3d' || title === 'log';
+
+// local types
+
+type TransitionTargetReached = boolean;

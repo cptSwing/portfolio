@@ -1,7 +1,7 @@
 import testDb from '../../queries/testDb.json';
 import { useParams } from 'react-router-dom';
 import { DataBase, ClipAreaSize } from '../../types/types';
-import { CSSProperties, FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
@@ -10,9 +10,6 @@ import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
 import remapToRange from '../../lib/remapToRange.ts';
 import CategoryCard from '../CategoryCard.tsx';
-import GetChildSize from '../GetChildSize.tsx';
-import GetChildSizeContext from '../../contexts/GetChildSizeContext.ts';
-import { getHexagonalClipPath } from '../../config/hexagonData.ts';
 
 const testDbTyped = testDb as DataBase;
 const categories = Object.values(testDbTyped);
@@ -92,21 +89,17 @@ const Category = () => {
         <>
             <Flipper
                 element={'nav'}
-                className='postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[4vh_repeat(8,minmax(0,1fr))_1vh] gap-x-6 gap-y-6 overflow-hidden bg-theme-primary/10 px-[8vh] py-3 transition-[transform,clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%]'
+                className='postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[0.6fr_repeat(8,minmax(0,1fr))_0.125fr] gap-[0%] overflow-hidden bg-theme-primary/10 px-[0%] py-[0%] transition-[transform,clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%] sm:gap-[3%] sm:px-[8%] sm:py-[1%]'
                 flipKey={flipIndex}
                 spring={{ stiffness: 600, damping: 40 }}
             >
                 {/* Info */}
-                <GetChildSize Context={GetChildSizeContext}>
-                    <CardTitles infoContent={infoContent} />
-                </GetChildSize>
+                <CardTitles infoContent={infoContent} />
 
                 {/* Brand */}
-                <div className='[grid-area:brand]'>
-                    <div className='select-none text-right text-theme-primary/50'>
-                        <div className='text-lg leading-snug'>jens Brandenburg</div>
-                        <div className='text-sm leading-snug'>webdev & 3d art</div>
-                    </div>
+                <div className='absolute mb-[2%] size-full select-none text-theme-primary/30 [grid-area:brand]'>
+                    <div className='text-nowrap text-right sm:text-sm sm:!leading-tight md:text-base lg:text-lg lg:!leading-snug'>jens Brandenburg</div>
+                    <div className='text-nowrap text-right sm:text-2xs md:text-xs lg:text-sm'>webdev & 3d art</div>
                 </div>
 
                 {/* Animated Grid */}
@@ -126,17 +119,14 @@ const Category = () => {
                     ))}
 
                 {/* Progress Bar */}
-                <div className='mx-auto -mt-3 flex w-[90%] items-center justify-between gap-x-2 [grid-area:track]'>
+                <div className='absolute left-[5%] mx-auto flex h-full w-[90%] items-center justify-between gap-x-[1.5%] [grid-area:track]'>
                     {categoryData_Memo.posts.map((post, idx) => {
                         return (
                             <button
                                 key={`${post.id}_${idx}`}
                                 className={classNames(
-                                    'relative h-1.5 flex-1 opacity-100 transition-[background-color,opacity] duration-300',
-                                    'before:absolute before:-left-1 before:h-[calc(100%+theme(spacing.2))] before:w-full',
-                                    idx === flipIndex
-                                        ? 'bg-theme-primary-lighter before:cursor-default'
-                                        : 'bg-black/15 before:cursor-pointer hover-active:bg-theme-primary hover-active:opacity-50',
+                                    'relative mt-[-2%] h-full flex-1 transition-[background-color] duration-300 xl:h-3/4',
+                                    idx === flipIndex ? 'bg-theme-primary-lighter' : 'bg-black/15 hover-active:bg-theme-primary/50',
                                 )}
                                 onClick={() => setFlipIndex(idx)}
                             />
@@ -163,9 +153,6 @@ const CardTitles: FC<{
 }> = ({ infoContent }) => {
     const { title, subTitle } = infoContent;
 
-    const parentSize = useContext(GetChildSizeContext);
-    const clipPath_Memo = useMemo(() => getHexagonalClipPath(0.8, parentSize, { multipliers: { x: 1.5 }, shape: 'top-right' }), [parentSize]);
-
     const [isSwitching, setIsSwitching] = useState(false);
 
     useEffect(() => {
@@ -183,19 +170,19 @@ const CardTitles: FC<{
     return (
         <div
             className={classNames(
-                // 'before:absolute before:left-[-50%] before:top-0 before:-z-10 before:h-full before:w-[150%] before:bg-theme-primary-darker/35 before:[clip-path:--category-card-title-clip-path]',
-                'absolute flex flex-col gap-y-0.5 pb-1 pr-6 transition-[clip-path] clip-inset-l-[-100%] [grid-area:info]',
+                'absolute size-full pl-[2%] transition-[clip-path] clip-inset-b-[-150%] clip-inset-l-[-100%] [grid-area:info]',
                 isSwitching ? 'clip-inset-r-[125%]' : 'clip-inset-r-0',
             )}
             style={
                 {
-                    'transitionDuration': `${isSwitching ? 0 : transitionDuration_MS}ms`,
-                    '--category-card-title-clip-path': clipPath_Memo,
+                    transitionDuration: `${isSwitching ? 0 : transitionDuration_MS}ms`,
                 } as CSSProperties
             }
         >
-            <div className='text-nowrap font-fjalla-one text-2xl text-theme-secondary-lighter'>{title}</div>
-            <div className='text-nowrap font-lato text-sm italic leading-none text-theme-text-background'>{subTitle}</div>
+            <div className='text-nowrap font-fjalla-one text-2xl text-theme-secondary-lighter sm:text-sm sm:!leading-tight md:text-base lg:text-lg lg:!leading-snug xl:text-xl'>
+                {title}
+            </div>
+            <div className='text-nowrap font-lato text-sm italic text-theme-text-background sm:text-2xs md:text-xs lg:text-sm xl:text-base'>{subTitle}</div>
         </div>
     );
 };

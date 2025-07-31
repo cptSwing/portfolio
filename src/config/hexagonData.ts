@@ -270,16 +270,6 @@ export const roundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth 
 export const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 10, true);
 export const svgObjectBoundingBoxHexagonPath = getHexagonPathData(0.5, 0.05);
 
-export function getHexagonPathOffsetAndScale(aspectRatio: number, scale: number, xPos: number, yPos: number) {
-    const scaleY = scale / hexAspectRatio;
-    const scaleX = scaleY / aspectRatio;
-
-    const offsetX = scaleX / 2;
-    const offsetY = offsetX * hexAspectRatio * aspectRatio;
-
-    return `translate(${xPos - offsetX} ${yPos - offsetY}) scale(${scaleX} ${scaleY})`;
-}
-
 export function getShapePaths(styleIndex: number, aspectRatio: number) {
     let backgroundShapePath;
     switch (styleIndex) {
@@ -439,7 +429,7 @@ export function getHexagonalClipPath(
     parentSize: { width: number; height: number },
     options?: {
         multipliers?: { x?: number; y?: number };
-        shape?: 'full' | 'top-right' | 'bottom';
+        shape?: 'full' | 'top-left' | 'top-right' | 'bottom' | 'slant-right';
     },
 ) {
     const { multipliers, shape } = options ?? {};
@@ -455,13 +445,20 @@ export function getHexagonalClipPath(
 
     switch (actualShape) {
         case 'full':
-            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, calc(100% - ${x_Percent}%) 0%, 100% ${y_Percent}%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, ${x_Percent}% 100%, 0% calc(100% - ${y_Percent}%))`;
+            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, calc(100% - ${x_Percent}%) 0%, 100% ${y_Percent}%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, ${x_Percent}% 100%, 0% calc
+            (100% - ${y_Percent}%))`;
+
+        case 'top-left':
+            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, 100% 0%, 100% 100%, 0% 100%)`;
 
         case 'top-right':
             return `polygon(0% 0%, calc(100% - ${x_Percent}%) 0%, 100% ${y_Percent}%, 100% 100%, 0% 100%)`;
 
         case 'bottom':
             return `polygon(0% 0%, 100% 0%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, ${x_Percent}% 100%, 0% calc(100% - ${y_Percent}%))`;
+
+        case 'slant-right':
+            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, 100% 0%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, 0% 100%)`;
     }
 }
 

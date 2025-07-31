@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useCallback, useEffect } from 'react';
+import { CSSProperties, FC, useEffect } from 'react';
 import { ClipAreaSize, PostType } from '../types/types.ts';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames.ts';
@@ -6,6 +6,7 @@ import { useZustand } from '../lib/zustand.ts';
 import { Flipped } from 'react-flip-toolkit';
 import { getShapePaths } from '../config/hexagonData.ts';
 import stripSpaces from '../lib/stripSpaces.ts';
+import { useMeasure } from 'react-use';
 
 const CategoryCard: FC<{
     post: PostType;
@@ -26,26 +27,23 @@ const CategoryCard: FC<{
 
     const styleIndex = getStyleIndex(flipIndex, cardIndex, cardCount);
 
-    /* Store various areas' sizes on mount, the earlier the better */
-    const mountCallback_Cb = useCallback(
-        (elem: HTMLButtonElement | null) => {
-            if (elem) {
-                // TODO should update on resize
-                if (!clipAreaSizes.current[styleIndex]) {
-                    const { width, height } = elem.getBoundingClientRect();
-                    const aspectRatio = width / height;
-                    const backgroundShapePath = getShapePaths(styleIndex, aspectRatio);
+    const [measureRef, { width: width, height: height }] = useMeasure<HTMLButtonElement>();
 
-                    clipAreaSizes.current[styleIndex] = {
-                        width,
-                        height,
-                        backgroundShapePath,
-                    };
-                }
+    /* Store areas' sizes */
+    useEffect(() => {
+        if (!clipAreaSizes.current[styleIndex]) {
+            if (width && height) {
+                const aspectRatio = width / height;
+                const backgroundShapePath = getShapePaths(styleIndex, aspectRatio);
+
+                clipAreaSizes.current[styleIndex] = {
+                    width,
+                    height,
+                    backgroundShapePath,
+                };
             }
-        },
-        [clipAreaSizes, styleIndex],
-    );
+        }
+    }, [styleIndex, width, height, clipAreaSizes]);
 
     const gridAreaStyle = gridAreaStyles[styleIndex];
     const clipAreaSize = clipAreaSizes.current[styleIndex];
@@ -74,7 +72,7 @@ const CategoryCard: FC<{
     return (
         <Flipped flipId={post.id} transformOrigin='0px 0px' opacity translate scale>
             <button
-                ref={mountCallback_Cb}
+                ref={measureRef}
                 className={classNames(
                     'group absolute flex size-full brightness-0 drop-shadow-omni-md grayscale-0 transition-[filter,background-color] hover-active:![--tw-brightness:_brightness(1)] hover-active:![--tw-grayscale:_grayscale(0)]',
                     debug_applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
