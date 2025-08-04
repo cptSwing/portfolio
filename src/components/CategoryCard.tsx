@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect } from 'react';
+import { CSSProperties, FC, useEffect, useLayoutEffect, useState } from 'react';
 import { ClipAreaSize, PostType } from '../types/types.ts';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames.ts';
@@ -26,37 +26,33 @@ const CategoryCard: FC<{
     const navigate = useNavigate();
 
     const styleIndex = getStyleIndex(flipIndex, cardIndex, cardCount);
-
-    const [measureRef, { width: width, height: height }] = useMeasure<HTMLButtonElement>();
-
-    /* Store areas' sizes */
-    useEffect(() => {
-        if (!clipAreaSizes.current[styleIndex]) {
-            if (width && height) {
-                const aspectRatio = width / height;
-                const backgroundShapePath = getShapePaths(styleIndex, aspectRatio);
-
-                clipAreaSizes.current[styleIndex] = {
-                    width,
-                    height,
-                    backgroundShapePath,
-                };
-            }
-        }
-    }, [styleIndex, width, height, clipAreaSizes]);
-
     const gridAreaStyle = gridAreaStyles[styleIndex];
-    const clipAreaSize = clipAreaSizes.current[styleIndex];
+    const [clipAreaSize, setClipAreaSize] = useState<ClipAreaSize | undefined>(clipAreaSizes.current[styleIndex]);
+
+    const [measureRef, { width, height }] = useMeasure<HTMLButtonElement>();
+
+    useLayoutEffect(() => {
+        if (width && height) {
+            if (!clipAreaSizes.current[styleIndex]) {
+                const newClipAreaSize = getIndexClipPath(styleIndex, width, height);
+                clipAreaSizes.current[styleIndex] = newClipAreaSize;
+            } else if (width !== clipAreaSizes.current[styleIndex].width || height !== clipAreaSizes.current[styleIndex].height) {
+                const updatedClipAreaSize = getIndexClipPath(styleIndex, width, height);
+                clipAreaSizes.current[styleIndex] = updatedClipAreaSize;
+            }
+
+            setClipAreaSize(clipAreaSizes.current[styleIndex]);
+        }
+    }, [clipAreaSizes, height, width, styleIndex]);
 
     const isAtFront = styleIndex === 0;
 
+    /* Set title/subtitle to top 'banner' */
     useEffect(() => {
         if (isAtFront) {
             setInfoContent({ title: post.title, subTitle: post.subTitle ?? '' });
         }
     }, [isAtFront, post, setInfoContent]);
-
-    const idSuffix = sanitizeString(post.id + post.title);
 
     const handleClick = () => {
         if (isAtFront) {
@@ -72,20 +68,17 @@ const CategoryCard: FC<{
     return (
         <Flipped flipId={post.id} transformOrigin='0px 0px' opacity translate scale>
             <button
+                // ref={mountCallback}
                 ref={measureRef}
                 className={classNames(
                     'group absolute flex size-full brightness-0 drop-shadow-omni-md grayscale-0 transition-[filter,background-color] hover-active:![--tw-brightness:_brightness(1)] hover-active:![--tw-grayscale:_grayscale(0)]',
-                    debug_applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                     isAtFront ? 'cursor-pointer' : 'cursor-zoom-in',
+                    debug_applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                 )}
                 style={gridAreaStyle}
                 onClick={handleClick}
             >
-                {/* Clip Path SVG */}
-                {clipAreaSize && <SVGClipPath clipAreaSize={clipAreaSize} idSuffix={idSuffix} />}
-
-                {/* Image */}
-                <CategoryCardImage post={post} idSuffix={idSuffix} />
+                {clipAreaSize && <SVGClippedImage post={post} clipAreaSize={clipAreaSize} />}
             </button>
         </Flipped>
     );
@@ -93,31 +86,13 @@ const CategoryCard: FC<{
 
 export default CategoryCard;
 
-const CategoryCardImage: FC<{
+const SVGClippedImage: FC<{
     post: PostType;
-    idSuffix: string;
-}> = ({ post, idSuffix }) => {
-    const { title, titleCardBg } = post;
-
-    return (
-        <div
-            className='group relative size-full overflow-hidden bg-theme-primary-darker/70 hover-active:scale-[1.03]'
-            style={
-                {
-                    clipPath: `url(#svg-hexagon-clip-path-${idSuffix})`,
-                } as CSSProperties
-            }
-        >
-            <img className='size-full object-cover object-center' src={titleCardBg} alt={title} />
-        </div>
-    );
-};
-
-const SVGClipPath: FC<{
     clipAreaSize: ClipAreaSize;
-    idSuffix: string;
-}> = ({ clipAreaSize, idSuffix }) => {
+}> = ({ post, clipAreaSize }) => {
+    const { id, title, titleCardBg } = post;
     const { width, height, backgroundShapePath } = clipAreaSize;
+    const idSuffix = sanitizeString(id + title);
 
     return (
         <svg xmlns='http://www.w3.org/2000/svg' className='pointer-events-none absolute' style={{ width, height }}>
@@ -126,6 +101,10 @@ const SVGClipPath: FC<{
                     <path className='transition-[d] delay-75' d={backgroundShapePath} />
                 </clipPath>
             </defs>
+
+            <foreignObject width='100%' height='100%' clipPath={`url(#svg-hexagon-clip-path-${idSuffix})`}>
+                <img className='size-full object-cover object-center' src={titleCardBg} alt={title} />
+            </foreignObject>
         </svg>
     );
 };
@@ -142,6 +121,17 @@ function getStyleIndex(flipIndex: number, cardIndex: number, cardCount: number) 
         // flipIndex === cardIndex
         return 0;
     }
+}
+
+function getIndexClipPath(styleIndex: number, width: number, height: number) {
+    const aspectRatio = width / height;
+    const backgroundShapePath = getShapePaths(styleIndex, aspectRatio);
+
+    return {
+        width,
+        height,
+        backgroundShapePath,
+    };
 }
 
 function sanitizeString(str: string) {
