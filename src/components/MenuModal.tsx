@@ -28,7 +28,7 @@ const MenuModal = () => {
             className='size-full bg-gray-950 bg-opacity-0 transition-[background-color]' // backdrop-blur-md
             onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleMenu({ name: null })}
         >
-            {name && (name === 'settings' ? <Settings /> : <Contact />)}
+            {name && (name === 'config' ? <Settings /> : <Contact />)}
         </dialog>
     );
 };

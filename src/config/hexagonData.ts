@@ -111,14 +111,14 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         null,
         {
             home: { position: allOffsets[3][1], rotation: -60, isHalf: false, scale: 1 },
-            category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.8, offsets: { x: 1.35, y: -4 } }, // "Active" position
+            category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.8, offsets: { x: 1.35, y: -3.75 } }, // "Active" position
             post: { position: allOffsets[5][1], rotation: 0, isHalf: false, scale: 0, offsets: { x: 6.25, y: 1 } },
             title: 'code',
             target: '/0',
         },
         {
             home: { position: allOffsets[3][2], rotation: 60, isHalf: false, scale: 1 },
-            category: { position: allOffsets[8][0], rotation: 0, isHalf: false, scale: 0.5, offsets: { x: -15.575, y: -2.5 } },
+            category: { position: allOffsets[8][0], rotation: 0, isHalf: false, scale: 0.5, offsets: { x: -15.575, y: -2 } },
             post: { position: allOffsets[6][1], rotation: 0, isHalf: false, scale: 0, offsets: { x: -12.5, y: 0 } },
             title: '3d',
             target: '/1',
@@ -149,7 +149,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         // Further UI:
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: 0, y: -2.25 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.275, offsets: { x: -4.25, y: 10.75 } },
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.275, offsets: { x: -4.25, y: 10.6 } },
             post: { position: allOffsets[6][0], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -12.5, y: 5 } },
             title: 'contact',
             svgPath: '/svg/ChatBubbleLeftRightOutline.svg',
@@ -157,11 +157,11 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         },
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -5.5, y: 1.5 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.225, offsets: { x: -9.5, y: 7.2 } },
+            category: { position: allOffsets[2][2], rotation: 0, isHalf: false, scale: 0.225, offsets: { x: 9.15, y: 1.15 } },
             post: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 6.25, y: 0 } },
-            title: 'settings',
+            title: 'config',
             svgPath: '/svg/AdjustmentsHorizontalOutline.svg',
-            target: (ev) => store_toggleMenu({ name: 'settings', positionAndSize: ev && getMenuButtonPosition(ev) }),
+            target: (ev) => store_toggleMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
             home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: 5.5, y: 1.5 } },
@@ -175,7 +175,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         // Appears only in 'category' and 'post' expansionState:
         {
             home: { position: allOffsets[4][1], rotation: 180, isHalf: false, scale: 0, offsets: { x: -3.125, y: 0 } },
-            category: { position: allOffsets[2][2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 9.35, y: 1.25 } },
+            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.225, offsets: { x: -9.65, y: 7.1 } },
             post: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: -6.25, y: -1.5625 } },
             title: 'home',
             svgPath: '/svg/HomeOutline.svg',
@@ -211,7 +211,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         },
         {
             home: { position: allOffsets[6][1], rotation: 180, isHalf: false, scale: 1 },
-            category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.37, offsets: { x: 11.3, y: 4.125 } },
+            category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.37, offsets: { x: 11.5, y: 4.45 } },
             post: { position: allOffsets[7][1], rotation: 0, isHalf: false, scale: 0, offsets: { x: 6.25, y: -1 } },
             title: 'log',
             target: '/3',
@@ -277,8 +277,8 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
         case 0:
             // top left; top right; bottom right; bottom left
             shapePath = `
-                    M0,${0.15} 
-                    L${0.15 / aspectRatio / tan60},0 
+                    M0,${0.075} 
+                    L${0.075 / aspectRatio / tan60},0 
                     
                     L${1 - 0.025 / aspectRatio / tan60},0 
                     L1,${0.025} 

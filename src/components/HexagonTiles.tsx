@@ -49,13 +49,13 @@ const HexagonTiles = () => {
     const navMenuTransitionClasses_Memo = useMemo(() => {
         switch (menuTransitionTarget) {
             case 'code':
-                return /* tw */ `rotate-[60deg] [&_.hex-link-class-code]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-60deg] [&_.hex-link-class-settings]:![--tw-rotate:-60deg] [&_.hex-link-class-login]:![--tw-rotate:-60deg] [&_.hex-link-class-contact]:![--tw-translate-x:35.8%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:35.75%] [&_.hex-link-class-settings]:![--tw-translate-y:43.5%] [&_.hex-link-class-login]:![--tw-translate-x:41.25%] [&_.hex-link-class-login]:![--tw-translate-y:32.5%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!duration-150 [&_.hex-link-class-code]:scale-90'}`;
+                return /* tw */ `rotate-[60deg] [&_.hex-link-class-code]:!scale-95 [&_.hex-link-class-code]:[filter:url(#lighter-inner)] [&_.hex-link-class-contact]:![--tw-rotate:-60deg] [&_.hex-link-class-config]:![--tw-rotate:-60deg] [&_.hex-link-class-login]:![--tw-rotate:-60deg] [&_.hex-link-class-contact]:![--tw-translate-x:35.8%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-config]:![--tw-translate-x:35.75%] [&_.hex-link-class-config]:![--tw-translate-y:43.5%] [&_.hex-link-class-login]:![--tw-translate-x:41.25%] [&_.hex-link-class-login]:![--tw-translate-y:32.5%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-code:hover]:!duration-150 [&_.hex-link-class-code]:scale-90'}`;
 
             case '3d':
-                return /* tw */ `rotate-[-60deg] [&_.hex-link-class-3d]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:60deg] [&_.hex-link-class-settings]:![--tw-rotate:60deg] [&_.hex-link-class-login]:![--tw-rotate:60deg] [&_.hex-link-class-contact]:![--tw-translate-x:39.35%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-settings]:![--tw-translate-x:33.7%] [&_.hex-link-class-settings]:![--tw-translate-y:32.6%] [&_.hex-link-class-login]:![--tw-translate-x:39.3%] [&_.hex-link-class-login]:![--tw-translate-y:43.6%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!duration-150 [&_.hex-link-class-3d]:scale-90'}`;
+                return /* tw */ `rotate-[-60deg] [&_.hex-link-class-3d]:!scale-95 [&_.hex-link-class-3d]:[filter:url(#lighter-inner)] [&_.hex-link-class-contact]:![--tw-rotate:60deg] [&_.hex-link-class-config]:![--tw-rotate:60deg] [&_.hex-link-class-login]:![--tw-rotate:60deg] [&_.hex-link-class-contact]:![--tw-translate-x:39.35%] [&_.hex-link-class-contact]:![--tw-translate-y:36.2%] [&_.hex-link-class-config]:![--tw-translate-x:33.7%] [&_.hex-link-class-config]:![--tw-translate-y:32.6%] [&_.hex-link-class-login]:![--tw-translate-x:39.3%] [&_.hex-link-class-login]:![--tw-translate-y:43.6%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-3d:hover]:!duration-150 [&_.hex-link-class-3d]:scale-90'}`;
 
             case 'log':
-                return /* tw */ `rotate-[180deg] [&_.hex-link-class-log]:stroke-blue-500 [&_.hex-link-class-contact]:![--tw-rotate:-180deg] [&_.hex-link-class-settings]:![--tw-rotate:-180deg] [&_.hex-link-class-login]:![--tw-rotate:-180deg] [&_.hex-link-class-contact]:![--tw-translate-y:39.75%] [&_.hex-link-class-settings]:![--tw-translate-x:43%] [&_.hex-link-class-settings]:![--tw-translate-y:36%] [&_.hex-link-class-login]:![--tw-translate-x:32%] [&_.hex-link-class-login]:![--tw-translate-y:36%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!duration-150 [&_.hex-link-class-log]:scale-90'}`;
+                return /* tw */ `rotate-[180deg] [&_.hex-link-class-log]:!scale-95 [&_.hex-link-class-log]:[filter:url(#lighter-inner)] [&_.hex-link-class-contact]:![--tw-rotate:-180deg] [&_.hex-link-class-config]:![--tw-rotate:-180deg] [&_.hex-link-class-login]:![--tw-rotate:-180deg] [&_.hex-link-class-contact]:![--tw-translate-y:39.75%] [&_.hex-link-class-config]:![--tw-translate-x:43%] [&_.hex-link-class-config]:![--tw-translate-y:36%] [&_.hex-link-class-login]:![--tw-translate-x:32%] [&_.hex-link-class-login]:![--tw-translate-y:36%] ${menuTransitionTargetReached && '[&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!scale-90 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!delay-0 [&_.hex-regular-class]:has-[.hex-link-class-log:hover]:!duration-150 [&_.hex-link-class-log]:scale-90'}`;
 
             default:
                 return /* tw */ 'rotate-0';
@@ -94,17 +94,10 @@ const HexagonTiles = () => {
             }}
         >
             <defs>
-                <filter id='light-inner'>
-                    <feFlood className='[flood-color:theme(colors.theme.primary-darker/0.5)]' />
-                    <feComposite operator='out' in2='SourceGraphic' />
-                    <feMorphology operator='dilate' radius='2' />
-                    {/* <feGaussianBlur stdDeviation='1' /> */}
-                    <feComposite operator='atop' in2='SourceGraphic' />
-                </filter>
                 <filter id='lighter-inner'>
                     <feFlood className='[flood-color:theme(colors.theme.primary-lighter/0.5)]' />
                     <feComposite operator='out' in2='SourceGraphic' />
-                    <feMorphology operator='dilate' radius='7' />
+                    <feMorphology operator='dilate' radius='4' />
                     <feGaussianBlur stdDeviation='5' />
                     <feComposite operator='atop' in2='SourceGraphic' />
                 </filter>
@@ -113,10 +106,6 @@ const HexagonTiles = () => {
                     <stop offset='50%' className='[stop-color:theme(colors.theme.primary-lighter/0.75)]' />
                     <stop offset='100%' className='[stop-color:theme(colors.theme.primary-darker/1)]' />
                 </linearGradient>
-                <radialGradient id='radialGradient'>
-                    <stop offset='90%' className='[stop-color:theme(colors.theme.primary-darker/1)]' />
-                    <stop offset='100%' className='[stop-color:theme(colors.theme.primary-lighter/1)]' />
-                </radialGradient>
             </defs>
 
             {nonLinkHexes.map((hexData, idx) => (
@@ -164,16 +153,15 @@ const AnimatedHexagon: FC<{
                 className={classNames(
                     'hex-regular-class pointer-events-auto origin-[12.5%_12.5%] translate-x-0 transition-[fill,transform,stroke,stroke-width,d]',
                     expansionState === 'home'
-                        ? 'fill-theme-primary/50 stroke-theme-primary-lighter/25 hover-active:fill-theme-primary/55 hover-active:stroke-theme-primary-lighter/20'
+                        ? 'fill-theme-primary/50 stroke-theme-primary-lighter/10 hover-active:fill-theme-primary/55 hover-active:stroke-theme-primary-lighter/5'
                         : expansionState === 'category'
-                          ? 'fill-theme-primary/95 stroke-theme-primary-lighter/50 hover-active:fill-theme-primary hover-active:stroke-theme-primary-lighter/45'
+                          ? 'fill-theme-primary/35 stroke-theme-primary-lighter/10 hover-active:fill-theme-primary/45 hover-active:stroke-theme-primary-lighter/5'
                           : /* post */
-                            'fill-theme-text-background stroke-theme-text-background',
+                            'fill-theme-text-background/100 stroke-theme-text-background',
                 )}
                 style={{
                     ...cssVariables_Memo,
                     transitionDuration: `50ms, ${svgTransitionDurationMs}ms`,
-                    transitionDelay: `0ms, ${randomDelay_Memo}ms`,
                     strokeWidth: expansionState === 'home' ? `${8 / scale}` : expansionState === 'category' ? `${4 / scale}` : /* post */ '50',
                 }}
                 clipPath={`url(#${randomDelay_Memo}-clipPath)`}
@@ -217,14 +205,22 @@ const ButtonHexagon: FC<{
         <g
             className={classNames(
                 'group origin-[12.5%_12.5%] translate-x-0 cursor-pointer no-underline transition-[transform,stroke] duration-700',
-                expansionState === 'home' ? 'stroke-red-500' : expansionState === 'category' ? 'stroke-green-500' : 'stroke-theme-text-background',
+                expansionState === 'home'
+                    ? 'stroke-theme-primary-lighter/90'
+                    : expansionState === 'category'
+                      ? 'stroke-theme-primary-lighter/80'
+                      : 'stroke-theme-text-background',
                 `hex-link-class hex-link-class-${title}`,
             )}
             style={{
                 ...cssVariables_Memo,
                 transitionDelay: `${randomDelay_Memo}ms`,
                 strokeWidth:
-                    expansionState === 'home' ? `${8 / scale / 2}` : expansionState === 'category' ? `${4 / scale / 2}` : /* post */ `${4 / scale / 2}`,
+                    expansionState === 'home'
+                        ? `${(svgPath ? 2 : 4) / scale}`
+                        : expansionState === 'category'
+                          ? `${(svgPath ? 2 : 4) / scale}`
+                          : /* post */ `${2 / scale}`,
             }}
             role='button'
             onClick={handleClick}
@@ -232,7 +228,7 @@ const ButtonHexagon: FC<{
         >
             <path
                 d={roundedHexagonPath}
-                className='pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[fill,filter] duration-300 [filter:url(#light-inner)] group-hover-active:scale-105 group-hover-active:[filter:url(#lighter-inner)]'
+                className='pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[fill,filter] duration-300 group-hover-active:scale-105'
                 style={{ clipPath: `view-box path("${roundedHexagonPath}")` }}
                 // TODO set as options in Settings ?
                 shapeRendering='geometricPrecision'
@@ -243,17 +239,17 @@ const ButtonHexagon: FC<{
             {svgPath ? (
                 <foreignObject x='0' y='0' width='100' height='86.66' overflow='visible'>
                     <div
-                        className='size-full origin-[12.5%_12.5%] bg-theme-secondary [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter'
+                        className='size-full origin-[12.5%_12.5%] bg-theme-text-background [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter'
                         style={{ maskImage: `url(${svgPath})` }}
                     />
                     <span
                         className={classNames(
-                            'absolute left-1/2 top-full -translate-x-1/2 font-lato text-sm uppercase',
+                            'absolute left-1/2 top-full -translate-x-1/2 font-lato uppercase',
                             expansionState === 'home'
-                                ? 'mt-px text-theme-secondary-lighter/25 group-hover-active:text-theme-secondary-lighter'
+                                ? 'mt-0.5 text-sm text-theme-root-background group-hover-active:text-theme-secondary-lighter'
                                 : expansionState === 'category'
-                                  ? 'mt-1 text-theme-primary/25 group-hover-active:text-theme-primary'
-                                  : 'mt-px text-theme-text group-hover-active:text-theme-text',
+                                  ? 'mt-0.5 text-base text-theme-text-background/75 group-hover-active:text-theme-text-background'
+                                  : 'mt-0.5 text-theme-text before:absolute before:left-[-15%] before:top-[7.5%] before:-z-10 before:h-[90%] before:w-[130%] before:rounded-sm before:bg-theme-text-background group-hover-active:text-theme-primary',
                         )}
                     >
                         {title}
@@ -265,7 +261,7 @@ const ButtonHexagon: FC<{
                     y={hexHalfHeight}
                     textAnchor='middle'
                     alignmentBaseline='central'
-                    className='pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter'
+                    className='pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary-lighter stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter'
                 >
                     {title}
                 </text>

@@ -205,13 +205,9 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                     ) : (
                         <button
                             onClick={handleClick}
-                            className='relative shadow-md shadow-theme-primary-darker/10 transition-[box-shadow] duration-75 group-hover-active:shadow-theme-primary-darker/20'
+                            className='relative shadow-md shadow-theme-primary-darker/10 transition-[box-shadow,transform] duration-75 group-hover-active:scale-[1.01] group-hover-active:shadow-theme-primary-darker/20 group-hover-active:brightness-105'
                         >
-                            <img
-                                src={constructThumbsUrl((showCase as Post_ShowCase_Image).imgUrl)}
-                                alt={showCase.caption}
-                                className='size-full object-cover transition-transform duration-75 hover-active:scale-[1.01]'
-                            />
+                            <img src={constructThumbsUrl((showCase as Post_ShowCase_Image).imgUrl)} alt={showCase.caption} className='size-full object-cover' />
                             {showCase.caption && (
                                 <div
                                     className={classNames(
@@ -277,7 +273,7 @@ const RemainingImages: FC<{
                     return (
                         <button
                             key={showCase.imgUrl + imageIndex}
-                            className='group max-h-48 w-full overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.03] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110'
+                            className='group max-h-48 w-full overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.01] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110'
                             onClick={() => handleClick(imageIndex)}
                             onKeyDown={() => handleClick(imageIndex)}
                         >

@@ -66,7 +66,7 @@ export type DataBase = {
 };
 
 export type CategoryLink = 'code' | 'log' | '3d';
-type MenuLink = 'settings' | 'contact' | 'login';
+type MenuLink = 'config' | 'contact' | 'login';
 type NavButton = 'home' | 'previous' | 'next' | 'close';
 export type UIButton = CategoryLink | MenuLink | NavButton;
 
@@ -76,5 +76,5 @@ export type HexagonLink = { title: UIButton; svgPath?: string; target: string | 
 export type ClipAreaSize = {
     width: number;
     height: number;
-    backgroundShapePath: string;
+    shapePath: string;
 };

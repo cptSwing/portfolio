@@ -91,20 +91,30 @@ const SVGClippedImage: FC<{
     clipAreaSize: ClipAreaSize;
 }> = ({ post, clipAreaSize }) => {
     const { id, title, titleCardBg } = post;
-    const { width, height, backgroundShapePath } = clipAreaSize;
+    const { width, height, shapePath } = clipAreaSize;
+
     const idSuffix = sanitizeString(id + title);
 
     return (
-        <svg xmlns='http://www.w3.org/2000/svg' className='pointer-events-none absolute' style={{ width, height }}>
+        <svg style={{ width, height }}>
             <defs>
+                <path id={`svg-hexagon-path-${idSuffix}`} d={shapePath} className='transition-[d] duration-700' />
+
                 <clipPath id={`svg-hexagon-clip-path-${idSuffix}`} clipPathUnits='objectBoundingBox'>
-                    <path className='transition-[d] delay-75' d={backgroundShapePath} />
+                    <use href={`#svg-hexagon-path-${idSuffix}`} />
                 </clipPath>
             </defs>
 
-            <foreignObject width='100%' height='100%' clipPath={`url(#svg-hexagon-clip-path-${idSuffix})`}>
-                <img className='size-full object-cover object-center' src={titleCardBg} alt={title} />
-            </foreignObject>
+            <image width='100%' height='100%' href={titleCardBg} clipPath={`url(#svg-hexagon-clip-path-${idSuffix})`} preserveAspectRatio='xMidYMid slice' />
+
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1' preserveAspectRatio='none'>
+                <use
+                    href={`#svg-hexagon-path-${idSuffix}`}
+                    className='fill-none stroke-red-700'
+                    clipPath={`url(#svg-hexagon-clip-path-${idSuffix})`}
+                    strokeWidth={0.01}
+                />
+            </svg>
         </svg>
     );
 };
@@ -125,12 +135,12 @@ function getStyleIndex(flipIndex: number, cardIndex: number, cardCount: number) 
 
 function getIndexClipPath(styleIndex: number, width: number, height: number) {
     const aspectRatio = width / height;
-    const backgroundShapePath = getShapePaths(styleIndex, aspectRatio);
+    const shapePath = getShapePaths(styleIndex, aspectRatio);
 
     return {
         width,
         height,
-        backgroundShapePath,
+        shapePath,
     };
 }
 

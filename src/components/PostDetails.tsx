@@ -20,7 +20,7 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
 
     return (
         <>
-            <div className='relative flex items-start justify-end font-lato leading-none'>
+            <div className='relative flex items-start justify-end font-lato leading-none tracking-tight'>
                 {stack && (
                     <GetChildSize Context={GetChildSizeContext}>
                         <SingleStackBlock

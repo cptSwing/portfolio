@@ -170,7 +170,7 @@ const CardTitles: FC<{
     return (
         <div
             className={classNames(
-                'absolute size-full pl-[2%] transition-[clip-path] clip-inset-b-[-150%] clip-inset-l-[-100%] [grid-area:info]',
+                'absolute size-full bg-theme-primary-darker/50 pl-[4.5%] transition-[clip-path] clip-inset-b-[-150%] clip-inset-l-[-100%] [grid-area:info] md:mt-0.5 lg:mt-1 xl:mt-1.5 2xl:mt-2',
                 isSwitching ? 'clip-inset-r-[125%]' : 'clip-inset-r-0',
             )}
             style={
@@ -179,10 +179,12 @@ const CardTitles: FC<{
                 } as CSSProperties
             }
         >
-            <div className='text-nowrap font-fjalla-one text-2xl text-theme-secondary-lighter sm:text-sm sm:!leading-tight md:text-base lg:text-lg lg:!leading-snug xl:text-xl'>
+            <div className='text-nowrap font-fjalla-one text-2xl text-theme-secondary-lighter underline underline-offset-2 sm:text-sm sm:!leading-tight md:text-base lg:text-lg xl:text-xl'>
                 {title}
             </div>
-            <div className='text-nowrap font-lato text-sm italic text-theme-text-background sm:text-2xs md:text-xs lg:text-sm xl:text-base'>{subTitle}</div>
+            <div className='text-nowrap font-lato text-sm leading-none text-theme-text-background/90 sm:text-2xs md:text-xs lg:text-sm lg:tracking-tight xl:text-sm'>
+                {subTitle}
+            </div>
         </div>
     );
 };
