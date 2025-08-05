@@ -271,38 +271,38 @@ export const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWi
 export const svgObjectBoundingBoxHexagonPath = getHexagonPathData(0.5, 0.05);
 
 export function getShapePaths(styleIndex: number, aspectRatio: number) {
-    let backgroundShapePath;
+    let shapePath;
     switch (styleIndex) {
         // isFirst
         case 0:
             // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.05} 
-                    L${0.05 / aspectRatio / tan60},0 
+            shapePath = `
+                    M0,${0.15} 
+                    L${0.15 / aspectRatio / tan60},0 
                     
-                    L${1 - 0.05 / aspectRatio / tan60},0 
-                    L1,${0.05} 
+                    L${1 - 0.025 / aspectRatio / tan60},0 
+                    L1,${0.025} 
 
-                    L1,${1 - 0.05} 
-                    L${1 - 0.05 / aspectRatio / tan60},1 
+                    L1,1 
+                    L1,1 
                     
-                    L${0.05 / aspectRatio / tan60},1 
-                    L0,${1 - 0.05}
+                    L${0.125 / aspectRatio / tan60},1 
+                    L0,${1 - 0.125}
                     Z`;
 
             break;
 
         case 1:
             // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.08} 
-                    L${0.08 / aspectRatio / tan60},0 
+            shapePath = `
+                    M0,${0.05} 
+                    L${0.05 / aspectRatio / tan60},0 
                     
-                    L${1 - 0.08 / aspectRatio / tan60},0 
-                    L1,${0.08} 
+                    L1,0 
+                    L1,0 
 
-                    L1,${1 - 0.08} 
-                    L${1 - 0.08 / aspectRatio / tan60},1 
+                    L1,${1 - 0.05} 
+                    L${1 - 0.05 / aspectRatio / tan60},1 
                     
                     L${0.375 / aspectRatio / tan60},1 
                     L0,${1 - 0.375}
@@ -312,116 +312,116 @@ export function getShapePaths(styleIndex: number, aspectRatio: number) {
 
         case 2:
             // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.08} 
-                    L${0.08 / aspectRatio / tan60},0 
+            shapePath = `
+                    M0,0 
+                    L0,0 
                     
-                    L${1 - 0.08 / aspectRatio / tan60},0 
-                    L1,${0.08} 
+                    L${1 - 0.05 / aspectRatio / tan60},0 
+                    L1,${0.05} 
 
-                    L1,${1 - 0.15} 
-                    L${1 - 0.15 / aspectRatio / tan60},1 
+                    L1,${1 - 0.2125} 
+                    L${1 - 0.2125 / aspectRatio / tan60},1 
                     
-                    L${0.08 / aspectRatio / tan60},1 
-                    L0,${1 - 0.08}
+                    L${0.05 / aspectRatio / tan60},1 
+                    L0,${1 - 0.05}
                     Z`;
 
             break;
 
         case 3:
             // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.15} 
-                    L${0.15 / aspectRatio / tan60},0 
+            shapePath = `
+                    M0,0 
+                    L0,0 
                     
-                    L${1 - 0.15 / aspectRatio / tan60},0 
-                    L1,${0.15} 
+                    L${1 - 0.08 / aspectRatio / tan60},0 
+                    L1,${0.08} 
 
-                    L1,${1 - 0.15} 
-                    L${1 - 0.15 / aspectRatio / tan60},1 
+                    L1,${1 - 0.08} 
+                    L${1 - 0.08 / aspectRatio / tan60},1 
                     
-                    L${0.15 / aspectRatio / tan60},1 
-                    L0,${1 - 0.15}
+                    L0,1 
+                    L0,1
                     Z`;
 
             break;
 
         case 4:
             // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.15} 
-                    L${0.15 / aspectRatio / tan60},0 
+            shapePath = `
+                    M0,0 
+                    L0,0 
                     
-                    L${1 - 0.375 / aspectRatio / tan60},0 
-                    L1,${0.375} 
+                    L${1 - 0.08 / aspectRatio / tan60},0 
+                    L1,${0.08} 
 
-                    L1,${1 - 0.15} 
-                    L${1 - 0.15 / aspectRatio / tan60},1 
+                    L1,${1 - 0.225} 
+                    L${1 - 0.225 / aspectRatio / tan60},1 
                     
-                    L${0.15 / aspectRatio / tan60},1 
-                    L0,${1 - 0.15}
+                    L0,1 
+                    L0,1
                     Z`;
 
             break;
 
         case 5:
             // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.25} 
-                    L${0.25 / aspectRatio / tan60},0 
+            shapePath = `
+                    M0,${0.15} 
+                    L${0.15 / aspectRatio / tan60},0 
                     
-                    L${1 - 0.25 / aspectRatio / tan60},0 
-                    L1,${0.25} 
+                    L${1 - 0.4 / aspectRatio / tan60},0 
+                    L1,${0.4} 
 
-                    L1,${1 - 0.75} 
-                    L${1 - 0.75 / aspectRatio / tan60},1 
+                    L1,${1 - 0.15} 
+                    L${1 - 0.15 / aspectRatio / tan60},1 
                     
-                    L${0.25 / aspectRatio / tan60},1 
-                    L0,${1 - 0.25}
+                    L0,1 
+                    L0,1
                     Z`;
 
             break;
 
         case 6:
             // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.2} 
-                    L${0.2 / aspectRatio / tan60},0 
+            shapePath = `
+                    M0,${0.15} 
+                    L${0.15 / aspectRatio / tan60},0 
                     
-                    L${1 - 0.2 / aspectRatio / tan60},0 
-                    L1,${0.2} 
+                    L${1 - 0.15 / aspectRatio / tan60},0 
+                    L1,${0.15} 
 
-                    L1,${1 - 0.2} 
-                    L${1 - 0.2 / aspectRatio / tan60},1 
+                    L1,1 
+                    L1,1 
                     
-                    L${0.2 / aspectRatio / tan60},1 
-                    L0,${1 - 0.2}
+                    L0,1 
+                    L0,1
                     Z`;
             break;
 
         case 7:
             // top left; top right; bottom right; bottom left
-            backgroundShapePath = `
-                    M0,${0.2} 
-                    L${0.2 / aspectRatio / tan60},0 
+            shapePath = `
+                    M0,${0.15} 
+                    L${0.15 / aspectRatio / tan60},0 
                     
-                    L${1 - 0.2 / aspectRatio / tan60},0 
-                    L1,${0.2} 
+                    L${1 - 0.15 / aspectRatio / tan60},0 
+                    L1,${0.15} 
 
-                    L1,${1 - 0.2} 
-                    L${1 - 0.2 / aspectRatio / tan60},1 
+                    L1,1 
+                    L1,1 
                     
-                    L${0.2 / aspectRatio / tan60},1 
-                    L0,${1 - 0.2}
+                    L0,1 
+                    L0,1
                     Z`;
 
             break;
 
         default:
-            backgroundShapePath = 'M0,0 L1,0 L1,1 L0,1 Z';
+            shapePath = 'M0,0 L1,0 L1,1 L0,1 Z';
     }
 
-    return backgroundShapePath;
+    return shapePath;
 }
 
 export function getHexagonalClipPath(
