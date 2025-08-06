@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { svgObjectBoundingBoxHexagonPath } from '../config/hexagonData';
+import { subMenuButtonHexagonPath } from '../config/hexagonData';
 
 /**
  * For clipping with CSS `clip-path`: Set useClipPath to `true`, and refer to `url(#svgRoundedHexagonClipPath)` in the element's `clip-path` property.
@@ -30,7 +30,7 @@ const RoundedHexagonSVG: FC<RoundedHexagonSVGProps> = ({
             preserveAspectRatio='none'
         >
             <defs>
-                <path id='svgRoundedHexagonPath' d={svgObjectBoundingBoxHexagonPath} />
+                <path id='svgRoundedHexagonPath' d={subMenuButtonHexagonPath} />
 
                 {useClipPath && (
                     // Scaled up again to counteract the above viewBox

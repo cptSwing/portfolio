@@ -268,7 +268,7 @@ hexShape.forEach((hexRow) =>
 
 export const roundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 5);
 export const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 5, true);
-export const svgObjectBoundingBoxHexagonPath = getHexagonPathData(0.5, 0.1);
+export const subMenuButtonHexagonPath = getHexagonPathData(0.5, 0.1);
 
 export function getShapePaths(styleIndex: number, aspectRatio: number) {
     let shapePath;
