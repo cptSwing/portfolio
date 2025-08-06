@@ -39,34 +39,34 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     [
         null,
         {
-            home: { position: allOffsets[0][1], rotation: 0, isHalf: true, scale: 1 },
-            category: { position: allOffsets[1][0], rotation: 120, isHalf: true, scale: 1.1, offsets: { x: 5, y: -4.75 } }, // L1
-            post: { position: allOffsets[1][0], rotation: 30, isHalf: true, scale: 0, offsets: { x: 2.325, y: -5.65 } },
+            home: { position: allOffsets[0]![1], rotation: 0, isHalf: true, scale: 1 },
+            category: { position: allOffsets[1]![0], rotation: 120, isHalf: true, scale: 1.1, offsets: { x: 5, y: -4.75 } }, // L1
+            post: { position: allOffsets[1]![0], rotation: 30, isHalf: true, scale: 0, offsets: { x: 2.325, y: -5.65 } },
         },
 
         // Post controls, only available in that component
         {
-            home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
-            category: { position: allOffsets[1][2], rotation: 0, isHalf: false, scale: 0 },
-            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 2.1, y: 4.25 } },
+            home: { position: allOffsets[0]![2], rotation: 0, isHalf: false, scale: 0 },
+            category: { position: allOffsets[1]![2], rotation: 0, isHalf: false, scale: 0 },
+            post: { position: allOffsets[0]![2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 2.1, y: 4.25 } },
             title: 'previous',
-            svgPath: '/svg/ChevronLeftOutline.svg',
+            svgIconPath: '/svg/ChevronLeftOutline.svg',
             target: () => store_setPostNavState('prev'),
         },
         {
-            home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
-            category: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
-            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 5.9, y: 1.75 } },
+            home: { position: allOffsets[0]![2], rotation: 0, isHalf: false, scale: 0 },
+            category: { position: allOffsets[0]![2], rotation: 0, isHalf: false, scale: 0 },
+            post: { position: allOffsets[0]![2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 5.9, y: 1.75 } },
             title: 'close',
-            svgPath: '/svg/XMarkOutline.svg',
+            svgIconPath: '/svg/XMarkOutline.svg',
             target: () => store_setPostNavState('close'),
         },
         {
-            home: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0 },
-            category: { position: allOffsets[3][3], rotation: 0, isHalf: false, scale: 0 },
-            post: { position: allOffsets[0][2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 9.7, y: 4.25 } },
+            home: { position: allOffsets[0]![2], rotation: 0, isHalf: false, scale: 0 },
+            category: { position: allOffsets[3]![3], rotation: 0, isHalf: false, scale: 0 },
+            post: { position: allOffsets[0]![2], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 9.7, y: 4.25 } },
             title: 'next',
-            svgPath: '/svg/ChevronRightOutline.svg',
+            svgIconPath: '/svg/ChevronRightOutline.svg',
             target: () => store_setPostNavState('next'),
         },
     ],
@@ -75,14 +75,14 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     [
         null,
         {
-            home: { position: allOffsets[1][1], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[1][0], rotation: -60, isHalf: true, scale: 0.8, offsets: { x: 3.25, y: 5.925 } }, // L4
-            post: { position: allOffsets[1][0], rotation: 90, isHalf: true, scale: 0, offsets: { x: 0.1, y: 0.3 } },
+            home: { position: allOffsets[1]![1], rotation: 0, isHalf: false, scale: 1 },
+            category: { position: allOffsets[1]![0], rotation: -60, isHalf: true, scale: 0.8, offsets: { x: 3.25, y: 5.925 } }, // L4
+            post: { position: allOffsets[1]![0], rotation: 90, isHalf: true, scale: 0, offsets: { x: 0.1, y: 0.3 } },
         },
         {
-            home: { position: allOffsets[1][2], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[3][0], rotation: 120, isHalf: false, scale: 0.65, offsets: { x: -2.25, y: 3.35 } }, // L6
-            post: { position: allOffsets[7][3], rotation: 30, isHalf: false, scale: 0.35, offsets: { x: -6.75, y: 9 } }, // Bottom right
+            home: { position: allOffsets[1]![2], rotation: 0, isHalf: false, scale: 1 },
+            category: { position: allOffsets[3]![0], rotation: 120, isHalf: false, scale: 0.65, offsets: { x: -2.25, y: 3.35 } }, // L6
+            post: { position: allOffsets[7]![3], rotation: 30, isHalf: false, scale: 0.35, offsets: { x: -6.75, y: 9 } }, // Bottom right
         },
         null,
     ],
@@ -90,19 +90,19 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     // 2
     [
         {
-            home: { position: allOffsets[2][0], rotation: -60, isHalf: true, scale: 1 },
-            category: { position: allOffsets[0][2], rotation: -120, isHalf: true, scale: 1, offsets: { x: 17.85, y: 7.25 } }, // R1
-            post: { position: allOffsets[0][2], rotation: 30, isHalf: true, scale: 0, offsets: { x: 20.35, y: 6.75 } },
+            home: { position: allOffsets[2]![0], rotation: -60, isHalf: true, scale: 1 },
+            category: { position: allOffsets[0]![2], rotation: -120, isHalf: true, scale: 1, offsets: { x: 17.85, y: 7.25 } }, // R1
+            post: { position: allOffsets[0]![2], rotation: 30, isHalf: true, scale: 0, offsets: { x: 20.35, y: 6.75 } },
         },
         {
-            home: { position: allOffsets[2][1], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[3][0], rotation: 120, isHalf: false, scale: 0.5, offsets: { x: -7.3, y: -17 } }, // L3
-            post: { position: allOffsets[0][2], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 12, y: 3.5 } }, // Top right
+            home: { position: allOffsets[2]![1], rotation: 0, isHalf: false, scale: 1 },
+            category: { position: allOffsets[3]![0], rotation: 120, isHalf: false, scale: 0.5, offsets: { x: -7.3, y: -17 } }, // L3
+            post: { position: allOffsets[0]![2], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 12, y: 3.5 } }, // Top right
         },
         {
-            home: { position: allOffsets[2][2], rotation: 60, isHalf: true, scale: 1 },
-            category: { position: allOffsets[1][3], rotation: 60, isHalf: true, scale: 0.75, offsets: { x: -2.4, y: -0.9 } }, // R2
-            post: { position: allOffsets[1][3], rotation: 90, isHalf: true, scale: 0, offsets: { x: -1.9, y: 4.55 } },
+            home: { position: allOffsets[2]![2], rotation: 60, isHalf: true, scale: 1 },
+            category: { position: allOffsets[1]![3], rotation: 60, isHalf: true, scale: 0.75, offsets: { x: -2.4, y: -0.9 } }, // R2
+            post: { position: allOffsets[1]![3], rotation: 90, isHalf: true, scale: 0, offsets: { x: -1.9, y: 4.55 } },
         },
     ],
 
@@ -110,16 +110,16 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     [
         null,
         {
-            home: { position: allOffsets[3][1], rotation: -60, isHalf: false, scale: 1 },
-            category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.8, offsets: { x: 1.35, y: -3.75 } }, // "Active" position
-            post: { position: allOffsets[5][1], rotation: 0, isHalf: false, scale: 0, offsets: { x: 6.25, y: 1 } },
+            home: { position: allOffsets[3]![1], rotation: -60, isHalf: false, scale: 1 },
+            category: { position: allOffsets[7]![0], rotation: 0, isHalf: false, scale: 0.8, offsets: { x: 1.35, y: -3.75 } }, // "Active" position
+            post: { position: allOffsets[5]![1], rotation: 0, isHalf: false, scale: 0, offsets: { x: 6.25, y: 1 } },
             title: 'code',
             target: '/0',
         },
         {
-            home: { position: allOffsets[3][2], rotation: 60, isHalf: false, scale: 1 },
-            category: { position: allOffsets[8][0], rotation: 0, isHalf: false, scale: 0.5, offsets: { x: -15.575, y: -2 } },
-            post: { position: allOffsets[6][1], rotation: 0, isHalf: false, scale: 0, offsets: { x: -12.5, y: 0 } },
+            home: { position: allOffsets[3]![2], rotation: 60, isHalf: false, scale: 1 },
+            category: { position: allOffsets[8]![0], rotation: 0, isHalf: false, scale: 0.5, offsets: { x: -15.575, y: -2 } },
+            post: { position: allOffsets[6]![1], rotation: 0, isHalf: false, scale: 0, offsets: { x: -12.5, y: 0 } },
             title: '3d',
             target: '/1',
         },
@@ -129,56 +129,56 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     // 4 (Vertical center)
     [
         {
-            home: { position: allOffsets[4][0], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[0][0], rotation: 120, isHalf: true, scale: 0.25, offsets: { x: -8.7, y: 8.5 } }, // L2
-            post: { position: allOffsets[0][0], rotation: -90, isHalf: true, scale: 0, offsets: { x: -8.15, y: 0.25 } },
+            home: { position: allOffsets[4]![0], rotation: 0, isHalf: false, scale: 1 },
+            category: { position: allOffsets[0]![0], rotation: 120, isHalf: true, scale: 0.25, offsets: { x: -8.7, y: 8.5 } }, // L2
+            post: { position: allOffsets[0]![0], rotation: -90, isHalf: true, scale: 0, offsets: { x: -8.15, y: 0.25 } },
         },
 
         {
-            home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[1][3], rotation: 180, isHalf: true, scale: 0.3, offsets: { x: 2, y: 12.75 } }, // R3
-            post: { position: allOffsets[0][2], rotation: 30, isHalf: false, scale: 0, offsets: { x: 11.75, y: 3.1 } },
+            home: { position: allOffsets[4]![1], rotation: 0, isHalf: false, scale: 1 },
+            category: { position: allOffsets[1]![3], rotation: 180, isHalf: true, scale: 0.3, offsets: { x: 2, y: 12.75 } }, // R3
+            post: { position: allOffsets[0]![2], rotation: 30, isHalf: false, scale: 0, offsets: { x: 11.75, y: 3.1 } },
         },
 
         {
-            home: { position: allOffsets[4][2], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[3][3], rotation: 120, isHalf: false, scale: 1, offsets: { x: -1.6, y: -1.25 } }, // R4
-            post: { position: allOffsets[7][0], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 6.75, y: 9 } }, // Bottom Left
+            home: { position: allOffsets[4]![2], rotation: 0, isHalf: false, scale: 1 },
+            category: { position: allOffsets[3]![3], rotation: 120, isHalf: false, scale: 1, offsets: { x: -1.6, y: -1.25 } }, // R4
+            post: { position: allOffsets[7]![0], rotation: -90, isHalf: false, scale: 0.35, offsets: { x: 6.75, y: 9 } }, // Bottom Left
         },
 
         // Further UI:
         {
-            home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: 0, y: -2.25 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.275, offsets: { x: -4.25, y: 10.6 } },
-            post: { position: allOffsets[6][0], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -12.5, y: 5 } },
+            home: { position: allOffsets[4]![1], rotation: 0, isHalf: false, scale: 0.3, offsets: { x: 0, y: -2.25 } },
+            category: { position: allOffsets[1]![3], rotation: 0, isHalf: false, scale: 0.275, offsets: { x: -4.25, y: 10.6 } },
+            post: { position: allOffsets[6]![0], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -12.5, y: 5 } },
             title: 'contact',
-            svgPath: '/svg/ChatBubbleLeftRightOutline.svg',
+            svgIconPath: '/svg/ChatBubbleLeftRightOutline.svg',
             target: (ev) => store_toggleMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
-            home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -5.5, y: 1.5 } },
-            category: { position: allOffsets[2][2], rotation: 0, isHalf: false, scale: 0.225, offsets: { x: 9.15, y: 1.15 } },
-            post: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 6.25, y: 0 } },
+            home: { position: allOffsets[4]![1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: -5.5, y: 1.5 } },
+            category: { position: allOffsets[2]![2], rotation: 0, isHalf: false, scale: 0.225, offsets: { x: 9.15, y: 1.15 } },
+            post: { position: allOffsets[7]![0], rotation: 0, isHalf: false, scale: 0.2, offsets: { x: 6.25, y: 0 } },
             title: 'config',
-            svgPath: '/svg/AdjustmentsHorizontalOutline.svg',
+            svgIconPath: '/svg/AdjustmentsHorizontalOutline.svg',
             target: (ev) => store_toggleMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
-            home: { position: allOffsets[4][1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: 5.5, y: 1.5 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0, offsets: { x: -6, y: 1.9 } },
-            post: { position: allOffsets[6][2], rotation: 0, isHalf: false, scale: 0, offsets: { x: 12.5, y: 0 } },
+            home: { position: allOffsets[4]![1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: 5.5, y: 1.5 } },
+            category: { position: allOffsets[1]![3], rotation: 0, isHalf: false, scale: 0, offsets: { x: -6, y: 1.9 } },
+            post: { position: allOffsets[6]![2], rotation: 0, isHalf: false, scale: 0, offsets: { x: 12.5, y: 0 } },
             title: 'login',
-            svgPath: '/svg/UserIconOutline.svg',
+            svgIconPath: '/svg/UserIconOutline.svg',
             target: () => {},
         },
 
         // Appears only in 'category' and 'post' expansionState:
         {
-            home: { position: allOffsets[4][1], rotation: 180, isHalf: false, scale: 0, offsets: { x: -3.125, y: 0 } },
-            category: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.225, offsets: { x: -9.65, y: 7.1 } },
-            post: { position: allOffsets[1][3], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: -6.25, y: -1.5625 } },
+            home: { position: allOffsets[4]![1], rotation: 180, isHalf: false, scale: 0, offsets: { x: -3.125, y: 0 } },
+            category: { position: allOffsets[1]![3], rotation: 0, isHalf: false, scale: 0.225, offsets: { x: -9.65, y: 7.1 } },
+            post: { position: allOffsets[1]![3], rotation: 0, isHalf: false, scale: 0.175, offsets: { x: -6.25, y: -1.5625 } },
             title: 'home',
-            svgPath: '/svg/HomeOutline.svg',
+            svgIconPath: '/svg/HomeOutline.svg',
             target: () => {
                 store_toggleMenu({ name: null });
                 return '/';
@@ -190,14 +190,14 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     [
         null,
         {
-            home: { position: allOffsets[5][1], rotation: 60, isHalf: false, scale: 1 },
-            category: { position: allOffsets[4][0], rotation: -60, isHalf: true, scale: 0.3, offsets: { x: -13.1, y: -4.65 } }, // L7
-            post: { position: allOffsets[4][0], rotation: 150, isHalf: true, scale: 0, offsets: { x: -26.75, y: 0.35 } },
+            home: { position: allOffsets[5]![1], rotation: 60, isHalf: false, scale: 1 },
+            category: { position: allOffsets[4]![0], rotation: -60, isHalf: true, scale: 0.3, offsets: { x: -13.1, y: -4.65 } }, // L7
+            post: { position: allOffsets[4]![0], rotation: 150, isHalf: true, scale: 0, offsets: { x: -26.75, y: 0.35 } },
         },
         {
-            home: { position: allOffsets[5][2], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[4][2], rotation: 60, isHalf: false, scale: 0.725, offsets: { x: 15.6, y: 6.55 } }, // R5
-            post: { position: allOffsets[4][2], rotation: -90, isHalf: false, scale: 0, offsets: { x: 16, y: 7.1 } },
+            home: { position: allOffsets[5]![2], rotation: 0, isHalf: false, scale: 1 },
+            category: { position: allOffsets[4]![2], rotation: 60, isHalf: false, scale: 0.725, offsets: { x: 15.6, y: 6.55 } }, // R5
+            post: { position: allOffsets[4]![2], rotation: -90, isHalf: false, scale: 0, offsets: { x: 16, y: 7.1 } },
         },
         null,
     ],
@@ -205,21 +205,21 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     // 6
     [
         {
-            home: { position: allOffsets[6][0], rotation: -120, isHalf: true, scale: 1 },
-            category: { position: allOffsets[4][0], rotation: 0, isHalf: true, scale: 0.65, offsets: { x: -20.075, y: -22 } }, // L5
-            post: { position: allOffsets[4][0], rotation: -90, isHalf: true, scale: 0, offsets: { x: -28.5, y: -6.1 } },
+            home: { position: allOffsets[6]![0], rotation: -120, isHalf: true, scale: 1 },
+            category: { position: allOffsets[4]![0], rotation: 0, isHalf: true, scale: 0.65, offsets: { x: -20.075, y: -22 } }, // L5
+            post: { position: allOffsets[4]![0], rotation: -90, isHalf: true, scale: 0, offsets: { x: -28.5, y: -6.1 } },
         },
         {
-            home: { position: allOffsets[6][1], rotation: 180, isHalf: false, scale: 1 },
-            category: { position: allOffsets[7][0], rotation: 0, isHalf: false, scale: 0.37, offsets: { x: 11.5, y: 4.45 } },
-            post: { position: allOffsets[7][1], rotation: 0, isHalf: false, scale: 0, offsets: { x: 6.25, y: -1 } },
+            home: { position: allOffsets[6]![1], rotation: 180, isHalf: false, scale: 1 },
+            category: { position: allOffsets[7]![0], rotation: 0, isHalf: false, scale: 0.37, offsets: { x: 11.5, y: 4.45 } },
+            post: { position: allOffsets[7]![1], rotation: 0, isHalf: false, scale: 0, offsets: { x: 6.25, y: -1 } },
             title: 'log',
             target: '/3',
         },
         {
-            home: { position: allOffsets[6][2], rotation: 120, isHalf: true, scale: 1 },
-            category: { position: allOffsets[5][3], rotation: 120, isHalf: true, scale: 0.7, offsets: { x: -3.6, y: 8.6 } }, // R6
-            post: { position: allOffsets[5][3], rotation: -90, isHalf: true, scale: 0, offsets: { x: -2.75, y: 8.5 } },
+            home: { position: allOffsets[6]![2], rotation: 120, isHalf: true, scale: 1 },
+            category: { position: allOffsets[5]![3], rotation: 120, isHalf: true, scale: 0.7, offsets: { x: -3.6, y: 8.6 } }, // R6
+            post: { position: allOffsets[5]![3], rotation: -90, isHalf: true, scale: 0, offsets: { x: -2.75, y: 8.5 } },
         },
     ],
 
@@ -227,14 +227,14 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     [
         null,
         {
-            home: { position: allOffsets[7][1], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[5][0], rotation: -60, isHalf: false, scale: 1.075, offsets: { x: 2.4, y: -1.3 } }, // L8
-            post: { position: allOffsets[5][0], rotation: 60, isHalf: false, scale: 0, offsets: { x: 1.45, y: -3 } },
+            home: { position: allOffsets[7]![1], rotation: 0, isHalf: false, scale: 1 },
+            category: { position: allOffsets[5]![0], rotation: -60, isHalf: false, scale: 1.075, offsets: { x: 2.4, y: -1.3 } }, // L8
+            post: { position: allOffsets[5]![0], rotation: 60, isHalf: false, scale: 0, offsets: { x: 1.45, y: -3 } },
         },
         {
-            home: { position: allOffsets[7][2], rotation: 0, isHalf: false, scale: 1 },
-            category: { position: allOffsets[6][2], rotation: -60, isHalf: true, scale: 1.1, offsets: { x: 16.1, y: 1.75 } }, // R7
-            post: { position: allOffsets[6][2], rotation: 30, isHalf: true, scale: 0, offsets: { x: 13.9, y: 1.5 } },
+            home: { position: allOffsets[7]![2], rotation: 0, isHalf: false, scale: 1 },
+            category: { position: allOffsets[6]![2], rotation: -60, isHalf: true, scale: 1.1, offsets: { x: 16.1, y: 1.75 } }, // R7
+            post: { position: allOffsets[6]![2], rotation: 30, isHalf: true, scale: 0, offsets: { x: 13.9, y: 1.5 } },
         },
         null,
     ],
@@ -243,32 +243,32 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
     [
         null,
         {
-            home: { position: allOffsets[8][1], rotation: 180, isHalf: true, scale: 1 },
-            category: { position: allOffsets[8][2], rotation: 0, isHalf: false, scale: 0.7, offsets: { x: 12, y: -3.35 } }, // R8
-            post: { position: allOffsets[0][0], rotation: -30, isHalf: false, scale: 0.35, offsets: { x: -12, y: 3.5 } }, // Top right
+            home: { position: allOffsets[8]![1], rotation: 180, isHalf: true, scale: 1 },
+            category: { position: allOffsets[8]![2], rotation: 0, isHalf: false, scale: 0.7, offsets: { x: 12, y: -3.35 } }, // R8
+            post: { position: allOffsets[0]![0], rotation: -30, isHalf: false, scale: 0.35, offsets: { x: -12, y: 3.5 } }, // Top right
         },
         null,
     ],
 ];
 
-export const nonLinkHexes: Record<NavigationExpansionState, HexagonData>[] = [];
-export const linkHexes: (Record<NavigationExpansionState, HexagonData> & HexagonLink)[] = [];
+export const regularHexagons: Record<NavigationExpansionState, HexagonData>[] = [];
+export const buttonHexagons: (Record<NavigationExpansionState, HexagonData> & HexagonLink)[] = [];
 
 hexShape.forEach((hexRow) =>
     hexRow.forEach((hexCol) => {
         if (hexCol) {
             if ((hexCol as Record<NavigationExpansionState, HexagonData> & HexagonLink).title) {
-                linkHexes.push(hexCol as Record<NavigationExpansionState, HexagonData> & HexagonLink);
+                buttonHexagons.push(hexCol as Record<NavigationExpansionState, HexagonData> & HexagonLink);
             } else {
-                nonLinkHexes.push(hexCol);
+                regularHexagons.push(hexCol);
             }
         }
     }),
 );
 
-export const roundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 10);
-export const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 10, true);
-export const svgObjectBoundingBoxHexagonPath = getHexagonPathData(0.5, 0.05);
+export const roundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 5);
+export const halfRoundedHexagonPath = getHexagonPathData(hexHalfWidth, hexHalfWidth / 5, true);
+export const svgObjectBoundingBoxHexagonPath = getHexagonPathData(0.5, 0.1);
 
 export function getShapePaths(styleIndex: number, aspectRatio: number) {
     let shapePath;
@@ -495,42 +495,42 @@ function getHexagonPathData(sideLength = 1, cornerRadius = 8, isHalf = false) {
     const cornerCosOffset = cornerRadius * cos(30);
 
     return isHalf
-        ? ` M ${points[0].x + cornerSinOffset},${points[0].y + cornerCosOffset}   \
-            Q ${points[0].x},${points[0].y} ${points[0].x + cornerSinOffset * 2},${points[0].y}   \
+        ? ` M ${points[0]!.x + cornerSinOffset},${points[0]!.y + cornerCosOffset}   \
+            Q ${points[0]!.x},${points[0]!.y} ${points[0]!.x + cornerSinOffset * 2},${points[0]!.y}   \
             \
-            L ${points[1].x + cornerSinOffset},${points[0].y} \
-            Q ${points[1].x},${points[0].y} ${points[1].x + cornerSinOffset * 2},${points[0].y}   \
+            L ${points[1]!.x + cornerSinOffset},${points[0]!.y} \
+            Q ${points[1]!.x},${points[0]!.y} ${points[1]!.x + cornerSinOffset * 2},${points[0]!.y}   \
             \
-            L ${points[2].x - cornerSinOffset * 2},${points[3].y} \
-            Q ${points[2].x},${points[3].y} ${points[2].x + cornerSinOffset},${points[3].y}   \
+            L ${points[2]!.x - cornerSinOffset * 2},${points[3]!.y} \
+            Q ${points[2]!.x},${points[3]!.y} ${points[2]!.x + cornerSinOffset},${points[3]!.y}   \
             \
-            L ${points[3].x - cornerSinOffset * 2},${points[3].y} \
-            Q ${points[3].x},${points[0].y} ${points[3].x - cornerSinOffset},${points[3].y + cornerCosOffset} \
+            L ${points[3]!.x - cornerSinOffset * 2},${points[3]!.y} \
+            Q ${points[3]!.x},${points[0]!.y} ${points[3]!.x - cornerSinOffset},${points[3]!.y + cornerCosOffset} \
             \
-            L ${points[4].x + cornerSinOffset},${points[4].y - cornerCosOffset}   \
-            Q ${points[4].x},${points[4].y} ${points[4].x - cornerSinOffset * 2},${points[4].y}   \
+            L ${points[4]!.x + cornerSinOffset},${points[4]!.y - cornerCosOffset}   \
+            Q ${points[4]!.x},${points[4]!.y} ${points[4]!.x - cornerSinOffset * 2},${points[4]!.y}   \
             \
-            L ${points[5].x + cornerSinOffset * 2},${points[5].y} \
-            Q ${points[5].x},${points[5].y} ${points[5].x - cornerSinOffset},${points[5].y - cornerCosOffset} \
+            L ${points[5]!.x + cornerSinOffset * 2},${points[5]!.y} \
+            Q ${points[5]!.x},${points[5]!.y} ${points[5]!.x - cornerSinOffset},${points[5]!.y - cornerCosOffset} \
             \
             Z`
-        : ` M ${points[0].x + cornerSinOffset},${points[0].y + cornerCosOffset} \
-            Q ${points[0].x},${points[0].y} ${points[0].x + cornerSinOffset},${points[0].y - cornerCosOffset} \
+        : ` M ${points[0]!.x + cornerSinOffset},${points[0]!.y + cornerCosOffset} \
+            Q ${points[0]!.x},${points[0]!.y} ${points[0]!.x + cornerSinOffset},${points[0]!.y - cornerCosOffset} \
             \
-            L ${points[1].x - cornerSinOffset},${points[1].y + cornerCosOffset} \
-            Q ${points[1].x},${points[1].y} ${points[1].x + cornerSinOffset * 2},${points[1].y} \
+            L ${points[1]!.x - cornerSinOffset},${points[1]!.y + cornerCosOffset} \
+            Q ${points[1]!.x},${points[1]!.y} ${points[1]!.x + cornerSinOffset * 2},${points[1]!.y} \
             \
-            L ${points[2].x - cornerSinOffset * 2},${points[2].y} \
-            Q ${points[2].x},${points[2].y} ${points[2].x + cornerSinOffset},${points[2].y + cornerCosOffset} \
+            L ${points[2]!.x - cornerSinOffset * 2},${points[2]!.y} \
+            Q ${points[2]!.x},${points[2]!.y} ${points[2]!.x + cornerSinOffset},${points[2]!.y + cornerCosOffset} \
             \
-            L ${points[3].x - cornerSinOffset},${points[3].y - cornerCosOffset} \
-            Q ${points[3].x},${points[3].y} ${points[3].x - cornerSinOffset},${points[3].y + cornerCosOffset} \
+            L ${points[3]!.x - cornerSinOffset},${points[3]!.y - cornerCosOffset} \
+            Q ${points[3]!.x},${points[3]!.y} ${points[3]!.x - cornerSinOffset},${points[3]!.y + cornerCosOffset} \
             \
-            L ${points[4].x + cornerSinOffset},${points[4].y - cornerCosOffset} \
-            Q ${points[4].x},${points[4].y} ${points[4].x - cornerSinOffset * 2},${points[4].y} \
+            L ${points[4]!.x + cornerSinOffset},${points[4]!.y - cornerCosOffset} \
+            Q ${points[4]!.x},${points[4]!.y} ${points[4]!.x - cornerSinOffset * 2},${points[4]!.y} \
             \
-            L ${points[5].x + cornerSinOffset * 2},${points[5].y} \
-            Q ${points[5].x},${points[5].y} ${points[5].x - cornerSinOffset},${points[5].y - cornerCosOffset} \
+            L ${points[5]!.x + cornerSinOffset * 2},${points[5]!.y} \
+            Q ${points[5]!.x},${points[5]!.y} ${points[5]!.x - cornerSinOffset},${points[5]!.y - cornerCosOffset} \
             \
             Z`;
 }

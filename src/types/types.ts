@@ -70,8 +70,8 @@ type MenuLink = 'config' | 'contact' | 'login';
 type NavButton = 'home' | 'previous' | 'next' | 'close';
 export type UIButton = CategoryLink | MenuLink | NavButton;
 
-export type HexagonData = { position: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; offsets?: { x: number; y: number } };
-export type HexagonLink = { title: UIButton; svgPath?: string; target: string | ((ev?: React.MouseEvent<SVGGElement, MouseEvent>) => void | string) };
+export type HexagonData = { position?: { x: number; y: number }; rotation: number; scale: number; isHalf: boolean; offsets?: { x: number; y: number } };
+export type HexagonLink = { title: UIButton; svgIconPath?: string; target: string | ((ev?: React.MouseEvent<SVGGElement, MouseEvent>) => void | string) };
 
 export type GridAreaPathData = {
     width: number;
