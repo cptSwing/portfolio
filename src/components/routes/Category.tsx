@@ -1,6 +1,6 @@
 import testDb from '../../queries/testDb.json';
 import { useParams } from 'react-router-dom';
-import { DataBase, ClipAreaSize } from '../../types/types';
+import { DataBase, GridAreaPathData } from '../../types/types';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
@@ -79,7 +79,7 @@ const Category = () => {
         }
     }, [categoryData_Memo]);
 
-    const clipAreaSizes = useRef<ClipAreaSize[]>([]);
+    const gridAreaPathsDataRef = useRef<GridAreaPathData[]>([]);
 
     const [infoContent, setInfoContent] = useState({ title: 'jens Brandenburg', subTitle: 'webdev and 3d art' });
 
@@ -112,7 +112,7 @@ const Category = () => {
                             cardIndex={idx}
                             cardCount={arr.length}
                             gridAreaStyles={gridAreaStyles_Memo}
-                            clipAreaSizes={clipAreaSizes}
+                            gridAreaPathsData={gridAreaPathsDataRef}
                             setFlipIndex={setFlipIndex}
                             setInfoContent={setInfoContent}
                         />
