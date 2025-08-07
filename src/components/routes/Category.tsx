@@ -170,7 +170,7 @@ const CardTitles: FC<{
     return (
         <div
             className={classNames(
-                'absolute size-full bg-theme-primary-darker/50 pl-[4.5%] transition-[clip-path] clip-inset-b-[-150%] clip-inset-l-[-100%] [grid-area:info] md:mt-0.5 lg:mt-1 xl:mt-1.5 2xl:mt-2',
+                'absolute size-full bg-theme-primary/75 pl-[4.5%] transition-[clip-path] clip-inset-b-[-150%] clip-inset-l-[-100%] [grid-area:info] md:mt-0.5 lg:mt-1 xl:mt-1.5 2xl:mt-2',
                 isSwitching ? 'clip-inset-r-[125%]' : 'clip-inset-r-0',
             )}
             style={

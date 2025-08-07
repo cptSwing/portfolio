@@ -1,5 +1,5 @@
 import { CSSProperties, FC, useEffect, useLayoutEffect, useState } from 'react';
-import { ClipAreaSize, PostType } from '../types/types.ts';
+import { GridAreaPathData, PostType } from '../types/types.ts';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
@@ -14,7 +14,7 @@ const CategoryCard: FC<{
     flipIndex: number;
     cardCount: number;
     gridAreaStyles: CSSProperties[];
-    clipAreaSizes: React.MutableRefObject<ClipAreaSize[]>;
+    gridAreaPathsData: React.MutableRefObject<GridAreaPathData[]>;
     setFlipIndex: (value: React.SetStateAction<number>) => void;
     setInfoContent: React.Dispatch<
         React.SetStateAction<{
@@ -22,30 +22,30 @@ const CategoryCard: FC<{
             subTitle: string;
         }>
     >;
-}> = ({ post, cardIndex, flipIndex, cardCount, gridAreaStyles, clipAreaSizes, setFlipIndex, setInfoContent }) => {
+}> = ({ post, cardIndex, flipIndex, cardCount, gridAreaStyles, gridAreaPathsData, setFlipIndex, setInfoContent }) => {
     const navigate = useNavigate();
 
-    const styleIndex = getStyleIndex(flipIndex, cardIndex, cardCount);
-    const gridAreaStyle = gridAreaStyles[styleIndex];
-    const [clipAreaSize, setClipAreaSize] = useState<ClipAreaSize | undefined>(clipAreaSizes.current[styleIndex]);
+    const gridAreaIndex = getGridAreaIndex(flipIndex, cardIndex, cardCount);
+    const gridAreaStyle = gridAreaStyles[gridAreaIndex];
+    const [gridAreaPathData, setGridAreaPathData] = useState<GridAreaPathData | undefined>(gridAreaPathsData.current[gridAreaIndex]);
 
     const [measureRef, { width, height }] = useMeasure<HTMLButtonElement>();
 
     useLayoutEffect(() => {
         if (width && height) {
-            if (!clipAreaSizes.current[styleIndex]) {
-                const newClipAreaSize = getIndexClipPath(styleIndex, width, height);
-                clipAreaSizes.current[styleIndex] = newClipAreaSize;
-            } else if (width !== clipAreaSizes.current[styleIndex].width || height !== clipAreaSizes.current[styleIndex].height) {
-                const updatedClipAreaSize = getIndexClipPath(styleIndex, width, height);
-                clipAreaSizes.current[styleIndex] = updatedClipAreaSize;
+            if (!gridAreaPathsData.current[gridAreaIndex]) {
+                const newGridAreaPathData = getIndexClipPath(gridAreaIndex, width, height);
+                gridAreaPathsData.current[gridAreaIndex] = newGridAreaPathData;
+            } else if (width !== gridAreaPathsData.current[gridAreaIndex].width || height !== gridAreaPathsData.current[gridAreaIndex].height) {
+                const updatedGridAreaPathData = getIndexClipPath(gridAreaIndex, width, height);
+                gridAreaPathsData.current[gridAreaIndex] = updatedGridAreaPathData;
             }
 
-            setClipAreaSize(clipAreaSizes.current[styleIndex]);
+            setGridAreaPathData(gridAreaPathsData.current[gridAreaIndex]);
         }
-    }, [clipAreaSizes, height, width, styleIndex]);
+    }, [gridAreaPathsData, height, width, gridAreaIndex]);
 
-    const isAtFront = styleIndex === 0;
+    const isAtFront = gridAreaIndex === 0;
 
     /* Set title/subtitle to top 'banner' */
     useEffect(() => {
@@ -78,7 +78,7 @@ const CategoryCard: FC<{
                 style={gridAreaStyle}
                 onClick={handleClick}
             >
-                {clipAreaSize && <SVGClippedImage post={post} clipAreaSize={clipAreaSize} />}
+                {gridAreaPathData && <SVGClippedImage post={post} gridAreaPathData={gridAreaPathData} />}
             </button>
         </Flipped>
     );
@@ -88,31 +88,45 @@ export default CategoryCard;
 
 const SVGClippedImage: FC<{
     post: PostType;
-    clipAreaSize: ClipAreaSize;
-}> = ({ post, clipAreaSize }) => {
+    gridAreaPathData: GridAreaPathData;
+}> = ({ post, gridAreaPathData }) => {
     const { id, title, titleCardBg } = post;
-    const { width, height, shapePath } = clipAreaSize;
+    const { width, height, shapePath } = gridAreaPathData;
 
-    const idSuffix = sanitizeString(id + title);
+    const idSuffix = sanitizeString(id + '_' + title);
+    const pathName = `svg-hexagon-path-${idSuffix}`;
+    const clipPathName = pathName + '-clipPath';
 
     return (
-        <svg style={{ width, height }}>
+        <svg xmlns='http://www.w3.org/2000/svg' style={{ width, height }}>
             <defs>
-                <path id={`svg-hexagon-path-${idSuffix}`} d={shapePath} className='transition-[d] duration-700' />
+                {/* custom per-grid-area path: */}
+                <path id={pathName} d={shapePath} />
 
-                <clipPath id={`svg-hexagon-clip-path-${idSuffix}`} clipPathUnits='objectBoundingBox'>
-                    <use href={`#svg-hexagon-path-${idSuffix}`} />
+                {/* clip with same path in order for stroke attribute to only stroke inside of path: */}
+                <clipPath id={clipPathName} clipPathUnits='objectBoundingBox'>
+                    <use href={`#${pathName}`} />
                 </clipPath>
             </defs>
 
-            <image width='100%' height='100%' href={titleCardBg} clipPath={`url(#svg-hexagon-clip-path-${idSuffix})`} preserveAspectRatio='xMidYMid slice' />
+            {/* Emulate object-cover via preserveAspectRatio */}
+            <image
+                width='100%'
+                height='100%'
+                className='origin-center scale-[0.9975] transform-gpu' // to combat pixel errors (rounding?)
+                href={titleCardBg}
+                clipPath={`url(#${clipPathName})`}
+                preserveAspectRatio='xMidYMid slice'
+            />
 
+            {/* Scale according to percentages of width/height */}
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1' preserveAspectRatio='none'>
                 <use
-                    href={`#svg-hexagon-path-${idSuffix}`}
-                    className='fill-none stroke-red-700'
-                    clipPath={`url(#svg-hexagon-clip-path-${idSuffix})`}
-                    strokeWidth={0.01}
+                    href={`#${pathName}`}
+                    clipPath={`url(#${clipPathName})`}
+                    className='fill-none stroke-theme-primary'
+                    shapeRendering='geometricPrecision'
+                    strokeWidth={10 / (width + height)}
                 />
             </svg>
         </svg>
@@ -122,7 +136,7 @@ const SVGClippedImage: FC<{
 /* Local Functions */
 
 /** Match the flipIndex to the correct style preset */
-function getStyleIndex(flipIndex: number, cardIndex: number, cardCount: number) {
+function getGridAreaIndex(flipIndex: number, cardIndex: number, cardCount: number) {
     if (flipIndex > cardIndex) {
         return cardCount + (cardIndex - flipIndex);
     } else if (flipIndex < cardIndex) {
@@ -133,9 +147,9 @@ function getStyleIndex(flipIndex: number, cardIndex: number, cardCount: number) 
     }
 }
 
-function getIndexClipPath(styleIndex: number, width: number, height: number) {
+function getIndexClipPath(gridAreaIndex: number, width: number, height: number) {
     const aspectRatio = width / height;
-    const shapePath = getShapePaths(styleIndex, aspectRatio);
+    const shapePath = getShapePaths(gridAreaIndex, aspectRatio);
 
     return {
         width,

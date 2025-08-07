@@ -64,12 +64,6 @@
     }
 }
 
-/* 
-button :focus-visible {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-} */
-
 .postcards-grid-template {
     grid-template-areas:
         'info   info    info    info    brand   brand'

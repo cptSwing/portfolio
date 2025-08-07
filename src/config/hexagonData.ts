@@ -41,7 +41,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[0]![1], rotation: 0, isHalf: true, scale: 1 },
             category: { position: allOffsets[1]![0], rotation: 120, isHalf: true, scale: 1.1, offsets: { x: 5, y: -4.75 } }, // L1
-            post: { position: allOffsets[1]![0], rotation: 30, isHalf: true, scale: 0, offsets: { x: 2.325, y: -5.65 } },
+            post: { position: allOffsets[1]![1], rotation: 30, isHalf: true, scale: 0, offsets: { x: 2.325, y: -5.65 } },
         },
 
         // Post controls, only available in that component
@@ -77,7 +77,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[1]![1], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[1]![0], rotation: -60, isHalf: true, scale: 0.8, offsets: { x: 3.25, y: 5.925 } }, // L4
-            post: { position: allOffsets[1]![0], rotation: 90, isHalf: true, scale: 0, offsets: { x: 0.1, y: 0.3 } },
+            post: { position: allOffsets[1]![1], rotation: 90, isHalf: true, scale: 0, offsets: { x: 0.1, y: 0.3 } },
         },
         {
             home: { position: allOffsets[1]![2], rotation: 0, isHalf: false, scale: 1 },
@@ -92,7 +92,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[2]![0], rotation: -60, isHalf: true, scale: 1 },
             category: { position: allOffsets[0]![2], rotation: -120, isHalf: true, scale: 1, offsets: { x: 17.85, y: 7.25 } }, // R1
-            post: { position: allOffsets[0]![2], rotation: 30, isHalf: true, scale: 0, offsets: { x: 20.35, y: 6.75 } },
+            post: { position: allOffsets[0]![1], rotation: 30, isHalf: true, scale: 0, offsets: { x: 20.35, y: 6.75 } },
         },
         {
             home: { position: allOffsets[2]![1], rotation: 0, isHalf: false, scale: 1 },
@@ -102,7 +102,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[2]![2], rotation: 60, isHalf: true, scale: 1 },
             category: { position: allOffsets[1]![3], rotation: 60, isHalf: true, scale: 0.75, offsets: { x: -2.4, y: -0.9 } }, // R2
-            post: { position: allOffsets[1]![3], rotation: 90, isHalf: true, scale: 0, offsets: { x: -1.9, y: 4.55 } },
+            post: { position: allOffsets[1]![2], rotation: 90, isHalf: true, scale: 0, offsets: { x: -1.9, y: 4.55 } },
         },
     ],
 
@@ -131,13 +131,13 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[4]![0], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[0]![0], rotation: 120, isHalf: true, scale: 0.25, offsets: { x: -8.7, y: 8.5 } }, // L2
-            post: { position: allOffsets[0]![0], rotation: -90, isHalf: true, scale: 0, offsets: { x: -8.15, y: 0.25 } },
+            post: { position: allOffsets[0]![1], rotation: -90, isHalf: true, scale: 0, offsets: { x: -8.15, y: 0.25 } },
         },
 
         {
             home: { position: allOffsets[4]![1], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[1]![3], rotation: 180, isHalf: true, scale: 0.3, offsets: { x: 2, y: 12.75 } }, // R3
-            post: { position: allOffsets[0]![2], rotation: 30, isHalf: false, scale: 0, offsets: { x: 11.75, y: 3.1 } },
+            post: { position: allOffsets[0]![1], rotation: 30, isHalf: false, scale: 0, offsets: { x: 11.75, y: 3.1 } },
         },
 
         {
@@ -166,7 +166,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[4]![1], rotation: 0, isHalf: false, scale: 0.25, offsets: { x: 5.5, y: 1.5 } },
             category: { position: allOffsets[1]![3], rotation: 0, isHalf: false, scale: 0, offsets: { x: -6, y: 1.9 } },
-            post: { position: allOffsets[6]![2], rotation: 0, isHalf: false, scale: 0, offsets: { x: 12.5, y: 0 } },
+            post: { position: allOffsets[6]![1], rotation: 0, isHalf: false, scale: 0, offsets: { x: 12.5, y: 0 } },
             title: 'login',
             svgIconPath: '/svg/UserIconOutline.svg',
             target: () => {},
@@ -192,12 +192,12 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[5]![1], rotation: 60, isHalf: false, scale: 1 },
             category: { position: allOffsets[4]![0], rotation: -60, isHalf: true, scale: 0.3, offsets: { x: -13.1, y: -4.65 } }, // L7
-            post: { position: allOffsets[4]![0], rotation: 150, isHalf: true, scale: 0, offsets: { x: -26.75, y: 0.35 } },
+            post: { position: allOffsets[4]![1], rotation: 150, isHalf: true, scale: 0, offsets: { x: -26.75, y: 0.35 } },
         },
         {
             home: { position: allOffsets[5]![2], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[4]![2], rotation: 60, isHalf: false, scale: 0.725, offsets: { x: 15.6, y: 6.55 } }, // R5
-            post: { position: allOffsets[4]![2], rotation: -90, isHalf: false, scale: 0, offsets: { x: 16, y: 7.1 } },
+            post: { position: allOffsets[4]![1], rotation: -90, isHalf: false, scale: 0, offsets: { x: 16, y: 7.1 } },
         },
         null,
     ],
@@ -207,7 +207,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[6]![0], rotation: -120, isHalf: true, scale: 1 },
             category: { position: allOffsets[4]![0], rotation: 0, isHalf: true, scale: 0.65, offsets: { x: -20.075, y: -22 } }, // L5
-            post: { position: allOffsets[4]![0], rotation: -90, isHalf: true, scale: 0, offsets: { x: -28.5, y: -6.1 } },
+            post: { position: allOffsets[4]![1], rotation: -90, isHalf: true, scale: 0, offsets: { x: -28.5, y: -6.1 } },
         },
         {
             home: { position: allOffsets[6]![1], rotation: 180, isHalf: false, scale: 1 },
@@ -219,7 +219,7 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[6]![2], rotation: 120, isHalf: true, scale: 1 },
             category: { position: allOffsets[5]![3], rotation: 120, isHalf: true, scale: 0.7, offsets: { x: -3.6, y: 8.6 } }, // R6
-            post: { position: allOffsets[5]![3], rotation: -90, isHalf: true, scale: 0, offsets: { x: -2.75, y: 8.5 } },
+            post: { position: allOffsets[5]![2], rotation: -90, isHalf: true, scale: 0, offsets: { x: -2.75, y: 8.5 } },
         },
     ],
 
@@ -229,12 +229,12 @@ const hexShape: (Record<NavigationExpansionState, HexagonData> | (Record<Navigat
         {
             home: { position: allOffsets[7]![1], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[5]![0], rotation: -60, isHalf: false, scale: 1.075, offsets: { x: 2.4, y: -1.3 } }, // L8
-            post: { position: allOffsets[5]![0], rotation: 60, isHalf: false, scale: 0, offsets: { x: 1.45, y: -3 } },
+            post: { position: allOffsets[5]![1], rotation: 60, isHalf: false, scale: 0, offsets: { x: 1.45, y: -3 } },
         },
         {
             home: { position: allOffsets[7]![2], rotation: 0, isHalf: false, scale: 1 },
             category: { position: allOffsets[6]![2], rotation: -60, isHalf: true, scale: 1.1, offsets: { x: 16.1, y: 1.75 } }, // R7
-            post: { position: allOffsets[6]![2], rotation: 30, isHalf: true, scale: 0, offsets: { x: 13.9, y: 1.5 } },
+            post: { position: allOffsets[6]![1], rotation: 30, isHalf: true, scale: 0, offsets: { x: 13.9, y: 1.5 } },
         },
         null,
     ],
@@ -536,7 +536,9 @@ function getHexagonPathData(sideLength = 1, cornerRadius = 8, isHalf = false) {
 }
 
 const getMenuButtonPosition = (ev: React.MouseEvent<SVGGElement, MouseEvent>) => {
-    const { left, width, top, height } = ev.currentTarget.getBoundingClientRect();
+    const { left, width, top, height } = ev.currentTarget.firstElementChild
+        ? ev.currentTarget.firstElementChild.getBoundingClientRect()
+        : ev.currentTarget.getBoundingClientRect();
     const position: ZustandStore['values']['activeMenuButton']['positionAndSize'] = { x: left, y: top, width, height };
     return position;
 };
