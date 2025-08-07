@@ -1,6 +1,6 @@
-import configJSON from './config.json';
+import configJSON from '../config/config.json';
 import { HexagonData, HexagonLink, NavigationExpansionState, ZustandStore } from '../types/types';
-import { useZustand } from '../lib/zustand';
+import { useZustand } from './zustand';
 
 const { store_toggleMenu, store_setPostNavState } = useZustand.getState().methods;
 
