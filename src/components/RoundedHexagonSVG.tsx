@@ -13,40 +13,44 @@ const RoundedHexagonSVG: FC<RoundedHexagonSVGProps> = ({
     hasMask = false,
     className,
     strokeColor = 'currentColor',
-    strokeWidth,
+    strokeWidth = 0.1,
     fillColor = 'transparent',
 }) => {
+    const baseName = 'svgRoundedHexagon' + idSuffix;
+    const pathId = baseName + '-path';
+    const clipPathId = baseName + '-clipPath';
+
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
-            id='svgRoundedHexagon'
+            id={baseName}
             fill={fillColor}
             stroke={strokeColor}
             strokeWidth={strokeWidth}
             className={className}
             viewBox='0 0 1 0.866'
-            width='0'
-            height='0'
+            width={showPath ? undefined : 0}
+            height={showPath ? undefined : 0}
             preserveAspectRatio='none'
         >
             <defs>
-                <path id='svgRoundedHexagonPath' d={subMenuButtonHexagonPath} />
+                <path id={pathId} d={subMenuButtonHexagonPath} />
 
                 {useClipPath && (
                     // Scaled up again to counteract the above viewBox
-                    <clipPath id={'svgRoundedHexagonClipPath' + idSuffix} clipPathUnits='objectBoundingBox' transform='scale(1, 1.1547)'>
-                        <use href='#svgRoundedHexagonPath' />
+                    <clipPath id={clipPathId}>
+                        <use href={'#' + pathId} />
                     </clipPath>
                 )}
 
                 {hasMask && (
                     <mask id={'svgRoundedHexagonMask' + idSuffix}>
-                        <use href='#svgRoundedHexagonPath' fill='white' />
+                        <use href={'#' + pathId} fill='white' />
                     </mask>
                 )}
             </defs>
 
-            {showPath && <use href='#svgRoundedHexagonPath' clipPath={useClipPath ? `url(#svgRoundedHexagonClipPath${idSuffix}})` : undefined} />}
+            {showPath && <use href={'#' + pathId} clipPath={useClipPath ? `url(#${clipPathId})` : undefined} />}
         </svg>
     );
 };

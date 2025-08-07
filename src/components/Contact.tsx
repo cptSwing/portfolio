@@ -1,21 +1,15 @@
 import { Link } from 'react-router-dom';
-import { useBreakpoint } from '../hooks/useBreakPoint';
 import { CSSProperties, useCallback, useState } from 'react';
-import RoundedHexagonSVG from './RoundedHexagonSVG';
 import { useZustand } from '../lib/zustand';
 import useOutsideClick from '../hooks/useOutsideClick'; // TODO replace with useClickAway ?
 import { CloseSubMenu } from './MenuModal';
 import classNames from '../lib/classNames';
-
-const NUM_SUBMENU_ITEMS = 4;
-const _shouldRotate = NUM_SUBMENU_ITEMS % 2 === 0;
 
 const Contact = () => {
     const menuButtonPosAndSize = useZustand((store) => store.values.activeMenuButton.positionAndSize);
 
     const [hasMounted, setHasMounted] = useState(false);
 
-    const _isDesktop = useBreakpoint('sm');
     const [_mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
     const clickRef = useOutsideClick(() => setMobileMenuIsOpen(false));
 
@@ -38,16 +32,14 @@ const Contact = () => {
     const subMenuButtonsMargin = menuButtonPosAndSize ? menuButtonPosAndSize.width * 0.1 : 0;
 
     return (
-        <nav
+        <menu
             ref={refCallback}
-            className={classNames(
-                'pointer-events-auto absolute aspect-hex-flat transition-transform delay-75 duration-300',
-                hasMounted ? 'rotate-90' : 'rotate-0',
-            )}
+            className={classNames('pointer-events-auto absolute transition-transform delay-75 duration-300', hasMounted ? 'rotate-90' : 'rotate-0')}
             style={
                 menuButtonPosAndSize &&
                 ({
                     width: menuButtonPosAndSize.width,
+                    height: menuButtonPosAndSize.height,
                     left: menuButtonPosAndSize.x,
                     bottom: `calc(100% - ${menuButtonPosAndSize.y + menuButtonPosAndSize.height}px)`,
                 } as CSSProperties)
@@ -55,7 +47,7 @@ const Contact = () => {
         >
             {/* Linkedin */}
             <button
-                className='group/linkedin duration-500-none peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform [clip-path:url(#svgRoundedHexagonClipPath-default)]'
+                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
                 data-title='LinkedIn'
                 title='LinkedIn'
                 style={
@@ -63,22 +55,19 @@ const Contact = () => {
                         ? ({
                               '--tw-translate-x': `${0}%`,
                               '--tw-translate-y': `calc(${100}% + ${subMenuButtonsMargin}px)`,
-                              // '--tw-scale-x': '1.2',
-                              // '--tw-scale-y': '1.2',
                           } as CSSProperties)
                         : undefined
                 }
                 onClick={() => (window.location.href = 'https://www.linkedin.com/in/jensbrandenburg')}
             >
-                <RoundedHexagonSVG
-                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active/linkedin:fill-theme-secondary-darker'
-                    strokeWidth={subMenuButtonsMargin / 50}
-                />
+                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
+                    <use href='#svgRoundedHexagon-default-path' />
+                </svg>
 
                 {/* logo */}
                 <div
                     className={classNames(
-                        'absolute left-0 top-0 size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active/linkedin:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -86,7 +75,7 @@ const Contact = () => {
 
             {/* github */}
             <button
-                className='group/github peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500 [clip-path:url(#svgRoundedHexagonClipPath-default)]'
+                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
                 data-title='GitHub'
                 title='GitHub'
                 style={
@@ -94,22 +83,19 @@ const Contact = () => {
                         ? ({
                               '--tw-translate-x': `calc(${-75}% - ${subMenuButtonsMargin * 0.866}px)`,
                               '--tw-translate-y': `calc(${50}% + ${subMenuButtonsMargin / 2}px)`,
-                              // '--tw-scale-x': '1.2',
-                              // '--tw-scale-y': '1.2',
                           } as CSSProperties)
                         : undefined
                 }
                 onClick={() => (window.location.href = 'https://github.com/cptSwing')}
             >
-                <RoundedHexagonSVG
-                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active/github:fill-theme-secondary-darker'
-                    strokeWidth={subMenuButtonsMargin / 50}
-                />
+                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
+                    <use href='#svgRoundedHexagon-default-path' />
+                </svg>
 
                 {/* logo */}
                 <div
                     className={classNames(
-                        'absolute left-0 top-0 size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active/github:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -117,14 +103,12 @@ const Contact = () => {
 
             {/* email */}
             <button
-                className='group/email peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500 [clip-path:url(#svgRoundedHexagonClipPath-default)]'
+                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
                 style={
                     hasMounted
                         ? ({
                               '--tw-translate-x': `calc(${-75}% - ${subMenuButtonsMargin * 0.866}px)`,
                               '--tw-translate-y': `calc(${-50}% - ${subMenuButtonsMargin / 2}px)`,
-                              // '--tw-scale-x': '1.2',
-                              // '--tw-scale-y': '1.2',
                           } as CSSProperties)
                         : undefined
                 }
@@ -132,15 +116,14 @@ const Contact = () => {
                 title='Email'
                 onClick={() => (window.location.href = 'mailto:jens@jbrandenburg.de')}
             >
-                <RoundedHexagonSVG
-                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active/email:fill-theme-secondary-darker'
-                    strokeWidth={subMenuButtonsMargin / 50}
-                />
+                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
+                    <use href='#svgRoundedHexagon-default-path' />
+                </svg>
 
                 {/* logo */}
                 <div
                     className={classNames(
-                        'size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active/email:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -149,28 +132,25 @@ const Contact = () => {
             {/* 3D Stores */}
             <label
                 htmlFor='menu-stores-input'
-                className='group/stores peer absolute size-full translate-x-0 translate-y-0 cursor-pointer transition-transform duration-500 [clip-path:url(#svgRoundedHexagonClipPath-default)]'
+                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
                 style={
                     hasMounted
                         ? ({
                               '--tw-translate-x': `${0}%`,
                               '--tw-translate-y': `calc(${-100}% - ${subMenuButtonsMargin}px)`,
-                              // '--tw-scale-x': '1.2',
-                              // '--tw-scale-y': '1.2',
                           } as CSSProperties)
                         : undefined
                 }
                 data-title='Stores'
             >
-                <RoundedHexagonSVG
-                    className='absolute left-0 top-0 -z-50 size-full fill-theme-secondary stroke-theme-secondary-lighter/50 transition-[fill] group-hover-active/stores:fill-theme-secondary-darker'
-                    strokeWidth={subMenuButtonsMargin / 50}
-                />
+                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' strokeWidth={0} viewBox='0 0 1 0.866'>
+                    <use href='#svgRoundedHexagon-default-path' />
+                </svg>
 
                 {/* logo */}
                 <div
                     className={classNames(
-                        'size-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0] [mask-image:url(/svg/CubeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active/stores:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/CubeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -206,19 +186,75 @@ const Contact = () => {
                 </div>
             </label>
 
+            {/* About */}
+            <button
+                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
+                style={
+                    hasMounted
+                        ? ({
+                              '--tw-translate-x': `calc(${75}% + ${subMenuButtonsMargin * 0.866}px)`,
+                              '--tw-translate-y': `calc(${-50}% - ${subMenuButtonsMargin / 2}px)`,
+                          } as CSSProperties)
+                        : undefined
+                }
+                data-title='About'
+                title='About'
+                // onClick={() => (window.location.href = 'mailto:jens@jbrandenburg.de')}
+            >
+                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
+                    <use href='#svgRoundedHexagon-default-path' />
+                </svg>
+
+                {/* logo */}
+                <div
+                    className={classNames(
+                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
+                        hasMounted ? '-rotate-90' : 'rotate-0',
+                    )}
+                />
+            </button>
+
+            {/* CV */}
+            <button
+                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
+                style={
+                    hasMounted
+                        ? ({
+                              '--tw-translate-x': `calc(${75}% + ${subMenuButtonsMargin * 0.866}px)`,
+                              '--tw-translate-y': `calc(${50}% + ${subMenuButtonsMargin / 2}px)`,
+                          } as CSSProperties)
+                        : undefined
+                }
+                data-title='CV'
+                title='CV'
+                // onClick={() => (window.location.href = 'mailto:jens@jbrandenburg.de')}
+            >
+                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
+                    <use href='#svgRoundedHexagon-default-path' />
+                </svg>
+
+                {/* logo */}
+                <div
+                    className={classNames(
+                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
+                        hasMounted ? '-rotate-90' : 'rotate-0',
+                    )}
+                />
+            </button>
+
             {/* Close */}
             <CloseSubMenu />
 
             {/* Title */}
             <div
                 className={classNames(
-                    'before:peer-hover-active:peer-data-[title=Email]:content-["Email"] before:peer-hover-active:peer-data-[title=GitHub]:content-["GitHub"] before:peer-hover-active:peer-data-[title=LinkedIn]:content-["LinkedIn"] before:peer-hover-active:peer-data-[title=Stores]:content-["Stores"]',
+                    'font-lato before:peer-hover-active:peer-data-[title=About]:content-["About"] before:peer-hover-active:peer-data-[title=CV]:content-["CV"] before:peer-hover-active:peer-data-[title=Email]:content-["Email"] before:peer-hover-active:peer-data-[title=GitHub]:content-["GitHub"] before:peer-hover-active:peer-data-[title=LinkedIn]:content-["LinkedIn"] before:peer-hover-active:peer-data-[title=Stores]:content-["Stores"]',
                     'before:absolute before:top-1/2 before:z-10 before:w-full before:-translate-y-1/2 before:select-none before:text-center before:text-sm before:leading-none before:text-theme-secondary-lighter',
                     'pointer-events-none absolute size-full transform-gpu',
                     hasMounted ? '-rotate-90' : 'rotate-0',
                 )}
             />
-        </nav>
+        </menu>
     );
 };
 
