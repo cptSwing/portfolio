@@ -47,9 +47,9 @@ const Contact = () => {
         >
             {/* Linkedin */}
             <button
-                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
-                data-title='LinkedIn'
-                title='LinkedIn'
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
+                data-title="LinkedIn"
+                title="LinkedIn"
                 style={
                     hasMounted
                         ? ({
@@ -60,8 +60,8 @@ const Contact = () => {
                 }
                 onClick={() => (window.location.href = 'https://www.linkedin.com/in/jensbrandenburg')}
             >
-                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
-                    <use href='#svgRoundedHexagon-default-path' />
+                <svg className="fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker" viewBox="0 0 1 0.866">
+                    <use href="#svgRoundedHexagon-default-path" />
                 </svg>
 
                 {/* logo */}
@@ -75,9 +75,9 @@ const Contact = () => {
 
             {/* github */}
             <button
-                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
-                data-title='GitHub'
-                title='GitHub'
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
+                data-title="GitHub"
+                title="GitHub"
                 style={
                     hasMounted
                         ? ({
@@ -88,8 +88,8 @@ const Contact = () => {
                 }
                 onClick={() => (window.location.href = 'https://github.com/cptSwing')}
             >
-                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
-                    <use href='#svgRoundedHexagon-default-path' />
+                <svg className="fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker" viewBox="0 0 1 0.866">
+                    <use href="#svgRoundedHexagon-default-path" />
                 </svg>
 
                 {/* logo */}
@@ -103,7 +103,7 @@ const Contact = () => {
 
             {/* email */}
             <button
-                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
                 style={
                     hasMounted
                         ? ({
@@ -112,12 +112,12 @@ const Contact = () => {
                           } as CSSProperties)
                         : undefined
                 }
-                data-title='Email'
-                title='Email'
+                data-title="Email"
+                title="Email"
                 onClick={() => (window.location.href = 'mailto:jens@jbrandenburg.de')}
             >
-                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
-                    <use href='#svgRoundedHexagon-default-path' />
+                <svg className="fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker" viewBox="0 0 1 0.866">
+                    <use href="#svgRoundedHexagon-default-path" />
                 </svg>
 
                 {/* logo */}
@@ -131,8 +131,8 @@ const Contact = () => {
 
             {/* 3D Stores */}
             <label
-                htmlFor='menu-stores-input'
-                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
+                htmlFor="menu-stores-input"
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
                 style={
                     hasMounted
                         ? ({
@@ -141,10 +141,10 @@ const Contact = () => {
                           } as CSSProperties)
                         : undefined
                 }
-                data-title='Stores'
+                data-title="Stores"
             >
-                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' strokeWidth={0} viewBox='0 0 1 0.866'>
-                    <use href='#svgRoundedHexagon-default-path' />
+                <svg className="fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker" strokeWidth={0} viewBox="0 0 1 0.866">
+                    <use href="#svgRoundedHexagon-default-path" />
                 </svg>
 
                 {/* logo */}
@@ -155,31 +155,31 @@ const Contact = () => {
                     )}
                 />
 
-                <input id='menu-stores-input' type='checkbox' className='peer/stores-input group/stores-input-group hidden' />
+                <input id="menu-stores-input" type="checkbox" className="peer/stores-input group/stores-input-group hidden" />
 
                 {/* list of Stores */}
-                <div className='absolute top-1/2 size-full -translate-y-1/2 text-xs text-theme-secondary opacity-0 transition-opacity peer-checked/stores-input:opacity-100 peer-checked/stores-input:*:clip-inset-0'>
+                <div className="absolute top-1/2 size-full -translate-y-1/2 text-xs text-theme-secondary opacity-0 transition-opacity peer-checked/stores-input:opacity-100 peer-checked/stores-input:*:clip-inset-0">
                     <Link
-                        to='https://www.cgtrader.com/designers/cptswing'
-                        className='absolute block translate-x-[-90%] translate-y-[-62.5%] rotate-[-150deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter'
+                        to="https://www.cgtrader.com/designers/cptswing"
+                        className="absolute block translate-x-[-90%] translate-y-[-62.5%] rotate-[-150deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter"
                     >
                         CGTrader
                     </Link>
                     <Link
-                        to='https://www.turbosquid.com/Search/Artists/cptSwing'
-                        className='absolute block translate-x-[-1%] translate-y-[-208%] rotate-[-90deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter'
+                        to="https://www.turbosquid.com/Search/Artists/cptSwing"
+                        className="absolute block translate-x-[-1%] translate-y-[-208%] rotate-[-90deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter"
                     >
                         TurboSquid
                     </Link>
                     <Link
-                        to='https://www.printables.com/@cptSwing_2552270'
-                        className='absolute block translate-x-[102.5%] translate-y-[-66%] rotate-[-30deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter'
+                        to="https://www.printables.com/@cptSwing_2552270"
+                        className="absolute block translate-x-[102.5%] translate-y-[-66%] rotate-[-30deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter"
                     >
                         Printables
                     </Link>
                     <Link
-                        to='https://www.thingiverse.com/cptswing/designs'
-                        className='absolute block translate-x-[90%] translate-y-[192.5%] rotate-[210deg] transform-gpu rounded-l-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-l-full hover-active:text-theme-primary-lighter'
+                        to="https://www.thingiverse.com/cptswing/designs"
+                        className="absolute block translate-x-[90%] translate-y-[192.5%] rotate-[210deg] transform-gpu rounded-l-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-l-full hover-active:text-theme-primary-lighter"
                     >
                         Thingiverse
                     </Link>
@@ -188,7 +188,7 @@ const Contact = () => {
 
             {/* About */}
             <button
-                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
                 style={
                     hasMounted
                         ? ({
@@ -197,12 +197,12 @@ const Contact = () => {
                           } as CSSProperties)
                         : undefined
                 }
-                data-title='About'
-                title='About'
+                data-title="About"
+                title="About"
                 // onClick={() => (window.location.href = 'mailto:jens@jbrandenburg.de')}
             >
-                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
-                    <use href='#svgRoundedHexagon-default-path' />
+                <svg className="fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker" viewBox="0 0 1 0.866">
+                    <use href="#svgRoundedHexagon-default-path" />
                 </svg>
 
                 {/* logo */}
@@ -216,7 +216,7 @@ const Contact = () => {
 
             {/* CV */}
             <button
-                className='group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500'
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
                 style={
                     hasMounted
                         ? ({
@@ -225,12 +225,12 @@ const Contact = () => {
                           } as CSSProperties)
                         : undefined
                 }
-                data-title='CV'
-                title='CV'
+                data-title="CV"
+                title="CV"
                 // onClick={() => (window.location.href = 'mailto:jens@jbrandenburg.de')}
             >
-                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
-                    <use href='#svgRoundedHexagon-default-path' />
+                <svg className="fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker" viewBox="0 0 1 0.866">
+                    <use href="#svgRoundedHexagon-default-path" />
                 </svg>
 
                 {/* logo */}

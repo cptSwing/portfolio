@@ -89,7 +89,7 @@ const Category = () => {
         <>
             <Flipper
                 element={'nav'}
-                className='postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[0.6fr_repeat(8,minmax(0,1fr))_0.125fr] gap-[0%] overflow-hidden bg-theme-primary/10 px-[0%] py-[0%] transition-[transform,clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%] sm:gap-[3%] sm:px-[8%] sm:py-[1%]'
+                className="postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[0.6fr_repeat(8,minmax(0,1fr))_0.125fr] gap-[0%] overflow-hidden bg-theme-primary/10 px-[0%] py-[0%] transition-[transform,clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%] sm:gap-[3%] sm:px-[8%] sm:py-[1%]"
                 flipKey={flipIndex}
                 spring={{ stiffness: 600, damping: 40 }}
             >
@@ -97,9 +97,9 @@ const Category = () => {
                 <CardTitles infoContent={infoContent} />
 
                 {/* Brand */}
-                <div className='absolute mb-[2%] size-full select-none text-theme-primary/30 [grid-area:brand]'>
-                    <div className='text-nowrap text-right sm:text-sm sm:!leading-tight md:text-base lg:text-lg lg:!leading-snug'>jens Brandenburg</div>
-                    <div className='text-nowrap text-right sm:text-2xs md:text-xs lg:text-sm'>webdev & 3d art</div>
+                <div className="absolute mb-[2%] size-full select-none text-theme-primary/30 [grid-area:brand]">
+                    <div className="text-nowrap text-right sm:text-sm sm:!leading-tight md:text-base lg:text-lg lg:!leading-snug">jens Brandenburg</div>
+                    <div className="text-nowrap text-right sm:text-2xs md:text-xs lg:text-sm">webdev & 3d art</div>
                 </div>
 
                 {/* Animated Grid */}
@@ -119,7 +119,7 @@ const Category = () => {
                     ))}
 
                 {/* Progress Bar */}
-                <div className='absolute left-[5%] mx-auto flex h-full w-[90%] items-center justify-between gap-x-[1.5%] [grid-area:track]'>
+                <div className="absolute left-[5%] mx-auto flex h-full w-[90%] items-center justify-between gap-x-[1.5%] [grid-area:track]">
                     {categoryData_Memo.posts.map((post, idx) => {
                         return (
                             <button
@@ -179,10 +179,10 @@ const CardTitles: FC<{
                 } as CSSProperties
             }
         >
-            <div className='text-nowrap font-fjalla-one text-2xl text-theme-secondary-lighter underline underline-offset-2 sm:text-sm sm:!leading-tight md:text-base lg:text-lg xl:text-xl'>
+            <div className="text-nowrap font-fjalla-one text-2xl text-theme-secondary-lighter underline underline-offset-2 sm:text-sm sm:!leading-tight md:text-base lg:text-lg xl:text-xl">
                 {title}
             </div>
-            <div className='text-nowrap font-lato text-sm leading-none text-theme-text-background/90 sm:text-2xs md:text-xs lg:text-sm lg:tracking-tight xl:text-sm'>
+            <div className="text-nowrap font-lato text-sm leading-none text-theme-text-background/90 sm:text-2xs md:text-xs lg:text-sm lg:tracking-tight xl:text-sm">
                 {subTitle}
             </div>
         </div>

@@ -1,15 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) => void, isActive?: boolean) => void = (label, buttonCallback, isActive = true) => {
-    const createContainer = useCallback((id: string) => {
-        const container = document.body.appendChild(document.createElement('div'));
-        container.id = id;
-
-        container.appendChild(debugButtonStyleElement);
-
-        return container;
-    }, []);
-
     const createButton = useCallback(() => {
         const button = document.createElement('button');
         button.addEventListener('contextmenu', (ev) => {
@@ -38,7 +29,7 @@ const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) => void, 
         }
 
         return () => {};
-    }, [createContainer, isActive]);
+    }, [isActive]);
 
     /* Check wether Button exists */
     const buttonNode_Ref = useRef<HTMLButtonElement | null>(null);
@@ -60,6 +51,17 @@ const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) => void, 
 };
 
 export default useDebugButton;
+
+/* Local Functions */
+
+function createContainer(id: string) {
+    const container = document.body.appendChild(document.createElement('div'));
+    container.id = id;
+
+    container.appendChild(debugButtonStyleElement);
+
+    return container;
+}
 
 const debugContainerId = '__debug-container';
 

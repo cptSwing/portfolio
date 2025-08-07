@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames.ts';
 import { useZustand } from '../lib/zustand.ts';
 import { Flipped } from 'react-flip-toolkit';
-import { getShapePaths } from '../config/hexagonData.ts';
+import { getShapePaths } from '../lib/hexagonData.ts';
 import stripSpaces from '../lib/stripSpaces.ts';
 import { useMeasure } from 'react-use';
 
@@ -66,7 +66,7 @@ const CategoryCard: FC<{
     const debug_applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
 
     return (
-        <Flipped flipId={post.id} transformOrigin='0px 0px' opacity translate scale>
+        <Flipped flipId={post.id} transformOrigin="0px 0px" opacity translate scale>
             <button
                 // ref={mountCallback}
                 ref={measureRef}
@@ -98,34 +98,34 @@ const SVGClippedImage: FC<{
     const clipPathName = pathName + '-clipPath';
 
     return (
-        <svg xmlns='http://www.w3.org/2000/svg' style={{ width, height }}>
+        <svg xmlns="http://www.w3.org/2000/svg" style={{ width, height }}>
             <defs>
                 {/* custom per-grid-area path: */}
                 <path id={pathName} d={shapePath} />
 
                 {/* clip with same path in order for stroke attribute to only stroke inside of path: */}
-                <clipPath id={clipPathName} clipPathUnits='objectBoundingBox'>
+                <clipPath id={clipPathName} clipPathUnits="objectBoundingBox">
                     <use href={`#${pathName}`} />
                 </clipPath>
             </defs>
 
             {/* Emulate object-cover via preserveAspectRatio */}
             <image
-                width='100%'
-                height='100%'
-                className='origin-center scale-[0.9975] transform-gpu' // to combat pixel errors (rounding?)
+                width="100%"
+                height="100%"
+                className="origin-center scale-[0.9975] transform-gpu" // to combat pixel errors (rounding?)
                 href={titleCardBg}
                 clipPath={`url(#${clipPathName})`}
-                preserveAspectRatio='xMidYMid slice'
+                preserveAspectRatio="xMidYMid slice"
             />
 
             {/* Scale according to percentages of width/height */}
-            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1' preserveAspectRatio='none'>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" preserveAspectRatio="none">
                 <use
                     href={`#${pathName}`}
                     clipPath={`url(#${clipPathName})`}
-                    className='fill-none stroke-theme-primary'
-                    shapeRendering='geometricPrecision'
+                    className="fill-none stroke-theme-primary"
+                    shapeRendering="geometricPrecision"
                     strokeWidth={10 / (width + height)}
                 />
             </svg>

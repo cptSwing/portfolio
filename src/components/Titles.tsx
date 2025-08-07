@@ -16,7 +16,7 @@ const Titles = () => {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     return (
-        <header className='pointer-events-auto transition-transform duration-500 [--nav-title-animation-duration:300ms]'>
+        <header className="pointer-events-auto transition-transform duration-500 [--nav-title-animation-duration:300ms]">
             {/* Code, 3D, Log */}
             {categoriesArray.map((cardData) => (
                 <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
@@ -31,14 +31,14 @@ const Titles = () => {
                 )}
                 onClick={() => setMenuIsOpen((prev) => !prev)}
             >
-                <div className='h-0.5 w-full bg-theme-primary-darker' />
-                <div className='h-0.5 w-full bg-theme-primary-darker' />
-                <div className='h-0.5 w-full bg-theme-primary-darker' />
+                <div className="h-0.5 w-full bg-theme-primary-darker" />
+                <div className="h-0.5 w-full bg-theme-primary-darker" />
+                <div className="h-0.5 w-full bg-theme-primary-darker" />
             </button>
 
             {menuIsOpen &&
                 createPortal(
-                    <div className='absolute left-2/3 top-0'>
+                    <div className="absolute left-2/3 top-0">
                         <div>about yadda yadda</div>
 
                         <Settings />

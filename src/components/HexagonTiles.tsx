@@ -2,7 +2,7 @@ import { CSSProperties, FC, memo, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames';
 import { CategoryLink, HexagonData, HexagonLink, NavigationExpansionState, UIButton } from '../types/types';
-import { halfRoundedHexagonPath, buttonHexagons, regularHexagons, roundedHexagonPath, staticValues } from '../config/hexagonData';
+import { halfRoundedHexagonPath, buttonHexagons, regularHexagons, roundedHexagonPath, staticValues } from '../lib/hexagonData';
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
 import { useBreakpoint } from '../hooks/useBreakPoint';
@@ -90,26 +90,26 @@ const HexagonSvgDefs = memo(() => {
                 <use href={'#' + halfRoundedHexagonPathName} />
             </clipPath>
 
-            <filter id='lighter-none'>
-                <feFlood className='[flood-color:theme(colors.theme.primary-lighter/1)]' />
-                <feComposite operator='out' in2='SourceGraphic' />
-                <feMorphology operator='dilate' radius='0' />
-                <feGaussianBlur stdDeviation='0' />
-                <feComposite operator='atop' in2='SourceGraphic' />
+            <filter id="lighter-none">
+                <feFlood className="[flood-color:theme(colors.theme.primary-lighter/1)]" />
+                <feComposite operator="out" in2="SourceGraphic" />
+                <feMorphology operator="dilate" radius="0" />
+                <feGaussianBlur stdDeviation="0" />
+                <feComposite operator="atop" in2="SourceGraphic" />
             </filter>
 
-            <filter id='lighter-inner'>
-                <feFlood className='[flood-color:theme(colors.theme.primary-lighter/0.5)]' />
-                <feComposite operator='out' in2='SourceGraphic' />
-                <feMorphology operator='dilate' radius='4' />
-                <feGaussianBlur stdDeviation='5' />
-                <feComposite operator='atop' in2='SourceGraphic' />
+            <filter id="lighter-inner">
+                <feFlood className="[flood-color:theme(colors.theme.primary-lighter/0.5)]" />
+                <feComposite operator="out" in2="SourceGraphic" />
+                <feMorphology operator="dilate" radius="4" />
+                <feGaussianBlur stdDeviation="5" />
+                <feComposite operator="atop" in2="SourceGraphic" />
             </filter>
 
-            <linearGradient id='linearGradient' x1='0%' y1='100%' x2='0%' y2='0%'>
-                <stop offset='0%' className='[stop-color:theme(colors.theme.primary-darker/1)]' />
-                <stop offset='50%' className='[stop-color:theme(colors.theme.primary-lighter/0.75)]' />
-                <stop offset='100%' className='[stop-color:theme(colors.theme.primary-darker/1)]' />
+            <linearGradient id="linearGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" className="[stop-color:theme(colors.theme.primary-darker/1)]" />
+                <stop offset="50%" className="[stop-color:theme(colors.theme.primary-lighter/0.75)]" />
+                <stop offset="100%" className="[stop-color:theme(colors.theme.primary-darker/1)]" />
             </linearGradient>
         </defs>
     );
@@ -203,15 +203,15 @@ const ButtonHexagon: FC<{
                           ? `${(svgIconPath ? 2 : 4) / scale}`
                           : /* post */ `${2 / scale}`,
             }}
-            role='button'
+            role="button"
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
         >
             <use
                 href={'#' + roundedHexagonPathName}
                 clipPath={`url(#${roundedHexagonPathName}-clipPath)`}
-                className='pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[transform,filter] [filter:url(#lighter-none)] group-hover-active:scale-105'
-                shapeRendering='geometricPrecision'
+                className="pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[transform,filter] [filter:url(#lighter-none)] group-hover-active:scale-105"
+                shapeRendering="geometricPrecision"
                 // TODO set as options in Settings ?
                 // shapeRendering='crispEdges'
                 // shapeRendering='optimizeSpeed'
@@ -220,9 +220,9 @@ const ButtonHexagon: FC<{
 
             {svgIconPath ? (
                 // This is a regular menu button (with an icon by default)
-                <foreignObject x='0' y='0' width='100' height='86.66' overflow='visible'>
+                <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible">
                     <div
-                        className='size-full origin-center bg-theme-text-background [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter'
+                        className="size-full origin-center bg-theme-text-background [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter"
                         style={{ maskImage: `url(${svgIconPath})` }}
                     />
                     <span
@@ -243,9 +243,9 @@ const ButtonHexagon: FC<{
                 <text
                     x={hexHalfWidth}
                     y={hexHalfHeight}
-                    textAnchor='middle'
-                    alignmentBaseline='central'
-                    className='pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary-lighter stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter'
+                    textAnchor="middle"
+                    alignmentBaseline="central"
+                    className="pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary-lighter stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter"
                 >
                     {title}
                 </text>

@@ -6,7 +6,7 @@ import Markdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import GetChildSize from './GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import { getHexagonalClipPath } from '../config/hexagonData';
+import { getHexagonalClipPath } from '../lib/hexagonData';
 
 const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; viewLive: PostType['viewLive']; viewSource: PostType['viewSource'] }> = ({
     stack,
@@ -20,15 +20,15 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
 
     return (
         <>
-            <div className='relative flex items-start justify-end font-lato leading-none tracking-tight'>
+            <div className="relative flex items-start justify-end font-lato leading-none tracking-tight">
                 {stack && (
                     <GetChildSize Context={GetChildSizeContext}>
                         <SingleStackBlock
                             title={'Stack'}
                             jsx={
                                 <div
-                                    data-block-id='stack-content-parent'
-                                    className='grid gap-1'
+                                    data-block-id="stack-content-parent"
+                                    className="grid gap-1"
                                     // dir='rtl'
                                     style={{ gridTemplateColumns: `repeat(${stack.length < 4 ? stack.length : 4}, minmax(0, 1fr)` }}
                                 >
@@ -36,7 +36,7 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
                                         <a
                                             key={idx}
                                             href={ToolsUrls[tool]}
-                                            className='block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline'
+                                            className="block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline"
                                         >
                                             {tool}
                                         </a>
@@ -55,17 +55,17 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
                         <SingleStackBlock
                             title={'View Live'}
                             jsx={
-                                <div data-block-id='view-live-content-parent' dir='rtl' className='grid grid-cols-3 items-start gap-1'>
+                                <div data-block-id="view-live-content-parent" dir="rtl" className="grid grid-cols-3 items-start gap-1">
                                     {viewLive.map(({ url, title, description }, idx) => (
                                         <div
                                             key={idx}
-                                            className='group max-h-[4vh] bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker outline outline-1 -outline-offset-2 outline-theme-text-background transition-[max-height,color,background-color,outline-color] hover-active:max-h-full hover-active:bg-theme-primary/50 hover-active:text-theme-text-background'
+                                            className="group max-h-[4vh] bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker outline outline-1 -outline-offset-2 outline-theme-text-background transition-[max-height,color,background-color,outline-color] hover-active:max-h-full hover-active:bg-theme-primary/50 hover-active:text-theme-text-background"
                                         >
-                                            <a className='leading-none no-underline group-hover-active:underline' href={url}>
+                                            <a className="leading-none no-underline group-hover-active:underline" href={url}>
                                                 {title}
                                             </a>
                                             <Markdown
-                                                className='overflow-hidden pt-px text-left text-theme-text/60 transition-[clip-path] [clip-path:polygon(0%_0%,100%_0%,100%_1.25vh,0%_1.25vh)] group-hover-active:text-theme-text-background/70 group-hover-active:[clip-path:polygon(0%_0%,100%_0%,100%_100%,0%_100%)]'
+                                                className="overflow-hidden pt-px text-left text-theme-text/60 transition-[clip-path] [clip-path:polygon(0%_0%,100%_0%,100%_1.25vh,0%_1.25vh)] group-hover-active:text-theme-text-background/70 group-hover-active:[clip-path:polygon(0%_0%,100%_0%,100%_100%,0%_100%)]"
                                                 remarkPlugins={[remarkBreaks]}
                                             >
                                                 {description}
@@ -86,9 +86,9 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
                         <SingleStackBlock
                             title={'View Source'}
                             jsx={
-                                <div data-block-id='view-source-content-parent' className=''>
+                                <div data-block-id="view-source-content-parent" className="">
                                     <a
-                                        className='block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline'
+                                        className="block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline"
                                         href={viewSource.href}
                                     >
                                         {viewSource.alt}
@@ -108,18 +108,18 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
                             title={'Clients / Users'}
                             jsx={
                                 <div
-                                    data-block-id='clients-content-parent'
-                                    className='relative grid gap-x-0.5'
+                                    data-block-id="clients-content-parent"
+                                    className="relative grid gap-x-0.5"
                                     style={{ gridTemplateColumns: `repeat(${clients.length < 4 ? clients.length : 4}, minmax(0, 1fr)` }}
                                 >
                                     {clients.map(({ abbreviation, name, svgUrl }, idx) => (
-                                        <div key={idx + abbreviation + name} className='group relative'>
-                                            <div className='relative flex aspect-hex-flat w-12 items-center justify-center bg-theme-secondary-darker/50 text-theme-primary-darker [clip-path:url(#svgRoundedHexagonClipPath-default)] group-hover-active:bg-theme-primary/50 group-hover-active:text-theme-secondary-darker'>
-                                                <div className='flex aspect-square w-3/5 select-none items-center justify-center rounded-full bg-theme-text-background text-center text-2xs font-semibold'>
+                                        <div key={idx + abbreviation + name} className="group relative">
+                                            <div className="relative flex aspect-hex-flat w-12 items-center justify-center bg-theme-secondary-darker/50 text-theme-primary-darker [clip-path:url(#svgRoundedHexagonClipPath-default)] group-hover-active:bg-theme-primary/50 group-hover-active:text-theme-secondary-darker">
+                                                <div className="flex aspect-square w-3/5 select-none items-center justify-center rounded-full bg-theme-text-background text-center text-2xs font-semibold">
                                                     {abbreviation}
                                                 </div>
                                             </div>
-                                            <div className='pointer-events-none absolute top-full z-10 mt-1 text-center text-2xs text-theme-primary opacity-0 group-hover-active:opacity-100'>
+                                            <div className="pointer-events-none absolute top-full z-10 mt-1 text-center text-2xs text-theme-primary opacity-0 group-hover-active:opacity-100">
                                                 {name}
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
             </div>
 
             {/* Line Break in flexbox */}
-            <div className='size-0 basis-full' />
+            <div className="size-0 basis-full" />
 
             <div
                 className={classNames(

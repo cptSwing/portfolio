@@ -13,14 +13,14 @@ import NoRouteMatched from '../components/routes/NoRouteMatched';
 
 const App = () => {
     return (
-        <div className='flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather'>
+        <div className="flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather">
             <BrowserRouter>
                 <Routes>
-                    <Route path='/:catId?/:postId?' element={<Main />} />
+                    <Route path="/:catId?/:postId?" element={<Main />} />
 
-                    <Route path='/bundles/:bundlePath' element={<BundleRoutes />} />
+                    <Route path="/bundles/:bundlePath" element={<BundleRoutes />} />
 
-                    <Route path='*' element={<NoRouteMatched />} />
+                    <Route path="*" element={<NoRouteMatched />} />
                 </Routes>
             </BrowserRouter>
         </div>
@@ -69,7 +69,7 @@ const Main = () => {
             )}
         >
             {/* Used as clip-shape multiple times down the line */}
-            <RoundedHexagonSVG showPath={false} useClipPath idSuffix='-default' />
+            <RoundedHexagonSVG showPath={false} useClipPath idSuffix="-default" />
 
             <HexagonTiles />
 

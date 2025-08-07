@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { subMenuButtonHexagonPath } from '../config/hexagonData';
+import { subMenuButtonHexagonPath } from '../lib/hexagonData';
 
 /**
  * For clipping with CSS `clip-path`: Set useClipPath to `true`, and refer to `url(#svgRoundedHexagonClipPath)` in the element's `clip-path` property.
@@ -22,16 +22,16 @@ const RoundedHexagonSVG: FC<RoundedHexagonSVGProps> = ({
 
     return (
         <svg
-            xmlns='http://www.w3.org/2000/svg'
+            xmlns="http://www.w3.org/2000/svg"
             id={baseName}
             fill={fillColor}
             stroke={strokeColor}
             strokeWidth={strokeWidth}
             className={className}
-            viewBox='0 0 1 0.866'
+            viewBox="0 0 1 0.866"
             width={showPath ? undefined : 0}
             height={showPath ? undefined : 0}
-            preserveAspectRatio='none'
+            preserveAspectRatio="none"
         >
             <defs>
                 <path id={pathId} d={subMenuButtonHexagonPath} />
@@ -45,7 +45,7 @@ const RoundedHexagonSVG: FC<RoundedHexagonSVGProps> = ({
 
                 {hasMask && (
                     <mask id={'svgRoundedHexagonMask' + idSuffix}>
-                        <use href={'#' + pathId} fill='white' />
+                        <use href={'#' + pathId} fill="white" />
                     </mask>
                 )}
             </defs>

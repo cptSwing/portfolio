@@ -12,7 +12,7 @@ import parseDateString from '../../lib/parseDateString';
 import { DataBase, PostType, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
 import testDb from '../../queries/testDb.json';
 import { useZustand } from '../../lib/zustand';
-import { getHexagonalClipPath } from '../../config/hexagonData';
+import { getHexagonalClipPath } from '../../lib/hexagonData';
 import PostDetails from '../PostDetails';
 import GetChildSize from '../GetChildSize';
 import GetChildSizeContext from '../../contexts/GetChildSizeContext';
@@ -89,18 +89,18 @@ const Post = () => {
     );
 
     return (
-        <div className='absolute left-0 top-0 size-full bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] clip-inset-r-[--clip-post] clip-inset-t-[-10%] sm:pt-10 lg:pt-12 xl:px-[6%]'>
-            <header className='pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center'>
+        <div className="absolute left-0 top-0 size-full bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] clip-inset-r-[--clip-post] clip-inset-t-[-10%] sm:pt-10 lg:pt-12 xl:px-[6%]">
+            <header className="pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center">
                 <GetChildSize Context={GetChildSizeContext}>
                     <FloatingHeader title={title} />
                 </GetChildSize>
             </header>
 
-            <main className='scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll scrollbar-thin sm:pr-[2%] xl:pr-[1.5%]'>
+            <main className="scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll scrollbar-thin sm:pr-[2%] xl:pr-[1.5%]">
                 {/* (Sub-)Header, date, "Built with"  */}
                 <div>
-                    <span className='block sm:text-lg md:text-xl lg:text-2xl'>{subTitle}</span>
-                    <div className='flex flex-wrap items-center justify-between sm:my-1 sm:gap-y-0.5 lg:my-2 lg:gap-y-1'>
+                    <span className="block sm:text-lg md:text-xl lg:text-2xl">{subTitle}</span>
+                    <div className="flex flex-wrap items-center justify-between sm:my-1 sm:gap-y-0.5 lg:my-2 lg:gap-y-1">
                         <GetChildSize Context={GetChildSizeContext}>
                             <PostDate date={date_Memo} />
                         </GetChildSize>
@@ -150,7 +150,7 @@ const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
 
     return (
         <span
-            className='select-none px-[4%] font-fjalla-one font-semibold text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-1.5 before:-z-10 before:h-[90%] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path] sm:text-2xl sm:tracking-wider lg:text-3xl lg:tracking-wide'
+            className="select-none px-[4%] font-fjalla-one font-semibold text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-1.5 before:-z-10 before:h-[90%] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path] sm:text-2xl sm:tracking-wider lg:text-3xl lg:tracking-wide"
             style={
                 {
                     '--post-title-clip-path': clipPath_Memo,
@@ -168,7 +168,7 @@ const PostDate: FC<{ date: { year?: string; month?: string; day?: string } }> = 
 
     return (
         <span
-            className='block bg-theme-primary-lighter py-1 pl-2 pr-4 font-lato text-sm leading-none text-theme-primary-darker'
+            className="block bg-theme-primary-lighter py-1 pl-2 pr-4 font-lato text-sm leading-none text-theme-primary-darker"
             style={{ clipPath: clipPath_Memo }}
         >
             {day && `${day}.`}
@@ -188,7 +188,7 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
     const handleClick = () => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback();
 
     return (
-        <div className='first-of-type:mt-0 sm:my-3 sm:text-xs md:my-5 md:text-sm'>
+        <div className="first-of-type:mt-0 sm:my-3 sm:text-xs md:my-5 md:text-sm">
             {showCase && (
                 <div
                     className={classNames('group max-h-64 w-full max-w-[40%]', isBlockIndexEven ? 'float-right sm:ml-4 md:ml-5' : 'float-left sm:mr-4 md:mr-5')}
@@ -196,18 +196,18 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                     {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
                         <iframe
                             src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')}
-                            title='YouTube video player'
-                            referrerPolicy='strict-origin-when-cross-origin'
-                            loading='lazy'
+                            title="YouTube video player"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            loading="lazy"
                             allowFullScreen
-                            className='aspect-video size-full shadow-md shadow-theme-primary-darker/10 transition-[box-shadow] duration-75 group-hover-active:shadow-theme-primary-darker/20'
+                            className="aspect-video size-full shadow-md shadow-theme-primary-darker/10 transition-[box-shadow] duration-75 group-hover-active:shadow-theme-primary-darker/20"
                         />
                     ) : (
                         <button
                             onClick={handleClick}
-                            className='relative shadow-md shadow-theme-primary-darker/10 transition-[box-shadow,transform] duration-75 group-hover-active:scale-[1.01] group-hover-active:shadow-theme-primary-darker/20 group-hover-active:brightness-105'
+                            className="relative shadow-md shadow-theme-primary-darker/10 transition-[box-shadow,transform] duration-75 group-hover-active:scale-[1.01] group-hover-active:shadow-theme-primary-darker/20 group-hover-active:brightness-105"
                         >
-                            <img src={constructThumbsUrl((showCase as Post_ShowCase_Image).imgUrl)} alt={showCase.caption} className='size-full object-cover' />
+                            <img src={constructThumbsUrl((showCase as Post_ShowCase_Image).imgUrl)} alt={showCase.caption} className="size-full object-cover" />
                             {showCase.caption && (
                                 <div
                                     className={classNames(
@@ -237,7 +237,7 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
                             {children}
                         </p>
                     ),
-                    h5: ({ children }) => <h5 className='w-fit'>{children}</h5>,
+                    h5: ({ children }) => <h5 className="w-fit">{children}</h5>,
                 }}
                 remarkPlugins={[remarkBreaks]}
             >
@@ -263,7 +263,7 @@ const RemainingImages: FC<{
     const handleClick = (imageIndex: number) => setLightBoxSlide(imageIndex);
 
     return (
-        <div className='grid items-start gap-3 pb-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+        <div className="grid items-start gap-3 pb-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {remaining_Memo.map((remain) => {
                 const [showCase, imageIndex] = remain || [];
 
@@ -273,11 +273,11 @@ const RemainingImages: FC<{
                     return (
                         <button
                             key={showCase.imgUrl + imageIndex}
-                            className='group max-h-48 w-full overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.01] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110'
+                            className="group max-h-48 w-full overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.01] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110"
                             onClick={() => handleClick(imageIndex)}
                             onKeyDown={() => handleClick(imageIndex)}
                         >
-                            <img src={constructThumbsUrl(showCase.imgUrl)} alt={showCase.caption} className='object-cover' />
+                            <img src={constructThumbsUrl(showCase.imgUrl)} alt={showCase.caption} className="object-cover" />
                         </button>
                     );
                 }

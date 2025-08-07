@@ -31,7 +31,7 @@ const Settings = () => {
     return (
         <div
             ref={refCallback}
-            className='pointer-events-auto absolute'
+            className="pointer-events-auto absolute"
             style={
                 menuButtonPosAndSize &&
                 ({
@@ -44,7 +44,7 @@ const Settings = () => {
         >
             {/* Radius Settings */}
             <button
-                className='group peer absolute flex size-full rotate-0 cursor-pointer items-center justify-center transition-transform'
+                className="group peer absolute flex size-full rotate-0 cursor-pointer items-center justify-center transition-transform"
                 style={
                     hasMounted
                         ? ({
@@ -53,20 +53,20 @@ const Settings = () => {
                           } as CSSProperties)
                         : undefined
                 }
-                data-title='Radius'
-                title='Radius'
+                data-title="Radius"
+                title="Radius"
             >
-                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
-                    <use href='#svgRoundedHexagon-default-path' />
+                <svg className="fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker" viewBox="0 0 1 0.866">
+                    <use href="#svgRoundedHexagon-default-path" />
                 </svg>
 
                 {/* Radius logo */}
-                <div className='absolute aspect-hex-flat w-full bg-theme-primary transition-[background-color] [mask-image:url(/svg/PercentBadgeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter' />
+                <div className="absolute aspect-hex-flat w-full bg-theme-primary transition-[background-color] [mask-image:url(/svg/PercentBadgeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter" />
             </button>
 
             {/* Theme Settings */}
             <button
-                className='group peer absolute flex size-full rotate-0 cursor-pointer items-center justify-center transition-transform'
+                className="group peer absolute flex size-full rotate-0 cursor-pointer items-center justify-center transition-transform"
                 style={
                     hasMounted
                         ? ({
@@ -75,21 +75,21 @@ const Settings = () => {
                           } as CSSProperties)
                         : undefined
                 }
-                data-title='Theme'
-                title='Theme'
+                data-title="Theme"
+                title="Theme"
                 onClick={() => store_cycleTheme()}
             >
-                <svg className='fill-theme-secondary bg-blend-multiply transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
-                    <use href='#svgRoundedHexagon-default-path' />
+                <svg className="fill-theme-secondary bg-blend-multiply transition-[fill] group-hover-active:fill-theme-secondary-darker" viewBox="0 0 1 0.866">
+                    <use href="#svgRoundedHexagon-default-path" />
                 </svg>
 
                 {/* Themes logo */}
-                <div className='absolute aspect-hex-flat w-full bg-theme-primary transition-[background-color] [mask-image:url(/svg/PaintBrushOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter' />
+                <div className="absolute aspect-hex-flat w-full bg-theme-primary transition-[background-color] [mask-image:url(/svg/PaintBrushOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter" />
             </button>
 
             {/* empty */}
             <button
-                className='group peer absolute flex size-full rotate-0 cursor-pointer items-center justify-center transition-transform'
+                className="group peer absolute flex size-full rotate-0 cursor-pointer items-center justify-center transition-transform"
                 style={
                     hasMounted
                         ? ({
@@ -98,15 +98,15 @@ const Settings = () => {
                           } as CSSProperties)
                         : undefined
                 }
-                data-title='2'
-                title='2'
+                data-title="2"
+                title="2"
             >
-                <svg className='fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker' viewBox='0 0 1 0.866'>
-                    <use href='#svgRoundedHexagon-default-path' />
+                <svg className="fill-theme-secondary transition-[fill] group-hover-active:fill-theme-secondary-darker" viewBox="0 0 1 0.866">
+                    <use href="#svgRoundedHexagon-default-path" />
                 </svg>
 
                 {/* Themes logo */}
-                <div className='absolute aspect-hex-flat w-full bg-theme-primary transition-[background-color] [mask-image:url(/svg/PaintBrushOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter' />
+                <div className="absolute aspect-hex-flat w-full bg-theme-primary transition-[background-color] [mask-image:url(/svg/PaintBrushOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter" />
             </button>
 
             {/* Close */}
