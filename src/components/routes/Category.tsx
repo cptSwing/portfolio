@@ -86,22 +86,16 @@ const Category = () => {
     if (!categoryData_Memo) return null;
 
     return (
-        <>
+        <div className="relative flex h-[95%] w-full flex-col items-center justify-center bg-theme-primary/10 px-[0%] py-[0%] transition-[clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%] sm:px-[8%] sm:py-[1%]">
+            {/* Info */}
+            <CardTitles infoContent={infoContent} />
+
             <Flipper
                 element={'nav'}
-                className="postcards-grid-template grid size-full origin-center transform grid-cols-6 grid-rows-[0.6fr_repeat(8,minmax(0,1fr))_0.125fr] gap-[0%] overflow-hidden bg-theme-primary/10 px-[0%] py-[0%] transition-[transform,clip-path] delay-200 duration-1000 clip-inset-x-[--clip-category] mask-edges-x-[7.5%] sm:gap-[3%] sm:px-[8%] sm:py-[1%]"
+                className="postcards-grid-template grid w-full basis-[80%] origin-center transform grid-cols-6 grid-rows-[repeat(7,minmax(0,1fr))_0.1fr] gap-[0%] overflow-hidden sm:gap-[3%]"
                 flipKey={flipIndex}
                 spring={{ stiffness: 600, damping: 40 }}
             >
-                {/* Info */}
-                <CardTitles infoContent={infoContent} />
-
-                {/* Brand */}
-                <div className="absolute mb-[2%] size-full select-none text-theme-primary/30 [grid-area:brand]">
-                    <div className="text-nowrap text-right sm:text-sm sm:!leading-tight md:text-base lg:text-lg lg:!leading-snug">jens Brandenburg</div>
-                    <div className="text-nowrap text-right sm:text-2xs md:text-xs lg:text-sm">webdev & 3d art</div>
-                </div>
-
                 {/* Animated Grid */}
                 {gridAreaStyles_Memo &&
                     categoryData_Memo.posts.map((post, idx, arr) => (
@@ -119,13 +113,13 @@ const Category = () => {
                     ))}
 
                 {/* Progress Bar */}
-                <div className="absolute left-[5%] mx-auto flex h-full w-[90%] items-center justify-between gap-x-[1.5%] [grid-area:track]">
+                <div className="flex items-center justify-between gap-x-[1.5%] px-[3%] [grid-area:track]">
                     {categoryData_Memo.posts.map((post, idx) => {
                         return (
                             <button
                                 key={`${post.id}_${idx}`}
                                 className={classNames(
-                                    'relative mt-[-2%] h-full flex-1 transition-[background-color] duration-300 xl:h-3/4',
+                                    'relative h-full flex-1 transition-[background-color] duration-300',
                                     idx === flipIndex ? 'bg-theme-primary-lighter' : 'bg-black/15 hover-active:bg-theme-primary/50',
                                 )}
                                 onClick={() => setFlipIndex(idx)}
@@ -135,9 +129,15 @@ const Category = () => {
                 </div>
             </Flipper>
 
+            {/* Brand */}
+            <div className="flex basis-[10%] select-none flex-col items-end justify-center self-end px-[3%] text-theme-primary/30">
+                <div className="text-nowrap text-right text-2xs sm:text-xs sm:!leading-tight md:text-sm lg:text-base lg:!leading-snug">jens Brandenburg</div>
+                <div className="text-nowrap text-right text-3xs md:text-2xs lg:text-xs">webdev & 3d art</div>
+            </div>
+
             {/* Debug! */}
             {<DebugWrapper category={categoryData_Memo} flipIndex={flipIndex} setIndex={setFlipIndex} />}
-        </>
+        </div>
     );
 };
 
@@ -170,7 +170,7 @@ const CardTitles: FC<{
     return (
         <div
             className={classNames(
-                'absolute size-full bg-theme-primary/75 pl-[4.5%] transition-[clip-path] clip-inset-b-[-150%] clip-inset-l-[-100%] [grid-area:info] md:mt-0.5 lg:mt-1 xl:mt-1.5 2xl:mt-2',
+                'ml-[1.5%] flex basis-[10%] flex-col items-start justify-end self-start pl-[1%] pr-[10%] transition-[clip-path] clip-inset-b-[-150%] clip-inset-l-[-100%] [grid-area:info]',
                 isSwitching ? 'clip-inset-r-[125%]' : 'clip-inset-r-0',
             )}
             style={

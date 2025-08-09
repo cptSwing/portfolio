@@ -1,11 +1,10 @@
-import { CSSProperties, FC, memo, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames';
 import { CategoryLink, HexagonData, HexagonLink, NavigationExpansionState, UIButton } from '../types/types';
 import { halfRoundedHexagonPath, buttonHexagons, regularHexagons, roundedHexagonPath, staticValues } from '../lib/hexagonData';
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
-import { useBreakpoint } from '../hooks/useBreakPoint';
 
 const HexagonTiles = () => {
     const menuTransitionStateUpdates = useState<[CategoryLink | null, TransitionTargetReached]>([null, true]);
@@ -19,28 +18,21 @@ const HexagonTiles = () => {
         }
     }, [expansionState, setMenuTransitionStates]);
 
-    const isXlBreakpoint = useBreakpoint('xl');
-
     const navMenuTransitionClasses_Memo = useMemo(
         () => getHomeMenuTransitionClasses(menuTransitionTarget, menuTransitionTargetReached),
         [menuTransitionTarget, menuTransitionTargetReached],
     );
 
+    const svgRef = useRef<SVGSVGElement | null>(null);
+
     return (
         <svg
+            ref={svgRef}
             className={classNames(
-                'pointer-events-none absolute z-10 overflow-visible transition-transform',
+                'pointer-events-none absolute z-10 h-full overflow-visible transition-transform',
                 expansionState === 'home' ? navMenuTransitionClasses_Memo : '',
             )}
-            viewBox={
-                expansionState === 'category'
-                    ? viewBoxes['square']
-                    : expansionState === 'post'
-                      ? isXlBreakpoint
-                          ? viewBoxes['hexFlat']
-                          : viewBoxes['hexPointy']
-                      : viewBoxes['hexFlat']
-            }
+            viewBox={expansionState === 'category' ? viewBoxes['square'] : expansionState === 'post' ? viewBoxes['hexPointy'] : viewBoxes['hexFlat']}
             style={
                 {
                     transitionDuration: `${svgTransitionDurationMs}ms`,
@@ -120,9 +112,12 @@ const RegularHexagon: FC<{
     expansionState: NavigationExpansionState;
 }> = memo(({ shapeData, expansionState }) => {
     const localShapeData_Memo = useMemo(() => shapeData[expansionState], [expansionState, shapeData]);
-    const { position, rotation, scale, isHalf, offsets } = localShapeData_Memo;
+    const { position, rotation, scale, isHalf, offsets, isRightSide } = localShapeData_Memo;
 
-    const cssVariables_Memo = useMemo(() => position && calcCSSVariables(position, rotation, scale, offsets), [offsets, position, rotation, scale]);
+    const cssVariables_Memo = useMemo(
+        () => position && calcCSSVariables(position, rotation, scale, isRightSide, offsets),
+        [offsets, isRightSide, position, rotation, scale],
+    );
     const randomDurationMemo = useMemo(() => svgTransitionDurationMs + svgTransitionDurationMs * Math.random(), []);
 
     return (
@@ -159,11 +154,14 @@ const ButtonHexagon: FC<{
 
     const localShapeData_Memo = useMemo(() => shapeData[expansionState], [expansionState, shapeData]);
     const { title, svgIconPath, target } = shapeData;
-    const { position, rotation, scale, offsets } = localShapeData_Memo;
+    const { position, rotation, scale, offsets, isRightSide } = localShapeData_Memo;
 
-    const cssVariables_Memo = useMemo(() => position && calcCSSVariables(position, rotation, scale, offsets), [offsets, position, rotation, scale]);
+    const cssVariables_Memo = useMemo(
+        () => position && calcCSSVariables(position, rotation, scale, isRightSide, offsets),
+        [offsets, isRightSide, position, rotation, scale],
+    );
     const randomDurationMemo = useMemo(() => svgTransitionDurationMs + svgTransitionDurationMs * Math.random(), []);
-    const isCategoryLink_Memo = useMemo(() => isCategoryLink(title), [title]);
+    const isCategoryLink_Memo = useMemo(() => title && isCategoryLink(title), [title]);
 
     const navigate = useNavigate();
 
@@ -192,17 +190,18 @@ const ButtonHexagon: FC<{
                       : 'stroke-theme-text-background',
                 `button-hexagon-class button-hexagon-class-${title}`,
             )}
-            style={{
-                ...cssVariables_Memo,
-                transitionDuration: `${randomDurationMemo}ms`,
-                // transitionDelay: `${randomDelay_Memo}ms, 0ms, 0ms`,
-                strokeWidth:
-                    expansionState === 'home'
-                        ? `${(svgIconPath ? 2 : 4) / scale}`
-                        : expansionState === 'category'
-                          ? `${(svgIconPath ? 2 : 4) / scale}`
-                          : /* post */ `${2 / scale}`,
-            }}
+            style={
+                {
+                    ...cssVariables_Memo,
+                    transitionDuration: `${randomDurationMemo}ms`,
+                    strokeWidth:
+                        expansionState === 'home'
+                            ? `${(svgIconPath ? 2 : 4) / scale}`
+                            : expansionState === 'category'
+                              ? `${(svgIconPath ? 2 : 4) / scale}`
+                              : /* post */ `${2 / scale}`,
+                } as CSSProperties
+            }
             role="button"
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
@@ -232,7 +231,7 @@ const ButtonHexagon: FC<{
                                 ? 'mt-0.5 text-sm text-theme-root-background group-hover-active:text-theme-secondary-lighter'
                                 : expansionState === 'category'
                                   ? 'mt-0.5 text-base text-theme-text-background/75 group-hover-active:text-theme-text-background'
-                                  : 'mt-0.5 text-theme-text before:absolute before:left-[-15%] before:top-[7.5%] before:-z-10 before:h-[90%] before:w-[130%] before:rounded-sm before:bg-theme-text-background group-hover-active:text-theme-primary',
+                                  : 'mt-0.5 text-theme-primary group-hover-active:text-theme-primary',
                         )}
                     >
                         {title}
@@ -270,13 +269,14 @@ function calcCSSVariables(
     position: { x: number; y: number },
     rotation: number,
     scale: number,
+    isRightSide: boolean,
     offsets?: {
         x: number;
         y: number;
     },
 ) {
     return {
-        '--tw-translate-x': `${(position.x / totalWidthAtCenter) * 100 + (offsets?.x ?? 0)}%`,
+        '--tw-translate-x': `calc(${(position.x / totalWidthAtCenter) * 100 + (offsets?.x ?? 0)}% ${isRightSide ? '+ var(--translate-right-offset)' : ''})`,
         '--tw-translate-y': `${(position.y / totalHeight) * 100 + (offsets?.y ?? 0)}%`,
         '--tw-rotate': `${rotation}deg`,
         '--tw-scale-x': (1 - strokeWidth) * scale,
@@ -301,10 +301,10 @@ const columns = 3;
 const scaleUp = 100;
 
 const hexPaddingFactor = staticValues.tilingMultiplierHorizontal.flatTop;
-const totalWidthAtCenter = (columns * hexPaddingFactor - (hexPaddingFactor - 1)) * 100;
+const totalWidthAtCenter = (columns * hexPaddingFactor - (hexPaddingFactor - 1)) * scaleUp;
 
-const totalHeight = totalWidthAtCenter * staticValues.heightAspectRatio.flatTop;
-const hexHeight = staticValues.heightAspectRatio.flatTop * scaleUp;
+const totalHeight = totalWidthAtCenter * staticValues.heightAspect.flatTop;
+const hexHeight = staticValues.heightAspect.flatTop * scaleUp;
 const hexHalfHeight = hexHeight / 2;
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 

@@ -66,16 +66,14 @@
 
 .postcards-grid-template {
     grid-template-areas:
-        'info   info    info    info    brand   brand'
         'area6  area6   area6   area6   rest    area1 '
         'area6  area6   area6   area6   area2   area2 '
-        'area6  area6   area6   area6   area2   area2 '
         'area6  area6   area6   area6   area3   area3 '
         'area6  area6   area6   area6   area3   area3 '
         'area5  area5   area5   area4   area4   area4 '
         'area5  area5   area5   area4   area4   area4 '
         'area5  area5   area5   area4   area4   area4 '
-        'track  track   track   track   track   track';
+        'track  track   track   track   track   track'
 }
 
 /* SVG Filters */

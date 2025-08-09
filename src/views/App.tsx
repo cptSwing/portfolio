@@ -3,13 +3,13 @@ import { MutableRefObject, useLayoutEffect } from 'react';
 import { useZustand } from '../lib/zustand';
 import useOutsideClick from '../hooks/useOutsideClick';
 import RoundedHexagonSVG from '../components/RoundedHexagonSVG';
-import HexagonTiles from '../components/HexagonTiles';
 import classNames from '../lib/classNames';
 import Category from '../components/routes/Category';
 import MenuModal from '../components/MenuModal';
 import Post from '../components/routes/Post';
 import BundleRoutes from '../components/routes/BundleRoutes';
 import NoRouteMatched from '../components/routes/NoRouteMatched';
+import HexagonTiles from '../components/HexagonTiles';
 
 const App = () => {
     return (
@@ -58,14 +58,14 @@ const Main = () => {
     return (
         <div
             className={classNames(
-                '[--main-max-height:90vh] [--scrollbar-thumb:theme(colors.theme.primary-darker)]',
-                'relative flex h-auto w-[--main-width] items-center justify-center text-theme-text scrollbar-track-transparent',
+                '[--scrollbar-thumb:theme(colors.theme.primary-darker)] [--translate-right-offset:0px]',
+                'relative w-auto text-theme-text transition-[aspect-ratio] scrollbar-track-transparent',
                 expansionState === 'category'
-                    ? 'aspect-square max-w-[--main-max-height] [--main-width:70vw] md:[--main-width:67.5vw] lg:[--main-width:65vw] xl:[--main-width:57.5vw] 2xl:[--main-width:50vw]'
+                    ? 'aspect-square h-[min(90vh,70vw)] 2xl:aspect-[1/0.75] 2xl:[--translate-right-offset:122px]'
                     : expansionState === 'post'
-                      ? 'aspect-hex-pointy max-w-[calc(var(--main-max-height)*0.866)] ![--main-max-height:95vh] [--main-width:90vw] xl:aspect-hex-flat xl:max-w-[calc(var(--main-max-height)/0.866)]'
+                      ? 'aspect-hex-pointy h-[min(95vh,105vw)] lg:aspect-square lg:[--translate-right-offset:52px] 2xl:aspect-hex-flat 2xl:[--translate-right-offset:115px]'
                       : // 'home'
-                        'aspect-hex-flat max-w-[calc(var(--main-max-height)/0.866)] [--main-width:90vw] sm:[--main-width:80vw] xl:[--main-width:50vw]',
+                        'aspect-hex-flat h-[min(80vh,80vw)]',
             )}
         >
             {/* Used as clip-shape multiple times down the line */}
