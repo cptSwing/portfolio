@@ -1,9 +1,7 @@
 {
-    "Code": {
+    "code": {
         "id": 0,
-        "categoryTitle": "Code",
-        "categoryBackgroundColor": "rgb(32,80,48)",
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/code/500?grayscale",
+        "title": "Code",
         "categoryBlurb": "A frontend Javascript & React dev with a slant towards 3d content..",
         "posts": [
             {
@@ -316,11 +314,9 @@
             }
         ]
     },
-    "3D": {
+    "3d": {
         "id": 1,
-        "categoryTitle": "3D",
-        "categoryBackgroundColor": "rgb(128,200,225)",
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/art/500?grayscale",
+        "title": "3D",
         "categoryBlurb": "..a natural transition since I started out as a game artist / 3D generalist.",
         "posts": [
             {
@@ -901,10 +897,9 @@
             }
         ]
     },
-    "Log": {
+    "log": {
         "id": 3,
-        "categoryTitle": "Log",
-        "categoryCardBackgroundImage": "https://picsum.photos/seed/updates/500?grayscale",
+        "title": "Log",
         "categoryBlurb": "And in other news..",
         "posts": [
             {
