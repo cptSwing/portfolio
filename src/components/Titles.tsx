@@ -19,7 +19,7 @@ const Titles = () => {
         <header className="pointer-events-auto transition-transform duration-500 [--nav-title-animation-duration:300ms]">
             {/* Code, 3D, Log */}
             {categoriesArray.map((cardData) => (
-                <CategoryTitle key={cardData.categoryTitle} cardData={cardData} />
+                <CategoryTitle key={cardData.title} cardData={cardData} />
             ))}
 
             {/* Hamburger Menu */}
@@ -54,9 +54,9 @@ export default Titles;
 const CategoryTitle: FC<{
     cardData: DataBase[MENU_CATEGORY];
 }> = ({ cardData }) => {
-    const { id, categoryTitle } = cardData;
+    const { id, title } = cardData;
 
-    const { catId } = useParams();
+    const { param_categoryId } = useParams();
     const isIndexEven = id % 2 === 0;
 
     const [refCallback] = useAnimationOnMount({
@@ -71,7 +71,7 @@ const CategoryTitle: FC<{
         displayAtStart: false,
     });
 
-    const isThisCategoryOpen_Memo = useMemo(() => (catId ? parseInt(catId) === id : false), [catId, id]);
+    const isThisCategoryOpen_Memo = useMemo(() => (param_categoryId ? parseInt(param_categoryId) === id : false), [param_categoryId, id]);
 
     return (
         <Link
@@ -94,7 +94,7 @@ const CategoryTitle: FC<{
                         : 'from-theme-primary-darker via-theme-primary-darker to-theme-secondary-lighter [background-position:100%_100%]',
                 )}
             >
-                {categoryTitle}
+                {title}
             </span>
         </Link>
     );

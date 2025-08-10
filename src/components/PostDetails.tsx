@@ -1,14 +1,16 @@
 import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import classNames from '../lib/classNames';
-import { PostType } from '../types/types';
-import { ToolsUrls } from '../types/enums';
+import { Post, Config } from '../types/types';
 import Markdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import GetChildSize from './GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { getHexagonalClipPath } from '../lib/hexagonData';
+import config from '../config/config.json';
 
-const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; viewLive: PostType['viewLive']; viewSource: PostType['viewSource'] }> = ({
+const tools: Config['tools'] = config.tools;
+
+const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive: Post['viewLive']; viewSource: Post['viewSource'] }> = ({
     stack,
     clients,
     viewLive,
@@ -35,7 +37,7 @@ const PostDetails: FC<{ stack: PostType['stack']; clients: PostType['clients']; 
                                     {stack.map((tool, idx) => (
                                         <a
                                             key={idx}
-                                            href={ToolsUrls[tool]}
+                                            href={tools[tool]}
                                             className="block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline"
                                         >
                                             {tool}
@@ -166,7 +168,7 @@ const SingleStackBlock: FC<{
     return (
         <button
             className={classNames(
-                'group flex size-full cursor-pointer items-center justify-end pl-4 hover-active:bg-theme-primary sm:-ml-1.5 xl:-ml-1',
+                'group flex size-full cursor-pointer items-center justify-end pl-4 hover-active:bg-theme-primary/75 sm:-ml-1.5 xl:-ml-1',
                 isThisJsx ? 'bg-theme-primary' : 'bg-theme-primary-lighter',
                 isLast ? 'pr-1' : 'pr-2',
             )}
@@ -194,7 +196,7 @@ const SingleStackBlock: FC<{
             <div
                 className={classNames(
                     'ml-1 inline-block aspect-square h-4 transition-transform [mask-image:url(/svg/ChevronDownOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%] group-hover-active:bg-theme-text-background',
-                    isThisJsx ? 'rotate-0 bg-theme-text-background' : '-rotate-180 bg-theme-primary-darker',
+                    isThisJsx ? 'rotate-0 bg-theme-text-background' : 'rotate-90 bg-theme-primary-darker',
                 )}
             />
         </button>

@@ -1,6 +1,5 @@
-import { CSSProperties, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
-import { useParams, useNavigate } from 'react-router-dom';
 import remarkBreaks from 'remark-breaks';
 import Lightbox, { SlideImage } from 'yet-another-react-lightbox';
 import { Captions, Counter } from 'yet-another-react-lightbox/plugins';
@@ -9,57 +8,32 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/counter.css';
 import classNames from '../../lib/classNames';
 import parseDateString from '../../lib/parseDateString';
-import { DataBase, PostType, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
-import testDb from '../../queries/testDb.json';
-import { useZustand } from '../../lib/zustand';
+import { Post as Post_T, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
 import { getHexagonalClipPath } from '../../lib/hexagonData';
 import PostDetails from '../PostDetails';
 import GetChildSize from '../GetChildSize';
 import GetChildSizeContext from '../../contexts/GetChildSizeContext';
+import usePostNavigation from '../../hooks/usePostNavigation';
+import useMountTransition from '../../hooks/useMountTransition';
+import { useZustand } from '../../lib/zustand';
 
-const testDbTyped = testDb as DataBase;
-const store_setPostNavState = useZustand.getState().methods.store_setPostNavState;
+const emptyPost: Post_T = {
+    id: -1,
+    title: '',
+    date: '',
+    textBlocks: [],
+};
 
-const Post = () => {
-    const { catId, postId } = useParams();
-    const navigate = useNavigate();
+const Post: FC<{ show: boolean }> = ({ show }) => {
+    const post = useZustand((store) => store.values.routeData.content.post) ?? emptyPost;
 
-    const activeCategory_Memo = useMemo(() => Object.values(testDbTyped).find((category) => category.id.toString() === catId), [catId]);
-    const activePost_Memo = useMemo(
-        () => activeCategory_Memo && activeCategory_Memo.posts.find((post) => post.id.toString() === postId),
-        [activeCategory_Memo, postId],
-    );
+    const postRef = useRef<HTMLDivElement | null>(null);
+    const shouldMount = useMountTransition(postRef, show, '!clip-inset-x-0');
 
-    const { title, subTitle, stack, clients, viewLive, viewSource, showCases, textBlocks, date, id } = activePost_Memo ?? {};
+    const { title, subTitle, stack, clients, viewLive, viewSource, showCases, textBlocks, date, id } = post;
+    usePostNavigation(id);
+
     const date_Memo = useMemo(() => parseDateString(date ?? ''), [date]);
-
-    /* Nav menu logic */
-    const postNavState = useZustand((store) => store.values.postNavState);
-    useEffect(() => {
-        if (postNavState && typeof id === 'number' && activeCategory_Memo?.posts.length) {
-            const postIds = activeCategory_Memo.posts.map((post) => post.id);
-            const currentIndex = postIds.findIndex((val) => val === id);
-            const previousInArray = postIds[currentIndex - 1 >= 0 ? currentIndex - 1 : postIds.length - 1];
-            const nextInArray = postIds[currentIndex + 1 < postIds.length ? currentIndex + 1 : 0];
-
-            switch (postNavState) {
-                case 'prev':
-                    store_setPostNavState(null);
-                    navigate(`/${catId}/${previousInArray}`);
-                    break;
-                case 'next':
-                    store_setPostNavState(null);
-                    navigate(`/${catId}/${nextInArray}`);
-                    break;
-                case 'close':
-                    store_setPostNavState(null);
-                    navigate(`/${catId}`);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }, [activeCategory_Memo, catId, id, navigate, postNavState]);
 
     const filteredImages_Memo = useMemo(
         () =>
@@ -88,8 +62,12 @@ const Post = () => {
         [filteredImages_Memo],
     );
 
-    return (
-        <div className="absolute left-0 top-0 size-full bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] clip-inset-r-[--clip-post] clip-inset-t-[-10%] sm:pt-10 lg:pt-12 xl:px-[6%]">
+    return shouldMount ? (
+        <div
+            // ref={mountCb}
+            ref={postRef}
+            className="absolute left-0 top-0 size-full bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] duration-500 clip-inset-t-[-10%] clip-inset-x-[100%] sm:px-[5.25%] sm:pt-10 lg:px-[5%] lg:pt-12 2xl:px-[4.2%]"
+        >
             <header className="pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center">
                 <GetChildSize Context={GetChildSizeContext}>
                     <FloatingHeader title={title} />
@@ -97,7 +75,7 @@ const Post = () => {
             </header>
 
             <main className="scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll scrollbar-thin sm:pr-[2%] xl:pr-[1.5%]">
-                {/* (Sub-)Header, date, "Built with"  */}
+                {/* (Sub-)Header, date, "Stack" etc  */}
                 <div>
                     <span className="block sm:text-lg md:text-xl lg:text-2xl">{subTitle}</span>
                     <div className="flex flex-wrap items-center justify-between sm:my-1 sm:gap-y-0.5 lg:my-2 lg:gap-y-1">
@@ -139,7 +117,7 @@ const Post = () => {
                 />
             </main>
         </div>
-    );
+    ) : null;
 };
 
 export default Post;
@@ -249,7 +227,7 @@ const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_Sho
 
 const RemainingImages: FC<{
     showCases: Post_ShowCase[];
-    textBlocks: PostType['textBlocks'];
+    textBlocks: Post_T['textBlocks'];
     setLightBoxSlide: (showCaseIndex: number) => void;
 }> = ({ showCases, textBlocks, setLightBoxSlide }) => {
     const remaining_Memo = useMemo(

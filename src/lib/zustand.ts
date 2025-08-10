@@ -1,14 +1,15 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { ZustandStore } from '../types/types';
+import { Category, Post, ZustandStore } from '../types/types';
+import { ROUTE } from '../types/enums';
 
 export const useZustand = create<ZustandStore>()(
     immer((set, get) => ({
         values: {
             theme: 'pink',
-            expansionState: 'home',
+            routeData: { name: ROUTE.home, content: {} },
             activeMenuButton: { name: null },
-            postNavState: null,
+            postNavigationState: null,
             debug: {
                 applyTransformMatrixFix: true,
             },
@@ -38,9 +39,18 @@ export const useZustand = create<ZustandStore>()(
                 });
             },
 
-            store_setExpansionState: (newState) => {
+            store_setRouteData: ({ name, content }) => {
+                const oldContent = get().values.routeData.content;
+                const newRouteData = {
+                    name,
+                    content: {
+                        ...oldContent,
+                        ...content,
+                    },
+                };
+
                 set((draftState) => {
-                    draftState.values.expansionState = newState;
+                    draftState.values.routeData = newRouteData as { name: ROUTE.home; content: { category?: Category; post?: Post } }; // most permissive of the three types
                 });
             },
 
@@ -53,9 +63,9 @@ export const useZustand = create<ZustandStore>()(
                 });
             },
 
-            store_setPostNavState: (postNavState) => {
+            store_setPostNavigationState: (postNavigationState) => {
                 set((draftState) => {
-                    draftState.values.postNavState = postNavState;
+                    draftState.values.postNavigationState = postNavigationState;
                 });
             },
 

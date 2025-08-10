@@ -1,22 +1,23 @@
 import { CSSProperties, FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames';
-import { CategoryLink, HexagonData, HexagonLink, NavigationExpansionState, UIButton } from '../types/types';
+import { HexagonData, HexagonLink, RouteData, UI_CategoryLink, UIButton } from '../types/types';
 import { halfRoundedHexagonPath, buttonHexagons, regularHexagons, roundedHexagonPath, staticValues } from '../lib/hexagonData';
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
+import { CATEGORY, ROUTE } from '../types/enums';
 
 const HexagonTiles = () => {
-    const menuTransitionStateUpdates = useState<[CategoryLink | null, TransitionTargetReached]>([null, true]);
+    const menuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
 
-    const expansionState = useZustand((store) => store.values.expansionState);
+    const routeName = useZustand((store) => store.values.routeData.name);
 
     useEffect(() => {
-        if (expansionState !== 'home') {
+        if (routeName !== ROUTE.home) {
             setMenuTransitionStates([null, true]);
         }
-    }, [expansionState, setMenuTransitionStates]);
+    }, [routeName, setMenuTransitionStates]);
 
     const navMenuTransitionClasses_Memo = useMemo(
         () => getHomeMenuTransitionClasses(menuTransitionTarget, menuTransitionTargetReached),
@@ -29,10 +30,11 @@ const HexagonTiles = () => {
         <svg
             ref={svgRef}
             className={classNames(
-                'pointer-events-none absolute z-10 h-full overflow-visible transition-transform',
-                expansionState === 'home' ? navMenuTransitionClasses_Memo : '',
+                '[--hover-stroke-duration:500ms]',
+                'pointer-events-none absolute z-10 h-full transform-gpu overflow-visible transition-transform',
+                routeName === ROUTE.home ? navMenuTransitionClasses_Memo : '',
             )}
-            viewBox={expansionState === 'category' ? viewBoxes['square'] : expansionState === 'post' ? viewBoxes['hexPointy'] : viewBoxes['hexFlat']}
+            viewBox={routeName === ROUTE.category ? viewBoxes['square'] : routeName === ROUTE.post ? viewBoxes['hexPointy'] : viewBoxes['hexFlat']}
             style={
                 {
                     transitionDuration: `${svgTransitionDurationMs}ms`,
@@ -52,13 +54,13 @@ const HexagonTiles = () => {
             <HexagonSvgDefs />
 
             {regularHexagons.map((hexData, idx) => (
-                <RegularHexagon shapeData={hexData} expansionState={expansionState} key={`hex-regular-index-${idx}`} />
+                <RegularHexagon shapeData={hexData} routeName={routeName} key={`hex-regular-index-${idx}`} />
             ))}
 
             {buttonHexagons.map((hexData, idx) => (
                 <ButtonHexagon
                     shapeData={hexData}
-                    expansionState={expansionState}
+                    routeName={routeName}
                     menuTransitionStateUpdates={menuTransitionStateUpdates}
                     key={`hex-link-index-${idx}`}
                 />
@@ -108,10 +110,10 @@ const HexagonSvgDefs = memo(() => {
 });
 
 const RegularHexagon: FC<{
-    shapeData: Record<NavigationExpansionState, HexagonData>;
-    expansionState: NavigationExpansionState;
-}> = memo(({ shapeData, expansionState }) => {
-    const localShapeData_Memo = useMemo(() => shapeData[expansionState], [expansionState, shapeData]);
+    shapeData: Record<RouteData['name'], HexagonData>;
+    routeName: RouteData['name'];
+}> = memo(({ shapeData, routeName }) => {
+    const localShapeData_Memo = useMemo(() => shapeData[routeName], [routeName, shapeData]);
     const { position, rotation, scale, isHalf, offsets, isRightSide } = localShapeData_Memo;
 
     const cssVariables_Memo = useMemo(
@@ -125,20 +127,19 @@ const RegularHexagon: FC<{
             href={'#' + (isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName)}
             clipPath={`url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`}
             className={classNames(
-                'regular-hexagon-class pointer-events-auto size-full origin-[12.5%_12.5%] translate-x-0',
-                expansionState === 'home'
+                'regular-hexagon-class pointer-events-auto size-full origin-[12.5%_12.5%] translate-x-0 transform-gpu transition-[stroke,transform,fill,stroke-width] hover-active:[--hover-stroke-duration:50ms]',
+                routeName === ROUTE.home
                     ? 'fill-theme-primary/25 stroke-theme-primary-lighter/5 hover-active:stroke-theme-primary-lighter/15'
-                    : expansionState === 'category'
-                      ? 'stroke-theme-primary-lighter/ fill-theme-primary/10 hover-active:stroke-theme-primary-lighter/[0.075]'
+                    : routeName === ROUTE.category
+                      ? 'fill-theme-primary/10 stroke-theme-primary-lighter/[0.025] hover-active:stroke-theme-primary-lighter/[0.075]'
                       : /* post */
-                        'fill-theme-text-background/100 stroke-theme-text-background',
+                        'fill-theme-text-background stroke-theme-text-background',
             )}
             style={
                 {
                     ...cssVariables_Memo,
-                    transitionProperty: 'stroke, fill, stroke-width, transform',
-                    transitionDuration: `50ms, ${randomDurationMemo}ms`,
-                    strokeWidth: expansionState === 'home' ? `${8 / scale}` : expansionState === 'category' ? `${4 / scale}` : /* post */ '0',
+                    transitionDuration: `var(--hover-stroke-duration), ${randomDurationMemo}ms`,
+                    strokeWidth: routeName === ROUTE.home ? `${8 / scale}` : routeName === ROUTE.category ? `${4 / scale}` : /* post */ '0',
                 } as CSSProperties
             }
         />
@@ -146,13 +147,13 @@ const RegularHexagon: FC<{
 });
 
 const ButtonHexagon: FC<{
-    shapeData: Record<NavigationExpansionState, HexagonData> & HexagonLink;
-    expansionState: NavigationExpansionState;
-    menuTransitionStateUpdates: [[CategoryLink | null, boolean], React.Dispatch<React.SetStateAction<[CategoryLink | null, boolean]>>];
-}> = memo(({ shapeData, expansionState, menuTransitionStateUpdates }) => {
+    shapeData: Record<RouteData['name'], HexagonData> & HexagonLink;
+    routeName: RouteData['name'];
+    menuTransitionStateUpdates: [[UI_CategoryLink | null, boolean], React.Dispatch<React.SetStateAction<[UI_CategoryLink | null, boolean]>>];
+}> = memo(({ shapeData, routeName, menuTransitionStateUpdates }) => {
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
 
-    const localShapeData_Memo = useMemo(() => shapeData[expansionState], [expansionState, shapeData]);
+    const localShapeData_Memo = useMemo(() => shapeData[routeName], [routeName, shapeData]);
     const { title, svgIconPath, target } = shapeData;
     const { position, rotation, scale, offsets, isRightSide } = localShapeData_Memo;
 
@@ -174,18 +175,18 @@ const ButtonHexagon: FC<{
     };
 
     const handleMouseEnter =
-        isCategoryLink_Memo && expansionState === 'home' && menuTransitionTarget !== title && menuTransitionTargetReached
+        isCategoryLink_Memo && routeName === ROUTE.home && menuTransitionTarget !== title && menuTransitionTargetReached
             ? //  Prevent parent from prematurely rotating again, and again, and again: --------- ^^^
-              () => setMenuTransitionStates([title as CategoryLink, false])
+              () => setMenuTransitionStates([title as UI_CategoryLink, false])
             : undefined;
 
     return (
         <g
             className={classNames(
-                'group origin-[12.5%_12.5%] translate-x-0 cursor-pointer no-underline transition-[transform,stroke,stroke-width]',
-                expansionState === 'home'
+                'group origin-[12.5%_12.5%] translate-x-0 transform-gpu cursor-pointer no-underline transition-[transform,stroke,stroke-width]',
+                routeName === ROUTE.home
                     ? 'stroke-theme-primary-lighter/90'
-                    : expansionState === 'category'
+                    : routeName === ROUTE.category
                       ? 'stroke-theme-primary-lighter/80'
                       : 'stroke-theme-text-background',
                 `button-hexagon-class button-hexagon-class-${title}`,
@@ -195,9 +196,9 @@ const ButtonHexagon: FC<{
                     ...cssVariables_Memo,
                     transitionDuration: `${randomDurationMemo}ms`,
                     strokeWidth:
-                        expansionState === 'home'
+                        routeName === ROUTE.home
                             ? `${(svgIconPath ? 2 : 4) / scale}`
-                            : expansionState === 'category'
+                            : routeName === ROUTE.category
                               ? `${(svgIconPath ? 2 : 4) / scale}`
                               : /* post */ `${2 / scale}`,
                 } as CSSProperties
@@ -209,7 +210,7 @@ const ButtonHexagon: FC<{
             <use
                 href={'#' + roundedHexagonPathName}
                 clipPath={`url(#${roundedHexagonPathName}-clipPath)`}
-                className="pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-[transform,filter] [filter:url(#lighter-none)] group-hover-active:scale-105"
+                className="pointer-events-auto origin-[12.5%_12.5%] transform-gpu fill-theme-primary transition-transform group-hover-active:scale-105"
                 shapeRendering="geometricPrecision"
                 // TODO set as options in Settings ?
                 // shapeRendering='crispEdges'
@@ -221,15 +222,15 @@ const ButtonHexagon: FC<{
                 // This is a regular menu button (with an icon by default)
                 <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible">
                     <div
-                        className="size-full origin-center bg-theme-text-background [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter"
+                        className="size-full origin-center transform-gpu bg-theme-text-background transition-transform [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter"
                         style={{ maskImage: `url(${svgIconPath})` }}
                     />
                     <span
                         className={classNames(
                             'absolute left-1/2 top-full -translate-x-1/2 font-lato uppercase',
-                            expansionState === 'home'
+                            routeName === ROUTE.home
                                 ? 'mt-0.5 text-sm text-theme-root-background group-hover-active:text-theme-secondary-lighter'
-                                : expansionState === 'category'
+                                : routeName === ROUTE.category
                                   ? 'mt-0.5 text-base text-theme-text-background/75 group-hover-active:text-theme-text-background'
                                   : 'mt-0.5 text-theme-primary group-hover-active:text-theme-primary',
                         )}
@@ -244,7 +245,7 @@ const ButtonHexagon: FC<{
                     y={hexHalfHeight}
                     textAnchor="middle"
                     alignmentBaseline="central"
-                    className="pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary-lighter stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter"
+                    className="pointer-events-none origin-[12.5%_12.5%] transform-gpu select-none fill-theme-secondary-lighter/75 stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter"
                 >
                     {title}
                 </text>
@@ -255,7 +256,7 @@ const ButtonHexagon: FC<{
 
 // Local Functions
 
-function getHomeMenuTransitionClasses(category: CategoryLink | null, transitionCompleted: boolean) {
+function getHomeMenuTransitionClasses(category: UI_CategoryLink | null, transitionCompleted: boolean) {
     let classNames = 'rotate-0';
     if (category) {
         classNames = homeMenuTransitionClasses[category].base;
@@ -308,7 +309,7 @@ const hexHeight = staticValues.heightAspect.flatTop * scaleUp;
 const hexHalfHeight = hexHeight / 2;
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 
-const navRotationValues: Record<CategoryLink, number> = {
+const navRotationValues: Record<UI_CategoryLink, number> = {
     'code': 60,
     '3d': -60,
     'log': 180,

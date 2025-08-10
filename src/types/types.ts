@@ -1,25 +1,70 @@
-import { MENU_CATEGORY, ToolsUrls } from './enums';
+import { CATEGORY, ROUTE } from './enums';
+
+export type Config = {
+    categoryGrid: {
+        cellCount: number;
+    };
+    placeholders: {
+        cardImage: string;
+    };
+    hexMenu: {
+        columns: number;
+        strokeWidth: number;
+        scaleUp: number;
+    };
+    tools: Record<string, string>;
+};
 
 export type ZustandStore = {
     values: {
         theme: 'yellow' | 'pink' | 'orange' | 'bw';
-        expansionState: NavigationExpansionState;
-        activeMenuButton: { name: MenuLink | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
-        postNavState: Omit<NavButton, 'gohome'> | null;
+        routeData: RouteData;
+        activeMenuButton: { name: UI_MenuLink | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
+        postNavigationState: Omit<UI_NavigationButton, 'gohome'> | null;
         debug: {
             applyTransformMatrixFix: boolean;
         };
     };
     methods: {
         store_cycleTheme: () => void;
-        store_setExpansionState: (expansionState: NavigationExpansionState) => void;
+        store_setRouteData: (routeData: RouteData) => void;
         store_toggleMenu: (newMenuState: ZustandStore['values']['activeMenuButton']) => void;
-        store_setPostNavState: (postNavState: Omit<NavButton, 'home'> | null) => void;
+        store_setPostNavigationState: (postNavigationState: Omit<UI_NavigationButton, 'home'> | null) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
 };
 
-export type NavigationExpansionState = 'home' | 'category' | 'post';
+export type RouteData =
+    | { name: ROUTE.home; content: { category?: Category; post?: Post } }
+    | { name: ROUTE.category; content: { category: Category; post?: Post } }
+    | { name: ROUTE.post; content: { category: Category; post: Post } };
+
+export type DataBase = Record<keyof typeof CATEGORY, Category>;
+
+export type CategoryName = keyof typeof CATEGORY;
+export type Category = {
+    id: number;
+    title: string;
+    posts: Post[];
+    categoryBlurb: string;
+};
+
+export type Post = {
+    id: number;
+    title: string;
+    date: string | string[];
+    textBlocks: { text: string; useShowCaseIndex?: number }[];
+    showCases?: Post_ShowCase[];
+    subTitle?: string;
+    titleCardBg?: string;
+    clients?: { abbreviation: string; svgUrl?: string; name: string }[];
+    stack?: (keyof Config['tools'])[];
+    viewLive?: { url: string; title: string; description: string }[];
+    viewSource?: {
+        href: string;
+        alt: string;
+    };
+};
 
 type Post_ShowCase_Base = {
     caption?: string;
@@ -36,39 +81,10 @@ export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
 /* NOTE Easy, if non-generic, method to build a Type that has EITHER key1 OR key2. Mind the "?"" in the key to be excluded in the helper types above. */
 export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
-export type PostType = {
-    id: number;
-    title: string;
-    date: string | string[];
-    textBlocks: { text: string; useShowCaseIndex?: number }[];
-    showCases?: Post_ShowCase[];
-    subTitle?: string;
-    titleCardBg?: string;
-    clients?: { abbreviation: string; svgUrl?: string; name: string }[];
-    stack?: (keyof typeof ToolsUrls)[];
-    viewLive?: { url: string; title: string; description: string }[];
-    viewSource?: {
-        href: string;
-        alt: string;
-    };
-};
-
-export type DataBase = {
-    [key in MENU_CATEGORY]: {
-        id: number;
-        categoryTitle: MENU_CATEGORY;
-        posts: PostType[];
-        categoryCardBackgroundImage: string;
-        categoryBackgroundSvg: CategoryLink;
-        categoryBlurb: string;
-        categoryBackgroundColor?: string;
-    };
-};
-
-export type CategoryLink = 'code' | 'log' | '3d';
-type MenuLink = 'config' | 'contact' | 'login';
-type NavButton = 'home' | 'previous' | 'next' | 'close';
-export type UIButton = CategoryLink | MenuLink | NavButton;
+type UI_MenuLink = 'config' | 'contact' | 'login';
+type UI_NavigationButton = 'home' | 'previous' | 'next' | 'close';
+export type UI_CategoryLink = CategoryName;
+export type UIButton = UI_CategoryLink | UI_MenuLink | UI_NavigationButton;
 
 export type HexagonData = {
     position: { x: number; y: number };
@@ -83,5 +99,5 @@ export type HexagonLink = { title?: UIButton; svgIconPath?: string; target: stri
 export type GridAreaPathData = {
     width: number;
     height: number;
-    shapePath: string;
+    path: string;
 };
