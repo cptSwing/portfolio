@@ -14,7 +14,12 @@ import HexagonTiles from '../components/HexagonTiles';
 const App = () => {
     return (
         <div className="flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather">
-            <BrowserRouter>
+            <BrowserRouter
+                future={{
+                    v7_startTransition: true,
+                    v7_relativeSplatPath: true,
+                }}
+            >
                 <Routes>
                     <Route path="/:catId?/:postId?" element={<Main />} />
 
