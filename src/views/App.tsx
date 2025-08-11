@@ -11,7 +11,7 @@ import NoRouteMatched from '../components/routes/NoRouteMatched';
 import HexagonTiles from '../components/HexagonTiles';
 import useSetRouteData from '../hooks/useSetRouteData';
 import { ROUTE } from '../types/enums';
-import { globalCssVariables } from '../config/globalCssVariables';
+import { globalCssVariables } from '../styles/globalCssVariables';
 
 const App = () => {
     return (
