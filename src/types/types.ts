@@ -1,4 +1,4 @@
-import { CATEGORY, ROUTE } from './enums';
+import { CATEGORY, ROUTE, TOOL } from './enums';
 
 export type Config = {
     categoryGrid: {
@@ -18,7 +18,6 @@ export type Config = {
             menuTransition_Ms: number;
         };
     };
-    tools: Record<string, string>;
 };
 
 export type ZustandStore = {
@@ -64,7 +63,7 @@ export type Post = {
     subTitle?: string;
     titleCardBg?: string;
     clients?: { abbreviation: string; svgUrl?: string; name: string }[];
-    stack?: (keyof Config['tools'])[];
+    stack?: (keyof typeof TOOL)[];
     viewLive?: { url: string; title: string; description: string }[];
     viewSource?: {
         href: string;
