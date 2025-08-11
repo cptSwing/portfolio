@@ -115,7 +115,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 position: allOffsets[1]?.[0] ?? defaultPosition,
                 rotation: -60,
                 isHalf: true,
-                scale: 1.75, //0.8
+                scale: 0.8,
                 offsets: { x: 3.25, y: 5.925 },
                 isRightSide: false,
             }, // L4
@@ -644,127 +644,176 @@ export const roundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5)
 export const halfRoundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5, true);
 export const subMenuButtonHexagonPath = getHexagonPath(0.5, 0.1);
 
+type Point = [number, number];
+type PointOpts = {
+    point: Point;
+    customRadius?: number;
+    useAspectRatio?: boolean;
+};
+
+function roundedPolygon(points: PointOpts[], cornerRadius: number, aspectRatio = 1) {
+    if (points.length < 3) return '';
+
+    const pathParts: string[] = [];
+    const length = points.length;
+
+    const radius = cornerRadius;
+
+    for (let i = 0; i < length; i++) {
+        const withOpts = points[i]!;
+        const r = withOpts.customRadius ?? radius;
+        const aspect = withOpts.useAspectRatio ? aspectRatio : 1;
+
+        const previous = points[(i - 1 + length) % length]!.point;
+        const current = points[i]!.point;
+        const next = points[(i + 1) % length]!.point;
+
+        // Direction vectors
+        const inVector: Point = [current[0] - previous[0], current[1] - previous[1]];
+        const outVector: Point = [next[0] - current[0], next[1] - current[1]];
+
+        // Normalize vectors
+        const inLength = Math.hypot(inVector[0], inVector[1]);
+        const outLength = Math.hypot(outVector[0], outVector[1]);
+
+        const inDirection: Point = [inVector[0] / inLength, inVector[1] / inLength];
+        const outDirection: Point = [outVector[0] / outLength, outVector[1] / outLength];
+
+        // Entry and exit points
+        const entry: Point = [current[0] - inDirection[0] * r, current[1] - inDirection[1] * r];
+        const exit: Point = [current[0] + outDirection[0] * r, current[1] + outDirection[1] * r];
+
+        if (i === 0) {
+            pathParts.push(`M ${entry[0] / aspect},${entry[1]}`);
+        } else {
+            pathParts.push(`L ${entry[0] / aspect},${entry[1]}`);
+        }
+
+        pathParts.push(`Q ${current[0]},${current[1]} ${exit[0] / aspect},${exit[1]}`);
+    }
+
+    pathParts.push('Z');
+    return pathParts.join(' ');
+}
+
 function getCategoryCardPath(styleIndex: number, aspectRatio: number) {
-    const cornerRadius = 0.1;
-    const cornerSinOffset = cornerRadius * sin30;
-    const cornerCosOffset = cornerRadius * cos30;
+    const cornerRadius = 0.025;
 
     let path;
 
     switch (styleIndex) {
         // isFirst
         case 0:
-            // top left; top right; bottom right; bottom left
-            path = `
-                    M 0,${0.5 + cornerCosOffset}
-                    Q 0,${0.5} ${0 / aspectRatio / tan60 + cornerSinOffset / 2},${0.5 - cornerCosOffset}
-                    
-                    L${0.5 / aspectRatio / tan60 - cornerSinOffset},${cornerCosOffset}
-                    Q ${0.5 / aspectRatio / tan60},${0} ${0.5 / aspectRatio / tan60 + cornerSinOffset * 2},0
+            path = roundedPolygon(
+                [
+                    { point: [0, 0.25] },
+                    { point: [0.25 / aspectRatio / tan60, 0] },
 
-                    
-                    L${1 - cornerRadius},0
-                    Q 1,0 1,${cornerRadius * aspectRatio}
-                    
-                    L 1,${1 - (cornerRadius / 3) * aspectRatio} 
-                    Q 1,1 ${1 - cornerRadius / 3},1 
-                    
-                    L${cornerRadius},1
-                    Q 0,1 0,${1 - cornerRadius * aspectRatio}
-                    Z`;
+                    { point: [1 - 0.05 / aspectRatio / tan60, 0] },
+                    { point: [1, 0.05] },
 
+                    { point: [1, 1] },
+
+                    { point: [0.2 / aspectRatio / tan60, 1] },
+                    { point: [0, 1 - 0.2] },
+                ],
+                cornerRadius,
+            );
             break;
-
         case 1:
             // top left; top right; bottom right; bottom left
-            path = `
-                    M0,${0.05} 
-                    L${0.05 / aspectRatio / tan60},0 
-                    
-                    L1,0 
-                    L1,0 
+            path = roundedPolygon(
+                [
+                    { point: [0, 0.3] },
+                    { point: [0.3 / aspectRatio / tan60, 0] },
 
-                    L1,${1 - 0.05} 
-                    L${1 - 0.05 / aspectRatio / tan60},1 
-                    
-                    L${0.375 / aspectRatio / tan60},1 
-                    L0,${1 - 0.375}
-                    Z`;
+                    { point: [1, 0] },
 
+                    { point: [1, 1 - 0.05] },
+                    { point: [1 - 0.05 / aspectRatio / tan60, 1] },
+
+                    { point: [0.18 / aspectRatio / tan60, 1] },
+                    { point: [0, 1 - 0.18] },
+                ],
+                cornerRadius,
+            );
             break;
-
         case 2:
             // top left; top right; bottom right; bottom left
-            path = `
-                    M0,0 
-                    L0,0 
-                    
-                    L${1 - 0.05 / aspectRatio / tan60},0 
-                    L1,${0.05} 
+            path = roundedPolygon(
+                [
+                    { point: [0, 0] },
 
-                    L1,${1 - 0.2125} 
-                    L${1 - 0.2125 / aspectRatio / tan60},1 
-                    
-                    L${0.05 / aspectRatio / tan60},1 
-                    L0,${1 - 0.05}
-                    Z`;
+                    { point: [1 - 0.05 / aspectRatio / tan60, 0] },
+                    { point: [1, 0.05] },
 
+                    { point: [1, 1 - 0.2] },
+                    { point: [1 - 0.2 / aspectRatio / tan60, 1] },
+
+                    { point: [0.05 / aspectRatio / tan60, 1] },
+                    { point: [0, 1 - 0.05] },
+                ],
+                cornerRadius,
+            );
             break;
-
         case 3:
             // top left; top right; bottom right; bottom left
-            path = `
-                    M0,0 
-                    L0,0 
-                    
-                    L${1 - 0.08 / aspectRatio / tan60},0 
-                    L1,${0.08} 
+            path = roundedPolygon(
+                [
+                    { point: [0, 0], customRadius: 0.075, useAspectRatio: true },
 
-                    L1,${1 - 0.08} 
-                    L${1 - 0.08 / aspectRatio / tan60},1 
-                    
-                    L0,1 
-                    L0,1
-                    Z`;
+                    { point: [1 - 0.125 / aspectRatio / tan60, 0] },
+                    { point: [1, 0.125] },
 
+                    { point: [1, 1 - 0.125] },
+                    { point: [1 - 0.125 / aspectRatio / tan60, 1] },
+
+                    // [0.025 / aspectRatio / tan60, 1],
+                    { point: [0, 1], customRadius: 0.075, useAspectRatio: true },
+                ],
+                cornerRadius,
+                aspectRatio,
+            );
             break;
-
         case 4:
             // top left; top right; bottom right; bottom left
-            path = `
-                    M0,0 
-                    L0,0 
-                    
-                    L${1 - 0.08 / aspectRatio / tan60},0 
-                    L1,${0.08} 
+            path = roundedPolygon(
+                [
+                    { point: [0, 0], customRadius: 0.2, useAspectRatio: true },
 
-                    L1,${1 - 0.225} 
-                    L${1 - 0.225 / aspectRatio / tan60},1 
-                    
-                    L0,1 
-                    L0,1
-                    Z`;
+                    { point: [1 - 0.225 / aspectRatio / tan60, 0] },
+                    { point: [1, 0.225] },
 
+                    { point: [1, 1 - 0.225] },
+                    { point: [1 - 0.225 / aspectRatio / tan60, 1] },
+
+                    // [0.05 / aspectRatio / tan60, 1],
+                    { point: [0, 1], customRadius: 0.2, useAspectRatio: true },
+                ],
+                cornerRadius,
+                aspectRatio,
+            );
             break;
 
         case 5:
             // top left; top right; bottom right; bottom left
-            path = `
-                    M0,${0.15} 
-                    L${0.15 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.4 / aspectRatio / tan60},0 
-                    L1,${0.4} 
+            path = roundedPolygon(
+                [
+                    { point: [0, 0], customRadius: 0.2, useAspectRatio: true },
 
-                    L1,${1 - 0.15} 
-                    L${1 - 0.15 / aspectRatio / tan60},1 
-                    
-                    L0,1 
-                    L0,1
-                    Z`;
+                    { point: [1 - 0.25 / aspectRatio / tan60, 0] },
+                    { point: [1, 0.25] },
 
+                    { point: [1, 1 - 0.25] },
+                    { point: [1 - 0.25 / aspectRatio / tan60, 1] },
+
+                    // [0.05 / aspectRatio / tan60, 1],
+                    { point: [0, 1], customRadius: 0.2, useAspectRatio: true },
+                ],
+                cornerRadius,
+                aspectRatio,
+            );
             break;
-
         case 6:
             // top left; top right; bottom right; bottom left
             path = `
@@ -810,12 +859,7 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number) {
 export function getIndexCategoryCardPath(gridAreaIndex: number, width: number, height: number) {
     const aspectRatio = width / height;
     const path = getCategoryCardPath(gridAreaIndex, aspectRatio);
-
-    return {
-        width,
-        height,
-        path,
-    };
+    return path;
 }
 
 /* Local functions */
