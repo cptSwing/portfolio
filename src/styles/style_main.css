@@ -58,13 +58,13 @@
 
 .postcards-grid-template {
     grid-template-areas:
-        'area6  area6   area6   area6   rest    area1 '
-        'area6  area6   area6   area6   area2   area2 '
-        'area6  area6   area6   area6   area3   area3 '
-        'area6  area6   area6   area6   area3   area3 '
-        'area5  area5   area5   area4   area4   area4 '
-        'area5  area5   area5   area4   area4   area4 '
-        'area5  area5   area5   area4   area4   area4 '
+        'area0  area0   area0   area0   rest    area5'
+        'area0  area0   area0   area0   area4   area4'
+        'area0  area0   area0   area0   area3   area3'
+        'area0  area0   area0   area0   area3   area3'
+        'area1  area1   area1   area2   area2   area2'
+        'area1  area1   area1   area2   area2   area2'
+        'area1  area1   area1   area2   area2   area2'
         'track  track   track   track   track   track'
 }
 

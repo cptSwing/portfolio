@@ -54,7 +54,7 @@ const Main = () => {
                 '[--scrollbar-thumb:theme(colors.theme.primary-darker)] [--translate-right-offset:0px]',
                 'relative w-auto text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
                 routeName === ROUTE.category
-                    ? 'aspect-square h-[min(90vh,70vw)] 2xl:aspect-[1/0.75] 2xl:[--translate-right-offset:122px]'
+                    ? 'aspect-square h-[min(90vh,70vw)] 2xl:aspect-[1/0.75] 2xl:[--translate-right-offset:135px]'
                     : routeName === ROUTE.post
                       ? 'aspect-hex-pointy h-[min(95vh,105vw)] lg:aspect-square lg:[--translate-right-offset:52px] 2xl:aspect-hex-flat 2xl:[--translate-right-offset:115px]'
                       : // ROUTE.home
@@ -67,10 +67,8 @@ const Main = () => {
 
             <HexagonTiles />
 
-            <div className="relative flex size-full items-center justify-center">
-                <Category show={routeName === ROUTE.category} />
-                <Post show={routeName === ROUTE.post} />
-            </div>
+            <Category show={routeName === ROUTE.category} />
+            <Post show={routeName === ROUTE.post} />
 
             <MenuModal />
         </div>
