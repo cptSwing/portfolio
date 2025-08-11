@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
 function useMountTransition(targetElement: React.MutableRefObject<Element | null>, showTargetElement: boolean, transitionClassName: string) {
-    const [shouldMount, setShouldMount] = useState(showTargetElement);
+    const [shouldMount, setShouldMount] = useState(false);
 
     useEffect(() => {
         if (showTargetElement) {
             setShouldMount(true);
         }
-    }, [targetElement, showTargetElement, transitionClassName]);
+    }, [showTargetElement]);
 
     useEffect(() => {
         if (targetElement.current) {
@@ -17,6 +17,7 @@ function useMountTransition(targetElement: React.MutableRefObject<Element | null
 
             if (!showTargetElement) {
                 targetElement.current.classList.remove(transitionClassName);
+                targetElement.current.addEventListener('transitionend', handleTransitionEnd);
 
                 function handleTransitionEnd(this: Element, event: Event) {
                     if (event.target === event.currentTarget) {
@@ -24,8 +25,6 @@ function useMountTransition(targetElement: React.MutableRefObject<Element | null
                         setShouldMount(false);
                     }
                 }
-
-                targetElement.current.addEventListener('transitionend', handleTransitionEnd);
             }
         }
     }, [shouldMount, showTargetElement, targetElement, transitionClassName]);
