@@ -11,8 +11,7 @@ import NoRouteMatched from '../components/routes/NoRouteMatched';
 import HexagonTiles from '../components/HexagonTiles';
 import useSetRouteData from '../hooks/useSetRouteData';
 import { ROUTE } from '../types/enums';
-import { CSSProperties } from 'react';
-import { config } from '../config/exportTyped';
+import { globalCssVariables } from '../config/globalCssVariables';
 
 const App = () => {
     return (
@@ -34,9 +33,6 @@ const App = () => {
         </div>
     );
 };
-
-const menuTransition_Ms = config.ui.animation.menuTransition_Ms;
-const globalCssVariables = { '--ui-animation-menu-transition-duration': `${menuTransition_Ms}ms` } as CSSProperties;
 
 const Main = () => {
     useSetRouteData();

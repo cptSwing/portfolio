@@ -3,7 +3,7 @@ import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
-import { config } from '../../config/exportTyped';
+import { config } from '../../types/exportTyped';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
 import remapToRange from '../../lib/remapToRange.ts';
@@ -89,7 +89,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     return shouldMount ? (
         <div
             ref={categoryRef}
-            className="relative flex h-[95%] w-full flex-col items-center justify-center bg-theme-primary/10 px-[0%] py-[0%] transition-[clip-path] delay-200 duration-1000 clip-inset-x-[50%] mask-edges-x-[7.5%] sm:px-[8%] sm:py-[1%]"
+            className="relative flex h-[95%] w-full flex-col items-center justify-center bg-theme-primary/10 px-[0%] py-[0%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-x-[7.5%] sm:px-[8%] sm:py-[1%]"
         >
             {/* Info */}
             <CardTitles bannerTitle={bannerTitle} />
