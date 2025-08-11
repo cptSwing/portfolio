@@ -11,6 +11,8 @@ import NoRouteMatched from '../components/routes/NoRouteMatched';
 import HexagonTiles from '../components/HexagonTiles';
 import useSetRouteData from '../hooks/useSetRouteData';
 import { ROUTE } from '../types/enums';
+import { CSSProperties } from 'react';
+import { config } from '../config/exportTyped';
 
 const App = () => {
     return (
@@ -32,6 +34,9 @@ const App = () => {
         </div>
     );
 };
+
+const menuTransition_Ms = config.ui.animation.menuTransition_Ms;
+const globalCssVariables = { '--ui-animation-menu-transition-duration': `${menuTransition_Ms}ms` } as CSSProperties;
 
 const Main = () => {
     useSetRouteData();
@@ -56,11 +61,12 @@ const Main = () => {
                     ? 'aspect-square h-[min(90vh,70vw)] 2xl:aspect-[1/0.75] 2xl:[--translate-right-offset:122px]'
                     : routeName === ROUTE.post
                       ? 'aspect-hex-pointy h-[min(95vh,105vw)] lg:aspect-square lg:[--translate-right-offset:52px] 2xl:aspect-hex-flat 2xl:[--translate-right-offset:115px]'
-                      : // 'home'
+                      : // ROUTE.home
                         'aspect-hex-flat h-[min(80vh,80vw)]',
             )}
+            style={globalCssVariables}
         >
-            {/* Used as clip-shape multiple times down the line */}
+            {/* TODO Used as clip-shape multiple times down the line, could be served in HexagonTiles as well? */}
             <RoundedHexagonSVG showPath={false} useClipPath idSuffix="-default" />
 
             <HexagonTiles />

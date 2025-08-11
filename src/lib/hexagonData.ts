@@ -1,4 +1,4 @@
-import configJSON from '../config/config.json';
+import { config } from '../config/exportTyped';
 import { ROUTE } from '../types/enums';
 import { HexagonData, HexagonLink, RouteData, ZustandStore } from '../types/types';
 import { useZustand } from './zustand';
@@ -6,8 +6,10 @@ import { useZustand } from './zustand';
 const { store_toggleMenu, store_setPostNavigationState } = useZustand.getState().methods;
 
 const {
-    hexMenu: { columns, scaleUp },
-} = configJSON;
+    ui: {
+        hexMenu: { columns, rows, scaleUp },
+    },
+} = config;
 
 export const staticValues = {
     heightAspect: {
@@ -24,9 +26,13 @@ export const staticValues = {
     },
 };
 
+const tan60 = Math.tan(degToRad(60));
+const sin30 = sin(30);
+const cos30 = cos(30);
+
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 
-const allOffsets = Array.from({ length: 9 }).map((_, rowIndex) =>
+const allOffsets = Array.from({ length: rows }).map((_, rowIndex) =>
     Array.from({ length: rowIndex % 2 === 0 ? 3 : 4 }).map((_, colIndex) => getOffsetsAndScale(colIndex, rowIndex)),
 );
 const defaultPosition = { x: 0, y: 0 };
@@ -638,10 +644,6 @@ export const roundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5)
 export const halfRoundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5, true);
 export const subMenuButtonHexagonPath = getHexagonPath(0.5, 0.1);
 
-const tan60 = Math.tan(degToRad(60));
-const sin30 = sin(30);
-const cos30 = cos(30);
-
 function getCategoryCardPath(styleIndex: number, aspectRatio: number) {
     const cornerRadius = 0.1;
     const cornerSinOffset = cornerRadius * sin30;
@@ -845,8 +847,8 @@ function getHexagonPath(sideLength = 1, cornerRadius = 8, isHalf = false) {
         points.push({ x, y });
     }
 
-    const cornerSinOffset = cornerRadius * sin(30);
-    const cornerCosOffset = cornerRadius * cos(30);
+    const cornerSinOffset = cornerRadius * sin30;
+    const cornerCosOffset = cornerRadius * cos30;
 
     return isHalf
         ? ` M ${points[0]!.x + cornerSinOffset},${points[0]!.y + cornerCosOffset}   \

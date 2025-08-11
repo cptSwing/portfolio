@@ -7,10 +7,16 @@ export type Config = {
     placeholders: {
         cardImage: string;
     };
-    hexMenu: {
-        columns: number;
-        strokeWidth: number;
-        scaleUp: number;
+    ui: {
+        hexMenu: {
+            columns: number;
+            rows: number;
+            strokeWidth: number;
+            scaleUp: number;
+        };
+        animation: {
+            menuTransition_Ms: number;
+        };
     };
     tools: Record<string, string>;
 };

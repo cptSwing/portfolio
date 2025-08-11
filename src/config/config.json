@@ -5,10 +5,14 @@
     "placeholders": {
         "cardImage": "images/utility/1x1.png"
     },
-    "hexMenu": {
-        "columns": 3,
-        "strokeWidth": 0.025,
-        "scaleUp": 100
+    "ui": {
+        "hexMenu": {
+            "columns": 3,
+            "rows": 9,
+            "strokeWidth": 0.025,
+            "scaleUp": 100
+        },
+        "animation": { "menuTransition_Ms": 500 }
     },
     "tools": {
         "react": "https://react.dev/",

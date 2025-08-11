@@ -34,7 +34,10 @@ const Contact = () => {
     return (
         <menu
             ref={refCallback}
-            className={classNames('pointer-events-auto absolute transition-transform delay-75 duration-300', hasMounted ? 'rotate-90' : 'rotate-0')}
+            className={classNames(
+                'pointer-events-auto absolute transform-gpu transition-transform delay-75 duration-300',
+                hasMounted ? 'rotate-90' : 'rotate-0',
+            )}
             style={
                 menuButtonPosAndSize &&
                 ({
@@ -47,7 +50,7 @@ const Contact = () => {
         >
             {/* Linkedin */}
             <button
-                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 transform-gpu cursor-pointer items-center justify-center transition-transform duration-500"
                 data-title="LinkedIn"
                 title="LinkedIn"
                 style={
@@ -67,7 +70,7 @@ const Contact = () => {
                 {/* logo */}
                 <div
                     className={classNames(
-                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full transform-gpu bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/logo_linkedin.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -75,7 +78,7 @@ const Contact = () => {
 
             {/* github */}
             <button
-                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 transform-gpu cursor-pointer items-center justify-center transition-transform duration-500"
                 data-title="GitHub"
                 title="GitHub"
                 style={
@@ -95,7 +98,7 @@ const Contact = () => {
                 {/* logo */}
                 <div
                     className={classNames(
-                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full transform-gpu bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/logo_github.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -103,7 +106,7 @@ const Contact = () => {
 
             {/* email */}
             <button
-                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 transform-gpu cursor-pointer items-center justify-center transition-transform duration-500"
                 style={
                     hasMounted
                         ? ({
@@ -123,7 +126,7 @@ const Contact = () => {
                 {/* logo */}
                 <div
                     className={classNames(
-                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full transform-gpu bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -132,7 +135,7 @@ const Contact = () => {
             {/* 3D Stores */}
             <label
                 htmlFor="menu-stores-input"
-                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 transform-gpu cursor-pointer items-center justify-center transition-transform duration-500"
                 style={
                     hasMounted
                         ? ({
@@ -150,7 +153,7 @@ const Contact = () => {
                 {/* logo */}
                 <div
                     className={classNames(
-                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/CubeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full transform-gpu bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/CubeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -158,7 +161,7 @@ const Contact = () => {
                 <input id="menu-stores-input" type="checkbox" className="peer/stores-input group/stores-input-group hidden" />
 
                 {/* list of Stores */}
-                <div className="absolute top-1/2 size-full -translate-y-1/2 text-xs text-theme-secondary opacity-0 transition-opacity peer-checked/stores-input:opacity-100 peer-checked/stores-input:*:clip-inset-0">
+                <div className="absolute top-1/2 size-full -translate-y-1/2 transform-gpu text-xs text-theme-secondary opacity-0 transition-opacity peer-checked/stores-input:opacity-100 peer-checked/stores-input:*:clip-inset-0">
                     <Link
                         to="https://www.cgtrader.com/designers/cptswing"
                         className="absolute block translate-x-[-90%] translate-y-[-62.5%] rotate-[-150deg] transform-gpu rounded-r-lg bg-neutral-500 px-1.5 py-1.5 no-underline transition-[clip-path,background-color] duration-300 clip-inset-r-full hover-active:text-theme-primary-lighter"
@@ -188,7 +191,7 @@ const Contact = () => {
 
             {/* About */}
             <button
-                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 transform-gpu cursor-pointer items-center justify-center transition-transform duration-500"
                 style={
                     hasMounted
                         ? ({
@@ -208,7 +211,7 @@ const Contact = () => {
                 {/* logo */}
                 <div
                     className={classNames(
-                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full transform-gpu bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -216,7 +219,7 @@ const Contact = () => {
 
             {/* CV */}
             <button
-                className="group peer absolute flex size-full translate-x-0 translate-y-0 cursor-pointer items-center justify-center transition-transform duration-500"
+                className="group peer absolute flex size-full translate-x-0 translate-y-0 transform-gpu cursor-pointer items-center justify-center transition-transform duration-500"
                 style={
                     hasMounted
                         ? ({
@@ -236,7 +239,7 @@ const Contact = () => {
                 {/* logo */}
                 <div
                     className={classNames(
-                        'absolute aspect-hex-flat w-full bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
+                        'absolute aspect-hex-flat w-full transform-gpu bg-theme-primary transition-[transform,background-color] delay-[300ms,0ms] [mask-image:url(/svg/EnvelopeOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:bg-theme-primary-lighter',
                         hasMounted ? '-rotate-90' : 'rotate-0',
                     )}
                 />
@@ -248,7 +251,7 @@ const Contact = () => {
             {/* Title */}
             <div
                 className={classNames(
-                    'font-lato before:peer-hover-active:peer-data-[title=About]:content-["About"] before:peer-hover-active:peer-data-[title=CV]:content-["CV"] before:peer-hover-active:peer-data-[title=Email]:content-["Email"] before:peer-hover-active:peer-data-[title=GitHub]:content-["GitHub"] before:peer-hover-active:peer-data-[title=LinkedIn]:content-["LinkedIn"] before:peer-hover-active:peer-data-[title=Stores]:content-["Stores"]',
+                    'transform-gpu font-lato before:peer-hover-active:peer-data-[title=About]:content-["About"] before:peer-hover-active:peer-data-[title=CV]:content-["CV"] before:peer-hover-active:peer-data-[title=Email]:content-["Email"] before:peer-hover-active:peer-data-[title=GitHub]:content-["GitHub"] before:peer-hover-active:peer-data-[title=LinkedIn]:content-["LinkedIn"] before:peer-hover-active:peer-data-[title=Stores]:content-["Stores"]',
                     'before:absolute before:top-1/2 before:z-10 before:w-full before:-translate-y-1/2 before:select-none before:text-center before:text-sm before:leading-none before:text-theme-secondary-lighter',
                     'pointer-events-none absolute size-full transform-gpu',
                     hasMounted ? '-rotate-90' : 'rotate-0',

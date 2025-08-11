@@ -1,14 +1,14 @@
 import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import classNames from '../lib/classNames';
-import { Post, Config } from '../types/types';
+import { Post } from '../types/types';
 import Markdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import GetChildSize from './GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { getHexagonalClipPath } from '../lib/hexagonData';
-import config from '../config/config.json';
+import { config } from '../config/exportTyped';
 
-const tools: Config['tools'] = config.tools;
+const tools = config.tools;
 
 const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive: Post['viewLive']; viewSource: Post['viewSource'] }> = ({
     stack,
@@ -195,7 +195,7 @@ const SingleStackBlock: FC<{
             {/* ChevronDown */}
             <div
                 className={classNames(
-                    'ml-1 inline-block aspect-square h-4 transition-transform [mask-image:url(/svg/ChevronDownOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%] group-hover-active:bg-theme-text-background',
+                    'ml-1 inline-block aspect-square h-4 transform-gpu transition-transform [mask-image:url(/svg/ChevronDownOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%] group-hover-active:bg-theme-text-background',
                     isThisJsx ? 'rotate-0 bg-theme-text-background' : 'rotate-90 bg-theme-primary-darker',
                 )}
             />

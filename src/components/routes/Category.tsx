@@ -3,7 +3,7 @@ import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from '../../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
-import config from '../../config/config.json';
+import { config } from '../../config/exportTyped';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
 import remapToRange from '../../lib/remapToRange.ts';
@@ -27,14 +27,6 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
 
     const categoryRef = useRef<HTMLDivElement | null>(null);
     const shouldMount = useMountTransition(categoryRef, show, '!clip-inset-x-0');
-
-    useEffect(() => {
-        console.log('%c[Category]', 'color: #756086', `show :`, show);
-    }, [show]);
-
-    useEffect(() => {
-        console.log('%c[Category]', 'color: #d2eac6', `shouldMount :`, shouldMount);
-    }, [shouldMount]);
 
     const [flipIndex, setFlipIndex] = useState(0);
 

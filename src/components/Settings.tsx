@@ -44,7 +44,7 @@ const Settings = () => {
         >
             {/* Radius Settings */}
             <button
-                className="group peer absolute flex size-full rotate-0 cursor-pointer items-center justify-center transition-transform"
+                className="group peer absolute flex size-full rotate-0 transform-gpu cursor-pointer items-center justify-center transition-transform"
                 style={
                     hasMounted
                         ? ({
@@ -66,7 +66,7 @@ const Settings = () => {
 
             {/* Theme Settings */}
             <button
-                className="group peer absolute flex size-full rotate-0 cursor-pointer items-center justify-center transition-transform"
+                className="group peer absolute flex size-full rotate-0 transform-gpu cursor-pointer items-center justify-center transition-transform"
                 style={
                     hasMounted
                         ? ({
@@ -89,7 +89,7 @@ const Settings = () => {
 
             {/* empty */}
             <button
-                className="group peer absolute flex size-full rotate-0 cursor-pointer items-center justify-center transition-transform"
+                className="group peer absolute flex size-full rotate-0 transform-gpu cursor-pointer items-center justify-center transition-transform"
                 style={
                     hasMounted
                         ? ({

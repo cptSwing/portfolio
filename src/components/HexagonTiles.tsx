@@ -6,6 +6,14 @@ import { halfRoundedHexagonPath, buttonHexagons, regularHexagons, roundedHexagon
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
 import { CATEGORY, ROUTE } from '../types/enums';
+import { config } from '../config/exportTyped';
+
+const {
+    ui: {
+        animation: { menuTransition_Ms },
+        hexMenu: { columns, strokeWidth, scaleUp },
+    },
+} = config;
 
 const HexagonTiles = () => {
     const menuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
@@ -30,14 +38,13 @@ const HexagonTiles = () => {
         <svg
             ref={svgRef}
             className={classNames(
-                '[--hover-stroke-duration:500ms]',
                 'pointer-events-none absolute z-10 h-full transform-gpu overflow-visible transition-transform',
                 routeName === ROUTE.home ? navMenuTransitionClasses_Memo : '',
             )}
             viewBox={routeName === ROUTE.category ? viewBoxes['square'] : routeName === ROUTE.post ? viewBoxes['hexPointy'] : viewBoxes['hexFlat']}
             style={
                 {
-                    transitionDuration: `${svgTransitionDurationMs}ms`,
+                    transitionDuration: `${menuTransition_Ms}ms`,
                 } as CSSProperties
             }
             onTransitionEnd={({ target, currentTarget }) => {
@@ -120,14 +127,14 @@ const RegularHexagon: FC<{
         () => position && calcCSSVariables(position, rotation, scale, isRightSide, offsets),
         [offsets, isRightSide, position, rotation, scale],
     );
-    const randomDurationMemo = useMemo(() => svgTransitionDurationMs + svgTransitionDurationMs * Math.random(), []);
+    const random_Memo = useMemo(() => Math.random(), []);
 
     return (
         <use
             href={'#' + (isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName)}
             clipPath={`url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`}
             className={classNames(
-                'regular-hexagon-class pointer-events-auto size-full origin-[12.5%_12.5%] translate-x-0 transform-gpu transition-[stroke,transform,fill,stroke-width] hover-active:[--hover-stroke-duration:50ms]',
+                'regular-hexagon-class pointer-events-auto size-full origin-[12.5%_12.5%] translate-x-0 transform-gpu transition-[stroke,transform,fill,stroke-width] [--hover-stroke-duration:--ui-animation-menu-transition-duration] hover-active:[--hover-stroke-duration:50ms]',
                 routeName === ROUTE.home
                     ? 'fill-theme-primary/25 stroke-theme-primary-lighter/5 hover-active:stroke-theme-primary-lighter/15'
                     : routeName === ROUTE.category
@@ -138,8 +145,9 @@ const RegularHexagon: FC<{
             style={
                 {
                     ...cssVariables_Memo,
-                    transitionDuration: `var(--hover-stroke-duration), ${randomDurationMemo}ms`,
                     strokeWidth: routeName === ROUTE.home ? `${8 / scale}` : routeName === ROUTE.category ? `${4 / scale}` : /* post */ '0',
+                    transitionDuration: `var(--hover-stroke-duration), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
+                    transitionDelay: `0ms, calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
                 } as CSSProperties
             }
         />
@@ -161,7 +169,7 @@ const ButtonHexagon: FC<{
         () => position && calcCSSVariables(position, rotation, scale, isRightSide, offsets),
         [offsets, isRightSide, position, rotation, scale],
     );
-    const randomDurationMemo = useMemo(() => svgTransitionDurationMs + svgTransitionDurationMs * Math.random(), []);
+    const random_Memo = useMemo(() => Math.random(), []);
     const isCategoryLink_Memo = useMemo(() => title && isCategoryLink(title), [title]);
 
     const navigate = useNavigate();
@@ -183,7 +191,7 @@ const ButtonHexagon: FC<{
     return (
         <g
             className={classNames(
-                'group origin-[12.5%_12.5%] translate-x-0 transform-gpu cursor-pointer no-underline transition-[transform,stroke,stroke-width]',
+                'group origin-[12.5%_12.5%] translate-x-0 transform-gpu cursor-pointer no-underline transition-[stroke,transform,fill,stroke-width]',
                 routeName === ROUTE.home
                     ? 'stroke-theme-primary-lighter/90'
                     : routeName === ROUTE.category
@@ -194,7 +202,8 @@ const ButtonHexagon: FC<{
             style={
                 {
                     ...cssVariables_Memo,
-                    transitionDuration: `${randomDurationMemo}ms`,
+                    transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
+                    transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
                     strokeWidth:
                         routeName === ROUTE.home
                             ? `${(svgIconPath ? 2 : 4) / scale}`
@@ -227,7 +236,7 @@ const ButtonHexagon: FC<{
                     />
                     <span
                         className={classNames(
-                            'absolute left-1/2 top-full -translate-x-1/2 font-lato uppercase',
+                            'absolute left-1/2 top-full -translate-x-1/2 transform-gpu font-lato uppercase',
                             routeName === ROUTE.home
                                 ? 'mt-0.5 text-sm text-theme-root-background group-hover-active:text-theme-secondary-lighter'
                                 : routeName === ROUTE.category
@@ -282,7 +291,6 @@ function calcCSSVariables(
         '--tw-rotate': `${rotation}deg`,
         '--tw-scale-x': (1 - strokeWidth) * scale,
         '--tw-scale-y': (1 - strokeWidth) * scale,
-        'transitionDuration': `${svgTransitionDurationMs}ms`,
     } as CSSProperties;
 }
 
@@ -292,14 +300,8 @@ function isCategoryLink(title: UIButton) {
 
 // Local Values
 
-const strokeWidth = 0.025;
-const svgTransitionDurationMs = 600;
-
 const roundedHexagonPathName = 'roundedHexagonPath';
 const halfRoundedHexagonPathName = 'halfRoundedHexagonPath';
-
-const columns = 3;
-const scaleUp = 100;
 
 const hexPaddingFactor = staticValues.tilingMultiplierHorizontal.flatTop;
 const totalWidthAtCenter = (columns * hexPaddingFactor - (hexPaddingFactor - 1)) * scaleUp;
