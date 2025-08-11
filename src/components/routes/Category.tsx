@@ -1,32 +1,21 @@
-import { Category as Category_T, GridAreaPathData } from '../../types/types';
-import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
+import { Category as Category_T } from '../../types/types';
+import { CSSProperties, FC, useEffect, useRef, useState } from 'react';
 import classNames from '../../lib/classNames';
 import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
-import { config } from '../../types/exportTyped';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
-import remapToRange from '../../lib/remapToRange.ts';
 import CategoryCard from '../CategoryCard.tsx';
-import { getIndexCategoryCardPath } from '../../lib/hexagonData.ts';
 import useMountTransition from '../../hooks/useMountTransition.ts';
+import { config } from '../../types/exportTyped.ts';
 
 const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
-const { cellCount } = config.categoryGrid;
-const defaultGridAreaPathData = getIndexCategoryCardPath(-1, 0, 0);
-
-const emptyCategory: Category_T = {
-    id: -1,
-    title: '',
-    posts: [],
-    categoryBlurb: '',
-};
 
 const Category: FC<{ show: boolean }> = ({ show }) => {
     const category = useZustand((store) => store.values.routeData.content.category) ?? emptyCategory;
 
     const categoryRef = useRef<HTMLDivElement | null>(null);
-    const shouldMount = useMountTransition(categoryRef, show, '!clip-inset-x-0');
+    const isMounted = useMountTransition(categoryRef, show, '!clip-inset-x-0');
 
     const [flipIndex, setFlipIndex] = useState(0);
 
@@ -37,87 +26,43 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
         }
     }, [category.posts.length, wheelDirection, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
 
-    const gridAreaPathsDataRef = useRef<GridAreaPathData[]>([]);
+    const gridAreaStylesAndPaths_ref = useRef<{ style: CSSProperties; path: string }[]>([]);
 
-    const gridAreaStyles_Memo = useMemo(() => {
-        const brightnessPercentage = 1 / cellCount;
+    const [title, setTitle] = useState('jens Brandenburg');
 
-        const gridStyles = category.posts.map((_, idx, arr) => {
-            // NOTE piggybacking off this loop to fill gridAreaPathsDataRef
-            console.log('%c[Category]', 'color: #3bf9fb', `piggybacking..`);
-            gridAreaPathsDataRef.current[idx] = defaultGridAreaPathData;
-
-            const numGridArea = getGridAreaNumber(idx, cellCount, arr.length);
-
-            const baseStyle = {
-                zIndex: Math.max(numGridArea, 0),
-            };
-
-            if (numGridArea < 1) {
-                const surplusCells = arr.length - cellCount;
-                const thisSurplusCell = remapToRange(numGridArea, -surplusCells + 1, 0, surplusCells - 1, 0);
-                const r = 2; // ratio
-
-                const total_ratio = (Math.pow(r, surplusCells) - 1) / (r - 1);
-                const ratio = Math.pow(r, surplusCells - 1 - thisSurplusCell);
-                const widthPercent = (ratio / total_ratio) * 100;
-
-                return {
-                    ...baseStyle,
-                    'gridArea': 'rest',
-                    'position': 'absolute',
-                    'width': `${widthPercent * 0.9}%`,
-                    'left': `${100 - widthPercent > widthPercent ? 0 : 100 - widthPercent + widthPercent * 0.1}%`,
-                    '--tw-brightness': `brightness(${brightnessPercentage / 2})`,
-                    '--tw-grayscale': `grayscale(${1 - brightnessPercentage / 2})`,
-                } as CSSProperties;
-            } else {
-                return {
-                    ...baseStyle,
-                    'gridArea': 'area' + numGridArea,
-                    '--tw-brightness': `brightness(${numGridArea * brightnessPercentage})`,
-                    '--tw-grayscale': `grayscale(${1 - numGridArea * brightnessPercentage})`,
-                } as CSSProperties;
-            }
-        });
-
-        return gridStyles;
-    }, [category]);
-
-    const [bannerTitle, setBannerTitle] = useState('jens Brandenburg');
-
-    return shouldMount ? (
+    return isMounted ? (
         <div
             ref={categoryRef}
-            className="relative flex h-[95%] w-full flex-col items-center justify-center bg-theme-primary/10 px-[0%] py-[0%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-x-[7.5%] sm:px-[8%] sm:py-[1%]"
+            className={classNames(
+                'flex size-full flex-col items-center justify-center bg-theme-primary/10 px-[0%] py-[0%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-x-[7.5%] sm:px-[5%] sm:py-[1%] 2xl:px-[3.5%]',
+                show ? 'delay-[--ui-animation-menu-transition-duration]' : 'delay-0',
+            )}
         >
             {/* Info */}
-            <CardTitles bannerTitle={bannerTitle} />
+            <BannerTitle title={title} />
 
             <Flipper
                 element={'nav'}
-                className="postcards-grid-template grid w-full basis-[80%] origin-center transform-gpu grid-cols-6 grid-rows-[repeat(7,minmax(0,1fr))_0.1fr] gap-[0%] sm:gap-[3%]"
+                className="postcards-grid-template grid h-[85%] w-full origin-center transform grid-cols-6 grid-rows-[repeat(7,minmax(0,1fr))_0.1fr] gap-[0%] sm:gap-[3%]"
                 flipKey={flipIndex}
-                spring={{ stiffness: 600, damping: 40 }}
+                spring={{ stiffness: 500, damping: 35 }}
             >
                 {/* Animated Grid */}
-                {gridAreaStyles_Memo &&
-                    category.posts.map((post, idx, arr) => (
-                        <CategoryCard
-                            key={post.title + idx}
-                            post={post}
-                            flipIndex={flipIndex}
-                            cardIndex={idx}
-                            cardCount={arr.length}
-                            gridAreaStyles={gridAreaStyles_Memo}
-                            gridAreaPathsData={gridAreaPathsDataRef}
-                            setFlipIndex={setFlipIndex}
-                            setBannerTitle={setBannerTitle}
-                        />
-                    ))}
+                {category.posts.map((post, idx, arr) => (
+                    <CategoryCard
+                        key={post.id}
+                        post={post}
+                        flipIndex={flipIndex}
+                        cardIndex={idx}
+                        cardCount={arr.length}
+                        gridAreaStylesAndPaths={gridAreaStylesAndPaths_ref}
+                        setFlipIndex={setFlipIndex}
+                        setTitle={setTitle}
+                    />
+                ))}
 
                 {/* Progress Bar */}
-                <div className="flex items-center justify-between gap-x-[1.5%] px-[3%] [grid-area:track]">
+                <div className="flex h-2/3 items-center justify-between gap-x-[1.5%] px-[3%] [grid-area:track]">
                     {category.posts.map((post, idx) => {
                         return (
                             <button
@@ -134,7 +79,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
             </Flipper>
 
             {/* Brand */}
-            <div className="flex basis-[10%] select-none flex-col items-end justify-center self-end px-[3%] text-theme-primary/30">
+            <div className="flex flex-1 select-none flex-col items-end justify-center self-end px-[3%] text-theme-primary/30">
                 <div className="text-nowrap text-right text-2xs sm:text-xs sm:!leading-tight md:text-sm lg:text-base lg:!leading-snug">jens Brandenburg</div>
                 <div className="text-nowrap text-right text-3xs md:text-2xs lg:text-xs">webdev & 3d art</div>
             </div>
@@ -147,11 +92,11 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
 
 export default Category;
 
-const transitionDuration_MS = 250;
+const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
-const CardTitles: FC<{
-    bannerTitle: string;
-}> = ({ bannerTitle }) => {
+const BannerTitle: FC<{
+    title: string;
+}> = ({ title }) => {
     const [isSwitching, setIsSwitching] = useState(false);
 
     useEffect(() => {
@@ -159,50 +104,30 @@ const CardTitles: FC<{
 
         const timer = setTimeout(() => {
             setIsSwitching(false);
-        }, transitionDuration_MS / 3);
+        }, transitionDuration_MS / 8);
 
         return () => {
             clearTimeout(timer);
         };
-    }, [bannerTitle]);
+    }, [title]);
 
     return (
         <div
             className={classNames(
-                'ml-[1.5%] flex basis-[10%] transform-gpu flex-col items-start justify-end self-start pr-[10%] transition-[transform,opacity]',
+                'ml-[6.75%] flex flex-1 transform-gpu flex-col items-start justify-end self-start pr-[10%] transition-[transform,opacity]',
                 isSwitching ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100',
             )}
             style={
                 {
-                    transitionDuration: `${isSwitching ? 0 : transitionDuration_MS}ms`,
+                    transitionDuration: `${isSwitching ? 0 : transitionDuration_MS / 2}ms`,
                 } as CSSProperties
             }
         >
             <div className="text-nowrap font-fjalla-one text-2xl leading-none text-theme-secondary-lighter sm:text-sm md:text-base lg:text-lg xl:text-xl">
-                {bannerTitle}
+                {title}
             </div>
         </div>
     );
-};
-
-const loopFlipValues = (value: number, max: number, direction: 'down' | 'up') => {
-    if (direction === 'down') {
-        const nextValue = value + 1;
-        return nextValue >= max ? 0 : nextValue;
-    } else {
-        const previousValue = value - 1;
-        return previousValue < 0 ? max - 1 : previousValue;
-    }
-};
-
-const getGridAreaNumber: (index: number, maxCells: number, arrayLength: number) => number = (index, maxCells, arrayLength) => {
-    let numGridArea = maxCells - index;
-
-    if (numGridArea > maxCells) {
-        numGridArea = numGridArea - arrayLength;
-    }
-
-    return numGridArea;
 };
 
 const DebugWrapper: FC<{
@@ -227,4 +152,25 @@ const DebugWrapper: FC<{
     );
 
     return <></>;
+};
+
+/* Local functions */
+
+const loopFlipValues = (value: number, max: number, direction: 'down' | 'up') => {
+    if (direction === 'down') {
+        const nextValue = value + 1;
+        return nextValue >= max ? 0 : nextValue;
+    } else {
+        const previousValue = value - 1;
+        return previousValue < 0 ? max - 1 : previousValue;
+    }
+};
+
+/* Local values */
+
+const emptyCategory: Category_T = {
+    id: -1,
+    title: '',
+    posts: [],
+    categoryBlurb: '',
 };
