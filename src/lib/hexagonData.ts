@@ -1,4 +1,4 @@
-import { config } from '../config/exportTyped';
+import { config } from '../types/exportTyped';
 import { ROUTE } from '../types/enums';
 import { HexagonData, HexagonLink, RouteData, ZustandStore } from '../types/types';
 import { useZustand } from './zustand';

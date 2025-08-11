@@ -2,11 +2,9 @@ import { useParams } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
 import { useLayoutEffect } from 'react';
 import { ROUTE } from '../types/enums';
-import { DataBase } from '../types/types';
+import { database } from '../types/exportTyped';
 
-import testDb from '../queries/testDb.json';
-const testDbTyped = testDb as DataBase;
-const categories = Object.values(testDbTyped);
+const categories = Object.values(database);
 
 const store_setRouteData = useZustand.getState().methods.store_setRouteData;
 

@@ -6,7 +6,7 @@ import remarkBreaks from 'remark-breaks';
 import GetChildSize from './GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { getHexagonalClipPath } from '../lib/hexagonData';
-import { config } from '../config/exportTyped';
+import { config } from '../types/exportTyped';
 
 const tools = config.tools;
 

@@ -1,7 +1,6 @@
-import { DataBase } from '../types/types';
+import { Category } from '../types/types';
 import { FC, useMemo, useState } from 'react';
-import testDb from '../queries/testDb.json';
-import { MENU_CATEGORY } from '../types/enums.ts';
+import { database } from '../types/exportTyped';
 import { Link, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import { bars_totalDuration } from '../lib/animationValues.ts';
@@ -9,8 +8,7 @@ import Settings from './Settings.tsx';
 import classNames from '../lib/classNames.ts';
 import { createPortal } from 'react-dom';
 
-const testDbTyped = testDb as DataBase;
-const categoriesArray = Object.values(testDbTyped);
+const categories = Object.values(database);
 
 const Titles = () => {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -18,7 +16,7 @@ const Titles = () => {
     return (
         <header className="pointer-events-auto transition-transform duration-500 [--nav-title-animation-duration:300ms]">
             {/* Code, 3D, Log */}
-            {categoriesArray.map((cardData) => (
+            {categories.map((cardData) => (
                 <CategoryTitle key={cardData.title} cardData={cardData} />
             ))}
 
@@ -52,7 +50,7 @@ const Titles = () => {
 export default Titles;
 
 const CategoryTitle: FC<{
-    cardData: DataBase[MENU_CATEGORY];
+    cardData: Category;
 }> = ({ cardData }) => {
     const { id, title } = cardData;
 

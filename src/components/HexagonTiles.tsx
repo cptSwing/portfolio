@@ -6,7 +6,7 @@ import { halfRoundedHexagonPath, buttonHexagons, regularHexagons, roundedHexagon
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
 import { CATEGORY, ROUTE } from '../types/enums';
-import { config } from '../config/exportTyped';
+import { config } from '../types/exportTyped';
 
 const {
     ui: {
