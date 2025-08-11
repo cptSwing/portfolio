@@ -7,7 +7,7 @@
             {
                 "id": 0,
                 "title": "Design Your Ring",
-                "titleCardBg": "/images/hd_dyr/hd_dyr_card.jpg",
+                "cardImage": "/images/hd_dyr/hd_dyr_card.jpg",
                 "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
                 "subTitle": "Customizable Wedding-Rings in 3D",
                 "date": "2024-09-12",
@@ -77,7 +77,7 @@
             {
                 "id": 1,
                 "title": "This site!",
-                "titleCardBg": "/images/portfolio/portfolio_featured.jpg",
+                "cardImage": "/images/portfolio/portfolio_featured.jpg",
                 "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
                 "subTitle": "Rebuilt Portfolio from Scratch",
                 "date": "2024-07-30",
@@ -95,7 +95,7 @@
                 "id": 2,
                 "title": "Mediaverse: Fader360",
                 "subTitle": "Open-source 360° Media Authoring Tool",
-                "titleCardBg": "/images/fader/mediaverse_fader_logo.jpg",
+                "cardImage": "/images/fader/mediaverse_fader_logo.jpg",
                 "viewSource": {
                     "alt": "fader360-frontend (Github)",
                     "href": "https://github.com/VRagments/fader360-frontend"
@@ -175,7 +175,7 @@
                 "id": 3,
                 "title": "Brotherland",
                 "subTitle": "The lives of \"contract workers\" in the former GDR",
-                "titleCardBg": "/images/brotherland/brotherland_small.jpg",
+                "cardImage": "/images/brotherland/brotherland_small.jpg",
                 "date": "2023-06",
                 "viewSource": {
                     "alt": "brotherland on github.com",
@@ -222,7 +222,7 @@
                 "id": 4,
                 "title": "Scrollmersives",
                 "subTitle": "Scroll through 3D experiences",
-                "titleCardBg": "/images/scrollmersives/scrollmersives_featured.jpg",
+                "cardImage": "/images/scrollmersives/scrollmersives_featured.jpg",
                 "date": "2022",
                 "stack": ["three.js", "3ds Max"],
 
@@ -273,7 +273,7 @@
             {
                 "id": 5,
                 "title": "Side Projects",
-                "titleCardBg": "/images/projects/platecalc_mob.jpg",
+                "cardImage": "/images/projects/platecalc_mob.jpg",
                 "subTitle": "Plates-Calculator, etc etc",
                 "date": "2024-09-12",
                 "showCases": [
@@ -323,7 +323,7 @@
                 "id": 5,
                 "title": "Groundwater AR App",
                 "subTitle": "Learn about the water cycle & the ground below our feet",
-                "titleCardBg": "/images/dwc/dwc_featured.jpg",
+                "cardImage": "/images/dwc/dwc_featured.jpg",
                 "date": "2022-11-03",
                 "showCases": [
                     {
@@ -388,7 +388,7 @@
                 "id": 6,
                 "title": "BER Airport (Tagespiegel)",
                 "subTitle": "Interactive fly-through of BER airport - and its teething problems",
-                "titleCardBg": "/images/ber/ber_featured.jpg",
+                "cardImage": "/images/ber/ber_featured.jpg",
                 "date": "2021-09-18",
                 "showCases": [
                     {
@@ -442,7 +442,7 @@
                 "id": 7,
                 "title": "StasiVR (Deutschlandfunk)",
                 "subTitle": "Experiencing Stasi interrogations with VR",
-                "titleCardBg": "/images/stasi/stasi_featured_image.jpg",
+                "cardImage": "/images/stasi/stasi_featured_image.jpg",
                 "date": "2017",
                 "showCases": [
                     {
@@ -490,7 +490,7 @@
                 "id": 8,
                 "title": "A 100 (RBB)",
                 "subTitle": "A 360° & VR experience for rbb|24 news",
-                "titleCardBg": "/images/a100/a100_featured_image.jpg",
+                "cardImage": "/images/a100/a100_featured_image.jpg",
                 "date": "2016-06-20",
                 "showCases": [
                     {
@@ -529,7 +529,7 @@
                 "id": 9,
                 "title": "U Stadtmitte (VR)",
                 "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
-                "titleCardBg": "/images/stadtmitte/usm_featured_image.jpg",
+                "cardImage": "/images/stadtmitte/usm_featured_image.jpg",
                 "date": "2016",
                 "stack": ["Unity Engine", "3ds Max", "Substance Designer"],
                 "viewSource": {
@@ -638,13 +638,13 @@
                     }
                 ],
                 "title": "Emergency 5",
-                "titleCardBg": "/images/em5/em5_equipments_featured_image.jpg"
+                "cardImage": "/images/em5/em5_equipments_featured_image.jpg"
             },
             {
                 "id": 11,
                 "title": "Personal 3D Projects",
                 "subTitle": "Where WIP's come to die",
-                "titleCardBg": "/images/personal3d/satellite_featured_image.jpg",
+                "cardImage": "/images/personal3d/satellite_featured_image.jpg",
                 "date": "2016-05-12",
                 "showCases": [
                     {
@@ -758,7 +758,7 @@
                 "id": 12,
                 "title": "Student Projects",
                 "subTitle": "Throwback to my first steps as a game artist..",
-                "titleCardBg": "/images/student3d/student_featured_image.jpg",
+                "cardImage": "/images/student3d/student_featured_image.jpg",
                 "date": "2012",
                 "showCases": [
                     {
@@ -911,14 +911,14 @@
                     }
                 ],
                 "title": "Triplanar Mapping ",
-                "titleCardBg": "/images/updates/log_triplanar.jpg",
+                "cardImage": "/images/updates/log_triplanar.jpg",
                 "subTitle": "Object-Space Shader for threeJs"
             },
             {
                 "id": 16,
                 "title": "Tailwind - clipInset",
                 "subTitle": "Adds TW classes for clip-path: inset()",
-                "titleCardBg": "/images/updates/code_clipInset.jpg",
+                "cardImage": "/images/updates/code_clipInset.jpg",
                 "date": "2024-09-25",
                 "textBlocks": [
                     {

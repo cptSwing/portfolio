@@ -1,6 +1,6 @@
 {
     "categoryGrid": {
-        "cellCount": 6
+        "areaCount": 6
     },
     "placeholders": {
         "cardImage": "images/utility/1x1.png"

@@ -2,7 +2,7 @@ import { CATEGORY, ROUTE, TOOL } from './enums';
 
 export type Config = {
     categoryGrid: {
-        cellCount: number;
+        areaCount: number;
     };
     placeholders: {
         cardImage: string;
@@ -61,7 +61,7 @@ export type Post = {
     textBlocks: { text: string; useShowCaseIndex?: number }[];
     showCases?: Post_ShowCase[];
     subTitle?: string;
-    titleCardBg?: string;
+    cardImage?: string;
     clients?: { abbreviation: string; svgUrl?: string; name: string }[];
     stack?: (keyof typeof TOOL)[];
     viewLive?: { url: string; title: string; description: string }[];
