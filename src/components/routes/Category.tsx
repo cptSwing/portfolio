@@ -114,7 +114,7 @@ const BannerTitle: FC<{
     return (
         <div
             className={classNames(
-                'ml-[13%] flex flex-1 transform-gpu flex-col items-start justify-end self-start pr-[10%] transition-[transform,opacity] 2xl:ml-[10%]',
+                'mb-[0.5%] ml-[13%] flex flex-1 transform-gpu flex-col items-start justify-end self-start pr-[10%] transition-[transform,opacity] 2xl:ml-[10%]',
                 isSwitching ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100',
             )}
             style={
@@ -123,7 +123,7 @@ const BannerTitle: FC<{
                 } as CSSProperties
             }
         >
-            <div className="text-nowrap font-fjalla-one text-3xl leading-none text-theme-secondary-lighter sm:text-sm md:text-base lg:text-lg xl:text-xl">
+            <div className="text-nowrap font-fjalla-one text-xs leading-none text-theme-secondary-lighter sm:text-sm md:text-base lg:text-xl xl:text-xl 2xl:text-2xl">
                 {title}
             </div>
         </div>

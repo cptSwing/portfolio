@@ -188,6 +188,8 @@ const ButtonHexagon: FC<{
               () => setMenuTransitionStates([title as UI_CategoryLink, false])
             : undefined;
 
+    title === 'config' && console.log('%c[HexagonTiles]', 'color: #f753f2', `cssVariables_Memo['--tw-scale-x'] :`, cssVariables_Memo['--tw-scale-x']);
+
     return (
         <g
             className={classNames(
@@ -236,13 +238,19 @@ const ButtonHexagon: FC<{
                     />
                     <span
                         className={classNames(
-                            'absolute left-1/2 top-full -translate-x-1/2 transform-gpu font-lato uppercase',
+                            'absolute left-1/2 top-full mt-[7.5%] -translate-x-1/2 transform-gpu font-lato text-3xs uppercase text-theme-text-background/35',
                             routeName === ROUTE.home
-                                ? 'mt-0.5 text-sm text-theme-root-background group-hover-active:text-theme-secondary-lighter'
+                                ? 'text-theme-root-background group-hover-active:text-theme-secondary-lighter'
                                 : routeName === ROUTE.category
-                                  ? 'mt-0.5 text-base text-theme-text-background/75 group-hover-active:text-theme-text-background'
-                                  : 'mt-0.5 text-theme-primary group-hover-active:text-theme-primary',
+                                  ? 'group-hover-active:text-theme-text-background'
+                                  : '!text-theme-primary group-hover-active:text-theme-primary',
                         )}
+                        style={
+                            {
+                                '--tw-scale-x': `calc(0.5 / ${cssVariables_Memo['--tw-scale-x']})`,
+                                '--tw-scale-y': `calc(0.5 / ${cssVariables_Memo['--tw-scale-y']})`,
+                            } as CSSProperties
+                        }
                     >
                         {title}
                     </span>
@@ -291,7 +299,7 @@ function calcCSSVariables(
         '--tw-rotate': `${rotation}deg`,
         '--tw-scale-x': (1 - strokeWidth) * scale,
         '--tw-scale-y': (1 - strokeWidth) * scale,
-    } as CSSProperties;
+    };
 }
 
 function isCategoryLink(title: UIButton) {
