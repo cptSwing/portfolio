@@ -62,7 +62,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                 ))}
 
                 {/* Progress Bar */}
-                <div className="flex h-2/3 items-center justify-between gap-x-[1.5%] pl-[6.5%] pr-[3.5%] [grid-area:track]">
+                <div className="flex h-2/3 items-center justify-between gap-x-[1.5%] pl-[7.75%] pr-[4.4%] [grid-area:track] 2xl:pl-[6.5%] 2xl:pr-[3.5%]">
                     {category.posts.map((post, idx) => {
                         return (
                             <button
@@ -79,7 +79,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
             </Flipper>
 
             {/* Brand */}
-            <div className="flex flex-1 select-none flex-col items-end justify-center self-end pr-[3.65%] text-theme-primary/30">
+            <div className="flex flex-1 select-none flex-col items-end justify-center self-end pr-[4.65%] text-theme-primary/30 2xl:pr-[3.65%]">
                 <div className="text-nowrap text-right text-2xs sm:text-xs sm:!leading-tight md:text-sm lg:text-base lg:!leading-snug">jens Brandenburg</div>
                 <div className="text-nowrap text-right text-3xs md:text-2xs lg:text-xs">webdev & 3d art</div>
             </div>
@@ -114,7 +114,7 @@ const BannerTitle: FC<{
     return (
         <div
             className={classNames(
-                'ml-[10%] flex flex-1 transform-gpu flex-col items-start justify-end self-start pr-[10%] transition-[transform,opacity]',
+                'ml-[13%] flex flex-1 transform-gpu flex-col items-start justify-end self-start pr-[10%] transition-[transform,opacity] 2xl:ml-[10%]',
                 isSwitching ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100',
             )}
             style={

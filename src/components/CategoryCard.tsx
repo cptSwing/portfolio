@@ -95,7 +95,12 @@ const CategoryCard: FC<{
                     </clipPath>
                 </defs>
 
-                <ChildImageAndSvg cardImage={post.cardImage} pathName={componentStrings_memo.pathName} clipPathName={componentStrings_memo.clipPathName} />
+                <ChildImageAndSvg
+                    gridAreaIndex={gridAreaIndex}
+                    cardImage={post.cardImage}
+                    pathName={componentStrings_memo.pathName}
+                    clipPathName={componentStrings_memo.clipPathName}
+                />
             </svg>
         </Flipped>
     );
@@ -103,33 +108,35 @@ const CategoryCard: FC<{
 
 export default CategoryCard;
 
-const ChildImageAndSvg: FC<{ cardImage?: string; pathName: string; clipPathName: string }> = memo(({ cardImage, pathName, clipPathName }) => {
-    return (
-        <>
-            {/* Emulate object-cover via preserveAspectRatio */}
-            <image
-                width="100%"
-                height="100%"
-                className="origin-center scale-[0.99] transform-gpu transition-[filter] [filter:var(--image-filter,brightness(0.1)_grayscale(0.1))] group-hover-active:brightness-110" // to combat pixel errors (rounding?)
-                href={cardImage}
-                clipPath={`url(#${clipPathName})`}
-                preserveAspectRatio="xMidYMid slice"
-            />
-
-            {/* Scale according to percentages of width/height */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" preserveAspectRatio="none">
-                <use
-                    href={`#${pathName}`}
+const ChildImageAndSvg: FC<{ gridAreaIndex: number; cardImage?: string; pathName: string; clipPathName: string }> = memo(
+    ({ gridAreaIndex, cardImage, pathName, clipPathName }) => {
+        return (
+            <>
+                {/* Emulate object-cover via preserveAspectRatio */}
+                <image
+                    width="100%"
+                    height="100%"
+                    className="origin-center scale-[0.99] transform-gpu transition-[filter] [filter:var(--image-filter,brightness(0.1)_grayscale(0.1))] group-hover-active:brightness-110" // to combat pixel errors (rounding?)
+                    href={cardImage}
                     clipPath={`url(#${clipPathName})`}
-                    className="stroke-theme-primary-darker"
-                    shapeRendering="geometricPrecision"
-                    strokeWidth={6}
-                    fill="none"
+                    preserveAspectRatio="xMidYMid slice"
                 />
-            </svg>
-        </>
-    );
-});
+
+                {/* Scale according to percentages of width/height */}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" preserveAspectRatio="none">
+                    <use
+                        href={`#${pathName}`}
+                        clipPath={`url(#${clipPathName})`}
+                        className="stroke-theme-primary-darker"
+                        shapeRendering="geometricPrecision"
+                        strokeWidth={7 / ((gridAreaIndex + 5) / areaCount)}
+                        fill="none"
+                    />
+                </svg>
+            </>
+        );
+    },
+);
 
 /* Local Functions */
 
