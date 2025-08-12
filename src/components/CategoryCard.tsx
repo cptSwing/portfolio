@@ -123,7 +123,7 @@ const ChildImageAndSvg: FC<{ cardImage?: string; pathName: string; clipPathName:
                     clipPath={`url(#${clipPathName})`}
                     className="stroke-theme-primary-darker"
                     shapeRendering="geometricPrecision"
-                    strokeWidth={5}
+                    strokeWidth={6}
                     fill="none"
                 />
             </svg>

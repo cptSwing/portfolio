@@ -193,11 +193,11 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
         {
             [ROUTE.home]: { position: allOffsets[2]?.[2] ?? defaultPosition, rotation: 60, isHalf: true, scale: 1, isRightSide: false },
             [ROUTE.category]: {
-                position: allOffsets[1]?.[3] ?? defaultPosition,
+                position: allOffsets[0]?.[2] ?? defaultPosition,
                 rotation: 60,
                 isHalf: true,
-                scale: 0.75,
-                offsets: { x: -2.4, y: -0.9 },
+                scale: 0.65,
+                offsets: { x: 12.85, y: 5.5 },
                 isRightSide: true,
             }, // R2
             [ROUTE.post]: {
@@ -285,10 +285,10 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
             [ROUTE.home]: { position: allOffsets[4]?.[1] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
             [ROUTE.category]: {
                 position: allOffsets[1]?.[3] ?? defaultPosition,
-                rotation: 180,
+                rotation: 60,
                 isHalf: true,
-                scale: 0.3,
-                offsets: { x: 2, y: 12.75 },
+                scale: 0.395,
+                offsets: { x: -1, y: 13.9 },
                 isRightSide: true,
             }, // R3
             [ROUTE.post]: {
@@ -307,8 +307,8 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 position: allOffsets[3]?.[3] ?? defaultPosition,
                 rotation: 120,
                 isHalf: false,
-                scale: 1,
-                offsets: { x: -1.6, y: -1.25 },
+                scale: 0.75,
+                offsets: { x: -3.2, y: 0.575 },
                 isRightSide: true,
             }, // R4
             [ROUTE.post]: {
@@ -335,8 +335,8 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 position: allOffsets[1]?.[3] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
-                scale: 0.275,
-                offsets: { x: -4.25, y: 10.6 },
+                scale: 0.3,
+                offsets: { x: -0.5, y: 6.75 },
                 isRightSide: true,
             },
             [ROUTE.post]: {
@@ -365,7 +365,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 rotation: 0,
                 isHalf: false,
                 scale: 0.225,
-                offsets: { x: 9.15, y: 1.15 },
+                offsets: { x: 12.725, y: -3.1 },
                 isRightSide: true,
             },
             [ROUTE.post]: {
@@ -424,8 +424,8 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 position: allOffsets[1]?.[3] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
-                scale: 0.225,
-                offsets: { x: -9.65, y: 7.1 },
+                scale: 0.175,
+                offsets: { x: -5.8, y: 4.4 },
                 isRightSide: true,
             },
             [ROUTE.post]: {
@@ -436,7 +436,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 offsets: { x: -6.25, y: -1.5625 },
                 isRightSide: true,
             },
-            title: 'home',
+            title: '',
             svgIconPath: '/svg/HomeOutline.svg',
             target: () => {
                 store_toggleMenu({ name: null });
@@ -473,8 +473,8 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 position: allOffsets[4]?.[2] ?? defaultPosition,
                 rotation: 60,
                 isHalf: false,
-                scale: 0.725,
-                offsets: { x: 15.6, y: 6.55 },
+                scale: 0.775,
+                offsets: { x: 15.5, y: 6.05 },
                 isRightSide: true,
             }, // R5
             [ROUTE.post]: {
@@ -537,8 +537,8 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 position: allOffsets[5]?.[3] ?? defaultPosition,
                 rotation: 120,
                 isHalf: true,
-                scale: 0.7,
-                offsets: { x: -3.6, y: 8.6 },
+                scale: 0.65,
+                offsets: { x: -3.175, y: 8.05 },
                 isRightSide: true,
             }, // R6
             [ROUTE.post]: {
@@ -697,7 +697,7 @@ function roundedPolygon(points: PointOpts[], cornerRadius: number, aspectRatio =
 }
 
 function getCategoryCardPath(styleIndex: number, aspectRatio: number) {
-    const cornerRadius = 0.025;
+    const cornerRadius = 0.035;
 
     let path;
 
@@ -706,36 +706,36 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number) {
         case 0:
             path = roundedPolygon(
                 [
-                    { point: [0, 0.25] },
-                    { point: [0.25 / aspectRatio / tan60, 0] },
+                    { point: [0, 0.375] },
+                    { point: [0.375 / aspectRatio / tan60, 0] },
 
-                    { point: [1 - 0.05 / aspectRatio / tan60, 0] },
-                    { point: [1, 0.05] },
+                    { point: [1, 0], customRadius: cornerRadius * 2 },
 
                     { point: [1, 1] },
 
-                    { point: [0.2 / aspectRatio / tan60, 1] },
-                    { point: [0, 1 - 0.2] },
+                    { point: [0.08 / aspectRatio / tan60, 1], customRadius: cornerRadius / 2 },
+                    { point: [0, 1 - 0.08], customRadius: cornerRadius / 2 },
                 ],
                 cornerRadius,
+                aspectRatio,
             );
             break;
         case 1:
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
                 [
-                    { point: [0, 0.3] },
-                    { point: [0.3 / aspectRatio / tan60, 0] },
+                    { point: [0, 0.465] },
+                    { point: [0.465 / aspectRatio / tan60, 0] },
 
                     { point: [1, 0] },
 
-                    { point: [1, 1 - 0.05] },
-                    { point: [1 - 0.05 / aspectRatio / tan60, 1] },
+                    { point: [1, 1], customRadius: cornerRadius * 2 },
 
-                    { point: [0.18 / aspectRatio / tan60, 1] },
-                    { point: [0, 1 - 0.18] },
+                    { point: [0.35 / aspectRatio / tan60, 1] },
+                    { point: [0, 1 - 0.35] },
                 ],
                 cornerRadius,
+                aspectRatio,
             );
             break;
         case 2:
@@ -744,32 +744,30 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number) {
                 [
                     { point: [0, 0] },
 
-                    { point: [1 - 0.05 / aspectRatio / tan60, 0] },
-                    { point: [1, 0.05] },
+                    { point: [1 - 0.175 / aspectRatio / tan60, 0] },
+                    { point: [1, 0.175] },
 
-                    { point: [1, 1 - 0.2] },
-                    { point: [1 - 0.2 / aspectRatio / tan60, 1] },
+                    { point: [1, 1 - 0.175] },
+                    { point: [1 - 0.175 / aspectRatio / tan60, 1] },
 
-                    { point: [0.05 / aspectRatio / tan60, 1] },
-                    { point: [0, 1 - 0.05] },
+                    { point: [0, 1], customRadius: cornerRadius * 2, useAspectRatio: true },
                 ],
                 cornerRadius,
+                aspectRatio,
             );
             break;
         case 3:
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
                 [
-                    { point: [0, 0], customRadius: 0.075, useAspectRatio: true },
+                    { point: [0, 0] },
 
-                    { point: [1 - 0.125 / aspectRatio / tan60, 0] },
-                    { point: [1, 0.125] },
+                    { point: [1, 0], customRadius: cornerRadius * 3 },
 
-                    { point: [1, 1 - 0.125] },
-                    { point: [1 - 0.125 / aspectRatio / tan60, 1] },
+                    { point: [1, 1 - 0.165] },
+                    { point: [1 - 0.165 / aspectRatio / tan60, 1] },
 
-                    // [0.025 / aspectRatio / tan60, 1],
-                    { point: [0, 1], customRadius: 0.075, useAspectRatio: true },
+                    { point: [0, 1] },
                 ],
                 cornerRadius,
                 aspectRatio,
@@ -779,16 +777,15 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number) {
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
                 [
-                    { point: [0, 0], customRadius: 0.2, useAspectRatio: true },
+                    { point: [0, 0], customRadius: 0.1, useAspectRatio: true },
 
-                    { point: [1 - 0.225 / aspectRatio / tan60, 0] },
-                    { point: [1, 0.225] },
+                    { point: [1 - 0.2 / aspectRatio / tan60, 0] },
+                    { point: [1, 0.2] },
 
-                    { point: [1, 1 - 0.225] },
-                    { point: [1 - 0.225 / aspectRatio / tan60, 1] },
+                    { point: [1, 1], customRadius: 0.1 },
 
                     // [0.05 / aspectRatio / tan60, 1],
-                    { point: [0, 1], customRadius: 0.2, useAspectRatio: true },
+                    { point: [0, 1], customRadius: 0.1, useAspectRatio: true },
                 ],
                 cornerRadius,
                 aspectRatio,
@@ -799,16 +796,15 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number) {
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
                 [
-                    { point: [0, 0], customRadius: 0.2, useAspectRatio: true },
+                    { point: [0, 0], customRadius: cornerRadius * 3, useAspectRatio: true },
 
-                    { point: [1 - 0.25 / aspectRatio / tan60, 0] },
-                    { point: [1, 0.25] },
+                    { point: [1 - 0.5 / aspectRatio / tan60, 0] },
+                    { point: [1, 0.5] },
 
-                    { point: [1, 1 - 0.25] },
-                    { point: [1 - 0.25 / aspectRatio / tan60, 1] },
+                    { point: [1, 1], customRadius: cornerRadius * 3 },
 
                     // [0.05 / aspectRatio / tan60, 1],
-                    { point: [0, 1], customRadius: 0.2, useAspectRatio: true },
+                    { point: [0, 1], customRadius: cornerRadius * 3, useAspectRatio: true },
                 ],
                 cornerRadius,
                 aspectRatio,
@@ -816,37 +812,35 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number) {
             break;
         case 6:
             // top left; top right; bottom right; bottom left
-            path = `
-                    M0,${0.15} 
-                    L${0.15 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.15 / aspectRatio / tan60},0 
-                    L1,${0.15} 
+            path = roundedPolygon(
+                [
+                    { point: [0, 0], customRadius: cornerRadius * 3, useAspectRatio: true },
 
-                    L1,1 
-                    L1,1 
-                    
-                    L0,1 
-                    L0,1
-                    Z`;
+                    { point: [1, 0], customRadius: cornerRadius * 3 },
+
+                    { point: [1, 1], customRadius: cornerRadius * 3 },
+
+                    { point: [0, 1], customRadius: cornerRadius * 3, useAspectRatio: true },
+                ],
+                cornerRadius,
+                aspectRatio,
+            );
             break;
-
         case 7:
             // top left; top right; bottom right; bottom left
-            path = `
-                    M0,${0.15} 
-                    L${0.15 / aspectRatio / tan60},0 
-                    
-                    L${1 - 0.15 / aspectRatio / tan60},0 
-                    L1,${0.15} 
+            path = roundedPolygon(
+                [
+                    { point: [0, 0], customRadius: cornerRadius * 3, useAspectRatio: true },
 
-                    L1,1 
-                    L1,1 
-                    
-                    L0,1 
-                    L0,1
-                    Z`;
+                    { point: [1, 0], customRadius: cornerRadius * 3 },
 
+                    { point: [1, 1], customRadius: cornerRadius * 3 },
+
+                    { point: [0, 1], customRadius: cornerRadius * 3, useAspectRatio: true },
+                ],
+                cornerRadius,
+                aspectRatio,
+            );
             break;
 
         default:

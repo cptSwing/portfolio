@@ -62,7 +62,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                 ))}
 
                 {/* Progress Bar */}
-                <div className="flex h-2/3 items-center justify-between gap-x-[1.5%] px-[3%] [grid-area:track]">
+                <div className="flex h-2/3 items-center justify-between gap-x-[1.5%] pl-[6.5%] pr-[3.5%] [grid-area:track]">
                     {category.posts.map((post, idx) => {
                         return (
                             <button
@@ -79,7 +79,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
             </Flipper>
 
             {/* Brand */}
-            <div className="flex flex-1 select-none flex-col items-end justify-center self-end px-[3%] text-theme-primary/30">
+            <div className="flex flex-1 select-none flex-col items-end justify-center self-end pr-[3.65%] text-theme-primary/30">
                 <div className="text-nowrap text-right text-2xs sm:text-xs sm:!leading-tight md:text-sm lg:text-base lg:!leading-snug">jens Brandenburg</div>
                 <div className="text-nowrap text-right text-3xs md:text-2xs lg:text-xs">webdev & 3d art</div>
             </div>
@@ -114,7 +114,7 @@ const BannerTitle: FC<{
     return (
         <div
             className={classNames(
-                'ml-[6.75%] flex flex-1 transform-gpu flex-col items-start justify-end self-start pr-[10%] transition-[transform,opacity]',
+                'ml-[10%] flex flex-1 transform-gpu flex-col items-start justify-end self-start pr-[10%] transition-[transform,opacity]',
                 isSwitching ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100',
             )}
             style={
@@ -123,7 +123,7 @@ const BannerTitle: FC<{
                 } as CSSProperties
             }
         >
-            <div className="text-nowrap font-fjalla-one text-2xl leading-none text-theme-secondary-lighter sm:text-sm md:text-base lg:text-lg xl:text-xl">
+            <div className="text-nowrap font-fjalla-one text-3xl leading-none text-theme-secondary-lighter sm:text-sm md:text-base lg:text-lg xl:text-xl">
                 {title}
             </div>
         </div>
