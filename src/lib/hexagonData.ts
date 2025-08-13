@@ -424,8 +424,8 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 position: allOffsets[1]?.[3] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
-                scale: 0.175,
-                offsets: { x: -5.8, y: 4.4 },
+                scale: 0.19,
+                offsets: { x: -5.85, y: 4.4 },
                 isRightSide: true,
             },
             [ROUTE.post]: {

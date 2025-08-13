@@ -8,6 +8,7 @@ import { getIndexCategoryCardPath } from '../lib/hexagonData.ts';
 import remapToRange from '../lib/remapToRange.ts';
 import { config } from '../types/exportTyped.ts';
 import { useZustand } from '../lib/zustand.ts';
+import { keyDownA11y } from '../lib/handleA11y.ts';
 
 const CategoryCard: FC<{
     post: Post;
@@ -83,7 +84,10 @@ const CategoryCard: FC<{
                     debug_applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                 )}
                 style={style}
+                role="button"
+                tabIndex={0}
                 onClick={handleClick}
+                onKeyDown={keyDownA11y(handleClick)}
             >
                 <defs>
                     {/* custom per-grid-area path: */}

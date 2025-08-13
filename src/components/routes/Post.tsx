@@ -64,7 +64,6 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
 
     return shouldMount ? (
         <div
-            // ref={mountCb}
             ref={postRef}
             className="absolute left-0 top-0 size-full bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-t-[-10%] clip-inset-x-[100%] sm:px-[5.25%] sm:pt-10 lg:px-[5%] lg:pt-12 2xl:px-[4.2%]"
         >
@@ -238,12 +237,14 @@ const RemainingImages: FC<{
         [showCases, textBlocks],
     );
 
-    const handleClick = (imageIndex: number) => setLightBoxSlide(imageIndex);
-
     return (
         <div className="grid items-start gap-3 pb-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {remaining_Memo.map((remain) => {
                 const [showCase, imageIndex] = remain || [];
+
+                function handleClick() {
+                    imageIndex && setLightBoxSlide(imageIndex);
+                }
 
                 if (!showCase || typeof imageIndex != 'number') {
                     return null;
@@ -252,8 +253,7 @@ const RemainingImages: FC<{
                         <button
                             key={showCase.imgUrl + imageIndex}
                             className="group max-h-48 w-full transform-gpu overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.01] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110"
-                            onClick={() => handleClick(imageIndex)}
-                            onKeyDown={() => handleClick(imageIndex)}
+                            onClick={handleClick}
                         >
                             <img src={constructThumbsUrl(showCase.imgUrl)} alt={showCase.caption} className="object-cover" />
                         </button>

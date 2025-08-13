@@ -7,6 +7,7 @@ import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { config } from '../types/exportTyped';
+import { keyDownA11y } from '../lib/handleA11y';
 
 const {
     ui: {
@@ -81,7 +82,14 @@ export default HexagonTiles;
 const HexagonSvgDefs = memo(() => {
     return (
         <defs>
-            <path id={roundedHexagonPathName} d={roundedHexagonPath} />
+            <path
+                id={roundedHexagonPathName}
+                d={roundedHexagonPath}
+                // TODO set as options in Settings ?
+                // shapeRendering="geometricPrecision"
+                // shapeRendering="crispEdges"
+                shapeRendering="optimizeSpeed"
+            />
             <path id={halfRoundedHexagonPathName} d={halfRoundedHexagonPath} />
 
             <clipPath id={roundedHexagonPathName + '-clipPath'}>
@@ -169,30 +177,32 @@ const ButtonHexagon: FC<{
         () => position && calcCSSVariables(position, rotation, scale, isRightSide, offsets),
         [offsets, isRightSide, position, rotation, scale],
     );
+
+    const isCategory = title && isCategoryLink(title);
+    const isVisible = !cssVariables_Memo['--tw-scale-x'];
+
     const random_Memo = useMemo(() => Math.random(), []);
-    const isCategoryLink_Memo = useMemo(() => title && isCategoryLink(title), [title]);
 
     const navigate = useNavigate();
 
-    const handleClick = (ev: React.MouseEvent<SVGGElement, MouseEvent>) => {
+    function handleClick(ev: React.MouseEvent<SVGGElement>) {
         let targetResult = target;
         if (typeof targetResult !== 'string') {
-            targetResult = (target as (ev: React.MouseEvent<SVGGElement, MouseEvent>) => void | string)(ev) ?? '';
+            targetResult = (target as (ev: React.MouseEvent<SVGGElement>) => void | string)(ev) ?? '';
         }
         navigate(targetResult);
-    };
+    }
 
     const handleMouseEnter =
-        isCategoryLink_Memo && routeName === ROUTE.home && menuTransitionTarget !== title && menuTransitionTargetReached
+        isCategory && routeName === ROUTE.home && menuTransitionTarget !== title && menuTransitionTargetReached
             ? //  Prevent parent from prematurely rotating again, and again, and again: --------- ^^^
               () => setMenuTransitionStates([title as UI_CategoryLink, false])
             : undefined;
 
-    title === 'config' && console.log('%c[HexagonTiles]', 'color: #f753f2', `cssVariables_Memo['--tw-scale-x'] :`, cssVariables_Memo['--tw-scale-x']);
-
     return (
         <g
             className={classNames(
+                '[--button-scale:--tw-scale-x]',
                 'group origin-[12.5%_12.5%] translate-x-0 transform-gpu cursor-pointer no-underline transition-[stroke,transform,fill,stroke-width]',
                 routeName === ROUTE.home
                     ? 'stroke-theme-primary-lighter/90'
@@ -215,46 +225,20 @@ const ButtonHexagon: FC<{
                 } as CSSProperties
             }
             role="button"
-            onClick={handleClick}
+            tabIndex={isVisible ? -1 : 0}
             onMouseEnter={handleMouseEnter}
+            onClick={handleClick}
+            onKeyDown={keyDownA11y(handleClick)}
         >
             <use
                 href={'#' + roundedHexagonPathName}
                 clipPath={`url(#${roundedHexagonPathName}-clipPath)`}
-                className="pointer-events-auto origin-[12.5%_12.5%] transform-gpu fill-theme-primary transition-transform group-hover-active:scale-105"
-                shapeRendering="geometricPrecision"
-                // TODO set as options in Settings ?
-                // shapeRendering='crispEdges'
-                // shapeRendering='optimizeSpeed'
+                className="pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-transform group-hover-active:scale-105"
                 // paintOrder='stroke'
             />
 
             {svgIconPath ? (
-                // This is a regular menu button (with an icon by default)
-                <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible">
-                    <div
-                        className="size-full origin-center transform-gpu bg-theme-text-background transition-transform [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter"
-                        style={{ maskImage: `url(${svgIconPath})` }}
-                    />
-                    <span
-                        className={classNames(
-                            'absolute left-1/2 top-full mt-[7.5%] -translate-x-1/2 transform-gpu font-lato text-3xs uppercase text-theme-text-background/35',
-                            routeName === ROUTE.home
-                                ? 'text-theme-root-background group-hover-active:text-theme-secondary-lighter'
-                                : routeName === ROUTE.category
-                                  ? 'group-hover-active:text-theme-text-background'
-                                  : '!text-theme-primary group-hover-active:text-theme-primary',
-                        )}
-                        style={
-                            {
-                                '--tw-scale-x': `calc(0.5 / ${cssVariables_Memo['--tw-scale-x']})`,
-                                '--tw-scale-y': `calc(0.5 / ${cssVariables_Memo['--tw-scale-y']})`,
-                            } as CSSProperties
-                        }
-                    >
-                        {title}
-                    </span>
-                </foreignObject>
+                <MenuNavButton title={title} svgIconPath={svgIconPath} routeName={routeName} />
             ) : (
                 // This is a main menu-category button
                 <text
@@ -270,6 +254,37 @@ const ButtonHexagon: FC<{
         </g>
     );
 });
+
+const MenuNavButton: FC<{
+    title?: string;
+    svgIconPath: string;
+    routeName: RouteData['name'];
+}> = ({ title, svgIconPath, routeName }) => {
+    return (
+        // This is a regular menu button (with an icon by default)
+        <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible">
+            <div
+                className="size-full origin-center transform-gpu bg-theme-text-background transition-transform [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter"
+                style={{
+                    maskImage: `url(${svgIconPath})`,
+                }}
+            />
+            <span
+                className={classNames(
+                    'scale-[calc(0.5/var(--button-scale))]', // de-scale menu-text
+                    'absolute left-1/2 top-full mt-[7.5%] -translate-x-1/2 transform-gpu font-lato text-3xs uppercase text-theme-text-background/35',
+                    routeName === ROUTE.home
+                        ? 'text-theme-root-background group-hover-active:text-theme-secondary-lighter'
+                        : routeName === ROUTE.category
+                          ? 'group-hover-active:text-theme-text-background'
+                          : '!text-theme-primary group-hover-active:text-theme-primary',
+                )}
+            >
+                {title}
+            </span>
+        </foreignObject>
+    );
+};
 
 // Local Functions
 

@@ -12,7 +12,7 @@ const useMouseWheel = () => {
             setMouseWheelScrolled((currentState) => e.deltaY + currentState);
         };
 
-        window.addEventListener('wheel', updateScroll);
+        window.addEventListener('wheel', updateScroll, { passive: true });
 
         return () => {
             window.removeEventListener('wheel', updateScroll);

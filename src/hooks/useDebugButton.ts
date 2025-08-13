@@ -12,6 +12,8 @@ const useDebugButton: (label: string, buttonCallback: (ev: MouseEvent) => void, 
         });
 
         button.innerHTML = label;
+        button.tabIndex = -1;
+        button.ariaHidden = 'true';
         button.classList.add('__debugButtonClass');
 
         return button;
