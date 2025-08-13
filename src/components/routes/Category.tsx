@@ -34,7 +34,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
         <div
             ref={categoryRef}
             className={classNames(
-                'flex size-full flex-col items-center justify-center bg-theme-primary/10 px-[0%] py-[0%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-x-[7.5%] sm:px-[5%] sm:py-[1%] 2xl:px-[3.5%]',
+                'flex h-full w-full flex-col items-center justify-center bg-theme-primary/10 px-[0%] py-[0%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-y-[7.5%] sm:size-full sm:px-[5%] sm:py-[1%] sm:mask-edges-x-[7.5%] sm:mask-edges-y-0 2xl:px-[3.5%]',
                 show ? 'delay-[--ui-animation-menu-transition-duration]' : 'delay-0',
             )}
         >
@@ -43,9 +43,9 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
 
             <Flipper
                 element={'nav'}
-                className="postcards-grid-template grid h-[85%] w-full origin-center transform grid-cols-6 grid-rows-[repeat(7,minmax(0,1fr))_0.1fr] gap-[0%] sm:gap-[3%]"
+                className="sm:postcards-grid-template-desktop postcards-grid-template-mobile grid h-[85%] w-[92.5%] origin-center transform grid-cols-[repeat(2,minmax(0,1fr))_0.05fr] grid-rows-[repeat(13,minmax(0,1fr))] gap-x-[2%] gap-y-[1.5%] sm:size-[85%] sm:h-[85%] sm:w-full sm:grid-cols-6 sm:grid-rows-[repeat(7,minmax(0,1fr))_0.1fr] sm:gap-[3%]"
                 flipKey={flipIndex}
-                spring={{ stiffness: 500, damping: 35 }}
+                spring={{ stiffness: 700, damping: 100 }}
             >
                 {/* Animated Grid */}
                 {category.posts.map((post, idx, arr) => (
@@ -62,13 +62,13 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                 ))}
 
                 {/* Progress Bar */}
-                <div className="flex h-2/3 items-center justify-between gap-x-[1.5%] pl-[7.75%] pr-[4.4%] [grid-area:track] 2xl:pl-[6.5%] 2xl:pr-[3.5%]">
+                <div className="flex w-full flex-col items-center justify-between gap-y-[2%] py-1 [grid-area:track] sm:flex-row sm:gap-x-[2%] sm:gap-y-0 sm:py-0 sm:pl-[7.75%] sm:pr-[4.4%] 2xl:pl-[6.5%] 2xl:pr-[3.5%]">
                     {category.posts.map((post, idx) => {
                         return (
                             <button
                                 key={`${post.id}_${idx}`}
                                 className={classNames(
-                                    'relative h-full flex-1 transition-[background-color] duration-300',
+                                    'relative h-1/2 w-full flex-1 transition-[background-color] duration-300 sm:h-full',
                                     idx === flipIndex ? 'bg-theme-primary-lighter' : 'bg-black/15 hover-active:bg-theme-primary/50',
                                 )}
                                 onClick={() => setFlipIndex(idx)}

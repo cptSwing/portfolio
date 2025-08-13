@@ -39,8 +39,8 @@ const HexagonTiles = () => {
         <svg
             ref={svgRef}
             className={classNames(
-                'pointer-events-none absolute z-10 h-full transform-gpu overflow-visible transition-transform',
-                routeName === ROUTE.home ? navMenuTransitionClasses_Memo : '',
+                'pointer-events-none absolute z-10 h-auto w-full transform-gpu overflow-visible transition-transform sm:h-full sm:w-auto',
+                routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'rotate-[--svg-mobile-rotate]',
             )}
             viewBox={routeName === ROUTE.category ? viewBoxes['square'] : routeName === ROUTE.post ? viewBoxes['hexPointy'] : viewBoxes['hexFlat']}
             style={
@@ -246,7 +246,7 @@ const ButtonHexagon: FC<{
                     y={hexHalfHeight}
                     textAnchor="middle"
                     alignmentBaseline="central"
-                    className="pointer-events-none origin-[12.5%_12.5%] transform-gpu select-none fill-theme-secondary-lighter/75 stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter"
+                    className="pointer-events-none origin-[12.5%_11%] rotate-[calc(var(--svg-mobile-rotate)*-1)] transform-gpu select-none fill-theme-secondary-lighter/75 stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter sm:origin-[12.5%_12.5%]"
                 >
                     {title}
                 </text>
@@ -265,9 +265,12 @@ const MenuNavButton: FC<{
         <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible">
             <div
                 className="size-full origin-center transform-gpu bg-theme-text-background transition-transform [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter"
-                style={{
-                    maskImage: `url(${svgIconPath})`,
-                }}
+                style={
+                    {
+                        '--tw-rotate': 'calc(var(--svg-mobile-rotate) * -1)',
+                        'maskImage': `url(${svgIconPath})`,
+                    } as CSSProperties
+                }
             />
             <span
                 className={classNames(
@@ -309,7 +312,7 @@ function calcCSSVariables(
     },
 ) {
     return {
-        '--tw-translate-x': `calc(${(position.x / totalWidthAtCenter) * 100 + (offsets?.x ?? 0)}% ${isRightSide ? '+ var(--translate-right-offset)' : ''})`,
+        '--tw-translate-x': `calc(${(position.x / totalWidthAtCenter) * 100 + (offsets?.x ?? 0)}% ${isRightSide ? '+ var(--translate-menu-offset)' : ''})`,
         '--tw-translate-y': `${(position.y / totalHeight) * 100 + (offsets?.y ?? 0)}%`,
         '--tw-rotate': `${rotation}deg`,
         '--tw-scale-x': (1 - strokeWidth) * scale,

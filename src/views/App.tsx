@@ -51,12 +51,12 @@ const Main = () => {
     return (
         <div
             className={classNames(
-                '[--scrollbar-thumb:theme(colors.theme.primary-darker)] [--translate-right-offset:0px]',
-                'relative w-auto text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
+                '[--scrollbar-thumb:theme(colors.theme.primary-darker)] sm:[--svg-mobile-rotate:0deg] sm:[--translate-menu-offset:0px]',
+                'relative text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
                 routeName === ROUTE.category
-                    ? 'aspect-square h-[min(90vh,70vw)] 2xl:aspect-[1/0.75] 2xl:[--translate-right-offset:135px]'
+                    ? 'aspect-[1/1.75] w-[min(90vw,47.5vh)] [--svg-mobile-rotate:90deg] [--translate-menu-offset:290px] sm:aspect-square sm:h-[min(90vh,70vw)] sm:w-auto 2xl:aspect-[1/0.75] 2xl:[--translate-menu-offset:135px]'
                     : routeName === ROUTE.post
-                      ? 'aspect-hex-pointy h-[min(95vh,105vw)] lg:aspect-square lg:[--translate-right-offset:52px] 2xl:aspect-hex-flat 2xl:[--translate-right-offset:115px]'
+                      ? 'aspect-hex-pointy pt-[20%] [--svg-mobile-rotate:90deg] sm:h-[min(95vh,105vw)] lg:aspect-square lg:[--translate-menu-offset:52px] 2xl:aspect-hex-flat 2xl:[--translate-menu-offset:115px]'
                       : // ROUTE.home
                         'aspect-hex-flat h-[min(80vh,80vw)]',
             )}
