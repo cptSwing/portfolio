@@ -312,8 +312,8 @@ function calcCSSVariables(
     },
 ) {
     return {
-        '--tw-translate-x': `calc(${(position.x / totalWidthAtCenter) * 100 + (offsets?.x ?? 0)}% ${isRightSide ? '+ var(--translate-menu-offset)' : ''})`,
-        '--tw-translate-y': `${(position.y / totalHeight) * 100 + (offsets?.y ?? 0)}%`,
+        '--tw-translate-x': `calc(${(position.x / totalWidthAtCenter) * 100}% + ${offsets?.x ?? 0}% ${isRightSide ? '+ var(--translate-menu-offset)' : ''})`,
+        '--tw-translate-y': `calc(${(position.y / totalHeight) * 100}% + ${offsets?.y ?? 0}%)`,
         '--tw-rotate': `${rotation}deg`,
         '--tw-scale-x': (1 - strokeWidth) * scale,
         '--tw-scale-y': (1 - strokeWidth) * scale,

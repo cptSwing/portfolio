@@ -991,9 +991,11 @@ const getMenuButtonPosition = (ev: React.MouseEvent<SVGGElement, MouseEvent>) =>
 function degToRad(deg: number) {
     return (Math.PI / 180) * deg;
 }
-function sin(deg: number) {
-    return Math.sin(degToRad(deg));
+export function sin(deg: number, clampTo?: number) {
+    const cosSin = Math.sin(degToRad(deg));
+    return clampTo ? parseFloat(cosSin.toFixed(clampTo)) : cosSin;
 }
-function cos(deg: number) {
-    return Math.cos(degToRad(deg));
+export function cos(deg: number, clampTo?: number) {
+    const cosNum = Math.cos(degToRad(deg));
+    return clampTo ? parseFloat(cosNum.toFixed(clampTo)) : cosNum;
 }

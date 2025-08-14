@@ -73,7 +73,15 @@ const CategoryCard: FC<{
     const debug_applyTransformMatrixFix = useZustand(({ values }) => values.debug.applyTransformMatrixFix);
 
     return (
-        <Flipped flipId={post.id} transformOrigin="0px 0px" opacity translate scale>
+        <Flipped
+            flipId={post.id}
+            transformOrigin="0px 0px"
+            opacity
+            translate
+            scale
+            // onStartImmediate={(elem) => elem.classList.add('will-change-transform')}
+            // onComplete={(elem) => elem.classList.remove('will-change-transform')}
+        >
             <svg
                 ref={svgRef}
                 width="100%"
@@ -130,12 +138,12 @@ const ChildImageAndSvg: FC<{ gridAreaIndex: number; cardImage?: string; pathName
                     height="100%"
                     className="origin-center scale-[0.99] transform-gpu transition-[filter] [filter:var(--image-filter,brightness(0.1)_grayscale(0.1))] group-hover-active:brightness-110" // to combat pixel errors (rounding?)
                     href={cardImage}
-                    clipPath={`url(#${clipPathName})`}
+                    // clipPath={`url(#${clipPathName})`}
                     preserveAspectRatio="xMidYMid slice"
                 />
 
                 {/* Scale according to percentages of width/height */}
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" preserveAspectRatio="none">
+                {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" preserveAspectRatio="none">
                     <use
                         href={`#${pathName}`}
                         clipPath={`url(#${clipPathName})`}
@@ -145,7 +153,7 @@ const ChildImageAndSvg: FC<{ gridAreaIndex: number; cardImage?: string; pathName
                         strokeWidth={7 / ((gridAreaIndex + 5) / areaCount)}
                         fill="none"
                     />
-                </svg>
+                </svg> */}
             </>
         );
     },
