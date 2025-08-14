@@ -1,7 +1,7 @@
 import tailwindBreakpointsInspector from 'tailwindcss-breakpoints-inspector';
 import tailwindScrollbar from 'tailwind-scrollbar';
 import { tailwindClipInset, tailwindMaskEdges } from 'tailwind-css-plugins/meta';
-import { tailwindHoverActive } from './src/lib/tailwindPlugins';
+import { tailwindHoverActive, tailwindConvertToMatrixTransform } from './src/lib/tailwindPlugins';
 
 const tailWindTheme = {
     future: {
@@ -76,7 +76,7 @@ const tailWindTheme = {
             },
         },
     },
-    plugins: [tailwindScrollbar, tailwindBreakpointsInspector, tailwindClipInset, tailwindMaskEdges, tailwindHoverActive],
+    plugins: [tailwindScrollbar, tailwindBreakpointsInspector, tailwindClipInset, tailwindMaskEdges, tailwindHoverActive, tailwindConvertToMatrixTransform],
 };
 
 export default tailWindTheme;

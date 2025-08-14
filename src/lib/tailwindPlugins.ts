@@ -27,6 +27,128 @@ export const tailwindHoverActive = plugin(({ addVariant, matchVariant }) => {
     );
 });
 
+export const tailwindConvertToMatrixTransform = plugin(({ addUtilities, matchUtilities, theme }) => {
+    const defaults = {
+        matrixA: 1,
+        matrixB: 0,
+        matrixC: 0,
+        matrixD: 1,
+        matrixE: 0,
+        matrixF: 0,
+        matrixRotateCos: 1,
+        matrixRotateSin: 0,
+        matrixScale: 1,
+    };
+
+    const defaultMatrixTransform = `matrix(var(--tw-matrix-a, ${defaults.matrixA}), var(--tw-matrix-b, ${defaults.matrixB}), var(--tw-matrix-c, ${defaults.matrixC}), var(--tw-matrix-d, ${defaults.matrixD}), var(--tw-matrix-e, ${defaults.matrixE}), var(--tw-matrix-f, ${defaults.matrixF}))`;
+
+    addUtilities({
+        '.matrix-transform': {
+            '--tw-matrix-a': `calc(var(--tw-matrix-scale-x, ${defaults.matrixScale}) * var(--tw-matrix-rotate-cos, ${defaults.matrixRotateCos}))`,
+            '--tw-matrix-b': `calc(var(--tw-matrix-scale-x, ${defaults.matrixScale}) * var(--tw-matrix-rotate-sin, ${defaults.matrixRotateSin}))`,
+            '--tw-matrix-c': `calc(-1 * var(--tw-matrix-scale-y, ${defaults.matrixScale}) * var(--tw-matrix-rotate-sin, ${defaults.matrixRotateSin}))`,
+            '--tw-matrix-d': `calc(var(--tw-matrix-scale-y, ${defaults.matrixScale}) * var(--tw-matrix-rotate-cos, ${defaults.matrixRotateCos}))`,
+            'transform': defaultMatrixTransform,
+        },
+    });
+
+    matchUtilities(
+        {
+            'matrix-translate-x': (value: string) => ({
+                '--tw-matrix-e': value,
+                'transform': defaultMatrixTransform,
+            }),
+            'matrix-translate-y': (value: string) => ({
+                '--tw-matrix-f': value,
+                'transform': defaultMatrixTransform,
+            }),
+        },
+        { values: theme('number'), supportsNegativeValues: true },
+    );
+
+    matchUtilities(
+        {
+            'matrix-rotate': (value: string) => ({
+                '--tw-matrix-rotate-cos': cos(value, 5),
+                '--tw-matrix-rotate-sin': sin(value, 5),
+                '--tw-matrix-a': `calc(var(--tw-matrix-scale-x, ${defaults.matrixScale}) * var(--tw-matrix-rotate-cos))`,
+                '--tw-matrix-b': `calc(var(--tw-matrix-scale-x, ${defaults.matrixScale}) * var(--tw-matrix-rotate-sin))`,
+                '--tw-matrix-c': `calc(-1 * var(--tw-matrix-scale-y, ${defaults.matrixScale}) * var(--tw-matrix-rotate-sin))`,
+                '--tw-matrix-d': `calc(var(--tw-matrix-scale-y, ${defaults.matrixScale}) * var(--tw-matrix-rotate-cos))`,
+                'transform': defaultMatrixTransform,
+            }),
+        },
+        { values: theme('rotate'), supportsNegativeValues: true },
+    );
+
+    matchUtilities(
+        {
+            'matrix-scale-x': (value: string) => ({
+                '--tw-matrix-scale-x': value,
+                '--tw-matrix-a': `calc(var(--tw-matrix-scale-x) * var(--tw-matrix-rotate-cos, ${defaults.matrixRotateCos}))`,
+                '--tw-matrix-b': `calc(var(--tw-matrix-scale-x) * var(--tw-matrix-rotate-sin, ${defaults.matrixRotateSin}))`,
+                'transform': defaultMatrixTransform,
+            }),
+            'matrix-scale-y': (value: string) => ({
+                '--tw-matrix-scale-y': value,
+                '--tw-matrix-c': `calc(-1 * var(--tw-matrix-scale-y) * var(--tw-matrix-rotate-sin, ${defaults.matrixRotateSin}))`,
+                '--tw-matrix-d': `calc(var(--tw-matrix-scale-y) * var(--tw-matrix-rotate-cos, ${defaults.matrixRotateCos}))`,
+                'transform': defaultMatrixTransform,
+            }),
+            'matrix-scale': (value: string) => ({
+                '--tw-matrix-scale-x': value,
+                '--tw-matrix-scale-y': value,
+                '--tw-matrix-a': `calc(var(--tw-matrix-scale-x) * var(--tw-matrix-rotate-cos, ${defaults.matrixRotateCos}))`,
+                '--tw-matrix-b': `calc(var(--tw-matrix-scale-x) * var(--tw-matrix-rotate-sin, ${defaults.matrixRotateSin}))`,
+                '--tw-matrix-c': `calc(-1 * var(--tw-matrix-scale-y) * var(--tw-matrix-rotate-sin, ${defaults.matrixRotateSin}))`,
+                '--tw-matrix-d': `calc(var(--tw-matrix-scale-y) * var(--tw-matrix-rotate-cos, ${defaults.matrixRotateCos}))`,
+                'transform': defaultMatrixTransform,
+            }),
+        },
+        { values: theme('scale'), supportsNegativeValues: true },
+    );
+
+    function cos(angle_DEG: string, clampTo?: number) {
+        const parsedAngle = angle_DEG.split('deg')[0];
+        if (parsedAngle) {
+            const angle_RAD = parseFloat(parsedAngle) * (Math.PI / 180);
+            return clampTo ? Math.cos(angle_RAD).toFixed(clampTo).toString() : Math.cos(angle_RAD).toString();
+        } else return '1';
+    }
+
+    function sin(angle_DEG: string, clampTo?: number) {
+        const parsedAngle = angle_DEG.split('deg')[0];
+        if (parsedAngle) {
+            const angle_RAD = parseFloat(parsedAngle) * (Math.PI / 180);
+            return clampTo ? Math.sin(angle_RAD).toFixed(clampTo).toString() : Math.sin(angle_RAD).toString();
+        } else return '0';
+    }
+});
+
+// export const tailwindConvertToMatrixTransform = plugin(({ addUtilities }) => {
+//     addUtilities({
+//         '.matrix-transform': {
+//             '--tw-translate-x': '0px',
+//             '--tw-translate-y': '0px',
+//             '--tw-rotate': '0deg',
+//             '--tw-scale-x': '1',
+//             '--tw-scale-y': '1',
+
+//             '--tw-rotate-cos': 'cos(var(--tw-rotate))',
+//             '--tw-rotate-sin': 'sin(var(--tw-rotate))',
+
+//             'transform': `matrix(
+//                 calc(var(--tw-rotate-cos) * var(--tw-scale-x)),
+//                 calc(var(--tw-rotate-sin) * var(--tw-scale-x)),
+//                 calc(var(--tw-rotate-sin) * (var(--tw-scale-y) * -1)),
+//                 calc(var(--tw-rotate-cos) * var(--tw-scale-y)),
+//                 var(--tw-translate-x),
+//                 var(--tw-translate-y)
+//             )`,
+//         },
+//     });
+// });
+
 // TODO add explicit plugin option to include default presets I guess
 // TODO other popular Google fonts: Montserrat, Open Sans, Poppins, Lato, Raleway, Oswald, Source Sans Pro, Playfair Display, Pathway Gothic One
 
