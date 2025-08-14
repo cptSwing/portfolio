@@ -123,7 +123,7 @@ const BannerTitle: FC<{
                 } as CSSProperties
             }
         >
-            <div className="text-nowrap font-fjalla-one text-xs leading-none text-theme-secondary-lighter sm:text-sm md:text-base lg:text-xl xl:text-xl 2xl:text-2xl">
+            <div className="text-nowrap font-fjalla-one text-xs leading-none text-theme-primary-lighter sm:text-sm md:text-base lg:text-xl xl:text-xl 2xl:text-2xl">
                 {title}
             </div>
         </div>

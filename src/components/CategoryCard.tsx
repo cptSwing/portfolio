@@ -112,8 +112,16 @@ const CategoryCard: FC<{
 
 export default CategoryCard;
 
+const {
+    ui: {
+        animation: { menuTransition_Ms },
+    },
+} = config;
+
 const ChildImageAndSvg: FC<{ gridAreaIndex: number; cardImage?: string; pathName: string; clipPathName: string }> = memo(
     ({ gridAreaIndex, cardImage, pathName, clipPathName }) => {
+        const isAtFront = gridAreaIndex === 0;
+
         return (
             <>
                 {/* Emulate object-cover via preserveAspectRatio */}
@@ -131,7 +139,8 @@ const ChildImageAndSvg: FC<{ gridAreaIndex: number; cardImage?: string; pathName
                     <use
                         href={`#${pathName}`}
                         clipPath={`url(#${clipPathName})`}
-                        className="stroke-theme-primary-darker"
+                        className={classNames('transition-[stroke]', isAtFront ? 'stroke-theme-primary-lighter' : 'stroke-theme-primary-darker')}
+                        style={{ transitionDuration: `${menuTransition_Ms}ms` }}
                         shapeRendering="geometricPrecision"
                         strokeWidth={7 / ((gridAreaIndex + 5) / areaCount)}
                         fill="none"

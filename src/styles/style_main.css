@@ -22,6 +22,35 @@
 }
 
 @layer components {
+    .postcards-grid-template-mobile {
+        grid-template-areas:
+            'area0  area0  track'
+            'area0  area0  track'
+            'area0  area0  track'
+            'area0  area0  track'
+            'area0  area0  track'
+            'area0  area0  track'
+            'area0  area0  track'
+            'area2  area1  track'
+            'area2  area1  track'
+            'area2  area1  track'
+            'area3  area4  track'
+            'area3  area4  track'
+            'rest   area5  track';
+    }
+
+    .postcards-grid-template-desktop {
+        grid-template-areas:
+            'area0  area0   area0   area0   rest    area5'
+            'area0  area0   area0   area0   area4   area4'
+            'area0  area0   area0   area0   area3   area3'
+            'area0  area0   area0   area0   area3   area3'
+            'area1  area1   area1   area2   area2   area2'
+            'area1  area1   area1   area2   area2   area2'
+            'area1  area1   area1   area2   area2   area2'
+            'track  track   track   track   track   track';
+    }
+
     .rotate-text {
         @apply writing-mode-vert-lr rotate-180;
     }
@@ -59,38 +88,6 @@
     .backface-visible {
         backface-visibility: visible;
     }
-}
-
-
-.postcards-grid-template-mobile {
-    grid-template-areas:
-        'area0  area0  track'
-        'area0  area0  track'
-        'area0  area0  track'
-        'area0  area0  track'
-        'area0  area0  track'
-        'area0  area0  track'
-        'area0  area0  track'
-        'area2  area1  track'
-        'area2  area1  track'
-        'area2  area1  track'
-        'area3  area4  track'
-        'area3  area4  track'
-        'rest   area5  track'
-        
-}
-
-
-.postcards-grid-template-desktop {
-    grid-template-areas:
-        'area0  area0   area0   area0   rest    area5'
-        'area0  area0   area0   area0   area4   area4'
-        'area0  area0   area0   area0   area3   area3'
-        'area0  area0   area0   area0   area3   area3'
-        'area1  area1   area1   area2   area2   area2'
-        'area1  area1   area1   area2   area2   area2'
-        'area1  area1   area1   area2   area2   area2'
-        'track  track   track   track   track   track';
 }
 
 /* SVG Filters */
