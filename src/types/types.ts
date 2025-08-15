@@ -24,8 +24,8 @@ export type ZustandStore = {
     values: {
         theme: 'yellow' | 'pink' | 'orange' | 'bw';
         routeData: RouteData;
-        activeMenuButton: { name: UI_MenuLink | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
-        postNavigationState: Omit<UI_NavigationButton, 'gohome'> | null;
+        activeMenuButton: { name: MenuName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
+        postNavigationState: Omit<NavigationButtonName, 'home'> | null;
         debug: {
             applyTransformMatrixFix: boolean;
         };
@@ -34,7 +34,7 @@ export type ZustandStore = {
         store_cycleTheme: () => void;
         store_setRouteData: (routeData: RouteData) => void;
         store_toggleMenu: (newMenuState: ZustandStore['values']['activeMenuButton']) => void;
-        store_setPostNavigationState: (postNavigationState: Omit<UI_NavigationButton, 'home'> | null) => void;
+        store_setPostNavigationState: (postNavigationState: Omit<NavigationButtonName, 'home'> | null) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
 };
@@ -46,7 +46,6 @@ export type RouteData =
 
 export type DataBase = Record<keyof typeof CATEGORY, Category>;
 
-export type CategoryName = keyof typeof CATEGORY;
 export type Category = {
     id: number;
     title: string;
@@ -86,20 +85,45 @@ export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
 /* NOTE Easy, if non-generic, method to build a Type that has EITHER key1 OR key2. Mind the "?"" in the key to be excluded in the helper types above. */
 export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
-type UI_MenuLink = 'config' | 'contact' | 'login';
-type UI_NavigationButton = 'home' | 'previous' | 'next' | 'close';
-export type UI_CategoryLink = CategoryName;
-export type UIButton = UI_CategoryLink | UI_MenuLink | UI_NavigationButton;
+type MenuName = 'config' | 'contact' | 'login' | 'previous' | 'close' | 'next';
+type NavigationButtonName = 'home';
+export type CategoryName = keyof typeof CATEGORY;
+export type ButtonName = CategoryName | MenuName | NavigationButtonName;
 
 export type HexagonData = {
     position: { x: number; y: number };
     rotation: number;
     scale: number;
     isHalf: boolean;
-    offsets?: { x: number; y: number };
-    isRightSide: boolean;
+    shouldOffset: boolean;
 };
-export type HexagonLink = { title?: UIButton; svgIconPath?: string; target: string | ((ev?: React.MouseEvent<SVGGElement, MouseEvent>) => void | string) };
+export type HexagonRouteData = Record<ROUTE, HexagonData>;
+
+interface HexagonButtonData {
+    name: ButtonName;
+    title?: string;
+    svgIconPath?: string;
+}
+
+export interface HexagonNavigationButtonData extends HexagonButtonData {
+    target: string | ((ev?: React.MouseEvent<SVGGElement, MouseEvent>) => string);
+}
+export interface HexagonNavigationDefaultButtonData extends HexagonNavigationButtonData {
+    name: NavigationButtonName;
+    svgIconPath: string;
+}
+export interface HexagonNavigationCategoryButtonData extends HexagonNavigationButtonData {
+    name: CategoryName;
+    title: string;
+}
+export interface HexagonNavigationDefaultButtonRouteData extends HexagonRouteData, HexagonNavigationDefaultButtonData {}
+export interface HexagonNavigationCategoryButtonRouteData extends HexagonRouteData, HexagonNavigationCategoryButtonData {}
+
+export interface HexagonMenuButtonRouteData extends HexagonRouteData, HexagonButtonData {
+    target: (ev?: React.MouseEvent<SVGGElement, MouseEvent>) => void;
+    name: MenuName;
+    svgIconPath: string;
+}
 
 export type GridAreaPathData = {
     width: number;

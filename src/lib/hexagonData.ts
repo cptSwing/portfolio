@@ -1,6 +1,6 @@
 import { config } from '../types/exportTyped';
 import { ROUTE } from '../types/enums';
-import { HexagonData, HexagonLink, RouteData, ZustandStore } from '../types/types';
+import { HexagonData, HexagonNavigation, RouteData, ZustandStore } from '../types/types';
 import { useZustand } from './zustand';
 
 const { store_toggleMenu, store_setPostNavigationState } = useZustand.getState().methods;
@@ -37,69 +37,69 @@ const allOffsets = Array.from({ length: rows }).map((_, rowIndex) =>
 );
 const defaultPosition = { x: 0, y: 0 };
 
-const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['name'], HexagonData> & HexagonLink) | null)[][] = [
+const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['name'], HexagonData> & HexagonNavigation) | null)[][] = [
     // 0
     [
         null,
         {
-            [ROUTE.home]: { position: allOffsets[0]?.[1] ?? defaultPosition, rotation: 0, isHalf: true, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[0]?.[1] ?? defaultPosition, rotation: 0, isHalf: true, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[1]?.[0] ?? defaultPosition,
                 rotation: 120,
                 isHalf: true,
                 scale: 1.1,
                 offsets: { x: 5, y: -4.75 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // L1
             [ROUTE.post]: {
                 position: allOffsets[1]?.[1] ?? defaultPosition,
                 rotation: 30,
                 isHalf: true,
                 scale: 0,
-                isRightSide: false,
+                shouldOffset: false,
                 offsets: { x: 2.325, y: -5.65 },
             },
         },
 
         // Post controls, only available in that component
         {
-            [ROUTE.home]: { position: allOffsets[0]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, isRightSide: false },
-            [ROUTE.category]: { position: allOffsets[1]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[0]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, shouldOffset: false },
+            [ROUTE.category]: { position: allOffsets[1]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, shouldOffset: false },
             [ROUTE.post]: {
                 position: allOffsets[0]?.[2] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
                 scale: 0.2,
                 offsets: { x: 2.1, y: 4.25 },
-                isRightSide: true,
+                shouldOffset: true,
             },
             svgIconPath: '/svg/ChevronLeftOutline.svg',
             target: () => store_setPostNavigationState('prev'),
         },
         {
-            [ROUTE.home]: { position: allOffsets[0]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, isRightSide: false },
-            [ROUTE.category]: { position: allOffsets[0]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[0]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, shouldOffset: false },
+            [ROUTE.category]: { position: allOffsets[0]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, shouldOffset: false },
             [ROUTE.post]: {
                 position: allOffsets[0]?.[2] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
                 scale: 0.2,
                 offsets: { x: 5.9, y: 1.75 },
-                isRightSide: true,
+                shouldOffset: true,
             },
             svgIconPath: '/svg/XMarkOutline.svg',
             target: () => store_setPostNavigationState('close'),
         },
         {
-            [ROUTE.home]: { position: allOffsets[0]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, isRightSide: false },
-            [ROUTE.category]: { position: allOffsets[3]?.[3] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[0]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, shouldOffset: false },
+            [ROUTE.category]: { position: allOffsets[3]?.[3] ?? defaultPosition, rotation: 0, isHalf: false, scale: 0, shouldOffset: false },
             [ROUTE.post]: {
                 position: allOffsets[0]?.[2] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
                 scale: 0.2,
                 offsets: { x: 9.7, y: 4.25 },
-                isRightSide: true,
+                shouldOffset: true,
             },
             svgIconPath: '/svg/ChevronRightOutline.svg',
             target: () => store_setPostNavigationState('next'),
@@ -110,14 +110,14 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
     [
         null,
         {
-            [ROUTE.home]: { position: allOffsets[1]?.[1] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[1]?.[1] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[1]?.[0] ?? defaultPosition,
                 rotation: -60,
                 isHalf: true,
                 scale: 0.8,
                 offsets: { x: 3.25, y: 5.925 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // L4
             [ROUTE.post]: {
                 position: allOffsets[1]?.[1] ?? defaultPosition,
@@ -125,18 +125,18 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: true,
                 scale: 0,
                 offsets: { x: 0.1, y: 0.3 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
         {
-            [ROUTE.home]: { position: allOffsets[1]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[1]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[3]?.[0] ?? defaultPosition,
                 rotation: 120,
                 isHalf: false,
                 scale: 0.65,
                 offsets: { x: -2.25, y: 3.35 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // L6
             [ROUTE.post]: {
                 position: allOffsets[7]?.[3] ?? defaultPosition,
@@ -144,7 +144,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.35,
                 offsets: { x: -7.5, y: 9.5 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // Bottom right
         },
         null,
@@ -153,14 +153,14 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
     // 2
     [
         {
-            [ROUTE.home]: { position: allOffsets[2]?.[0] ?? defaultPosition, rotation: -60, isHalf: true, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[2]?.[0] ?? defaultPosition, rotation: -60, isHalf: true, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[0]?.[2] ?? defaultPosition,
                 rotation: -120,
                 isHalf: true,
                 scale: 1,
                 offsets: { x: 17.85, y: 7.25 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // R1
             [ROUTE.post]: {
                 position: allOffsets[0]?.[1] ?? defaultPosition,
@@ -168,18 +168,18 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: true,
                 scale: 0,
                 offsets: { x: 20.35, y: 6.75 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
         {
-            [ROUTE.home]: { position: allOffsets[2]?.[1] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[2]?.[1] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[3]?.[0] ?? defaultPosition,
                 rotation: 120,
                 isHalf: false,
                 scale: 0.5,
                 offsets: { x: -7.3, y: -17 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // L3
             [ROUTE.post]: {
                 position: allOffsets[0]?.[2] ?? defaultPosition,
@@ -187,18 +187,18 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.35,
                 offsets: { x: 12, y: 3.5 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // Top right
         },
         {
-            [ROUTE.home]: { position: allOffsets[2]?.[2] ?? defaultPosition, rotation: 60, isHalf: true, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[2]?.[2] ?? defaultPosition, rotation: 60, isHalf: true, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[0]?.[2] ?? defaultPosition,
                 rotation: 60,
                 isHalf: true,
                 scale: 0.65,
                 offsets: { x: 12.85, y: 5.5 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // R2
             [ROUTE.post]: {
                 position: allOffsets[1]?.[2] ?? defaultPosition,
@@ -206,7 +206,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: true,
                 scale: 0,
                 offsets: { x: -1.9, y: 4.55 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
     ],
@@ -215,14 +215,14 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
     [
         null,
         {
-            [ROUTE.home]: { position: allOffsets[3]?.[1] ?? defaultPosition, rotation: -60, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[3]?.[1] ?? defaultPosition, rotation: -60, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[7]?.[0] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
                 scale: 0.8,
                 offsets: { x: 1.35, y: -3.75 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // "Active" position
             [ROUTE.post]: {
                 position: allOffsets[5]?.[1] ?? defaultPosition,
@@ -230,20 +230,20 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0,
                 offsets: { x: 6.25, y: 1 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             title: 'code',
             target: '/0',
         },
         {
-            [ROUTE.home]: { position: allOffsets[3]?.[2] ?? defaultPosition, rotation: 60, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[3]?.[2] ?? defaultPosition, rotation: 60, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[8]?.[0] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
                 scale: 0.5,
                 offsets: { x: -15.575, y: -2 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             [ROUTE.post]: {
                 position: allOffsets[6]?.[1] ?? defaultPosition,
@@ -251,7 +251,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0,
                 offsets: { x: -12.5, y: 0 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             title: '3d',
             target: '/1',
@@ -262,14 +262,14 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
     // 4 (Vertical center)
     [
         {
-            [ROUTE.home]: { position: allOffsets[4]?.[0] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[4]?.[0] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[0]?.[0] ?? defaultPosition,
                 rotation: 120,
                 isHalf: true,
                 scale: 0.25,
                 offsets: { x: -8.7, y: 8.5 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // L2
             [ROUTE.post]: {
                 position: allOffsets[0]?.[1] ?? defaultPosition,
@@ -277,19 +277,19 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: true,
                 scale: 0,
                 offsets: { x: -8.15, y: 0.25 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
 
         {
-            [ROUTE.home]: { position: allOffsets[4]?.[1] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[4]?.[1] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[1]?.[3] ?? defaultPosition,
                 rotation: 60,
                 isHalf: true,
                 scale: 0.395,
                 offsets: { x: -1, y: 13.9 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // R3
             [ROUTE.post]: {
                 position: allOffsets[0]?.[1] ?? defaultPosition,
@@ -297,19 +297,19 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0,
                 offsets: { x: 11.75, y: 3.1 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
 
         {
-            [ROUTE.home]: { position: allOffsets[4]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[4]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[3]?.[3] ?? defaultPosition,
                 rotation: 120,
                 isHalf: false,
                 scale: 0.75,
                 offsets: { x: -3.2, y: 0.575 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // R4
             [ROUTE.post]: {
                 position: allOffsets[7]?.[0] ?? defaultPosition,
@@ -317,7 +317,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.35,
                 offsets: { x: 7.5, y: 9.75 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // Bottom Left
         },
 
@@ -329,7 +329,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.3,
                 offsets: { x: 0, y: -2.25 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             [ROUTE.category]: {
                 position: allOffsets[1]?.[3] ?? defaultPosition,
@@ -337,7 +337,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.3,
                 offsets: { x: -0.5, y: 6.75 },
-                isRightSide: true,
+                shouldOffset: true,
             },
             [ROUTE.post]: {
                 position: allOffsets[6]?.[0] ?? defaultPosition,
@@ -345,7 +345,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.25,
                 offsets: { x: -12.5, y: 5 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             title: 'contact',
             svgIconPath: '/svg/ChatBubbleLeftRightOutline.svg',
@@ -358,7 +358,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.25,
                 offsets: { x: -5.5, y: 1.5 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             [ROUTE.category]: {
                 position: allOffsets[2]?.[2] ?? defaultPosition,
@@ -366,7 +366,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.225,
                 offsets: { x: 12.725, y: -3.1 },
-                isRightSide: true,
+                shouldOffset: true,
             },
             [ROUTE.post]: {
                 position: allOffsets[7]?.[0] ?? defaultPosition,
@@ -374,7 +374,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.2,
                 offsets: { x: 6.25, y: 0 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             title: 'config',
             svgIconPath: '/svg/AdjustmentsHorizontalOutline.svg',
@@ -387,7 +387,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.25,
                 offsets: { x: 5.5, y: 1.5 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             [ROUTE.category]: {
                 position: allOffsets[1]?.[3] ?? defaultPosition,
@@ -395,7 +395,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0,
                 offsets: { x: -6, y: 1.9 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             [ROUTE.post]: {
                 position: allOffsets[6]?.[1] ?? defaultPosition,
@@ -403,7 +403,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0,
                 offsets: { x: 12.5, y: 0 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             title: 'login',
             svgIconPath: '/svg/UserIconOutline.svg',
@@ -418,7 +418,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0,
                 offsets: { x: -3.125, y: 0 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             [ROUTE.category]: {
                 position: allOffsets[1]?.[3] ?? defaultPosition,
@@ -426,7 +426,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.19,
                 offsets: { x: -5.85, y: 4.4 },
-                isRightSide: true,
+                shouldOffset: true,
             },
             [ROUTE.post]: {
                 position: allOffsets[1]?.[3] ?? defaultPosition,
@@ -434,7 +434,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.175,
                 offsets: { x: -6.25, y: -1.5625 },
-                isRightSide: true,
+                shouldOffset: true,
             },
             title: '',
             svgIconPath: '/svg/HomeOutline.svg',
@@ -449,14 +449,14 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
     [
         null,
         {
-            [ROUTE.home]: { position: allOffsets[5]?.[1] ?? defaultPosition, rotation: 60, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[5]?.[1] ?? defaultPosition, rotation: 60, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[4]?.[0] ?? defaultPosition,
                 rotation: -60,
                 isHalf: true,
                 scale: 0.3,
                 offsets: { x: -13.1, y: -4.65 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // L7
             [ROUTE.post]: {
                 position: allOffsets[4]?.[1] ?? defaultPosition,
@@ -464,18 +464,18 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: true,
                 scale: 0,
                 offsets: { x: -26.75, y: 0.35 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
         {
-            [ROUTE.home]: { position: allOffsets[5]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[5]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[4]?.[2] ?? defaultPosition,
                 rotation: 60,
                 isHalf: false,
                 scale: 0.775,
                 offsets: { x: 15.5, y: 6.05 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // R5
             [ROUTE.post]: {
                 position: allOffsets[4]?.[1] ?? defaultPosition,
@@ -483,7 +483,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0,
                 offsets: { x: 16, y: 7.1 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
         null,
@@ -492,14 +492,14 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
     // 6
     [
         {
-            [ROUTE.home]: { position: allOffsets[6]?.[0] ?? defaultPosition, rotation: -120, isHalf: true, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[6]?.[0] ?? defaultPosition, rotation: -120, isHalf: true, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[4]?.[0] ?? defaultPosition,
                 rotation: 0,
                 isHalf: true,
                 scale: 0.65,
                 offsets: { x: -20.075, y: -22 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // L5
             [ROUTE.post]: {
                 position: allOffsets[4]?.[1] ?? defaultPosition,
@@ -507,18 +507,18 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: true,
                 scale: 0,
                 offsets: { x: -28.5, y: -6.1 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
         {
-            [ROUTE.home]: { position: allOffsets[6]?.[1] ?? defaultPosition, rotation: 180, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[6]?.[1] ?? defaultPosition, rotation: 180, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[7]?.[0] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
                 scale: 0.37,
                 offsets: { x: 11.5, y: 4.45 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             [ROUTE.post]: {
                 position: allOffsets[7]?.[1] ?? defaultPosition,
@@ -526,20 +526,20 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0,
                 offsets: { x: 6.25, y: -1 },
-                isRightSide: false,
+                shouldOffset: false,
             },
             title: 'log',
             target: '/3',
         },
         {
-            [ROUTE.home]: { position: allOffsets[6]?.[2] ?? defaultPosition, rotation: 120, isHalf: true, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[6]?.[2] ?? defaultPosition, rotation: 120, isHalf: true, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[5]?.[3] ?? defaultPosition,
                 rotation: 120,
                 isHalf: true,
                 scale: 0.65,
                 offsets: { x: -3.175, y: 8.05 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // R6
             [ROUTE.post]: {
                 position: allOffsets[5]?.[2] ?? defaultPosition,
@@ -547,7 +547,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: true,
                 scale: 0,
                 offsets: { x: -2.75, y: 8.5 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
     ],
@@ -556,14 +556,14 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
     [
         null,
         {
-            [ROUTE.home]: { position: allOffsets[7]?.[1] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[7]?.[1] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[5]?.[0] ?? defaultPosition,
                 rotation: -60,
                 isHalf: false,
                 scale: 1.075,
                 offsets: { x: 2.4, y: -1.3 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // L8
             [ROUTE.post]: {
                 position: allOffsets[5]?.[1] ?? defaultPosition,
@@ -571,18 +571,18 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0,
                 offsets: { x: 1.45, y: -3 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
         {
-            [ROUTE.home]: { position: allOffsets[7]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[7]?.[2] ?? defaultPosition, rotation: 0, isHalf: false, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[6]?.[2] ?? defaultPosition,
                 rotation: -60,
                 isHalf: true,
                 scale: 1.1,
                 offsets: { x: 16.1, y: 1.75 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // R7
             [ROUTE.post]: {
                 position: allOffsets[6]?.[1] ?? defaultPosition,
@@ -590,7 +590,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: true,
                 scale: 0,
                 offsets: { x: 13.9, y: 1.5 },
-                isRightSide: false,
+                shouldOffset: false,
             },
         },
         null,
@@ -600,14 +600,14 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
     [
         null,
         {
-            [ROUTE.home]: { position: allOffsets[8]?.[1] ?? defaultPosition, rotation: 180, isHalf: true, scale: 1, isRightSide: false },
+            [ROUTE.home]: { position: allOffsets[8]?.[1] ?? defaultPosition, rotation: 180, isHalf: true, scale: 1, shouldOffset: false },
             [ROUTE.category]: {
                 position: allOffsets[8]?.[2] ?? defaultPosition,
                 rotation: 0,
                 isHalf: false,
                 scale: 0.7,
                 offsets: { x: 12, y: -3.35 },
-                isRightSide: true,
+                shouldOffset: true,
             }, // R8
             [ROUTE.post]: {
                 position: allOffsets[0]?.[0] ?? defaultPosition,
@@ -615,7 +615,7 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
                 isHalf: false,
                 scale: 0.35,
                 offsets: { x: -12, y: 3.5 },
-                isRightSide: false,
+                shouldOffset: false,
             }, // Top left
         },
         null,
@@ -623,16 +623,16 @@ const hexShape: (Record<RouteData['name'], HexagonData> | (Record<RouteData['nam
 ];
 
 export const regularHexagons: Record<RouteData['name'], HexagonData>[] = [];
-export const buttonHexagons: (Record<RouteData['name'], HexagonData> & HexagonLink)[] = [];
+export const buttonHexagons: (Record<RouteData['name'], HexagonData> & HexagonNavigation)[] = [];
 
 hexShape.forEach((hexRow) =>
     hexRow.forEach((hexCol) => {
         if (hexCol) {
             if (
-                (hexCol as Record<RouteData['name'], HexagonData> & HexagonLink).title ||
-                (hexCol as Record<RouteData['name'], HexagonData> & HexagonLink).svgIconPath
+                (hexCol as Record<RouteData['name'], HexagonData> & HexagonNavigation).title ||
+                (hexCol as Record<RouteData['name'], HexagonData> & HexagonNavigation).svgIconPath
             ) {
-                buttonHexagons.push(hexCol as Record<RouteData['name'], HexagonData> & HexagonLink);
+                buttonHexagons.push(hexCol as Record<RouteData['name'], HexagonData> & HexagonNavigation);
             } else {
                 regularHexagons.push(hexCol);
             }

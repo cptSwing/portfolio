@@ -1,7 +1,7 @@
 import { CSSProperties, FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from '../lib/classNames';
-import { HexagonData, HexagonLink, RouteData, UI_CategoryLink, UIButton } from '../types/types';
+import { HexagonData, HexagonNavigation, RouteData, UI_CategoryLink, UIButton } from '../types/types';
 import { halfRoundedHexagonPath, buttonHexagons, regularHexagons, roundedHexagonPath, staticValues } from '../lib/hexagonData';
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
@@ -129,11 +129,11 @@ const RegularHexagon: FC<{
     routeName: RouteData['name'];
 }> = memo(({ shapeData, routeName }) => {
     const localShapeData_Memo = useMemo(() => shapeData[routeName], [routeName, shapeData]);
-    const { position, rotation, scale, isHalf, offsets, isRightSide } = localShapeData_Memo;
+    const { position, rotation, scale, isHalf, offsets, shouldOffset } = localShapeData_Memo;
 
     const cssVariables_Memo = useMemo(
-        () => position && calcCSSVariables(position, rotation, scale, isRightSide, offsets),
-        [offsets, isRightSide, position, rotation, scale],
+        () => position && calcCSSVariables(position, rotation, scale, shouldOffset, offsets),
+        [offsets, shouldOffset, position, rotation, scale],
     );
     const random_Memo = useMemo(() => Math.random(), []);
 
@@ -163,7 +163,7 @@ const RegularHexagon: FC<{
 });
 
 const ButtonHexagon: FC<{
-    shapeData: Record<RouteData['name'], HexagonData> & HexagonLink;
+    shapeData: Record<RouteData['name'], HexagonData> & HexagonNavigation;
     routeName: RouteData['name'];
     menuTransitionStateUpdates: [[UI_CategoryLink | null, boolean], React.Dispatch<React.SetStateAction<[UI_CategoryLink | null, boolean]>>];
 }> = memo(({ shapeData, routeName, menuTransitionStateUpdates }) => {
@@ -171,11 +171,11 @@ const ButtonHexagon: FC<{
 
     const localShapeData_Memo = useMemo(() => shapeData[routeName], [routeName, shapeData]);
     const { title, svgIconPath, target } = shapeData;
-    const { position, rotation, scale, offsets, isRightSide } = localShapeData_Memo;
+    const { position, rotation, scale, offsets, shouldOffset } = localShapeData_Memo;
 
     const cssVariables_Memo = useMemo(
-        () => position && calcCSSVariables(position, rotation, scale, isRightSide, offsets),
-        [offsets, isRightSide, position, rotation, scale],
+        () => position && calcCSSVariables(position, rotation, scale, shouldOffset, offsets),
+        [offsets, shouldOffset, position, rotation, scale],
     );
 
     const isCategory = title && isCategoryLink(title);
@@ -305,14 +305,14 @@ function calcCSSVariables(
     position: { x: number; y: number },
     rotation: number,
     scale: number,
-    isRightSide: boolean,
+    shouldOffset: boolean,
     offsets?: {
         x: number;
         y: number;
     },
 ) {
     return {
-        '--tw-translate-x': `calc(${(position.x / totalWidthAtCenter) * 100}% + ${offsets?.x ?? 0}% ${isRightSide ? '+ var(--translate-menu-offset)' : ''})`,
+        '--tw-translate-x': `calc(${(position.x / totalWidthAtCenter) * 100}% + ${offsets?.x ?? 0}% ${shouldOffset ? '+ var(--translate-menu-offset)' : ''})`,
         '--tw-translate-y': `calc(${(position.y / totalHeight) * 100}% + ${offsets?.y ?? 0}%)`,
         '--tw-rotate': `${rotation}deg`,
         '--tw-scale-x': (1 - strokeWidth) * scale,
