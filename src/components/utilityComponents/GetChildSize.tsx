@@ -1,5 +1,5 @@
 import { Children, Context, FC, ReactElement, useEffect, useMemo, useRef, useState } from 'react';
-import { getChildSizeContextDefaultValue } from '../contexts/GetChildSizeContext';
+import { getChildSizeContextDefaultValue } from '../../contexts/GetChildSizeContext';
 
 const GetChildSize: FC<{ children: ReactElement; Context: Context<{ width: number; height: number }> }> = ({ children, Context }) => {
     const singleChild_Memo = useMemo(() => {

@@ -11,7 +11,7 @@ import parseDateString from '../../lib/parseDateString';
 import { Post as Post_T, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
 import { getHexagonalClipPath } from '../../lib/hexagonData';
 import PostDetails from '../PostDetails';
-import GetChildSize from '../GetChildSize';
+import GetChildSize from '../utilityComponents/GetChildSize';
 import GetChildSizeContext from '../../contexts/GetChildSizeContext';
 import usePostNavigation from '../../hooks/usePostNavigation';
 import useMountTransition from '../../hooks/useMountTransition';
@@ -65,7 +65,7 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
     return shouldMount ? (
         <div
             ref={postRef}
-            className="absolute left-0 top-0 size-full bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-t-[-10%] clip-inset-x-[100%] sm:px-[5.25%] sm:pt-10 lg:px-[5%] lg:pt-12 2xl:px-[4.2%]"
+            className="absolute left-0 top-0 size-full bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-t-[-10%] clip-inset-x-[100%] sm:px-[4.7%] sm:pt-10 md:px-[4.95%] lg:px-[5%] lg:pt-12 2xl:px-[4.2%]"
         >
             <header className="pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center">
                 <GetChildSize Context={GetChildSizeContext}>

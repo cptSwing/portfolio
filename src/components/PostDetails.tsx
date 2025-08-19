@@ -3,7 +3,7 @@ import classNames from '../lib/classNames';
 import { Post } from '../types/types';
 import Markdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
-import GetChildSize from './GetChildSize';
+import GetChildSize from './utilityComponents/GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { getHexagonalClipPath } from '../lib/hexagonData';
 import { TOOL } from '../types/enums';
