@@ -8,6 +8,7 @@ import useDebugButton from '../../hooks/useDebugButton.ts';
 import CategoryCard from '../CategoryCard.tsx';
 import useMountTransition from '../../hooks/useMountTransition.ts';
 import { config } from '../../types/exportTyped.ts';
+import FitText from '../utilityComponents/FitText.tsx';
 
 const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
 
@@ -26,7 +27,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
         }
     }, [category.posts.length, wheelDirection, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
 
-    const gridAreaStylesAndPaths_ref = useRef<{ style: CSSProperties; path: string }[]>([]);
+    const gridAreaStylesAndPaths_ref = useRef<{ styleAndIndex: { zIndex: string; style: CSSProperties }; path: string }[]>([]);
 
     const [title, setTitle] = useState('jens Brandenburg');
 
@@ -34,16 +35,16 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
         <div
             ref={categoryRef}
             className={classNames(
-                'flex h-full w-full flex-col items-center justify-center bg-theme-primary/10 px-[0%] py-[0%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-y-[7.5%] sm:size-full sm:px-[5%] sm:py-[1%] sm:mask-edges-x-[7.5%] sm:mask-edges-y-0 2xl:px-[3.5%]',
+                'flex size-full flex-col items-center justify-center bg-theme-primary/10 transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-y-[7.5%] sm:mask-edges-x-[7.5%] sm:mask-edges-y-0',
                 show ? 'delay-[--ui-animation-menu-transition-duration]' : 'delay-0',
             )}
         >
             {/* Info */}
-            <BannerTitle title={title} />
+            <BannerTitle title={title} classes="h-[7.5%] w-[90%]" />
 
             <Flipper
                 element={'nav'}
-                className="sm:postcards-grid-template-desktop postcards-grid-template-mobile grid h-[85%] w-[92.5%] origin-center transform grid-cols-[repeat(2,minmax(0,1fr))_0.05fr] grid-rows-[repeat(13,minmax(0,1fr))] gap-x-[2%] gap-y-[1.5%] sm:size-[85%] sm:h-[85%] sm:w-full sm:grid-cols-6 sm:grid-rows-[repeat(7,minmax(0,1fr))_0.1fr] sm:gap-[3%]"
+                className="sm:post-cards-grid-template-desktop post-cards-grid-template-mobile h-[85%] w-[90%] origin-center transform gap-x-[2%] gap-y-[1.5%] sm:gap-x-[2.5%] sm:gap-y-[3%] 2xl:gap-x-[2.1%]"
                 flipKey={flipIndex}
                 spring={{ stiffness: 700, damping: 100 }}
             >
@@ -61,27 +62,29 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                     />
                 ))}
 
-                {/* Progress Bar */}
-                <div className="flex w-full flex-col items-center justify-between gap-y-[2%] py-1 [grid-area:track] sm:flex-row sm:gap-x-[2%] sm:gap-y-0 sm:py-0 sm:pl-[7.75%] sm:pr-[4.4%] 2xl:pl-[6.5%] 2xl:pr-[3.5%]">
-                    {category.posts.map((post, idx) => {
-                        return (
-                            <button
-                                key={`${post.id}_${idx}`}
-                                className={classNames(
-                                    'relative h-1/2 w-full flex-1 transition-[background-color] duration-300 sm:h-full',
-                                    idx === flipIndex ? 'bg-theme-primary-lighter' : 'bg-black/15 hover-active:bg-theme-primary/50',
-                                )}
-                                onClick={() => setFlipIndex(idx)}
-                            />
-                        );
-                    })}
+                {/* Brand */}
+                <div className="sm:post-cards-grid-brand-area-desktop relative z-50 flex flex-col items-center justify-center">
+                    <div className="select-none rounded-2xl border-4 border-green-500/50 text-theme-primary">
+                        <FitText text="jens Brandenburg" classes="h-1/2 mx-auto w-[90%]" />
+                        <FitText text="webdev & 3d art" classes="h-1/3 mx-auto w-[90%]" />
+                    </div>
                 </div>
             </Flipper>
 
-            {/* Brand */}
-            <div className="flex flex-1 select-none flex-col items-end justify-center self-end pr-[4.65%] text-theme-primary/30 2xl:pr-[3.65%]">
-                <div className="text-nowrap text-right text-2xs sm:text-xs sm:!leading-tight md:text-sm lg:text-base lg:!leading-snug">jens Brandenburg</div>
-                <div className="text-nowrap text-right text-3xs md:text-2xs lg:text-xs">webdev & 3d art</div>
+            {/* Progress Bar */}
+            <div className="flex h-[7.5%] w-[90%] flex-col items-center justify-between gap-y-[2%] py-1 sm:flex-row sm:gap-x-[2%] sm:gap-y-0 sm:py-0 sm:pl-[7.75%] sm:pr-[4.4%] 2xl:pl-[6.5%] 2xl:pr-[3.5%]">
+                {category.posts.map((post, idx) => {
+                    return (
+                        <button
+                            key={`${post.id}_${idx}`}
+                            className={classNames(
+                                'w-full flex-1 transition-[background-color] duration-300 sm:h-1/3 md:h-1/4 lg:h-1/5 xl:h-1/6',
+                                idx === flipIndex ? 'bg-theme-primary-lighter' : 'bg-black/15 hover-active:bg-theme-primary/50',
+                            )}
+                            onClick={() => setFlipIndex(idx)}
+                        />
+                    );
+                })}
             </div>
 
             {/* Debug! */}
@@ -96,7 +99,8 @@ const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
 const BannerTitle: FC<{
     title: string;
-}> = ({ title }) => {
+    classes?: string;
+}> = ({ title, classes }) => {
     const [isSwitching, setIsSwitching] = useState(false);
 
     useEffect(() => {
@@ -114,8 +118,9 @@ const BannerTitle: FC<{
     return (
         <div
             className={classNames(
-                'mb-[0.5%] ml-[13%] flex flex-1 transform-gpu flex-col items-start justify-end self-start pr-[10%] transition-[transform,opacity] 2xl:ml-[10%]',
+                'flex transform-gpu items-center justify-center transition-[transform,opacity]',
                 isSwitching ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100',
+                classes,
             )}
             style={
                 {
@@ -123,9 +128,7 @@ const BannerTitle: FC<{
                 } as CSSProperties
             }
         >
-            <div className="text-nowrap font-fjalla-one text-xs leading-none text-theme-primary-lighter sm:text-sm md:text-base lg:text-xl xl:text-xl 2xl:text-2xl">
-                {title}
-            </div>
+            <FitText text={title} classes="font-fjalla-one text-theme-primary-lighter text-nowrap leading-none h-1/2" />
         </div>
     );
 };

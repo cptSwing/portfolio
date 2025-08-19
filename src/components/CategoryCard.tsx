@@ -17,7 +17,7 @@ const CategoryCard: FC<{
     cardCount: number;
     gridAreaStylesAndPaths: React.MutableRefObject<
         {
-            style: CSSProperties;
+            styleAndIndex: { zIndex: string; style: CSSProperties };
             path: string;
         }[]
     >;
@@ -42,7 +42,7 @@ const CategoryCard: FC<{
     const gridAreaIndex = getGridAreaIndex(flipIndex, cardIndex, cardCount);
 
     /* set synchronously so the later call to getBoundingClientRect() will report on the correct sizes of respective gridArea */
-    const style = gridAreaStylesAndPaths.current[gridAreaIndex]?.style ?? getGridAreaStyle(gridAreaIndex, cardCount);
+    const styleAndIndex = gridAreaStylesAndPaths.current[gridAreaIndex]?.styleAndIndex ?? getGridAreaStyle(gridAreaIndex, cardCount);
     const path = gridAreaStylesAndPaths.current[gridAreaIndex]?.path;
 
     useLayoutEffect(() => {
@@ -50,9 +50,9 @@ const CategoryCard: FC<{
             const { width, height } = svgRef.current!.getBoundingClientRect();
             const newPath = getIndexCategoryCardPath(gridAreaIndex, width, height);
 
-            gridAreaStylesAndPaths.current[gridAreaIndex] = { style, path: newPath };
+            gridAreaStylesAndPaths.current[gridAreaIndex] = { styleAndIndex, path: newPath };
         }
-    }, [gridAreaIndex, gridAreaStylesAndPaths, style]);
+    }, [gridAreaIndex, gridAreaStylesAndPaths, styleAndIndex]);
 
     /* set title to parent's 'banner' */
     useEffect(() => {
@@ -79,8 +79,8 @@ const CategoryCard: FC<{
             opacity
             translate
             scale
-            // onStartImmediate={(elem) => elem.classList.add('will-change-transform')}
-            // onComplete={(elem) => elem.classList.remove('will-change-transform')}
+            onStartImmediate={(elem) => styleAndIndex.style.gridArea === 'rest' && elem.style.setProperty('z-index', styleAndIndex.zIndex)}
+            onComplete={(elem) => styleAndIndex.style.gridArea !== 'rest' && elem.style.setProperty('z-index', styleAndIndex.zIndex)}
         >
             <svg
                 ref={svgRef}
@@ -91,7 +91,7 @@ const CategoryCard: FC<{
                     gridAreaIndex === 0 ? 'cursor-pointer' : 'cursor-zoom-in',
                     debug_applyTransformMatrixFix ? '[transform:matrix(1,0.00001,-0.00001,1,0,0)]' : '',
                 )}
-                style={style}
+                style={styleAndIndex.style}
                 role="button"
                 tabIndex={0}
                 onClick={handleClick}
@@ -175,12 +175,9 @@ function getGridAreaIndex(flipIndex: number, cardIndex: number, cardCount: numbe
 
 const { areaCount } = config.categoryGrid;
 
-function getGridAreaStyle(gridAreaIndex: number, cardCount: number) {
+function getGridAreaStyle(gridAreaIndex: number, cardCount: number): { zIndex: string; style: CSSProperties } {
     const brightnessPercentage = 1 / areaCount;
-
-    let baseStyle: CSSProperties = {
-        zIndex: cardCount - gridAreaIndex,
-    };
+    let baseStyle: CSSProperties = {};
 
     if (gridAreaIndex >= areaCount) {
         const surplusCells = cardCount - areaCount;
@@ -193,7 +190,6 @@ function getGridAreaStyle(gridAreaIndex: number, cardCount: number) {
         const widthPercent = (ratio / total_ratio) * 100;
 
         baseStyle = {
-            ...baseStyle,
             'position': 'absolute',
             'gridArea': 'rest',
             'width': `${widthPercent * 0.9}%`,
@@ -202,13 +198,15 @@ function getGridAreaStyle(gridAreaIndex: number, cardCount: number) {
         } as CSSProperties;
     } else {
         baseStyle = {
-            ...baseStyle,
-            'gridArea': 'area' + gridAreaIndex,
+            'gridArea': `area${gridAreaIndex}`,
             '--image-filter': `brightness(${1 - gridAreaIndex * brightnessPercentage}) grayscale(${gridAreaIndex * brightnessPercentage})`,
         } as CSSProperties;
     }
 
-    return baseStyle;
+    return {
+        zIndex: (cardCount - gridAreaIndex).toString(),
+        style: baseStyle,
+    };
 }
 
 function sanitizeString(str: string) {
