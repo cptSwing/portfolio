@@ -57,13 +57,13 @@ const Main = () => {
         <div
             className={classNames(
                 '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
-                'relative aspect-hex-flat text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
+                'relative flex items-center justify-center text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
                 routeName === ROUTE.category
-                    ? 'w-[min(90vw,47.5vh)] sm:h-[min(90vh,70vw)] sm:w-auto 2xl:aspect-[1/0.75]'
+                    ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(90vh,62.5vw)] sm:w-auto 2xl:aspect-[1/0.75]'
                     : routeName === ROUTE.post
-                      ? 'w-[min(90vw,47.5vh)] sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]'
+                      ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]'
                       : // ROUTE.home
-                        'h-[min(80vh,80vw)]',
+                        'aspect-hex-flat h-[min(80vh,80vw)] sm:h-[min(70vh,70vw)]',
             )}
             style={globalCssVariables}
         >

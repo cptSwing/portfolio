@@ -155,7 +155,7 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 365,
+                x: 375,
                 y: -9.5,
             },
             rotation: -120,
@@ -219,7 +219,7 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 354,
+                x: 364,
                 y: -24.5,
             },
             rotation: 60,
@@ -285,7 +285,7 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 375,
+                x: 385,
                 y: 40,
             },
             rotation: 60,
@@ -318,7 +318,7 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 372.5,
+                x: 382.5,
                 y: 63.25,
             },
             rotation: 120,
@@ -383,7 +383,7 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 371.5,
+                x: 381.5,
                 y: 126.5,
             },
             rotation: 60,
@@ -449,7 +449,7 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 369.5,
+                x: 379.5,
                 y: 185.5,
             },
             rotation: 120,
@@ -514,7 +514,7 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 361,
+                x: 371,
                 y: 204.5,
             },
             rotation: -60,
@@ -547,7 +547,7 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 350,
+                x: 360,
                 y: 282.5,
             },
             rotation: 0,
@@ -690,7 +690,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
         },
         [ROUTE.category]: {
             position: {
-                x: 341,
+                x: 351,
                 y: 9.25,
             },
             rotation: 0,
@@ -701,7 +701,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
         [ROUTE.post]: {
             position: {
                 x: -50,
-                y: 205,
+                y: 211,
             },
             rotation: 0,
             isHalf: false,
@@ -728,7 +728,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             },
             rotation: 0,
             isHalf: false,
-            scale: 0.25,
+            scale: 0.275,
             shouldOffset: false,
         },
         [ROUTE.category]: {
@@ -765,31 +765,31 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             },
             rotation: 0,
             isHalf: false,
-            scale: 0.25,
+            scale: 0.275,
             shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
-                x: 341.5,
+                x: 351.5,
                 y: 29.25,
             },
             rotation: 0,
             isHalf: false,
-            scale: 0.225,
+            scale: 0.275,
             shouldOffset: true,
         },
         [ROUTE.post]: {
             position: {
                 x: -50,
-                y: 225,
+                y: 232.5,
             },
             rotation: 0,
             isHalf: false,
-            scale: 0.2,
+            scale: 0.25,
             shouldOffset: false,
         },
         name: 'config',
-        title: 'config',
+        title: 'opts',
         svgIconPath: '/svg/AdjustmentsHorizontalOutline.svg',
         target: (ev) => store_toggleMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
     },
@@ -802,12 +802,12 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             },
             rotation: 0,
             isHalf: false,
-            scale: 0.3,
+            scale: 0.275,
             shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
-                x: 363.25,
+                x: 373.25,
                 y: 17.75,
             },
             rotation: 0,
@@ -826,7 +826,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             shouldOffset: false,
         },
         name: 'contact',
-        title: 'contact',
+        title: 'me!',
         svgIconPath: '/svg/ChatBubbleLeftRightOutline.svg',
         target: (ev) => store_toggleMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
     },
@@ -998,24 +998,28 @@ function roundedPolygon(points: PointOpts[], cornerRadius: number, aspectRatio =
 }
 
 function getCategoryCardPath(styleIndex: number, aspectRatio: number): string {
-    const cornerRadius = 0.035;
+    const cornerRadius = 0.0175;
 
     let path;
 
     switch (styleIndex) {
         // isFirst
         case 0:
+            // top left; top right; bottom right; bottom left
             path = roundedPolygon(
                 [
-                    { point: [0, 0.375] },
-                    { point: [0.375 / aspectRatio / tan60, 0] },
+                    { point: [0, 0.41] },
+                    { point: [0.41 / aspectRatio / tan60, 0] },
 
-                    { point: [1, 0], customRadius: cornerRadius * 2 },
+                    { point: [1, 0] },
 
                     { point: [1, 1] },
+                    { point: [0.9075, 1] },
+                    { point: [0.9075, 0.91] },
+                    { point: [0.51, 0.91] },
+                    { point: [0.51, 1] },
 
-                    { point: [0.08 / aspectRatio / tan60, 1], customRadius: cornerRadius / 2 },
-                    { point: [0, 1 - 0.08], customRadius: cornerRadius / 2 },
+                    { point: [0, 1] },
                 ],
                 cornerRadius,
                 aspectRatio,
@@ -1025,15 +1029,16 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number): string {
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
                 [
-                    { point: [0, 0.465] },
-                    { point: [0.465 / aspectRatio / tan60, 0] },
+                    { point: [0, 0] },
 
-                    { point: [1, 0] },
+                    { point: [0.645, 0] },
+                    { point: [0.645, 0.12] },
+                    { point: [1, 0.12] },
 
-                    { point: [1, 1], customRadius: cornerRadius * 2 },
+                    { point: [1, 1] },
 
-                    { point: [0.35 / aspectRatio / tan60, 1] },
-                    { point: [0, 1 - 0.35] },
+                    { point: [0.325 / aspectRatio / tan60, 1] },
+                    { point: [0, 1 - 0.325] },
                 ],
                 cornerRadius,
                 aspectRatio,
@@ -1043,15 +1048,16 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number): string {
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
                 [
-                    { point: [0, 0] },
+                    { point: [0, 0.12] },
+                    { point: [0.215, 0.12] },
+                    { point: [0.215, 0] },
 
-                    { point: [1 - 0.175 / aspectRatio / tan60, 0] },
-                    { point: [1, 0.175] },
+                    { point: [1, 0] },
 
-                    { point: [1, 1 - 0.175] },
-                    { point: [1 - 0.175 / aspectRatio / tan60, 1] },
+                    { point: [1, 1 - 0.19] },
+                    { point: [1 - 0.19 / aspectRatio / tan60, 1] },
 
-                    { point: [0, 1], customRadius: cornerRadius * 2, useAspectRatio: true },
+                    { point: [0, 1], useAspectRatio: true },
                 ],
                 cornerRadius,
                 aspectRatio,
@@ -1059,35 +1065,12 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number): string {
             break;
         case 3:
             // top left; top right; bottom right; bottom left
-            path = roundedPolygon(
-                [
-                    { point: [0, 0] },
-
-                    { point: [1, 0], customRadius: cornerRadius * 3 },
-
-                    { point: [1, 1 - 0.165] },
-                    { point: [1 - 0.165 / aspectRatio / tan60, 1] },
-
-                    { point: [0, 1] },
-                ],
-                cornerRadius,
-                aspectRatio,
-            );
+            path = roundedPolygon([{ point: [0, 0] }, { point: [1, 0] }, { point: [1, 1] }, { point: [0, 1] }], cornerRadius, aspectRatio);
             break;
         case 4:
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
-                [
-                    { point: [0, 0], customRadius: 0.1, useAspectRatio: true },
-
-                    { point: [1 - 0.2 / aspectRatio / tan60, 0] },
-                    { point: [1, 0.2] },
-
-                    { point: [1, 1], customRadius: 0.1 },
-
-                    // [0.05 / aspectRatio / tan60, 1],
-                    { point: [0, 1], customRadius: 0.1, useAspectRatio: true },
-                ],
+                [{ point: [0, 0], useAspectRatio: true }, { point: [1, 0] }, { point: [1, 1] }, { point: [0, 1], useAspectRatio: true }],
                 cornerRadius,
                 aspectRatio,
             );
@@ -1097,15 +1080,14 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number): string {
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
                 [
-                    { point: [0, 0], customRadius: cornerRadius * 3, useAspectRatio: true },
+                    { point: [0, 0], useAspectRatio: true },
 
-                    { point: [1 - 0.5 / aspectRatio / tan60, 0] },
-                    { point: [1, 0.5] },
+                    { point: [1 - 0.2 / aspectRatio / tan60, 0] },
+                    { point: [1, 0.2] },
 
-                    { point: [1, 1], customRadius: cornerRadius * 3 },
+                    { point: [1, 1] },
 
-                    // [0.05 / aspectRatio / tan60, 1],
-                    { point: [0, 1], customRadius: cornerRadius * 3, useAspectRatio: true },
+                    { point: [0, 1], useAspectRatio: true },
                 ],
                 cornerRadius,
                 aspectRatio,
@@ -1114,15 +1096,7 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number): string {
         case 6:
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
-                [
-                    { point: [0, 0], customRadius: cornerRadius * 3, useAspectRatio: true },
-
-                    { point: [1, 0], customRadius: cornerRadius * 3 },
-
-                    { point: [1, 1], customRadius: cornerRadius * 3 },
-
-                    { point: [0, 1], customRadius: cornerRadius * 3, useAspectRatio: true },
-                ],
+                [{ point: [0, 0], useAspectRatio: true }, { point: [1, 0] }, { point: [1, 1] }, { point: [0, 1], useAspectRatio: true }],
                 cornerRadius,
                 aspectRatio,
             );
@@ -1130,15 +1104,7 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number): string {
         case 7:
             // top left; top right; bottom right; bottom left
             path = roundedPolygon(
-                [
-                    { point: [0, 0], customRadius: cornerRadius * 3, useAspectRatio: true },
-
-                    { point: [1, 0], customRadius: cornerRadius * 3 },
-
-                    { point: [1, 1], customRadius: cornerRadius * 3 },
-
-                    { point: [0, 1], customRadius: cornerRadius * 3, useAspectRatio: true },
-                ],
+                [{ point: [0, 0], useAspectRatio: true }, { point: [1, 0] }, { point: [1, 1] }, { point: [0, 1], useAspectRatio: true }],
                 cornerRadius,
                 aspectRatio,
             );
