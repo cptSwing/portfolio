@@ -13,7 +13,7 @@
 
     button,
     [role='button'] {
-        @apply focus:outline-none focus:brightness-125 focus:invert-[25%] focus-visible:outline-none focus-visible:brightness-125 focus-visible:invert-[25%];
+        @apply focus:outline-none focus-visible:outline-none focus-visible:brightness-125 focus-visible:invert-[25%];
     }
 
     dialog {
@@ -23,42 +23,65 @@
 
 @layer components {
     .post-cards-grid-template-mobile {
-        @apply grid;
-        grid-template-columns: repeat(2,minmax(0,1fr)) 0.05fr;
-        grid-template-rows: repeat(13,minmax(0,1fr));
+        @apply grid grid-cols-2;
+        grid-template-rows: repeat(10, minmax(0, 1fr)) repeat(4, 0);
         grid-template-areas:
-            'area0  area0  track'
-            'area0  area0  track'
-            'area0  area0  track'
-            'area0  area0  track'
-            'area0  area0  track'
-            'area0  area0  track'
-            'area0  area0  track'
-            'area2  area1  track'
-            'area2  area1  track'
-            'area2  area1  track'
-            'area3  area4  track'
-            'area3  area4  track'
-            'rest   area5  track';
+            'area0  area0'
+            'area0  area0'
+            'area0  area0'
+            'area0  area0'
+            'area0  area0'
+            'area0  area0'
+            'area1  area1'
+            'area1  area1'
+            'area2  area2'
+            'area2  area2'
+            'area3  area3'
+            'area4  area4'
+            'area5  area5'
+            'rest    rest';
+
+        /* @apply grid grid-cols-2; */
+        /* grid-template-rows: repeat(13, minmax(0, 1fr));     */
+        /* grid-template-areas:
+            'area0  area0'
+            'area0  area0'
+            'area0  area0'
+            'area0  area0'
+            'area0  area0'
+            'area0  area0'
+            'area0  area0'
+            'area2  area1'
+            'area2  area1'
+            'area2  area1'
+            'area3  area4'
+            'area3  area4'
+            'rest   area5'; */
+    }
+
+    .post-cards-grid-brand-area-mobile {
+        grid-row-start: 14;
+        grid-row-end: 15;
+        grid-column-start: 1;
+        grid-column-end: 3;
     }
 
     .post-cards-grid-template-desktop {
-        @apply grid grid-cols-6 grid-rows-7;
+        @apply grid grid-cols-7 grid-rows-6;
         grid-template-areas:
-            'area0  area0   area0   area0   rest    area5'
-            'area0  area0   area0   area0   area4   area4'
-            'area0  area0   area0   area0   area3   area3'
-            'area0  area0   area0   area0   area3   area3'
-            'area1  area1   area1   area2   area2   area2'
-            'area1  area1   area1   area2   area2   area2'
-            'area1  area1   area1   area2   area2   area2';
+            'area0  area0   area0   area0   area0  rest    rest'
+            'area0  area0   area0   area0   area0  area5  area5'
+            'area0  area0   area0   area0   area0  area4  area4'
+            'area0  area0   area0   area0   area0  area3  area3'
+            'area1  area1   area1   area1   area2  area2  area2'
+            'area1  area1   area1   area1   area2  area2  area2';
     }
 
     .post-cards-grid-brand-area-desktop {
         grid-row-start: 4;
         grid-row-end: 6;
         grid-column-start: 3;
-        grid-column-end: 5;
+        grid-column-end: 6;
     }
 
     .rotate-text {
