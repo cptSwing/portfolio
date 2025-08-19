@@ -27,7 +27,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
         }
     }, [category.posts.length, wheelDirection, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
 
-    const gridAreaStylesAndPaths_ref = useRef<{ styleAndIndex: { zIndex: string; style: CSSProperties }; path: string }[]>([]);
+    const gridAreaStylesAndPaths_ref = useRef<{ style: CSSProperties; path: string }[]>([]);
 
     const [title, setTitle] = useState('jens Brandenburg');
 
@@ -35,16 +35,16 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
         <div
             ref={categoryRef}
             className={classNames(
-                'flex size-full flex-col items-center justify-center bg-theme-primary/10 transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-y-[7.5%] sm:mask-edges-x-[7.5%] sm:mask-edges-y-0',
+                'flex h-full w-[86.66%] flex-row flex-wrap items-center justify-center bg-theme-primary/10 py-[8%] pl-[2.5%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-x-0 mask-edges-y-[4%] sm:size-full sm:flex-col sm:p-0 sm:mask-edges-x-[6%] sm:mask-edges-y-0',
                 show ? 'delay-[--ui-animation-menu-transition-duration]' : 'delay-0',
             )}
         >
             {/* Info */}
-            <BannerTitle title={title} classes="h-[7.5%] w-[90%]" />
+            <BannerTitle title={title} classes="h-[3%] ml-[17%] self-start sm:h-[7.5%] flex-shrink-0 flex-grow sm:basis-auto basis-full" />
 
             <Flipper
                 element={'nav'}
-                className="sm:post-cards-grid-template-desktop post-cards-grid-template-mobile h-[85%] w-[90%] origin-center transform gap-x-[2%] gap-y-[1.5%] sm:gap-x-[2.5%] sm:gap-y-[3%] 2xl:gap-x-[2.1%]"
+                className="sm:post-cards-grid-template-desktop post-cards-grid-template-mobile h-[97%] flex-shrink-0 flex-grow basis-[92.5%] origin-center transform gap-x-[2%] gap-y-[1.5%] sm:size-full sm:h-[85%] sm:w-[90%] sm:basis-auto sm:gap-x-[2.5%] sm:gap-y-[3%] 2xl:gap-x-[2.1%]"
                 flipKey={flipIndex}
                 spring={{ stiffness: 700, damping: 100 }}
             >
@@ -63,26 +63,26 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                 ))}
 
                 {/* Brand */}
-                <div className="sm:post-cards-grid-brand-area-desktop relative z-50 flex flex-col items-center justify-center">
-                    <div className="select-none rounded-2xl border-4 border-green-500/50 text-theme-primary">
-                        <FitText text="jens Brandenburg" classes="h-1/2 mx-auto w-[90%]" />
-                        <FitText text="webdev & 3d art" classes="h-1/3 mx-auto w-[90%]" />
-                    </div>
+                <div className="sm:post-cards-grid-brand-area-desktop post-cards-grid-brand-area-mobile relative -z-50 flex select-none flex-col items-center justify-center text-theme-primary">
+                    <FitText text="jens brandenburg" classes="leading-none tracking-tight h-1/5 mx-auto w-[65%]" />
+                    <FitText text="webdev / 3d art" classes="leading-none tracking-tight h-[12.5%] mx-auto w-[65%]" />
                 </div>
             </Flipper>
 
             {/* Progress Bar */}
-            <div className="flex h-[7.5%] w-[90%] flex-col items-center justify-between gap-y-[2%] py-1 sm:flex-row sm:gap-x-[2%] sm:gap-y-0 sm:py-0 sm:pl-[7.75%] sm:pr-[4.4%] 2xl:pl-[6.5%] 2xl:pr-[3.5%]">
+            <div className="flex h-[97%] w-full flex-shrink-0 flex-grow basis-[7.5%] flex-col items-center justify-between gap-y-[2%] sm:h-[7.5%] sm:w-[80%] sm:basis-auto sm:flex-row sm:gap-x-[2%] sm:gap-y-0">
                 {category.posts.map((post, idx) => {
                     return (
-                        <button
-                            key={`${post.id}_${idx}`}
-                            className={classNames(
-                                'w-full flex-1 transition-[background-color] duration-300 sm:h-1/3 md:h-1/4 lg:h-1/5 xl:h-1/6',
-                                idx === flipIndex ? 'bg-theme-primary-lighter' : 'bg-black/15 hover-active:bg-theme-primary/50',
-                            )}
-                            onClick={() => setFlipIndex(idx)}
-                        />
+                        <button key={`${post.id}_${idx}`} className="group size-full" onClick={() => setFlipIndex(idx)}>
+                            <div
+                                className={classNames(
+                                    'mx-auto h-full w-1/4 border-l border-t-[3px] border-theme-root-background transition-[background-color] duration-300 sm:h-1/3 sm:w-auto md:h-1/4 lg:h-1/5 xl:h-1/6',
+                                    idx === flipIndex
+                                        ? 'bg-theme-primary-lighter'
+                                        : 'bg-black/15 group-hover-active:bg-theme-primary/50 group-hover-active:duration-75',
+                                )}
+                            />
+                        </button>
                     );
                 })}
             </div>
@@ -108,7 +108,7 @@ const BannerTitle: FC<{
 
         const timer = setTimeout(() => {
             setIsSwitching(false);
-        }, transitionDuration_MS / 8);
+        }, transitionDuration_MS / 2);
 
         return () => {
             clearTimeout(timer);
@@ -118,8 +118,8 @@ const BannerTitle: FC<{
     return (
         <div
             className={classNames(
-                'flex transform-gpu items-center justify-center transition-[transform,opacity]',
-                isSwitching ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100',
+                'flex transform-gpu items-center justify-center bg-theme-primary-darker/0 transition-[transform,opacity]',
+                isSwitching ? 'translate-y-[250%] opacity-0' : 'translate-y-[22.5%] opacity-100',
                 classes,
             )}
             style={
@@ -128,7 +128,7 @@ const BannerTitle: FC<{
                 } as CSSProperties
             }
         >
-            <FitText text={title} classes="font-fjalla-one text-theme-primary-lighter text-nowrap leading-none h-1/2" />
+            <FitText text={title} classes="font-fjalla-one text-theme-primary-darker text-nowrap leading-none h-full sm:h-1/2" />
         </div>
     );
 };

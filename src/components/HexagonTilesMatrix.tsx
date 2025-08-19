@@ -59,7 +59,7 @@ const HexagonTilesMatrix = () => {
         <svg
             ref={svgRef}
             className={classNames(
-                'pointer-events-none absolute z-10 h-auto w-full overflow-visible transition-transform sm:h-full sm:w-auto',
+                'pointer-events-none absolute z-10 h-full w-full overflow-visible transition-transform sm:h-full sm:w-auto',
                 routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'matrix-rotate-90 sm:matrix-rotate-0',
             )}
             viewBox="0 0 400 346.4"
@@ -78,6 +78,7 @@ const HexagonTilesMatrix = () => {
                     }
                 }
             }}
+            shapeRendering="geometricPrecision"
         >
             <HexagonSvgDefs />
 
@@ -110,7 +111,7 @@ const HexagonSvgDefs = memo(() => {
                 id={roundedHexagonPathName}
                 d={roundedHexagonPath}
                 // TODO set as options in Settings ?
-                shapeRendering="geometricPrecision"
+                // shapeRendering="geometricPrecision"
                 // shapeRendering="crispEdges"
                 // shapeRendering="optimizeSpeed"
             />
@@ -270,7 +271,7 @@ const NavigationButtonHexagon: FC<{
                     {title}
                 </text>
             ) : (
-                <MenuButtonSvg title={title} svgIconPath={svgIconPath!} routeName={routeName} />
+                <MenuButtonSvg title={title} svgIconPath={svgIconPath!} />
             )}
         </g>
     );
@@ -299,7 +300,7 @@ const MenuButtonHexagon: FC<{
         <g
             className={classNames(
                 isVisible ? '[--button-scale:--tw-matrix-scale-x]' : '[--button-scale:0]',
-                'group origin-[12.5%_12.5%] cursor-pointer fill-theme-primary no-underline transition-[stroke,transform,fill,stroke-width] matrix-transform',
+                'group relative origin-[12.5%_12.5%] cursor-pointer fill-theme-primary no-underline transition-[stroke,transform,fill,stroke-width] matrix-transform',
                 routeName === ROUTE.home
                     ? 'stroke-theme-primary-lighter/90'
                     : routeName === ROUTE.category
@@ -328,10 +329,10 @@ const MenuButtonHexagon: FC<{
             <use
                 href={'#' + roundedHexagonPathName}
                 clipPath={`url(#${roundedHexagonPathName}-clipPath)`}
-                className="pointer-events-auto origin-[12.5%_12.5%] group-hover-active:scale-105" // group-hover-active:matrix-scale-105 matrix- transition-transform
+                className="pointer-events-auto origin-[12.5%_12.5%] group-hover-active:scale-105"
             />
 
-            <MenuButtonSvg title={title} svgIconPath={svgIconPath} routeName={routeName} />
+            <MenuButtonSvg title={title} svgIconPath={svgIconPath} />
         </g>
     );
 });
@@ -339,40 +340,23 @@ const MenuButtonHexagon: FC<{
 const MenuButtonSvg: FC<{
     title?: string;
     svgIconPath: string;
-    routeName: RouteData['name'];
-}> = ({ title, svgIconPath, routeName }) => {
+}> = ({ title, svgIconPath }) => {
     return (
-        <foreignObject
-            x="0"
-            y="0"
-            width="100"
-            height="86.66"
-            overflow="visible"
-            className="relative flex origin-[12.5%_12.5%] flex-col items-center justify-start group-hover-active:scale-105"
-        >
-            <div
-                className="z-50 size-full bg-theme-text-background [mask-position:center] [mask-repeat:no-repeat] [mask-size:57.5%] group-hover-active:bg-theme-secondary-lighter"
-                style={
-                    {
-                        maskImage: `url(${svgIconPath})`,
-                    } as CSSProperties
-                }
-            />
+        <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible" className="origin-[12.5%_12.5%] group-hover-active:scale-105">
+            <div className="flex size-full origin-[12.5%_12.5%] flex-col items-center justify-center">
+                <div
+                    className="-mb-1 -mt-1 aspect-square h-2/3 w-auto bg-theme-text-background/50 [mask-position:top] [mask-repeat:no-repeat] [mask-size:85%] group-hover-active:bg-theme-secondary-lighter/50"
+                    style={
+                        {
+                            maskImage: `url(${svgIconPath})`,
+                        } as CSSProperties
+                    }
+                />
 
-            <span
-                className={classNames(
-                    'scale-[calc(0.5/var(--button-scale))]', // de-scale menu-text
-                    // 'before:absolute before:left-[-5%] before:top-[-2.5%] before:-z-10 before:block before:h-[105%] before:w-[110%] before:bg-theme-text-background',
-                    'mx-auto mt-[5%] w-fit text-right font-lato text-3xs uppercase text-theme-text-background/35',
-                    routeName === ROUTE.home
-                        ? 'text-theme-root-background group-hover-active:text-theme-secondary-lighter'
-                        : routeName === ROUTE.category
-                          ? 'group-hover-active:text-theme-text-background'
-                          : '!text-theme-primary group-hover-active:text-theme-primary',
-                )}
-            >
-                {title}
-            </span>
+                <span className="scale-[calc(0.5/var(--button-scale))] pr-px font-lato text-xs leading-none tracking-tighter text-theme-primary-darker group-hover-active:text-theme-secondary-lighter">
+                    {title}
+                </span>
+            </div>
         </foreignObject>
     );
 };
@@ -397,7 +381,7 @@ function calcCSSVariables(
 ) {
     const { shouldOffset, offset, clampTo: _clampTo } = options ?? {};
     return {
-        '--tw-matrix-e': shouldOffset && offset ? translate.x + offset : translate.x,
+        '--tw-matrix-e': offset ? translate.x + (shouldOffset ? offset : -offset) : translate.x,
         '--tw-matrix-f': translate.y,
         '--tw-matrix-rotate-cos': cos(rotation, 5),
         '--tw-matrix-rotate-sin': sin(rotation, 5),
@@ -465,8 +449,8 @@ const navRotationValues: Record<CategoryName, { deg: number; sin: number; cos: n
 
 const routeOffsetValues: Record<ROUTE, Record<BreakpointName | 'base', number>> = {
     [ROUTE.home]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 0 },
-    [ROUTE.category]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 67.5 },
-    [ROUTE.post]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 63 },
+    [ROUTE.category]: { 'base': 160, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 28 },
+    [ROUTE.post]: { 'base': 163, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 31.5 },
 };
 
 const homeMenuTransitionClasses = {

@@ -65,7 +65,7 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
     return shouldMount ? (
         <div
             ref={postRef}
-            className="absolute left-0 top-0 size-full bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-t-[-10%] clip-inset-x-[100%] sm:px-[4.7%] sm:pt-10 md:px-[4.95%] lg:px-[5%] lg:pt-12 2xl:px-[4.2%]"
+            className="absolute top-0 mx-auto h-full w-[86.66%] bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-t-[-10%] clip-inset-x-[100%] sm:size-full sm:px-[4.7%] sm:pt-10 md:px-[4.95%] lg:px-[5%] lg:pt-12 2xl:px-[4.2%]"
         >
             <header className="pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center">
                 <GetChildSize Context={GetChildSizeContext}>
