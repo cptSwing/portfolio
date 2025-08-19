@@ -8,6 +8,7 @@ export const useZustand = create<ZustandStore>()(
         values: {
             theme: 'pink',
             routeData: { name: ROUTE.home, content: {} },
+            breakpoint: null,
             activeMenuButton: { name: null },
             postNavigationState: null,
             debug: {
@@ -51,6 +52,12 @@ export const useZustand = create<ZustandStore>()(
 
                 set((draftState) => {
                     draftState.values.routeData = newRouteData as { name: ROUTE.home; content: { category?: Category; post?: Post } }; // most permissive of the three types
+                });
+            },
+
+            store_setBreakpoint: (newBreakpoint) => {
+                set((draftState) => {
+                    draftState.values.breakpoint = newBreakpoint;
                 });
             },
 

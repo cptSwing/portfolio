@@ -1,3 +1,4 @@
+import { BreakpointName } from '../hooks/useBreakPoint';
 import { CATEGORY, ROUTE, TOOL } from './enums';
 
 export type Config = {
@@ -24,6 +25,7 @@ export type ZustandStore = {
     values: {
         theme: 'yellow' | 'pink' | 'orange' | 'bw';
         routeData: RouteData;
+        breakpoint: BreakpointName | null;
         activeMenuButton: { name: MenuName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
         postNavigationState: Omit<NavigationButtonName, 'home'> | null;
         debug: {
@@ -33,6 +35,7 @@ export type ZustandStore = {
     methods: {
         store_cycleTheme: () => void;
         store_setRouteData: (routeData: RouteData) => void;
+        store_setBreakpoint: (breakpoint: BreakpointName | null) => void;
         store_toggleMenu: (newMenuState: ZustandStore['values']['activeMenuButton']) => void;
         store_setPostNavigationState: (postNavigationState: Omit<NavigationButtonName, 'home'> | null) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;

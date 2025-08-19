@@ -12,8 +12,13 @@ import HexagonTilesMatrix from '../components/HexagonTilesMatrix';
 import useSetRouteData from '../hooks/useSetRouteData';
 import { ROUTE } from '../types/enums';
 import { globalCssVariables } from '../styles/globalCssVariables';
+import { useBreakpoint } from '../hooks/useBreakPoint';
+
+const store_setBreakpoint = useZustand.getState().methods.store_setBreakpoint;
 
 const App = () => {
+    useBreakpoint(store_setBreakpoint);
+
     return (
         <div className="flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather">
             <BrowserRouter
@@ -51,12 +56,12 @@ const Main = () => {
     return (
         <div
             className={classNames(
-                '[--scrollbar-thumb:theme(colors.theme.primary-darker)] sm:[--svg-mobile-rotate:0deg] sm:[--translate-menu-offset:0]',
+                '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
                 'relative aspect-hex-flat text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
                 routeName === ROUTE.category
-                    ? 'w-[min(90vw,47.5vh)] [--svg-mobile-rotate:90deg] [--translate-menu-offset:0] sm:h-[min(90vh,70vw)] sm:w-auto 2xl:aspect-[1/0.75] 2xl:[--translate-menu-offset:67]'
+                    ? 'w-[min(90vw,47.5vh)] sm:h-[min(90vh,70vw)] sm:w-auto 2xl:aspect-[1/0.75]'
                     : routeName === ROUTE.post
-                      ? 'aspect-[1/2] w-[min(90vw,47.5vh)] [--svg-mobile-rotate:0deg] [--translate-menu-offset:0px] sm:h-[min(95vh,105vw)] lg:aspect-square lg:[--translate-menu-offset:52px] 2xl:aspect-hex-flat 2xl:[--translate-menu-offset:115px]'
+                      ? 'w-[min(90vw,47.5vh)] sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]'
                       : // ROUTE.home
                         'h-[min(80vh,80vw)]',
             )}

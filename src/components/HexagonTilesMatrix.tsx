@@ -19,17 +19,20 @@ import {
     sin,
     navigationButtonHexagons,
     menuButtonHexagons,
+    degToRad,
+    matrixNearZeroScale,
 } from '../lib/hexagonDataMatrix';
 import { useZustand } from '../lib/zustand';
 import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { config } from '../types/exportTyped';
 import { keyDownA11y } from '../lib/handleA11y';
+import { BreakpointName } from '../hooks/useBreakPoint';
 
 const {
     ui: {
         animation: { menuTransition_Ms },
-        hexMenu: { columns, strokeWidth, scaleUp },
+        hexMenu: { strokeWidth, scaleUp },
     },
 } = config;
 
@@ -59,7 +62,7 @@ const HexagonTilesMatrix = () => {
                 'pointer-events-none absolute z-10 h-auto w-full overflow-visible transition-transform sm:h-full sm:w-auto',
                 routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'matrix-rotate-90 sm:matrix-rotate-0',
             )}
-            viewBox={viewBoxes['hexFlat']}
+            viewBox="0 0 400 346.4"
             style={
                 {
                     transitionDuration: `${menuTransition_Ms}ms`,
@@ -150,8 +153,13 @@ const RegularHexagon: FC<{
     routeName: ROUTE;
 }> = memo(({ shapeData, routeName }) => {
     const { position, rotation, scale, isHalf, shouldOffset } = shapeData[routeName];
+    const breakpoint = useZustand((state) => state.values.breakpoint);
 
-    const cssVariables_Memo = useMemo(() => position && calcCSSVariables(position, rotation, scale, shouldOffset), [shouldOffset, position, rotation, scale]);
+    const cssVariables_Memo = useMemo(
+        () => position && calcCSSVariables(position, rotation, scale, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, shouldOffset, routeName, breakpoint],
+    );
+
     const random_Memo = useMemo(() => Math.random(), []);
 
     return (
@@ -186,13 +194,18 @@ const NavigationButtonHexagon: FC<{
 }> = memo(({ shapeData, routeName, menuTransitionStateUpdates }) => {
     const { title, name, svgIconPath, target } = shapeData;
     const { position, rotation, scale, shouldOffset } = shapeData[routeName];
-
+    const breakpoint = useZustand((state) => state.values.breakpoint);
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
     const navigate = useNavigate();
 
     const random_Memo = useMemo(() => Math.random(), []);
-    const cssVariables_Memo = useMemo(() => position && calcCSSVariables(position, rotation, scale, shouldOffset), [shouldOffset, position, rotation, scale]);
-    const isVisible = !cssVariables_Memo['--tw-matrix-scale-x'];
+
+    const cssVariables_Memo = useMemo(
+        () => position && calcCSSVariables(position, rotation, scale, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, shouldOffset, routeName, breakpoint],
+    );
+
+    const isVisible = scale > matrixNearZeroScale;
 
     function handleClick(ev: React.MouseEvent<SVGGElement>) {
         const targetResult = typeof target === 'string' ? target : target(ev);
@@ -200,7 +213,7 @@ const NavigationButtonHexagon: FC<{
     }
 
     function handleMouseEnter() {
-        if (isCategoryNavitation(name)) {
+        if (isCategoryNavigation(name)) {
             if (routeName === ROUTE.home && menuTransitionTargetReached && menuTransitionTarget !== name) {
                 setMenuTransitionStates([name as CategoryName, false]);
                 // ^^^  Prevent parent from prematurely rotating again, and again, and again
@@ -212,7 +225,7 @@ const NavigationButtonHexagon: FC<{
         <g
             className={classNames(
                 '[--button-scale:--tw-matrix-scale-x]',
-                'group origin-[12.5%_12.5%] cursor-pointer no-underline transition-[stroke,transform,fill,stroke-width] matrix-transform hover:matrix-scale-105',
+                'group origin-[12.5%_12.5%] cursor-pointer fill-theme-primary no-underline transition-[stroke,transform,fill,stroke-width] matrix-transform',
                 routeName === ROUTE.home
                     ? 'stroke-theme-primary-lighter/90'
                     : routeName === ROUTE.category
@@ -242,17 +255,17 @@ const NavigationButtonHexagon: FC<{
             <use
                 href={'#' + roundedHexagonPathName}
                 clipPath={`url(#${roundedHexagonPathName}-clipPath)`}
-                className="pointer-events-auto fill-theme-primary" // group-hover-active:matrix-scale-105 matrix-transform origin-[12.5%_12.5%] transition-transform
+                className="pointer-events-auto origin-[12.5%_12.5%] group-hover-active:scale-105"
                 // paintOrder='stroke'
             />
 
-            {isCategoryNavitation(name) ? (
+            {isCategoryNavigation(name) ? (
                 <text
                     x={hexHalfWidth}
                     y={hexHalfHeight}
                     textAnchor="middle"
                     alignmentBaseline="central"
-                    className="pointer-events-none select-none fill-theme-secondary-lighter/75 stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:fill-theme-secondary-lighter sm:origin-[12.5%_12.5%]" // group-hover-active:matrix-scale-105 matrix-rotate-90 sm:matrix-rotate-0
+                    className="pointer-events-none origin-[12.5%_12.5%] select-none fill-theme-secondary-lighter/75 stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter"
                 >
                     {title}
                 </text>
@@ -269,10 +282,14 @@ const MenuButtonHexagon: FC<{
 }> = memo(({ shapeData, routeName }) => {
     const { name, title, svgIconPath, target } = shapeData;
     const { position, rotation, scale, shouldOffset } = shapeData[routeName];
+    const breakpoint = useZustand((state) => state.values.breakpoint);
 
-    const cssVariables_Memo = useMemo(() => position && calcCSSVariables(position, rotation, scale, shouldOffset), [shouldOffset, position, rotation, scale]);
+    const cssVariables_Memo = useMemo(
+        () => position && calcCSSVariables(position, rotation, scale, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, shouldOffset, routeName, breakpoint],
+    );
     const random_Memo = useMemo(() => Math.random(), []);
-    const isVisible = !cssVariables_Memo['--tw-matrix-scale-x'];
+    const isVisible = scale > matrixNearZeroScale;
 
     function handleClick(ev: React.MouseEvent<SVGGElement>) {
         target(ev);
@@ -281,8 +298,8 @@ const MenuButtonHexagon: FC<{
     return (
         <g
             className={classNames(
-                '[--button-scale:--tw-matrix-scale-x]',
-                'group origin-[12.5%_12.5%] cursor-pointer no-underline transition-[stroke,transform,fill,stroke-width] matrix-transform hover:matrix-scale-105',
+                isVisible ? '[--button-scale:--tw-matrix-scale-x]' : '[--button-scale:0]',
+                'group origin-[12.5%_12.5%] cursor-pointer fill-theme-primary no-underline transition-[stroke,transform,fill,stroke-width] matrix-transform',
                 routeName === ROUTE.home
                     ? 'stroke-theme-primary-lighter/90'
                     : routeName === ROUTE.category
@@ -311,7 +328,7 @@ const MenuButtonHexagon: FC<{
             <use
                 href={'#' + roundedHexagonPathName}
                 clipPath={`url(#${roundedHexagonPathName}-clipPath)`}
-                className="pointer-events-auto fill-theme-primary" // group-hover-active:matrix-scale-105 matrix-transform origin-[12.5%_12.5%] transition-transform
+                className="pointer-events-auto origin-[12.5%_12.5%] group-hover-active:scale-105" // group-hover-active:matrix-scale-105 matrix- transition-transform
             />
 
             <MenuButtonSvg title={title} svgIconPath={svgIconPath} routeName={routeName} />
@@ -325,20 +342,28 @@ const MenuButtonSvg: FC<{
     routeName: RouteData['name'];
 }> = ({ title, svgIconPath, routeName }) => {
     return (
-        <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible">
+        <foreignObject
+            x="0"
+            y="0"
+            width="100"
+            height="86.66"
+            overflow="visible"
+            className="relative flex origin-[12.5%_12.5%] flex-col items-center justify-start group-hover-active:scale-105"
+        >
             <div
-                className="size-full bg-theme-text-background transition-transform [mask-position:center] [mask-repeat:no-repeat] [mask-size:57.5%] group-hover-active:bg-theme-secondary-lighter"
+                className="z-50 size-full bg-theme-text-background [mask-position:center] [mask-repeat:no-repeat] [mask-size:57.5%] group-hover-active:bg-theme-secondary-lighter"
                 style={
                     {
-                        // '--tw-rotate': 'calc(var(--svg-mobile-rotate) * -1)',
                         maskImage: `url(${svgIconPath})`,
                     } as CSSProperties
                 }
             />
+
             <span
                 className={classNames(
                     'scale-[calc(0.5/var(--button-scale))]', // de-scale menu-text
-                    'absolute left-1/2 top-full mt-[7.5%] -translate-x-1/2 transform-gpu font-lato text-3xs uppercase text-theme-text-background/35',
+                    // 'before:absolute before:left-[-5%] before:top-[-2.5%] before:-z-10 before:block before:h-[105%] before:w-[110%] before:bg-theme-text-background',
+                    'mx-auto mt-[5%] w-fit text-right font-lato text-3xs uppercase text-theme-text-background/35',
                     routeName === ROUTE.home
                         ? 'text-theme-root-background group-hover-active:text-theme-secondary-lighter'
                         : routeName === ROUTE.category
@@ -364,10 +389,16 @@ function getHomeMenuTransitionClasses(category: CategoryName | null, transitionC
     return classNames;
 }
 
-function calcCSSVariables(position: { x: number; y: number }, rotation: number, scale: number, shouldOffset: boolean) {
+function calcCSSVariables(
+    translate: { x: number; y: number },
+    rotation: number,
+    scale: number,
+    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
+) {
+    const { shouldOffset, offset, clampTo: _clampTo } = options ?? {};
     return {
-        '--tw-matrix-e': shouldOffset ? `calc(${position.x} + var(--translate-menu-offset))` : position.x,
-        '--tw-matrix-f': position.y,
+        '--tw-matrix-e': shouldOffset && offset ? translate.x + offset : translate.x,
+        '--tw-matrix-f': translate.y,
         '--tw-matrix-rotate-cos': cos(rotation, 5),
         '--tw-matrix-rotate-sin': sin(rotation, 5),
         '--tw-matrix-scale-x': (1 - strokeWidth) * scale,
@@ -375,7 +406,45 @@ function calcCSSVariables(position: { x: number; y: number }, rotation: number, 
     };
 }
 
-function isCategoryNavitation(name: ButtonName): name is CategoryName {
+function _toSvgTransform(
+    translate?: { x: number; y: number },
+    rotate_DEG?: number,
+    scale?: { x: number; y: number },
+    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
+) {
+    const { shouldOffset, offset, clampTo: _clampTo } = options ?? {};
+
+    const translation = translate ? `translate(${shouldOffset && offset ? translate.x + offset : translate.x} ${translate.y}) ` : '';
+    const rotation = rotate_DEG ? `rotate(${rotate_DEG}) ` : '';
+    const scaling = scale ? `scale(${scale.x}, ${scale.y}) ` : '';
+
+    return translation + rotation + scaling;
+}
+
+function _toSvgTransformMatrix(
+    translate = { x: 0, y: 0 },
+    rotate_DEG = 0,
+    scale = { x: 1, y: 1 },
+    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
+) {
+    const { shouldOffset, offset, clampTo } = options ?? {};
+
+    const angle = degToRad(rotate_DEG); // Convert to radians
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+
+    // Apply scale and rotation
+    const a = scale.x * cos;
+    const b = scale.x * sin;
+    const c = -scale.y * sin;
+    const d = scale.y * cos;
+    const e = shouldOffset && offset ? translate.x + offset : translate.x;
+    const f = translate.y;
+
+    return `matrix(${a.toFixed(clampTo ?? 6)} ${b.toFixed(clampTo ?? 6)} ${c.toFixed(clampTo ?? 6)} ${d.toFixed(clampTo ?? 6)} ${e.toFixed(clampTo ?? 6)} ${f.toFixed(clampTo ?? 6)})`;
+}
+
+function isCategoryNavigation(name: ButtonName): name is CategoryName {
     return Object.keys(CATEGORY).includes(name);
 }
 
@@ -384,10 +453,6 @@ function isCategoryNavitation(name: ButtonName): name is CategoryName {
 const roundedHexagonPathName = 'roundedHexagonPath';
 const halfRoundedHexagonPathName = 'halfRoundedHexagonPath';
 
-const hexPaddingFactor = staticValues.tilingMultiplierHorizontal.flatTop;
-const totalWidthAtCenter = (columns * hexPaddingFactor - (hexPaddingFactor - 1)) * scaleUp;
-
-const totalHeight = totalWidthAtCenter * staticValues.heightAspect.flatTop;
 const hexHeight = staticValues.heightAspect.flatTop * scaleUp;
 const hexHalfHeight = hexHeight / 2;
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
@@ -398,10 +463,10 @@ const navRotationValues: Record<CategoryName, { deg: number; sin: number; cos: n
     'log': { deg: 180, sin: sin(180), cos: cos(180) },
 };
 
-const viewBoxes = {
-    square: `0 0 ${totalWidthAtCenter} ${totalWidthAtCenter}`,
-    hexFlat: `0 0 ${totalWidthAtCenter} ${totalHeight}`,
-    hexPointy: `0 0 ${totalHeight} ${totalWidthAtCenter}`,
+const routeOffsetValues: Record<ROUTE, Record<BreakpointName | 'base', number>> = {
+    [ROUTE.home]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 0 },
+    [ROUTE.category]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 67.5 },
+    [ROUTE.post]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 63 },
 };
 
 const homeMenuTransitionClasses = {
@@ -413,7 +478,7 @@ const homeMenuTransitionClasses = {
     '3d': {
         base: /* tw */ 'matrix-rotate-[-60deg] [&_.navigation-button-hexagon-class-3d]:!matrix-scale-95 [&_.navigation-button-hexagon-class-3d]:[filter:url(#lighter-inner-off)] [&_.menu-button-hexagon-class-contact]:!matrix-rotate-[60deg] [&_.menu-button-hexagon-class-config]:!matrix-rotate-[60deg] [&_.menu-button-hexagon-class-login]:!matrix-rotate-[60deg] [&_.menu-button-hexagon-class-contact]:!matrix-translate-x-[147] [&_.menu-button-hexagon-class-contact]:!matrix-translate-y-[134] [&_.menu-button-hexagon-class-config]:!matrix-translate-x-[146.5] [&_.menu-button-hexagon-class-config]:!matrix-translate-y-[108.5] [&_.menu-button-hexagon-class-login]:!matrix-translate-x-[169] [&_.menu-button-hexagon-class-login]:!matrix-translate-y-[147.5]',
         completed:
-            /* tw */ '[&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!matrix-scale-90 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!duration-150 [&_.navigation-button-hexagon-class-3d]:matrix-scale-90',
+            /* tw */ '[&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!matrix-scale-95 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!duration-150 [&_.navigation-button-hexagon-class-3d]:matrix-scale-90',
     },
     'log': {
         base: /* tw */ 'matrix-rotate-[180deg] [&_.navigation-button-hexagon-class-log]:!matrix-scale-95 [&_.navigation-button-hexagon-class-log]:[filter:url(#lighter-inner-off)] [&_.menu-button-hexagon-class-contact]:!matrix-rotate-[-180deg] [&_.menu-button-hexagon-class-config]:!matrix-rotate-[-180deg] [&_.menu-button-hexagon-class-login]:!matrix-rotate-[-180deg] [&_.menu-button-hexagon-class-contact]:!matrix-translate-y-[125] [&_.menu-button-hexagon-class-config]:!matrix-translate-x-[172.5] [&_.menu-button-hexagon-class-config]:!matrix-translate-y-[137.5] [&_.menu-button-hexagon-class-login]:!matrix-translate-x-[127.5] [&_.menu-button-hexagon-class-login]:!matrix-translate-y-[137.5]',

@@ -35,6 +35,7 @@ export const staticValues = {
 const tan60 = Math.tan(degToRad(60));
 const sin30 = sin(30);
 const cos30 = cos(30);
+export const matrixNearZeroScale = 0.0001; // value 0 can not be transitioned to / animated in a matrix() transform
 
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
 
@@ -71,7 +72,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: 30,
             isHalf: true,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -104,7 +105,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: 90,
             isHalf: true,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -131,8 +132,8 @@ export const regularHexagons: HexagonRouteData[] = [
         }, // L6
         [ROUTE.post]: {
             position: {
-                x: 375,
-                y: 259.8,
+                x: 345,
+                y: 290,
             },
             rotation: 30,
             isHalf: false,
@@ -169,7 +170,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: 30,
             isHalf: true,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -196,8 +197,8 @@ export const regularHexagons: HexagonRouteData[] = [
         }, // L3
         [ROUTE.post]: {
             position: {
-                x: 300,
-                y: -43.3,
+                x: 345,
+                y: -32,
             },
             rotation: -90,
             isHalf: false,
@@ -233,7 +234,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: 90,
             isHalf: true,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -266,7 +267,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: -90,
             isHalf: true,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -299,7 +300,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: 30,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -327,8 +328,8 @@ export const regularHexagons: HexagonRouteData[] = [
         }, // R4
         [ROUTE.post]: {
             position: {
-                x: -75,
-                y: 259.8,
+                x: -45,
+                y: 290,
             },
             rotation: -90,
             isHalf: false,
@@ -365,7 +366,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: 150,
             isHalf: true,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -397,7 +398,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: -90,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -430,7 +431,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: -90,
             isHalf: true,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -463,7 +464,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: -90,
             isHalf: true,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -496,7 +497,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: 60,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -528,7 +529,7 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: 30,
             isHalf: true,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
     },
@@ -556,8 +557,8 @@ export const regularHexagons: HexagonRouteData[] = [
         }, // R8
         [ROUTE.post]: {
             position: {
-                x: 0,
-                y: -43.3,
+                x: -45,
+                y: -32,
             },
             rotation: -30,
             isHalf: false,
@@ -597,7 +598,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         name: 'code',
@@ -632,7 +633,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         name: '3d',
@@ -667,7 +668,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         name: 'log',
@@ -684,7 +685,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
             },
             rotation: 180,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         [ROUTE.category]: {
@@ -699,13 +700,13 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
         },
         [ROUTE.post]: {
             position: {
-                x: 375,
-                y: 0,
+                x: -50,
+                y: 205,
             },
             rotation: 0,
             isHalf: false,
-            scale: 0.175,
-            shouldOffset: true,
+            scale: 0.2,
+            shouldOffset: false,
         },
         name: 'home',
         title: '',
@@ -719,7 +720,6 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
 
 export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
     // Further UI:
-
     {
         [ROUTE.home]: {
             position: {
@@ -738,7 +738,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         [ROUTE.post]: {
@@ -748,7 +748,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         name: 'login',
@@ -780,8 +780,8 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         },
         [ROUTE.post]: {
             position: {
-                x: -75,
-                y: 259.8,
+                x: -50,
+                y: 225,
             },
             rotation: 0,
             isHalf: false,
@@ -817,12 +817,12 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         },
         [ROUTE.post]: {
             position: {
-                x: 0,
-                y: 216.5,
+                x: -50,
+                y: 257.5,
             },
             rotation: 0,
             isHalf: false,
-            scale: 0.25,
+            scale: 0.275,
             shouldOffset: false,
         },
         name: 'contact',
@@ -840,42 +840,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 300,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 300,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.2,
-            shouldOffset: true,
-        },
-        name: 'close',
-        svgIconPath: '/svg/XMarkOutline.svg',
-        target: () => store_setPostNavigationState('close'),
-    },
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 300,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         [ROUTE.category]: {
@@ -885,13 +850,13 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
-                x: 300,
-                y: -43.3,
+                x: 312.5,
+                y: -29.5,
             },
             rotation: 0,
             isHalf: false,
@@ -911,7 +876,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         [ROUTE.category]: {
@@ -921,13 +886,13 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
+            scale: matrixNearZeroScale,
             shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
-                x: 300,
-                y: -43.3,
+                x: 341.5,
+                y: -29.5,
             },
             rotation: 0,
             isHalf: false,
@@ -937,6 +902,42 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         name: 'next',
         svgIconPath: '/svg/ChevronRightOutline.svg',
         target: () => store_setPostNavigationState('next'),
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: -43.3,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: matrixNearZeroScale,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 300,
+                y: -43.3,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: matrixNearZeroScale,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 327,
+                y: -37.5,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.2,
+            shouldOffset: true,
+        },
+        name: 'close',
+        svgIconPath: '/svg/XMarkOutline.svg',
+        target: () => store_setPostNavigationState('close'),
     },
 ];
 
@@ -1292,7 +1293,7 @@ function getMenuButtonPosition(ev: React.MouseEvent<SVGGElement, MouseEvent>): P
     return position;
 }
 
-function degToRad(deg: number): number {
+export function degToRad(deg: number): number {
     return (Math.PI / 180) * deg;
 }
 export function sin(deg: number, clampTo?: number): number {
