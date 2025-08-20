@@ -1,6 +1,6 @@
 import { CSSProperties, FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import classNames from '../lib/classNames';
+import { classNames } from 'cpts-javascript-utilities';
 import {
     ButtonName,
     CategoryName,
@@ -23,10 +23,10 @@ import {
     matrixNearZeroScale,
 } from '../lib/hexagonDataMatrix';
 import { useZustand } from '../lib/zustand';
-import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
+import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { config } from '../types/exportTyped';
-import { keyDownA11y } from '../lib/handleA11y';
+import { keyDownA11y } from 'cpts-javascript-utilities';
 import { BreakpointName } from '../hooks/useBreakPoint';
 
 const {
@@ -71,7 +71,7 @@ const HexagonTilesMatrix = () => {
             onTransitionEnd={({ target, currentTarget }) => {
                 if (target === currentTarget) {
                     // ^^^  condition filters out bubbled child events
-                    const elementRotation = elementGetCurrentRotation(currentTarget);
+                    const elementRotation = getCurrentElementRotation(currentTarget);
                     if (menuTransitionTarget && navRotationValues[menuTransitionTarget].deg === elementRotation) {
                         // Set transition target as reached:
                         setMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);

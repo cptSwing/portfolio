@@ -1,6 +1,6 @@
 import { CSSProperties, FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import classNames from '../lib/classNames';
+import { classNames } from 'cpts-javascript-utilities';
 import { HexagonData, HexagonNavigation, RouteData, UI_CategoryLink, UIButton } from '../types/types';
 import { halfRoundedHexagonPath, buttonHexagons, regularHexagons, roundedHexagonPath, staticValues } from '../lib/hexagonData';
 import { useZustand } from '../lib/zustand';

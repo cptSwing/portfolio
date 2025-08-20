@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { Category, Post, Theme, themes, ZustandStore } from '../types/types';
 import { ROUTE } from '../types/enums';
-import stepThroughArray from './stepThroughArray';
+import { cycleThrough } from 'cpts-javascript-utilities';
 
 export const useZustand = create<ZustandStore>()(
     immer((set, get) => ({
@@ -19,7 +19,7 @@ export const useZustand = create<ZustandStore>()(
         methods: {
             store_cycleTheme: () => {
                 const current = get().values.theme;
-                const nextTheme = stepThroughArray<Theme>(current, 'next', themes);
+                const nextTheme = cycleThrough<Theme>(themes, current, 'next');
 
                 set((draftState) => {
                     draftState.values.theme = nextTheme;

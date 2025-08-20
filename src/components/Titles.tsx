@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import { bars_totalDuration } from '../lib/animationValues.ts';
 import Settings from './Settings.tsx';
-import classNames from '../lib/classNames.ts';
+import { classNames } from 'cpts-javascript-utilities';
 import { createPortal } from 'react-dom';
 
 const categories = Object.values(database);

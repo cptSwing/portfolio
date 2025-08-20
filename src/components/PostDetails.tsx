@@ -1,5 +1,5 @@
 import { FC, ReactElement, useContext, useEffect, useMemo, useState } from 'react';
-import classNames from '../lib/classNames';
+import { classNames } from 'cpts-javascript-utilities';
 import { Post } from '../types/types';
 import Markdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';

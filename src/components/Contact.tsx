@@ -3,7 +3,7 @@ import { CSSProperties, useCallback, useState } from 'react';
 import { useZustand } from '../lib/zustand';
 import useOutsideClick from '../hooks/useOutsideClick'; // TODO replace with useClickAway ?
 import { CloseSubMenu } from './MenuModal';
-import classNames from '../lib/classNames';
+import { classNames } from 'cpts-javascript-utilities';
 
 const Contact = () => {
     const menuButtonPosAndSize = useZustand((store) => store.values.activeMenuButton.positionAndSize);

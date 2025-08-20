@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
 // import useOutsideClick from '../hooks/useOutsideClick';
 import RoundedHexagonSVG from '../components/RoundedHexagonSVG';
-import classNames from '../lib/classNames';
+import { classNames } from 'cpts-javascript-utilities';
 import Category from '../components/routes/Category';
 import MenuModal from '../components/MenuModal';
 import Post from '../components/routes/Post';
@@ -20,7 +20,7 @@ const App = () => {
     useBreakpoint(store_setBreakpoint);
 
     return (
-        <div className="flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather">
+        <div className="flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather" style={globalCssVariables}>
             <BrowserRouter
                 future={{
                     v7_startTransition: true,
@@ -65,13 +65,11 @@ const Main = () => {
                       : // ROUTE.home
                         'aspect-hex-flat h-[min(80vh,80vw)] sm:h-[min(70vh,70vw)]',
             )}
-            style={globalCssVariables}
         >
             {/* TODO Used as clip-shape multiple times down the line, could be served in HexagonTiles as well? */}
             <RoundedHexagonSVG showPath={false} useClipPath idSuffix="-default" />
 
             <HexagonTilesMatrix />
-
             <Category show={routeName === ROUTE.category} />
             <Post show={routeName === ROUTE.post} />
 

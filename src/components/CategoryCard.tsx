@@ -1,14 +1,12 @@
 import { CSSProperties, FC, memo, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { Post } from '../types/types.ts';
 import { useNavigate } from 'react-router-dom';
-import classNames from '../lib/classNames.ts';
+import { classNames, remapRange, keyDownA11y } from 'cpts-javascript-utilities';
 import { Flipped } from 'react-flip-toolkit';
 import stripSpaces from '../lib/stripSpaces.ts';
 import { getIndexCategoryCardPath } from '../lib/hexagonDataMatrix.ts';
-import remapToRange from '../lib/remapToRange.ts';
 import { config } from '../types/exportTyped.ts';
 import { useZustand } from '../lib/zustand.ts';
-import { keyDownA11y } from '../lib/handleA11y.ts';
 
 const CategoryCard: FC<{
     post: Post;
@@ -177,7 +175,7 @@ function getGridAreaStyle(gridAreaIndex: number, cardCount: number): CSSProperti
 
     if (gridAreaIndex >= areaCount) {
         const surplusCells = cardCount - areaCount;
-        const thisSurplusCell = remapToRange(gridAreaIndex - areaCount, 0, surplusCells - 1, 0, 1);
+        const thisSurplusCell = remapRange(gridAreaIndex - areaCount, 0, surplusCells - 1, 0, 1);
 
         const r = 2; // ratio
 
