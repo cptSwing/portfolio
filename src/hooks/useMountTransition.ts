@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 
-function useMountTransition(targetElement: React.MutableRefObject<Element | null>, showTargetElement: boolean, transitionClassName: string) {
+function useMountTransition(targetElement: RefObject<Element | null>, showTargetElement: boolean, transitionClassName: string) {
     const [shouldMount, setShouldMount] = useState(false);
 
     useEffect(() => {

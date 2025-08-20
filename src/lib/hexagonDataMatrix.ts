@@ -1263,8 +1263,8 @@ export function degToRad(deg: number): number {
     return (Math.PI / 180) * deg;
 }
 export function sin(deg: number, clampTo?: number): number {
-    const cosSin = Math.sin(degToRad(deg));
-    return clampTo ? parseFloat(cosSin.toFixed(clampTo)) : cosSin;
+    const sinNum = Math.sin(degToRad(deg));
+    return clampTo ? parseFloat(sinNum.toFixed(clampTo)) : sinNum;
 }
 export function cos(deg: number, clampTo?: number): number {
     const cosNum = Math.cos(degToRad(deg));
