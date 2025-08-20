@@ -21,9 +21,12 @@ export type Config = {
     };
 };
 
+export const themes = ['pink', 'orange', 'bw', 'yellow'] as const;
+export type Theme = (typeof themes)[number];
+
 export type ZustandStore = {
     values: {
-        theme: 'yellow' | 'pink' | 'orange' | 'bw';
+        theme: Theme;
         routeData: RouteData;
         breakpoint: BreakpointName | null;
         activeMenuButton: { name: MenuName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };

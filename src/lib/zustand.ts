@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { Category, Post, ZustandStore } from '../types/types';
+import { Category, Post, Theme, themes, ZustandStore } from '../types/types';
 import { ROUTE } from '../types/enums';
+import stepThroughArray from './stepThroughArray';
 
 export const useZustand = create<ZustandStore>()(
     immer((set, get) => ({
@@ -18,25 +19,10 @@ export const useZustand = create<ZustandStore>()(
         methods: {
             store_cycleTheme: () => {
                 const current = get().values.theme;
-                let next: ZustandStore['values']['theme'];
-
-                switch (current) {
-                    case 'yellow':
-                        next = 'pink';
-                        break;
-                    case 'pink':
-                        next = 'orange';
-                        break;
-                    case 'orange':
-                        next = 'bw';
-                        break;
-                    case 'bw':
-                        next = 'yellow';
-                        break;
-                }
+                const nextTheme = stepThroughArray<Theme>(current, 'next', themes);
 
                 set((draftState) => {
-                    draftState.values.theme = next;
+                    draftState.values.theme = nextTheme;
                 });
             },
 
