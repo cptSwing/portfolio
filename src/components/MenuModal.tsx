@@ -13,7 +13,7 @@ const MenuModal = () => {
         if (dialogRef.current) {
             if (name) {
                 dialogRef.current.showModal();
-                dialogRef.current.style.setProperty('--tw-bg-opacity', '0.95');
+                dialogRef.current.style.setProperty('--tw-bg-opacity', '0.75');
             } else {
                 dialogRef.current.close();
                 dialogRef.current.style.setProperty('--tw-bg-opacity', '0');
@@ -25,7 +25,7 @@ const MenuModal = () => {
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
         <dialog
             ref={dialogRef}
-            className="size-full overflow-hidden bg-gray-950 transition-[background-color]" // backdrop-blur-md
+            className="backdrop-glassmorphic size-full overflow-hidden bg-gray-950 transition-[background-color]" // backdrop-blur-md
             onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleMenu({ name: null })}
         >
             {name && (name === 'config' ? <Settings /> : <Contact />)}

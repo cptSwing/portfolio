@@ -7,6 +7,10 @@
 @tailwind utilities;
 
 @layer base {
+    html {
+        @apply scroll-smooth;
+    }
+
     a {
         @apply text-[--theme-secondary-50] underline decoration-white/25 visited:text-[--theme-secondary-200];
     }
@@ -82,6 +86,10 @@
         grid-row-end: 6;
         grid-column-start: 3;
         grid-column-end: 6;
+    }
+
+    .backdrop-glassmorphic {
+        @apply backdrop-blur-md backdrop-saturate-150;
     }
 
     .rotate-text {
