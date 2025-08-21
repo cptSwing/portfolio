@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import FitText from './utilityComponents/FitText';
+import { Flipped } from 'react-flip-toolkit';
 
 const Brand: FC<{ flippedProps: object }> = ({ flippedProps }) => {
     return (
@@ -13,4 +14,8 @@ const Brand: FC<{ flippedProps: object }> = ({ flippedProps }) => {
     );
 };
 
-export default Brand;
+const FlippedBrand: FC = () => {
+    return <Flipped flipId={'brand'}>{(flippedProps) => <Brand flippedProps={flippedProps} />}</Flipped>;
+};
+
+export default FlippedBrand;

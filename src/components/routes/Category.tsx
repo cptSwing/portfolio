@@ -1,7 +1,7 @@
 import { Category as Category_T } from '../../types/types';
 import { CSSProperties, FC, useEffect, useRef, useState } from 'react';
 import { classNames } from 'cpts-javascript-utilities';
-import { Flipped, Flipper } from 'react-flip-toolkit';
+import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
@@ -9,7 +9,7 @@ import CategoryCard from '../CategoryCard.tsx';
 import useMountTransition from '../../hooks/useMountTransition.ts';
 import { config } from '../../types/exportTyped.ts';
 import FitText from '../utilityComponents/FitText.tsx';
-import Brand from '../Brand.tsx';
+import FlippedBrand from '../Brand.tsx';
 
 const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
 
@@ -22,6 +22,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     const [flipIndex, setFlipIndex] = useState(0);
 
     const [wheelDirection, wheelDistance] = useMouseWheelDirection();
+
     useEffect(() => {
         if (wheelDirection !== null) {
             setFlipIndex((previous) => loopFlipValues(previous, category.posts.length, wheelDirection));
@@ -33,19 +34,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     const [title, setTitle] = useState('jens Brandenburg');
 
     return (
-        <Flipper
-            className="[display:contents]"
-            flipKey={isMounted}
-            spring={{ stiffness: 200, damping: 300 }}
-            handleEnterUpdateDelete={({ hideEnteringElements, animateEnteringElements, animateExitingElements, animateFlippedElements }) => {
-                // hideEnteringElements();
-                animateExitingElements().then(animateEnteringElements);
-                // animateFlippedElements().then(animateExitingElements);
-                // animateEnteringElements();
-                // hideEnteringElements();
-                // animateExitingElements().then(animateFlippedElements).then(animateEnteringElements);
-            }}
-        >
+        <Flipper className="[display:contents]" flipKey={isMounted} spring={{ stiffness: 500, damping: 300 }}>
             {isMounted ? (
                 <div
                     ref={categoryRef}
@@ -53,48 +42,29 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                         'flex h-full w-[86.66%] flex-row flex-wrap items-center justify-center bg-theme-primary/10 py-[8%] pl-[2.5%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-x-0 mask-edges-y-[4%] sm:size-full sm:flex-col sm:p-0 sm:mask-edges-x-[6%] sm:mask-edges-y-0',
                         show ? 'delay-[calc(var(--ui-animation-menu-transition-duration)/2)]' : 'delay-0',
                     )}
-                    onTransitionEnd={({ currentTarget, target }) => {}}
                 >
                     {/* Info */}
                     <BannerTitle title={title} classes="h-[3%] ml-[17%] self-start sm:h-[7.5%] flex-shrink-0 flex-grow sm:basis-auto basis-full" />
 
-                    <Flipper
-                        element={'nav'}
-                        className="sm:post-cards-grid-template-desktop post-cards-grid-template-mobile h-[97%] flex-shrink-0 flex-grow basis-[92.5%] origin-center transform gap-x-[2%] gap-y-[1.5%] sm:size-full sm:h-[85%] sm:w-[90%] sm:basis-auto sm:gap-x-[2.5%] sm:gap-y-[3%] 2xl:gap-x-[2.1%]"
-                        flipKey={flipIndex}
-                        spring={{ stiffness: 700, damping: 100 }}
-                    >
-                        {/* Animated Grid */}
-                        {category.posts.map((post, idx, arr) => (
-                            <CategoryCard
-                                key={post.id}
-                                post={post}
-                                flipIndex={flipIndex}
-                                cardIndex={idx}
-                                cardCount={arr.length}
-                                gridAreaStylesAndPaths={gridAreaStylesAndPaths_ref}
-                                setFlipIndex={setFlipIndex}
-                                setTitle={setTitle}
-                            />
-                        ))}
+                    <nav className="sm:post-cards-grid-template-desktop post-cards-grid-template-mobile h-[97%] flex-shrink-0 flex-grow basis-[92.5%] origin-center transform gap-x-[2%] gap-y-[1.5%] sm:size-full sm:h-[85%] sm:w-[90%] sm:basis-auto sm:gap-x-[2.5%] sm:gap-y-[3%] 2xl:gap-x-[2.1%]">
+                        <Flipper className="[display:contents]" flipKey={flipIndex} spring={{ stiffness: 700, damping: 100 }}>
+                            {/* Animated Grid */}
+                            {category.posts.map((post, idx, arr) => (
+                                <CategoryCard
+                                    key={post.id}
+                                    post={post}
+                                    flipIndex={flipIndex}
+                                    cardIndex={idx}
+                                    cardCount={arr.length}
+                                    gridAreaStylesAndPaths={gridAreaStylesAndPaths_ref}
+                                    setFlipIndex={setFlipIndex}
+                                    setTitle={setTitle}
+                                />
+                            ))}
+                        </Flipper>
 
-                        <Flipped
-                            flipId={'brand'}
-                            transformOrigin="50% 50%"
-                            shouldFlip={(previousDecisionData: any, currentDecisionData: any) => {
-                                console.log(
-                                    '%c[Category]',
-                                    'color: #adc5cb',
-                                    `previousDecisionData, currentDecisionData :`,
-                                    previousDecisionData,
-                                    currentDecisionData,
-                                );
-                                return false;
-                            }}
-                        >
-                            {(flippedProps) => <Brand flippedProps={flippedProps} />}
-                        </Flipped>
-                    </Flipper>
+                        <FlippedBrand />
+                    </nav>
 
                     {/* Progress Bar */}
                     <div className="flex h-[97%] w-full flex-shrink-0 flex-grow basis-[7.5%] flex-col items-center justify-between gap-y-[2%] sm:h-[7.5%] sm:w-[80%] sm:basis-auto sm:flex-row sm:gap-x-[2%] sm:gap-y-0">
@@ -118,9 +88,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                     {<DebugWrapper category={category} flipIndex={flipIndex} setIndex={setFlipIndex} />}
                 </div>
             ) : (
-                <Flipped flipId={'brand'} transformOrigin="0 -250%" onAppear={(...args) => console.log('%c[Category]', 'color: #4457fc', `args :`, args)}>
-                    {(flippedProps) => <Brand flippedProps={flippedProps} />}
-                </Flipped>
+                <FlippedBrand />
             )}
         </Flipper>
     );
