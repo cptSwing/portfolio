@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, memo, Context, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { classNames } from 'cpts-javascript-utilities';
 import {
@@ -28,6 +28,9 @@ import { config } from '../types/exportTyped';
 import { keyDownA11y } from 'cpts-javascript-utilities';
 import { BreakpointName } from '../hooks/useBreakPoint';
 
+import GetChildSizeContext, { getChildSizeContextDefaultValue } from '../contexts/GetChildSizeContext';
+import useResizeObserver from '../hooks/useResizeObserver';
+
 const {
     ui: {
         animation: { menuTransition_Ms },
@@ -35,7 +38,7 @@ const {
     },
 } = config;
 
-const HexagonTilesMatrix = () => {
+const HexagonTilesGlass = () => {
     const menuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
 
@@ -53,57 +56,76 @@ const HexagonTilesMatrix = () => {
     );
 
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const hexagonElements_Ref = useRef<HTMLDivElement | null>(null);
+    const hexagonElementsRect = useResizeObserver(hexagonElements_Ref.current);
 
     return (
-        <svg
-            ref={svgRef}
-            className={classNames(
-                'pointer-events-none absolute z-10 h-full w-full overflow-visible transition-transform sm:h-full sm:w-auto',
-                routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'matrix-rotate-90 sm:matrix-rotate-0',
-            )}
-            viewBox="0 0 400 346.4"
-            style={
-                {
-                    transitionDuration: `${menuTransition_Ms}ms`,
-                } as CSSProperties
-            }
-            onTransitionEnd={({ target, currentTarget }) => {
-                if (target === currentTarget) {
-                    // ^^^  condition filters out bubbled child events
-                    const elementRotation = getCurrentElementRotation(currentTarget);
-                    if (menuTransitionTarget && navRotationValues[menuTransitionTarget].deg === elementRotation) {
-                        // Set transition target as reached:
-                        setMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
-                    }
+        <>
+            <svg
+                ref={svgRef}
+                className={classNames(
+                    'pointer-events-none absolute z-10 h-full w-full overflow-visible transition-transform sm:h-full sm:w-auto',
+                    routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'matrix-rotate-90 sm:matrix-rotate-0',
+                )}
+                viewBox="0 0 400 346.4"
+                style={
+                    {
+                        transitionDuration: `${menuTransition_Ms}ms`,
+                    } as CSSProperties
                 }
-            }}
-            shapeRendering="geometricPrecision"
-        >
-            <HexagonSvgDefs />
+                onTransitionEnd={({ target, currentTarget }) => {
+                    if (target === currentTarget) {
+                        // ^^^  condition filters out bubbled child events
+                        const elementRotation = getCurrentElementRotation(currentTarget);
+                        if (menuTransitionTarget && navRotationValues[menuTransitionTarget].deg === elementRotation) {
+                            // Set transition target as reached:
+                            setMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
+                        }
+                    }
+                }}
+                shapeRendering="geometricPrecision"
+            >
+                <HexagonSvgDefs />
 
-            {regularHexagons.map((hexagonData, idx) => (
-                <RegularHexagon shapeData={hexagonData} routeName={routeName} key={`hex-regular-index-${idx}`} />
-            ))}
+                {/* {regularHexagons.map((hexagonData, idx) => (
+                    <RegularHexagon shapeData={hexagonData} routeName={routeName} key={`hex-regular-index-${idx}`} />
+                ))} */}
 
-            {navigationButtonHexagons.map((hexagonNavigationButtonData, idx) => (
-                <NavigationButtonHexagon
-                    shapeData={hexagonNavigationButtonData}
-                    routeName={routeName}
-                    menuTransitionStateUpdates={menuTransitionStateUpdates}
-                    key={`hex-link-index-${idx}`}
-                />
-            ))}
+                {navigationButtonHexagons.map((hexagonNavigationButtonData, idx) => (
+                    <NavigationButtonHexagon
+                        shapeData={hexagonNavigationButtonData}
+                        routeName={routeName}
+                        menuTransitionStateUpdates={menuTransitionStateUpdates}
+                        key={`hex-link-index-${idx}`}
+                    />
+                ))}
 
-            {menuButtonHexagons.map((hexagonMenuButtonData, idx) => (
-                <MenuButtonHexagon shapeData={hexagonMenuButtonData} routeName={routeName} key={`hex-link-index-${idx}`} />
-            ))}
-        </svg>
+                {menuButtonHexagons.map((hexagonMenuButtonData, idx) => (
+                    <MenuButtonHexagon shapeData={hexagonMenuButtonData} routeName={routeName} key={`hex-link-index-${idx}`} />
+                ))}
+            </svg>
+
+            <GetChildSizeContext.Provider
+                value={hexagonElementsRect ? { width: hexagonElementsRect.width, height: hexagonElementsRect.height } : getChildSizeContextDefaultValue}
+            >
+                <div
+                    ref={hexagonElements_Ref}
+                    className="pointer-events-none absolute aspect-hex-flat h-full w-full overflow-visible transition-transform sm:h-full sm:w-auto" //
+                >
+                    {regularHexagons.map((hexagonData, idx) => (
+                        <RegularHexagonDiv shapeData={hexagonData} routeName={routeName} key={`hex-regular-index-${idx}`} />
+                    ))}
+                </div>
+            </GetChildSizeContext.Provider>
+        </>
     );
 };
 
-export default HexagonTilesMatrix;
+export default HexagonTilesGlass;
 
 const HexagonSvgDefs = memo(() => {
+    console.log('%c[HexagonTilesGlass]', 'color: #bec3a1', `roundedHexagonPath :`, roundedHexagonPath);
+
     return (
         <defs>
             <path
@@ -115,16 +137,6 @@ const HexagonSvgDefs = memo(() => {
                 // shapeRendering="optimizeSpeed"
             />
             <path id={halfRoundedHexagonPathName} d={halfRoundedHexagonPath} />
-
-            <foreignObject
-                id="svg-hexagon-foreign-object-backdrop-blur"
-                x="0"
-                y="0"
-                width="100"
-                height="86.66"
-                overflow="visible"
-                className="backdrop-blur-[2px]"
-            />
 
             <clipPath id={roundedHexagonPathName + '-clipPath'}>
                 <use href={'#' + roundedHexagonPathName} />
@@ -142,7 +154,7 @@ const HexagonSvgDefs = memo(() => {
             </filter>
 
             <filter id="svg-hexagon-lighter-inner">
-                <feFlood className="[flood-color:theme(colors.theme.primary-lighter/0.5)]" />
+                <feFlood floodColor="rgb(255 255 255 / 1)" />
                 <feComposite operator="out" in2="SourceGraphic" />
                 <feMorphology operator="dilate" radius="4" />
                 <feGaussianBlur stdDeviation="5" />
@@ -160,12 +172,77 @@ const HexagonSvgDefs = memo(() => {
                 <stop offset="100%" stopColor="rgba(255, 255, 255, 0.03)" />
             </linearGradient>
 
-            <radialGradient id="svg-hexagon-radial-background-gradient">
-                <stop offset="0%" stopColor="rgba(255, 255, 255, 0.03)" />
-                <stop offset="70%" stopColor="rgba(255, 255, 255, 0.08)" />
-                <stop offset="100%" stopColor="rgba(255, 255, 255, 0.16)" />
+            <radialGradient id="svg-hexagon-radial-background-gradient" r="0.55" cx="0.5" cy="0.5">
+                <stop offset="80%" stopColor="rgb(255 255 255 / 0.01)" />
+                <stop offset="100%" stopColor="rgb(255 255 255 / 0.075)" />
+            </radialGradient>
+
+            <radialGradient id="svg-hexagon-radial-background-gradient-half" r="0.625" cx="0.5" cy="0.425">
+                <stop offset="80%" stopColor="rgb(255 255 255 / 0.01)" />
+                <stop offset="100%" stopColor="rgb(255 255 255 / 0.075)" />
             </radialGradient>
         </defs>
+    );
+});
+
+const RegularHexagonDiv: FC<{
+    shapeData: HexagonRouteData;
+    routeName: ROUTE;
+}> = memo(({ shapeData, routeName }) => {
+    const { position, rotation, scale, isHalf, shouldOffset } = shapeData[routeName];
+    const breakpoint = useZustand((state) => state.values.breakpoint);
+    const parentSize = useContext(GetChildSizeContext);
+
+    const cssVariables_Memo = useMemo(
+        () =>
+            position &&
+            calcCSSVariablesGlass(position, rotation, scale, parentSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, parentSize, shouldOffset, routeName, breakpoint],
+    );
+
+    const random_Memo = useMemo(() => Math.random(), []);
+
+    return (
+        <div
+            className={classNames(
+                'regular-hexagon-class pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform backdrop-blur-[3px] backdrop-saturate-150 transition-[transform,background-color]',
+                routeName === ROUTE.home
+                    ? 'bg-theme-primary/20'
+                    : routeName === ROUTE.category
+                      ? 'bg-theme-primary/10'
+                      : // post
+                        'bg-theme-text-background',
+            )}
+            style={
+                {
+                    ...cssVariables_Memo,
+                    clipPath: `url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`,
+                    transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
+                    transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
+                } as CSSProperties
+            }
+        >
+            {/* For Stroke and inner gradient (filter) */}
+            <svg viewBox="0 0 100 86.6">
+                <use
+                    href={'#' + (isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName)}
+                    className={classNames(
+                        'transition-[stroke,stroke-width] duration-500 [--hover-stroke-duration:--ui-animation-menu-transition-duration] hover-active:[--hover-stroke-duration:50ms]',
+                        isHalf ? 'fill-[url(#svg-hexagon-radial-background-gradient-half)]' : 'fill-[url(#svg-hexagon-radial-background-gradient)]',
+                        routeName === ROUTE.home
+                            ? 'stroke-theme-primary-lighter/5 hover-active:stroke-theme-primary-lighter/15'
+                            : routeName === ROUTE.category
+                              ? 'stroke-theme-primary-lighter/[0.025] hover-active:stroke-theme-primary-lighter/[0.075]'
+                              : // post
+                                'stroke-theme-text-background',
+                    )}
+                    style={{
+                        strokeWidth: routeName === ROUTE.post ? '0' : `${4 / scale}`,
+                        transitionDuration: `var(--hover-stroke-duration), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
+                    }}
+                />
+            </svg>
+        </div>
     );
 });
 
@@ -197,17 +274,17 @@ const RegularHexagon: FC<{
                 } as CSSProperties
             }
         >
-            <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible" className="backdrop-blur-[2px]" />
+            {/* <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible" className="backdrop-blur-[2px]" /> */}
 
             <use
                 href={'#' + (isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName)}
                 className={classNames(
-                    'fill-[url(#svg-hexagon-radial-background-gradient)] stroke-white/10 transition-[fill,stroke,stroke-width] duration-1000',
+                    'transition-[fill,stroke,stroke-width] duration-1000',
                     routeName === ROUTE.home
-                        ? '' // fill-theme-primary/25 stroke-theme-primary-lighter/5 hover-active:stroke-theme-primary-lighter/15
+                        ? 'fill-theme-primary/25 stroke-theme-primary-lighter/5 hover-active:stroke-theme-primary-lighter/15' //
                         : routeName === ROUTE.category
-                          ? '' // fill-theme-primary/10 stroke-theme-primary-lighter/[0.025] hover-active:stroke-theme-primary-lighter/[0.075]
-                          : /* post */
+                          ? 'fill-theme-primary/10 stroke-theme-primary-lighter/[0.025] hover-active:stroke-theme-primary-lighter/[0.075]'
+                          : // post
                             '!fill-theme-text-background !stroke-theme-text-background',
                 )}
                 style={{
@@ -217,45 +294,6 @@ const RegularHexagon: FC<{
         </g>
     );
 });
-
-// const RegularHexagon: FC<{
-//     shapeData: HexagonRouteData;
-//     routeName: ROUTE;
-// }> = memo(({ shapeData, routeName }) => {
-//     const { position, rotation, scale, isHalf, shouldOffset } = shapeData[routeName];
-//     const breakpoint = useZustand((state) => state.values.breakpoint);
-
-//     const cssVariables_Memo = useMemo(
-//         () => position && calcCSSVariables(position, rotation, scale, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
-//         [position, rotation, scale, shouldOffset, routeName, breakpoint],
-//     );
-
-//     const random_Memo = useMemo(() => Math.random(), []);
-
-//     return (
-//         <use
-//             href={'#' + (isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName)}
-//             clipPath={`url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`}
-//             className={classNames(
-//                 'regular-hexagon-class glassmorphic-svg pointer-events-auto origin-[12.5%_12.5%] transition-[stroke,transform,fill,stroke-width] matrix-transform [--hover-stroke-duration:--ui-animation-menu-transition-duration] hover-active:[--hover-stroke-duration:50ms]',
-//                 routeName === ROUTE.home
-//                     ? '' // fill-theme-primary/25 stroke-theme-primary-lighter/5 hover-active:stroke-theme-primary-lighter/15
-//                     : routeName === ROUTE.category
-//                       ? '' // fill-theme-primary/10 stroke-theme-primary-lighter/[0.025] hover-active:stroke-theme-primary-lighter/[0.075]
-//                       : /* post */
-//                         'fill-theme-text-background stroke-theme-text-background',
-//             )}
-//             style={
-//                 {
-//                     ...cssVariables_Memo,
-//                     strokeWidth: routeName === ROUTE.home ? `${4 / scale}` : routeName === ROUTE.category ? `${4 / scale}` : /* post */ '0',
-//                     transitionDuration: `var(--hover-stroke-duration), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
-//                     transitionDelay: `0ms, calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
-//                 } as CSSProperties
-//             }
-//         />
-//     );
-// });
 
 const NavigationButtonHexagon: FC<{
     shapeData: HexagonNavigationDefaultButtonRouteData | HexagonNavigationCategoryButtonRouteData;
@@ -456,6 +494,50 @@ function calcCSSVariables(
         '--tw-matrix-rotate-sin': sin(rotation, 5),
         '--tw-matrix-scale-x': (1 - strokeWidth) * scale,
         '--tw-matrix-scale-y': (1 - strokeWidth) * scale,
+    };
+}
+
+function calcCSSVariablesGlass(
+    translate: { x: number; y: number },
+    rotation: number,
+    scale: number,
+    parentSize: {
+        width: number;
+        height: number;
+    },
+    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
+) {
+    const { shouldOffset, offset, clampTo: _clampTo } = options ?? {};
+
+    // TODO Recalculating given values (originally for a 400x346.4 viewBox) to container's pixel dimensions
+    const { width, height } = parentSize;
+
+    const viewBoxWidth = 400;
+    const viewBoxHeight = 346.4;
+    const pathWidth = 100;
+    const pathHeight = 86.6;
+    const pathInitialOffsetX = 50;
+    const pathInitialOffsetY = 43.3;
+    const pathFractionalScale = pathWidth / viewBoxWidth; // Or pathHeight / viewBoxHeight
+
+    const mappedTranslateX = Math.round((translate.x / viewBoxWidth) * width);
+    const mappedTranslateY = Math.round((translate.y / viewBoxHeight) * height);
+    const mappedScaleX = (1 - strokeWidth) * scale * ((width * pathFractionalScale) / pathWidth);
+    const mappedScaleY = (1 - strokeWidth) * scale * ((height * pathFractionalScale) / pathHeight); // Should basically be the same number
+
+    return {
+        '--tw-matrix-e': offset ? translate.x + (shouldOffset ? offset : -offset) : mappedTranslateX,
+        '--tw-matrix-f': mappedTranslateY,
+        '--tw-matrix-rotate-cos': cos(rotation, 5),
+        '--tw-matrix-rotate-sin': sin(rotation, 5),
+        '--tw-matrix-scale-x': mappedScaleX,
+        '--tw-matrix-scale-y': mappedScaleY,
+
+        '--tw-translate-x': mappedTranslateX + 'px',
+        '--tw-translate-y': mappedTranslateY + 'px',
+        '--tw-rotate': rotation + 'deg',
+        '--tw-scale-x': mappedScaleX,
+        '--tw-scale-y': mappedScaleY,
     };
 }
 
