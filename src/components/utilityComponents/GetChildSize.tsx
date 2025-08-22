@@ -1,7 +1,10 @@
 import { Children, Context, FC, ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { getChildSizeContextDefaultValue } from '../../contexts/GetChildSizeContext';
+import useResizeObserver from '../../hooks/useResizeObserver';
 
 const GetChildSize: FC<{ children: ReactElement; Context: Context<{ width: number; height: number }> }> = ({ children, Context }) => {
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
     const singleChild_Memo = useMemo(() => {
         try {
             return Children.only(children) as ReactElement;
@@ -12,25 +15,19 @@ const GetChildSize: FC<{ children: ReactElement; Context: Context<{ width: numbe
         }
     }, [children]);
 
-    const [size, setSize] = useState<{ width: number; height: number } | null>(null);
+    const [size, setSize] = useState<{ width: number; height: number }>();
+    const rect = useResizeObserver(wrapperRef.current?.firstElementChild);
 
     useEffect(() => {
-        if (wrapperRef.current) {
-            const { width, height } = wrapperRef.current.firstElementChild?.getBoundingClientRect() ?? {};
-
+        if (rect) {
+            const { width, height } = rect;
             setSize((prevState) => {
-                if (width && height) {
-                    if (!prevState || prevState.width != width || prevState.height != height) {
-                        return { width, height };
-                    }
+                if (!prevState || prevState.width != width || prevState.height != height) {
+                    return { width, height };
                 }
-
-                return prevState;
             });
         }
-    }, [singleChild_Memo]);
-
-    const wrapperRef = useRef<HTMLDivElement>(null);
+    }, [rect]);
 
     return (
         <Context.Provider value={size ?? getChildSizeContextDefaultValue}>
