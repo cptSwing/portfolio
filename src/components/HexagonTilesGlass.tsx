@@ -66,6 +66,7 @@ const HexagonTilesGlass = () => {
                 className={classNames(
                     'pointer-events-none absolute z-10 h-full w-full overflow-visible transition-transform sm:h-full sm:w-auto',
                     routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'matrix-rotate-90 sm:matrix-rotate-0',
+                    '[--dilation-color:theme(colors.theme[text-background])] [--fill-color:theme(colors.theme[primary-lighter]/0.5)] [--stroke-color:theme(colors.theme.primary)]',
                 )}
                 viewBox="0 0 400 346.4"
                 style={
@@ -124,8 +125,6 @@ const HexagonTilesGlass = () => {
 export default HexagonTilesGlass;
 
 const HexagonSvgDefs = memo(() => {
-    console.log('%c[HexagonTilesGlass]', 'color: #bec3a1', `roundedHexagonPath :`, roundedHexagonPath);
-
     return (
         <defs>
             <path
@@ -154,16 +153,46 @@ const HexagonSvgDefs = memo(() => {
             </filter>
 
             <filter id="svg-hexagon-lighter-inner">
-                <feFlood floodColor="rgb(255 255 255 / 1)" />
-                <feComposite operator="out" in2="SourceGraphic" />
-                <feMorphology operator="dilate" radius="4" />
-                <feGaussianBlur stdDeviation="5" />
-                <feComposite operator="atop" in2="SourceGraphic" />
+                <feFlood floodColor="var(--dilation-color)" result="flood-border" />
+                <feComposite operator="out" in="flood-border" in2="SourceAlpha" result="composite-border" />
+                <feMorphology operator="dilate" in="composite-border" radius="4" result="dilate-border-for-blur" />
+                <feGaussianBlur in="dilate-border-for-blur" stdDeviation="5" result="blur-border" />
+
+                <feFlood floodColor="var(--fill-color)" result="flood-background" />
+                <feComposite operator="over" in="blur-border" in2="flood-background" result="border-fill-composite" />
+
+                {/* <feFlood floodColor="var(--stroke-color)" result="flood-stroke" /> */}
+                {/* <feComposite operator="out" in="flood-stroke" in2="SourceAlpha" result="composite-border" /> */}
+                {/* <feMorphology operator="dilate" in="flood-stroke" radius="2" result="dilate-border-for-stroke" /> */}
+
+                {/* <feComposite operator="over" in="dilate-border-for-stroke" in2="border-fill-composite" /> */}
             </filter>
 
             <filter id="svg-hexagon-glass-filter">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="0.02" result="blur" />
                 <feImage x="-50%" y="-50%" width="200%" height="200%" result="map" />
+            </filter>
+
+            <filter id="svg-hexagon-bloom-filter" x="-5%" y="-5%" width="110%" height="110%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3" edgeMode="wrap" result="blurResult" />
+
+                <feBlend in="blurResult" in2="SourceGraphic" mode="screen" result="final" />
+                <feMerge result="merge">
+                    <feMergeNode in="SourceGraphic" />
+                    <feMergeNode in="final" />
+                </feMerge>
+            </filter>
+
+            <filter id="fill-filter" colorInterpolationFilters="linearRGB" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
+                <feFlood floodColor="#0055ff" floodOpacity="1" x="0%" y="0%" width="100%" height="100%" result="flood" />
+            </filter>
+
+            <filter id="dilate-filter" colorInterpolationFilters="linearRGB" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
+                <feFlood floodColor="#00ffff" floodOpacity="1" x="0%" y="0%" width="100%" height="100%" result="flood" />
+                <feFlood floodColor="#ffff00" floodOpacity="1" x="0%" y="0%" width="100%" height="100%" result="flood-border" />
+                <feComposite in="flood-border" in2="SourceGraphic" operator="out" x="0%" y="0%" width="100%" height="100%" result="composite" />
+                <feMorphology operator="dilate" radius="5 5" x="0%" y="0%" width="100%" height="100%" in="composite" result="morphology" />
+                <feComposite in="morphology" in2="flood" operator="in" x="0%" y="0%" width="100%" height="100%" result="composite2" />
             </filter>
 
             <linearGradient id="svg-hexagon-linear-background-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
@@ -205,25 +234,23 @@ const RegularHexagonDiv: FC<{
     return (
         <div
             className={classNames(
-                'regular-hexagon-class pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform backdrop-blur-[3px] backdrop-saturate-150 transition-[transform,background-color]',
-                routeName === ROUTE.home
-                    ? 'bg-theme-primary/20'
-                    : routeName === ROUTE.category
-                      ? 'bg-theme-primary/10'
-                      : // post
-                        'bg-theme-text-background',
+                'regular-hexagon-class pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform backdrop-blur-[2px] backdrop-saturate-150 transition-transform [clip-path:--before-clipPath]',
+                '',
             )}
             style={
                 {
                     ...cssVariables_Memo,
-                    clipPath: `url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`,
-                    transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
-                    transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
+                    '--before-clipPath': `url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`,
+                    // 'clipPath': `url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`,
+                    'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
+                    'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
                 } as CSSProperties
             }
         >
+            <div className="relative size-full [filter:url(#svg-hexagon-lighter-inner)] before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-white before:[clip-path:--before-clipPath]" />
+
             {/* For Stroke and inner gradient (filter) */}
-            <svg viewBox="0 0 100 86.6">
+            {/* <svg viewBox="0 0 100 86.6">
                 <use
                     href={'#' + (isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName)}
                     className={classNames(
@@ -241,7 +268,7 @@ const RegularHexagonDiv: FC<{
                         transitionDuration: `var(--hover-stroke-duration), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
                     }}
                 />
-            </svg>
+            </svg> */}
         </div>
     );
 });
@@ -520,19 +547,12 @@ function calcCSSVariablesGlass(
     const pathInitialOffsetY = 43.3;
     const pathFractionalScale = pathWidth / viewBoxWidth; // Or pathHeight / viewBoxHeight
 
-    const mappedTranslateX = Math.round((translate.x / viewBoxWidth) * width);
-    const mappedTranslateY = Math.round((translate.y / viewBoxHeight) * height);
+    const mappedTranslateX = (translate.x / viewBoxWidth) * width;
+    const mappedTranslateY = (translate.y / viewBoxHeight) * height;
     const mappedScaleX = (1 - strokeWidth) * scale * ((width * pathFractionalScale) / pathWidth);
     const mappedScaleY = (1 - strokeWidth) * scale * ((height * pathFractionalScale) / pathHeight); // Should basically be the same number
 
     return {
-        '--tw-matrix-e': offset ? translate.x + (shouldOffset ? offset : -offset) : mappedTranslateX,
-        '--tw-matrix-f': mappedTranslateY,
-        '--tw-matrix-rotate-cos': cos(rotation, 5),
-        '--tw-matrix-rotate-sin': sin(rotation, 5),
-        '--tw-matrix-scale-x': mappedScaleX,
-        '--tw-matrix-scale-y': mappedScaleY,
-
         '--tw-translate-x': mappedTranslateX + 'px',
         '--tw-translate-y': mappedTranslateY + 'px',
         '--tw-rotate': rotation + 'deg',

@@ -108,10 +108,12 @@ const SvgBackground: FC = () => {
             </defs>
             <rect fill="rgb(var(--theme-root-background))" width="800" height="450" />
 
-            <g filter="url(#blurry-filter)">
+            <rect width="100%" height="100%" fill="gray" />
+
+            {/* <g filter="url(#blurry-filter)">
                 <ellipse rx="500" ry="300" cx="-100" cy="-50" fill="rgb(var(--theme-secondary)/0.1)" />
                 <ellipse rx="100" ry="300" cx="600" cy="325" fill="rgb(var(--theme-secondary-darker)/0.25)" />
-            </g>
+            </g> */}
         </svg>
     );
 };
