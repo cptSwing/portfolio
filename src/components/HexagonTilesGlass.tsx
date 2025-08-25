@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, Context, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, memo, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { classNames } from 'cpts-javascript-utilities';
 import {
@@ -66,8 +66,7 @@ const HexagonTilesGlass = () => {
                 className={classNames(
                     'pointer-events-none absolute z-10 h-full w-full overflow-visible transition-transform sm:h-full sm:w-auto',
                     routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'matrix-rotate-90 sm:matrix-rotate-0',
-                    // '[--blur-color:theme(colors.theme[text-background])] [--fill-color:theme(colors.theme[primary-lighter]/0.5)] [--stroke-color:theme(colors.theme.primary)]',
-                    '[--blur-color:theme(colors.green[500])] [--fill-color:theme(colors.red[500]/0.25)] [--stroke-color:theme(colors.blue[500])]',
+                    '[--blur-color:theme(colors.white/0.2)] [--fill-color:theme(colors.theme.primary/0.01)] [--stroke-color:theme(colors.theme.secondary/0.1)]',
                 )}
                 viewBox="0 0 400 346.4"
                 style={
@@ -113,6 +112,12 @@ const HexagonTilesGlass = () => {
                 <div
                     ref={hexagonElements_Ref}
                     className="pointer-events-none absolute aspect-hex-flat h-full w-full overflow-visible transition-transform sm:h-full sm:w-auto" //
+                    style={
+                        {
+                            '--hexagon-clip-path': `url(#${roundedHexagonPathName}-clipPath)`,
+                            '--half-hexagon-clip-path': `url(#${halfRoundedHexagonPathName}-clipPath)`,
+                        } as CSSProperties
+                    }
                 >
                     {regularHexagons.map((hexagonData, idx) => (
                         <RegularHexagonDiv shapeData={hexagonData} routeName={routeName} key={`hex-regular-index-${idx}`} />
@@ -145,39 +150,23 @@ const HexagonSvgDefs = memo(() => {
                 <use href={'#' + halfRoundedHexagonPathName} />
             </clipPath>
 
-            <filter id="svg-hexagon-lighter-none">
-                <feFlood className="[flood-color:theme(colors.theme.primary-lighter/1)]" />
-                <feComposite operator="out" in2="SourceGraphic" />
-                <feMorphology operator="dilate" radius="0" />
-                <feGaussianBlur stdDeviation="0" />
-                <feComposite operator="atop" in2="SourceGraphic" />
-            </filter>
-
             <filter id="svg-hexagon-lighter-inner">
                 <feFlood floodColor="var(--fill-color)" result="fill-flood" />
 
-                <feFlood floodColor="var(--stroke-color)" result="stroke-flood" />
-                <feComposite operator="out" in="stroke-flood" in2="SourceAlpha" result="stroke-composite" />
-                <feMorphology operator="dilate" in="stroke-composite" radius="2" result="stroke-dilate" />
-
                 <feFlood floodColor="var(--blur-color)" result="blur-flood" />
                 <feComposite operator="out" in="blur-flood" in2="SourceAlpha" result="blur-composite" />
-
-                <feMorphology operator="dilate" in="blur-composite" radius="4" result="blur-dilate" />
+                <feMorphology operator="dilate" in="blur-composite" radius="2" result="blur-dilate" />
                 <feGaussianBlur in="blur-dilate" stdDeviation="5" result="blur-gaussian" />
 
-                <feMerge>
-                    {/* <feMergeNode in="blur-fill-composite" /> */}
+                <feFlood floodColor="var(--stroke-color)" result="stroke-flood" />
+                <feComposite operator="out" in="stroke-flood" in2="SourceAlpha" result="stroke-composite" />
+                <feMorphology operator="dilate" in="stroke-composite" radius="1" result="stroke-dilate" />
 
+                <feMerge>
                     <feMergeNode in="fill-flood" />
                     <feMergeNode in="blur-gaussian" />
                     <feMergeNode in="stroke-dilate" />
                 </feMerge>
-            </filter>
-
-            <filter id="svg-hexagon-glass-filter">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="0.02" result="blur" />
-                <feImage x="-50%" y="-50%" width="200%" height="200%" result="map" />
             </filter>
 
             <filter id="svg-hexagon-bloom-filter" x="-5%" y="-5%" width="110%" height="110%">
@@ -189,34 +178,6 @@ const HexagonSvgDefs = memo(() => {
                     <feMergeNode in="final" />
                 </feMerge>
             </filter>
-
-            <filter id="fill-filter" colorInterpolationFilters="linearRGB" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
-                <feFlood floodColor="#0055ff" floodOpacity="1" x="0%" y="0%" width="100%" height="100%" result="flood" />
-            </filter>
-
-            <filter id="dilate-filter" colorInterpolationFilters="linearRGB" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
-                <feFlood floodColor="#00ffff" floodOpacity="1" x="0%" y="0%" width="100%" height="100%" result="flood" />
-                <feFlood floodColor="#ffff00" floodOpacity="1" x="0%" y="0%" width="100%" height="100%" result="flood-border" />
-                <feComposite in="flood-border" in2="SourceGraphic" operator="out" x="0%" y="0%" width="100%" height="100%" result="composite" />
-                <feMorphology operator="dilate" radius="5 5" x="0%" y="0%" width="100%" height="100%" in="composite" result="morphology" />
-                <feComposite in="morphology" in2="flood" operator="in" x="0%" y="0%" width="100%" height="100%" result="composite2" />
-            </filter>
-
-            <linearGradient id="svg-hexagon-linear-background-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="rgba(255, 255, 255, 0.2)" />
-                <stop offset="50%" stopColor="rgba(255, 255, 255, 0.08)" />
-                <stop offset="100%" stopColor="rgba(255, 255, 255, 0.03)" />
-            </linearGradient>
-
-            <radialGradient id="svg-hexagon-radial-background-gradient" r="0.55" cx="0.5" cy="0.5">
-                <stop offset="80%" stopColor="rgb(255 255 255 / 0.01)" />
-                <stop offset="100%" stopColor="rgb(255 255 255 / 0.075)" />
-            </radialGradient>
-
-            <radialGradient id="svg-hexagon-radial-background-gradient-half" r="0.625" cx="0.5" cy="0.425">
-                <stop offset="80%" stopColor="rgb(255 255 255 / 0.01)" />
-                <stop offset="100%" stopColor="rgb(255 255 255 / 0.075)" />
-            </radialGradient>
         </defs>
     );
 });
@@ -241,91 +202,24 @@ const RegularHexagonDiv: FC<{
     return (
         <div
             className={classNames(
-                'regular-hexagon-class pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform backdrop-blur-[2px] backdrop-saturate-150 transition-transform [clip-path:--before-clipPath]',
-                '',
+                'regular-hexagon-class pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform backdrop-blur-[2px] backdrop-saturate-150 transition-transform',
+                isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
             )}
             style={
                 {
                     ...cssVariables_Memo,
-                    '--before-clipPath': `url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`,
-                    // 'clipPath': `url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`,
-                    'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
-                    'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
-                } as CSSProperties
-            }
-        >
-            <div className="relative size-full [filter:url(#svg-hexagon-lighter-inner)] before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-white before:[clip-path:--before-clipPath]" />
-
-            {/* For Stroke and inner gradient (filter) */}
-            {/* <svg viewBox="0 0 100 86.6">
-                <use
-                    href={'#' + (isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName)}
-                    className={classNames(
-                        'transition-[stroke,stroke-width] duration-500 [--hover-stroke-duration:--ui-animation-menu-transition-duration] hover-active:[--hover-stroke-duration:50ms]',
-                        isHalf ? 'fill-[url(#svg-hexagon-radial-background-gradient-half)]' : 'fill-[url(#svg-hexagon-radial-background-gradient)]',
-                        routeName === ROUTE.home
-                            ? 'stroke-theme-primary-lighter/5 hover-active:stroke-theme-primary-lighter/15'
-                            : routeName === ROUTE.category
-                              ? 'stroke-theme-primary-lighter/[0.025] hover-active:stroke-theme-primary-lighter/[0.075]'
-                              : // post
-                                'stroke-theme-text-background',
-                    )}
-                    style={{
-                        strokeWidth: routeName === ROUTE.post ? '0' : `${4 / scale}`,
-                        transitionDuration: `var(--hover-stroke-duration), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
-                    }}
-                />
-            </svg> */}
-        </div>
-    );
-});
-
-const RegularHexagon: FC<{
-    shapeData: HexagonRouteData;
-    routeName: ROUTE;
-}> = memo(({ shapeData, routeName }) => {
-    const { position, rotation, scale, isHalf, shouldOffset } = shapeData[routeName];
-    const breakpoint = useZustand((state) => state.values.breakpoint);
-
-    const cssVariables_Memo = useMemo(
-        () => position && calcCSSVariables(position, rotation, scale, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
-        [position, rotation, scale, shouldOffset, routeName, breakpoint],
-    );
-
-    const random_Memo = useMemo(() => Math.random(), []);
-
-    return (
-        <g
-            clipPath={`url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`}
-            className={classNames(
-                'regular-hexagon-class pointer-events-auto origin-[12.5%_12.5%] transition-transform matrix-transform [--hover-stroke-duration:--ui-animation-menu-transition-duration] hover-active:[--hover-stroke-duration:50ms]',
-            )}
-            style={
-                {
-                    ...cssVariables_Memo,
-                    transitionDuration: `var(--hover-stroke-duration), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
+                    transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
                     transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
                 } as CSSProperties
             }
         >
-            {/* <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible" className="backdrop-blur-[2px]" /> */}
-
-            <use
-                href={'#' + (isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName)}
+            <div
                 className={classNames(
-                    'transition-[fill,stroke,stroke-width] duration-1000',
-                    routeName === ROUTE.home
-                        ? 'fill-theme-primary/25 stroke-theme-primary-lighter/5 hover-active:stroke-theme-primary-lighter/15' //
-                        : routeName === ROUTE.category
-                          ? 'fill-theme-primary/10 stroke-theme-primary-lighter/[0.025] hover-active:stroke-theme-primary-lighter/[0.075]'
-                          : // post
-                            '!fill-theme-text-background !stroke-theme-text-background',
+                    'relative size-full [filter:url(#svg-hexagon-lighter-inner)] before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-white',
+                    isHalf ? 'before:[clip-path:--half-hexagon-clip-path]' : 'before:[clip-path:--hexagon-clip-path]',
                 )}
-                style={{
-                    strokeWidth: routeName === ROUTE.post ? '0' : `${2 / scale}`,
-                }}
             />
-        </g>
+        </div>
     );
 });
 
