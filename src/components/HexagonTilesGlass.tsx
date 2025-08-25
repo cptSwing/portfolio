@@ -66,7 +66,8 @@ const HexagonTilesGlass = () => {
                 className={classNames(
                     'pointer-events-none absolute z-10 h-full w-full overflow-visible transition-transform sm:h-full sm:w-auto',
                     routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'matrix-rotate-90 sm:matrix-rotate-0',
-                    '[--dilation-color:theme(colors.theme[text-background])] [--fill-color:theme(colors.theme[primary-lighter]/0.5)] [--stroke-color:theme(colors.theme.primary)]',
+                    // '[--blur-color:theme(colors.theme[text-background])] [--fill-color:theme(colors.theme[primary-lighter]/0.5)] [--stroke-color:theme(colors.theme.primary)]',
+                    '[--blur-color:theme(colors.green[500])] [--fill-color:theme(colors.red[500]/0.25)] [--stroke-color:theme(colors.blue[500])]',
                 )}
                 viewBox="0 0 400 346.4"
                 style={
@@ -153,19 +154,25 @@ const HexagonSvgDefs = memo(() => {
             </filter>
 
             <filter id="svg-hexagon-lighter-inner">
-                <feFlood floodColor="var(--dilation-color)" result="flood-border" />
-                <feComposite operator="out" in="flood-border" in2="SourceAlpha" result="composite-border" />
-                <feMorphology operator="dilate" in="composite-border" radius="4" result="dilate-border-for-blur" />
-                <feGaussianBlur in="dilate-border-for-blur" stdDeviation="5" result="blur-border" />
+                <feFlood floodColor="var(--fill-color)" result="fill-flood" />
 
-                <feFlood floodColor="var(--fill-color)" result="flood-background" />
-                <feComposite operator="over" in="blur-border" in2="flood-background" result="border-fill-composite" />
+                <feFlood floodColor="var(--stroke-color)" result="stroke-flood" />
+                <feComposite operator="out" in="stroke-flood" in2="SourceAlpha" result="stroke-composite" />
+                <feMorphology operator="dilate" in="stroke-composite" radius="2" result="stroke-dilate" />
 
-                {/* <feFlood floodColor="var(--stroke-color)" result="flood-stroke" /> */}
-                {/* <feComposite operator="out" in="flood-stroke" in2="SourceAlpha" result="composite-border" /> */}
-                {/* <feMorphology operator="dilate" in="flood-stroke" radius="2" result="dilate-border-for-stroke" /> */}
+                <feFlood floodColor="var(--blur-color)" result="blur-flood" />
+                <feComposite operator="out" in="blur-flood" in2="SourceAlpha" result="blur-composite" />
 
-                {/* <feComposite operator="over" in="dilate-border-for-stroke" in2="border-fill-composite" /> */}
+                <feMorphology operator="dilate" in="blur-composite" radius="4" result="blur-dilate" />
+                <feGaussianBlur in="blur-dilate" stdDeviation="5" result="blur-gaussian" />
+
+                <feMerge>
+                    {/* <feMergeNode in="blur-fill-composite" /> */}
+
+                    <feMergeNode in="fill-flood" />
+                    <feMergeNode in="blur-gaussian" />
+                    <feMergeNode in="stroke-dilate" />
+                </feMerge>
             </filter>
 
             <filter id="svg-hexagon-glass-filter">
