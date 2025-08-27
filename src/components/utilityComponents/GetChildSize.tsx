@@ -31,7 +31,7 @@ const GetChildSize: FC<{ children: ReactElement; Context: Context<{ width: numbe
 
     return (
         <Context.Provider value={size ?? getChildSizeContextDefaultValue}>
-            <div ref={wrapperRef} style={{ display: 'contents' }}>
+            <div ref={wrapperRef} className="contents">
                 {singleChild_Memo}
             </div>
         </Context.Provider>

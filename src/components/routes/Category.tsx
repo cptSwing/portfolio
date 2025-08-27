@@ -34,12 +34,12 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     const [title, setTitle] = useState('jens Brandenburg');
 
     return (
-        <Flipper className="[display:contents]" flipKey={isMounted} spring={{ stiffness: 500, damping: 300 }}>
+        <Flipper className="contents" flipKey={isMounted} spring={{ stiffness: 500, damping: 300 }}>
             {isMounted ? (
                 <div
                     ref={categoryRef}
                     className={classNames(
-                        'flex h-full w-[86.66%] flex-row flex-wrap items-center justify-center bg-theme-primary/10 py-[8%] pl-[2.5%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-x-0 mask-edges-y-[4%] sm:size-full sm:flex-col sm:p-0 sm:mask-edges-x-[6%] sm:mask-edges-y-0',
+                        'absolute flex h-full w-[86.66%] flex-row flex-wrap items-center justify-center bg-theme-primary/10 py-[8%] pl-[2.5%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-x-0 mask-edges-y-[3%] sm:size-full sm:flex-col sm:p-0 sm:mask-edges-x-[4%] sm:mask-edges-y-0', //
                         show ? 'delay-[calc(var(--ui-animation-menu-transition-duration)/2)]' : 'delay-0',
                     )}
                 >
@@ -47,7 +47,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                     <BannerTitle title={title} classes="h-[3%] ml-[17%] self-start sm:h-[7.5%] flex-shrink-0 flex-grow sm:basis-auto basis-full" />
 
                     <nav className="sm:post-cards-grid-template-desktop post-cards-grid-template-mobile h-[97%] flex-shrink-0 flex-grow basis-[92.5%] origin-center transform gap-x-[2%] gap-y-[1.5%] sm:size-full sm:h-[85%] sm:w-[90%] sm:basis-auto sm:gap-x-[2.5%] sm:gap-y-[3%] 2xl:gap-x-[2.1%]">
-                        <Flipper className="[display:contents]" flipKey={flipIndex} spring={{ stiffness: 700, damping: 100 }}>
+                        <Flipper className="contents" flipKey={flipIndex} spring={{ stiffness: 700, damping: 100 }}>
                             {/* Animated Grid */}
                             {category.posts.map((post, idx, arr) => (
                                 <CategoryCard
@@ -125,11 +125,11 @@ const BannerTitle: FC<{
             )}
             style={
                 {
-                    transitionDuration: `${isSwitching ? 0 : transitionDuration_MS / 2}ms`,
+                    transitionDuration: isSwitching ? '0ms' : 'calc(var(--ui-animation-menu-transition-duration) / 2)',
                 } as CSSProperties
             }
         >
-            <FitText text={title} classes="font-fjalla-one text-theme-primary-darker text-nowrap leading-none h-full sm:h-1/2" />
+            <FitText text={title} className="h-full text-nowrap font-fjalla-one leading-none text-theme-primary-darker sm:h-1/2" />
         </div>
     );
 };

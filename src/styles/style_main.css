@@ -89,7 +89,11 @@
     }
 
     .backdrop-glassmorphic {
-        @apply backdrop-blur-lg backdrop-saturate-150;
+        @apply backdrop-blur-sm backdrop-saturate-[1.75];
+    }
+
+    .backdrop-glassmorphic-off {
+        @apply backdrop-blur-none [--tw-backdrop-saturate:_];
     }
 
     .rotate-text {
