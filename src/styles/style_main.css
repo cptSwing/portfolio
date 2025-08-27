@@ -89,7 +89,7 @@
     }
 
     .backdrop-glassmorphic {
-        @apply backdrop-blur-sm backdrop-saturate-[1.75];
+        @apply backdrop-blur-[--glassmorphic-backdrop-blur] backdrop-saturate-[1.75];
     }
 
     .backdrop-glassmorphic-off {
@@ -139,19 +139,19 @@
     @apply flex h-dvh w-dvw items-center justify-center overflow-hidden font-merriweather;
 }
 
-@property --hexagon-blur-color-menu {
+@property --hexagon-blur-color {
     syntax: '<color>';
     inherits: true;
     initial-value: white;
 }
 
-@property --hexagon-fill-color-menu {
+@property --hexagon-fill-color {
     syntax: '<color>';
     inherits: true;
     initial-value: white;
 }
 
-@property --hexagon-stroke-color-menu {
+@property --hexagon-stroke-color {
     syntax: '<color>';
     inherits: true;
     initial-value: white;
@@ -161,6 +161,12 @@
     syntax: '<number>';
     inherits: false;
     initial-value: 1;
+}
+
+@property --gradient-counter-rotation {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
 }
 
 /* SVG Filters */
