@@ -1251,7 +1251,7 @@ export function getHexagonalClipPath(
     }
 }
 
-function getMenuButtonPosition(ev: React.MouseEvent<SVGGElement, MouseEvent>): Pick<DOMRect, 'x' | 'y' | 'width' | 'height'> {
+function getMenuButtonPosition(ev: React.MouseEvent<HTMLDivElement, MouseEvent>): Pick<DOMRect, 'x' | 'y' | 'width' | 'height'> {
     const { left, width, top, height } = ev.currentTarget.firstElementChild
         ? ev.currentTarget.firstElementChild.getBoundingClientRect()
         : ev.currentTarget.getBoundingClientRect();

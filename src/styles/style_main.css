@@ -92,14 +92,6 @@
         @apply backdrop-blur-lg backdrop-saturate-150;
     }
 
-    .glassmorphic {
-        @apply backdrop-glassmorphic border border-white/30 bg-white/15 [box-shadow:0_8px_32px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.5),inset_0_-1px_0_rgba(255,255,255,0.1),inset_0_0_20px_10px_rgba(255,255,255,1)] before:absolute before:bottom-0 before:left-0 before:right-0 before:top-0 before:h-px before:[background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)] after:absolute after:left-0 after:top-0 after:h-full after:w-px after:[background:linear-gradient(180deg,rgba(255,255,255,0.8),transparent,rgba(255,255,255,0.3))];
-    }
-
-    .glassmorphic-svg {
-        @apply fill-[url(#radial-background-gradient)] stroke-white/10
-    }
-
     .rotate-text {
         @apply writing-mode-vert-lr rotate-180;
     }
@@ -141,6 +133,30 @@
 
 #root {
     @apply flex h-dvh w-dvw items-center justify-center overflow-hidden font-merriweather;
+}
+
+@property --hexagon-blur-color-menu {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: white;
+}
+
+@property --hexagon-fill-color-menu {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: white;
+}
+
+@property --hexagon-stroke-color-menu {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: white;
+}
+
+@property --scale-property {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 1;
 }
 
 /* SVG Filters */

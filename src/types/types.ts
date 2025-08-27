@@ -112,7 +112,7 @@ interface HexagonButtonData {
 }
 
 export interface HexagonNavigationButtonData extends HexagonButtonData {
-    target: string | ((ev?: React.MouseEvent<SVGGElement, MouseEvent>) => string);
+    target: string | ((ev?: React.MouseEvent<HTMLDivElement, MouseEvent>) => string);
 }
 export interface HexagonNavigationDefaultButtonData extends HexagonNavigationButtonData {
     name: NavigationButtonName;
@@ -126,7 +126,7 @@ export interface HexagonNavigationDefaultButtonRouteData extends HexagonRouteDat
 export interface HexagonNavigationCategoryButtonRouteData extends HexagonRouteData, HexagonNavigationCategoryButtonData {}
 
 export interface HexagonMenuButtonRouteData extends HexagonRouteData, HexagonButtonData {
-    target: (ev?: React.MouseEvent<SVGGElement, MouseEvent>) => void;
+    target: (ev?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     name: MenuName;
     svgIconPath: string;
 }

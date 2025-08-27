@@ -1,20 +1,32 @@
-import { CSSProperties, FC, memo, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { classNames } from 'cpts-javascript-utilities';
-import { HexagonData, HexagonNavigation, RouteData, UI_CategoryLink, UIButton } from '../types/types';
-import { halfRoundedHexagonPath, buttonHexagons, regularHexagons, roundedHexagonPath, staticValues } from '../lib/hexagonData';
+import {
+    ButtonName,
+    CategoryName,
+    HexagonMenuButtonRouteData,
+    HexagonNavigationCategoryButtonRouteData,
+    HexagonNavigationDefaultButtonRouteData,
+    HexagonRouteData,
+} from '../types/types';
+import { regularHexagons, navigationButtonHexagons, menuButtonHexagons, degToRad, matrixNearZeroScale } from '../lib/hexagonDataMatrix';
 import { useZustand } from '../lib/zustand';
-import elementGetCurrentRotation from '../lib/elementGetCurrentRotation';
+import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { config } from '../types/exportTyped';
-import { keyDownA11y } from '../lib/handleA11y';
+import { keyDownA11y } from 'cpts-javascript-utilities';
+import { BreakpointName } from '../hooks/useBreakPoint';
+import GetChildSizeContext from '../contexts/GetChildSizeContext';
 
 const {
     ui: {
         animation: { menuTransition_Ms },
-        hexMenu: { columns, strokeWidth, scaleUp },
+        hexMenu: { strokeWidth },
     },
 } = config;
+
+const viewBoxWidth = 400;
+const viewBoxHeight = 346.4;
 
 const HexagonTiles = () => {
     const menuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
@@ -33,265 +45,269 @@ const HexagonTiles = () => {
         [menuTransitionTarget, menuTransitionTargetReached],
     );
 
-    const svgRef = useRef<SVGSVGElement | null>(null);
-
     return (
-        <svg
-            ref={svgRef}
+        <div
             className={classNames(
-                'pointer-events-none absolute z-10 h-auto w-full transform-gpu overflow-visible transition-transform sm:h-full sm:w-auto',
-                routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'rotate-[--svg-mobile-rotate]',
+                'pointer-events-none absolute size-full overflow-visible transition-transform',
+                routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'rotate-90 sm:rotate-0',
             )}
-            viewBox={routeName === ROUTE.category ? viewBoxes['square'] : routeName === ROUTE.post ? viewBoxes['hexPointy'] : viewBoxes['hexFlat']}
             style={
                 {
-                    transitionDuration: `${menuTransition_Ms}ms`,
+                    '--hexagon-clip-path': `url(#${roundedHexagonPathName}-clipPath)`,
+                    '--half-hexagon-clip-path': `url(#${halfRoundedHexagonPathName}-clipPath)`,
+                    'transitionDuration': `${menuTransition_Ms}ms`,
                 } as CSSProperties
             }
             onTransitionEnd={({ target, currentTarget }) => {
                 if (target === currentTarget) {
                     // ^^^  condition filters out bubbled child events
-                    const elementRotation = elementGetCurrentRotation(currentTarget);
-                    if (menuTransitionTarget && navRotationValues[menuTransitionTarget] === elementRotation) {
+                    const elementRotation = getCurrentElementRotation(currentTarget);
+                    if (menuTransitionTarget && navRotationValues[menuTransitionTarget].deg === elementRotation) {
                         // Set transition target as reached:
                         setMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
                     }
                 }
             }}
         >
-            <HexagonSvgDefs />
-
-            {regularHexagons.map((hexData, idx) => (
-                <RegularHexagon shapeData={hexData} routeName={routeName} key={`hex-regular-index-${idx}`} />
+            {regularHexagons.map((hexagonData, idx) => (
+                <RegularHexagonDiv shapeData={hexagonData} routeName={routeName} key={`hex-regular-index-${idx}`} />
             ))}
 
-            {buttonHexagons.map((hexData, idx) => (
-                <ButtonHexagon
-                    shapeData={hexData}
+            {navigationButtonHexagons.map((hexagonNavigationButtonData, idx) => (
+                <NavigationButtonHexagonDiv
+                    shapeData={hexagonNavigationButtonData}
                     routeName={routeName}
                     menuTransitionStateUpdates={menuTransitionStateUpdates}
                     key={`hex-link-index-${idx}`}
                 />
             ))}
-        </svg>
+
+            {menuButtonHexagons.map((hexagonMenuButtonData, idx) => (
+                <MenuButtonHexagonDiv shapeData={hexagonMenuButtonData} routeName={routeName} key={`hex-link-index-${idx}`} />
+            ))}
+        </div>
     );
 };
 
 export default HexagonTiles;
 
-const HexagonSvgDefs = memo(() => {
-    return (
-        <defs>
-            <path
-                id={roundedHexagonPathName}
-                d={roundedHexagonPath}
-                // TODO set as options in Settings ?
-                // shapeRendering="geometricPrecision"
-                // shapeRendering="crispEdges"
-                shapeRendering="optimizeSpeed"
-            />
-            <path id={halfRoundedHexagonPathName} d={halfRoundedHexagonPath} />
-
-            <clipPath id={roundedHexagonPathName + '-clipPath'}>
-                <use href={'#' + roundedHexagonPathName} />
-            </clipPath>
-            <clipPath id={halfRoundedHexagonPathName + '-clipPath'}>
-                <use href={'#' + halfRoundedHexagonPathName} />
-            </clipPath>
-
-            <filter id="lighter-none">
-                <feFlood className="[flood-color:theme(colors.theme.primary-lighter/1)]" />
-                <feComposite operator="out" in2="SourceGraphic" />
-                <feMorphology operator="dilate" radius="0" />
-                <feGaussianBlur stdDeviation="0" />
-                <feComposite operator="atop" in2="SourceGraphic" />
-            </filter>
-
-            <filter id="lighter-inner">
-                <feFlood className="[flood-color:theme(colors.theme.primary-lighter/0.5)]" />
-                <feComposite operator="out" in2="SourceGraphic" />
-                <feMorphology operator="dilate" radius="4" />
-                <feGaussianBlur stdDeviation="5" />
-                <feComposite operator="atop" in2="SourceGraphic" />
-            </filter>
-
-            <linearGradient id="linearGradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" className="[stop-color:theme(colors.theme.primary-darker/1)]" />
-                <stop offset="50%" className="[stop-color:theme(colors.theme.primary-lighter/0.75)]" />
-                <stop offset="100%" className="[stop-color:theme(colors.theme.primary-darker/1)]" />
-            </linearGradient>
-        </defs>
-    );
-});
-
-const RegularHexagon: FC<{
-    shapeData: Record<RouteData['name'], HexagonData>;
-    routeName: RouteData['name'];
+const RegularHexagonDiv: FC<{
+    shapeData: HexagonRouteData;
+    routeName: ROUTE;
 }> = memo(({ shapeData, routeName }) => {
-    const localShapeData_Memo = useMemo(() => shapeData[routeName], [routeName, shapeData]);
-    const { position, rotation, scale, isHalf, offsets, shouldOffset } = localShapeData_Memo;
+    const { position, rotation, scale, isHalf, shouldOffset } = shapeData[routeName];
+    const breakpoint = useZustand((state) => state.values.breakpoint);
+    const parentSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(
-        () => position && calcCSSVariables(position, rotation, scale, shouldOffset, offsets),
-        [offsets, shouldOffset, position, rotation, scale],
+        () => calcCSSVariablesGlass(position, rotation, scale, parentSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, parentSize, shouldOffset, routeName, breakpoint],
     );
+
     const random_Memo = useMemo(() => Math.random(), []);
 
     return (
-        <use
-            href={'#' + (isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName)}
-            clipPath={`url(#${isHalf ? halfRoundedHexagonPathName : roundedHexagonPathName}-clipPath)`}
+        <div
             className={classNames(
-                'regular-hexagon-class pointer-events-auto size-full origin-[12.5%_12.5%] translate-x-0 transform-gpu transition-[stroke,transform,fill,stroke-width] [--hover-stroke-duration:--ui-animation-menu-transition-duration] hover-active:[--hover-stroke-duration:50ms]',
-                routeName === ROUTE.home
-                    ? 'fill-theme-primary/25 stroke-theme-primary-lighter/5 hover-active:stroke-theme-primary-lighter/15'
-                    : routeName === ROUTE.category
-                      ? 'fill-theme-primary/10 stroke-theme-primary-lighter/[0.025] hover-active:stroke-theme-primary-lighter/[0.075]'
-                      : /* post */
-                        'fill-theme-text-background stroke-theme-text-background',
-            )}
-            style={
-                {
-                    ...cssVariables_Memo,
-                    strokeWidth: routeName === ROUTE.home ? `${8 / scale}` : routeName === ROUTE.category ? `${4 / scale}` : /* post */ '0',
-                    transitionDuration: `var(--hover-stroke-duration), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
-                    transitionDelay: `0ms, calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
-                } as CSSProperties
-            }
-        />
-    );
-});
-
-const ButtonHexagon: FC<{
-    shapeData: Record<RouteData['name'], HexagonData> & HexagonNavigation;
-    routeName: RouteData['name'];
-    menuTransitionStateUpdates: [[UI_CategoryLink | null, boolean], React.Dispatch<React.SetStateAction<[UI_CategoryLink | null, boolean]>>];
-}> = memo(({ shapeData, routeName, menuTransitionStateUpdates }) => {
-    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
-
-    const localShapeData_Memo = useMemo(() => shapeData[routeName], [routeName, shapeData]);
-    const { title, svgIconPath, target } = shapeData;
-    const { position, rotation, scale, offsets, shouldOffset } = localShapeData_Memo;
-
-    const cssVariables_Memo = useMemo(
-        () => position && calcCSSVariables(position, rotation, scale, shouldOffset, offsets),
-        [offsets, shouldOffset, position, rotation, scale],
-    );
-
-    const isCategory = title && isCategoryLink(title);
-    const isVisible = !cssVariables_Memo['--tw-scale-x'];
-
-    const random_Memo = useMemo(() => Math.random(), []);
-
-    const navigate = useNavigate();
-
-    function handleClick(ev: React.MouseEvent<SVGGElement>) {
-        let targetResult = target;
-        if (typeof targetResult !== 'string') {
-            targetResult = (target as (ev: React.MouseEvent<SVGGElement>) => void | string)(ev) ?? '';
-        }
-        navigate(targetResult);
-    }
-
-    const handleMouseEnter =
-        isCategory && routeName === ROUTE.home && menuTransitionTarget !== title && menuTransitionTargetReached
-            ? //  Prevent parent from prematurely rotating again, and again, and again: --------- ^^^
-              () => setMenuTransitionStates([title as UI_CategoryLink, false])
-            : undefined;
-
-    return (
-        <g
-            className={classNames(
-                '[--button-scale:--tw-scale-x]',
-                'group origin-[12.5%_12.5%] translate-x-0 transform-gpu cursor-pointer no-underline transition-[stroke,transform,fill,stroke-width]',
-                routeName === ROUTE.home
-                    ? 'stroke-theme-primary-lighter/90'
-                    : routeName === ROUTE.category
-                      ? 'stroke-theme-primary-lighter/80'
-                      : 'stroke-theme-text-background',
-                `button-hexagon-class button-hexagon-class-${title}`,
+                'regular-hexagon-class pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform backdrop-blur-[3px] backdrop-saturate-150 transition-[transform,filter]',
+                isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
+                routeName === ROUTE.post ? 'backdrop-blur-none backdrop-saturate-100' : 'backdrop-blur-[3px] backdrop-saturate-150',
             )}
             style={
                 {
                     ...cssVariables_Memo,
                     transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
                     transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
-                    strokeWidth:
-                        routeName === ROUTE.home
-                            ? `${(svgIconPath ? 2 : 4) / scale}`
-                            : routeName === ROUTE.category
-                              ? `${(svgIconPath ? 2 : 4) / scale}`
-                              : /* post */ `${2 / scale}`,
+                } as CSSProperties
+            }
+        >
+            <div
+                className={classNames(
+                    'relative size-full transition-[filter] before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:transition-[background-color] before:duration-1000',
+                    isHalf ? 'before:[clip-path:--half-hexagon-clip-path]' : 'before:[clip-path:--hexagon-clip-path]',
+                    routeName === ROUTE.post
+                        ? 'filter-none before:bg-theme-text-background'
+                        : '[filter:url(#svg-hexagon-regular)] before:bg-theme-root-background',
+                )}
+            />
+        </div>
+    );
+});
+
+const NavigationButtonHexagonDiv: FC<{
+    shapeData: HexagonNavigationDefaultButtonRouteData | HexagonNavigationCategoryButtonRouteData;
+    routeName: ROUTE;
+    menuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
+}> = memo(({ shapeData, routeName, menuTransitionStateUpdates }) => {
+    const { title, name, svgIconPath, target } = shapeData;
+    const { position, rotation, scale, shouldOffset } = shapeData[routeName];
+    const breakpoint = useZustand((state) => state.values.breakpoint);
+    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
+    const parentSize = useContext(GetChildSizeContext);
+    const navigate = useNavigate();
+
+    const random_Memo = useMemo(() => Math.random(), []);
+
+    const cssVariables_Memo = useMemo(
+        () => calcCSSVariablesGlass(position, rotation, scale, parentSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, parentSize, shouldOffset, routeName, breakpoint],
+    );
+
+    const isVisible = scale > matrixNearZeroScale;
+
+    function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
+        const targetResult = typeof target === 'string' ? target : target(ev);
+        navigate(targetResult);
+    }
+
+    function handleMouseEnter() {
+        if (isCategoryNavigation(name)) {
+            if (routeName === ROUTE.home && menuTransitionTargetReached && menuTransitionTarget !== name) {
+                setMenuTransitionStates([name as CategoryName, false]);
+                // ^^^  Prevent parent from prematurely rotating again, and again, and again
+            }
+        }
+    }
+
+    return (
+        <>
+            <div
+                className={classNames(
+                    '[--button-scale:--tw-matrix-scale-x]',
+                    'group pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform transition-[transform,--hexagon-blur-color-menu] [clip-path:--hexagon-clip-path] hover-active:!scale-[calc(var(--scale-property)*1.1)] hover-active:!delay-0 hover-active:!duration-500 hover-active:![--hexagon-blur-color-menu:red]',
+                    `navigation-button-hexagon-class-${name}`,
+                )}
+                style={
+                    {
+                        ...cssVariables_Memo,
+                        transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
+                        transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
+                    } as CSSProperties
+                }
+                role="button"
+                tabIndex={isVisible ? -1 : 0}
+                onMouseEnter={handleMouseEnter}
+                onClick={handleClick}
+                onKeyDown={keyDownA11y(handleClick)}
+            >
+                <svg width="0" height="0">
+                    <defs>
+                        <filter id={`svg-hexagon-menu-${name}`}>
+                            <feFlood floodColor="var(--hexagon-fill-color-menu)" result="fill-flood" />
+
+                            <feFlood floodColor="var(--hexagon-blur-color-menu)" result="blur-flood" />
+                            <feComposite operator="out" in="blur-flood" in2="SourceAlpha" result="blur-composite" />
+                            <feMorphology operator="dilate" in="blur-composite" radius="2" result="blur-dilate" />
+                            <feGaussianBlur in="blur-dilate" stdDeviation="5" result="blur-gaussian" />
+
+                            <feFlood floodColor="var(--hexagon-stroke-color-menu)" result="stroke-flood" />
+                            <feComposite operator="out" in="stroke-flood" in2="SourceAlpha" result="stroke-composite" />
+                            <feMorphology operator="dilate" in="stroke-composite" radius="1" result="stroke-dilate" />
+
+                            <feMerge>
+                                <feMergeNode in="fill-flood" />
+                                <feMergeNode in="blur-gaussian" />
+                                <feMergeNode in="stroke-dilate" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+                </svg>
+
+                <div
+                    className={classNames(
+                        'relative size-full [filter:url(#svg-hexagon-menu)] before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-black before:[clip-path:--hexagon-clip-path]',
+                    )}
+                    style={{ filter: `url(#svg-hexagon-menu-${name})` }}
+                />
+
+                {isCategoryNavigation(name) ? (
+                    <div className="absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75 group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter">
+                        {title}
+                    </div>
+                ) : (
+                    <MenuButtonSvg title={title} svgIconPath={svgIconPath!} />
+                )}
+            </div>
+        </>
+    );
+});
+
+const MenuButtonHexagonDiv: FC<{
+    shapeData: HexagonMenuButtonRouteData;
+    routeName: ROUTE;
+}> = memo(({ shapeData, routeName }) => {
+    const { name, title, svgIconPath, target } = shapeData;
+    const { position, rotation, scale, shouldOffset } = shapeData[routeName];
+    const parentSize = useContext(GetChildSizeContext);
+
+    const breakpoint = useZustand((state) => state.values.breakpoint);
+
+    const cssVariables_Memo = useMemo(
+        () => calcCSSVariablesGlass(position, rotation, scale, parentSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, parentSize, shouldOffset, routeName, breakpoint],
+    );
+    const random_Memo = useMemo(() => Math.random(), []);
+    const isVisible = scale > 0;
+
+    function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
+        target(ev);
+    }
+
+    return (
+        <div
+            className={classNames(
+                isVisible ? '[--button-scale:--tw-matrix-scale-x]' : '[--button-scale:0]',
+                'group pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform backdrop-blur-[3px] backdrop-saturate-150 transition-transform [clip-path:--hexagon-clip-path] hover-active:!scale-[calc(var(--scale-property)*1.1)]',
+                `menu-button-hexagon-class-${name}`,
+            )}
+            style={
+                {
+                    ...cssVariables_Memo,
+                    transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
+                    transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
                 } as CSSProperties
             }
             role="button"
             tabIndex={isVisible ? -1 : 0}
-            onMouseEnter={handleMouseEnter}
             onClick={handleClick}
             onKeyDown={keyDownA11y(handleClick)}
         >
-            <use
-                href={'#' + roundedHexagonPathName}
-                clipPath={`url(#${roundedHexagonPathName}-clipPath)`}
-                className="pointer-events-auto origin-[12.5%_12.5%] fill-theme-primary transition-transform group-hover-active:scale-105"
-                // paintOrder='stroke'
+            <div
+                className={classNames(
+                    'relative size-full [filter:url(#svg-hexagon-menu)] before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-black before:[clip-path:--hexagon-clip-path]',
+                )}
             />
 
-            {svgIconPath ? (
-                <MenuNavButton title={title} svgIconPath={svgIconPath} routeName={routeName} />
-            ) : (
-                // This is a main menu-category button
-                <text
-                    x={hexHalfWidth}
-                    y={hexHalfHeight}
-                    textAnchor="middle"
-                    alignmentBaseline="central"
-                    className="pointer-events-none origin-[12.5%_11%] rotate-[calc(var(--svg-mobile-rotate)*-1)] transform-gpu select-none fill-theme-secondary-lighter/75 stroke-none font-fjalla-one text-4xl font-semibold transition-[transform,fill] group-hover-active:scale-105 group-hover-active:fill-theme-secondary-lighter sm:origin-[12.5%_12.5%]"
-                >
-                    {title}
-                </text>
-            )}
-        </g>
+            <MenuButtonSvg title={title} svgIconPath={svgIconPath} />
+        </div>
     );
 });
 
-const MenuNavButton: FC<{
+const MenuButtonSvg: FC<{
     title?: string;
     svgIconPath: string;
-    routeName: RouteData['name'];
-}> = ({ title, svgIconPath, routeName }) => {
+}> = ({ title, svgIconPath }) => {
     return (
-        // This is a regular menu button (with an icon by default)
-        <foreignObject x="0" y="0" width="100" height="86.66" overflow="visible">
+        <div className="absolute left-0 top-0 flex size-full flex-col items-center justify-center group-hover-active:scale-105">
             <div
-                className="size-full origin-center transform-gpu bg-theme-text-background transition-transform [mask-position:center] [mask-repeat:no-repeat] [mask-size:50%] group-hover-active:scale-105 group-hover-active:bg-theme-secondary-lighter"
+                className="-mb-1 -mt-1 aspect-square h-2/3 w-auto bg-theme-text-background/50 [mask-position:top] [mask-repeat:no-repeat] [mask-size:85%] group-hover-active:bg-theme-secondary-lighter/50"
                 style={
                     {
-                        '--tw-rotate': 'calc(var(--svg-mobile-rotate) * -1)',
-                        'maskImage': `url(${svgIconPath})`,
+                        maskImage: `url(${svgIconPath})`,
                     } as CSSProperties
                 }
             />
-            <span
-                className={classNames(
-                    'scale-[calc(0.5/var(--button-scale))]', // de-scale menu-text
-                    'absolute left-1/2 top-full mt-[7.5%] -translate-x-1/2 transform-gpu font-lato text-3xs uppercase text-theme-text-background/35',
-                    routeName === ROUTE.home
-                        ? 'text-theme-root-background group-hover-active:text-theme-secondary-lighter'
-                        : routeName === ROUTE.category
-                          ? 'group-hover-active:text-theme-text-background'
-                          : '!text-theme-primary group-hover-active:text-theme-primary',
-                )}
-            >
+
+            <span className="scale-[calc(0.5/var(--button-scale))] pr-px font-lato text-xs leading-none tracking-tighter text-theme-primary-darker group-hover-active:text-theme-secondary-lighter">
                 {title}
             </span>
-        </foreignObject>
+        </div>
     );
 };
 
 // Local Functions
 
-function getHomeMenuTransitionClasses(category: UI_CategoryLink | null, transitionCompleted: boolean) {
+function getHomeMenuTransitionClasses(category: CategoryName | null, transitionCompleted: boolean) {
     let classNames = 'rotate-0';
     if (category) {
         classNames = homeMenuTransitionClasses[category].base;
@@ -301,27 +317,97 @@ function getHomeMenuTransitionClasses(category: UI_CategoryLink | null, transiti
     return classNames;
 }
 
-function calcCSSVariables(
-    position: { x: number; y: number },
+const viewBoxAspect = viewBoxWidth / viewBoxHeight;
+
+function getOffset(scale: number) {
+    const baseline = 1;
+    const factor = 50;
+    return factor * (scale - baseline);
+}
+
+function calcCSSVariablesGlass(
+    translate: { x: number; y: number },
     rotation: number,
     scale: number,
-    shouldOffset: boolean,
-    offsets?: {
-        x: number;
-        y: number;
+    parentSize: {
+        width: number;
+        height: number;
     },
+    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
 ) {
+    const { shouldOffset, offset, clampTo: _clampTo } = options ?? {};
+
+    let { width, height } = parentSize;
+
+    // TODO better than the top left stack-spawn, bu
+    if (!width || !height) {
+        width = viewBoxWidth;
+        height = viewBoxHeight;
+    }
+
+    const parentAspect = width / height;
+    const ratio = viewBoxAspect / parentAspect;
+
+    const parentToViewboxWidth = width / viewBoxWidth;
+    const parentToViewboxHeight = height / viewBoxHeight;
+    const insetByStrokeWidth = (1 - strokeWidth) * scale;
+
+    const mappedScaleX = insetByStrokeWidth * parentToViewboxWidth * ratio;
+    const mappedScaleY = insetByStrokeWidth * parentToViewboxHeight;
+
+    const mappedTranslateX = translate.x * parentToViewboxWidth * ratio + getOffset(parentToViewboxWidth * ratio);
+    const mappedTranslateY = translate.y * parentToViewboxHeight + getOffset(parentToViewboxHeight) * (viewBoxHeight / viewBoxWidth);
+
     return {
-        '--tw-translate-x': `calc(${(position.x / totalWidthAtCenter) * 100}% + ${offsets?.x ?? 0}% ${shouldOffset ? '+ var(--translate-menu-offset)' : ''})`,
-        '--tw-translate-y': `calc(${(position.y / totalHeight) * 100}% + ${offsets?.y ?? 0}%)`,
-        '--tw-rotate': `${rotation}deg`,
-        '--tw-scale-x': (1 - strokeWidth) * scale,
-        '--tw-scale-y': (1 - strokeWidth) * scale,
+        '--tw-translate-x': mappedTranslateX + 'px',
+        '--tw-translate-y': mappedTranslateY + 'px',
+        '--tw-rotate': rotation + 'deg',
+        '--tw-scale-x': mappedScaleX,
+        '--tw-scale-y': mappedScaleY,
+        '--scale-property': mappedScaleX,
     };
 }
 
-function isCategoryLink(title: UIButton) {
-    return title === 'code' || title === '3d' || title === 'log';
+function _toSvgTransform(
+    translate?: { x: number; y: number },
+    rotate_DEG?: number,
+    scale?: { x: number; y: number },
+    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
+) {
+    const { shouldOffset, offset, clampTo: _clampTo } = options ?? {};
+
+    const translation = translate ? `translate(${shouldOffset && offset ? translate.x + offset : translate.x} ${translate.y}) ` : '';
+    const rotation = rotate_DEG ? `rotate(${rotate_DEG}) ` : '';
+    const scaling = scale ? `scale(${scale.x}, ${scale.y}) ` : '';
+
+    return translation + rotation + scaling;
+}
+
+function _toSvgTransformMatrix(
+    translate = { x: 0, y: 0 },
+    rotate_DEG = 0,
+    scale = { x: 1, y: 1 },
+    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
+) {
+    const { shouldOffset, offset, clampTo } = options ?? {};
+
+    const angle = degToRad(rotate_DEG); // Convert to radians
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+
+    // Apply scale and rotation
+    const a = scale.x * cos;
+    const b = scale.x * sin;
+    const c = -scale.y * sin;
+    const d = scale.y * cos;
+    const e = shouldOffset && offset ? translate.x + offset : translate.x;
+    const f = translate.y;
+
+    return `matrix(${a.toFixed(clampTo ?? 6)} ${b.toFixed(clampTo ?? 6)} ${c.toFixed(clampTo ?? 6)} ${d.toFixed(clampTo ?? 6)} ${e.toFixed(clampTo ?? 6)} ${f.toFixed(clampTo ?? 6)})`;
+}
+
+function isCategoryNavigation(name: ButtonName): name is CategoryName {
+    return Object.keys(CATEGORY).includes(name);
 }
 
 // Local Values
@@ -329,41 +415,34 @@ function isCategoryLink(title: UIButton) {
 const roundedHexagonPathName = 'roundedHexagonPath';
 const halfRoundedHexagonPathName = 'halfRoundedHexagonPath';
 
-const hexPaddingFactor = staticValues.tilingMultiplierHorizontal.flatTop;
-const totalWidthAtCenter = (columns * hexPaddingFactor - (hexPaddingFactor - 1)) * scaleUp;
-
-const totalHeight = totalWidthAtCenter * staticValues.heightAspect.flatTop;
-const hexHeight = staticValues.heightAspect.flatTop * scaleUp;
-const hexHalfHeight = hexHeight / 2;
-const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
-
-const navRotationValues: Record<UI_CategoryLink, number> = {
-    'code': 60,
-    '3d': -60,
-    'log': 180,
+const navRotationValues: Record<CategoryName, { deg: number }> = {
+    'code': { deg: 60 },
+    '3d': { deg: -60 },
+    'log': { deg: 180 },
 };
 
-const viewBoxes = {
-    square: `0 0 ${totalWidthAtCenter} ${totalWidthAtCenter}`,
-    hexFlat: `0 0 ${totalWidthAtCenter} ${totalHeight}`,
-    hexPointy: `0 0 ${totalHeight} ${totalWidthAtCenter}`,
+const routeOffsetValues: Record<ROUTE, Record<BreakpointName | 'base', number>> = {
+    [ROUTE.home]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 0 },
+    [ROUTE.category]: { 'base': 160, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 28 },
+    [ROUTE.post]: { 'base': 163, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 31.5 },
 };
 
+// TODO filter lighter-inner to be replaced
 const homeMenuTransitionClasses = {
     'code': {
-        base: /* tw */ 'rotate-[60deg] [&_.button-hexagon-class-code]:!scale-95 [&_.button-hexagon-class-code]:[filter:url(#lighter-inner)] [&_.button-hexagon-class-contact]:![--tw-rotate:-60deg] [&_.button-hexagon-class-config]:![--tw-rotate:-60deg] [&_.button-hexagon-class-login]:![--tw-rotate:-60deg] [&_.button-hexagon-class-contact]:![--tw-translate-x:35.8%] [&_.button-hexagon-class-contact]:![--tw-translate-y:36.2%] [&_.button-hexagon-class-config]:![--tw-translate-x:35.75%] [&_.button-hexagon-class-config]:![--tw-translate-y:43.5%] [&_.button-hexagon-class-login]:![--tw-translate-x:41.25%] [&_.button-hexagon-class-login]:![--tw-translate-y:32.5%]',
+        base: /* tw */ 'rotate-[60deg] [&_.navigation-button-hexagon-class-code]:[filter:url(#lighter-inner)] [&_.menu-button-hexagon-class-contact]:![--tw-rotate:-60deg] [&_.menu-button-hexagon-class-config]:![--tw-rotate:-60deg] [&_.menu-button-hexagon-class-login]:![--tw-rotate:-60deg] [&_.menu-button-hexagon-class-contact]:![--tw-translate-x:35.8%] [&_.menu-button-hexagon-class-contact]:![--tw-translate-y:36.2%] [&_.menu-button-hexagon-class-config]:![--tw-translate-x:35.75%] [&_.menu-button-hexagon-class-config]:![--tw-translate-y:43.5%] [&_.menu-button-hexagon-class-login]:![--tw-translate-x:41.25%] [&_.menu-button-hexagon-class-login]:![--tw-translate-y:32.5%]',
         completed:
-            /* tw */ '[&_.regular-hexagon-class]:has-[.button-hexagon-class-code:hover]:!scale-90 [&_.regular-hexagon-class]:has-[.button-hexagon-class-code:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.button-hexagon-class-code:hover]:!duration-150 [&_.button-hexagon-class-code]:scale-90',
+            /* tw */ '[&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-code:hover]:grayscale-[0.5] [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-code:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-code:hover]:!duration-150 [&_.navigation-button-hexagon-class-code]:scale-90',
     },
     '3d': {
-        base: /* tw */ 'rotate-[-60deg] [&_.button-hexagon-class-3d]:!scale-95 [&_.button-hexagon-class-3d]:[filter:url(#lighter-inner)] [&_.button-hexagon-class-contact]:![--tw-rotate:60deg] [&_.button-hexagon-class-config]:![--tw-rotate:60deg] [&_.button-hexagon-class-login]:![--tw-rotate:60deg] [&_.button-hexagon-class-contact]:![--tw-translate-x:39.35%] [&_.button-hexagon-class-contact]:![--tw-translate-y:36.2%] [&_.button-hexagon-class-config]:![--tw-translate-x:33.7%] [&_.button-hexagon-class-config]:![--tw-translate-y:32.6%] [&_.button-hexagon-class-login]:![--tw-translate-x:39.3%] [&_.button-hexagon-class-login]:![--tw-translate-y:43.6%]',
+        base: /* tw */ 'rotate-[-60deg] [&_.navigation-button-hexagon-class-3d]:[filter:url(#lighter-inner)] [&_.menu-button-hexagon-class-contact]:![--tw-rotate:60deg] [&_.menu-button-hexagon-class-config]:![--tw-rotate:60deg] [&_.menu-button-hexagon-class-login]:![--tw-rotate:60deg] [&_.menu-button-hexagon-class-contact]:![--tw-translate-x:39.35%] [&_.menu-button-hexagon-class-contact]:![--tw-translate-y:36.2%] [&_.menu-button-hexagon-class-config]:![--tw-translate-x:33.7%] [&_.menu-button-hexagon-class-config]:![--tw-translate-y:32.6%] [&_.menu-button-hexagon-class-login]:![--tw-translate-x:39.3%] [&_.menu-button-hexagon-class-login]:![--tw-translate-y:43.6%]',
         completed:
-            /* tw */ '[&_.regular-hexagon-class]:has-[.button-hexagon-class-3d:hover]:!scale-90 [&_.regular-hexagon-class]:has-[.button-hexagon-class-3d:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.button-hexagon-class-3d:hover]:!duration-150 [&_.button-hexagon-class-3d]:scale-90',
+            /* tw */ '[&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:grayscale-[0.5] [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!duration-150 [&_.navigation-button-hexagon-class-3d]:scale-90',
     },
     'log': {
-        base: /* tw */ 'rotate-[180deg] [&_.button-hexagon-class-log]:!scale-95 [&_.button-hexagon-class-log]:[filter:url(#lighter-inner)] [&_.button-hexagon-class-contact]:![--tw-rotate:-180deg] [&_.button-hexagon-class-config]:![--tw-rotate:-180deg] [&_.button-hexagon-class-login]:![--tw-rotate:-180deg] [&_.button-hexagon-class-contact]:![--tw-translate-y:39.75%] [&_.button-hexagon-class-config]:![--tw-translate-x:43%] [&_.button-hexagon-class-config]:![--tw-translate-y:36%] [&_.button-hexagon-class-login]:![--tw-translate-x:32%] [&_.button-hexagon-class-login]:![--tw-translate-y:36%]',
+        base: /* tw */ 'rotate-[180deg] [&_.navigation-button-hexagon-class-log]:[filter:url(#lighter-inner)] [&_.menu-button-hexagon-class-contact]:![--tw-rotate:-180deg] [&_.menu-button-hexagon-class-config]:![--tw-rotate:-180deg] [&_.menu-button-hexagon-class-login]:![--tw-rotate:-180deg] [&_.menu-button-hexagon-class-contact]:![--tw-translate-y:39.75%] [&_.menu-button-hexagon-class-config]:![--tw-translate-x:43%] [&_.menu-button-hexagon-class-config]:![--tw-translate-y:36%] [&_.menu-button-hexagon-class-login]:![--tw-translate-x:32%] [&_.menu-button-hexagon-class-login]:![--tw-translate-y:36%]',
         completed:
-            /* tw */ '[&_.regular-hexagon-class]:has-[.button-hexagon-class-log:hover]:!scale-90 [&_.regular-hexagon-class]:has-[.button-hexagon-class-log:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.button-hexagon-class-log:hover]:!duration-150 [&_.button-hexagon-class-log]:scale-90',
+            /* tw */ '[&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-log:hover]:grayscale-[0.5] [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-log:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-log:hover]:!duration-150 [&_.navigation-button-hexagon-class-log]:scale-90',
     },
 };
 
