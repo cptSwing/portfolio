@@ -8,6 +8,7 @@ import {
     ZustandStore,
 } from '../types/types';
 import { useZustand } from './zustand';
+import roundToDecimal from './roundToDecimal';
 
 const { store_toggleMenu, store_setPostNavigationState } = useZustand.getState().methods;
 
@@ -1153,49 +1154,53 @@ function getHexagonPath(sideLength = 1, cornerRadius = 8, isHalf = false): strin
         const angle_deg = 60 * i + moveZeroPoint;
         const x = centerX + sideLength * cos(angle_deg);
         const y = centerY + sideLength * sin(angle_deg);
-        points.push({ x, y });
+
+        const xRounded = roundToDecimal(x, 4);
+        const yRounded = roundToDecimal(y, 4);
+
+        points.push({ x: xRounded, y: yRounded });
     }
 
-    const cornerSinOffset = cornerRadius * sin30;
-    const cornerCosOffset = cornerRadius * cos30;
+    const cornerSinOffsetRounded = roundToDecimal(cornerRadius * sin30, 4);
+    const cornerCosOffsetRounded = roundToDecimal(cornerRadius * cos30, 4);
 
     return isHalf
-        ? ` M ${points[0]!.x + cornerSinOffset},${points[0]!.y + cornerCosOffset}   \
-            Q ${points[0]!.x},${points[0]!.y} ${points[0]!.x + cornerSinOffset * 2},${points[0]!.y}   \
+        ? ` M ${points[0]!.x + cornerSinOffsetRounded},${points[0]!.y + cornerCosOffsetRounded}   \
+            Q ${points[0]!.x},${points[0]!.y} ${points[0]!.x + cornerSinOffsetRounded * 2},${points[0]!.y}   \
             \
-            L ${points[1]!.x + cornerSinOffset},${points[0]!.y} \
-            Q ${points[1]!.x},${points[0]!.y} ${points[1]!.x + cornerSinOffset * 2},${points[0]!.y}   \
+            L ${points[1]!.x + cornerSinOffsetRounded},${points[0]!.y} \
+            Q ${points[1]!.x},${points[0]!.y} ${points[1]!.x + cornerSinOffsetRounded * 2},${points[0]!.y}   \
             \
-            L ${points[2]!.x - cornerSinOffset * 2},${points[3]!.y} \
-            Q ${points[2]!.x},${points[3]!.y} ${points[2]!.x + cornerSinOffset},${points[3]!.y}   \
+            L ${points[2]!.x - cornerSinOffsetRounded * 2},${points[3]!.y} \
+            Q ${points[2]!.x},${points[3]!.y} ${points[2]!.x + cornerSinOffsetRounded},${points[3]!.y}   \
             \
-            L ${points[3]!.x - cornerSinOffset * 2},${points[3]!.y} \
-            Q ${points[3]!.x},${points[0]!.y} ${points[3]!.x - cornerSinOffset},${points[3]!.y + cornerCosOffset} \
+            L ${points[3]!.x - cornerSinOffsetRounded * 2},${points[3]!.y} \
+            Q ${points[3]!.x},${points[0]!.y} ${points[3]!.x - cornerSinOffsetRounded},${points[3]!.y + cornerCosOffsetRounded} \
             \
-            L ${points[4]!.x + cornerSinOffset},${points[4]!.y - cornerCosOffset}   \
-            Q ${points[4]!.x},${points[4]!.y} ${points[4]!.x - cornerSinOffset * 2},${points[4]!.y}   \
+            L ${points[4]!.x + cornerSinOffsetRounded},${points[4]!.y - cornerCosOffsetRounded}   \
+            Q ${points[4]!.x},${points[4]!.y} ${points[4]!.x - cornerSinOffsetRounded * 2},${points[4]!.y}   \
             \
-            L ${points[5]!.x + cornerSinOffset * 2},${points[5]!.y} \
-            Q ${points[5]!.x},${points[5]!.y} ${points[5]!.x - cornerSinOffset},${points[5]!.y - cornerCosOffset} \
+            L ${points[5]!.x + cornerSinOffsetRounded * 2},${points[5]!.y} \
+            Q ${points[5]!.x},${points[5]!.y} ${points[5]!.x - cornerSinOffsetRounded},${points[5]!.y - cornerCosOffsetRounded} \
             \
             Z`
-        : ` M ${points[0]!.x + cornerSinOffset},${points[0]!.y + cornerCosOffset} \
-            Q ${points[0]!.x},${points[0]!.y} ${points[0]!.x + cornerSinOffset},${points[0]!.y - cornerCosOffset} \
+        : ` M ${points[0]!.x + cornerSinOffsetRounded},${points[0]!.y + cornerCosOffsetRounded} \
+            Q ${points[0]!.x},${points[0]!.y} ${points[0]!.x + cornerSinOffsetRounded},${points[0]!.y - cornerCosOffsetRounded} \
             \
-            L ${points[1]!.x - cornerSinOffset},${points[1]!.y + cornerCosOffset} \
-            Q ${points[1]!.x},${points[1]!.y} ${points[1]!.x + cornerSinOffset * 2},${points[1]!.y} \
+            L ${points[1]!.x - cornerSinOffsetRounded},${points[1]!.y + cornerCosOffsetRounded} \
+            Q ${points[1]!.x},${points[1]!.y} ${points[1]!.x + cornerSinOffsetRounded * 2},${points[1]!.y} \
             \
-            L ${points[2]!.x - cornerSinOffset * 2},${points[2]!.y} \
-            Q ${points[2]!.x},${points[2]!.y} ${points[2]!.x + cornerSinOffset},${points[2]!.y + cornerCosOffset} \
+            L ${points[2]!.x - cornerSinOffsetRounded * 2},${points[2]!.y} \
+            Q ${points[2]!.x},${points[2]!.y} ${points[2]!.x + cornerSinOffsetRounded},${points[2]!.y + cornerCosOffsetRounded} \
             \
-            L ${points[3]!.x - cornerSinOffset},${points[3]!.y - cornerCosOffset} \
-            Q ${points[3]!.x},${points[3]!.y} ${points[3]!.x - cornerSinOffset},${points[3]!.y + cornerCosOffset} \
+            L ${points[3]!.x - cornerSinOffsetRounded},${points[3]!.y - cornerCosOffsetRounded} \
+            Q ${points[3]!.x},${points[3]!.y} ${points[3]!.x - cornerSinOffsetRounded},${points[3]!.y + cornerCosOffsetRounded} \
             \
-            L ${points[4]!.x + cornerSinOffset},${points[4]!.y - cornerCosOffset} \
-            Q ${points[4]!.x},${points[4]!.y} ${points[4]!.x - cornerSinOffset * 2},${points[4]!.y} \
+            L ${points[4]!.x + cornerSinOffsetRounded},${points[4]!.y - cornerCosOffsetRounded} \
+            Q ${points[4]!.x},${points[4]!.y} ${points[4]!.x - cornerSinOffsetRounded * 2},${points[4]!.y} \
             \
-            L ${points[5]!.x + cornerSinOffset * 2},${points[5]!.y} \
-            Q ${points[5]!.x},${points[5]!.y} ${points[5]!.x - cornerSinOffset},${points[5]!.y - cornerCosOffset} \
+            L ${points[5]!.x + cornerSinOffsetRounded * 2},${points[5]!.y} \
+            Q ${points[5]!.x},${points[5]!.y} ${points[5]!.x - cornerSinOffsetRounded},${points[5]!.y - cornerCosOffsetRounded} \
             \
             Z`;
 }
