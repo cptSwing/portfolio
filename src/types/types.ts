@@ -136,3 +136,5 @@ export type GridAreaPathData = {
     height: number;
     path: string;
 };
+
+export type valueof<T> = T[keyof T];

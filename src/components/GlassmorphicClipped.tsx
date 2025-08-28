@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
+import { ComponentPropsWithoutRef, FC, memo, ReactNode } from 'react';
 
 interface GlassmorphicProps {
     children?: ReactNode;
@@ -14,7 +14,7 @@ const GlassmorphicClipped: FC<GlassmorphicProps> = ({ children, outer, inner, sh
     return (
         <div
             {...outerRest}
-            className={`${outerClassName} [--glassmorphic-backdrop-blur:3px] [background-image:linear-gradient(var(--gradient-counter-rotation),var(--tw-gradient-stops))] ${showGlass ? 'backdrop-glassmorphic' : 'backdrop-glassmorphic-off !from-transparent !to-transparent'}`}
+            className={`${outerClassName} [--glassmorphic-backdrop-blur:2px] [background-image:linear-gradient(var(--gradient-counter-rotation),var(--tw-gradient-stops))] ${showGlass ? 'backdrop-glassmorphic' : 'backdrop-glassmorphic-off !from-transparent !to-transparent'}`}
         >
             {children}
 
@@ -28,19 +28,19 @@ const GlassmorphicClipped: FC<GlassmorphicProps> = ({ children, outer, inner, sh
 
 export default GlassmorphicClipped;
 
-export const SvgGlassFilter: FC<{ name?: string; withWrapper?: boolean }> = ({ name, withWrapper = true }) => {
+export const SvgGlassFilter: FC<{ name?: string; withWrapper?: boolean; strokeRadius?: number }> = memo(({ name, withWrapper = true, strokeRadius = 1 }) => {
     return withWrapper ? (
         <svg width="100%" height="100%">
             <defs>
-                <SvgFilter name={name} />
+                <SvgFilter name={name} strokeRadius={strokeRadius} />
             </defs>
         </svg>
     ) : (
-        <SvgFilter name={name} />
+        <SvgFilter name={name} strokeRadius={strokeRadius} />
     );
-};
+});
 
-const SvgFilter: FC<{ name?: string }> = ({ name }) => (
+const SvgFilter: FC<{ name?: string; strokeRadius: number }> = ({ name, strokeRadius }) => (
     <filter id={`svg-hexagon-filter${name ? '-' + name : ''}`}>
         <feFlood floodColor="var(--hexagon-fill-color)" result="fill-flood" />
 
@@ -51,7 +51,7 @@ const SvgFilter: FC<{ name?: string }> = ({ name }) => (
 
         <feFlood floodColor="var(--hexagon-stroke-color)" result="stroke-flood" />
         <feComposite operator="out" in="stroke-flood" in2="SourceAlpha" result="stroke-composite" />
-        <feMorphology operator="dilate" in="stroke-composite" radius="1" result="stroke-dilate" />
+        <feMorphology operator="dilate" in="stroke-composite" radius={strokeRadius} result="stroke-dilate" />
 
         <feMerge>
             <feMergeNode in="fill-flood" />

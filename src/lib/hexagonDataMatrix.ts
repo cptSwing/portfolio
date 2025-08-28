@@ -855,7 +855,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         },
         [ROUTE.post]: {
             position: {
-                x: 312.5,
+                x: 312,
                 y: -29.5,
             },
             rotation: 0,
@@ -891,7 +891,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         },
         [ROUTE.post]: {
             position: {
-                x: 341.5,
+                x: 342,
                 y: -29.5,
             },
             rotation: 0,

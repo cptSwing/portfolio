@@ -17,13 +17,7 @@ const HexagonNavigation = () => {
         <GetChildSizeContext.Provider
             value={hexagonElementsRect ? { width: hexagonElementsRect.width, height: hexagonElementsRect.height } : getChildSizeContextDefaultValue}
         >
-            <div
-                ref={hexagonElements_Ref}
-                className={classNames(
-                    '[--hexagon-blur-color:theme(colors.white/0.2)] [--hexagon-fill-color:theme(colors.theme.primary/0.05)] [--hexagon-stroke-color:theme(colors.theme.secondary/0.2)]',
-                    'pointer-events-none absolute size-full',
-                )}
-            >
+            <div ref={hexagonElements_Ref} className="pointer-events-none absolute size-full">
                 <SVGDefs />
                 <HexagonTiles />
             </div>
