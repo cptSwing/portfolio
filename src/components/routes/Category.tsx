@@ -5,6 +5,8 @@ import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
+import { Post } from '../../types/types.ts';
+
 import CategoryCard from '../CategoryCard.tsx';
 import useMountTransition from '../../hooks/useMountTransition.ts';
 import { config } from '../../types/exportTyped.ts';
@@ -17,7 +19,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     const category = useZustand((store) => store.values.routeData.content.category) ?? emptyCategory;
 
     const categoryRef = useRef<HTMLDivElement | null>(null);
-    const isMounted = useMountTransition(categoryRef, show, '!clip-inset-x-0');
+    const isMounted = useMountTransition(categoryRef, show, '!clip-inset-x-[-50%]');
 
     const [flipIndex, setFlipIndex] = useState(0);
 
@@ -39,16 +41,15 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                 <div
                     ref={categoryRef}
                     className={classNames(
-                        'absolute flex h-full w-[86.66%] flex-row flex-wrap items-center justify-center bg-theme-primary/10 py-[8%] pl-[2.5%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] mask-edges-x-0 mask-edges-y-[3%] sm:size-full sm:flex-col sm:p-0 sm:mask-edges-x-[4%] sm:mask-edges-y-0', //
+                        'absolute flex h-full w-[86.66%] flex-row flex-wrap items-center justify-center py-[8%] pl-[2.5%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] sm:size-full sm:flex-col sm:p-0', //
                         show ? 'delay-[calc(var(--ui-animation-menu-transition-duration)/2)]' : 'delay-0',
                     )}
                 >
                     {/* Info */}
                     <BannerTitle title={title} classes="h-[3%] ml-[17%] self-start sm:h-[7.5%] flex-shrink-0 flex-grow sm:basis-auto basis-full" />
 
-                    <nav className="sm:post-cards-grid-template-desktop post-cards-grid-template-mobile h-[97%] flex-shrink-0 flex-grow basis-[92.5%] origin-center transform gap-x-[2%] gap-y-[1.5%] sm:size-full sm:h-[85%] sm:w-[90%] sm:basis-auto sm:gap-x-[2.5%] sm:gap-y-[3%] 2xl:gap-x-[2.1%]">
+                    {/* <nav className="sm:post-cards-grid-template-desktop post-cards-grid-template-mobile h-[97%] flex-shrink-0 flex-grow basis-[92.5%] origin-center transform gap-x-[2%] gap-y-[1.5%] sm:h-[85%] sm:w-[90%] sm:basis-auto sm:gap-x-[2.5%] sm:gap-y-[3%] 2xl:gap-x-[2.1%]">
                         <Flipper className="contents" flipKey={flipIndex} spring={{ stiffness: 700, damping: 100 }}>
-                            {/* Animated Grid */}
                             {category.posts.map((post, idx, arr) => (
                                 <CategoryCard
                                     key={post.id}
@@ -64,7 +65,17 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                         </Flipper>
 
                         <FlippedBrand />
-                    </nav>
+                    </nav> */}
+
+                    <Carousel posts={category.posts} />
+
+                    {/* <div className="flex items-center sm:h-[85%] sm:w-[90%]">
+                        <LookDevCard index={0} post={category.posts[0]} width={0.5} height={0.75} />
+                        <LookDevCard index={1} post={category.posts[1]} />
+                        <LookDevCard index={2} post={category.posts[2]} width={0.5} height={0.75} />
+                    </div> */}
+
+                    {/* <FlippedBrand /> */}
 
                     {/* Progress Bar */}
                     <div className="flex h-[97%] w-full flex-shrink-0 flex-grow basis-[7.5%] flex-col items-center justify-between gap-y-[2%] sm:h-[7.5%] sm:w-[80%] sm:basis-auto sm:flex-row sm:gap-x-[2%] sm:gap-y-0">
@@ -95,6 +106,90 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
 };
 
 export default Category;
+
+const Carousel: FC<{ posts: Post[] }> = ({ posts }) => {
+    const [rotation, setRotation] = useState(0);
+
+    const cellCount = posts.length;
+    const theta = 360 / cellCount;
+    const cellSize = 600;
+    const radius = Math.round(cellSize / 2 / Math.tan(Math.PI / cellCount));
+
+    function handleClick(direction: 'previous' | 'next') {
+        switch (direction) {
+            case 'previous':
+                setRotation((state) => state + theta);
+                break;
+            case 'next':
+                setRotation((state) => state - theta);
+                break;
+        }
+    }
+
+    return (
+        <div className="pointer-events-auto flex items-center justify-center overflow-visible sm:h-[85%] sm:w-[90%]">
+            <button className="pointer-events-auto z-10 cursor-pointer rounded-md bg-red-500 p-2" onClick={() => handleClick('previous')}>
+                previous
+            </button>
+
+            <div
+                className="relative mx-auto aspect-hex-flat w-[--category-card-width] [perspective:250px]"
+                style={
+                    {
+                        '--category-card-width': cellSize + 'px',
+                    } as CSSProperties
+                }
+            >
+                <div
+                    className="transform-3d backface-hidden absolute size-full transition-transform duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d]"
+                    style={
+                        {
+                            '--tw-translate-z': -radius + 'px',
+                            '--tw-rotate-y': rotation + 'deg',
+                        } as CSSProperties
+                    }
+                >
+                    {posts.map(({ id, title, subTitle, cardImage }, idx, arr) => {
+                        const cellAngle = theta * idx;
+                        return (
+                            <div
+                                key={id}
+                                className="glassmorphic backface-hidden absolute size-full rounded-md bg-gray-400/10 transition-transform duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d]"
+                                style={{
+                                    zIndex: arr.length - idx,
+                                    transform: `rotateY(${cellAngle}deg) translateZ(${radius}px) rotateY(${-cellAngle - rotation}deg)`,
+                                }}
+                            >
+                                {idx} {title}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+
+            <button className="pointer-events-auto z-10 cursor-pointer rounded-md bg-red-500 p-2" onClick={() => handleClick('next')}>
+                next
+            </button>
+        </div>
+    );
+};
+
+const LookDevCard: FC<{ post?: Post; index: number; width?: number; height?: number }> = ({ post, index, width = 1, height = 1 }) => {
+    const { id, title, cardImage, subTitle } = post ?? {};
+
+    return (
+        <div
+            className="glassmorphic absolute aspect-video w-full transform rounded-xl"
+            style={
+                {
+                    '--tw-scale-x': width,
+                    '--tw-scale-y': height,
+                    '--tw-translate-x': index > 1 ? '10%' : index < 1 ? '-10%' : '0',
+                } as CSSProperties
+            }
+        ></div>
+    );
+};
 
 const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 

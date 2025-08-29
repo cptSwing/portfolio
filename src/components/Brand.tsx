@@ -14,7 +14,7 @@ const Brand: FC<{ flippedProps: object }> = ({ flippedProps }) => {
     return (
         <div
             {...flippedProps}
-            className="sm:post-cards-grid-brand-area-desktop backdrop-glassmorphic post-cards-grid-brand-area-mobile pointer-events-none z-50 mx-auto flex w-auto select-none flex-col items-end justify-center rounded-lg text-theme-primary"
+            className="sm:post-cards-grid-brand-area-desktop glassmorphic-backdrop post-cards-grid-brand-area-mobile pointer-events-none z-50 mx-auto flex w-auto select-none flex-col items-end justify-center rounded-lg text-theme-primary"
         >
             <FitText text="jens brandenburg" className="h-1/5 w-fit leading-none tracking-tight" />
             <FitText text="web developer" className="h-[12.5%] w-fit leading-none tracking-tight" />

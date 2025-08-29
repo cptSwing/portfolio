@@ -15,7 +15,7 @@ const GlassmorphicClipped = forwardRef<HTMLDivElement, GlassmorphicProps>((props
         <div
             ref={ref}
             {...rest}
-            className={`${className} backdrop-glassmorphic !bg-transparent from-transparent via-transparent to-white/40 [background-image:linear-gradient(var(--hexagon-lighting-gradient-counter-rotation),var(--tw-gradient-stops))] [clip-path:--glassmorphic-clipped-clip-path]`}
+            className={`${className} glassmorphic [clip-path:--glassmorphic-clipped-clip-path]`}
             style={{ ...style, '--glassmorphic-clipped-clip-path': clipPath } as CSSProperties}
         >
             <svg width="100%" height="100%">

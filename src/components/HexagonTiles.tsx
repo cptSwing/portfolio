@@ -47,18 +47,22 @@ const HexagonTiles = () => {
         [menuTransitionTarget, menuTransitionTargetReached],
     );
 
+    const hexagonClipPaths_Memo = useMemo(
+        () =>
+            ({
+                '--half-hexagon-clip-path': `path("${halfRoundedHexagonPath}")`,
+                '--hexagon-clip-path': `path("${roundedHexagonPath}")`,
+            }) as CSSProperties,
+        [],
+    );
+
     return (
         <div
             className={classNames(
                 'pointer-events-none absolute size-full transform-gpu overflow-visible transition-transform duration-[--ui-animation-menu-transition-duration]',
                 routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'rotate-90 sm:rotate-0',
             )}
-            style={
-                {
-                    '--half-hexagon-clip-path': `path("${halfRoundedHexagonPath}")`,
-                    '--hexagon-clip-path': `path("${roundedHexagonPath}")`,
-                } as CSSProperties
-            }
+            style={hexagonClipPaths_Memo}
             onTransitionEnd={({ target, currentTarget }) => {
                 if (target === currentTarget) {
                     // ^^^  condition filters out bubbled child events
@@ -110,9 +114,9 @@ const RegularHexagonDiv: FC<{
     return (
         <div
             className={classNames(
-                'bg-[--hexagon-fill-color] from-transparent via-transparent to-white/10 [background-image:linear-gradient(var(--hexagon-lighting-gradient-counter-rotation),var(--tw-gradient-stops))]',
-                'backdrop-glassmorphic regular-hexagon-class pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform-gpu transition-[transform,filter,--hexagon-lighting-gradient-counter-rotation,clip-path]',
+                'regular-hexagon-class glassmorphic pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform-gpu bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path]',
                 isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
+                routeName === ROUTE.post ? '!glassmorphic-off ![--hexagon-fill-color:theme(colors.theme.text-background)]' : '!to-white/10',
             )}
             style={
                 {
