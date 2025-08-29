@@ -1,4 +1,3 @@
-import { classNames } from 'cpts-javascript-utilities';
 import { halfRoundedHexagonPath, roundedHexagonPath } from '../lib/hexagonDataMatrix';
 import { useZustand } from '../lib/zustand';
 import HexagonTiles from './HexagonTiles';
@@ -50,7 +49,7 @@ const SVGDefs = () => {
                     <use href={'#' + halfRoundedHexagonPathName} />
                 </clipPath>
 
-                <SvgGlassFilter withWrapper={false} />
+                <SvgGlassFilter withWrapper={false} blurRadius={0} strokeRadius={0} />
 
                 <filter id="svg-hexagon-bloom-filter" x="-5%" y="-5%" width="110%" height="110%">
                     <feGaussianBlur in="SourceGraphic" stdDeviation="3" edgeMode="wrap" result="blurResult" />
