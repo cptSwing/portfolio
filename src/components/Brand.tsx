@@ -14,10 +14,11 @@ const Brand: FC<{ flippedProps: object }> = ({ flippedProps }) => {
     return (
         <div
             {...flippedProps}
-            className="sm:post-cards-grid-brand-area-desktop post-cards-grid-brand-area-mobile pointer-events-none relative flex select-none flex-col items-center justify-center text-theme-primary"
+            className="sm:post-cards-grid-brand-area-desktop backdrop-glassmorphic post-cards-grid-brand-area-mobile pointer-events-none z-50 mx-auto flex w-auto select-none flex-col items-end justify-center rounded-lg text-theme-primary"
         >
-            <FitText text="jens brandenburg" className="mx-auto h-1/5 w-[65%] leading-none tracking-tight" />
-            <FitText text="webdev / 3d art" className="mx-auto h-[12.5%] w-[65%] leading-none tracking-tight" />
+            <FitText text="jens brandenburg" className="h-1/5 w-fit leading-none tracking-tight" />
+            <FitText text="web developer" className="h-[12.5%] w-fit leading-none tracking-tight" />
+            <FitText text="& 3d artist" className="h-[12.5%] w-fit leading-none tracking-tight" />
         </div>
     );
 };
