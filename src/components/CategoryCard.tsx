@@ -117,13 +117,13 @@ const ChildImageAndSvg: FC<{ cardImage?: string; pathName: string; clipPathName:
         return (
             <>
                 {/* Backdrop/Shadow */}
-                <rect
+                {/* <rect
                     width="100%"
                     height="100%"
                     className="translate-x-1 translate-y-2 transform-gpu fill-theme-root-background"
                     clipPath={`url(#${clipPathName})`}
                     shapeRendering="crispEdges"
-                />
+                /> */}
 
                 <g
                     className="pointer-events-auto transition-[filter] [filter:var(--image-filter,brightness(0.1)_grayscale(0.1))] group-hover-active:brightness-110 group-hover-active:!duration-75"

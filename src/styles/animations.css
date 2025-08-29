@@ -14,6 +14,16 @@
     }
 }
 
+
+@keyframes animate-linear {
+    25% {
+        --background-gradient-linear-angle: 185deg;
+    }
+    75% {
+        --background-gradient-linear-angle: 235deg;
+    }
+}
+
 @keyframes animate-radial-1 {
     25% {
         --background-gradient-radial-1-position: 20% 85%;

@@ -1,27 +1,33 @@
-import { ComponentPropsWithRef, FC, forwardRef, memo, ReactNode } from 'react';
+import { ComponentPropsWithRef, CSSProperties, FC, forwardRef, ReactNode, useMemo } from 'react';
 
-interface GlassmorphicProps {
+interface GlassmorphicProps extends ComponentPropsWithRef<'div'> {
     children?: ReactNode;
-    outer: ComponentPropsWithRef<'div'>;
-    inner: ComponentPropsWithRef<'div'>;
-    showGlass?: boolean;
+    clipPath: string;
+    blurRadius?: number;
+    strokeRadius?: number;
 }
 
-const GlassmorphicClipped = forwardRef<HTMLDivElement, GlassmorphicProps>(({ children, outer, inner, showGlass = true }, ref) => {
-    const { className: outerClassName, ...outerRest } = outer;
-    const { className: innerClassName, ...innerRest } = inner;
+const GlassmorphicClipped = forwardRef<HTMLDivElement, GlassmorphicProps>((props, ref) => {
+    const { children, clipPath, blurRadius = 3, strokeRadius = 1, className, style, ...rest } = props;
+    const uuid = useMemo(() => self.crypto.randomUUID(), []);
 
     return (
         <div
             ref={ref}
-            {...outerRest}
-            className={`${outerClassName} [background-image:linear-gradient(var(--gradient-counter-rotation),var(--tw-gradient-stops))] ${showGlass ? 'backdrop-glassmorphic' : 'backdrop-glassmorphic-off !from-transparent !to-transparent'}`}
+            {...rest}
+            className={`${className} backdrop-glassmorphic !bg-transparent from-transparent via-transparent to-white/40 [background-image:linear-gradient(var(--hexagon-lighting-gradient-counter-rotation),var(--tw-gradient-stops))] [clip-path:--glassmorphic-clipped-clip-path]`}
+            style={{ ...style, '--glassmorphic-clipped-clip-path': clipPath } as CSSProperties}
         >
+            <svg width="100%" height="100%">
+                <defs>
+                    <SvgGlassFilter name={uuid} blurRadius={blurRadius} strokeRadius={strokeRadius} />
+                </defs>
+            </svg>
             {children}
 
             <div
-                {...innerRest}
-                className={`${innerClassName} absolute left-0 top-0 -z-50 size-full before:absolute before:left-0 before:top-0 before:size-full before:bg-black ${showGlass ? '[filter:url(#svg-hexagon-filter)]' : 'filter-none'}`}
+                className="absolute left-0 top-0 -z-50 size-full before:absolute before:left-0 before:top-0 before:size-full before:bg-black before:[clip-path:--glassmorphic-clipped-clip-path]"
+                style={{ filter: `url(#svg-hexagon-filter-${uuid})` }}
             />
         </div>
     );
@@ -29,21 +35,7 @@ const GlassmorphicClipped = forwardRef<HTMLDivElement, GlassmorphicProps>(({ chi
 
 export default GlassmorphicClipped;
 
-export const SvgGlassFilter: FC<{ name?: string; withWrapper?: boolean; blurRadius?: number; strokeRadius?: number }> = memo(
-    ({ name, withWrapper = true, blurRadius = 3, strokeRadius = 1 }) => {
-        return withWrapper ? (
-            <svg width="100%" height="100%">
-                <defs>
-                    <SvgFilter name={name} blurRadius={blurRadius} strokeRadius={strokeRadius} />
-                </defs>
-            </svg>
-        ) : (
-            <SvgFilter name={name} blurRadius={blurRadius} strokeRadius={strokeRadius} />
-        );
-    },
-);
-
-const SvgFilter: FC<{ name?: string; blurRadius: number; strokeRadius: number }> = ({ name, blurRadius, strokeRadius }) => (
+const SvgGlassFilter: FC<{ name?: string; blurRadius: number; strokeRadius: number }> = ({ name, blurRadius, strokeRadius }) => (
     <filter id={`svg-hexagon-filter${name ? '-' + name : ''}`}>
         <feFlood floodColor="var(--hexagon-fill-color)" result="fill-flood" />
 

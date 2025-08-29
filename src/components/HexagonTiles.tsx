@@ -18,12 +18,11 @@ import { config } from '../types/exportTyped';
 import { keyDownA11y } from 'cpts-javascript-utilities';
 import { BreakpointName } from '../hooks/useBreakPoint';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import GlassmorphicClipped, { SvgGlassFilter } from './GlassmorphicClipped';
+import GlassmorphicClipped from './GlassmorphicClipped';
 import roundToDecimal from '../lib/roundToDecimal';
 
 const {
     ui: {
-        animation: { menuTransition_Ms },
         hexMenu: { strokeWidth },
     },
 } = config;
@@ -109,27 +108,19 @@ const RegularHexagonDiv: FC<{
     const random_Memo = useMemo(() => Math.random(), []);
 
     return (
-        <GlassmorphicClipped
-            showGlass={routeName != ROUTE.post}
-            outer={{
-                className: classNames(
-                    'from-transparent via-transparent to-white/10',
-                    'regular-hexagon-class aspect-hex-flat w-[100px] pointer-events-auto absolute origin-center transform-gpu filter-none transition-[transform,filter,--gradient-counter-rotation]',
-                    isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
-                ),
-                style: {
+        <div
+            className={classNames(
+                'bg-[--hexagon-fill-color] from-transparent via-transparent to-white/10 [background-image:linear-gradient(var(--hexagon-lighting-gradient-counter-rotation),var(--tw-gradient-stops))]',
+                'backdrop-glassmorphic regular-hexagon-class pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform-gpu transition-[transform,filter,--hexagon-lighting-gradient-counter-rotation,clip-path]',
+                isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
+            )}
+            style={
+                {
                     ...cssVariables_Memo,
-                    transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1}), var(--ui-animation-menu-transition-duration)`,
-                    transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), 0ms`,
-                } as CSSProperties,
-            }}
-            inner={{
-                className: classNames(
-                    'transition-[filter] before:transition-[background-color] before:duration-1000',
-                    isHalf ? 'before:[clip-path:--half-hexagon-clip-path]' : 'before:[clip-path:--hexagon-clip-path]',
-                    routeName === ROUTE.post ? 'before:!bg-theme-text-background' : 'before:!bg-theme-root-background',
-                ),
-            }}
+                    transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1}), var(--ui-animation-menu-transition-duration), var(--ui-animation-menu-transition-duration)`,
+                    transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), 0ms, 0ms`,
+                } as CSSProperties
+            }
         />
     );
 });
@@ -229,36 +220,30 @@ const GlassmorphicButtonWrapper: FC<{
 
     return (
         <GlassmorphicClipped
-            outer={{
-                className: classNames(
-                    '![--glassmorphic-backdrop-blur:12px]',
-                    'before:!opacity-0',
-                    'from-transparent via-transparent to-white/20',
-                    'group pointer-events-auto absolute aspect-hex-flat transform-gpu w-[100px] origin-center transition-[transform,--hexagon-blur-color,--scale-property,--gradient-counter-rotation] [clip-path:--hexagon-clip-path]',
-                    'hover-active:!scale-[calc(var(--scale-property)*1.05)] hover-active:!delay-0 hover-active:!duration-150 hover-active:![--hexagon-blur-color:theme(colors.theme.primary-lighter)]',
-                    routeName === ROUTE.post
-                        ? '[--hexagon-stroke-color:transparent] [--hexagon-fill-color:theme(colors.theme.primary/0.5)] [--hexagon-blur-color:transparent] '
-                        : '[--hexagon-stroke-color:theme(colors.theme.primary-lighter/0.5)] [--hexagon-fill-color:theme(colors.theme.secondary/0.35)] [--hexagon-blur-color:theme(colors.theme.primary/0.75)] ',
-                    isRouteNavigation ? `navigation-button-hexagon-class-${name}` : `menu-button-hexagon-class-${name}`,
-                ),
-                style: {
+            clipPath="var(--hexagon-clip-path)"
+            strokeRadius={isFinite(strokeRadius) ? strokeRadius : 0}
+            className={classNames(
+                '![--glassmorphic-backdrop-blur:8px]',
+                'group pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform-gpu transition-[transform,--hexagon-blur-color,--scale-property,--hexagon-lighting-gradient-counter-rotation] [clip-path:--hexagon-clip-path]',
+                'hover-active:!scale-[calc(var(--scale-property)*1.05)] hover-active:!delay-0 hover-active:!duration-150 hover-active:![--hexagon-blur-color:theme(colors.theme.primary-lighter)]',
+                routeName === ROUTE.post
+                    ? '[--hexagon-blur-color:transparent] [--hexagon-fill-color:theme(colors.theme.primary/0.5)] [--hexagon-stroke-color:transparent]'
+                    : '[--hexagon-blur-color:theme(colors.theme.primary/0.75)] [--hexagon-fill-color:theme(colors.theme.secondary/0.35)] [--hexagon-stroke-color:theme(colors.theme.primary-lighter/0.5)]',
+                isRouteNavigation ? `navigation-button-hexagon-class-${name}` : `menu-button-hexagon-class-${name}`,
+            )}
+            style={
+                {
                     ...style,
                     transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1}), 150ms, 150ms, var(--ui-animation-menu-transition-duration)`,
                     transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), 0ms, 0ms, 0ms`,
-                } as CSSProperties,
-                role: 'button',
-                tabIndex: isVisible ? -1 : 0,
-                onMouseEnter: mouseEnterHandler,
-                onClick: clickHandler,
-                onKeyDown: keyDownA11y(clickHandler),
-            }}
-            inner={{
-                className: classNames('transition-[filter] before:[clip-path:--hexagon-clip-path]'),
-                style: { filter: `url(#svg-hexagon-filter-${name})` },
-            }}
+                } as CSSProperties
+            }
+            role={'button'}
+            tabIndex={isVisible ? -1 : 0}
+            onMouseEnter={mouseEnterHandler}
+            onClick={clickHandler}
+            onKeyDown={keyDownA11y(clickHandler)}
         >
-            <SvgGlassFilter name={name} strokeRadius={isFinite(strokeRadius) ? strokeRadius : 0} />
-
             {children}
         </GlassmorphicClipped>
     );
@@ -348,7 +333,7 @@ function calcCSSVariables(
         '--tw-scale-x': mappedScaleX,
         '--tw-scale-y': mappedScaleY,
         '--scale-property': mappedScaleX,
-        '--gradient-counter-rotation': `calc(${-rotation}deg - var(--home-menu-rotation, 0deg))`,
+        '--hexagon-lighting-gradient-counter-rotation': `calc(${-rotation}deg - var(--home-menu-rotation, 0deg))`,
     };
 }
 
@@ -395,9 +380,6 @@ function isCategoryNavigation(name: ButtonName): name is CategoryName {
 }
 
 // Local Values
-
-const roundedHexagonPathName = 'roundedHexagonPath';
-const halfRoundedHexagonPathName = 'halfRoundedHexagonPath';
 
 const navRotationValues: Record<CategoryName, { deg: number }> = {
     'code': { deg: 60 },

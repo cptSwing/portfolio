@@ -89,8 +89,8 @@
     }
 
     .backdrop-glassmorphic {
-        @apply backdrop-blur-[--glassmorphic-backdrop-blur,4px] backdrop-saturate-[1.75];
-        @apply before:absolute before:left-0 before:top-0 before:size-full before:bg-transparent before:bg-repeat before:opacity-10 before:[background-size:100px];
+        @apply backdrop-blur-[--glassmorphic-backdrop-blur,4px] backdrop-saturate-[1.75] bg-[--hexagon-fill-color];
+        @apply before:absolute before:left-0 before:top-0 before:size-full before:bg-repeat before:opacity-5 before:[background-size:100px];
         @apply before:[background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20150%20150%22%3E%0A%20%20%20%20%3Cfilter%20id%3D%22a%22%3E%0A%20%20%20%20%20%20%20%20%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.95%22%20numOctaves%3D%221%22%20stitchTiles%3D%22stitch%22%2F%3E%0A%20%20%20%20%3C%2Ffilter%3E%0A%20%20%20%20%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23a)%22%2F%3E%0A%3C%2Fsvg%3E%0A")];
     }
 
@@ -105,19 +105,19 @@
                 theme(colors.theme.primary/0.5) 0%,
                 theme(colors.theme.primary-darker/0.75) 40%,
                 transparent 100%
-            ),
+            ), /* radial-3 */
             radial-gradient(
                 ellipse 50% 70% at var(--background-gradient-radial-2-position),
                 theme(colors.theme.root-background/0.5) 0%,
                 theme(colors.theme.root-background/0.25) 50%
-            ),
+            ), /* radial-2 */
             radial-gradient(
                 ellipse 20% 30% at var(--background-gradient-radial-1-position),
                 theme(colors.theme.primary-lighter/0.15) 0%,
                 theme(colors.theme.primary/0.1) 50%,
                 transparent
-            ),
-            linear-gradient(210deg, transparent 0%, theme(colors.theme.primary-darker) 47.5% 52.5%, transparent 100%);
+            ), /* radial-1 */
+            linear-gradient(var(--background-gradient-linear-angle), transparent 0%, theme(colors.theme.primary-darker) 47.5% 52.5%, transparent 100%);
     }
 
     .rotate-text {
@@ -162,29 +162,34 @@
 #root {
     @apply background-gradients flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather;
     @apply [--hexagon-blur-color:theme(colors.white/0.1)] [--hexagon-fill-color:theme(colors.theme.primary/0.05)] [--hexagon-stroke-color:theme(colors.theme.secondary/0.1)];
-    animation-name: animate-radial-1, animate-radial-2, animate-radial-3;
-    animation-duration: 60s, 15s, 120s;
+    animation-name: animate-linear, animate-radial-1, animate-radial-2, animate-radial-3;
+    animation-duration: 150s, 60s, 15s, 120s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
 
 @property --background-gradient-radial-1-position {
     syntax: '<percentage>+';
-    inherits: true;
+    inherits: false;
     initial-value: 70% 65%;
 }
 
 @property --background-gradient-radial-2-position {
     syntax: '<percentage>+';
-    inherits: true;
+    inherits: false;
     initial-value: 30% 35%;
 }
 
-
 @property --background-gradient-radial-3-position {
     syntax: '<percentage>+';
-    inherits: true;
+    inherits: false;
     initial-value: 50% 50%;
+}
+
+@property --background-gradient-linear-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 210deg;
 }
 
 @property --hexagon-blur-color {
@@ -205,16 +210,16 @@
     initial-value: blue;
 }
 
+@property --hexagon-lighting-gradient-counter-rotation {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
 @property --scale-property {
     syntax: '<number>';
     inherits: false;
     initial-value: 1;
-}
-
-@property --gradient-counter-rotation {
-    syntax: '<angle>';
-    inherits: false;
-    initial-value: 0deg;
 }
 
 /* SVG Filters */

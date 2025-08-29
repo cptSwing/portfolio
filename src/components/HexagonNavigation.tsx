@@ -4,7 +4,6 @@ import HexagonTiles from './HexagonTiles';
 import GetChildSizeContext, { getChildSizeContextDefaultValue } from '../contexts/GetChildSizeContext';
 import { useRef } from 'react';
 import useResizeObserver from '../hooks/useResizeObserver';
-import { SvgGlassFilter } from './GlassmorphicClipped';
 
 const HexagonNavigation = () => {
     const _routeName = useZustand((store) => store.values.routeData.name);
@@ -17,7 +16,7 @@ const HexagonNavigation = () => {
             value={hexagonElementsRect ? { width: hexagonElementsRect.width, height: hexagonElementsRect.height } : getChildSizeContextDefaultValue}
         >
             <div ref={hexagonElements_Ref} className="pointer-events-none absolute size-full">
-                <SVGDefs />
+                {/* <SVGDefs /> */}
                 <HexagonTiles />
             </div>
         </GetChildSizeContext.Provider>
@@ -29,7 +28,7 @@ export default HexagonNavigation;
 const roundedHexagonPathName = 'roundedHexagonPath';
 const halfRoundedHexagonPathName = 'halfRoundedHexagonPath';
 
-const SVGDefs = () => {
+const _SVGDefs = () => {
     return (
         <svg width="0" height="0">
             <defs>
@@ -48,8 +47,6 @@ const SVGDefs = () => {
                 <clipPath id={halfRoundedHexagonPathName + '-clipPath'} clipPathUnits="userSpaceOnUse">
                     <use href={'#' + halfRoundedHexagonPathName} />
                 </clipPath>
-
-                <SvgGlassFilter withWrapper={false} blurRadius={0} strokeRadius={0} />
 
                 <filter id="svg-hexagon-bloom-filter" x="-5%" y="-5%" width="110%" height="110%">
                     <feGaussianBlur in="SourceGraphic" stdDeviation="3" edgeMode="wrap" result="blurResult" />
