@@ -51,30 +51,11 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                     {/* Info */}
                     <BannerTitle title={title} classes="h-[3%] ml-[17%] self-start sm:h-[7.5%] flex-shrink-0 flex-grow sm:basis-auto basis-full" />
 
-                    {/* <nav className="sm:post-cards-grid-template-desktop post-cards-grid-template-mobile h-[97%] flex-shrink-0 flex-grow basis-[92.5%] origin-center transform gap-x-[2%] gap-y-[1.5%] sm:h-[85%] sm:w-[90%] sm:basis-auto sm:gap-x-[2.5%] sm:gap-y-[3%] 2xl:gap-x-[2.1%]">
-                        <Flipper className="contents" flipKey={flipIndex} spring={{ stiffness: 700, damping: 100 }}>
-                            {category.posts.map((post, idx, arr) => (
-                                <CategoryCard
-                                    key={post.id}
-                                    post={post}
-                                    flipIndex={flipIndex}
-                                    cardIndex={idx}
-                                    cardCount={arr.length}
-                                    gridAreaStylesAndPaths={gridAreaStylesAndPaths_ref}
-                                    setFlipIndex={setFlipIndex}
-                                    setTitle={setTitle}
-                                />
-                            ))}
-                        </Flipper>
+                    <nav className="pointer-events-none flex items-center justify-center sm:h-[85%] sm:w-[90%]">
+                        <Carousel posts={category.posts} flipIndexState={flipIndexState} direction={wheelDirection} />
 
                         <FlippedBrand />
-                    </nav> */}
-
-                    <nav className="pointer-events-none flex items-center justify-center sm:h-[85%] sm:w-[90%]">
-                        <Carousel posts={category.posts} flipIndexState={flipIndexState} />
                     </nav>
-
-                    {/* <FlippedBrand /> */}
 
                     {/* Progress Bar */}
                     <div className="flex h-[97%] w-full flex-shrink-0 flex-grow basis-[7.5%] flex-col items-center justify-between gap-y-[2%] sm:h-[7.5%] sm:w-[80%] sm:basis-auto sm:flex-row sm:gap-x-[2%] sm:gap-y-0">
@@ -106,23 +87,45 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
 
 export default Category;
 
-const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<React.SetStateAction<number>>] }> = ({ posts, flipIndexState }) => {
+const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<React.SetStateAction<number>>]; direction: 'down' | 'up' | null }> = ({
+    posts,
+    flipIndexState,
+    direction,
+}) => {
     const [flipIndex, setFlipIndex] = flipIndexState;
+    const prevFlipIndex = usePreviousPersistent(flipIndex);
 
     const cellCount = posts.length;
     const theta = 360 / cellCount;
-    const cellSize = 600;
+    const cellSize = 450;
     const radius = Math.round(cellSize / 2 / Math.tan(Math.PI / cellCount));
 
-    const [rotation, setRotation] = useState(-(flipIndex * theta));
+    const [rotation, setRotation] = useState(0);
 
     useEffect(() => {
-        setRotation((oldRotation) => oldRotation + theta);
-    }, [flipIndex, theta]);
+        if (typeof prevFlipIndex === 'number' && prevFlipIndex !== flipIndex) {
+            let dir;
+
+            if ((flipIndex === 0 && prevFlipIndex === cellCount - 1) || flipIndex > prevFlipIndex) dir = 'down';
+            else if ((flipIndex === cellCount - 1 && prevFlipIndex === 0) || flipIndex < prevFlipIndex) dir = 'up';
+
+            setRotation((oldRotation) => {
+                let newRotation = oldRotation;
+                if (dir === 'up') {
+                    newRotation = oldRotation + theta;
+                } else {
+                    newRotation = oldRotation - theta;
+                }
+                console.log('%c[Category]', 'color: #7c4f8a', `dir, flipIndex, prevFlipIndex, newRotation :`, dir, flipIndex, prevFlipIndex, newRotation);
+
+                return newRotation;
+            });
+        }
+    }, [prevFlipIndex, cellCount, flipIndex, theta, direction]);
 
     return (
         <div
-            className="relative mx-auto aspect-hex-flat [perspective:5000px]"
+            className="relative mx-auto aspect-hex-flat [perspective:1500px]"
             style={
                 {
                     width: cellSize + 'px',
@@ -136,7 +139,7 @@ const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<Reac
                         '--carousel-rotation': `${rotation}deg`,
                         '--carousel-radius': radius + 'px',
                         '--carousel-card-percentage': 1 / Math.ceil(posts.length / 2),
-                        'transform': 'translateZ(calc(var(--carousel-radius) * -1)) rotateY(var(--carousel-rotation))',
+                        'transform': 'translateZ(calc(var(--carousel-radius) * -1)) rotateY(var(--carousel-rotation)) ',
                     } as CSSProperties
                 }
             >
@@ -198,7 +201,7 @@ const CatCard: FC<{
     return (
         <button
             className={classNames(
-                'glassmorphic pointer-events-auto absolute flex size-full items-center justify-center overflow-hidden rounded-md transition-[transform,--carousel-card-opacity] delay-[150ms,0ms] duration-[--ui-animation-menu-transition-duration] [background-color:rgb(var(--theme-primary)/var(--carousel-card-opacity))] [transform-style:preserve-3d]',
+                'glassmorphic pointer-events-auto absolute flex size-full items-center justify-center overflow-hidden rounded-md p-4 transition-[transform,--carousel-card-opacity] delay-[150ms,0ms] duration-[--ui-animation-menu-transition-duration] [background-color:rgb(var(--theme-primary)/var(--carousel-card-opacity))] [transform-style:preserve-3d]',
                 carouselIndex === 0 ? 'cursor-pointer' : 'cursor-zoom-in',
             )}
             style={
@@ -210,7 +213,7 @@ const CatCard: FC<{
             }
             onClick={handleClick}
         >
-            <div className="absolute mx-auto text-theme-text-background">
+            <div className="mx-auto h-3/4 w-1/4 bg-gray-700 text-sm text-theme-text-background">
                 <span className="block">{title}</span>
                 <span className="block">{subTitle}</span>
 
@@ -220,8 +223,7 @@ const CatCard: FC<{
                 <span className="mt-[10%] block">flipIndex: {flipIndex}</span>
                 <span className="block">cardCount: {cardCount}</span>
             </div>
-
-            <img src={cardImage} alt={title} className="size-11/12 object-cover" />
+            <img src={cardImage} alt={title} className="size-3/4 object-cover" />
         </button>
     );
 };
