@@ -12,6 +12,8 @@ import useMountTransition from '../../hooks/useMountTransition.ts';
 import { config } from '../../types/exportTyped.ts';
 import FitText from '../utilityComponents/FitText.tsx';
 import FlippedBrand from '../Brand.tsx';
+import { useNavigate } from 'react-router-dom';
+import { usePreviousPersistent } from '../../hooks/usePrevious.ts';
 
 const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
 
@@ -68,13 +70,9 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                         <FlippedBrand />
                     </nav> */}
 
-                    <Carousel posts={category.posts} flipIndexState={flipIndexState} />
-
-                    {/* <div className="flex items-center sm:h-[85%] sm:w-[90%]">
-                        <LookDevCard index={0} post={category.posts[0]} width={0.5} height={0.75} />
-                        <LookDevCard index={1} post={category.posts[1]} />
-                        <LookDevCard index={2} post={category.posts[2]} width={0.5} height={0.75} />
-                    </div> */}
+                    <nav className="pointer-events-none flex items-center justify-center sm:h-[85%] sm:w-[90%]">
+                        <Carousel posts={category.posts} flipIndexState={flipIndexState} />
+                    </nav>
 
                     {/* <FlippedBrand /> */}
 
@@ -109,7 +107,6 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
 export default Category;
 
 const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<React.SetStateAction<number>>] }> = ({ posts, flipIndexState }) => {
-    const [rotation, setRotation] = useState(0);
     const [flipIndex, setFlipIndex] = flipIndexState;
 
     const cellCount = posts.length;
@@ -117,55 +114,50 @@ const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<Reac
     const cellSize = 600;
     const radius = Math.round(cellSize / 2 / Math.tan(Math.PI / cellCount));
 
-    function handleClick(direction: 'previous' | 'next') {
-        switch (direction) {
-            case 'previous':
-                setRotation((state) => state + theta);
-                break;
-            case 'next':
-                setRotation((state) => state - theta);
-                break;
-        }
-    }
+    const [rotation, setRotation] = useState(-(flipIndex * theta));
+
+    useEffect(() => {
+        setRotation((oldRotation) => oldRotation + theta);
+    }, [flipIndex, theta]);
 
     return (
-        <div className="pointer-events-auto flex items-center justify-center overflow-visible sm:h-[85%] sm:w-[90%]">
-            <button className="pointer-events-auto z-10 cursor-pointer rounded-md bg-red-500 p-2" onClick={() => handleClick('previous')}>
-                previous
-            </button>
-
+        <div
+            className="relative mx-auto aspect-hex-flat [perspective:5000px]"
+            style={
+                {
+                    width: cellSize + 'px',
+                } as CSSProperties
+            }
+        >
             <div
-                className="relative mx-auto aspect-hex-flat [perspective:5000px]"
+                className="backface-hidden absolute size-full transition-transform duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d]"
                 style={
                     {
-                        width: cellSize + 'px',
+                        '--carousel-rotation': `${rotation}deg`,
+                        '--carousel-radius': radius + 'px',
+                        '--carousel-card-percentage': 1 / Math.ceil(posts.length / 2),
+                        'transform': 'translateZ(calc(var(--carousel-radius) * -1)) rotateY(var(--carousel-rotation))',
                     } as CSSProperties
                 }
             >
-                <div
-                    className="backface-hidden absolute size-full transition-transform duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d]"
-                    style={
-                        {
-                            '--carousel-rotation': -(flipIndex * theta) + 'deg',
-                            '--carousel-radius': radius + 'px',
-                            'transform': 'translateZ(calc(var(--carousel-radius) * -1)) rotateY(var(--carousel-rotation))',
-                        } as CSSProperties
-                    }
-                >
-                    {/* <Flipper className="contents" flipKey={flipIndexState[0]} spring={{ stiffness: 700, damping: 100 }}> */}
-                    {posts.map((post, idx, arr) => (
-                        <CatCard key={post.id} post={post} cardIndex={idx} cardCount={arr.length} theta={theta} flipIndexState={flipIndexState} />
-                    ))}
-                    {/* </Flipper> */}
-                </div>
+                {/* <Flipper className="contents" flipKey={flipIndexState[0]} spring={{ stiffness: 700, damping: 100 }}> */}
+                {posts.map((post, idx, arr) => (
+                    <CatCard key={post.id} post={post} cardIndex={idx} cardCount={arr.length} theta={theta} flipIndexState={flipIndexState} />
+                ))}
+                {/* </Flipper> */}
             </div>
-
-            <button className="pointer-events-auto z-10 cursor-pointer rounded-md bg-red-500 p-2" onClick={() => handleClick('next')}>
-                next
-            </button>
         </div>
     );
 };
+
+function remapIndex(i: number, count: number) {
+    const half = Math.ceil(count / 2);
+    if (i < half) {
+        return i;
+    } else {
+        return -(count - i);
+    }
+}
 
 /** Match the flipIndex to the correct style preset */
 function getCarouselIndex(flipIndex: number, cardIndex: number, cardCount: number) {
@@ -178,16 +170,7 @@ function getCarouselIndex(flipIndex: number, cardIndex: number, cardCount: numbe
         carouselIndex = cardIndex - flipIndex;
     }
 
-    return remapRange(carouselIndex, 0, cardCount - 1, 0, Math.floor(cardCount / 2));
-
-    // if (flipIndex > cardIndex) {
-    //     return cardCount + (cardIndex - flipIndex);
-    // } else if (flipIndex < cardIndex) {
-    //     return cardIndex - flipIndex;
-    // } else {
-    //     // flipIndex === cardIndex
-    //     return 0;
-    // }
+    return remapIndex(carouselIndex, cardCount);
 }
 
 const CatCard: FC<{
@@ -198,45 +181,48 @@ const CatCard: FC<{
     flipIndexState: [number, React.Dispatch<React.SetStateAction<number>>];
 }> = ({ post, cardIndex, cardCount, theta, flipIndexState }) => {
     const { id, title, subTitle, cardImage } = post;
+    const navigate = useNavigate();
     const [flipIndex, setFlipIndex] = flipIndexState;
     const cardAngle = theta * cardIndex;
-    const opacityPercentage = 1 / cardCount;
 
     const carouselIndex = getCarouselIndex(flipIndex, cardIndex, cardCount);
 
-    return (
-        <div
-            className="glassmorphic absolute flex size-full flex-col items-center justify-start rounded-md bg-gray-400 transition-transform delay-150 duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d]"
-            style={{
-                'zIndex': cardCount - cardIndex,
-                '--tw-bg-opacity': `${cardIndex * opacityPercentage}`,
-                'transform': `rotateY(${cardAngle}deg) translateZ(var(--carousel-radius)) rotateY(calc(${-cardAngle}deg - var(--carousel-rotation)))`,
-            }}
-        >
-            <span className="block">{title}</span>
-            <span className="mt-12 block">cardIndex: {cardIndex}</span>
-            <span className="block">carouselIndex: {carouselIndex}</span>
-
-            <span className="mt-[10%] block">flipIndex: {flipIndex}</span>
-            <span className="block">cardCount: {cardCount}</span>
-        </div>
-    );
-};
-
-const LookDevCard: FC<{ post?: Post; index: number; width?: number; height?: number }> = ({ post, index, width = 1, height = 1 }) => {
-    const { id, title, cardImage, subTitle } = post ?? {};
+    function handleClick() {
+        if (carouselIndex === 0) {
+            navigate(post.id.toString());
+        } else {
+            setFlipIndex(cardIndex);
+        }
+    }
 
     return (
-        <div
-            className="glassmorphic absolute aspect-video w-full transform rounded-xl"
+        <button
+            className={classNames(
+                'glassmorphic pointer-events-auto absolute flex size-full items-center justify-center overflow-hidden rounded-md transition-[transform,--carousel-card-opacity] delay-[150ms,0ms] duration-[--ui-animation-menu-transition-duration] [background-color:rgb(var(--theme-primary)/var(--carousel-card-opacity))] [transform-style:preserve-3d]',
+                carouselIndex === 0 ? 'cursor-pointer' : 'cursor-zoom-in',
+            )}
             style={
                 {
-                    '--tw-scale-x': width,
-                    '--tw-scale-y': height,
-                    '--tw-translate-x': index > 1 ? '10%' : index < 1 ? '-10%' : '0',
+                    'zIndex': cardCount - Math.abs(carouselIndex),
+                    '--carousel-card-opacity': `calc(${Math.abs(carouselIndex)} * var(--carousel-card-percentage))`,
+                    'transform': `rotateY(${cardAngle}deg) translateZ(var(--carousel-radius)) rotateY(calc(${-cardAngle}deg - var(--carousel-rotation)))`,
                 } as CSSProperties
             }
-        ></div>
+            onClick={handleClick}
+        >
+            <div className="absolute mx-auto text-theme-text-background">
+                <span className="block">{title}</span>
+                <span className="block">{subTitle}</span>
+
+                <span className="mt-12 block">cardIndex: {cardIndex}</span>
+                <span className="block">carouselIndex: {carouselIndex}</span>
+
+                <span className="mt-[10%] block">flipIndex: {flipIndex}</span>
+                <span className="block">cardCount: {cardCount}</span>
+            </div>
+
+            <img src={cardImage} alt={title} className="size-11/12 object-cover" />
+        </button>
     );
 };
 
