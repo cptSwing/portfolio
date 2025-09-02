@@ -1,6 +1,6 @@
 import { Category as Category_T } from '../../types/types';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
-import { classNames, remapRange } from 'cpts-javascript-utilities';
+import { classNames, generateRange, remapRange } from 'cpts-javascript-utilities';
 import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
 import { useZustand } from '../../lib/zustand.ts';
@@ -90,42 +90,38 @@ export default Category;
 const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<React.SetStateAction<number>>]; direction: 'down' | 'up' | null }> = ({
     posts,
     flipIndexState,
-    direction,
 }) => {
-    const [flipIndex, setFlipIndex] = flipIndexState;
+    const [flipIndex] = flipIndexState;
     const prevFlipIndex = usePreviousPersistent(flipIndex);
 
     const cellCount = posts.length;
-    const theta = 360 / cellCount;
-    const cellSize = 450;
+    const cellSize = 400;
     const radius = Math.round(cellSize / 2 / Math.tan(Math.PI / cellCount));
 
     const [rotation, setRotation] = useState(0);
+    const [distance, setDistance] = useState(0);
 
     useEffect(() => {
-        if (typeof prevFlipIndex === 'number' && prevFlipIndex !== flipIndex) {
-            let dir;
-
-            if ((flipIndex === 0 && prevFlipIndex === cellCount - 1) || flipIndex > prevFlipIndex) dir = 'down';
-            else if ((flipIndex === cellCount - 1 && prevFlipIndex === 0) || flipIndex < prevFlipIndex) dir = 'up';
-
+        if (prevFlipIndex !== null && prevFlipIndex !== flipIndex) {
             setRotation((oldRotation) => {
-                let newRotation = oldRotation;
-                if (dir === 'up') {
-                    newRotation = oldRotation + theta;
-                } else {
-                    newRotation = oldRotation - theta;
-                }
-                console.log('%c[Category]', 'color: #7c4f8a', `dir, flipIndex, prevFlipIndex, newRotation :`, dir, flipIndex, prevFlipIndex, newRotation);
+                const directionDistance = getDirection(prevFlipIndex, flipIndex, cellCount);
 
-                return newRotation;
+                if (directionDistance) {
+                    const [direction, distance] = directionDistance;
+                    setDistance(distance);
+                    const theta = 360 / cellCount;
+
+                    return oldRotation + (direction === 'down' ? -distance : distance) * theta;
+                } else {
+                    return oldRotation;
+                }
             });
         }
-    }, [prevFlipIndex, cellCount, flipIndex, theta, direction]);
+    }, [flipIndex, prevFlipIndex, cellCount]);
 
     return (
         <div
-            className="relative mx-auto aspect-hex-flat [perspective:1500px]"
+            className="relative mx-auto aspect-hex-flat [perspective:500px]"
             style={
                 {
                     width: cellSize + 'px',
@@ -133,60 +129,35 @@ const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<Reac
             }
         >
             <div
-                className="backface-hidden absolute size-full transition-transform duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d]"
+                className="absolute size-full transition-transform [transform-style:preserve-3d]"
                 style={
                     {
                         '--carousel-rotation': `${rotation}deg`,
                         '--carousel-radius': radius + 'px',
                         '--carousel-card-percentage': 1 / Math.ceil(posts.length / 2),
+                        'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) + ${distance} * 50ms)`,
                         'transform': 'translateZ(calc(var(--carousel-radius) * -1)) rotateY(var(--carousel-rotation)) ',
                     } as CSSProperties
                 }
             >
-                {/* <Flipper className="contents" flipKey={flipIndexState[0]} spring={{ stiffness: 700, damping: 100 }}> */}
                 {posts.map((post, idx, arr) => (
-                    <CatCard key={post.id} post={post} cardIndex={idx} cardCount={arr.length} theta={theta} flipIndexState={flipIndexState} />
+                    <CatCard key={post.id} post={post} cardIndex={idx} cardCount={arr.length} flipIndexState={flipIndexState} />
                 ))}
-                {/* </Flipper> */}
             </div>
         </div>
     );
 };
 
-function remapIndex(i: number, count: number) {
-    const half = Math.ceil(count / 2);
-    if (i < half) {
-        return i;
-    } else {
-        return -(count - i);
-    }
-}
-
-/** Match the flipIndex to the correct style preset */
-function getCarouselIndex(flipIndex: number, cardIndex: number, cardCount: number) {
-    // ie flipIndex === cardIndex
-    let carouselIndex = 0;
-
-    if (flipIndex > cardIndex) {
-        carouselIndex = cardCount + (cardIndex - flipIndex);
-    } else if (flipIndex < cardIndex) {
-        carouselIndex = cardIndex - flipIndex;
-    }
-
-    return remapIndex(carouselIndex, cardCount);
-}
-
 const CatCard: FC<{
     post: Post;
     cardIndex: number;
     cardCount: number;
-    theta: number;
     flipIndexState: [number, React.Dispatch<React.SetStateAction<number>>];
-}> = ({ post, cardIndex, cardCount, theta, flipIndexState }) => {
+}> = ({ post, cardIndex, cardCount, flipIndexState }) => {
     const { id, title, subTitle, cardImage } = post;
     const navigate = useNavigate();
     const [flipIndex, setFlipIndex] = flipIndexState;
-    const cardAngle = theta * cardIndex;
+    const cardAngle = (360 / cardCount) * cardIndex;
 
     const carouselIndex = getCarouselIndex(flipIndex, cardIndex, cardCount);
 
@@ -201,14 +172,14 @@ const CatCard: FC<{
     return (
         <button
             className={classNames(
-                'glassmorphic pointer-events-auto absolute flex size-full items-center justify-center overflow-hidden rounded-md p-4 transition-[transform,--carousel-card-opacity] delay-[150ms,0ms] duration-[--ui-animation-menu-transition-duration] [background-color:rgb(var(--theme-primary)/var(--carousel-card-opacity))] [transform-style:preserve-3d]',
+                'glassmorphic pointer-events-auto absolute flex size-full items-center justify-center rounded-md p-4 transition-[transform,--carousel-card-opacity] delay-[150ms,0ms] duration-[--ui-animation-menu-transition-duration] [background-color:rgb(var(--theme-primary)/var(--carousel-card-opacity))] [transform-style:preserve-3d]',
                 carouselIndex === 0 ? 'cursor-pointer' : 'cursor-zoom-in',
             )}
             style={
                 {
                     'zIndex': cardCount - Math.abs(carouselIndex),
                     '--carousel-card-opacity': `calc(${Math.abs(carouselIndex)} * var(--carousel-card-percentage))`,
-                    'transform': `rotateY(${cardAngle}deg) translateZ(var(--carousel-radius)) rotateY(calc(${-cardAngle}deg - var(--carousel-rotation)))`,
+                    'transform': `rotateY(${cardAngle}deg) translateZ(var(--carousel-radius)) rotateY(calc(${-cardAngle}deg - var(--carousel-rotation))) translateY(calc(${carouselIndex * 100}% * var(--carousel-card-percentage))) scaleX(calc(1 - var(--carousel-card-opacity))) scaleY(calc(1 - var(--carousel-card-opacity)))`,
                 } as CSSProperties
             }
             onClick={handleClick}
@@ -301,6 +272,43 @@ const loopFlipValues = (value: number, max: number, direction: 'down' | 'up') =>
         return previousValue < 0 ? max - 1 : previousValue;
     }
 };
+
+function remapIndex(i: number, count: number) {
+    const half = Math.ceil(count / 2);
+    if (i < half) {
+        return i;
+    } else {
+        return -(count - i);
+    }
+}
+
+/** Match the flipIndex to the correct style preset */
+function getCarouselIndex(flipIndex: number, cardIndex: number, cardCount: number) {
+    // ie flipIndex === cardIndex
+    let carouselIndex = 0;
+
+    if (flipIndex > cardIndex) {
+        carouselIndex = cardCount + (cardIndex - flipIndex);
+    } else if (flipIndex < cardIndex) {
+        carouselIndex = cardIndex - flipIndex;
+    }
+
+    return remapIndex(carouselIndex, cardCount);
+}
+
+function _getFlipIndexFromRotation(rotation: number, cellCount: number) {
+    const theta = 360 / cellCount;
+    return Math.abs(rotation / theta) % cellCount;
+}
+
+function getDirection(previousIndex: number, nextIndex: number, length: number): ['up' | 'down', number] {
+    const forwardDistance = (nextIndex - previousIndex + length) % length;
+    const backwardDistance = (previousIndex - nextIndex + length) % length;
+
+    const direction = forwardDistance <= length / 2 ? 'down' : 'up';
+    const distance = direction === 'down' ? forwardDistance : backwardDistance;
+    return [direction, distance];
+}
 
 /* Local values */
 
