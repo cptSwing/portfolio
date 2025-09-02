@@ -1,19 +1,16 @@
 import { Category as Category_T } from '../../types/types';
-import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
-import { classNames, generateRange, remapRange } from 'cpts-javascript-utilities';
+import { CSSProperties, FC, useEffect, useRef, useState } from 'react';
+import { classNames } from 'cpts-javascript-utilities';
 import { Flipper } from 'react-flip-toolkit';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
-import { Post } from '../../types/types.ts';
 
-import CategoryCard from '../CategoryCard.tsx';
 import useMountTransition from '../../hooks/useMountTransition.ts';
 import { config } from '../../types/exportTyped.ts';
 import FitText from '../utilityComponents/FitText.tsx';
 import FlippedBrand from '../Brand.tsx';
-import { useNavigate } from 'react-router-dom';
-import { usePreviousPersistent } from '../../hooks/usePrevious.ts';
+import Carousel from '../Carousel.tsx';
 
 const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
 
@@ -86,118 +83,6 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
 };
 
 export default Category;
-
-const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<React.SetStateAction<number>>]; direction: 'down' | 'up' | null }> = ({
-    posts,
-    flipIndexState,
-}) => {
-    const [flipIndex] = flipIndexState;
-    const prevFlipIndex = usePreviousPersistent(flipIndex);
-
-    const cellCount = posts.length;
-    const cellSize = 400;
-    const radius = Math.round(cellSize / 2 / Math.tan(Math.PI / cellCount));
-
-    const [rotation, setRotation] = useState(0);
-    const [distance, setDistance] = useState(0);
-
-    useEffect(() => {
-        if (prevFlipIndex !== null && prevFlipIndex !== flipIndex) {
-            setRotation((oldRotation) => {
-                const directionDistance = getDirection(prevFlipIndex, flipIndex, cellCount);
-
-                if (directionDistance) {
-                    const [direction, distance] = directionDistance;
-                    setDistance(distance);
-                    const theta = 360 / cellCount;
-
-                    return oldRotation + (direction === 'down' ? -distance : distance) * theta;
-                } else {
-                    return oldRotation;
-                }
-            });
-        }
-    }, [flipIndex, prevFlipIndex, cellCount]);
-
-    return (
-        <div
-            className="relative mx-auto aspect-hex-flat [perspective:500px]"
-            style={
-                {
-                    width: cellSize + 'px',
-                } as CSSProperties
-            }
-        >
-            <div
-                className="absolute size-full transition-transform [transform-style:preserve-3d]"
-                style={
-                    {
-                        '--carousel-rotation': `${rotation}deg`,
-                        '--carousel-radius': radius + 'px',
-                        '--carousel-card-percentage': 1 / Math.ceil(posts.length / 2),
-                        'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) + ${distance} * 50ms)`,
-                        'transform': 'translateZ(calc(var(--carousel-radius) * -1)) rotateY(var(--carousel-rotation)) ',
-                    } as CSSProperties
-                }
-            >
-                {posts.map((post, idx, arr) => (
-                    <CatCard key={post.id} post={post} cardIndex={idx} cardCount={arr.length} flipIndexState={flipIndexState} />
-                ))}
-            </div>
-        </div>
-    );
-};
-
-const CatCard: FC<{
-    post: Post;
-    cardIndex: number;
-    cardCount: number;
-    flipIndexState: [number, React.Dispatch<React.SetStateAction<number>>];
-}> = ({ post, cardIndex, cardCount, flipIndexState }) => {
-    const { id, title, subTitle, cardImage } = post;
-    const navigate = useNavigate();
-    const [flipIndex, setFlipIndex] = flipIndexState;
-    const cardAngle = (360 / cardCount) * cardIndex;
-
-    const carouselIndex = getCarouselIndex(flipIndex, cardIndex, cardCount);
-
-    function handleClick() {
-        if (carouselIndex === 0) {
-            navigate(post.id.toString());
-        } else {
-            setFlipIndex(cardIndex);
-        }
-    }
-
-    return (
-        <button
-            className={classNames(
-                'glassmorphic pointer-events-auto absolute flex size-full items-center justify-center rounded-md p-4 transition-[transform,--carousel-card-opacity] delay-[150ms,0ms] duration-[--ui-animation-menu-transition-duration] [background-color:rgb(var(--theme-primary)/var(--carousel-card-opacity))] [transform-style:preserve-3d]',
-                carouselIndex === 0 ? 'cursor-pointer' : 'cursor-zoom-in',
-            )}
-            style={
-                {
-                    'zIndex': cardCount - Math.abs(carouselIndex),
-                    '--carousel-card-opacity': `calc(${Math.abs(carouselIndex)} * var(--carousel-card-percentage))`,
-                    'transform': `rotateY(${cardAngle}deg) translateZ(var(--carousel-radius)) rotateY(calc(${-cardAngle}deg - var(--carousel-rotation))) translateY(calc(${carouselIndex * 100}% * var(--carousel-card-percentage))) scaleX(calc(1 - var(--carousel-card-opacity))) scaleY(calc(1 - var(--carousel-card-opacity)))`,
-                } as CSSProperties
-            }
-            onClick={handleClick}
-        >
-            <div className="mx-auto h-3/4 w-1/4 bg-gray-700 text-sm text-theme-text-background">
-                <span className="block">{title}</span>
-                <span className="block">{subTitle}</span>
-
-                <span className="mt-12 block">cardIndex: {cardIndex}</span>
-                <span className="block">carouselIndex: {carouselIndex}</span>
-
-                <span className="mt-[10%] block">flipIndex: {flipIndex}</span>
-                <span className="block">cardCount: {cardCount}</span>
-            </div>
-            <img src={cardImage} alt={title} className="size-3/4 object-cover" />
-        </button>
-    );
-};
 
 const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
@@ -272,43 +157,6 @@ const loopFlipValues = (value: number, max: number, direction: 'down' | 'up') =>
         return previousValue < 0 ? max - 1 : previousValue;
     }
 };
-
-function remapIndex(i: number, count: number) {
-    const half = Math.ceil(count / 2);
-    if (i < half) {
-        return i;
-    } else {
-        return -(count - i);
-    }
-}
-
-/** Match the flipIndex to the correct style preset */
-function getCarouselIndex(flipIndex: number, cardIndex: number, cardCount: number) {
-    // ie flipIndex === cardIndex
-    let carouselIndex = 0;
-
-    if (flipIndex > cardIndex) {
-        carouselIndex = cardCount + (cardIndex - flipIndex);
-    } else if (flipIndex < cardIndex) {
-        carouselIndex = cardIndex - flipIndex;
-    }
-
-    return remapIndex(carouselIndex, cardCount);
-}
-
-function _getFlipIndexFromRotation(rotation: number, cellCount: number) {
-    const theta = 360 / cellCount;
-    return Math.abs(rotation / theta) % cellCount;
-}
-
-function getDirection(previousIndex: number, nextIndex: number, length: number): ['up' | 'down', number] {
-    const forwardDistance = (nextIndex - previousIndex + length) % length;
-    const backwardDistance = (previousIndex - nextIndex + length) % length;
-
-    const direction = forwardDistance <= length / 2 ? 'down' : 'up';
-    const distance = direction === 'down' ? forwardDistance : backwardDistance;
-    return [direction, distance];
-}
 
 /* Local values */
 

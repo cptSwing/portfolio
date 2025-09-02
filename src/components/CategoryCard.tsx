@@ -104,8 +104,6 @@ const CategoryCard: FC<{
     );
 };
 
-export default CategoryCard;
-
 const {
     ui: {
         animation: { menuTransition_Ms },
@@ -151,7 +149,88 @@ const ChildImageAndSvg: FC<{ cardImage?: string; pathName: string; clipPathName:
     },
 );
 
+const CatCard: FC<{
+    post: Post;
+    cardIndex: number;
+    cardCount: number;
+    flipIndexState: [number, React.Dispatch<React.SetStateAction<number>>];
+}> = ({ post, cardIndex, cardCount, flipIndexState }) => {
+    const { id, title, subTitle, cardImage } = post;
+    const navigate = useNavigate();
+    const [flipIndex, setFlipIndex] = flipIndexState;
+    const cardAngle = (360 / cardCount) * cardIndex;
+
+    const carouselIndex = getCarouselIndex(flipIndex, cardIndex, cardCount);
+
+    function handleClick() {
+        if (carouselIndex === 0) {
+            navigate(post.id.toString());
+        } else {
+            setFlipIndex(cardIndex);
+        }
+    }
+
+    return (
+        <button
+            className={classNames(
+                'glassmorphic pointer-events-auto absolute flex size-full items-center justify-center rounded-md p-4 transition-[transform,--carousel-card-opacity] delay-[150ms,0ms] duration-[--ui-animation-menu-transition-duration] [background-color:rgb(var(--theme-primary)/var(--carousel-card-opacity))]',
+                carouselIndex === 0 ? 'cursor-pointer' : 'cursor-zoom-in',
+            )}
+            style={
+                {
+                    'zIndex': cardCount - Math.abs(carouselIndex),
+                    '--carousel-card-opacity': `calc(${Math.abs(carouselIndex)} * var(--carousel-card-percentage))`,
+                    'transform':
+                        `rotateY(${cardAngle}deg) translateZ(var(--carousel-radius)) rotateY(calc(${-cardAngle}deg - var(--carousel-rotation)))` +
+                        ' ' +
+                        `scale3d(${carouselIndex === 0 ? 1 : 0.66}, ${carouselIndex === 0 ? 1 : 0.66}, ${carouselIndex === 0 ? 1 : 0.66})` +
+                        ' ' +
+                        `translate3d(calc(${-carouselIndex * 12.5}% * var(--carousel-card-percentage)), calc(${-carouselIndex * 30}% * (-1 * var(--carousel-card-percentage))), 0)`,
+                } as CSSProperties
+            }
+            onClick={handleClick}
+        >
+            <div className="mx-auto h-3/4 w-1/4 bg-gray-700 text-sm text-theme-text-background">
+                <span className="block">{title}</span>
+                <span className="block">{subTitle}</span>
+
+                <span className="mt-12 block">cardIndex: {cardIndex}</span>
+                <span className="block">carouselIndex: {carouselIndex}</span>
+
+                <span className="mt-[10%] block">flipIndex: {flipIndex}</span>
+                <span className="block">cardCount: {cardCount}</span>
+            </div>
+            <img src={cardImage} alt={title} className="size-3/4 object-cover" />
+        </button>
+    );
+};
+
+export default CatCard;
+
 /* Local Functions */
+
+/** Match the flipIndex to the correct style preset */
+function getCarouselIndex(flipIndex: number, cardIndex: number, cardCount: number) {
+    // ie flipIndex === cardIndex
+    let carouselIndex = 0;
+
+    if (flipIndex > cardIndex) {
+        carouselIndex = cardCount + (cardIndex - flipIndex);
+    } else if (flipIndex < cardIndex) {
+        carouselIndex = cardIndex - flipIndex;
+    }
+
+    return remapIndex(carouselIndex, cardCount);
+}
+
+function remapIndex(i: number, count: number) {
+    const half = Math.ceil(count / 2);
+    if (i < half) {
+        return i;
+    } else {
+        return -(count - i);
+    }
+}
 
 /** Match the flipIndex to the correct style preset */
 function getGridAreaIndex(flipIndex: number, cardIndex: number, cardCount: number) {
