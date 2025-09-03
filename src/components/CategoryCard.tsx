@@ -161,6 +161,7 @@ const CatCard: FC<{
     const cardAngle = (360 / cardCount) * cardIndex;
 
     const carouselIndex = getCarouselIndex(flipIndex, cardIndex, cardCount);
+    const absoluteCarouselIndex = Math.abs(carouselIndex);
 
     function handleClick() {
         if (carouselIndex === 0) {
@@ -173,24 +174,21 @@ const CatCard: FC<{
     return (
         <button
             className={classNames(
-                'glassmorphic pointer-events-auto absolute flex size-full items-center justify-center rounded-md p-4 transition-[transform,--carousel-card-opacity] delay-[150ms,0ms] duration-[--ui-animation-menu-transition-duration] [background-color:rgb(var(--theme-primary)/var(--carousel-card-opacity))]',
-                carouselIndex === 0 ? 'cursor-pointer' : 'cursor-zoom-in',
+                'pointer-events-auto absolute flex size-full items-center justify-center overflow-clip bg-theme-primary/5 p-4 opacity-[--carousel-card-opacity] transition-[transform,--carousel-card-opacity,backdrop-filter,border-radius] delay-[150ms,0ms,0ms,0ms] duration-[--ui-animation-menu-transition-duration] hover-active:!opacity-100',
+                carouselIndex === 0
+                    ? 'glassmorphic cursor-pointer rounded-lg'
+                    : 'glassmorphic-off !glassmorphic-lighting-gradient cursor-zoom-in rounded-[9rem]',
             )}
             style={
                 {
-                    'zIndex': cardCount - Math.abs(carouselIndex),
-                    '--carousel-card-opacity': `calc(${Math.abs(carouselIndex)} * var(--carousel-card-percentage))`,
-                    'transform':
-                        `rotateY(${cardAngle}deg) translateZ(var(--carousel-radius)) rotateY(calc(${-cardAngle}deg - var(--carousel-rotation)))` +
-                        ' ' +
-                        `scale3d(${carouselIndex === 0 ? 1 : 0.66}, ${carouselIndex === 0 ? 1 : 0.66}, ${carouselIndex === 0 ? 1 : 0.66})` +
-                        ' ' +
-                        `translate3d(calc(${-carouselIndex * 12.5}% * var(--carousel-card-percentage)), calc(${-carouselIndex * 30}% * (-1 * var(--carousel-card-percentage))), 0)`,
+                    'zIndex': cardCount - absoluteCarouselIndex,
+                    '--carousel-card-opacity': `max(0.2, calc(1 - (${absoluteCarouselIndex} * var(--carousel-card-percentage)))`,
+                    'transform': `rotateY(${cardAngle}deg) translateZ(var(--carousel-radius)) rotateY(calc(${-cardAngle}deg - var(--carousel-rotation))) scale3d(var(--carousel-card-opacity), var(--carousel-card-opacity), var(--carousel-card-opacity))`,
                 } as CSSProperties
             }
             onClick={handleClick}
         >
-            <div className="mx-auto h-3/4 w-1/4 bg-gray-700 text-sm text-theme-text-background">
+            <div className="mx-auto h-full w-1/4 bg-gray-700/50 text-sm text-theme-text-background">
                 <span className="block">{title}</span>
                 <span className="block">{subTitle}</span>
 
@@ -200,7 +198,7 @@ const CatCard: FC<{
                 <span className="mt-[10%] block">flipIndex: {flipIndex}</span>
                 <span className="block">cardCount: {cardCount}</span>
             </div>
-            <img src={cardImage} alt={title} className="size-3/4 object-cover" />
+            <img src={cardImage} alt={title} className="h-full w-3/4 object-cover" />
         </button>
     );
 };

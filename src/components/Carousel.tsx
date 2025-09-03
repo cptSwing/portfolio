@@ -11,7 +11,7 @@ const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<Reac
     const prevFlipIndex = usePreviousPersistent(flipIndex);
 
     const cellCount = posts.length;
-    const cellSize = 400;
+    const cellSize = 200;
     const radius = Math.round(cellSize / 2 / Math.tan(Math.PI / cellCount));
 
     const [rotation, setRotation] = useState(0);
@@ -37,22 +37,26 @@ const Carousel: FC<{ posts: Post[]; flipIndexState: [number, React.Dispatch<Reac
 
     return (
         <div
-            className="relative mx-auto aspect-hex-flat [perspective:2000px]"
+            className="relative size-full [perspective-origin:center_180%] [perspective:2000px]"
             style={
                 {
-                    width: cellSize * 1.5 + 'px',
+                    // width: cellSize * 1 + 'px',
                 } as CSSProperties
             }
         >
             <div
-                className="absolute size-full transition-transform [transform-style:preserve-3d]"
+                className="absolute h-4/5 w-full transition-transform [transform-style:preserve-3d]"
                 style={
                     {
-                        '--carousel-rotation': `${rotation}deg`,
-                        '--carousel-radius': radius + 'px',
+                        // '--carousel-radius': radius + 'px',
+                        '--carousel-radius': 35 + 'vw',
+                        'transform': 'translateZ(calc(var(--carousel-radius) * -1)) translateY(12.5%) rotateY(var(--carousel-rotation)) ',
+                        // '--carousel-radius': 100 + '%',
+                        // 'transform': 'translateY(calc(var(--carousel-radius) * -0.75)) rotateZ(var(--carousel-rotation)) ',
+
                         '--carousel-card-percentage': 1 / Math.ceil(posts.length / 2),
+                        '--carousel-rotation': `${rotation}deg`,
                         'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) + ${distance} * 50ms)`,
-                        'transform': 'translateZ(calc(var(--carousel-radius) * -1)) rotateY(var(--carousel-rotation)) ',
                     } as CSSProperties
                 }
             >
