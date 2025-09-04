@@ -14,6 +14,8 @@ export type Config = {
             rows: number;
             strokeWidth: number;
             scaleUp: number;
+            clipPathWidth: number;
+            clipPathHeight: number;
         };
         animation: {
             menuTransition_Ms: number;

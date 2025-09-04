@@ -8,11 +8,13 @@ import MenuModal from '../components/MenuModal';
 import Post from '../components/routes/Post';
 import BundleRoutes from '../components/routes/BundleRoutes';
 import NoRouteMatched from '../components/routes/NoRouteMatched';
-import HexagonNavigation from '../components/HexagonNavigation';
 import useSetRouteData from '../hooks/useSetRouteData';
 import { ROUTE } from '../types/enums';
 import { globalCssVariables } from '../styles/globalCssVariables';
 import { useBreakpoint } from '../hooks/useBreakPoint';
+import GetChildSize from '../components/utilityComponents/GetChildSize';
+import GetChildSizeContext from '../contexts/GetChildSizeContext';
+import HexagonTiles from '../components/HexagonTiles';
 
 const store_setBreakpoint = useZustand.getState().methods.store_setBreakpoint;
 
@@ -52,28 +54,30 @@ const Main = () => {
     // }) as MutableRefObject<HTMLDivElement | null>;
 
     return (
-        <div
-            className={classNames(
-                '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
-                'relative flex items-center justify-center text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
-                routeName === ROUTE.category
-                    ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(90vh,62.5vw)] sm:w-auto 2xl:aspect-[1/0.75]'
-                    : routeName === ROUTE.post
-                      ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]'
-                      : // ROUTE.home
-                        'aspect-hex-flat h-[min(80vh,80vw)] sm:h-[min(70vh,70vw)]',
-            )}
-            style={globalCssVariables}
-        >
-            {/* TODO Used as clip-shape multiple times down the line, could be served in HexagonTiles as well? */}
-            <RoundedHexagonSVG showPath={false} useClipPath idSuffix="-default" />
+        <GetChildSize Context={GetChildSizeContext}>
+            <div
+                className={classNames(
+                    '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
+                    'relative flex items-center justify-center text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
+                    routeName === ROUTE.category
+                        ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,62.5vw)] sm:w-auto 2xl:aspect-[1/0.75]'
+                        : routeName === ROUTE.post
+                          ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]'
+                          : // ROUTE.home
+                            'aspect-hex-flat h-[min(80vh,80vw)] sm:h-[min(70vh,70vw)]',
+                )}
+                style={globalCssVariables}
+            >
+                {/* TODO Used as clip-shape multiple times down the line, could be served in HexagonTiles as well? */}
+                <RoundedHexagonSVG showPath={false} useClipPath idSuffix="-default" />
+                <HexagonTiles />
 
-            <Category show={routeName === ROUTE.category} />
-            <Post show={routeName === ROUTE.post} />
+                <Category show={routeName === ROUTE.category} />
+                <Post show={routeName === ROUTE.post} />
 
-            <HexagonNavigation />
-            <MenuModal />
-        </div>
+                <MenuModal />
+            </div>
+        </GetChildSize>
     );
 };
 

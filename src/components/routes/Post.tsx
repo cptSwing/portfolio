@@ -8,7 +8,7 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/counter.css';
 import { classNames, parseDateString } from 'cpts-javascript-utilities';
 import { Post as Post_T, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
-import { getHexagonalClipPath } from '../../lib/hexagonData';
+import { getHexagonalClipPath } from '../../lib/hexagonDataNew';
 import PostDetails from '../PostDetails';
 import GetChildSize from '../utilityComponents/GetChildSize';
 import GetChildSizeContext from '../../contexts/GetChildSizeContext';

@@ -10,7 +10,7 @@ import useMountTransition from '../../hooks/useMountTransition.ts';
 import { config } from '../../types/exportTyped.ts';
 import FitText from '../utilityComponents/FitText.tsx';
 import FlippedBrand from '../Brand.tsx';
-import Carousel from '../Carousel.tsx';
+import CategoryCards from '../CategoryCards.tsx';
 
 const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
 
@@ -40,42 +40,48 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
             {isMounted ? (
                 <div
                     ref={categoryRef}
-                    className={classNames(
-                        'absolute flex h-full w-[86.66%] flex-row flex-wrap items-center justify-center py-[8%] pl-[2.5%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] sm:size-full sm:flex-col sm:p-0', //
-                        show ? 'delay-[calc(var(--ui-animation-menu-transition-duration)/2)]' : 'delay-0',
-                    )}
+                    className="pointer-events-none absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%]"
                 >
-                    {/* Info */}
-                    <BannerTitle title={title} classes="h-[3%] ml-[17%] self-start sm:h-[7.5%] flex-shrink-0 flex-grow sm:basis-auto basis-full" />
-
-                    <nav className="pointer-events-none flex items-center justify-center sm:h-[85%] sm:w-[90%]">
-                        <Carousel posts={category.posts} flipIndexState={flipIndexState} direction={wheelDirection} />
-
-                        <FlippedBrand />
-                    </nav>
-
-                    {/* Progress Bar */}
-                    <div className="flex h-[97%] w-full flex-shrink-0 flex-grow basis-[7.5%] flex-col items-center justify-between gap-y-[2%] sm:h-[7.5%] sm:w-[80%] sm:basis-auto sm:flex-row sm:gap-x-[2%] sm:gap-y-0">
-                        {category.posts.map((post, idx) => {
-                            return (
-                                <button key={`${post.id}_${idx}`} className="group size-full" onClick={() => setFlipIndex(idx)}>
-                                    <div
-                                        className={classNames(
-                                            'mx-auto h-full w-1/4 border-l border-t-[3px] border-theme-root-background transition-[background-color] duration-300 sm:h-1/3 sm:w-auto md:h-1/4 lg:h-1/5 xl:h-1/6',
-                                            idx === flipIndex
-                                                ? 'bg-theme-primary-lighter'
-                                                : 'bg-black/15 group-hover-active:bg-theme-primary/50 group-hover-active:duration-75',
-                                        )}
-                                    />
-                                </button>
-                            );
-                        })}
-                    </div>
-
-                    {/* Debug! */}
-                    {<DebugWrapper category={category} flipIndex={flipIndex} setIndex={setFlipIndex} />}
+                    <CategoryCards posts={category.posts} />
                 </div>
             ) : (
+                // <div
+                //     ref={categoryRef}
+                //     className={classNames(
+                //         'absolute flex h-full w-[86.66%] flex-row flex-wrap items-center justify-center py-[8%] pl-[2.5%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] sm:size-full sm:flex-col sm:p-0', //
+                //         show ? 'delay-[calc(var(--ui-animation-menu-transition-duration)/2)]' : 'delay-0',
+                //     )}
+                // >
+                //     {/* Info */}
+                //     <BannerTitle title={title} classes="h-[3%] ml-[17%] self-start sm:h-[7.5%] flex-shrink-0 flex-grow sm:basis-auto basis-full" />
+
+                //     <nav className="pointer-events-none flex items-center justify-center sm:h-[85%] sm:w-[90%]">
+                //         <Carousel posts={category.posts} flipIndexState={flipIndexState} direction={wheelDirection} />
+
+                //         <FlippedBrand />
+                //     </nav>
+
+                //     {/* Progress Bar */}
+                //     <div className="flex h-[97%] w-full flex-shrink-0 flex-grow basis-[7.5%] flex-col items-center justify-between gap-y-[2%] sm:h-[7.5%] sm:w-[80%] sm:basis-auto sm:flex-row sm:gap-x-[2%] sm:gap-y-0">
+                //         {category.posts.map((post, idx) => {
+                //             return (
+                //                 <button key={`${post.id}_${idx}`} className="group size-full" onClick={() => setFlipIndex(idx)}>
+                //                     <div
+                //                         className={classNames(
+                //                             'mx-auto h-full w-1/4 border-l border-t-[3px] border-theme-root-background transition-[background-color] duration-300 sm:h-1/3 sm:w-auto md:h-1/4 lg:h-1/5 xl:h-1/6',
+                //                             idx === flipIndex
+                //                                 ? 'bg-theme-primary-lighter'
+                //                                 : 'bg-black/15 group-hover-active:bg-theme-primary/50 group-hover-active:duration-75',
+                //                         )}
+                //                     />
+                //                 </button>
+                //             );
+                //         })}
+                //     </div>
+
+                //     {/* Debug! */}
+                //     {<DebugWrapper category={category} flipIndex={flipIndex} setIndex={setFlipIndex} />}
+                // </div>
                 <FlippedBrand />
             )}
         </Flipper>

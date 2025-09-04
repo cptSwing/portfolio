@@ -10,31 +10,21 @@ import {
     HexagonRouteData,
     valueof,
 } from '../types/types';
-import { regularHexagons, navigationButtonHexagons, menuButtonHexagons, degToRad, roundedHexagonPath, halfRoundedHexagonPath } from '../lib/hexagonDataMatrix';
+import { regularHexagons, navigationButtonHexagons, menuButtonHexagons, degToRad, calcCSSVariables } from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
-import { config } from '../types/exportTyped';
 import { keyDownA11y } from 'cpts-javascript-utilities';
 import { BreakpointName } from '../hooks/useBreakPoint';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import GlassmorphicClipped from './GlassmorphicClipped';
-import roundToDecimal from '../lib/roundToDecimal';
-
-const {
-    ui: {
-        hexMenu: { strokeWidth },
-    },
-} = config;
-
-const viewBoxWidth = 400;
-const viewBoxHeight = 346.4;
 
 const HexagonTiles = () => {
     const menuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
 
     const routeName = useZustand((store) => store.values.routeData.name);
+    const containerSize = useContext(GetChildSizeContext);
 
     useEffect(() => {
         if (routeName !== ROUTE.home) {
@@ -47,22 +37,12 @@ const HexagonTiles = () => {
         [menuTransitionTarget, menuTransitionTargetReached],
     );
 
-    const hexagonClipPaths_Memo = useMemo(
-        () =>
-            ({
-                '--half-hexagon-clip-path': `path("${halfRoundedHexagonPath}")`,
-                '--hexagon-clip-path': `path("${roundedHexagonPath}")`,
-            }) as CSSProperties,
-        [],
-    );
-
     return (
         <div
             className={classNames(
                 'pointer-events-none absolute size-full transform-gpu overflow-visible transition-transform duration-[--ui-animation-menu-transition-duration]',
                 routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'rotate-90 sm:rotate-0',
             )}
-            style={hexagonClipPaths_Memo}
             onTransitionEnd={({ target, currentTarget }) => {
                 if (target === currentTarget) {
                     // ^^^  condition filters out bubbled child events
@@ -75,20 +55,21 @@ const HexagonTiles = () => {
             }}
         >
             {regularHexagons.map((hexagonData, idx) => (
-                <RegularHexagonDiv shapeData={hexagonData} routeName={routeName} key={`hex-regular-index-${idx}`} />
+                <RegularHexagonDiv key={`hex-regular-index-${idx}`} shapeData={hexagonData} routeName={routeName} containerSize={containerSize} />
             ))}
 
             {navigationButtonHexagons.map((hexagonNavigationButtonData, idx) => (
                 <NavigationButtonHexagonDiv
+                    key={`hex-link-index-${idx}`}
                     shapeData={hexagonNavigationButtonData}
                     routeName={routeName}
+                    containerSize={containerSize}
                     menuTransitionStateUpdates={menuTransitionStateUpdates}
-                    key={`hex-link-index-${idx}`}
                 />
             ))}
 
             {menuButtonHexagons.map((hexagonMenuButtonData, idx) => (
-                <MenuButtonHexagonDiv shapeData={hexagonMenuButtonData} routeName={routeName} key={`hex-link-index-${idx}`} />
+                <MenuButtonHexagonDiv key={`hex-link-index-${idx}`} shapeData={hexagonMenuButtonData} routeName={routeName} containerSize={containerSize} />
             ))}
         </div>
     );
@@ -99,14 +80,17 @@ export default HexagonTiles;
 const RegularHexagonDiv: FC<{
     shapeData: HexagonRouteData;
     routeName: ROUTE;
-}> = memo(({ shapeData, routeName }) => {
+    containerSize: {
+        width: number;
+        height: number;
+    };
+}> = memo(({ shapeData, routeName, containerSize }) => {
     const { position, rotation, scale, isHalf, shouldOffset } = shapeData[routeName];
     const breakpoint = useZustand((state) => state.values.breakpoint);
-    const parentSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(
-        () => calcCSSVariables(position, rotation, scale, parentSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
-        [position, rotation, scale, parentSize, shouldOffset, routeName, breakpoint],
+        () => calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
     );
 
     const random_Memo = useMemo(() => Math.random(), []);
@@ -114,7 +98,7 @@ const RegularHexagonDiv: FC<{
     return (
         <div
             className={classNames(
-                'regular-hexagon-class glassmorphic pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform-gpu bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path]',
+                'regular-hexagon-class glassmorphic pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transform-gpu bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path]',
                 isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
                 routeName === ROUTE.post ? '!glassmorphic-off ![--hexagon-fill-color:theme(colors.theme.text-background)]' : '!to-white/10',
             )}
@@ -132,18 +116,21 @@ const RegularHexagonDiv: FC<{
 const NavigationButtonHexagonDiv: FC<{
     shapeData: HexagonNavigationDefaultButtonRouteData | HexagonNavigationCategoryButtonRouteData;
     routeName: ROUTE;
+    containerSize: {
+        width: number;
+        height: number;
+    };
     menuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
-}> = memo(({ shapeData, routeName, menuTransitionStateUpdates }) => {
+}> = memo(({ shapeData, routeName, containerSize, menuTransitionStateUpdates }) => {
     const { title, name, svgIconPath, target } = shapeData;
     const { position, rotation, scale, shouldOffset } = shapeData[routeName];
     const breakpoint = useZustand((state) => state.values.breakpoint);
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
-    const parentSize = useContext(GetChildSizeContext);
     const navigate = useNavigate();
 
     const cssVariables_Memo = useMemo(
-        () => calcCSSVariables(position, rotation, scale, parentSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
-        [position, rotation, scale, parentSize, shouldOffset, routeName, breakpoint],
+        () => calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
     );
 
     const isVisible = scale > 0;
@@ -185,16 +172,19 @@ const NavigationButtonHexagonDiv: FC<{
 const MenuButtonHexagonDiv: FC<{
     shapeData: HexagonMenuButtonRouteData;
     routeName: ROUTE;
-}> = memo(({ shapeData, routeName }) => {
+    containerSize: {
+        width: number;
+        height: number;
+    };
+}> = memo(({ shapeData, routeName, containerSize }) => {
     const { name, title, svgIconPath, target } = shapeData;
     const { position, rotation, scale, shouldOffset } = shapeData[routeName];
-    const parentSize = useContext(GetChildSizeContext);
 
     const breakpoint = useZustand((state) => state.values.breakpoint);
 
     const cssVariables_Memo = useMemo(
-        () => calcCSSVariables(position, rotation, scale, parentSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
-        [position, rotation, scale, parentSize, shouldOffset, routeName, breakpoint],
+        () => calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
     );
     const isVisible = scale > 0;
 
@@ -228,7 +218,7 @@ const GlassmorphicButtonWrapper: FC<{
             strokeRadius={isFinite(strokeRadius) ? strokeRadius : 0}
             className={classNames(
                 '![--glassmorphic-backdrop-blur:8px]',
-                'group pointer-events-auto absolute aspect-hex-flat w-[100px] origin-center transform-gpu transition-[transform,--hexagon-blur-color,--scale-property,--hexagon-lighting-gradient-counter-rotation] [clip-path:--hexagon-clip-path]',
+                'group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transform-gpu transition-[transform,--hexagon-blur-color,--scale-property,--hexagon-lighting-gradient-counter-rotation] [clip-path:--hexagon-clip-path]',
                 'hover-active:!scale-[calc(var(--scale-property)*1.05)] hover-active:!delay-0 hover-active:!duration-150 hover-active:![--hexagon-blur-color:theme(colors.theme.primary-lighter)]',
                 routeName === ROUTE.post
                     ? '[--hexagon-blur-color:transparent] [--hexagon-fill-color:theme(colors.theme.primary/0.5)] [--hexagon-stroke-color:transparent]'
@@ -287,58 +277,6 @@ function getHomeMenuTransitionClasses(category: CategoryName | null, transitionC
         if (transitionCompleted) classNames += ` ${homeMenuTransitionClasses[category].completed}`;
     }
     return classNames;
-}
-
-const viewBoxAspect = viewBoxWidth / viewBoxHeight;
-
-function getOffset(scale: number) {
-    const baseline = 1;
-    const factor = 50;
-    return factor * (scale - baseline);
-}
-
-function calcCSSVariables(
-    translate: { x: number; y: number },
-    rotation: number,
-    scale: number,
-    parentSize: {
-        width: number;
-        height: number;
-    },
-    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
-) {
-    const { shouldOffset, offset, clampTo: _clampTo } = options ?? {};
-
-    let { width, height } = parentSize;
-
-    // TODO better than the top left stack-spawn, bu
-    if (!width || !height) {
-        width = viewBoxWidth;
-        height = viewBoxHeight;
-    }
-
-    const parentAspect = width / height;
-    const ratio = viewBoxAspect / parentAspect;
-
-    const parentToViewboxWidth = width / viewBoxWidth;
-    const parentToViewboxHeight = height / viewBoxHeight;
-    const insetByStrokeWidth = (1 - strokeWidth) * scale;
-
-    const mappedScaleX = roundToDecimal(insetByStrokeWidth * parentToViewboxWidth * ratio, 3);
-    const mappedScaleY = roundToDecimal(insetByStrokeWidth * parentToViewboxHeight, 3);
-
-    const mappedTranslateX = roundToDecimal(translate.x * parentToViewboxWidth * ratio + getOffset(parentToViewboxWidth * ratio), 0);
-    const mappedTranslateY = roundToDecimal(translate.y * parentToViewboxHeight + getOffset(parentToViewboxHeight) * (viewBoxHeight / viewBoxWidth), 0);
-
-    return {
-        '--tw-translate-x': mappedTranslateX + 'px',
-        '--tw-translate-y': mappedTranslateY + 'px',
-        '--tw-rotate': rotation + 'deg',
-        '--tw-scale-x': mappedScaleX,
-        '--tw-scale-y': mappedScaleY,
-        '--scale-property': mappedScaleX,
-        '--hexagon-lighting-gradient-counter-rotation': `calc(${-rotation}deg - var(--home-menu-rotation, 0deg))`,
-    };
 }
 
 function _toSvgTransform(
