@@ -70,10 +70,10 @@ const Main = () => {
             >
                 {/* TODO Used as clip-shape multiple times down the line, could be served in HexagonTiles as well? */}
                 <RoundedHexagonSVG showPath={false} useClipPath idSuffix="-default" />
-                <HexagonTiles />
 
-                <Category show={routeName === ROUTE.category} />
                 <Post show={routeName === ROUTE.post} />
+                <HexagonTiles />
+                <Category show={routeName === ROUTE.category} />
 
                 <MenuModal />
             </div>

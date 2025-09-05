@@ -11,38 +11,46 @@ import { config } from '../../types/exportTyped.ts';
 import FitText from '../utilityComponents/FitText.tsx';
 import FlippedBrand from '../Brand.tsx';
 import CategoryCards from '../CategoryCards.tsx';
+import { usePreviousPersistent } from '../../hooks/usePrevious.ts';
 
 const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
 
 const Category: FC<{ show: boolean }> = ({ show }) => {
     const category = useZustand((store) => store.values.routeData.content.category) ?? emptyCategory;
+    const previousCategoryId = usePreviousPersistent(category.id);
 
     const categoryRef = useRef<HTMLDivElement | null>(null);
     const isMounted = useMountTransition(categoryRef, show, '!clip-inset-x-[-50%]');
 
-    const flipIndexState = useState(0);
-    const [flipIndex, setFlipIndex] = flipIndexState;
+    const activeIndexState = useState(0);
+    const [_, setActiveIndex] = activeIndexState;
 
     const [wheelDirection, wheelDistance] = useMouseWheelDirection();
-
     useEffect(() => {
         if (wheelDirection !== null) {
-            setFlipIndex((previous) => loopFlipValues(previous, category.posts.length, wheelDirection));
+            setActiveIndex((previous) => loopFlipValues(previous, category.posts.length, wheelDirection));
         }
-    }, [category.posts.length, wheelDirection, setFlipIndex, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
+    }, [category.posts.length, wheelDirection, setActiveIndex, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
 
-    const gridAreaStylesAndPaths_ref = useRef<{ style: CSSProperties; path: string }[]>([]);
+    /* Run after the wheel-direction effect to ensure activeIndex is at 0 when switching categories/unmounting */
+    useEffect(() => {
+        if (category.id !== previousCategoryId) {
+            setActiveIndex(0);
+        }
 
-    const [title, setTitle] = useState('jens Brandenburg');
+        return () => {
+            setActiveIndex(0);
+        };
+    }, [category.id, previousCategoryId, setActiveIndex]);
 
     return (
         <Flipper className="contents" flipKey={isMounted} spring={{ stiffness: 500, damping: 300 }}>
             {isMounted ? (
                 <div
                     ref={categoryRef}
-                    className="pointer-events-none absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%]"
+                    className="pointer-events-none absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] [perspective:100vw]"
                 >
-                    <CategoryCards posts={category.posts} />
+                    <CategoryCards posts={category.posts} activeIndexState={activeIndexState} />
                 </div>
             ) : (
                 // <div
@@ -56,31 +64,13 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                 //     <BannerTitle title={title} classes="h-[3%] ml-[17%] self-start sm:h-[7.5%] flex-shrink-0 flex-grow sm:basis-auto basis-full" />
 
                 //     <nav className="pointer-events-none flex items-center justify-center sm:h-[85%] sm:w-[90%]">
-                //         <Carousel posts={category.posts} flipIndexState={flipIndexState} direction={wheelDirection} />
+                //         <Carousel posts={category.posts} activeIndexState={activeIndexState} direction={wheelDirection} />
 
                 //         <FlippedBrand />
                 //     </nav>
 
-                //     {/* Progress Bar */}
-                //     <div className="flex h-[97%] w-full flex-shrink-0 flex-grow basis-[7.5%] flex-col items-center justify-between gap-y-[2%] sm:h-[7.5%] sm:w-[80%] sm:basis-auto sm:flex-row sm:gap-x-[2%] sm:gap-y-0">
-                //         {category.posts.map((post, idx) => {
-                //             return (
-                //                 <button key={`${post.id}_${idx}`} className="group size-full" onClick={() => setFlipIndex(idx)}>
-                //                     <div
-                //                         className={classNames(
-                //                             'mx-auto h-full w-1/4 border-l border-t-[3px] border-theme-root-background transition-[background-color] duration-300 sm:h-1/3 sm:w-auto md:h-1/4 lg:h-1/5 xl:h-1/6',
-                //                             idx === flipIndex
-                //                                 ? 'bg-theme-primary-lighter'
-                //                                 : 'bg-black/15 group-hover-active:bg-theme-primary/50 group-hover-active:duration-75',
-                //                         )}
-                //                     />
-                //                 </button>
-                //             );
-                //         })}
-                //     </div>
-
                 //     {/* Debug! */}
-                //     {<DebugWrapper category={category} flipIndex={flipIndex} setIndex={setFlipIndex} />}
+                //     {<DebugWrapper category={category} activeIndex={activeIndex} setIndex={setActiveIndex} />}
                 // </div>
                 <FlippedBrand />
             )}
@@ -90,50 +80,12 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
 
 export default Category;
 
-const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
-
-const BannerTitle: FC<{
-    title: string;
-    classes?: string;
-}> = ({ title, classes }) => {
-    const [isSwitching, setIsSwitching] = useState(false);
-
-    useEffect(() => {
-        setIsSwitching(true);
-
-        const timer = setTimeout(() => {
-            setIsSwitching(false);
-        }, transitionDuration_MS / 2);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [title]);
-
-    return (
-        <div
-            className={classNames(
-                'flex transform-gpu items-center justify-center bg-theme-primary-darker/0 transition-[transform,opacity]',
-                isSwitching ? 'translate-y-[250%] opacity-0' : 'translate-y-[22.5%] opacity-100',
-                classes,
-            )}
-            style={
-                {
-                    transitionDuration: isSwitching ? '0ms' : 'calc(var(--ui-animation-menu-transition-duration) / 2)',
-                } as CSSProperties
-            }
-        >
-            <FitText text={title} className="h-full text-nowrap font-fjalla-one leading-none text-theme-primary-darker sm:h-1/2" />
-        </div>
-    );
-};
-
 const DebugWrapper: FC<{
     category: Category_T;
-    flipIndex: number;
+    activeIndex: number;
     setIndex: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ category, flipIndex, setIndex }) => {
-    useDebugButton(`array.length: ${category.posts.length} flipIndex: ${flipIndex}`, (ev) => {
+}> = ({ category, activeIndex, setIndex }) => {
+    useDebugButton(`array.length: ${category.posts.length} activeIndex: ${activeIndex}`, (ev) => {
         switch (ev.button) {
             case 2:
                 setIndex((previous) => loopFlipValues(previous, category.posts.length, 'up'));

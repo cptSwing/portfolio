@@ -98,7 +98,7 @@ const RegularHexagonDiv: FC<{
     return (
         <div
             className={classNames(
-                'regular-hexagon-class glassmorphic pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transform-gpu bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path]',
+                'regular-hexagon-class glassmorphic transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path]',
                 isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
                 routeName === ROUTE.post ? '!glassmorphic-off ![--hexagon-fill-color:theme(colors.theme.text-background)]' : '!to-white/10',
             )}
@@ -159,7 +159,12 @@ const NavigationButtonHexagonDiv: FC<{
             mouseEnterHandler={handleMouseEnter}
         >
             {isCategoryNavigation(name) ? (
-                <div className="absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75">
+                <div
+                    className={classNames(
+                        'absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75 transition-transform duration-[--ui-animation-menu-transition-duration]',
+                        routeName === ROUTE.home ? '' : 'rotate-[calc(var(--hexagon-rotate)*-1)]',
+                    )}
+                >
                     {title}
                 </div>
             ) : (
@@ -218,8 +223,8 @@ const GlassmorphicButtonWrapper: FC<{
             strokeRadius={isFinite(strokeRadius) ? strokeRadius : 0}
             className={classNames(
                 '![--glassmorphic-backdrop-blur:8px]',
-                'group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transform-gpu transition-[transform,--hexagon-blur-color,--scale-property,--hexagon-lighting-gradient-counter-rotation] [clip-path:--hexagon-clip-path]',
-                'hover-active:!scale-[calc(var(--scale-property)*1.05)] hover-active:!delay-0 hover-active:!duration-150 hover-active:![--hexagon-blur-color:theme(colors.theme.primary-lighter)]',
+                'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[transform,--hexagon-blur-color,--scale-property,--hexagon-lighting-gradient-counter-rotation]',
+                'hover-active:!scale-x-[calc(var(--hexagon-scale-x)*1.05)] hover-active:!scale-y-[calc(var(--hexagon-scale-y)*1.05)] hover-active:!delay-0 hover-active:!duration-150 hover-active:![--hexagon-blur-color:theme(colors.theme.primary-lighter)]',
                 routeName === ROUTE.post
                     ? '[--hexagon-blur-color:transparent] [--hexagon-fill-color:theme(colors.theme.primary/0.5)] [--hexagon-stroke-color:transparent]'
                     : '[--hexagon-blur-color:theme(colors.theme.primary/0.75)] [--hexagon-fill-color:theme(colors.theme.secondary/0.35)] [--hexagon-stroke-color:theme(colors.theme.primary-lighter/0.5)]',
@@ -248,7 +253,7 @@ const MenuButtonSvg: FC<{
     svgIconPath: string;
 }> = ({ title, svgIconPath }) => {
     return (
-        <div className="absolute left-0 top-0 flex size-full flex-col items-center justify-center">
+        <div className="absolute left-0 top-0 flex size-full rotate-[calc(var(--hexagon-rotate)*-1)] flex-col items-center justify-center transition-transform duration-[--ui-animation-menu-transition-duration]">
             <div
                 className="-mb-1 -mt-1 aspect-square h-2/3 w-auto bg-theme-text-background/50 [mask-position:top] [mask-repeat:no-repeat] [mask-size:85%] group-hover-active:bg-theme-secondary-lighter/50"
                 style={

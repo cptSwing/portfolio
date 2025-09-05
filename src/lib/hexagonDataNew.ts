@@ -687,12 +687,12 @@ export const postCardHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 215,
-                y: 100,
+                x: 150,
+                y: 95,
             },
             rotation: 0,
             isHalf: false,
-            scale: 2.65,
+            scale: 2.1,
             shouldOffset: false,
         }, // "Active" position
         [ROUTE.post]: {
@@ -728,7 +728,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.75,
+            scale: 0.6,
             shouldOffset: false,
         }, // "Active" position
         [ROUTE.post]: {
@@ -758,12 +758,12 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
         },
         [ROUTE.category]: {
             position: {
-                x: 105,
+                x: 112.5,
                 y: 260,
             },
             rotation: -30,
             isHalf: false,
-            scale: 0.5,
+            scale: 0.425,
             shouldOffset: false,
         },
         [ROUTE.post]: {
@@ -793,12 +793,12 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
         },
         [ROUTE.category]: {
             position: {
-                x: 195,
+                x: 187.5,
                 y: 260,
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.5,
+            scale: 0.425,
             shouldOffset: false,
         },
         [ROUTE.post]: {
@@ -1083,6 +1083,8 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
 
 export const roundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5);
 export const halfRoundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5, true);
+export const widerRoundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5, false, true);
+
 export const subMenuButtonHexagonPath = getHexagonPath(0.5, 0.1);
 
 type Point = [number, number];
@@ -1297,12 +1299,11 @@ export function calcCSSVariables(
     const mappedTranslateY = roundToDecimal(translate.y * parentToViewboxHeight + getOffset(parentToViewboxHeight) * (viewBoxHeight / viewBoxWidth), 0);
 
     return {
-        '--tw-translate-x': mappedTranslateX + 'px',
-        '--tw-translate-y': mappedTranslateY + 'px',
-        '--tw-rotate': rotation + 'deg',
-        '--tw-scale-x': mappedScaleX,
-        '--tw-scale-y': mappedScaleY,
-        '--scale-property': mappedScaleX,
+        '--hexagon-translate-x': mappedTranslateX + 'px',
+        '--hexagon-translate-y': mappedTranslateY + 'px',
+        '--hexagon-rotate': rotation + 'deg',
+        '--hexagon-scale-x': mappedScaleX,
+        '--hexagon-scale-y': mappedScaleY,
         '--hexagon-lighting-gradient-counter-rotation': `calc(${-rotation}deg - var(--home-menu-rotation, 0deg))`,
     };
 }
@@ -1333,20 +1334,44 @@ function _getOffsetsAndScale(column: number, row: number): { x: number; y: numbe
     };
 }
 
-function getHexagonPath(sideLength = 1, cornerRadius = 8, isHalf = false): string {
+function getHexagonPath(sideLength = 1, cornerRadius = 8, isHalf = false, wide = false): string {
     const points: { x: number; y: number }[] = [];
     const moveZeroPoint = 180;
     const centerX = sideLength;
     const centerY = sideLength * staticValues.heightAspect.flatTop;
+
+    const extraWidth = wide ? sideLength * 1.25 : 0;
 
     for (let i = 0; i < 6; i++) {
         const angle_deg = 60 * i + moveZeroPoint;
         const x = centerX + sideLength * cos(angle_deg);
         const y = centerY + sideLength * sin(angle_deg);
 
-        const xRounded = roundToDecimal(x, 4);
+        let xRounded = roundToDecimal(x, 4);
         const yRounded = roundToDecimal(y, 4);
 
+        if (wide) {
+            switch (i) {
+                // case 0:
+                //     xRounded += extraWidth;
+                //     break;
+                // case 1:
+                //     xRounded += extraWidth;
+                //     break;
+                // case 5:
+                //     xRounded += extraWidth;
+                //     break;
+                case 2:
+                    xRounded += extraWidth;
+                    break;
+                case 3:
+                    xRounded += extraWidth;
+                    break;
+                case 4:
+                    xRounded += extraWidth;
+                    break;
+            }
+        }
         points.push({ x: xRounded, y: yRounded });
     }
 
