@@ -5,9 +5,9 @@ export enum ROUTE {
 }
 
 export enum CATEGORY {
-    'code',
-    '3d',
-    'log',
+    'code' = 0,
+    '3d' = 1,
+    'log' = 3,
 }
 
 export enum TOOL {

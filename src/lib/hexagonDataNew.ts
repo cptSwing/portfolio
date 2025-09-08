@@ -688,7 +688,7 @@ export const postCardHexagons: HexagonRouteData[] = [
         [ROUTE.category]: {
             position: {
                 x: 150,
-                y: 95,
+                y: 100,
             },
             rotation: 0,
             isHalf: false,
@@ -707,6 +707,36 @@ export const postCardHexagons: HexagonRouteData[] = [
         },
     },
 ];
+
+export const categoryNavigationButtonPositions = {
+    active: {
+        position: {
+            x: 150,
+            y: 260,
+        },
+        rotation: 30,
+        scale: 0.6,
+        shouldOffset: false,
+    },
+    left: {
+        position: {
+            x: 112.5,
+            y: 260,
+        },
+        rotation: -30,
+        scale: 0.425,
+        shouldOffset: false,
+    },
+    right: {
+        position: {
+            x: 187.5,
+            y: 260,
+        },
+        rotation: 30,
+        scale: 0.425,
+        shouldOffset: false,
+    },
+};
 
 export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData | HexagonNavigationCategoryButtonRouteData)[] = [
     // Category Links

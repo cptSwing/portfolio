@@ -68,7 +68,7 @@ const CategoryCards: FC<{ posts: Post[]; activeIndexState: [number, React.Dispat
                         // },
                         position: {
                             x: additionalHexagonStartingPositionX,
-                            y: 200,
+                            y: 202.5,
                         },
                         rotation: 0,
                         isHalf: false,
@@ -213,9 +213,12 @@ const PostHexagonDiv: FC<{
     return (
         <button
             className={classNames(
+                // Provides "Stroke" by adding :before element below, clipping, and with bg-color
                 'before:pointer-events-auto before:absolute before:left-0 before:top-0 before:size-full before:transition-[background-color] before:duration-[--ui-animation-menu-transition-duration] before:[clip-path:--hexagon-clip-path] before:hover-active:bg-theme-secondary before:hover-active:duration-75',
-                'transform-hexagon group absolute aspect-hex-flat w-[--hexagon-clip-path-width] transform-gpu transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d]',
-                isActive ? 'before:bg-theme-secondary/50' : 'before:bg-gray-800 hover-active:!z-50 hover-active:[--tw-translate-z:3vw]',
+                'transform-hexagon group absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d] hover-active:duration-100',
+                isActive
+                    ? 'before:bg-theme-secondary/50'
+                    : 'before:bg-gray-800 hover-active:!z-50 hover-active:scale-[calc(var(--hexagon-scale-x)*1.25)] hover-active:[--tw-translate-z:3vw]',
                 isActive && isLoaded ? '!translate-x-[calc(var(--hexagon-translate-x)*0.63)]' : '',
             )}
             style={
@@ -230,8 +233,8 @@ const PostHexagonDiv: FC<{
             {isActive && (
                 <div
                     className={classNames(
-                        'glassmorphic pointer-events-auto absolute left-0 top-0 -z-50 h-full w-[160%] !from-black/15 from-40% !to-white/15 to-60% transition-[background-color,clip-path,backdrop-filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path] group-hover-active:duration-75 group-hover-active:![--glassmorphic-backdrop-blur:3px]',
-                        isLoaded ? 'bg-theme-secondary/15 ![--glassmorphic-backdrop-blur:2px]' : 'bg-theme-secondary ![--glassmorphic-backdrop-blur:0px]',
+                        'glassmorphic pointer-events-auto absolute left-0 top-0 -z-50 h-full w-[160%] !from-black/15 from-40% !to-white/15 to-60% !backdrop-saturate-100 transition-[background-color,clip-path,backdrop-filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path] group-hover-active:!backdrop-saturate-150 group-hover-active:duration-100 group-hover-active:![--glassmorphic-backdrop-blur:3px]',
+                        isLoaded ? 'bg-theme-secondary/15 ![--glassmorphic-backdrop-blur:2px]' : 'bg-theme-secondary/0 ![--glassmorphic-backdrop-blur:0px]',
                     )}
                     style={{
                         '--hexagon-animated-clip-path': isLoaded ? `path("${widerRoundedHexagonPath}")` : 'var(--hexagon-clip-path)',

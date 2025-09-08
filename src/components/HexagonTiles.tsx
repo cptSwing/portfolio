@@ -1,8 +1,9 @@
 import { CSSProperties, FC, memo, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { classNames } from 'cpts-javascript-utilities';
+import { classNames, cycleThrough } from 'cpts-javascript-utilities';
 import {
     ButtonName,
+    Category,
     CategoryName,
     HexagonMenuButtonRouteData,
     HexagonNavigationCategoryButtonRouteData,
@@ -10,7 +11,14 @@ import {
     HexagonRouteData,
     valueof,
 } from '../types/types';
-import { regularHexagons, navigationButtonHexagons, menuButtonHexagons, degToRad, calcCSSVariables } from '../lib/hexagonDataNew';
+import {
+    regularHexagons,
+    navigationButtonHexagons,
+    menuButtonHexagons,
+    degToRad,
+    calcCSSVariables,
+    categoryNavigationButtonPositions,
+} from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
@@ -20,8 +28,8 @@ import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import GlassmorphicClipped from './GlassmorphicClipped';
 
 const HexagonTiles = () => {
-    const menuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
-    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
+    const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
+    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
 
     const routeName = useZustand((store) => store.values.routeData.name);
     const containerSize = useContext(GetChildSizeContext);
@@ -62,9 +70,8 @@ const HexagonTiles = () => {
                 <NavigationButtonHexagonDiv
                     key={`hex-link-index-${idx}`}
                     shapeData={hexagonNavigationButtonData}
-                    routeName={routeName}
                     containerSize={containerSize}
-                    menuTransitionStateUpdates={menuTransitionStateUpdates}
+                    homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates}
                 />
             ))}
 
@@ -115,23 +122,66 @@ const RegularHexagonDiv: FC<{
 
 const NavigationButtonHexagonDiv: FC<{
     shapeData: HexagonNavigationDefaultButtonRouteData | HexagonNavigationCategoryButtonRouteData;
-    routeName: ROUTE;
     containerSize: {
         width: number;
         height: number;
     };
-    menuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
-}> = memo(({ shapeData, routeName, containerSize, menuTransitionStateUpdates }) => {
+    homeMenuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
+}> = memo(({ shapeData, containerSize, homeMenuTransitionStateUpdates }) => {
     const { title, name, svgIconPath, target } = shapeData;
+    const { name: routeName, content: routeContent } = useZustand((store) => store.values.routeData);
+
     const { position, rotation, scale, shouldOffset } = shapeData[routeName];
     const breakpoint = useZustand((state) => state.values.breakpoint);
-    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = menuTransitionStateUpdates;
+    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
     const navigate = useNavigate();
 
-    const cssVariables_Memo = useMemo(
-        () => calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
-        [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
-    );
+    const isCategoryNavigationButton = isCategoryNavigation(name);
+    const isCategoryNavigationButtonAndIsCategoryRoute = isCategoryNavigationButton && routeName === ROUTE.category;
+    const isActiveCategoryButton = isCategoryNavigationButtonAndIsCategoryRoute ? isActiveCategory(name, routeContent.category) : false;
+
+    const cssVariables_Memo = useMemo(() => {
+        if (isCategoryNavigationButtonAndIsCategoryRoute) {
+            const previous = cycleThrough(
+                Object.values(CATEGORY).filter((val) => !isNaN(val as number)),
+                routeContent.category.id,
+                'previous',
+            );
+
+            let transforms, z;
+            if (isActiveCategoryButton) {
+                transforms = categoryNavigationButtonPositions['active'];
+                z = 20;
+            } else if (CATEGORY[name] === previous) {
+                transforms = categoryNavigationButtonPositions['left'];
+                z = 0;
+            } else {
+                transforms = categoryNavigationButtonPositions['right'];
+                z = 10;
+            }
+
+            const { position, rotation, scale } = transforms;
+            const style = calcCSSVariables(position, rotation, scale, containerSize, {
+                shouldOffset,
+                offset: routeOffsetValues[routeName][breakpoint ?? 'base'],
+            });
+            return { ...style, zIndex: z };
+        } else {
+            return calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] });
+        }
+    }, [
+        breakpoint,
+        containerSize,
+        isActiveCategoryButton,
+        isCategoryNavigationButtonAndIsCategoryRoute,
+        name,
+        position,
+        rotation,
+        routeContent.category?.id,
+        routeName,
+        scale,
+        shouldOffset,
+    ]);
 
     const isVisible = scale > 0;
 
@@ -141,7 +191,7 @@ const NavigationButtonHexagonDiv: FC<{
     }
 
     function handleMouseEnter() {
-        if (isCategoryNavigation(name)) {
+        if (isCategoryNavigationButton) {
             if (routeName === ROUTE.home && menuTransitionTargetReached && menuTransitionTarget !== name) {
                 setMenuTransitionStates([name as CategoryName, false]);
                 // ^^^  Prevent parent from prematurely rotating again, and again, and again
@@ -158,7 +208,7 @@ const NavigationButtonHexagonDiv: FC<{
             clickHandler={handleClick}
             mouseEnterHandler={handleMouseEnter}
         >
-            {isCategoryNavigation(name) ? (
+            {isCategoryNavigationButton ? (
                 <div
                     className={classNames(
                         'absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75 transition-transform duration-[--ui-animation-menu-transition-duration]',
@@ -324,6 +374,10 @@ function _toSvgTransformMatrix(
 
 function isCategoryNavigation(name: ButtonName): name is CategoryName {
     return Object.keys(CATEGORY).includes(name);
+}
+
+function isActiveCategory(name: CategoryName, category: Category) {
+    return CATEGORY[name] === category.id;
 }
 
 // Local Values

@@ -48,7 +48,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
             {isMounted ? (
                 <div
                     ref={categoryRef}
-                    className="pointer-events-none absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] [perspective:100vw]"
+                    className="pointer-events-none absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] [perspective:125vw]"
                 >
                     <CategoryCards posts={category.posts} activeIndexState={activeIndexState} />
                 </div>
