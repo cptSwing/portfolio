@@ -70,7 +70,7 @@ const CategoryCards: FC<{ posts: Post[]; activeIndexState: [number, React.Dispat
                             x: additionalHexagonStartingPositionX,
                             y: 202.5,
                         },
-                        rotation: 0,
+                        rotation: 30,
                         isHalf: false,
                         scale: extraHexagonScale,
                         shouldOffset: false,
@@ -205,6 +205,7 @@ const PostHexagonDiv: FC<{
         }
     }
 
+    // Triggered once transitions on parent element are finished
     const [isLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
         setIsLoaded(false);
@@ -230,15 +231,18 @@ const PostHexagonDiv: FC<{
             onClick={handleClick}
             onTransitionEnd={({ target, currentTarget }) => target === currentTarget && setIsLoaded(true)}
         >
+            {/* Extending Backdrop, Card Info */}
             {isActive && (
                 <div
                     className={classNames(
                         'glassmorphic pointer-events-auto absolute left-0 top-0 -z-50 h-full w-[160%] !from-black/15 from-40% !to-white/15 to-60% !backdrop-saturate-100 transition-[background-color,clip-path,backdrop-filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path] group-hover-active:!backdrop-saturate-150 group-hover-active:duration-100 group-hover-active:![--glassmorphic-backdrop-blur:3px]',
-                        isLoaded ? 'bg-theme-secondary/15 ![--glassmorphic-backdrop-blur:2px]' : 'bg-theme-secondary/0 ![--glassmorphic-backdrop-blur:0px]',
+                        isLoaded ? 'bg-theme-secondary/15 ![--glassmorphic-backdrop-blur:2px]' : 'bg-theme-secondary/5 ![--glassmorphic-backdrop-blur:0px]',
                     )}
-                    style={{
-                        '--hexagon-animated-clip-path': isLoaded ? `path("${widerRoundedHexagonPath}")` : 'var(--hexagon-clip-path)',
-                    }}
+                    style={
+                        {
+                            '--hexagon-animated-clip-path': isLoaded ? `path("${widerRoundedHexagonPath}")` : 'var(--hexagon-clip-path)',
+                        } as CSSProperties
+                    }
                 >
                     <div className={classNames('absolute left-[60%] flex h-full w-1/4 flex-col items-start justify-center gap-y-[40%] font-fjalla-one')}>
                         <div
@@ -261,15 +265,24 @@ const PostHexagonDiv: FC<{
                 </div>
             )}
 
+            {/* Card Image */}
             <div
                 className={classNames(
-                    'size-full transform-gpu bg-cover object-cover transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
+                    'relative size-full transform-gpu transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
                     isActive
                         ? 'scale-[0.98] cursor-pointer brightness-100 grayscale-0'
                         : 'scale-[0.95] cursor-zoom-in brightness-75 grayscale group-hover-active:brightness-100 group-hover-active:grayscale-0',
                 )}
-                style={{ backgroundImage: `url(${cardImage})` }}
-            />
+            >
+                <img
+                    src={cardImage}
+                    alt={title}
+                    className={classNames(
+                        'transform-gpu object-cover transition-transform duration-[--ui-animation-menu-transition-duration]',
+                        isActive ? 'size-full rotate-0' : 'size-[110%] rotate-[-30deg]',
+                    )}
+                />
+            </div>
         </button>
     );
 };
