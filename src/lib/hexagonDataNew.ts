@@ -54,39 +54,6 @@ export const regularHexagons: HexagonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
-                x: 150,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: true,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 150,
-                y: 0,
-            },
-            rotation: 90,
-            isHalf: false,
-            scale: 0.866,
-            shouldOffset: false,
-        }, // L1
-        [ROUTE.post]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: 30,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
                 x: 75,
                 y: 0,
             },
@@ -283,10 +250,10 @@ export const regularHexagons: HexagonRouteData[] = [
         [ROUTE.home]: {
             position: {
                 x: 150,
-                y: 129.9,
+                y: -43.3,
             },
             rotation: 0,
-            isHalf: false,
+            isHalf: true,
             scale: 1,
             shouldOffset: false,
         },
@@ -688,7 +655,7 @@ export const postCardHexagons: HexagonRouteData[] = [
         [ROUTE.category]: {
             position: {
                 x: 150,
-                y: 100,
+                y: 95,
             },
             rotation: 0,
             isHalf: false,
@@ -845,51 +812,49 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
         title: 'log',
         target: '/3',
     },
-
-    // Appears only in '[ROUTE.category]' and '[ROUTE.post]' routeData:
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: 180,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 150,
-                y: -23,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.3,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -50,
-                y: 211,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.2,
-            shouldOffset: false,
-        },
-        name: 'home',
-        title: '',
-        svgIconPath: '/svg/HomeOutline.svg',
-        target: () => {
-            store_toggleMenu({ name: null });
-            return '/';
-        },
-    },
 ];
 
-export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
-    // Further UI:
+export const hamburgerButtonHexagon: HexagonMenuButtonRouteData = {
+    [ROUTE.home]: {
+        position: {
+            x: 150,
+            y: 130,
+        },
+        rotation: 0,
+        isHalf: false,
+        scale: 0.275,
+        shouldOffset: false,
+    },
+    [ROUTE.category]: {
+        position: {
+            x: 150,
+            y: -24,
+        },
+        rotation: 30,
+        isHalf: false,
+        scale: 0.25,
+        shouldOffset: false,
+    },
+    [ROUTE.post]: {
+        position: {
+            x: -50,
+            y: 211,
+        },
+        rotation: 0,
+        isHalf: false,
+        scale: 0.2,
+        shouldOffset: false,
+    },
+    name: 'hamburger',
+    title: '',
+    svgIconPath: '/svg/Bars3Outline.svg',
+    target: () => {
+        store_toggleMenu({ name: 'hamburger' });
+    },
+};
+
+export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
+    // User Login (inactive), disappears after ROUTE.home
     {
         [ROUTE.home]: {
             position: {
@@ -927,6 +892,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         target: () => {},
     },
 
+    // Settings
     {
         [ROUTE.home]: {
             position: {
@@ -940,12 +906,12 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 351.5,
-                y: 29.25,
+                x: 170,
+                y: 14.5,
             },
-            rotation: 0,
+            rotation: 30,
             isHalf: false,
-            scale: 0.275,
+            scale: 0.25,
             shouldOffset: true,
         },
         [ROUTE.post]: {
@@ -964,6 +930,7 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         target: (ev) => store_toggleMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
     },
 
+    // Contact
     {
         [ROUTE.home]: {
             position: {
@@ -977,12 +944,12 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 373.25,
-                y: 17.75,
+                x: 130,
+                y: 14.5,
             },
-            rotation: 0,
+            rotation: -30,
             isHalf: false,
-            scale: 0.3,
+            scale: 0.25,
             shouldOffset: true,
         },
         [ROUTE.post]: {
@@ -1000,8 +967,10 @@ export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
         svgIconPath: '/svg/ChatBubbleLeftRightOutline.svg',
         target: (ev) => store_toggleMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
     },
+];
 
-    // Only available in Post route:
+// Only available in Post route
+export const postNavigationButtonHexagons: HexagonMenuButtonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {

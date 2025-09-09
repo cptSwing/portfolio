@@ -93,7 +93,7 @@ export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
 /* NOTE Easy, if non-generic, method to build a Type that has EITHER key1 OR key2. Mind the "?"" in the key to be excluded in the helper types above. */
 export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
-type MenuName = 'config' | 'contact' | 'login' | 'previous' | 'close' | 'next';
+type MenuName = 'hamburger' | 'config' | 'contact' | 'login' | 'previous' | 'close' | 'next';
 type NavigationButtonName = 'home';
 export type CategoryName = keyof typeof CATEGORY;
 export type ButtonName = CategoryName | MenuName | NavigationButtonName;

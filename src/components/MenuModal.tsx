@@ -11,7 +11,8 @@ const MenuModal = () => {
 
     useEffect(() => {
         if (dialogRef.current) {
-            if (name) {
+            if (name === 'hamburger') {
+            } else if (name) {
                 dialogRef.current.showModal();
                 dialogRef.current.style.setProperty('--tw-bg-opacity', '0.75');
             } else {
@@ -25,10 +26,10 @@ const MenuModal = () => {
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
         <dialog
             ref={dialogRef}
-            className="glassmorphic-backdrop size-full overflow-hidden bg-gray-950 transition-[background-color]" // backdrop-blur-md
+            className="glassmorphic-backdrop-filter size-full overflow-hidden bg-gray-950 transition-[background-color]" // backdrop-blur-md
             onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleMenu({ name: null })}
         >
-            {name && (name === 'config' ? <Settings /> : <Contact />)}
+            {name && (name === 'config' ? <Settings /> : name === 'contact' ? <Contact /> : null)}
         </dialog>
     );
 };

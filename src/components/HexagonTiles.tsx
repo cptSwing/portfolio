@@ -14,10 +14,12 @@ import {
 import {
     regularHexagons,
     navigationButtonHexagons,
-    menuButtonHexagons,
+    functionalButtonHexagons,
     degToRad,
     calcCSSVariables,
     categoryNavigationButtonPositions,
+    hamburgerButtonHexagon,
+    postNavigationButtonHexagons,
 } from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
@@ -26,6 +28,7 @@ import { keyDownA11y } from 'cpts-javascript-utilities';
 import { BreakpointName } from '../hooks/useBreakPoint';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import GlassmorphicClipped from './GlassmorphicClipped';
+import useHamburgerMenu from '../hooks/useHamburgerMenu';
 
 const HexagonTiles = () => {
     const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
@@ -33,6 +36,8 @@ const HexagonTiles = () => {
 
     const routeName = useZustand((store) => store.values.routeData.name);
     const containerSize = useContext(GetChildSizeContext);
+
+    const hamburgerMenuIsActive = useHamburgerMenu();
 
     useEffect(() => {
         if (routeName !== ROUTE.home) {
@@ -63,20 +68,40 @@ const HexagonTiles = () => {
             }}
         >
             {regularHexagons.map((hexagonData, idx) => (
-                <RegularHexagonDiv key={`hex-regular-index-${idx}`} shapeData={hexagonData} routeName={routeName} containerSize={containerSize} />
+                <RegularHexagonDiv
+                    key={`hex-regular-index-${idx}`}
+                    shapeData={hexagonData}
+                    routeName={routeName}
+                    containerSize={containerSize}
+                    hamburgerMenuActive={hamburgerMenuIsActive}
+                />
             ))}
 
             {navigationButtonHexagons.map((hexagonNavigationButtonData, idx) => (
                 <NavigationButtonHexagonDiv
-                    key={`hex-link-index-${idx}`}
+                    key={`hex-nav-index-${idx}`}
                     shapeData={hexagonNavigationButtonData}
                     containerSize={containerSize}
                     homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates}
                 />
             ))}
 
-            {menuButtonHexagons.map((hexagonMenuButtonData, idx) => (
-                <MenuButtonHexagonDiv key={`hex-link-index-${idx}`} shapeData={hexagonMenuButtonData} routeName={routeName} containerSize={containerSize} />
+            {/* Hamburger Menu */}
+            <HamburgerMenuHexagonDiv
+                key={`hex-link-index-hamburger`}
+                shapeData={hamburgerButtonHexagon}
+                routeName={routeName}
+                containerSize={containerSize}
+                hamburgerMenuActive={hamburgerMenuIsActive}
+            />
+
+            {postNavigationButtonHexagons.map((hexagonPostButtonData, idx) => (
+                <FunctionalButtonHexagonDiv
+                    key={`hex-post-navigation-index-${idx}`}
+                    shapeData={hexagonPostButtonData}
+                    routeName={routeName}
+                    containerSize={containerSize}
+                />
             ))}
         </div>
     );
@@ -91,7 +116,8 @@ const RegularHexagonDiv: FC<{
         width: number;
         height: number;
     };
-}> = memo(({ shapeData, routeName, containerSize }) => {
+    hamburgerMenuActive?: boolean;
+}> = memo(({ shapeData, routeName, containerSize, hamburgerMenuActive = false }) => {
     const { position, rotation, scale, isHalf, shouldOffset } = shapeData[routeName];
     const breakpoint = useZustand((state) => state.values.breakpoint);
 
@@ -105,9 +131,10 @@ const RegularHexagonDiv: FC<{
     return (
         <div
             className={classNames(
-                'regular-hexagon-class glassmorphic transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path]',
+                'regular-hexagon-class glassmorphic transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter]',
                 isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
                 routeName === ROUTE.post ? '!glassmorphic-off ![--hexagon-fill-color:theme(colors.theme.text-background)]' : '!to-white/10',
+                hamburgerMenuActive ? '!backdrop-saturate-[0.75]' : '',
             )}
             style={
                 {
@@ -203,6 +230,7 @@ const NavigationButtonHexagonDiv: FC<{
         <GlassmorphicButtonWrapper
             name={name}
             isVisible={isVisible}
+            isActive={isActiveCategoryButton}
             style={cssVariables_Memo}
             isRouteNavigation
             clickHandler={handleClick}
@@ -224,22 +252,35 @@ const NavigationButtonHexagonDiv: FC<{
     );
 });
 
-const MenuButtonHexagonDiv: FC<{
+/* A Button that calls a function onClick (this can open modals, change state, and can include mutating history stack via other means, but does not perform navigation directly) */
+const FunctionalButtonHexagonDiv: FC<{
     shapeData: HexagonMenuButtonRouteData;
     routeName: ROUTE;
     containerSize: {
         width: number;
         height: number;
     };
-}> = memo(({ shapeData, routeName, containerSize }) => {
+    isHamburgerChild?: boolean;
+    hamburgerMenuActive?: boolean;
+}> = memo(({ shapeData, routeName, containerSize, isHamburgerChild = false, hamburgerMenuActive = false }) => {
     const { name, title, svgIconPath, target } = shapeData;
     const { position, rotation, scale, shouldOffset } = shapeData[routeName];
 
     const breakpoint = useZustand((state) => state.values.breakpoint);
 
     const cssVariables_Memo = useMemo(
-        () => calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
-        [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
+        () =>
+            calcCSSVariables(
+                position,
+                isHamburgerChild ? (hamburgerMenuActive ? rotation - 30 : rotation) : rotation,
+                isHamburgerChild ? (hamburgerMenuActive ? scale : 0) : scale,
+                containerSize,
+                {
+                    shouldOffset,
+                    offset: routeOffsetValues[routeName][breakpoint ?? 'base'],
+                },
+            ),
+        [position, rotation, isHamburgerChild, hamburgerMenuActive, scale, containerSize, shouldOffset, routeName, breakpoint],
     );
     const isVisible = scale > 0;
 
@@ -254,15 +295,100 @@ const MenuButtonHexagonDiv: FC<{
     );
 });
 
+const HamburgerMenuHexagonDiv: FC<{
+    shapeData: HexagonMenuButtonRouteData;
+    routeName: ROUTE;
+    containerSize: {
+        width: number;
+        height: number;
+    };
+    hamburgerMenuActive: boolean;
+}> = memo(({ shapeData, routeName, containerSize, hamburgerMenuActive }) => {
+    const { name, title, svgIconPath, target } = shapeData;
+    const { position, rotation, scale, shouldOffset } = shapeData[routeName];
+
+    const breakpoint = useZustand((state) => state.values.breakpoint);
+
+    const cssVariables_Memo = useMemo(
+        () => calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
+        [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
+    );
+
+    const isVisible = scale > 0;
+
+    function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
+        target(ev);
+    }
+
+    return (
+        <>
+            <RegularHexagonDiv
+                shapeData={{
+                    [ROUTE.home]: {
+                        position: {
+                            x: 150,
+                            y: 129.9,
+                        },
+                        rotation: 0,
+                        isHalf: false,
+                        scale: 1,
+                        shouldOffset: false,
+                    },
+                    [ROUTE.category]: {
+                        position: {
+                            x: 150,
+                            y: 0,
+                        },
+                        rotation: hamburgerMenuActive ? -60 : 30,
+                        isHalf: false,
+                        scale: hamburgerMenuActive ? 0.95 : 0.866,
+                        shouldOffset: false,
+                    },
+                    [ROUTE.post]: {
+                        position: {
+                            x: 75,
+                            y: 0,
+                        },
+                        rotation: 30,
+                        isHalf: true,
+                        scale: 0,
+                        shouldOffset: false,
+                    },
+                }}
+                routeName={routeName}
+                containerSize={containerSize}
+            />
+
+            {functionalButtonHexagons.map((hexagonFunctionalButtonData, idx) => {
+                return (
+                    <FunctionalButtonHexagonDiv
+                        key={`hex-link-index-${idx}`}
+                        shapeData={hexagonFunctionalButtonData}
+                        routeName={routeName}
+                        containerSize={containerSize}
+                        hamburgerMenuActive={hamburgerMenuActive}
+                        isHamburgerChild
+                    />
+                );
+            })}
+
+            <GlassmorphicButtonWrapper name={name} isVisible={isVisible} isActive={hamburgerMenuActive} style={cssVariables_Memo} clickHandler={handleClick}>
+                <MenuButtonSvg title={title} svgIconPath={svgIconPath} />
+            </GlassmorphicButtonWrapper>
+        </>
+    );
+});
+
 const GlassmorphicButtonWrapper: FC<{
     children: ReactNode;
     name: string;
-    isVisible: boolean;
-    isRouteNavigation?: boolean;
     style: Record<string, valueof<CSSProperties>>;
     clickHandler: (ev: React.MouseEvent<HTMLDivElement>) => void;
+    isVisible: boolean;
+    isActive?: boolean;
+    isRouteNavigation?: boolean;
     mouseEnterHandler?: () => void;
-}> = ({ children, name, isVisible, isRouteNavigation = false, style, clickHandler, mouseEnterHandler }) => {
+}> = ({ children, name, style, clickHandler, isVisible, isActive = false, isRouteNavigation = false, mouseEnterHandler }) => {
     const routeName = useZustand((store) => store.values.routeData.name);
     const random_Memo = useMemo(() => Math.random(), []);
     const strokeRadius = 2 / (style['--tw-scale-x'] as number);
@@ -275,6 +401,7 @@ const GlassmorphicButtonWrapper: FC<{
                 '![--glassmorphic-backdrop-blur:8px]',
                 'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[transform,--hexagon-blur-color,--scale-property,--hexagon-lighting-gradient-counter-rotation]',
                 'hover-active:!scale-x-[calc(var(--hexagon-scale-x)*1.05)] hover-active:!scale-y-[calc(var(--hexagon-scale-y)*1.05)] hover-active:!delay-0 hover-active:!duration-150 hover-active:![--hexagon-blur-color:theme(colors.theme.primary-lighter)]',
+                isActive ? '![--hexagon-blur-color:theme(colors.theme.primary-lighter)]' : '',
                 routeName === ROUTE.post
                     ? '[--hexagon-blur-color:transparent] [--hexagon-fill-color:theme(colors.theme.primary/0.5)] [--hexagon-stroke-color:transparent]'
                     : '[--hexagon-blur-color:theme(colors.theme.primary/0.75)] [--hexagon-fill-color:theme(colors.theme.secondary/0.35)] [--hexagon-stroke-color:theme(colors.theme.primary-lighter/0.5)]',

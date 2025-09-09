@@ -1,19 +1,14 @@
 import { Category as Category_T } from '../../types/types';
-import { CSSProperties, FC, useEffect, useRef, useState } from 'react';
-import { classNames } from 'cpts-javascript-utilities';
-import { Flipper } from 'react-flip-toolkit';
+import { FC, useEffect, useRef, useState } from 'react';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
-
 import useMountTransition from '../../hooks/useMountTransition.ts';
-import { config } from '../../types/exportTyped.ts';
-import FitText from '../utilityComponents/FitText.tsx';
 import FlippedBrand from '../Brand.tsx';
 import CategoryCards from '../CategoryCards.tsx';
 import { usePreviousPersistent } from '../../hooks/usePrevious.ts';
 
-const store_setDebugValues = useZustand.getState().methods.store_setDebugValues;
+const { store_setDebugValues, store_toggleMenu } = useZustand.getState().methods;
 
 const Category: FC<{ show: boolean }> = ({ show }) => {
     const category = useZustand((store) => store.values.routeData.content.category) ?? emptyCategory;
@@ -29,6 +24,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     useEffect(() => {
         if (wheelDirection !== null) {
             setActiveIndex((previous) => loopFlipValues(previous, category.posts.length, wheelDirection));
+            store_toggleMenu({ name: null });
         }
     }, [category.posts.length, wheelDirection, setActiveIndex, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
 
@@ -44,7 +40,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     }, [category.id, previousCategoryId, setActiveIndex]);
 
     return (
-        <Flipper className="contents" flipKey={isMounted} spring={{ stiffness: 500, damping: 300 }}>
+        <>
             {isMounted ? (
                 <div
                     ref={categoryRef}
@@ -74,7 +70,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
                 // </div>
                 <FlippedBrand />
             )}
-        </Flipper>
+        </>
     );
 };
 

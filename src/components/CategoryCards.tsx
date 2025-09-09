@@ -8,6 +8,7 @@ import { ROUTE } from '../types/enums';
 import { config } from '../types/exportTyped';
 import { useNavigate } from 'react-router-dom';
 import FitText from './utilityComponents/FitText';
+import useHamburgerMenu from '../hooks/useHamburgerMenu';
 
 const { clipPathWidth, clipPathHeight } = config.ui.hexMenu;
 
@@ -68,7 +69,7 @@ const CategoryCards: FC<{ posts: Post[]; activeIndexState: [number, React.Dispat
                         // },
                         position: {
                             x: additionalHexagonStartingPositionX,
-                            y: 202.5,
+                            y: 199,
                         },
                         rotation: 30,
                         isHalf: false,
@@ -182,6 +183,8 @@ const PostHexagonDiv: FC<{
     const { position, rotation, scale } = shapeData[routeName];
     const { id, title, subTitle, cardImage } = post;
 
+    const hamburgerMenuIsActive = useHamburgerMenu();
+
     const isActive = activeIndex === cardIndex;
 
     const cssVariables_Memo = useMemo(
@@ -217,9 +220,14 @@ const PostHexagonDiv: FC<{
                 // Provides "Stroke" by adding :before element below, clipping, and with bg-color
                 'before:pointer-events-auto before:absolute before:left-0 before:top-0 before:size-full before:transition-[background-color] before:duration-[--ui-animation-menu-transition-duration] before:[clip-path:--hexagon-clip-path] before:hover-active:bg-theme-secondary before:hover-active:duration-75',
                 'transform-hexagon group absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d] hover-active:duration-100',
+                hamburgerMenuIsActive
+                    ? isActive
+                        ? '!translate-y-[calc(var(--hexagon-translate-y)*1.33)] before:bg-gray-800/50'
+                        : '!translate-y-[calc(var(--hexagon-translate-y)*1.05)]'
+                    : '',
                 isActive
                     ? 'before:bg-theme-secondary/50'
-                    : 'before:bg-gray-800 hover-active:!z-50 hover-active:scale-[calc(var(--hexagon-scale-x)*1.25)] hover-active:[--tw-translate-z:3vw]',
+                    : 'before:bg-gray-800/70 hover-active:!z-50 hover-active:scale-[calc(var(--hexagon-scale-x)*1.25)] hover-active:[--tw-translate-z:3vw]',
                 isActive && isLoaded ? '!translate-x-[calc(var(--hexagon-translate-x)*0.63)]' : '',
             )}
             style={
@@ -235,8 +243,9 @@ const PostHexagonDiv: FC<{
             {isActive && (
                 <div
                     className={classNames(
-                        'glassmorphic pointer-events-auto absolute left-0 top-0 -z-50 h-full w-[160%] !from-black/15 from-40% !to-white/15 to-60% !backdrop-saturate-100 transition-[background-color,clip-path,backdrop-filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path] group-hover-active:!backdrop-saturate-150 group-hover-active:duration-100 group-hover-active:![--glassmorphic-backdrop-blur:3px]',
+                        'glassmorphic pointer-events-auto absolute left-0 top-0 -z-50 h-full w-[160%] !from-black/15 from-40% !to-white/15 to-60% !backdrop-saturate-100 transition-[background-color,clip-path,backdrop-filter,filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path] group-hover-active:!backdrop-saturate-150 group-hover-active:duration-100 group-hover-active:![--glassmorphic-backdrop-blur:3px]',
                         isLoaded ? 'bg-theme-secondary/15 ![--glassmorphic-backdrop-blur:2px]' : 'bg-theme-secondary/5 ![--glassmorphic-backdrop-blur:0px]',
+                        hamburgerMenuIsActive ? '!from-black/5 !to-white/5 *:opacity-25' : '',
                     )}
                     style={
                         {
@@ -244,7 +253,11 @@ const PostHexagonDiv: FC<{
                         } as CSSProperties
                     }
                 >
-                    <div className={classNames('absolute left-[60%] flex h-full w-1/4 flex-col items-start justify-center gap-y-[40%] font-fjalla-one')}>
+                    <div
+                        className={classNames(
+                            'absolute left-[60%] flex h-full w-1/4 flex-col items-start justify-center gap-y-[40%] font-fjalla-one transition-opacity',
+                        )}
+                    >
                         <div
                             className={classNames(
                                 'text-pretty text-left text-[calc(1.4px*var(--hexagon-scale-x))] leading-relaxed text-theme-primary-lighter transition-transform delay-[calc(var(--ui-animation-menu-transition-duration)/2)] duration-[--ui-animation-menu-transition-duration]',
@@ -265,21 +278,22 @@ const PostHexagonDiv: FC<{
                 </div>
             )}
 
-            {/* Card Image */}
+            {/* Card Image, parent again fakes a stroke */}
             <div
                 className={classNames(
-                    'relative size-full transform-gpu transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
+                    'relative size-full transform-gpu transition-[transform,filter,opacity] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
                     isActive
-                        ? 'scale-[0.98] cursor-pointer brightness-100 grayscale-0'
-                        : 'scale-[0.95] cursor-zoom-in brightness-75 grayscale group-hover-active:brightness-100 group-hover-active:grayscale-0',
+                        ? 'scale-[0.99] cursor-pointer brightness-100 grayscale-0'
+                        : 'scale-[0.85] cursor-zoom-in brightness-75 grayscale group-hover-active:brightness-100 group-hover-active:grayscale-0',
+                    hamburgerMenuIsActive ? 'opacity-50 saturate-[0.25]' : '',
                 )}
             >
                 <img
                     src={cardImage}
                     alt={title}
                     className={classNames(
-                        'transform-gpu object-cover transition-transform duration-[--ui-animation-menu-transition-duration]',
-                        isActive ? 'size-full rotate-0' : 'size-[110%] rotate-[-30deg]',
+                        'absolute transform-gpu object-cover transition-transform duration-[--ui-animation-menu-transition-duration]',
+                        isActive ? 'top-0 size-full rotate-0' : 'top-[-5%] size-[110%] rotate-[-30deg]',
                     )}
                 />
             </div>

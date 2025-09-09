@@ -718,7 +718,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
     },
 ];
 
-export const menuButtonHexagons: HexagonMenuButtonRouteData[] = [
+export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
     // Further UI:
     {
         [ROUTE.home]: {
