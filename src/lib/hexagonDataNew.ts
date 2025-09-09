@@ -10,7 +10,7 @@ import {
 import { useZustand } from './zustand';
 import roundToDecimal from './roundToDecimal';
 
-const { store_toggleMenu, store_setPostNavigationState } = useZustand.getState().methods;
+const { store_toggleSubMenu, store_toggleHamburgerMenu, store_setPostNavigationState } = useZustand.getState().methods;
 
 const {
     ui: {
@@ -849,7 +849,7 @@ export const hamburgerButtonHexagon: HexagonMenuButtonRouteData = {
     title: '',
     svgIconPath: '/svg/Bars3Outline.svg',
     target: () => {
-        store_toggleMenu({ name: 'hamburger' });
+        store_toggleHamburgerMenu();
     },
 };
 
@@ -906,8 +906,8 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 170,
-                y: 14.5,
+                x: 172.5,
+                y: 5,
             },
             rotation: 30,
             isHalf: false,
@@ -925,9 +925,9 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
             shouldOffset: false,
         },
         name: 'config',
-        title: 'opts',
+        title: 'options',
         svgIconPath: '/svg/AdjustmentsHorizontalOutline.svg',
-        target: (ev) => store_toggleMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
+        target: (ev) => store_toggleSubMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
     },
 
     // Contact
@@ -944,10 +944,10 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 130,
-                y: 14.5,
+                x: 127.5,
+                y: 5,
             },
-            rotation: -30,
+            rotation: 30,
             isHalf: false,
             scale: 0.25,
             shouldOffset: true,
@@ -963,9 +963,50 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
             shouldOffset: false,
         },
         name: 'contact',
-        title: 'me!',
+        title: 'contact',
         svgIconPath: '/svg/ChatBubbleLeftRightOutline.svg',
-        target: (ev) => store_toggleMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
+        target: (ev) => store_toggleSubMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
+    },
+
+    // Appears only in '[ROUTE.category]' and '[ROUTE.post]' routeData:
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 180,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 150,
+                y: 17,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -50,
+                y: 211,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.2,
+            shouldOffset: false,
+        },
+        name: 'home',
+        title: 'home',
+        svgIconPath: '/svg/HomeOutline.svg',
+        target: () => {
+            store_toggleSubMenu({ name: null });
+            return '/';
+        },
     },
 ];
 
@@ -1469,11 +1510,11 @@ export function getHexagonalClipPath(
     }
 }
 
-function getMenuButtonPosition(ev: React.MouseEvent<HTMLDivElement, MouseEvent>): Pick<DOMRect, 'x' | 'y' | 'width' | 'height'> {
+function getMenuButtonPosition(ev: React.MouseEvent<HTMLButtonElement, MouseEvent>): Pick<DOMRect, 'x' | 'y' | 'width' | 'height'> {
     const { left, width, top, height } = ev.currentTarget.firstElementChild
         ? ev.currentTarget.firstElementChild.getBoundingClientRect()
         : ev.currentTarget.getBoundingClientRect();
-    const position: ZustandStore['values']['activeMenuButton']['positionAndSize'] = { x: left, y: top, width, height };
+    const position: ZustandStore['values']['activeSubMenuButton']['positionAndSize'] = { x: left, y: top, width, height };
     return position;
 }
 

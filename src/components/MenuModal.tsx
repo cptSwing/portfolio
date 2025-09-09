@@ -3,16 +3,15 @@ import Settings from './Settings';
 import Contact from './Contact';
 import { useEffect, useRef } from 'react';
 
-const store_toggleMenu = useZustand.getState().methods.store_toggleMenu;
+const store_toggleSubMenu = useZustand.getState().methods.store_toggleSubMenu;
 
 const MenuModal = () => {
-    const name = useZustand((store) => store.values.activeMenuButton.name);
+    const name = useZustand((store) => store.values.activeSubMenuButton.name);
     const dialogRef = useRef<HTMLDialogElement | null>(null);
 
     useEffect(() => {
         if (dialogRef.current) {
-            if (name === 'hamburger') {
-            } else if (name) {
+            if (name) {
                 dialogRef.current.showModal();
                 dialogRef.current.style.setProperty('--tw-bg-opacity', '0.75');
             } else {
@@ -27,7 +26,7 @@ const MenuModal = () => {
         <dialog
             ref={dialogRef}
             className="glassmorphic-backdrop-filter size-full overflow-hidden bg-gray-950 transition-[background-color]" // backdrop-blur-md
-            onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleMenu({ name: null })}
+            onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleSubMenu({ name: null })}
         >
             {name && (name === 'config' ? <Settings /> : name === 'contact' ? <Contact /> : null)}
         </dialog>
@@ -38,7 +37,7 @@ export default MenuModal;
 
 /* Used in child components: */
 export const CloseSubMenu = () => {
-    const handleClick = () => store_toggleMenu({ name: null });
+    const handleClick = () => store_toggleSubMenu({ name: null });
 
     return (
         <button

@@ -8,7 +8,6 @@ import { ROUTE } from '../types/enums';
 import { config } from '../types/exportTyped';
 import { useNavigate } from 'react-router-dom';
 import FitText from './utilityComponents/FitText';
-import useHamburgerMenu from '../hooks/useHamburgerMenu';
 
 const { clipPathWidth, clipPathHeight } = config.ui.hexMenu;
 
@@ -127,44 +126,6 @@ export default CategoryCards;
 
 const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
-const BannerTitle: FC<{
-    title: string;
-    subTitle?: string;
-    classes?: string;
-}> = ({ title, subTitle, classes }) => {
-    const [isSwitching, setIsSwitching] = useState(false);
-
-    useEffect(() => {
-        setIsSwitching(true);
-
-        const timer = setTimeout(() => {
-            setIsSwitching(false);
-        }, transitionDuration_MS / 2);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [title]);
-
-    return (
-        <div
-            className={classNames(
-                'flex transform-gpu flex-col items-center justify-center bg-theme-primary-lighter/10 transition-[transform,opacity]',
-                isSwitching ? 'translate-x-[150%] opacity-0' : 'translate-x-0 opacity-100',
-                classes,
-            )}
-            style={
-                {
-                    transitionDuration: isSwitching ? '0ms' : 'var(--ui-animation-menu-transition-duration)',
-                } as CSSProperties
-            }
-        >
-            <FitText text={title} className="h-full text-nowrap font-fjalla-one leading-none text-theme-primary-lighter sm:h-1/2" />
-            {subTitle && <FitText text={subTitle} className="h-full font-fjalla-one leading-none text-theme-secondary-darker/50 sm:h-1/2" />}
-        </div>
-    );
-};
-
 const PostHexagonDiv: FC<{
     shapeData: HexagonRouteData;
     post: Post;
@@ -177,13 +138,13 @@ const PostHexagonDiv: FC<{
     shapeIndex: number;
 }> = ({ shapeData, post, containerSize, cardIndex, activeIndexState, shapeIndex }) => {
     const routeName = useZustand((store) => store.values.routeData.name);
+    const hamburgerMenuIsActive = useZustand((store) => store.values.hamburgerIsOpen);
+
     const navigate = useNavigate();
     const [activeIndex, setActiveIndex] = activeIndexState;
 
     const { position, rotation, scale } = shapeData[routeName];
     const { id, title, subTitle, cardImage } = post;
-
-    const hamburgerMenuIsActive = useHamburgerMenu();
 
     const isActive = activeIndex === cardIndex;
 
@@ -222,13 +183,13 @@ const PostHexagonDiv: FC<{
                 'transform-hexagon group absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [transform-style:preserve-3d] hover-active:duration-100',
                 hamburgerMenuIsActive
                     ? isActive
-                        ? '!translate-y-[calc(var(--hexagon-translate-y)*1.33)] before:bg-gray-800/50'
-                        : '!translate-y-[calc(var(--hexagon-translate-y)*1.05)]'
+                        ? '!translate-x-[calc(var(--hexagon-translate-x)*0.7)] !translate-y-[calc(var(--hexagon-translate-y)*1.33)] !scale-x-[calc(var(--hexagon-scale-x)*0.75)] !scale-y-[calc(var(--hexagon-scale-y)*0.75)] before:bg-transparent before:hover-active:!bg-transparent'
+                        : '!translate-y-[calc(var(--hexagon-translate-y)*0.9)]'
                     : '',
                 isActive
                     ? 'before:bg-theme-secondary/50'
-                    : 'before:bg-gray-800/70 hover-active:!z-50 hover-active:scale-[calc(var(--hexagon-scale-x)*1.25)] hover-active:[--tw-translate-z:3vw]',
-                isActive && isLoaded ? '!translate-x-[calc(var(--hexagon-translate-x)*0.63)]' : '',
+                    : 'before:bg-gray-800/70 hover-active:!z-50 hover-active:scale-[calc(var(--hexagon-scale-x)*1.35)] hover-active:[--tw-translate-z:3vw]',
+                isActive && isLoaded ? '!translate-x-[calc(var(--hexagon-translate-x)*0.615)]' : '',
             )}
             style={
                 {
@@ -285,7 +246,7 @@ const PostHexagonDiv: FC<{
                     isActive
                         ? 'scale-[0.99] cursor-pointer brightness-100 grayscale-0'
                         : 'scale-[0.85] cursor-zoom-in brightness-75 grayscale group-hover-active:brightness-100 group-hover-active:grayscale-0',
-                    hamburgerMenuIsActive ? 'opacity-50 saturate-[0.25]' : '',
+                    hamburgerMenuIsActive ? 'opacity-50 blur-[1px] saturate-[0.25]' : '',
                 )}
             >
                 <img
@@ -298,6 +259,44 @@ const PostHexagonDiv: FC<{
                 />
             </div>
         </button>
+    );
+};
+
+const BannerTitle: FC<{
+    title: string;
+    subTitle?: string;
+    classes?: string;
+}> = ({ title, subTitle, classes }) => {
+    const [isSwitching, setIsSwitching] = useState(false);
+
+    useEffect(() => {
+        setIsSwitching(true);
+
+        const timer = setTimeout(() => {
+            setIsSwitching(false);
+        }, transitionDuration_MS / 2);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [title]);
+
+    return (
+        <div
+            className={classNames(
+                'flex transform-gpu flex-col items-center justify-center bg-theme-primary-lighter/10 transition-[transform,opacity]',
+                isSwitching ? 'translate-x-[150%] opacity-0' : 'translate-x-0 opacity-100',
+                classes,
+            )}
+            style={
+                {
+                    transitionDuration: isSwitching ? '0ms' : 'var(--ui-animation-menu-transition-duration)',
+                } as CSSProperties
+            }
+        >
+            <FitText text={title} className="h-full text-nowrap font-fjalla-one leading-none text-theme-primary-lighter sm:h-1/2" />
+            {subTitle && <FitText text={subTitle} className="h-full font-fjalla-one leading-none text-theme-secondary-darker/50 sm:h-1/2" />}
+        </div>
     );
 };
 

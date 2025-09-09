@@ -31,7 +31,8 @@ export type ZustandStore = {
         theme: Theme;
         routeData: RouteData;
         breakpoint: BreakpointName | null;
-        activeMenuButton: { name: MenuName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
+        hamburgerIsOpen: boolean;
+        activeSubMenuButton: { name: MenuName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
         postNavigationState: Omit<NavigationButtonName, 'home'> | null;
         debug: {
             applyTransformMatrixFix: boolean;
@@ -41,7 +42,8 @@ export type ZustandStore = {
         store_cycleTheme: () => void;
         store_setRouteData: (routeData: RouteData) => void;
         store_setBreakpoint: (breakpoint: BreakpointName | null) => void;
-        store_toggleMenu: (newMenuState: ZustandStore['values']['activeMenuButton']) => void;
+        store_toggleHamburgerMenu: (isOpen?: boolean) => void;
+        store_toggleSubMenu: (newMenuState: ZustandStore['values']['activeSubMenuButton']) => void;
         store_setPostNavigationState: (postNavigationState: Omit<NavigationButtonName, 'home'> | null) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
@@ -93,7 +95,7 @@ export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
 /* NOTE Easy, if non-generic, method to build a Type that has EITHER key1 OR key2. Mind the "?"" in the key to be excluded in the helper types above. */
 export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
-type MenuName = 'hamburger' | 'config' | 'contact' | 'login' | 'previous' | 'close' | 'next';
+type MenuName = 'config' | 'contact' | 'login' | 'previous' | 'close' | 'next';
 type NavigationButtonName = 'home';
 export type CategoryName = keyof typeof CATEGORY;
 export type ButtonName = CategoryName | MenuName | NavigationButtonName;
@@ -114,7 +116,7 @@ interface HexagonButtonData {
 }
 
 export interface HexagonNavigationButtonData extends HexagonButtonData {
-    target: string | ((ev?: React.MouseEvent<HTMLDivElement, MouseEvent>) => string);
+    target: string | ((ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => string);
 }
 export interface HexagonNavigationDefaultButtonData extends HexagonNavigationButtonData {
     name: NavigationButtonName;
@@ -128,7 +130,7 @@ export interface HexagonNavigationDefaultButtonRouteData extends HexagonRouteDat
 export interface HexagonNavigationCategoryButtonRouteData extends HexagonRouteData, HexagonNavigationCategoryButtonData {}
 
 export interface HexagonMenuButtonRouteData extends HexagonRouteData, HexagonButtonData {
-    target: (ev?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     name: MenuName;
     svgIconPath: string;
 }

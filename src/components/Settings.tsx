@@ -5,7 +5,11 @@ import { CloseSubMenu } from './MenuModal';
 const store_cycleTheme = useZustand.getState().methods.store_cycleTheme;
 
 const Settings = () => {
-    const menuButtonPosAndSize = useZustand((store) => store.values.activeMenuButton.positionAndSize);
+    const menuButtonPosAndSize = useZustand((store) => store.values.activeSubMenuButton.positionAndSize);
+
+    useEffect(() => {
+        console.log('%c[Settings]', 'color: #ca8c78', `menuButtonPosAndSize :`, menuButtonPosAndSize);
+    }, [menuButtonPosAndSize]);
 
     const [hasMounted, setHasMounted] = useState(false);
 

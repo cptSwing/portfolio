@@ -8,7 +8,7 @@ import FlippedBrand from '../Brand.tsx';
 import CategoryCards from '../CategoryCards.tsx';
 import { usePreviousPersistent } from '../../hooks/usePrevious.ts';
 
-const { store_setDebugValues, store_toggleMenu } = useZustand.getState().methods;
+const { store_setDebugValues, store_toggleHamburgerMenu } = useZustand.getState().methods;
 
 const Category: FC<{ show: boolean }> = ({ show }) => {
     const category = useZustand((store) => store.values.routeData.content.category) ?? emptyCategory;
@@ -24,7 +24,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     useEffect(() => {
         if (wheelDirection !== null) {
             setActiveIndex((previous) => loopFlipValues(previous, category.posts.length, wheelDirection));
-            store_toggleMenu({ name: null });
+            store_toggleHamburgerMenu(false);
         }
     }, [category.posts.length, wheelDirection, setActiveIndex, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
 

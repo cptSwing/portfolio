@@ -1,6 +1,6 @@
 import { CSSProperties, FC, memo, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { classNames, cycleThrough } from 'cpts-javascript-utilities';
+import { classNames, cycleThrough, roundNumberToDecimal } from 'cpts-javascript-utilities';
 import {
     ButtonName,
     Category,
@@ -28,16 +28,15 @@ import { keyDownA11y } from 'cpts-javascript-utilities';
 import { BreakpointName } from '../hooks/useBreakPoint';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import GlassmorphicClipped from './GlassmorphicClipped';
-import useHamburgerMenu from '../hooks/useHamburgerMenu';
 
 const HexagonTiles = () => {
     const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
 
     const routeName = useZustand((store) => store.values.routeData.name);
-    const containerSize = useContext(GetChildSizeContext);
+    const hamburgerMenuIsActive = useZustand((store) => store.values.hamburgerIsOpen);
 
-    const hamburgerMenuIsActive = useHamburgerMenu();
+    const containerSize = useContext(GetChildSizeContext);
 
     useEffect(() => {
         if (routeName !== ROUTE.home) {
@@ -212,7 +211,7 @@ const NavigationButtonHexagonDiv: FC<{
 
     const isVisible = scale > 0;
 
-    function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
+    function handleClick(ev: React.MouseEvent<HTMLButtonElement>) {
         const targetResult = typeof target === 'string' ? target : target(ev);
         navigate(targetResult);
     }
@@ -252,9 +251,8 @@ const NavigationButtonHexagonDiv: FC<{
     );
 });
 
-/* A Button that calls a function onClick (this can open modals, change state, and can include mutating history stack via other means, but does not perform navigation directly) */
 const FunctionalButtonHexagonDiv: FC<{
-    shapeData: HexagonMenuButtonRouteData;
+    shapeData: HexagonMenuButtonRouteData | HexagonNavigationDefaultButtonRouteData;
     routeName: ROUTE;
     containerSize: {
         width: number;
@@ -267,6 +265,7 @@ const FunctionalButtonHexagonDiv: FC<{
     const { position, rotation, scale, shouldOffset } = shapeData[routeName];
 
     const breakpoint = useZustand((state) => state.values.breakpoint);
+    const navigate = useNavigate();
 
     const cssVariables_Memo = useMemo(
         () =>
@@ -284,13 +283,14 @@ const FunctionalButtonHexagonDiv: FC<{
     );
     const isVisible = scale > 0;
 
-    function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
-        target(ev);
+    function handleClick(ev: React.MouseEvent<HTMLButtonElement>) {
+        const targetResult = typeof target === 'string' ? target : target(ev);
+        targetResult && navigate(targetResult);
     }
 
     return (
-        <GlassmorphicButtonWrapper name={name} isVisible={isVisible} style={cssVariables_Memo} clickHandler={handleClick}>
-            <MenuButtonSvg title={title} svgIconPath={svgIconPath} />
+        <GlassmorphicButtonWrapper name={name} title={title} isVisible={isVisible} style={cssVariables_Memo} strokeRadius={0} clickHandler={handleClick}>
+            <MenuButtonSvg svgIconPath={svgIconPath} />
         </GlassmorphicButtonWrapper>
     );
 });
@@ -309,14 +309,18 @@ const HamburgerMenuHexagonDiv: FC<{
 
     const breakpoint = useZustand((state) => state.values.breakpoint);
 
-    const cssVariables_Memo = useMemo(
-        () => calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: routeOffsetValues[routeName][breakpoint ?? 'base'] }),
-        [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
+    const hamburgerCssVariables_Memo = useMemo(
+        () =>
+            calcCSSVariables(position, hamburgerMenuActive ? rotation - 30 : rotation, scale, containerSize, {
+                shouldOffset,
+                offset: routeOffsetValues[routeName][breakpoint ?? 'base'],
+            }),
+        [position, hamburgerMenuActive, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
     );
 
     const isVisible = scale > 0;
 
-    function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
+    function handleClick(ev: React.MouseEvent<HTMLButtonElement>) {
         target(ev);
     }
 
@@ -372,8 +376,14 @@ const HamburgerMenuHexagonDiv: FC<{
                 );
             })}
 
-            <GlassmorphicButtonWrapper name={name} isVisible={isVisible} isActive={hamburgerMenuActive} style={cssVariables_Memo} clickHandler={handleClick}>
-                <MenuButtonSvg title={title} svgIconPath={svgIconPath} />
+            <GlassmorphicButtonWrapper
+                name={name}
+                isVisible={isVisible}
+                isActive={hamburgerMenuActive}
+                style={hamburgerCssVariables_Memo}
+                clickHandler={handleClick}
+            >
+                <MenuButtonSvg svgIconPath={svgIconPath} />
             </GlassmorphicButtonWrapper>
         </>
     );
@@ -382,46 +392,67 @@ const HamburgerMenuHexagonDiv: FC<{
 const GlassmorphicButtonWrapper: FC<{
     children: ReactNode;
     name: string;
+    title?: string;
     style: Record<string, valueof<CSSProperties>>;
-    clickHandler: (ev: React.MouseEvent<HTMLDivElement>) => void;
+    clickHandler: (ev: React.MouseEvent<HTMLButtonElement>) => void;
     isVisible: boolean;
     isActive?: boolean;
     isRouteNavigation?: boolean;
     mouseEnterHandler?: () => void;
-}> = ({ children, name, style, clickHandler, isVisible, isActive = false, isRouteNavigation = false, mouseEnterHandler }) => {
+    strokeRadius?: number;
+}> = ({ children, name, title, style, clickHandler, isVisible, isActive = false, isRouteNavigation = false, mouseEnterHandler, strokeRadius }) => {
     const routeName = useZustand((store) => store.values.routeData.name);
     const random_Memo = useMemo(() => Math.random(), []);
-    const strokeRadius = 2 / (style['--tw-scale-x'] as number);
+
+    let scaledStrokeRadius = strokeRadius;
+
+    if (strokeRadius) {
+        const averagedStroke = (style['--hexagon-scale-x'] as number) + (style['--hexagon-scale-y'] as number) / 2;
+        scaledStrokeRadius = roundNumberToDecimal(strokeRadius / averagedStroke, 2);
+        scaledStrokeRadius = isFinite(scaledStrokeRadius) ? scaledStrokeRadius : undefined;
+    }
 
     return (
-        <GlassmorphicClipped
-            clipPath="var(--hexagon-clip-path)"
-            strokeRadius={isFinite(strokeRadius) ? strokeRadius : 0}
-            className={classNames(
-                '![--glassmorphic-backdrop-blur:8px]',
-                'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[transform,--hexagon-blur-color,--scale-property,--hexagon-lighting-gradient-counter-rotation]',
-                'hover-active:!scale-x-[calc(var(--hexagon-scale-x)*1.05)] hover-active:!scale-y-[calc(var(--hexagon-scale-y)*1.05)] hover-active:!delay-0 hover-active:!duration-150 hover-active:![--hexagon-blur-color:theme(colors.theme.primary-lighter)]',
-                isActive ? '![--hexagon-blur-color:theme(colors.theme.primary-lighter)]' : '',
-                routeName === ROUTE.post
-                    ? '[--hexagon-blur-color:transparent] [--hexagon-fill-color:theme(colors.theme.primary/0.5)] [--hexagon-stroke-color:transparent]'
-                    : '[--hexagon-blur-color:theme(colors.theme.primary/0.75)] [--hexagon-fill-color:theme(colors.theme.secondary/0.35)] [--hexagon-stroke-color:theme(colors.theme.primary-lighter/0.5)]',
-                isRouteNavigation ? `navigation-button-hexagon-class-${name}` : `menu-button-hexagon-class-${name}`,
-            )}
-            style={
-                {
-                    ...style,
-                    transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1}), 150ms, 150ms, var(--ui-animation-menu-transition-duration)`,
-                    transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), 0ms, 0ms, 0ms`,
-                } as CSSProperties
-            }
-            role={'button'}
-            tabIndex={isVisible ? -1 : 0}
-            onMouseEnter={mouseEnterHandler}
+        <button
+            className="transform-hexagon group absolute transition-transform"
+            style={{
+                ...style,
+                transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1})`,
+                transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
+            }}
             onClick={clickHandler}
-            onKeyDown={keyDownA11y(clickHandler)}
         >
-            {children}
-        </GlassmorphicClipped>
+            <GlassmorphicClipped
+                clipPath="var(--hexagon-clip-path)"
+                strokeRadius={scaledStrokeRadius}
+                className={classNames(
+                    '![--glassmorphic-backdrop-blur:8px]',
+                    'pointer-events-auto aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[--hexagon-blur-color,--hexagon-lighting-gradient-counter-rotation]',
+                    'group-hover-active:!scale-x-[1.05] group-hover-active:!scale-y-[1.05] group-hover-active:![--hexagon-blur-color:theme(colors.theme.primary-lighter)]',
+                    isActive ? '![--hexagon-blur-color:theme(colors.theme.primary-lighter)]' : '',
+                    routeName === ROUTE.post
+                        ? '[--hexagon-blur-color:transparent] [--hexagon-fill-color:theme(colors.theme.primary/0.5)] [--hexagon-stroke-color:transparent]'
+                        : '[--hexagon-blur-color:theme(colors.theme.primary/0.75)] [--hexagon-fill-color:theme(colors.theme.secondary/0.35)] [--hexagon-stroke-color:theme(colors.theme.primary-lighter/0.5)]',
+                    isRouteNavigation ? `navigation-button-hexagon-class-${name}` : `menu-button-hexagon-class-${name}`,
+                )}
+                style={
+                    {
+                        transitionDuration: `150ms, var(--ui-animation-menu-transition-duration)`,
+                    } as CSSProperties
+                }
+                role={'button'}
+                tabIndex={isVisible ? -1 : 0}
+                onMouseEnter={mouseEnterHandler}
+            >
+                {children}
+            </GlassmorphicClipped>
+
+            <span
+                className="absolute left-1/2 top-full block -translate-x-1/2 translate-y-1/2 rotate-[calc(var(--hexagon-rotate)*-1)] scale-x-[calc(1/var(--hexagon-scale-x))] scale-y-[calc(1/var(--hexagon-scale-y))] font-lato text-xs leading-none tracking-tighter text-theme-primary transition-transform group-hover-active:text-theme-secondary-lighter" // scale-[calc(0.5/var(--button-scale))]
+            >
+                {title}
+            </span>
+        </button>
     );
 };
 
@@ -432,19 +463,13 @@ const MenuButtonSvg: FC<{
     return (
         <div className="absolute left-0 top-0 flex size-full rotate-[calc(var(--hexagon-rotate)*-1)] flex-col items-center justify-center transition-transform duration-[--ui-animation-menu-transition-duration]">
             <div
-                className="-mb-1 -mt-1 aspect-square h-2/3 w-auto bg-theme-text-background/50 [mask-position:top] [mask-repeat:no-repeat] [mask-size:85%] group-hover-active:bg-theme-secondary-lighter/50"
+                className="aspect-square h-full w-auto bg-theme-text-background/50 [mask-position:center] [mask-repeat:no-repeat] [mask-size:67.5%] group-hover-active:bg-theme-secondary-lighter/50"
                 style={
                     {
                         maskImage: `url(${svgIconPath})`,
                     } as CSSProperties
                 }
             />
-
-            <span
-                className="pr-px font-lato text-xs leading-none tracking-tighter text-theme-primary-darker group-hover-active:text-theme-secondary-lighter" // scale-[calc(0.5/var(--button-scale))]
-            >
-                {title}
-            </span>
         </div>
     );
 };

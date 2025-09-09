@@ -236,20 +236,8 @@
 
 @property --hexagon-lighting-gradient-counter-rotation {
     syntax: '<angle>';
-    inherits: false;
+    inherits: true;
     initial-value: 0deg;
-}
-
-@property --scale-property {
-    syntax: '<number>';
-    inherits: false;
-    initial-value: 1;
-}
-
-@property --carousel-card-opacity {
-    syntax: '<number>';
-    inherits: false;
-    initial-value: 1;
 }
 
 /* SVG Filters */

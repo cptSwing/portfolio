@@ -6,7 +6,7 @@ import { CloseSubMenu } from './MenuModal';
 import { classNames } from 'cpts-javascript-utilities';
 
 const Contact = () => {
-    const menuButtonPosAndSize = useZustand((store) => store.values.activeMenuButton.positionAndSize);
+    const menuButtonPosAndSize = useZustand((store) => store.values.activeSubMenuButton.positionAndSize);
 
     const [hasMounted, setHasMounted] = useState(false);
 

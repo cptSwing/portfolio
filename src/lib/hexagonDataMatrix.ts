@@ -10,7 +10,7 @@ import {
 import { useZustand } from './zustand';
 import roundToDecimal from './roundToDecimal';
 
-const { store_toggleMenu, store_setPostNavigationState } = useZustand.getState().methods;
+const { store_toggleSubMenu, store_setPostNavigationState } = useZustand.getState().methods;
 
 const {
     ui: {
@@ -712,7 +712,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
         title: '',
         svgIconPath: '/svg/HomeOutline.svg',
         target: () => {
-            store_toggleMenu({ name: null });
+            store_toggleSubMenu({ name: null });
             return '/';
         },
     },
@@ -791,7 +791,7 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
         name: 'config',
         title: 'opts',
         svgIconPath: '/svg/AdjustmentsHorizontalOutline.svg',
-        target: (ev) => store_toggleMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
+        target: (ev) => store_toggleSubMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
     },
 
     {
@@ -828,7 +828,7 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
         name: 'contact',
         title: 'me!',
         svgIconPath: '/svg/ChatBubbleLeftRightOutline.svg',
-        target: (ev) => store_toggleMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
+        target: (ev) => store_toggleSubMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
     },
 
     // Only available in Post route:
@@ -1259,7 +1259,7 @@ function getMenuButtonPosition(ev: React.MouseEvent<HTMLDivElement, MouseEvent>)
     const { left, width, top, height } = ev.currentTarget.firstElementChild
         ? ev.currentTarget.firstElementChild.getBoundingClientRect()
         : ev.currentTarget.getBoundingClientRect();
-    const position: ZustandStore['values']['activeMenuButton']['positionAndSize'] = { x: left, y: top, width, height };
+    const position: ZustandStore['values']['activeSubMenuButton']['positionAndSize'] = { x: left, y: top, width, height };
     return position;
 }
 

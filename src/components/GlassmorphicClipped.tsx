@@ -18,7 +18,7 @@ const GlassmorphicClipped = forwardRef<HTMLDivElement, GlassmorphicProps>((props
             className={`${className} glassmorphic [clip-path:--glassmorphic-clipped-clip-path]`}
             style={{ ...style, '--glassmorphic-clipped-clip-path': clipPath } as CSSProperties}
         >
-            <svg width="100%" height="100%">
+            <svg className="invisible absolute">
                 <defs>
                     <SvgGlassFilter name={uuid} blurRadius={blurRadius} strokeRadius={strokeRadius} />
                 </defs>
@@ -26,7 +26,7 @@ const GlassmorphicClipped = forwardRef<HTMLDivElement, GlassmorphicProps>((props
             {children}
 
             <div
-                className="absolute left-0 top-0 -z-50 size-full before:absolute before:left-0 before:top-0 before:size-full before:bg-black before:[clip-path:--glassmorphic-clipped-clip-path]"
+                className="absolute left-0 top-0 size-full before:absolute before:left-0 before:top-0 before:-z-50 before:size-full before:bg-black before:[clip-path:--glassmorphic-clipped-clip-path]"
                 style={{ filter: `url(#svg-hexagon-filter-${uuid})` }}
             />
         </div>
@@ -53,6 +53,7 @@ const SvgGlassFilter: FC<{ name?: string; blurRadius: number; strokeRadius: numb
                 <feFlood floodColor="var(--hexagon-stroke-color)" result="stroke-flood" />
                 <feComposite operator="out" in="stroke-flood" in2="SourceAlpha" result="stroke-composite" />
                 <feMorphology operator="dilate" in="stroke-composite" radius={strokeRadius} result="stroke-dilate" />
+                {/* <feOffset in="stroke-dilate" dx="-1" dy="0" result="stroke-dilate-offset" /> */}
             </>
         )}
         <feMerge>
