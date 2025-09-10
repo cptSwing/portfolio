@@ -1,14 +1,16 @@
 import { config } from '../types/exportTyped';
 import { ROUTE } from '../types/enums';
 import {
-    HexagonMenuButtonRouteData,
-    HexagonNavigationCategoryButtonRouteData,
-    HexagonNavigationDefaultButtonRouteData,
+    CategoryNavigationButtonRouteData,
     HexagonRouteData,
+    HexagonTransformData,
+    MenuButtonRouteData,
+    PostNavigationButtonRouteData,
     ZustandStore,
 } from '../types/types';
 import { useZustand } from './zustand';
 import roundToDecimal from './roundToDecimal';
+import { BreakpointName } from '../hooks/useBreakPoint';
 
 const { store_toggleSubMenu, store_toggleHamburgerMenu, store_setPostNavigationState } = useZustand.getState().methods;
 
@@ -35,7 +37,7 @@ export const staticValues = {
 
 // TODO put to config? or a static.json?
 export const viewBoxWidth = 400;
-export const viewBoxHeight = 346.4;
+export const viewBoxHeight = viewBoxWidth * staticValues.heightAspect.flatTop;
 export const viewBoxAspect = viewBoxWidth / viewBoxHeight;
 
 const tan60 = Math.tan(degToRad(60));
@@ -640,41 +642,6 @@ export const regularHexagons: HexagonRouteData[] = [
     },
 ];
 
-export const postCardHexagons: HexagonRouteData[] = [
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 175,
-                y: 86.6,
-            },
-            rotation: -60,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 150,
-                y: 95,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 2.1,
-            shouldOffset: false,
-        }, // "Active" position
-        [ROUTE.post]: {
-            position: {
-                x: 75,
-                y: 173.2,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-];
-
 export const categoryNavigationButtonPositions = {
     active: {
         position: {
@@ -705,7 +672,7 @@ export const categoryNavigationButtonPositions = {
     },
 };
 
-export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData | HexagonNavigationCategoryButtonRouteData)[] = [
+export const categoryNavigationButtons: CategoryNavigationButtonRouteData[] = [
     // Category Links
     {
         [ROUTE.home]: {
@@ -814,7 +781,7 @@ export const navigationButtonHexagons: (HexagonNavigationDefaultButtonRouteData 
     },
 ];
 
-export const hamburgerButtonHexagon: HexagonMenuButtonRouteData = {
+export const hamburgerButton: MenuButtonRouteData = {
     [ROUTE.home]: {
         position: {
             x: 150,
@@ -822,7 +789,7 @@ export const hamburgerButtonHexagon: HexagonMenuButtonRouteData = {
         },
         rotation: 0,
         isHalf: false,
-        scale: 0.275,
+        scale: 0.35,
         shouldOffset: false,
     },
     [ROUTE.category]: {
@@ -853,17 +820,17 @@ export const hamburgerButtonHexagon: HexagonMenuButtonRouteData = {
     },
 };
 
-export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
+export const menuButtons: MenuButtonRouteData[] = [
     // User Login (inactive), disappears after ROUTE.home
     {
         [ROUTE.home]: {
             position: {
-                x: 172.5,
-                y: 134.5,
+                x: 150,
+                y: 157.5,
             },
-            rotation: 0,
+            rotation: 30,
             isHalf: false,
-            scale: 0.275,
+            scale: 0.35,
             shouldOffset: false,
         },
         [ROUTE.category]: {
@@ -896,22 +863,22 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
-                x: 127.5,
-                y: 134.5,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.275,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 172.5,
-                y: 5,
+                x: 180,
+                y: 140,
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.25,
+            scale: 0.35,
+            shouldOffset: true,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 175,
+                y: 15,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.3,
             shouldOffset: true,
         },
         [ROUTE.post]: {
@@ -934,22 +901,22 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
-                x: 150,
-                y: 122,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.275,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 127.5,
-                y: 5,
+                x: 120,
+                y: 140,
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.25,
+            scale: 0.35,
+            shouldOffset: true,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 125,
+                y: 15,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.3,
             shouldOffset: true,
         },
         [ROUTE.post]: {
@@ -983,11 +950,11 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
         [ROUTE.category]: {
             position: {
                 x: 150,
-                y: 17,
+                y: 30,
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.25,
+            scale: 0.3,
             shouldOffset: false,
         },
         [ROUTE.post]: {
@@ -1005,13 +972,14 @@ export const functionalButtonHexagons: HexagonMenuButtonRouteData[] = [
         svgIconPath: '/svg/HomeOutline.svg',
         target: () => {
             store_toggleSubMenu({ name: null });
+            store_toggleHamburgerMenu(false);
             return '/';
         },
     },
 ];
 
 // Only available in Post route
-export const postNavigationButtonHexagons: HexagonMenuButtonRouteData[] = [
+export const postNavigationButtons: PostNavigationButtonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
@@ -1045,7 +1013,7 @@ export const postNavigationButtonHexagons: HexagonMenuButtonRouteData[] = [
         },
         name: 'previous',
         svgIconPath: '/svg/ChevronLeftOutline.svg',
-        target: () => store_setPostNavigationState('prev'),
+        target: () => store_setPostNavigationState('previous'),
     },
 
     {
@@ -1120,6 +1088,82 @@ export const postNavigationButtonHexagons: HexagonMenuButtonRouteData[] = [
         target: () => store_setPostNavigationState('close'),
     },
 ];
+
+// TODO likely not needed?
+export const hexagonRouteOffsetValues: Record<ROUTE, Record<BreakpointName | 'base', number>> = {
+    [ROUTE.home]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 0 },
+    [ROUTE.category]: { 'base': 160, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 28 },
+    [ROUTE.post]: { 'base': 163, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 31.5 },
+};
+
+/* Active (ie front) Hex in Category route */
+export const categoryCardActiveHexagon: HexagonTransformData = {
+    position: {
+        x: 150,
+        y: 95,
+    },
+    rotation: 0,
+    isHalf: false,
+    scale: 2.1,
+    shouldOffset: false,
+};
+
+/* inactive (small) Hexagons in Category route */
+const categoryCardInactiveHexagon: HexagonTransformData = {
+    position: {
+        x: 0,
+        y: 205,
+    },
+    rotation: 30,
+    isHalf: false,
+    scale: 1,
+    shouldOffset: false,
+};
+
+const { clipPathWidth, clipPathHeight } = config.ui.hexMenu;
+const centerPosition = viewBoxWidth / 2 - hexHalfWidth; // 100 width hexagon, transform top left corner, 400 width viewbox = 150 (hence spans 150 to 250)
+
+export function getCategoryHexagons(count: number): HexagonTransformData[] {
+    const activeHexagonScale = categoryCardActiveHexagon.scale;
+    const inactiveHexagonScale = activeHexagonScale / Math.max(count - 1, 8);
+
+    const allHexagons = [categoryCardActiveHexagon];
+
+    if (count > 1) {
+        const extraHexagons = count - 1;
+
+        const activeHexagonWidthInViewBox = clipPathWidth * activeHexagonScale;
+        const activeHexagonHeightInViewBox = clipPathHeight * activeHexagonScale;
+
+        const _activeHexagonHalfWidth = activeHexagonWidthInViewBox / 2;
+        const activeHexagonThreeQuarterWidth = activeHexagonWidthInViewBox * 0.75;
+        const _activeHexagonQuarterWidth = activeHexagonWidthInViewBox / 4;
+        const activeHexagonHalfHeight = activeHexagonHeightInViewBox / 2;
+
+        const inactiveHexagonWidth = clipPathWidth * inactiveHexagonScale;
+        const inactiveHexagonHeight = clipPathHeight * inactiveHexagonScale;
+
+        const _inactiveHexagonHeightOffset = Math.min(inactiveHexagonHeight, (activeHexagonHalfHeight - inactiveHexagonHeight) / count);
+        const inactiveHexagonWidthOffset =
+            Math.min(inactiveHexagonWidth, (activeHexagonThreeQuarterWidth - inactiveHexagonWidth) / count) + inactiveHexagonWidth / 8;
+
+        for (let i = 0; i < extraHexagons; i++) {
+            // const additionalHexagonStartingPositionY = 5 + inactiveHexagonHeightOffset * (i);
+            // const additionalHexagonStartingPositionX = additionalHexagonStartingPositionY / -tan60 + position.x - activeHexagonQuarterWidth - inactiveHexagonWidth;
+
+            const centered = extraHexagons % 2 === 0 ? extraHexagons / 4 : Math.floor(extraHexagons / 2);
+            const inactiveHexagonStartingPositionX = inactiveHexagonWidthOffset * i + (centerPosition - centered * inactiveHexagonWidthOffset);
+
+            const inactiveHexagon = { ...categoryCardInactiveHexagon };
+            inactiveHexagon.position = { ...categoryCardInactiveHexagon.position, x: inactiveHexagonStartingPositionX };
+            inactiveHexagon.scale = inactiveHexagonScale;
+
+            allHexagons.push(inactiveHexagon);
+        }
+    }
+
+    return allHexagons;
+}
 
 export const roundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5);
 export const halfRoundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5, true);
@@ -1528,4 +1572,42 @@ export function sin(deg: number, clampTo?: number): number {
 export function cos(deg: number, clampTo?: number): number {
     const cosNum = Math.cos(degToRad(deg));
     return clampTo ? parseFloat(cosNum.toFixed(clampTo)) : cosNum;
+}
+
+function _toSvgTransform(
+    translate?: { x: number; y: number },
+    rotate_DEG?: number,
+    scale?: { x: number; y: number },
+    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
+) {
+    const { shouldOffset, offset, clampTo: _clampTo } = options ?? {};
+
+    const translation = translate ? `translate(${shouldOffset && offset ? translate.x + offset : translate.x} ${translate.y}) ` : '';
+    const rotation = rotate_DEG ? `rotate(${rotate_DEG}) ` : '';
+    const scaling = scale ? `scale(${scale.x}, ${scale.y}) ` : '';
+
+    return translation + rotation + scaling;
+}
+
+function _toSvgTransformMatrix(
+    translate = { x: 0, y: 0 },
+    rotate_DEG = 0,
+    scale = { x: 1, y: 1 },
+    options?: { shouldOffset?: boolean; offset?: number; clampTo?: number },
+) {
+    const { shouldOffset, offset, clampTo } = options ?? {};
+
+    const angle = degToRad(rotate_DEG); // Convert to radians
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+
+    // Apply scale and rotation
+    const a = scale.x * cos;
+    const b = scale.x * sin;
+    const c = -scale.y * sin;
+    const d = scale.y * cos;
+    const e = shouldOffset && offset ? translate.x + offset : translate.x;
+    const f = translate.y;
+
+    return `matrix(${a.toFixed(clampTo ?? 6)} ${b.toFixed(clampTo ?? 6)} ${c.toFixed(clampTo ?? 6)} ${d.toFixed(clampTo ?? 6)} ${e.toFixed(clampTo ?? 6)} ${f.toFixed(clampTo ?? 6)})`;
 }

@@ -33,7 +33,7 @@ export type ZustandStore = {
         breakpoint: BreakpointName | null;
         hamburgerIsOpen: boolean;
         activeSubMenuButton: { name: MenuName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
-        postNavigationState: Omit<NavigationButtonName, 'home'> | null;
+        postNavigationState: PostNavigationName | null;
         debug: {
             applyTransformMatrixFix: boolean;
         };
@@ -44,7 +44,7 @@ export type ZustandStore = {
         store_setBreakpoint: (breakpoint: BreakpointName | null) => void;
         store_toggleHamburgerMenu: (isOpen?: boolean) => void;
         store_toggleSubMenu: (newMenuState: ZustandStore['values']['activeSubMenuButton']) => void;
-        store_setPostNavigationState: (postNavigationState: Omit<NavigationButtonName, 'home'> | null) => void;
+        store_setPostNavigationState: (postNavigationState: PostNavigationName | null) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
 };
@@ -95,45 +95,44 @@ export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
 /* NOTE Easy, if non-generic, method to build a Type that has EITHER key1 OR key2. Mind the "?"" in the key to be excluded in the helper types above. */
 export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
-type MenuName = 'config' | 'contact' | 'login' | 'previous' | 'close' | 'next';
-type NavigationButtonName = 'home';
+type PostNavigationName = 'previous' | 'close' | 'next';
+type MenuName = 'home' | 'hamburger' | 'config' | 'contact' | 'login';
 export type CategoryName = keyof typeof CATEGORY;
-export type ButtonName = CategoryName | MenuName | NavigationButtonName;
+export type ButtonName = CategoryName | MenuName | PostNavigationName;
 
-export type HexagonData = {
+export type HexagonTransformData = {
     position: { x: number; y: number };
     rotation: number;
     scale: number;
     isHalf: boolean;
     shouldOffset: boolean;
 };
-export type HexagonRouteData = Record<ROUTE, HexagonData>;
+export type HexagonRouteData = Record<ROUTE, HexagonTransformData>;
 
-interface HexagonButtonData {
-    name: ButtonName;
-    title?: string;
-    svgIconPath?: string;
-}
-
-export interface HexagonNavigationButtonData extends HexagonButtonData {
-    target: string | ((ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => string);
-}
-export interface HexagonNavigationDefaultButtonData extends HexagonNavigationButtonData {
-    name: NavigationButtonName;
-    svgIconPath: string;
-}
-export interface HexagonNavigationCategoryButtonData extends HexagonNavigationButtonData {
+interface CategoryNavigationButtonData {
     name: CategoryName;
     title: string;
+    target: string;
 }
-export interface HexagonNavigationDefaultButtonRouteData extends HexagonRouteData, HexagonNavigationDefaultButtonData {}
-export interface HexagonNavigationCategoryButtonRouteData extends HexagonRouteData, HexagonNavigationCategoryButtonData {}
+/** A Button for navigating to/from a CATEGORY */
+export interface CategoryNavigationButtonRouteData extends HexagonRouteData, CategoryNavigationButtonData {}
 
-export interface HexagonMenuButtonRouteData extends HexagonRouteData, HexagonButtonData {
-    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+interface MenuButtonData {
     name: MenuName;
+    title?: string;
     svgIconPath: string;
+    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => string | void;
 }
+/** A Button that executes a function (which can also return a navigatable target) */
+export interface MenuButtonRouteData extends HexagonRouteData, MenuButtonData {}
+
+interface PostNavigationButtonData {
+    name: PostNavigationName;
+    svgIconPath: string;
+    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+/** A Button on POST route, switches between posts, or returns to CATEGORY route */
+export interface PostNavigationButtonRouteData extends HexagonRouteData, PostNavigationButtonData {}
 
 export type GridAreaPathData = {
     width: number;
