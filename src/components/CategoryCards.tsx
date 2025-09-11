@@ -7,30 +7,22 @@ import { classNames } from 'cpts-javascript-utilities';
 import { config } from '../types/exportTyped';
 import { useNavigate } from 'react-router-dom';
 import FitText from './utilityComponents/FitText';
+import { Clients } from './PostDetails';
 
 const CategoryCards: FC<{ posts: Post[]; activeIndexState: [number, React.Dispatch<React.SetStateAction<number>>] }> = ({ posts, activeIndexState }) => {
     const containerSize = useContext(GetChildSizeContext);
     const categoryHexagons_Memo = useMemo(() => getCategoryHexagons(posts.length), [posts.length]);
 
-    return (
-        <>
-            {posts.map((post, idx) => (
-                <CategoryHexagons
-                    key={`hex-post-card-index-${idx}`}
-                    allButtons={categoryHexagons_Memo}
-                    post={post}
-                    containerSize={containerSize}
-                    cardIndex={idx}
-                    activeIndexState={activeIndexState}
-                />
-            ))}
-
-            {/* <BannerTitle
-                title={title}
-                subTitle={subTitle}
-            /> */}
-        </>
-    );
+    return posts.map((post, idx) => (
+        <CategoryHexagons
+            key={`hex-post-card-index-${idx}`}
+            allButtons={categoryHexagons_Memo}
+            post={post}
+            containerSize={containerSize}
+            cardIndex={idx}
+            activeIndexState={activeIndexState}
+        />
+    ));
 };
 
 export default CategoryCards;
@@ -53,7 +45,7 @@ const CategoryHexagons: FC<{
     const thisButtonIndex = getGridAreaIndex(activeIndex, cardIndex, allButtons.length);
 
     const { position, rotation, scale } = allButtons[thisButtonIndex]!;
-    const { title, subTitle, cardImage } = post;
+    const { title, subTitle, cardImage, clients } = post;
 
     const isAtFront = activeIndex === cardIndex;
 
@@ -109,7 +101,7 @@ const CategoryHexagons: FC<{
                 <>
                     <div
                         className={classNames(
-                            'glassmorphic-backdrop-filter-before before:transition-[backdrop-filter] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)] before:group-hover-active:!backdrop-saturate-200 before:group-hover-active:duration-100 before:group-hover-active:![--glassmorphic-backdrop-blur:3px]',
+                            'before-glassmorphic-backdrop-filter before:transition-[backdrop-filter] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)] before:group-hover-active:!backdrop-saturate-200 before:group-hover-active:duration-100 before:group-hover-active:![--glassmorphic-backdrop-blur:3px]',
                             'lighting-gradient pointer-events-auto absolute left-0 top-0 -z-10 h-full w-[160%] !from-black/15 from-40% !to-white/15 to-60% transition-[background-color,clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path] group-hover-active:duration-100',
                             isLoaded ? 'bg-theme-secondary/15 ![--glassmorphic-backdrop-blur:2px]' : 'bg-theme-secondary/5 ![--glassmorphic-backdrop-blur:0px]',
                             hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
@@ -119,27 +111,34 @@ const CategoryHexagons: FC<{
                                 '--hexagon-animated-clip-path': isLoaded ? `path("${widerRoundedHexagonPath}")` : 'var(--hexagon-clip-path)',
                             } as CSSProperties
                         }
-                    ></div>
-
-                    <div className="absolute flex size-full flex-col items-end justify-around">
+                    >
                         <div
                             className={classNames(
-                                'glassmorphic-backdrop-filter-before before:left-[-10%] before:top-[2px] before:-z-10 before:h-[85%] before:w-[120%] before:skew-x-[30deg] before:rounded-sm before:bg-theme-secondary/20 before:![--glassmorphic-backdrop-blur:1px]',
-                                'max-w-[40%] px-px text-left font-fjalla-one leading-[1.1] text-theme-primary-lighter transition-transform delay-[calc(var(--ui-animation-menu-transition-duration)/2)] duration-[--ui-animation-menu-transition-duration] [font-size:calc(1.4px*var(--hexagon-scale-x))] [text-shadow:0px_0.6px_theme(colors.theme.secondary-darker)]',
-                                isLoaded ? 'translate-x-full' : '-translate-x-full',
+                                'absolute left-[50%] h-full w-[37.5%] flex-col items-start justify-around font-fjalla-one leading-[1.1] text-theme-primary-lighter transition-transform delay-[calc(var(--ui-animation-menu-transition-duration)/4)] duration-[--ui-animation-menu-transition-duration]',
+                                isLoaded ? 'translate-x-0' : '-translate-x-full',
                             )}
                         >
-                            {title}
-                        </div>
+                            <div className="float-left h-full w-[42.5%] [shape-outside:polygon(0_0,100%_50%,0_100%)]" />
 
-                        <div
-                            className={classNames(
-                                'glassmorphic-backdrop-filter-before before:left-[-10%] before:top-[2px] before:-z-10 before:h-[85%] before:w-[120%] before:skew-x-[-30deg] before:rounded-sm before:bg-theme-secondary/20 before:![--glassmorphic-backdrop-blur:1px]',
-                                'max-w-[40%] text-pretty px-px pl-1 text-left font-fjalla-one text-[0.275rem] leading-snug text-theme-primary-lighter transition-transform delay-[calc(var(--ui-animation-menu-transition-duration)/2)] duration-[--ui-animation-menu-transition-duration]',
-                                isLoaded ? 'translate-x-full' : '-translate-x-full',
-                            )}
-                        >
-                            {subTitle}
+                            <div
+                                className={classNames(
+                                    'before-glassmorphic-backdrop-filter before:left-[20%] before:-z-10 before:h-[85%] before:w-[85%] before:translate-y-[1px] before:skew-x-[30deg] before:rounded-sm before:bg-theme-secondary/20 before:![--glassmorphic-backdrop-blur:1px]',
+                                    'relative mt-[25%] text-nowrap pl-[14px] text-left [font-size:5.25px] [text-shadow:0px_0.6px_theme(colors.theme.secondary-darker)]',
+                                )}
+                            >
+                                {title}
+                            </div>
+
+                            {clients && <Clients clients={clients} dataBlockId=" " extraClassNames="!absolute w-full h-1/3 overflow-hidden" />}
+
+                            <div
+                                className={classNames(
+                                    'before-glassmorphic-backdrop-filter before:left-[21%] before:-z-10 before:h-[90%] before:w-[85%] before:translate-y-[1px] before:skew-x-[-30deg] before:rounded-sm before:bg-theme-secondary/20 before:![--glassmorphic-backdrop-blur:1px]',
+                                    'relative mt-[65%] text-pretty text-left [font-size:3.5px]',
+                                )}
+                            >
+                                {subTitle}
+                            </div>
                         </div>
                     </div>
                 </>

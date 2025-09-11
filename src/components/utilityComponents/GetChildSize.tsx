@@ -2,7 +2,7 @@ import { Children, Context, FC, ReactElement, useEffect, useMemo, useRef, useSta
 import { getChildSizeContextDefaultValue } from '../../contexts/GetChildSizeContext';
 import useResizeObserver from '../../hooks/useResizeObserver';
 
-const GetChildSize: FC<{ children: ReactElement; Context: Context<{ width: number; height: number }> }> = ({ children, Context }) => {
+const GetChildSize: FC<{ children: ReactElement; context: Context<{ width: number; height: number }> }> = ({ children, context }) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     const singleChild_Memo = useMemo(() => {
@@ -30,11 +30,11 @@ const GetChildSize: FC<{ children: ReactElement; Context: Context<{ width: numbe
     }, [rect]);
 
     return (
-        <Context.Provider value={size ?? getChildSizeContextDefaultValue}>
+        <context.Provider value={size ?? getChildSizeContextDefaultValue}>
             <div ref={wrapperRef} className="contents">
                 {singleChild_Memo}
             </div>
-        </Context.Provider>
+        </context.Provider>
     );
 };
 

@@ -97,7 +97,7 @@
         @apply backdrop-blur-[--glassmorphic-backdrop-blur,4px] backdrop-saturate-[1.75];
     }
 
-    .glassmorphic-backdrop-filter-before {
+    .before-glassmorphic-backdrop-filter {
         @apply before:absolute before:left-0 before:top-0 before:size-full before:backdrop-blur-[--glassmorphic-backdrop-blur,4px] before:backdrop-saturate-[1.75];
     }
 

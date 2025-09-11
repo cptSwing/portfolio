@@ -66,6 +66,7 @@ const HamburgerMenu: FC<{
                         buttonData={menuButtonData}
                         routeName={routeName}
                         containerSize={containerSize}
+                        innerShadowRadius={5}
                         hamburgerMenuIsActive={hamburgerMenuIsActive}
                         isHamburgerChild
                     />
@@ -120,7 +121,6 @@ const HamburgerButton: FC<{
     return (
         <GlassmorphicButtonWrapper
             name={name}
-            isVisible={isVisible}
             isActive={hamburgerMenuIsActive}
             style={hamburgerCssVariables_Memo}
             innerShadowRadius={hamburgerMenuIsActive ? 8 : 0}

@@ -41,7 +41,6 @@ export const GlassmorphicButtonWrapper: FC<{
     title?: string;
     style: Record<string, valueof<CSSProperties>>;
     clickHandler: (ev: React.MouseEvent<HTMLButtonElement>) => void;
-    isVisible: boolean;
     isActive?: boolean;
     isRouteNavigation?: boolean;
     mouseEnterHandler?: () => void;
@@ -54,7 +53,6 @@ export const GlassmorphicButtonWrapper: FC<{
     title,
     style,
     clickHandler,
-    isVisible,
     isActive = false,
     isRouteNavigation = false,
     mouseEnterHandler,
@@ -74,6 +72,7 @@ export const GlassmorphicButtonWrapper: FC<{
                 transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo})`,
             }}
             onClick={clickHandler}
+            onMouseEnter={mouseEnterHandler}
         >
             <GlassmorphicClipped
                 clipPath="var(--hexagon-clip-path)"
@@ -95,9 +94,6 @@ export const GlassmorphicButtonWrapper: FC<{
                         transitionDuration: `150ms, var(--ui-animation-menu-transition-duration)`,
                     } as CSSProperties
                 }
-                role={'button'}
-                tabIndex={isVisible ? -1 : 0}
-                onMouseEnter={mouseEnterHandler}
             >
                 {children}
             </GlassmorphicClipped>
@@ -135,7 +131,6 @@ const SvgGlassFilter: FC<{ name?: string; innerShadowRadius: number | undefined;
                         <feFlood floodColor="var(--hexagon-stroke-color)" result="stroke-flood" />
                         <feComposite operator="out" in="stroke-flood" in2="SourceAlpha" result="stroke-composite" />
                         <feMorphology operator="dilate" in="stroke-composite" radius={strokeRadius} result="stroke-dilate" />
-                        {/* <feOffset in="stroke-dilate" dx="-1" dy="0" result="stroke-dilate-offset" /> */}
                     </>
                 )}
                 <feMerge>

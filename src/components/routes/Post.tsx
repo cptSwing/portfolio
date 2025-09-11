@@ -67,7 +67,7 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
             className="absolute top-0 mx-auto h-full w-[86.66%] bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-t-[-10%] clip-inset-x-[100%] sm:size-full sm:px-[4.7%] sm:pt-10 md:px-[4.95%] lg:px-[5%] lg:pt-12 2xl:px-[4.2%]"
         >
             <header className="pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center">
-                <GetChildSize Context={GetChildSizeContext}>
+                <GetChildSize context={GetChildSizeContext}>
                     <FloatingHeader title={title} />
                 </GetChildSize>
             </header>
@@ -77,7 +77,7 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
                 <div>
                     <span className="block sm:text-lg md:text-xl lg:text-2xl">{subTitle}</span>
                     <div className="flex flex-wrap items-center justify-between sm:my-1 sm:gap-y-0.5 lg:my-2 lg:gap-y-1">
-                        <GetChildSize Context={GetChildSizeContext}>
+                        <GetChildSize context={GetChildSizeContext}>
                             <PostDate date={date_Memo} />
                         </GetChildSize>
                         <PostDetails stack={stack} clients={clients} viewLive={viewLive} viewSource={viewSource} />

@@ -54,7 +54,7 @@ const Main = () => {
     // }) as MutableRefObject<HTMLDivElement | null>;
 
     return (
-        <GetChildSize Context={GetChildSizeContext}>
+        <GetChildSize context={GetChildSizeContext}>
             <div
                 className={classNames(
                     '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',

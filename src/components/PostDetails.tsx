@@ -21,7 +21,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive
         <>
             <div className="relative flex items-start justify-end font-lato leading-none tracking-tight">
                 {stack && (
-                    <GetChildSize Context={GetChildSizeContext}>
+                    <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
                             title={'Stack'}
                             jsx={<ToolStack stack={stack} dataBlockId="stack-content-parent" />}
@@ -33,7 +33,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive
                 )}
 
                 {viewLive && (
-                    <GetChildSize Context={GetChildSizeContext}>
+                    <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
                             title={'View Live'}
                             jsx={<ViewLive viewLive={viewLive} dataBlockId="view-live-content-parent" />}
@@ -45,7 +45,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive
                 )}
 
                 {viewSource && (
-                    <GetChildSize Context={GetChildSizeContext}>
+                    <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
                             title={'View Source'}
                             jsx={<ViewSource viewSource={viewSource} dataBlockId="view-source-content-parent" />}
@@ -57,7 +57,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive
                 )}
 
                 {clients && (
-                    <GetChildSize Context={GetChildSizeContext}>
+                    <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
                             title={'Clients / Users'}
                             jsx={<Clients clients={clients} dataBlockId="clients-content-parent" />}
@@ -193,23 +193,25 @@ const ViewSource: FC<{ viewSource: NonNullable<Post['viewSource']> } & PostDetai
     );
 };
 
-const Clients: FC<{ clients: NonNullable<Post['clients']> } & PostDetailElementContentProps> = ({ clients, dataBlockId }) => {
+export const Clients: FC<{ clients: NonNullable<Post['clients']>; extraClassNames?: string } & PostDetailElementContentProps> = ({
+    clients,
+    extraClassNames,
+    dataBlockId,
+}) => {
     return (
         <div
             data-block-id={dataBlockId}
-            className="relative grid gap-x-0.5"
+            className={`relative grid gap-x-0.5 ${extraClassNames}`}
             style={{ gridTemplateColumns: `repeat(${clients.length < 4 ? clients.length : 4}, minmax(0, 1fr)` }}
         >
             {clients.map(({ abbreviation, name, svgUrl }, idx) => (
-                <div key={idx + abbreviation + name} className="group relative">
-                    <div className="relative flex aspect-hex-flat w-12 items-center justify-center bg-theme-secondary-darker/50 text-theme-primary-darker [clip-path:url(#svgRoundedHexagonClipPath-default)] group-hover-active:bg-theme-primary/50 group-hover-active:text-theme-secondary-darker">
-                        <div className="flex aspect-square w-3/5 select-none items-center justify-center rounded-full bg-theme-text-background text-center text-2xs font-semibold">
+                <div key={idx + abbreviation + name} className="group relative flex flex-col items-center justify-start gap-y-1">
+                    <div className="relative flex aspect-hex-flat w-[100px] items-center justify-center bg-theme-secondary-darker/50 text-theme-primary-darker [clip-path:--hexagon-clip-path] group-hover-active:bg-theme-primary/50 group-hover-active:text-theme-secondary-darker">
+                        <div className="flex aspect-square w-3/5 select-none items-center justify-center rounded-full bg-theme-text-background text-center text-lg font-semibold">
                             {abbreviation}
                         </div>
                     </div>
-                    <div className="pointer-events-none absolute top-full z-10 mt-1 text-center text-2xs text-theme-primary opacity-0 group-hover-active:opacity-100">
-                        {name}
-                    </div>
+                    <span className="pointer-events-none text-2xs text-theme-primary opacity-0 group-hover-active:opacity-100">{name}</span>
                 </div>
             ))}
         </div>

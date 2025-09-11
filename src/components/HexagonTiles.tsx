@@ -205,7 +205,6 @@ const CategoryNavigationButton: FC<{
     return (
         <GlassmorphicButtonWrapper
             name={name}
-            isVisible={isVisible}
             isActive={isActiveCategoryButton}
             style={cssVariables_Memo}
             isRouteNavigation
@@ -235,9 +234,9 @@ export const MenuButton: FC<{
     };
     isHamburgerChild?: boolean;
     hamburgerMenuIsActive?: boolean;
-    blurRadius?: number;
+    innerShadowRadius?: number;
     strokeRadius?: number;
-}> = memo(({ buttonData, routeName, containerSize, isHamburgerChild = false, hamburgerMenuIsActive = false, blurRadius, strokeRadius }) => {
+}> = memo(({ buttonData, routeName, containerSize, isHamburgerChild = false, hamburgerMenuIsActive = false, innerShadowRadius, strokeRadius }) => {
     const { name, svgIconPath, target } = buttonData;
     const title = 'title' in buttonData ? buttonData.title : undefined;
 
@@ -259,7 +258,6 @@ export const MenuButton: FC<{
             ),
         [position, rotation, isHamburgerChild, hamburgerMenuIsActive, scale, containerSize, shouldOffset, routeName, breakpoint],
     );
-    const isVisible = scale > 0;
 
     const navigate = useNavigate();
     function handleClick(ev: React.MouseEvent<HTMLButtonElement>) {
@@ -271,9 +269,8 @@ export const MenuButton: FC<{
         <GlassmorphicButtonWrapper
             name={name}
             title={title}
-            isVisible={isVisible}
             style={cssVariables_Memo}
-            innerShadowRadius={blurRadius}
+            innerShadowRadius={innerShadowRadius}
             strokeRadius={strokeRadius}
             clickHandler={handleClick}
         >
@@ -289,19 +286,15 @@ export const MenuButtonSvg: FC<{
     return (
         <div
             className={classNames(
-                'absolute left-0 top-0 flex size-full flex-col items-center justify-center',
+                'size-full bg-theme-text-background/50 [mask-position:center] [mask-repeat:no-repeat] [mask-size:65%] group-hover-active:bg-theme-secondary-lighter/50',
                 counterRotate ? 'rotate-[calc(var(--hexagon-rotate)*-1)] transition-transform duration-[--ui-animation-menu-transition-duration]' : '',
             )}
-        >
-            <div
-                className="aspect-square h-full w-auto bg-theme-text-background/50 [mask-position:center] [mask-repeat:no-repeat] [mask-size:67.5%] group-hover-active:bg-theme-secondary-lighter/50"
-                style={
-                    {
-                        maskImage: `url(${svgIconPath})`,
-                    } as CSSProperties
-                }
-            />
-        </div>
+            style={
+                {
+                    maskImage: `url(${svgIconPath})`,
+                } as CSSProperties
+            }
+        />
     );
 };
 

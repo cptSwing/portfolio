@@ -8,7 +8,15 @@
                 "id": 0,
                 "title": "Design Your Ring",
                 "cardImage": "/images/hd_dyr/hd_dyr_card.jpg",
-                "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
+                "stack": [
+                    "react",
+                    "react-router",
+                    "react-three-fiber",
+                    "react-three-drei",
+                    "react-postprocessing",
+                    "three-bvh-csg",
+                    "tailwindcss"
+                ],
                 "subTitle": "Customizable Wedding-Rings in 3D",
                 "date": "2024-09-12",
                 "showCases": [
@@ -78,7 +86,15 @@
                 "id": 1,
                 "title": "This site!",
                 "cardImage": "/images/portfolio/portfolio_featured.jpg",
-                "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
+                "stack": [
+                    "react",
+                    "react-router",
+                    "react-three-fiber",
+                    "react-three-drei",
+                    "react-postprocessing",
+                    "three-bvh-csg",
+                    "tailwindcss"
+                ],
                 "subTitle": "Rebuilt Portfolio from Scratch",
                 "date": "2024-07-30",
                 "viewSource": {
@@ -101,11 +117,27 @@
                     "href": "https://github.com/VRagments/fader360-frontend"
                 },
                 "clients": [
-                    { "abbreviation": "DW", "name": "Deutsche Welle" },
-                    { "abbreviation": "DW", "name": "Deutsche Welle" },
-                    { "abbreviation": "DW", "name": "Deutsche Welle" }
+                    {
+                        "abbreviation": "DW",
+                        "name": "Deutsche Welle"
+                    },
+                    {
+                        "abbreviation": "DW",
+                        "name": "Deutsche Welle"
+                    },
+                    {
+                        "abbreviation": "DW",
+                        "name": "Deutsche Welle"
+                    }
                 ],
-                "stack": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
+                "stack": [
+                    "react",
+                    "react-three-fiber",
+                    "react-three-drei",
+                    "leva-gui",
+                    "tailwindcss",
+                    "3ds Max"
+                ],
                 "viewLive": [
                     {
                         "url": "https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2",
@@ -216,7 +248,11 @@
                         "text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
                     }
                 ],
-                "stack": ["parcel", "posthtml", "tailwindcss"]
+                "stack": [
+                    "parcel",
+                    "posthtml",
+                    "tailwindcss"
+                ]
             },
             {
                 "id": 4,
@@ -224,8 +260,10 @@
                 "subTitle": "Scroll through 3D experiences",
                 "cardImage": "/images/scrollmersives/scrollmersives_featured.jpg",
                 "date": "2022",
-                "stack": ["three.js", "3ds Max"],
-
+                "stack": [
+                    "three.js",
+                    "3ds Max"
+                ],
                 "showCases": [
                     {
                         "caption": "electric scooter, early proof of concept",
@@ -387,7 +425,7 @@
             {
                 "id": 6,
                 "title": "BER Airport (Tagespiegel)",
-                "subTitle": "Interactive fly-through of BER airport - and its teething problems",
+                "subTitle": "Interactive fly-through of BER airport - and its problems",
                 "cardImage": "/images/ber/ber_featured.jpg",
                 "date": "2021-09-18",
                 "showCases": [
@@ -531,7 +569,11 @@
                 "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
                 "cardImage": "/images/stadtmitte/usm_featured_image.jpg",
                 "date": "2016",
-                "stack": ["Unity Engine", "3ds Max", "Substance Designer"],
+                "stack": [
+                    "Unity Engine",
+                    "3ds Max",
+                    "Substance Designer"
+                ],
                 "viewSource": {
                     "href": "https://github.com/VRagments/StadtmitteVR"
                 },
