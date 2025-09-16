@@ -68,15 +68,20 @@ export const tailwindConvertToMatrixTransform = plugin(({ addUtilities, matchUti
 
     matchUtilities(
         {
-            'matrix-rotate': (value: string) => ({
-                '--tw-matrix-rotate-cos': cos(value, 5),
-                '--tw-matrix-rotate-sin': sin(value, 5),
-                '--tw-matrix-a': `calc(var(--tw-matrix-scale-x, ${defaults.matrixScale}) * var(--tw-matrix-rotate-cos))`,
-                '--tw-matrix-b': `calc(var(--tw-matrix-scale-x, ${defaults.matrixScale}) * var(--tw-matrix-rotate-sin))`,
-                '--tw-matrix-c': `calc(-1 * var(--tw-matrix-scale-y, ${defaults.matrixScale}) * var(--tw-matrix-rotate-sin))`,
-                '--tw-matrix-d': `calc(var(--tw-matrix-scale-y, ${defaults.matrixScale}) * var(--tw-matrix-rotate-cos))`,
-                'transform': defaultMatrixTransform,
-            }),
+            'matrix-rotate': (value: string) => {
+                const rotateCos = cos(value.split('deg')[0]!, 5);
+                const rotateSin = sin(value.split('deg')[0]!, 5);
+
+                return {
+                    '--tw-matrix-rotate-cos': rotateCos,
+                    '--tw-matrix-rotate-sin': rotateSin,
+                    '--tw-matrix-a': `calc(var(--tw-matrix-scale-x, ${defaults.matrixScale}) * var(--tw-matrix-rotate-cos))`,
+                    '--tw-matrix-b': `calc(var(--tw-matrix-scale-x, ${defaults.matrixScale}) * var(--tw-matrix-rotate-sin))`,
+                    '--tw-matrix-c': `calc(-1 * var(--tw-matrix-scale-y, ${defaults.matrixScale}) * var(--tw-matrix-rotate-sin))`,
+                    '--tw-matrix-d': `calc(var(--tw-matrix-scale-y, ${defaults.matrixScale}) * var(--tw-matrix-rotate-cos))`,
+                    'transform': defaultMatrixTransform,
+                };
+            },
         },
         { values: theme('rotate'), supportsNegativeValues: true },
     );

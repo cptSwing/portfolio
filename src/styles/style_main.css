@@ -26,9 +26,9 @@
 }
 
 @layer components {
-    .glassmorphic-grain-before {
-        @apply before:absolute before:left-0 before:top-0 before:size-full before:bg-repeat before:opacity-5 before:[background-size:150%];
-        @apply before:[background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20150%20150%22%3E%0A%20%20%20%20%3Cfilter%20id%3D%22a%22%3E%0A%20%20%20%20%20%20%20%20%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.95%22%20numOctaves%3D%221%22%20stitchTiles%3D%22stitch%22%2F%3E%0A%20%20%20%20%3C%2Ffilter%3E%0A%20%20%20%20%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23a)%22%2F%3E%0A%3C%2Fsvg%3E%0A")];
+    .glassmorphic-grain-after {
+        @apply after:absolute after:left-0 after:top-0 after:[z-index:-100]  after:size-full after:bg-repeat after:opacity-5 after:[background-size:100%];
+        @apply after:[background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20150%20150%22%3E%0A%20%20%20%20%3Cfilter%20id%3D%22a%22%3E%0A%20%20%20%20%20%20%20%20%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.95%22%20numOctaves%3D%221%22%20stitchTiles%3D%22stitch%22%2F%3E%0A%20%20%20%20%3C%2Ffilter%3E%0A%20%20%20%20%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23a)%22%2F%3E%0A%3C%2Fsvg%3E%0A")];
     }
 
     .glassmorphic-backdrop {
@@ -37,6 +37,10 @@
 
     .before-glassmorphic-backdrop {
         @apply before:absolute before:left-0 before:top-0 before:size-full before:backdrop-blur-[--glassmorphic-backdrop-blur,4px] before:backdrop-saturate-[--glassmorphic-backdrop-saturate,2];
+    }
+
+    .glassmorphic-off {
+        @apply !bg-none ![backdrop-filter:_] before:!content-none after:!content-none;
     }
 
     .lighting-gradient {
@@ -48,7 +52,7 @@
             radial-gradient(
                 ellipse 10% 10% at var(--background-gradient-radial-3-position),
                 theme(colors.theme.primary/0.5) 0%,
-                theme(colors.theme.primary-darker/0.75) 40%,
+                theme(colors.theme.primary-darker/0.7) 40%,
                 transparent 100%
             ),
             /* radial-3 */
@@ -62,10 +66,17 @@
                     ellipse 20% 30% at var(--background-gradient-radial-1-position),
                     theme(colors.theme.primary-lighter/0.15) 0%,
                     theme(colors.theme.primary/0.1) 50%,
-                    transparent
+                    transparent 100%
                 ),
             /* radial-1 */
-                linear-gradient(var(--background-gradient-linear-angle), transparent 0%, theme(colors.theme.primary-darker/0.9) 47.5% 52.5%, transparent 100%);
+                linear-gradient(
+                    var(--background-gradient-linear-angle),
+                    transparent 0%,
+                    theme(colors.theme.primary-darker/0.8) 20% 30%,
+                    theme(colors.theme.primary-darker/0.55) 45%,
+                    theme(colors.theme.primary-darker/0.25) 60% 80%,
+                    transparent 100%
+                );
     }
 
     .rotate-text {
@@ -120,10 +131,6 @@
         @apply [--glassmorphic-backdrop-blur:0] [--glassmorphic-backdrop-saturate:1];
     }
 
-    .\!glassmorphic-level-none {
-        @apply ![--glassmorphic-backdrop-blur:0] ![--glassmorphic-backdrop-saturate:1];
-    }
-
     .glassmorphic-level-1 {
         @apply [--glassmorphic-backdrop-blur:1px] [--glassmorphic-backdrop-saturate:1.25];
     }
@@ -141,7 +148,28 @@
     }
 }
 
+.\!glassmorphic-level-none {
+    @apply ![--glassmorphic-backdrop-blur:0] ![--glassmorphic-backdrop-saturate:1];
+}
+
+.\!glassmorphic-level-1 {
+    @apply ![--glassmorphic-backdrop-blur:1px] ![--glassmorphic-backdrop-saturate:1.25];
+}
+
+.\!glassmorphic-level-2 {
+    @apply ![--glassmorphic-backdrop-blur:2px] ![--glassmorphic-backdrop-saturate:1.5];
+}
+
+.\!glassmorphic-level-3 {
+    @apply ![--glassmorphic-backdrop-blur:3px] ![--glassmorphic-backdrop-saturate:1.75];
+}
+
+.\!glassmorphic-level-4 {
+    @apply ![--glassmorphic-backdrop-blur:4px] ![--glassmorphic-backdrop-saturate:2];
+}
+
 #root {
+    @apply before:absolute before:size-full before:top-0 before:left-0  before:bg-theme-primary/10 before:blur-lg before:[clip-path:inset(10%_50%_40%_15%_round_1rem_2rem_3rem_4rem)];
     @apply background-gradients flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather;
     @apply [--hexagon-fill-color:theme(colors.theme.primary/0.05)] [--hexagon-inner-shadow-color:theme(colors.white/0.1)] [--hexagon-stroke-color:theme(colors.theme.secondary/0.1)];
     animation-name: animate-linear, animate-radial-1, animate-radial-2, animate-radial-3;
@@ -149,6 +177,8 @@
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
+
+
 
 @property --background-gradient-radial-1-position {
     syntax: '<percentage>+';

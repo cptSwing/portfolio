@@ -108,7 +108,7 @@ export type HexagonTransformData = {
     shouldOffset: boolean;
 };
 export type HexagonRouteData = Record<ROUTE, HexagonTransformData>;
-export type HexagonRouteDataTransformOffsets = Record<ROUTE, Partial<HexagonTransformData>>;
+export type HexagonRouteDataTransformOffsets = Partial<Record<ROUTE, Partial<HexagonTransformData>>>;
 
 interface CategoryNavigationButtonData {
     name: CategoryName;

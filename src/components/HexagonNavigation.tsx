@@ -1,9 +1,9 @@
-import { halfRoundedHexagonPath, roundedHexagonPath } from '../lib/hexagonDataMatrix';
 import { useZustand } from '../lib/zustand';
 import HexagonTiles from './HexagonTiles';
 import GetChildSizeContext, { getChildSizeContextDefaultValue } from '../contexts/GetChildSizeContext';
 import { useRef } from 'react';
 import useResizeObserver from '../hooks/useResizeObserver';
+import { halfRoundedHexagonPath, roundedHexagonPath } from '../lib/hexagonDataNew';
 
 const HexagonNavigation = () => {
     const _routeName = useZustand((store) => store.values.routeData.name);

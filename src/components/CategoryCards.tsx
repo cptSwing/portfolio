@@ -44,18 +44,16 @@ const CategoryHexagons: FC<{
     const [activeIndex, setActiveIndex] = activeIndexState;
     const thisButtonIndex = getGridAreaIndex(activeIndex, cardIndex, allButtons.length);
 
-    const { position, rotation, scale } = allButtons[thisButtonIndex]!;
     const { title, subTitle, cardImage, clients } = post;
 
     const isAtFront = activeIndex === cardIndex;
 
-    const cssVariables_Memo = useMemo(
-        () =>
-            calcCSSVariables(position, rotation, scale, containerSize, {
-                strokeWidth: 0,
-            }),
-        [position, rotation, scale, containerSize],
-    );
+    const cssVariables_Memo = useMemo(() => {
+        const { position, rotation, scale, isHalf } = allButtons[thisButtonIndex]!;
+        return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
+            strokeWidth: 0,
+        });
+    }, [allButtons, containerSize, thisButtonIndex]);
 
     const navigate = useNavigate();
     function handleClick() {
@@ -76,11 +74,9 @@ const CategoryHexagons: FC<{
         <button
             className={classNames(
                 'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration]',
-                hamburgerMenuIsActive
-                    ? isAtFront
-                        ? '!translate-x-[calc(var(--hexagon-translate-x)*0.725)] !translate-y-[calc(var(--hexagon-translate-y)*1.425)] !scale-x-[calc(var(--hexagon-scale-x)*0.75)] !scale-y-[calc(var(--hexagon-scale-y)*0.75)]'
-                        : '!translate-y-[calc(var(--hexagon-translate-y)*0.9)]'
-                    : '',
+                hamburgerMenuIsActive && isAtFront
+                    ? '!translate-x-[calc(var(--hexagon-translate-x)*0.725)] !translate-y-[calc(var(--hexagon-translate-y)*1.425)] !scale-x-[calc(var(--hexagon-scale-x)*0.75)] !scale-y-[calc(var(--hexagon-scale-y)*0.75)]'
+                    : '!translate-y-[calc(var(--hexagon-translate-y)*0.9)]',
                 isAtFront
                     ? isLoaded
                         ? '!translate-x-[calc(var(--hexagon-translate-x)-(33.333%*var(--hexagon-scale-x)))]'
@@ -98,6 +94,16 @@ const CategoryHexagons: FC<{
         >
             {isAtFront ? (
                 <>
+                    {/* Background */}
+                    {/* <div
+                        className={classNames(
+                            'glassmorphic-backdrop glassmorphic-level-2 absolute left-[60%] top-[20%] flex h-3/4 w-full origin-left flex-col items-end justify-around rounded-[15%_15%_15%_15%/20%_20%_20%_20%] bg-theme-secondary/10 pr-4 transition-transform duration-[--ui-animation-menu-transition-duration]',
+                            isLoaded ? 'scale-x-100' : 'scale-x-0',
+                        )}
+                    >
+                        <div className="float-left h-full w-[42.5%] [shape-outside:polygon(0_0,100%_50%,0_100%)]" />
+                    </div> */}
+
                     {/* Extending wide hexagon */}
                     <div
                         className={classNames(
@@ -122,7 +128,7 @@ const CategoryHexagons: FC<{
                     <div
                         className={classNames(
                             'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute left-[87.5%] top-[40%] flex h-[20%] w-[77.5%] origin-left scale-x-0 flex-col items-center justify-center !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,background-color,transform] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] [clip-path:--hexagon-animated-clip-path]',
-                            isLoaded ? '!glassmorphic-level-3 scale-x-100 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
+                            isLoaded ? '!glassmorphic-level-3 !scale-x-100 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
                             hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
                         )}
                         style={
@@ -143,7 +149,8 @@ const CategoryHexagons: FC<{
                     {/* Card Image, parent again fakes a stroke */}
                     <div
                         className={classNames(
-                            'glassmorphic-backdrop glassmorphic-level-1 glassmorphic-grain-before relative size-full transform-gpu bg-theme-root-background/20 transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
+                            'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-text-background/75 before:transition-transform before:matrix-scale-[0.91] before:[clip-path:--hexagon-clip-path] before:group-hover-active:matrix-scale-[0.95]',
+                            'group relative size-full bg-theme-primary transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
                             hamburgerMenuIsActive ? 'brightness-75 saturate-[0.5]' : '',
                         )}
                     >
@@ -151,7 +158,7 @@ const CategoryHexagons: FC<{
                             src={cardImage}
                             alt={title}
                             className={classNames(
-                                'size-full scale-[0.95] transform-gpu cursor-pointer object-cover transition-transform duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
+                                'size-full cursor-pointer object-cover transition-transform duration-[--ui-animation-menu-transition-duration] matrix-scale-[0.9] [clip-path:--hexagon-clip-path] group-hover-active:matrix-scale-[0.94]',
                             )}
                         />
                     </div>
@@ -159,7 +166,7 @@ const CategoryHexagons: FC<{
             ) : (
                 <div
                     className={classNames(
-                        'relative size-full scale-[0.925] transform-gpu cursor-zoom-in brightness-75 grayscale transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path] group-hover-active:brightness-100 group-hover-active:grayscale-0',
+                        'relative size-full transform-gpu cursor-zoom-in brightness-75 grayscale transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] matrix-scale-[0.925] [clip-path:--hexagon-clip-path] group-hover-active:brightness-100 group-hover-active:grayscale-0',
                     )}
                 >
                     <img src={cardImage} alt={title} className={classNames('size-full object-cover')} />

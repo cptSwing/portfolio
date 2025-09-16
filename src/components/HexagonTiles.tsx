@@ -1,14 +1,7 @@
-import { CSSProperties, FC, memo, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import { FC, memo, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { classNames, cycleThrough, keyDownA11y } from 'cpts-javascript-utilities';
-import {
-    Category,
-    CategoryName,
-    CategoryNavigationButtonRouteData,
-    HexagonRouteData,
-    MenuButtonRouteData,
-    PostNavigationButtonRouteData,
-} from '../types/types';
+import { classNames, cycleThrough } from 'cpts-javascript-utilities';
+import { Category, CategoryName, CategoryNavigationButtonRouteData } from '../types/types';
 import {
     regularHexagons,
     categoryNavigationButtons,
@@ -23,6 +16,7 @@ import { CATEGORY, ROUTE } from '../types/enums';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import HamburgerMenu from './HamburgerMenu';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
+import { Hexagon, MenuButtonHexagon } from './HexagonShapes';
 
 const HexagonTiles = () => {
     const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
@@ -62,7 +56,7 @@ const HexagonTiles = () => {
             }}
         >
             {regularHexagons.map((regularHexagonData, idx) => (
-                <RegularHexagon
+                <Hexagon
                     key={`hex-regular-index-${idx}`}
                     data={regularHexagonData}
                     routeName={routeName}
@@ -71,20 +65,30 @@ const HexagonTiles = () => {
                 />
             ))}
 
-            {categoryNavigationButtons.map((categoryNavigationButtonData, idx) => (
-                <CategoryNavigationButton
-                    key={`hex-nav-index-${idx}`}
-                    buttonData={categoryNavigationButtonData}
-                    containerSize={containerSize}
-                    homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates}
-                />
-            ))}
+            {/* Background */}
+            <div
+                className={classNames(
+                    'before-glassmorphic-backdrop glassmorphic-level-4 before:!bottom-[3.5%] before:!left-[37%] before:!top-auto before:!h-[6%] before:!w-[26%] before:origin-bottom before:rounded-[8%_8%_8%_8%/35%_35%_35%_35%] before:border before:border-theme-text-background/[0.04] before:bg-theme-root-background/30 before:shadow-xl before:transition-transform before:delay-[--ui-animation-menu-transition-duration] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)]',
+                    'absolute size-full',
+                    'glassmorphic-grain-after after:!bottom-[3.5%] after:!left-[37%] after:!top-auto after:!h-[6%] after:!w-[26%] after:origin-bottom after:rounded-[8%_8%_8%_8%/35%_35%_35%_35%] after:transition-transform after:delay-[--ui-animation-menu-transition-duration] after:duration-[--ui-animation-menu-transition-duration]',
+                    routeName === ROUTE.category ? 'before:scale-y-100 after:scale-y-100' : 'before:scale-y-0 after:scale-y-0',
+                )}
+            >
+                {categoryNavigationButtons.map((categoryNavigationButtonData, idx) => (
+                    <CategoryNavigationButton
+                        key={`hex-nav-index-${idx}`}
+                        buttonData={categoryNavigationButtonData}
+                        containerSize={containerSize}
+                        homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates}
+                    />
+                ))}
+            </div>
 
-            {/* Hamburger Menu */}
+            {/* Hamburger Menu, includes further <RegularHexagon> and <MenuButton>s */}
             <HamburgerMenu routeName={routeName} containerSize={containerSize} hamburgerMenuIsActive={hamburgerMenuIsActive} />
 
             {postNavigationButtons.map((postNavigationButtonData, idx) => (
-                <MenuButton
+                <MenuButtonHexagon
                     key={`hex-post-navigation-index-${idx}`}
                     buttonData={postNavigationButtonData}
                     routeName={routeName}
@@ -97,69 +101,6 @@ const HexagonTiles = () => {
 
 export default HexagonTiles;
 
-export const RegularHexagon: FC<{
-    children?: ReactNode;
-    data: HexagonRouteData;
-    routeName: ROUTE;
-    containerSize: {
-        width: number;
-        height: number;
-    };
-    clickHandler?: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-    isMenuButton?: boolean;
-    hamburgerMenuIsActive?: boolean;
-    isHamburgerMenuBackground?: boolean;
-}> = memo(
-    ({ children, data, routeName, containerSize, clickHandler, isMenuButton = false, hamburgerMenuIsActive = false, isHamburgerMenuBackground = false }) => {
-        const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
-        const breakpoint = useZustand((state) => state.values.breakpoint);
-
-        const cssVariables_Memo = useMemo(
-            () =>
-                calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'] }),
-            [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
-        );
-
-        const random_Memo = useMemo(() => Math.random(), []);
-
-        return (
-            <div
-                className={classNames(
-                    'glassmorphic-backdrop glassmorphic-grain-before lighting-gradient transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter]',
-                    'delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms,_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]',
-                    isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
-                    routeName === ROUTE.post
-                        ? '!bg-none ![--hexagon-fill-color:theme(colors.theme.text-background)] [backdrop-filter:_] before:content-none'
-                        : '!to-white/10',
-                    isMenuButton
-                        ? 'hover-active:delay-0 hover-active:duration-100 hover-active:[--tw-scale-x:calc(var(--hexagon-scale-x)*1.1)] hover-active:[--tw-scale-y:calc(var(--hexagon-scale-y)*1.1)]'
-                        : 'regular-hexagon-named-class',
-                    isHamburgerMenuBackground ? '' : '',
-                    hamburgerMenuIsActive
-                        ? isHamburgerMenuBackground
-                            ? 'glassmorphic-level-4'
-                            : isMenuButton
-                              ? 'glassmorphic-level-3'
-                              : 'glassmorphic-level-2 [--glassmorphic-backdrop-saturate:0.75]'
-                        : 'glassmorphic-level-4',
-                )}
-                style={
-                    {
-                        ...cssVariables_Memo,
-                        '--regular-hexagon-transition-random-factor': random_Memo,
-                    } as CSSProperties
-                }
-                onClick={clickHandler}
-                onKeyDown={clickHandler ? keyDownA11y(clickHandler) : undefined}
-                role={clickHandler ? 'button' : undefined}
-                tabIndex={clickHandler ? -1 : undefined}
-            >
-                {children}
-            </div>
-        );
-    },
-);
-
 const CategoryNavigationButton: FC<{
     buttonData: CategoryNavigationButtonRouteData;
     containerSize: {
@@ -171,7 +112,6 @@ const CategoryNavigationButton: FC<{
     const { title, name, target } = buttonData;
     const { name: routeName, content: routeContent } = useZustand((store) => store.values.routeData);
 
-    const { position, rotation, scale, shouldOffset } = buttonData[routeName];
     const breakpoint = useZustand((state) => state.values.breakpoint);
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
     const navigate = useNavigate();
@@ -186,31 +126,35 @@ const CategoryNavigationButton: FC<{
                 'previous',
             );
 
-            let transforms, z;
+            let newTransforms, z;
             if (isActiveCategoryButton) {
-                transforms = categoryNavigationButtonPositions['active'];
+                newTransforms = categoryNavigationButtonPositions['active'];
                 z = 20;
             } else if (CATEGORY[name] === previousCategory) {
-                transforms = categoryNavigationButtonPositions['left'];
+                newTransforms = categoryNavigationButtonPositions['left'];
                 z = 0;
             } else {
-                transforms = categoryNavigationButtonPositions['right'];
+                newTransforms = categoryNavigationButtonPositions['right'];
                 z = 10;
             }
 
-            const { position, rotation, scale } = transforms;
-            const style = calcCSSVariables(position, rotation, scale, containerSize, {
+            const offsetTransforms = { ...buttonData[routeName], ...newTransforms };
+            const { position, rotation, scale, isHalf, shouldOffset } = offsetTransforms;
+            const style = calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
+                strokeWidth: 0,
                 shouldOffset,
                 offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
             });
             return { ...style, zIndex: z };
         } else {
-            return calcCSSVariables(position, rotation, scale, containerSize, {
+            const { position, rotation, scale, isHalf, shouldOffset } = buttonData[routeName];
+
+            return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
                 shouldOffset,
                 offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
             });
         }
-    }, [breakpoint, containerSize, isActiveCategoryButton, name, position, rotation, routeContent.category?.id, routeName, scale, shouldOffset]);
+    }, [breakpoint, buttonData, containerSize, isActiveCategoryButton, name, routeContent.category?.id, routeName]);
 
     function handleClick() {
         navigate(target);
@@ -232,82 +176,20 @@ const CategoryNavigationButton: FC<{
             clickHandler={handleClick}
             mouseEnterHandler={handleMouseEnter}
             lightingGradient
+            strokeRadius={1}
             innerShadowRadius={6}
         >
-            <div
+            <span
                 className={classNames(
                     'absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75 transition-transform duration-[--ui-animation-menu-transition-duration]',
                     routeName === ROUTE.home ? '' : 'rotate-[calc(var(--hexagon-rotate)*-1)]',
                 )}
             >
                 {title}
-            </div>
+            </span>
         </GlassmorphicButtonWrapper>
     );
 });
-
-export const MenuButton: FC<{
-    buttonData: MenuButtonRouteData | PostNavigationButtonRouteData;
-    routeName: ROUTE;
-    containerSize: {
-        width: number;
-        height: number;
-    };
-    hamburgerMenuIsActive?: boolean;
-}> = memo(({ buttonData, routeName, containerSize, hamburgerMenuIsActive = false }) => {
-    const { svgIconPath, target } = buttonData;
-    const title = 'title' in buttonData ? buttonData.title : undefined;
-
-    const navigate = useNavigate();
-    function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
-        // @ts-expect-error this will not lead to problems, trust me
-        const targetResult = typeof target === 'string' ? target : target(ev);
-        targetResult && navigate(targetResult);
-    }
-
-    return (
-        <RegularHexagon
-            data={buttonData}
-            routeName={routeName}
-            containerSize={containerSize}
-            isMenuButton={true}
-            hamburgerMenuIsActive={hamburgerMenuIsActive}
-            clickHandler={handleClick}
-        >
-            <MenuButtonSvg svgIconPath={svgIconPath} title={title} />
-        </RegularHexagon>
-    );
-});
-
-export const MenuButtonSvg: FC<{
-    svgIconPath: string;
-    title?: string;
-    counterRotate?: boolean;
-}> = ({ svgIconPath, title, counterRotate = true }) => {
-    return (
-        <div
-            className={classNames(
-                'group flex size-full flex-col items-center justify-center p-0.5 group-hover-active:scale-110',
-                counterRotate ? 'rotate-[calc(var(--hexagon-rotate)*-1)] transition-transform duration-[--ui-animation-menu-transition-duration]' : '',
-            )}
-        >
-            <div
-                className="w-full flex-auto bg-theme-primary-lighter/50 [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active:bg-theme-text-background/50"
-                style={
-                    {
-                        maskImage: `url(${svgIconPath})`,
-                    } as CSSProperties
-                }
-            />
-
-            {title && (
-                <span className="select-none pb-1.5 font-lato text-lg leading-none tracking-tighter text-theme-primary group-hover-active:text-theme-secondary-lighter">
-                    {title}
-                </span>
-            )}
-        </div>
-    );
-};
 
 // Local Functions
 

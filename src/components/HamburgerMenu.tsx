@@ -2,9 +2,15 @@ import { CSSProperties, FC, memo, useMemo } from 'react';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { ROUTE } from '../types/enums';
 import { useZustand } from '../lib/zustand';
-import { calcCSSVariables, hamburgerButton, hexagonRouteOffsetValues, menuButtons, menuButtonsHamburgerTransformOffsets } from '../lib/hexagonDataNew';
-import { MenuButton, MenuButtonSvg, RegularHexagon } from './HexagonTiles';
-import { HexagonRouteDataTransformOffsets, MenuButtonRouteData } from '../types/types';
+import {
+    calcCSSVariables,
+    hamburgerButton,
+    hexagonRouteOffsetValues,
+    menuButtons,
+    menuButtonsHamburgerTransformOffsets,
+    offsetHexagonTransforms,
+} from '../lib/hexagonDataNew';
+import { HamburgerBackgroundHexagon, MenuButtonHexagon, MenuButtonSvg } from './HexagonShapes';
 
 const HamburgerMenu: FC<{
     routeName: ROUTE;
@@ -16,23 +22,7 @@ const HamburgerMenu: FC<{
 }> = memo(({ routeName, containerSize, hamburgerMenuIsActive }) => {
     const menuButtons_Memo = useMemo(() => {
         if (hamburgerMenuIsActive) {
-            const offsetButtons = menuButtons.map((menuButtonRouteData, idx) => {
-                const newRouteData: MenuButtonRouteData = { ...menuButtonRouteData };
-
-                let key: keyof MenuButtonRouteData;
-                for (key in menuButtonRouteData) {
-                    if (key in ROUTE && menuButtonsHamburgerTransformOffsets[idx]?.[key as ROUTE]) {
-                        newRouteData[key as ROUTE] = {
-                            ...newRouteData[key as keyof HexagonRouteDataTransformOffsets],
-                            ...menuButtonsHamburgerTransformOffsets[idx][key as keyof HexagonRouteDataTransformOffsets],
-                        };
-                    }
-                }
-
-                return newRouteData as MenuButtonRouteData;
-            });
-
-            return offsetButtons;
+            return offsetHexagonTransforms(menuButtons, menuButtonsHamburgerTransformOffsets);
         } else {
             return menuButtons;
         }
@@ -48,54 +38,16 @@ const HamburgerMenu: FC<{
             }
         >
             {/* Background Hexagon, to fit into existing grid of hexes */}
-            <RegularHexagon
-                data={{
-                    [ROUTE.home]: {
-                        position: {
-                            x: 150,
-                            y: 129.9,
-                        },
-                        rotation: hamburgerMenuIsActive ? -90 : 0,
-                        isHalf: false,
-                        scale: hamburgerMenuIsActive ? 1.3 : 1,
-                        shouldOffset: false,
-                    },
-                    [ROUTE.category]: {
-                        position: {
-                            x: 150,
-                            y: hamburgerMenuIsActive ? 10 : 0,
-                        },
-                        rotation: hamburgerMenuIsActive ? -90 : 30,
-                        isHalf: false,
-                        scale: hamburgerMenuIsActive ? 1.1 : 0.866,
-                        shouldOffset: false,
-                    },
-                    [ROUTE.post]: {
-                        position: {
-                            x: 75,
-                            y: 0,
-                        },
-                        rotation: 30,
-                        isHalf: true,
-                        scale: 0,
-                        shouldOffset: false,
-                    },
-                }}
-                routeName={routeName}
-                containerSize={containerSize}
-                hamburgerMenuIsActive={hamburgerMenuIsActive}
-                isHamburgerMenuBackground
-            />
+            <HamburgerBackgroundHexagon routeName={routeName} containerSize={containerSize} hamburgerMenuIsActive={hamburgerMenuIsActive} />
 
             {menuButtons_Memo.map((menuButtonData, idx) => {
                 return (
-                    <MenuButton
+                    <MenuButtonHexagon
                         key={`hex-menu-button-index-${idx}`}
                         buttonData={menuButtonData}
                         routeName={routeName}
                         containerSize={containerSize}
                         hamburgerMenuIsActive={hamburgerMenuIsActive}
-                        // isHamburgerChild
                     />
                 );
             })}
@@ -116,14 +68,16 @@ const HamburgerButton: FC<{
     };
 }> = ({ routeName, hamburgerMenuIsActive, containerSize }) => {
     const { name, svgIconPath, target } = hamburgerButton;
-    const { position, rotation, scale, shouldOffset } = hamburgerButton[routeName];
 
     const breakpoint = useZustand((state) => state.values.breakpoint);
 
     const hamburgerCssVariables_Memo = useMemo(() => {
+        const { position, rotation, scale, isHalf, shouldOffset } = hamburgerButton[routeName];
+
         const newPosition = routeName === ROUTE.home && hamburgerMenuIsActive ? { x: position.x, y: 95 } : position;
 
-        const style = calcCSSVariables(newPosition, rotation, hamburgerMenuIsActive ? scale * 0.85 : scale, containerSize, {
+        const style = calcCSSVariables(newPosition, rotation, hamburgerMenuIsActive ? scale * 0.85 : scale, isHalf, containerSize, {
+            strokeWidth: 0,
             shouldOffset,
             offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
         });
@@ -138,7 +92,7 @@ const HamburgerButton: FC<{
         }
 
         return style;
-    }, [position, hamburgerMenuIsActive, rotation, scale, containerSize, shouldOffset, routeName, breakpoint]);
+    }, [hamburgerMenuIsActive, containerSize, routeName, breakpoint]);
 
     function handleClick(ev: React.MouseEvent<HTMLButtonElement>) {
         target(ev);
@@ -150,7 +104,7 @@ const HamburgerButton: FC<{
             isActive={hamburgerMenuIsActive}
             style={hamburgerCssVariables_Memo}
             innerShadowRadius={hamburgerMenuIsActive ? 8 : 0}
-            strokeRadius={0}
+            strokeRadius={0.85}
             lightingGradient
             clickHandler={handleClick}
         >
