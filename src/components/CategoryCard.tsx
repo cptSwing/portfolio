@@ -175,9 +175,7 @@ const CatCard: FC<{
         <button
             className={classNames(
                 'pointer-events-auto absolute flex size-full items-center justify-center overflow-clip bg-theme-primary/5 p-4 opacity-[--carousel-card-opacity] transition-[transform,--carousel-card-opacity,backdrop-filter,border-radius] delay-[150ms,0ms,0ms,0ms] duration-[--ui-animation-menu-transition-duration] hover-active:!opacity-100',
-                carouselIndex === 0
-                    ? 'glassmorphic cursor-pointer rounded-lg'
-                    : 'glassmorphic-off !glassmorphic-lighting-gradient cursor-zoom-in rounded-[9rem]',
+                carouselIndex === 0 ? 'cursor-pointer rounded-lg' : '!glassmorphic-lighting-gradient cursor-zoom-in rounded-[9rem]',
             )}
             style={
                 {

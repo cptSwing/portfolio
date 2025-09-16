@@ -3,6 +3,7 @@ import { ROUTE } from '../types/enums';
 import {
     CategoryNavigationButtonRouteData,
     HexagonRouteData,
+    HexagonRouteDataTransformOffsets,
     HexagonTransformData,
     MenuButtonRouteData,
     PostNavigationButtonRouteData,
@@ -642,7 +643,7 @@ export const regularHexagons: HexagonRouteData[] = [
     },
 ];
 
-export const categoryNavigationButtonPositions = {
+export const categoryNavigationButtonPositions: Record<'active' | 'left' | 'right', Omit<HexagonTransformData, 'isHalf'>> = {
     active: {
         position: {
             x: 150,
@@ -830,7 +831,7 @@ export const menuButtons: MenuButtonRouteData[] = [
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.35,
+            scale: 0,
             shouldOffset: false,
         },
         [ROUTE.category]: {
@@ -868,7 +869,7 @@ export const menuButtons: MenuButtonRouteData[] = [
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.35,
+            scale: 0,
             shouldOffset: true,
         },
         [ROUTE.category]: {
@@ -878,7 +879,7 @@ export const menuButtons: MenuButtonRouteData[] = [
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.3,
+            scale: 0,
             shouldOffset: true,
         },
         [ROUTE.post]: {
@@ -906,7 +907,7 @@ export const menuButtons: MenuButtonRouteData[] = [
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.35,
+            scale: 0,
             shouldOffset: true,
         },
         [ROUTE.category]: {
@@ -916,7 +917,7 @@ export const menuButtons: MenuButtonRouteData[] = [
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.3,
+            scale: 0,
             shouldOffset: true,
         },
         [ROUTE.post]: {
@@ -954,7 +955,7 @@ export const menuButtons: MenuButtonRouteData[] = [
             },
             rotation: 30,
             isHalf: false,
-            scale: 0.3,
+            scale: 0,
             shouldOffset: false,
         },
         [ROUTE.post]: {
@@ -974,6 +975,136 @@ export const menuButtons: MenuButtonRouteData[] = [
             store_toggleSubMenu({ name: null });
             store_toggleHamburgerMenu(false);
             return '/';
+        },
+    },
+];
+
+export const menuButtonsHamburgerTransformOffsets: HexagonRouteDataTransformOffsets[] = [
+    // User Login (inactive), disappears after ROUTE.home
+    {
+        [ROUTE.home]: {
+            rotation: 0,
+            scale: 0.35,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 375,
+                y: 0,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: 216.5,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0,
+        },
+    },
+
+    // Settings
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 180,
+                y: 140,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: true,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 175,
+                y: 15,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.3,
+            shouldOffset: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -50,
+                y: 232.5,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: false,
+        },
+    },
+
+    // Contact
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 120,
+                y: 140,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: true,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 125,
+                y: 15,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.3,
+            shouldOffset: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -50,
+                y: 257.5,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.275,
+            shouldOffset: false,
+        },
+    },
+
+    // Appears only in '[ROUTE.category]' and '[ROUTE.post]' routeData:
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 180,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 150,
+                y: 30,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.3,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -50,
+                y: 211,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.2,
+            shouldOffset: false,
         },
     },
 ];
@@ -1104,7 +1235,7 @@ export const categoryCardActiveHexagon: HexagonTransformData = {
     },
     rotation: 0,
     isHalf: false,
-    scale: 2.1,
+    scale: 1.8,
     shouldOffset: false,
 };
 
@@ -1114,7 +1245,7 @@ const categoryCardInactiveHexagon: HexagonTransformData = {
         x: 0,
         y: 205,
     },
-    rotation: 30,
+    rotation: 0,
     isHalf: false,
     scale: 1,
     shouldOffset: false,
@@ -1167,7 +1298,8 @@ export function getCategoryHexagons(count: number): HexagonTransformData[] {
 
 export const roundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5);
 export const halfRoundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5, true);
-export const widerRoundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5, false, true);
+export const widerRoundedHexagonPath = getHexagonPath(hexHalfWidth * 0.45, (hexHalfWidth * 0.45) / 5, false, 1.1);
+export const widerNarrowRoundedHexagonPath = getHexagonPath(hexHalfWidth * 0.2, (hexHalfWidth * 0.2) / 5, false, 2.875);
 
 export const subMenuButtonHexagonPath = getHexagonPath(0.5, 0.1);
 
@@ -1418,13 +1550,13 @@ function _getOffsetsAndScale(column: number, row: number): { x: number; y: numbe
     };
 }
 
-function getHexagonPath(sideLength = 1, cornerRadius = 8, isHalf = false, wide = false): string {
+function getHexagonPath(sideLength = 1, cornerRadius = 8, isHalf = false, wider = 0): string {
     const points: { x: number; y: number }[] = [];
     const moveZeroPoint = 180;
     const centerX = sideLength;
     const centerY = sideLength * staticValues.heightAspect.flatTop;
 
-    const extraWidth = wide ? sideLength * 1.25 : 0;
+    const extraWidth = wider ? sideLength * 2 * wider : 0;
 
     for (let i = 0; i < 6; i++) {
         const angle_deg = 60 * i + moveZeroPoint;
@@ -1434,7 +1566,7 @@ function getHexagonPath(sideLength = 1, cornerRadius = 8, isHalf = false, wide =
         let xRounded = roundToDecimal(x, 4);
         const yRounded = roundToDecimal(y, 4);
 
-        if (wide) {
+        if (wider) {
             switch (i) {
                 // case 0:
                 //     xRounded += extraWidth;

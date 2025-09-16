@@ -1,4 +1,4 @@
-import { Category as Category_T } from '../../types/types';
+import { Category as Category_T, Post } from '../../types/types';
 import { FC, useEffect, useRef, useState } from 'react';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
 import { useZustand } from '../../lib/zustand.ts';
@@ -18,7 +18,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     const isMounted = useMountTransition(categoryRef, show, '!clip-inset-x-[-50%]');
 
     const activeIndexState = useState(0);
-    const [_, setActiveIndex] = activeIndexState;
+    const [activeIndex, setActiveIndex] = activeIndexState;
 
     const [wheelDirection, wheelDistance] = useMouseWheelDirection();
     useEffect(() => {
@@ -39,42 +39,32 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
         };
     }, [category.id, previousCategoryId, setActiveIndex]);
 
-    return (
-        <>
-            {isMounted ? (
-                <div
-                    ref={categoryRef}
-                    className="pointer-events-none absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%]"
-                >
-                    <CategoryCards posts={category.posts} activeIndexState={activeIndexState} />
-                </div>
-            ) : (
-                // <div
-                //     ref={categoryRef}
-                //     className={classNames(
-                //         'absolute flex h-full w-[86.66%] flex-row flex-wrap items-center justify-center py-[8%] pl-[2.5%] transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%] sm:size-full sm:flex-col sm:p-0', //
-                //         show ? 'delay-[calc(var(--ui-animation-menu-transition-duration)/2)]' : 'delay-0',
-                //     )}
-                // >
-                //     {/* Info */}
-                //     <BannerTitle title={title} classes="h-[3%] ml-[17%] self-start sm:h-[7.5%] flex-shrink-0 flex-grow sm:basis-auto basis-full" />
+    return isMounted ? (
+        <div
+            ref={categoryRef}
+            className="pointer-events-none absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%]"
+        >
+            <CategoryCards posts={category.posts} activeIndexState={activeIndexState} />
 
-                //     <nav className="pointer-events-none flex items-center justify-center sm:h-[85%] sm:w-[90%]">
-                //         <Carousel posts={category.posts} activeIndexState={activeIndexState} direction={wheelDirection} />
+            {/* <div className="mx-auto mt-[40%] flex h-1/4 w-[90%] bg-black/80" /> */}
 
-                //         <FlippedBrand />
-                //     </nav>
-
-                //     {/* Debug! */}
-                //     {<DebugWrapper category={category} activeIndex={activeIndex} setIndex={setActiveIndex} />}
-                // </div>
-                <FlippedBrand />
-            )}
-        </>
-    );
+            {/* {category.posts[activeIndex] && <PostPreview post={category.posts[activeIndex]} />} */}
+        </div>
+    ) : null;
 };
 
 export default Category;
+
+const PostPreview: FC<{ post: Post }> = ({ post }) => {
+    const { title, subTitle } = post;
+
+    return (
+        <div className="absolute top-1/2 z-50 flex h-1/2 w-full -translate-y-1/2 flex-col items-center justify-around">
+            <div className="glassmorphic-backdrop w-fit rounded-xl bg-blue-500/10 p-4 text-3xl text-theme-text-background">{title}</div>
+            <div className="glassmorphic-backdrop w-fit rounded-xl bg-blue-500/10 p-4 text-3xl text-theme-text-background">{subTitle}</div>
+        </div>
+    );
+};
 
 const DebugWrapper: FC<{
     category: Category_T;

@@ -108,6 +108,7 @@ export type HexagonTransformData = {
     shouldOffset: boolean;
 };
 export type HexagonRouteData = Record<ROUTE, HexagonTransformData>;
+export type HexagonRouteDataTransformOffsets = Record<ROUTE, Partial<HexagonTransformData>>;
 
 interface CategoryNavigationButtonData {
     name: CategoryName;
@@ -121,10 +122,11 @@ interface MenuButtonData {
     name: MenuName;
     title?: string;
     svgIconPath: string;
-    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => string | void;
+    target: (ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>) => string | void;
 }
 /** A Button that executes a function (which can also return a navigatable target) */
 export interface MenuButtonRouteData extends HexagonRouteData, MenuButtonData {}
+export interface MenuButtonRouteDataTransformOffsets extends HexagonRouteDataTransformOffsets, MenuButtonData {}
 
 interface PostNavigationButtonData {
     name: PostNavigationName;

@@ -25,7 +25,7 @@ const MenuModal = () => {
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
         <dialog
             ref={dialogRef}
-            className="glassmorphic-backdrop-filter size-full overflow-hidden bg-gray-950 transition-[background-color]" // backdrop-blur-md
+            className="glassmorphic-backdrop size-full overflow-hidden bg-gray-950 transition-[background-color]" // backdrop-blur-md
             onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleSubMenu({ name: null })}
         >
             {name && (name === 'config' ? <Settings /> : name === 'contact' ? <Contact /> : null)}

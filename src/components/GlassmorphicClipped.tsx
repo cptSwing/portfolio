@@ -1,7 +1,7 @@
 import { ComponentPropsWithRef, CSSProperties, FC, forwardRef, ReactNode, useMemo } from 'react';
 import { valueof } from '../types/types';
 import { useZustand } from '../lib/zustand';
-import { classNames, roundNumberToDecimal } from 'cpts-javascript-utilities';
+import { classNames } from 'cpts-javascript-utilities';
 import { ROUTE } from '../types/enums';
 
 interface GlassmorphicProps extends ComponentPropsWithRef<'div'> {
@@ -19,7 +19,7 @@ const GlassmorphicClipped = forwardRef<HTMLDivElement, GlassmorphicProps>((props
         <div
             ref={ref}
             {...rest}
-            className={`${className} glassmorphic-backdrop-filter relative [clip-path:--glassmorphic-clipped-clip-path]`}
+            className={`${className} glassmorphic-backdrop glassmorphic-level-3 relative [clip-path:--glassmorphic-clipped-clip-path]`}
             style={{ ...style, '--glassmorphic-clipped-clip-path': clipPath } as CSSProperties}
         >
             <SvgGlassFilter name={uuid} innerShadowRadius={innerShadowRadius} strokeRadius={strokeRadius} />
@@ -38,7 +38,6 @@ export default GlassmorphicClipped;
 export const GlassmorphicButtonWrapper: FC<{
     children: ReactNode;
     name: string;
-    title?: string;
     style: Record<string, valueof<CSSProperties>>;
     clickHandler: (ev: React.MouseEvent<HTMLButtonElement>) => void;
     isActive?: boolean;
@@ -50,7 +49,6 @@ export const GlassmorphicButtonWrapper: FC<{
 }> = ({
     children,
     name,
-    title,
     style,
     clickHandler,
     isActive = false,
@@ -79,30 +77,23 @@ export const GlassmorphicButtonWrapper: FC<{
                 innerShadowRadius={innerShadowRadius}
                 strokeRadius={strokeRadius}
                 className={classNames(
-                    '![--glassmorphic-backdrop-blur:4px]',
+                    isRouteNavigation ? `navigation-button-hexagon-class-${name}` : '',
                     lightingGradient ? 'lighting-gradient' : '',
-                    'pointer-events-auto aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[--hexagon-inner-shadow-color,--hexagon-lighting-gradient-counter-rotation]',
+                    'pointer-events-auto aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[--hexagon-inner-shadow-color,--hexagon-lighting-gradient-counter-rotation,backdrop-filter]',
                     'group-hover-active:!scale-x-[1.05] group-hover-active:!scale-y-[1.05] group-hover-active:![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]',
-                    isActive ? '![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]' : '',
+                    isActive ? '!glassmorphic-level-4 ![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]' : '',
                     routeName === ROUTE.post
                         ? '[--hexagon-fill-color:theme(colors.theme.primary/0.5)] [--hexagon-inner-shadow-color:transparent] [--hexagon-stroke-color:transparent]'
                         : '[--hexagon-fill-color:theme(colors.theme.secondary/0.35)] [--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter/0.25)] [--hexagon-stroke-color:theme(colors.theme.primary-lighter/0.5)]',
-                    isRouteNavigation ? `navigation-button-hexagon-class-${name}` : `menu-button-hexagon-class-${name}`,
                 )}
                 style={
                     {
-                        transitionDuration: `150ms, var(--ui-animation-menu-transition-duration)`,
+                        transitionDuration: `150ms, var(--ui-animation-menu-transition-duration), 150ms`,
                     } as CSSProperties
                 }
             >
                 {children}
             </GlassmorphicClipped>
-
-            <span
-                className="absolute left-1/2 top-full block -translate-x-1/2 translate-y-1/2 rotate-[calc(var(--hexagon-rotate)*-1)] scale-x-[calc(1/var(--hexagon-scale-x))] scale-y-[calc(1/var(--hexagon-scale-y))] font-lato text-xs leading-none tracking-tighter text-theme-primary transition-transform group-hover-active:text-theme-secondary-lighter" // scale-[calc(0.5/var(--button-scale))]
-            >
-                {title}
-            </span>
         </button>
     );
 };

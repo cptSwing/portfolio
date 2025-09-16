@@ -2,8 +2,9 @@ import { CSSProperties, FC, memo, useMemo } from 'react';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { ROUTE } from '../types/enums';
 import { useZustand } from '../lib/zustand';
-import { calcCSSVariables, hamburgerButton, hexagonRouteOffsetValues, menuButtons } from '../lib/hexagonDataNew';
+import { calcCSSVariables, hamburgerButton, hexagonRouteOffsetValues, menuButtons, menuButtonsHamburgerTransformOffsets } from '../lib/hexagonDataNew';
 import { MenuButton, MenuButtonSvg, RegularHexagon } from './HexagonTiles';
+import { HexagonRouteDataTransformOffsets, MenuButtonRouteData } from '../types/types';
 
 const HamburgerMenu: FC<{
     routeName: ROUTE;
@@ -13,6 +14,30 @@ const HamburgerMenu: FC<{
     };
     hamburgerMenuIsActive: boolean;
 }> = memo(({ routeName, containerSize, hamburgerMenuIsActive }) => {
+    const menuButtons_Memo = useMemo(() => {
+        if (hamburgerMenuIsActive) {
+            const offsetButtons = menuButtons.map((menuButtonRouteData, idx) => {
+                const newRouteData: MenuButtonRouteData = { ...menuButtonRouteData };
+
+                let key: keyof MenuButtonRouteData;
+                for (key in menuButtonRouteData) {
+                    if (key in ROUTE && menuButtonsHamburgerTransformOffsets[idx]?.[key as ROUTE]) {
+                        newRouteData[key as ROUTE] = {
+                            ...newRouteData[key as keyof HexagonRouteDataTransformOffsets],
+                            ...menuButtonsHamburgerTransformOffsets[idx][key as keyof HexagonRouteDataTransformOffsets],
+                        };
+                    }
+                }
+
+                return newRouteData as MenuButtonRouteData;
+            });
+
+            return offsetButtons;
+        } else {
+            return menuButtons;
+        }
+    }, [hamburgerMenuIsActive]);
+
     return (
         <div
             className="transform-3d origin-[50%_35vh] transition-transform duration-[--ui-animation-menu-transition-duration]"
@@ -22,6 +47,7 @@ const HamburgerMenu: FC<{
                 } as CSSProperties
             }
         >
+            {/* Background Hexagon, to fit into existing grid of hexes */}
             <RegularHexagon
                 data={{
                     [ROUTE.home]: {
@@ -57,18 +83,19 @@ const HamburgerMenu: FC<{
                 }}
                 routeName={routeName}
                 containerSize={containerSize}
+                hamburgerMenuIsActive={hamburgerMenuIsActive}
+                isHamburgerMenuBackground
             />
 
-            {menuButtons.map((menuButtonData, idx) => {
+            {menuButtons_Memo.map((menuButtonData, idx) => {
                 return (
                     <MenuButton
                         key={`hex-menu-button-index-${idx}`}
                         buttonData={menuButtonData}
                         routeName={routeName}
                         containerSize={containerSize}
-                        innerShadowRadius={5}
                         hamburgerMenuIsActive={hamburgerMenuIsActive}
-                        isHamburgerChild
+                        // isHamburgerChild
                     />
                 );
             })}
@@ -112,7 +139,6 @@ const HamburgerButton: FC<{
 
         return style;
     }, [position, hamburgerMenuIsActive, rotation, scale, containerSize, shouldOffset, routeName, breakpoint]);
-    const isVisible = scale > 0;
 
     function handleClick(ev: React.MouseEvent<HTMLButtonElement>) {
         target(ev);

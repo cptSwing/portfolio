@@ -1,5 +1,5 @@
 import { CSSProperties, FC, useContext, useEffect, useMemo, useState } from 'react';
-import { getCategoryHexagons, calcCSSVariables, widerRoundedHexagonPath } from '../lib/hexagonDataNew';
+import { getCategoryHexagons, calcCSSVariables, widerRoundedHexagonPath, widerNarrowRoundedHexagonPath } from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { HexagonTransformData, Post } from '../types/types';
@@ -75,18 +75,17 @@ const CategoryHexagons: FC<{
     return (
         <button
             className={classNames(
-                // Provides "Stroke" by adding :before element below, clipping, and with bg-color
-                'before:pointer-events-auto before:absolute before:left-0 before:top-0 before:size-full before:transition-[background-color] before:duration-[--ui-animation-menu-transition-duration] before:[clip-path:--hexagon-clip-path]',
-                'transform-hexagon group absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] hover-active:duration-100',
+                'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration]',
                 hamburgerMenuIsActive
                     ? isAtFront
                         ? '!translate-x-[calc(var(--hexagon-translate-x)*0.725)] !translate-y-[calc(var(--hexagon-translate-y)*1.425)] !scale-x-[calc(var(--hexagon-scale-x)*0.75)] !scale-y-[calc(var(--hexagon-scale-y)*0.75)]'
-                        : '!translate-y-[calc(var(--hexagon-translate-y)*1)]'
+                        : '!translate-y-[calc(var(--hexagon-translate-y)*0.9)]'
                     : '',
                 isAtFront
-                    ? 'before:bg-theme-secondary'
-                    : 'before:bg-theme-primary-darker hover-active:!z-50 hover-active:scale-[calc(var(--hexagon-scale-x)*1.35)]',
-                isAtFront && isLoaded ? '!translate-x-[calc(var(--hexagon-translate-x)*0.615)]' : '',
+                    ? isLoaded
+                        ? '!translate-x-[calc(var(--hexagon-translate-x)-(33.333%*var(--hexagon-scale-x)))]'
+                        : ''
+                    : 'hover-active:!z-50 hover-active:scale-[calc(var(--hexagon-scale-x)*1.35)]',
             )}
             style={
                 {
@@ -94,75 +93,78 @@ const CategoryHexagons: FC<{
                     zIndex: 20 - thisButtonIndex,
                 } as CSSProperties
             }
-            onClick={handleClick}
             onTransitionEnd={({ target, currentTarget }) => target === currentTarget && setIsLoaded(true)}
+            onClick={handleClick}
         >
-            {isAtFront && (
+            {isAtFront ? (
                 <>
+                    {/* Extending wide hexagon */}
                     <div
                         className={classNames(
-                            'before-glassmorphic-backdrop-filter before:transition-[backdrop-filter] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)] before:group-hover-active:!backdrop-saturate-200 before:group-hover-active:duration-100 before:group-hover-active:![--glassmorphic-backdrop-blur:3px]',
-                            'lighting-gradient pointer-events-auto absolute left-0 top-0 -z-10 h-full w-[160%] !from-black/15 from-40% !to-white/15 to-60% transition-[background-color,clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path] group-hover-active:duration-100',
-                            isLoaded ? 'bg-theme-secondary/15 ![--glassmorphic-backdrop-blur:2px]' : 'bg-theme-secondary/5 ![--glassmorphic-backdrop-blur:0px]',
+                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute bottom-0 left-[60%] flex h-1/2 w-[105%] origin-left scale-x-0 flex-col items-center justify-center gap-y-[10%] !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,transform,background-color] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path]',
+                            isLoaded ? '!glassmorphic-level-2 !scale-x-100 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
                             hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
                         )}
                         style={
                             {
-                                '--hexagon-animated-clip-path': isLoaded ? `path("${widerRoundedHexagonPath}")` : 'var(--hexagon-clip-path)',
+                                '--hexagon-animated-clip-path': `path("${widerRoundedHexagonPath}")`,
+                            } as CSSProperties
+                        }
+                    >
+                        {clients && <Clients clients={clients} dataBlockId=" " extraClassNames="w-1/2 basis-1/3 overflow-hidden" />}
+
+                        <div className="ml-[15%] max-w-[33.333%] text-pretty text-left font-fjalla-one leading-[1.1] text-theme-primary [font-size:4px]">
+                            {subTitle}
+                        </div>
+                    </div>
+
+                    {/* Extending wide hexagon */}
+                    <div
+                        className={classNames(
+                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute left-[87.5%] top-[40%] flex h-[20%] w-[77.5%] origin-left scale-x-0 flex-col items-center justify-center !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,background-color,transform] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] [clip-path:--hexagon-animated-clip-path]',
+                            isLoaded ? '!glassmorphic-level-3 scale-x-100 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
+                            hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
+                        )}
+                        style={
+                            {
+                                '--hexagon-animated-clip-path': `path("${widerNarrowRoundedHexagonPath}")`,
                             } as CSSProperties
                         }
                     >
                         <div
                             className={classNames(
-                                'absolute left-[50%] h-full w-[37.5%] flex-col items-start justify-around font-fjalla-one leading-[1.1] text-theme-primary-lighter transition-transform delay-[calc(var(--ui-animation-menu-transition-duration)/4)] duration-[--ui-animation-menu-transition-duration]',
-                                isLoaded ? 'translate-x-0' : '-translate-x-full',
+                                'ml-[5%] text-nowrap pt-px text-left font-fjalla-one leading-[1.1] text-theme-text-background [font-size:7px] [text-shadow:0px_0.6px_theme(colors.theme.primary-darker)]',
                             )}
                         >
-                            <div className="float-left h-full w-[42.5%] [shape-outside:polygon(0_0,100%_50%,0_100%)]" />
-
-                            <div
-                                className={classNames(
-                                    'before-glassmorphic-backdrop-filter before:left-[20%] before:-z-10 before:h-[85%] before:w-[85%] before:translate-y-[1px] before:skew-x-[30deg] before:rounded-sm before:bg-theme-secondary/20 before:![--glassmorphic-backdrop-blur:1px]',
-                                    'relative mt-[25%] text-nowrap pl-[14px] text-left [font-size:5.25px] [text-shadow:0px_0.6px_theme(colors.theme.secondary-darker)]',
-                                )}
-                            >
-                                {title}
-                            </div>
-
-                            {clients && <Clients clients={clients} dataBlockId=" " extraClassNames="!absolute w-full h-1/3 overflow-hidden" />}
-
-                            <div
-                                className={classNames(
-                                    'before-glassmorphic-backdrop-filter before:left-[21%] before:-z-10 before:h-[90%] before:w-[85%] before:translate-y-[1px] before:skew-x-[-30deg] before:rounded-sm before:bg-theme-secondary/20 before:![--glassmorphic-backdrop-blur:1px]',
-                                    'relative mt-[65%] text-pretty text-left [font-size:3.5px]',
-                                )}
-                            >
-                                {subTitle}
-                            </div>
+                            {title}
                         </div>
                     </div>
-                </>
-            )}
 
-            {/* Card Image, parent again fakes a stroke */}
-            <div
-                className={classNames(
-                    'relative size-full transform-gpu transition-[transform,filter,opacity] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
-                    isAtFront
-                        ? 'scale-[0.975] cursor-pointer brightness-100 grayscale-0'
-                        : 'scale-[0.925] cursor-zoom-in brightness-75 grayscale group-hover-active:brightness-100 group-hover-active:grayscale-0',
-                    hamburgerMenuIsActive ? 'opacity-50 blur-[1px] saturate-[0.25]' : '',
-                )}
-            >
-                <img
-                    src={cardImage}
-                    alt={title}
+                    {/* Card Image, parent again fakes a stroke */}
+                    <div
+                        className={classNames(
+                            'glassmorphic-backdrop glassmorphic-level-1 glassmorphic-grain-before relative size-full transform-gpu bg-theme-root-background/20 transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
+                            hamburgerMenuIsActive ? 'brightness-75 saturate-[0.5]' : '',
+                        )}
+                    >
+                        <img
+                            src={cardImage}
+                            alt={title}
+                            className={classNames(
+                                'size-full scale-[0.95] transform-gpu cursor-pointer object-cover transition-transform duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
+                            )}
+                        />
+                    </div>
+                </>
+            ) : (
+                <div
                     className={classNames(
-                        'absolute transform-gpu object-cover transition-transform duration-[--ui-animation-menu-transition-duration]',
-                        isAtFront ? 'left-0 top-0 size-full rotate-0' : 'top-[-10%] size-[120%] rotate-[-30deg]',
+                        'relative size-full scale-[0.925] transform-gpu cursor-zoom-in brightness-75 grayscale transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path] group-hover-active:brightness-100 group-hover-active:grayscale-0',
                     )}
-                />
-            </div>
+                >
+                    <img src={cardImage} alt={title} className={classNames('size-full object-cover')} />
+                </div>
+            )}
         </button>
     );
 };

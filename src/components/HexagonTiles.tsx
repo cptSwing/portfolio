@@ -1,6 +1,6 @@
-import { CSSProperties, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, memo, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { classNames, cycleThrough } from 'cpts-javascript-utilities';
+import { classNames, cycleThrough, keyDownA11y } from 'cpts-javascript-utilities';
 import {
     Category,
     CategoryName,
@@ -67,7 +67,7 @@ const HexagonTiles = () => {
                     data={regularHexagonData}
                     routeName={routeName}
                     containerSize={containerSize}
-                    hamburgerMenuActive={hamburgerMenuIsActive}
+                    hamburgerMenuIsActive={hamburgerMenuIsActive}
                 />
             ))}
 
@@ -98,44 +98,67 @@ const HexagonTiles = () => {
 export default HexagonTiles;
 
 export const RegularHexagon: FC<{
+    children?: ReactNode;
     data: HexagonRouteData;
     routeName: ROUTE;
     containerSize: {
         width: number;
         height: number;
     };
-    hamburgerMenuActive?: boolean;
-}> = memo(({ data, routeName, containerSize, hamburgerMenuActive = false }) => {
-    const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
-    const breakpoint = useZustand((state) => state.values.breakpoint);
+    clickHandler?: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    isMenuButton?: boolean;
+    hamburgerMenuIsActive?: boolean;
+    isHamburgerMenuBackground?: boolean;
+}> = memo(
+    ({ children, data, routeName, containerSize, clickHandler, isMenuButton = false, hamburgerMenuIsActive = false, isHamburgerMenuBackground = false }) => {
+        const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
+        const breakpoint = useZustand((state) => state.values.breakpoint);
 
-    const cssVariables_Memo = useMemo(
-        () => calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'] }),
-        [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
-    );
+        const cssVariables_Memo = useMemo(
+            () =>
+                calcCSSVariables(position, rotation, scale, containerSize, { shouldOffset, offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'] }),
+            [position, rotation, scale, containerSize, shouldOffset, routeName, breakpoint],
+        );
 
-    const random_Memo = useMemo(() => Math.random(), []);
+        const random_Memo = useMemo(() => Math.random(), []);
 
-    return (
-        <div
-            className={classNames(
-                'regular-hexagon-class glassmorphic-backdrop-filter glassmorphic-grain-before lighting-gradient transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter]',
-                isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
-                routeName === ROUTE.post
-                    ? '!bg-none ![--hexagon-fill-color:theme(colors.theme.text-background)] [backdrop-filter:_] before:content-none'
-                    : '!to-white/10',
-                hamburgerMenuActive ? '!backdrop-saturate-[0.75]' : '',
-            )}
-            style={
-                {
-                    ...cssVariables_Memo,
-                    transitionDuration: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo + 1}), var(--ui-animation-menu-transition-duration), var(--ui-animation-menu-transition-duration)`,
-                    transitionDelay: `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), 0ms, 0ms`,
-                } as CSSProperties
-            }
-        />
-    );
-});
+        return (
+            <div
+                className={classNames(
+                    'glassmorphic-backdrop glassmorphic-grain-before lighting-gradient transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter]',
+                    'delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms,_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]',
+                    isHalf ? '[clip-path:--half-hexagon-clip-path]' : '[clip-path:--hexagon-clip-path]',
+                    routeName === ROUTE.post
+                        ? '!bg-none ![--hexagon-fill-color:theme(colors.theme.text-background)] [backdrop-filter:_] before:content-none'
+                        : '!to-white/10',
+                    isMenuButton
+                        ? 'hover-active:delay-0 hover-active:duration-100 hover-active:[--tw-scale-x:calc(var(--hexagon-scale-x)*1.1)] hover-active:[--tw-scale-y:calc(var(--hexagon-scale-y)*1.1)]'
+                        : 'regular-hexagon-named-class',
+                    isHamburgerMenuBackground ? '' : '',
+                    hamburgerMenuIsActive
+                        ? isHamburgerMenuBackground
+                            ? 'glassmorphic-level-4'
+                            : isMenuButton
+                              ? 'glassmorphic-level-3'
+                              : 'glassmorphic-level-2 [--glassmorphic-backdrop-saturate:0.75]'
+                        : 'glassmorphic-level-4',
+                )}
+                style={
+                    {
+                        ...cssVariables_Memo,
+                        '--regular-hexagon-transition-random-factor': random_Memo,
+                    } as CSSProperties
+                }
+                onClick={clickHandler}
+                onKeyDown={clickHandler ? keyDownA11y(clickHandler) : undefined}
+                role={clickHandler ? 'button' : undefined}
+                tabIndex={clickHandler ? -1 : undefined}
+            >
+                {children}
+            </div>
+        );
+    },
+);
 
 const CategoryNavigationButton: FC<{
     buttonData: CategoryNavigationButtonRouteData;
@@ -189,8 +212,6 @@ const CategoryNavigationButton: FC<{
         }
     }, [breakpoint, containerSize, isActiveCategoryButton, name, position, rotation, routeContent.category?.id, routeName, scale, shouldOffset]);
 
-    const isVisible = scale > 0;
-
     function handleClick() {
         navigate(target);
     }
@@ -232,69 +253,59 @@ export const MenuButton: FC<{
         width: number;
         height: number;
     };
-    isHamburgerChild?: boolean;
     hamburgerMenuIsActive?: boolean;
-    innerShadowRadius?: number;
-    strokeRadius?: number;
-}> = memo(({ buttonData, routeName, containerSize, isHamburgerChild = false, hamburgerMenuIsActive = false, innerShadowRadius, strokeRadius }) => {
-    const { name, svgIconPath, target } = buttonData;
+}> = memo(({ buttonData, routeName, containerSize, hamburgerMenuIsActive = false }) => {
+    const { svgIconPath, target } = buttonData;
     const title = 'title' in buttonData ? buttonData.title : undefined;
 
-    const { position, rotation, scale, shouldOffset } = buttonData[routeName];
-
-    const breakpoint = useZustand((state) => state.values.breakpoint);
-
-    const cssVariables_Memo = useMemo(
-        () =>
-            calcCSSVariables(
-                position,
-                isHamburgerChild ? (hamburgerMenuIsActive ? rotation - 30 : rotation) : rotation,
-                isHamburgerChild ? (hamburgerMenuIsActive ? scale : 0) : scale,
-                containerSize,
-                {
-                    shouldOffset,
-                    offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-                },
-            ),
-        [position, rotation, isHamburgerChild, hamburgerMenuIsActive, scale, containerSize, shouldOffset, routeName, breakpoint],
-    );
-
     const navigate = useNavigate();
-    function handleClick(ev: React.MouseEvent<HTMLButtonElement>) {
+    function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
+        // @ts-expect-error this will not lead to problems, trust me
         const targetResult = typeof target === 'string' ? target : target(ev);
         targetResult && navigate(targetResult);
     }
 
     return (
-        <GlassmorphicButtonWrapper
-            name={name}
-            title={title}
-            style={cssVariables_Memo}
-            innerShadowRadius={innerShadowRadius}
-            strokeRadius={strokeRadius}
+        <RegularHexagon
+            data={buttonData}
+            routeName={routeName}
+            containerSize={containerSize}
+            isMenuButton={true}
+            hamburgerMenuIsActive={hamburgerMenuIsActive}
             clickHandler={handleClick}
         >
-            <MenuButtonSvg svgIconPath={svgIconPath} />
-        </GlassmorphicButtonWrapper>
+            <MenuButtonSvg svgIconPath={svgIconPath} title={title} />
+        </RegularHexagon>
     );
 });
 
 export const MenuButtonSvg: FC<{
     svgIconPath: string;
+    title?: string;
     counterRotate?: boolean;
-}> = ({ svgIconPath, counterRotate = true }) => {
+}> = ({ svgIconPath, title, counterRotate = true }) => {
     return (
         <div
             className={classNames(
-                'size-full bg-theme-text-background/50 [mask-position:center] [mask-repeat:no-repeat] [mask-size:65%] group-hover-active:bg-theme-secondary-lighter/50',
+                'group flex size-full flex-col items-center justify-center p-0.5 group-hover-active:scale-110',
                 counterRotate ? 'rotate-[calc(var(--hexagon-rotate)*-1)] transition-transform duration-[--ui-animation-menu-transition-duration]' : '',
             )}
-            style={
-                {
-                    maskImage: `url(${svgIconPath})`,
-                } as CSSProperties
-            }
-        />
+        >
+            <div
+                className="w-full flex-auto bg-theme-primary-lighter/50 [mask-position:center] [mask-repeat:no-repeat] [mask-size:60%] group-hover-active:bg-theme-text-background/50"
+                style={
+                    {
+                        maskImage: `url(${svgIconPath})`,
+                    } as CSSProperties
+                }
+            />
+
+            {title && (
+                <span className="select-none pb-1.5 font-lato text-lg leading-none tracking-tighter text-theme-primary group-hover-active:text-theme-secondary-lighter">
+                    {title}
+                </span>
+            )}
+        </div>
     );
 };
 
@@ -327,20 +338,22 @@ const homeMenuTransitionClasses = {
     'code': {
         base: /* tw */ '[--home-menu-rotation:60deg] rotate-[--home-menu-rotation] [&_.navigation-button-hexagon-class-code]:[filter:url(#lighter-inner)]',
         completed:
-            /* tw */ '[&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-code:hover]:grayscale-[0.5] [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-code:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-code:hover]:!duration-150',
+            /* tw */ '[&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-code:hover]:[--glassmorphic-backdrop-saturate:0.75] [&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-code:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/4*var(--regular-hexagon-transition-random-factor))]',
     },
     '3d': {
         base: /* tw */ '[--home-menu-rotation:-60deg] rotate-[--home-menu-rotation] [&_.navigation-button-hexagon-class-3d]:[filter:url(#lighter-inner)]',
         completed:
-            /* tw */ '[&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:grayscale-[0.5] [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-3d:hover]:!duration-150 ',
+            /* tw */ '[&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-3d:hover]:[--glassmorphic-backdrop-saturate:0.75] [&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-3d:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/4*var(--regular-hexagon-transition-random-factor))]',
     },
     'log': {
         base: /* tw */ '[--home-menu-rotation:180deg] rotate-[--home-menu-rotation] [&_.navigation-button-hexagon-class-log]:[filter:url(#lighter-inner)]',
         completed:
-            /* tw */ '[&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-log:hover]:grayscale-[0.5] [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-log:hover]:!delay-0 [&_.regular-hexagon-class]:has-[.navigation-button-hexagon-class-log:hover]:!duration-150',
+            /* tw */ '[&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-log:hover]:[--glassmorphic-backdrop-saturate:0.75] [&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-log:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/4*var(--regular-hexagon-transition-random-factor))]',
     },
 };
 
 // Local Types
 
 type TransitionTargetReached = boolean;
+
+// delay-[--regular-hexagon-transition-delay] duration-[--regular-hexagon-transition-duration]
