@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useContext, useEffect, useMemo, useState } from 'react';
+import { cloneElement, CSSProperties, FC, ReactElement, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { getCategoryHexagons, calcCSSVariables, widerRoundedHexagonPath, widerNarrowRoundedHexagonPath } from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
@@ -73,7 +73,7 @@ const CategoryHexagons: FC<{
     return (
         <button
             className={classNames(
-                'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration]',
+                'transform-hexagon group pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration]',
                 hamburgerMenuIsActive && isAtFront
                     ? '!translate-x-[calc(var(--hexagon-translate-x)*0.725)] !translate-y-[calc(var(--hexagon-translate-y)*1.425)] !scale-x-[calc(var(--hexagon-scale-x)*0.75)] !scale-y-[calc(var(--hexagon-scale-y)*0.75)]'
                     : '!translate-y-[calc(var(--hexagon-translate-y)*0.9)]',
@@ -146,22 +146,16 @@ const CategoryHexagons: FC<{
                         </div>
                     </div>
 
-                    {/* Card Image, parent again fakes a stroke */}
-                    <div
-                        className={classNames(
-                            'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-text-background/75 before:transition-transform before:matrix-scale-[0.91] before:[clip-path:--hexagon-clip-path] before:group-hover-active:matrix-scale-[0.95]',
-                            'group relative size-full bg-theme-primary transition-[transform,filter] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path]',
-                            hamburgerMenuIsActive ? 'brightness-75 saturate-[0.5]' : '',
-                        )}
+                    <StrokedClipPath
+                        wrapperClasses="size-full group before:group-hover-active:matrix-scale-[0.95] before:transition-transform"
+                        clipPath="var(--hexagon-clip-path)"
+                        strokeColor="rgb(var(--theme-root-background) / 0.25)"
+                        strokeWidth={0.08}
+                        innerStrokeColor="rgb(var(--theme-text-background) / 0.5)"
+                        middleStrokeColor="rgb(var(--theme-primary) / 1)"
                     >
-                        <img
-                            src={cardImage}
-                            alt={title}
-                            className={classNames(
-                                'size-full cursor-pointer object-cover transition-transform duration-[--ui-animation-menu-transition-duration] matrix-scale-[0.9] [clip-path:--hexagon-clip-path] group-hover-active:matrix-scale-[0.94]',
-                            )}
-                        />
-                    </div>
+                        <img src={cardImage} alt={title} className="size-full object-cover transition-transform group-hover-active:matrix-scale-[0.94]" />
+                    </StrokedClipPath>
                 </>
             ) : (
                 <div
@@ -173,6 +167,46 @@ const CategoryHexagons: FC<{
                 </div>
             )}
         </button>
+    );
+};
+
+const StrokedClipPath: FC<{
+    clipPath: string;
+    strokeColor: string;
+    strokeWidth: number;
+    middleStrokeColor?: string;
+    innerStrokeColor?: string;
+    children?: ReactElement;
+    wrapperClasses?: string;
+}> = ({ clipPath, strokeColor, strokeWidth, innerStrokeColor, middleStrokeColor, children, wrapperClasses }) => {
+    return (
+        <div
+            className={classNames(
+                innerStrokeColor
+                    ? 'before:absolute before:left-0 before:top-0 before:size-full before:bg-[--stroked-clip-path-inner-stroke-color] before:matrix-scale-[calc(1-var(--stroked-clip-path-width)+var(--stroked-clip-path-width)/10)] before:[clip-path:--stroked-clip-path]'
+                    : '', // inner stroke, or off
+                'pointer-events-auto [clip-path:--stroked-clip-path]', // outer stroke
+                middleStrokeColor
+                    ? 'after:absolute after:left-0 after:top-0 after:-z-10 after:size-full after:bg-[--stroked-clip-path-middle-stroke-color] after:transition-transform after:matrix-scale-[calc(1-(var(--stroked-clip-path-width)/10))] after:[clip-path:--stroked-clip-path]'
+                    : '', // middle stroke if 3 strokes, or off
+                wrapperClasses,
+            )}
+            style={
+                {
+                    '--stroked-clip-path': clipPath,
+                    'backgroundColor': strokeColor,
+                    '--stroked-clip-path-width': strokeWidth,
+                    ...(middleStrokeColor ? { '--stroked-clip-path-middle-stroke-color': middleStrokeColor } : {}),
+                    ...(innerStrokeColor ? { '--stroked-clip-path-inner-stroke-color': innerStrokeColor } : {}),
+                } as CSSProperties
+            }
+        >
+            {children &&
+                cloneElement(children, {
+                    ...children.props,
+                    className: children.props.className + ' matrix-scale-[calc(1-var(--stroked-clip-path-width))] [clip-path:--stroked-clip-path] ',
+                })}
+        </div>
     );
 };
 
