@@ -13,10 +13,10 @@ import { HexagonRouteData, MenuButtonRouteData, PostNavigationButtonRouteData } 
 import { useNavigate } from 'react-router-dom';
 
 const baseClasses =
-    /* tw */ 'glassmorphic-backdrop glassmorphic-level-3 lighting-gradient transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path]';
+    /* tw */ 'glassmorphic-backdrop glassmorphic-level-3 lighting-gradient transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] ';
 const baseTransitionClasses =
     /* tw */
-    'transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms,_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]';
+    'transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms,_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]';
 
 export const Hexagon: FC<{
     data: HexagonRouteData;
@@ -45,11 +45,15 @@ export const Hexagon: FC<{
                 baseClasses,
                 baseTransitionClasses,
                 'regular-hexagon-named-class glassmorphic-grain-after after:![background-size:150%]',
-                hamburgerMenuIsActive ? '!glassmorphic-level-1 [--glassmorphic-backdrop-saturate:0.75]' : '',
+
                 routeName === ROUTE.home
-                    ? '!to-white/10'
+                    ? hamburgerMenuIsActive
+                        ? '!to-white/10 ![--glassmorphic-backdrop-blur:2px] ![--glassmorphic-backdrop-saturate:0.75]'
+                        : '!to-white/10'
                     : routeName === ROUTE.category
-                      ? '!glassmorphic-level-1 !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.4)]'
+                      ? hamburgerMenuIsActive
+                          ? '!to-white/[0.075] ![--glassmorphic-backdrop-blur:2px] ![--glassmorphic-backdrop-saturate:0.75] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.2)]'
+                          : '!to-white/[0.075] ![--glassmorphic-backdrop-blur:4px] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.4)]'
                       : 'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]', // ROUTE.post
             )}
             style={

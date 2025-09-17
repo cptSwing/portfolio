@@ -1,5 +1,5 @@
-import { cloneElement, CSSProperties, FC, ReactElement, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
-import { getCategoryHexagons, calcCSSVariables, widerRoundedHexagonPath, widerNarrowRoundedHexagonPath } from '../lib/hexagonDataNew';
+import { cloneElement, CSSProperties, FC, ReactElement, useContext, useEffect, useMemo, useState } from 'react';
+import { getCategoryHexagons, calcCSSVariables, roundedSideHexagonPathRight, roundedSideHexagonPathLeft } from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { HexagonTransformData, Post } from '../types/types';
@@ -11,7 +11,7 @@ import { Clients } from './PostDetails';
 
 const CategoryCards: FC<{ posts: Post[]; activeIndexState: [number, React.Dispatch<React.SetStateAction<number>>] }> = ({ posts, activeIndexState }) => {
     const containerSize = useContext(GetChildSizeContext);
-    const categoryHexagons_Memo = useMemo(() => getCategoryHexagons(posts.length), [posts.length]);
+    const categoryHexagons_Memo = useMemo(() => getCategoryHexagons(posts.length), [posts]);
 
     return posts.map((post, idx) => (
         <CategoryHexagons
@@ -76,10 +76,10 @@ const CategoryHexagons: FC<{
                 'transform-hexagon group pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration]',
                 hamburgerMenuIsActive && isAtFront
                     ? '!translate-x-[calc(var(--hexagon-translate-x)*0.725)] !translate-y-[calc(var(--hexagon-translate-y)*1.425)] !scale-x-[calc(var(--hexagon-scale-x)*0.75)] !scale-y-[calc(var(--hexagon-scale-y)*0.75)]'
-                    : '!translate-y-[calc(var(--hexagon-translate-y)*0.9)]',
+                    : '', // !translate-y-[calc(var(--hexagon-translate-y)*0.9)]
                 isAtFront
                     ? isLoaded
-                        ? '!translate-x-[calc(var(--hexagon-translate-x)-(33.333%*var(--hexagon-scale-x)))]'
+                        ? '' // !translate-x-[calc(var(--hexagon-translate-x)-(33.333%*var(--hexagon-scale-x)))]
                         : ''
                     : 'hover-active:!z-50 hover-active:scale-[calc(var(--hexagon-scale-x)*1.35)]',
             )}
@@ -107,39 +107,37 @@ const CategoryHexagons: FC<{
                     {/* Extending wide hexagon */}
                     <div
                         className={classNames(
-                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute bottom-0 left-[60%] flex h-1/2 w-[105%] origin-left scale-x-0 flex-col items-center justify-center gap-y-[10%] !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,transform,background-color] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path]',
+                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute left-[76%] top-[20%] flex h-[60%] w-[calc(60%*1.1547)] origin-left scale-x-0 flex-col items-center justify-center gap-y-[10%] !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,transform,background-color] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path]',
                             isLoaded ? '!glassmorphic-level-2 !scale-x-100 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
                             hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
                         )}
                         style={
                             {
-                                '--hexagon-animated-clip-path': `path("${widerRoundedHexagonPath}")`,
+                                '--hexagon-animated-clip-path': `path("${roundedSideHexagonPathRight}")`,
                             } as CSSProperties
                         }
                     >
                         {clients && <Clients clients={clients} dataBlockId=" " extraClassNames="w-1/2 basis-1/3 overflow-hidden" />}
 
-                        <div className="ml-[15%] max-w-[33.333%] text-pretty text-left font-fjalla-one leading-[1.1] text-theme-primary [font-size:4px]">
-                            {subTitle}
-                        </div>
+                        <div className="ml-[0%] text-pretty text-left font-fjalla-one leading-[1.1] text-theme-primary [font-size:4px]">{subTitle}</div>
                     </div>
 
                     {/* Extending wide hexagon */}
                     <div
                         className={classNames(
-                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute left-[87.5%] top-[40%] flex h-[20%] w-[77.5%] origin-left scale-x-0 flex-col items-center justify-center !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,background-color,transform] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] [clip-path:--hexagon-animated-clip-path]',
+                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute right-[87.5%] top-[20%] flex h-[60%] w-[58%] origin-right scale-x-0 flex-col items-center justify-center !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,background-color,transform] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] [clip-path:--hexagon-animated-clip-path]',
                             isLoaded ? '!glassmorphic-level-3 !scale-x-100 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
                             hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
                         )}
                         style={
                             {
-                                '--hexagon-animated-clip-path': `path("${widerNarrowRoundedHexagonPath}")`,
+                                '--hexagon-animated-clip-path': `path("${roundedSideHexagonPathLeft}")`,
                             } as CSSProperties
                         }
                     >
                         <div
                             className={classNames(
-                                'ml-[5%] text-nowrap pt-px text-left font-fjalla-one leading-[1.1] text-theme-text-background [font-size:7px] [text-shadow:0px_0.6px_theme(colors.theme.primary-darker)]',
+                                'ml-[0%] text-nowrap pt-px text-left font-fjalla-one leading-[1.1] text-theme-text-background [font-size:7px] [text-shadow:0px_0.6px_theme(colors.theme.primary-darker)]',
                             )}
                         >
                             {title}
@@ -149,9 +147,9 @@ const CategoryHexagons: FC<{
                     <StrokedClipPath
                         wrapperClasses="size-full group before:group-hover-active:matrix-scale-[0.95] before:transition-transform"
                         clipPath="var(--hexagon-clip-path)"
-                        strokeColor="rgb(var(--theme-root-background) / 0.25)"
+                        strokeColor="rgb(var(--theme-root-background) / 0.5)"
                         strokeWidth={0.08}
-                        innerStrokeColor="rgb(var(--theme-text-background) / 0.5)"
+                        innerStrokeColor="rgb(var(--theme-text-background) / 1)"
                         middleStrokeColor="rgb(var(--theme-primary) / 1)"
                     >
                         <img src={cardImage} alt={title} className="size-full object-cover transition-transform group-hover-active:matrix-scale-[0.94]" />
@@ -183,11 +181,11 @@ const StrokedClipPath: FC<{
         <div
             className={classNames(
                 innerStrokeColor
-                    ? 'before:absolute before:left-0 before:top-0 before:size-full before:bg-[--stroked-clip-path-inner-stroke-color] before:matrix-scale-[calc(1-var(--stroked-clip-path-width)+var(--stroked-clip-path-width)/10)] before:[clip-path:--stroked-clip-path]'
+                    ? 'before:absolute before:left-0 before:top-0 before:size-full before:bg-[--stroked-clip-path-inner-stroke-color] before:matrix-scale-[calc(1-var(--stroked-clip-path-width)+var(--stroked-clip-path-width)/8)] before:[clip-path:--stroked-clip-path]'
                     : '', // inner stroke, or off
                 'pointer-events-auto [clip-path:--stroked-clip-path]', // outer stroke
                 middleStrokeColor
-                    ? 'after:absolute after:left-0 after:top-0 after:-z-10 after:size-full after:bg-[--stroked-clip-path-middle-stroke-color] after:transition-transform after:matrix-scale-[calc(1-(var(--stroked-clip-path-width)/10))] after:[clip-path:--stroked-clip-path]'
+                    ? 'after:absolute after:left-0 after:top-0 after:-z-10 after:size-full after:bg-[--stroked-clip-path-middle-stroke-color] after:transition-transform after:matrix-scale-[calc(1-(var(--stroked-clip-path-width)/8))] after:[clip-path:--stroked-clip-path]'
                     : '', // middle stroke if 3 strokes, or off
                 wrapperClasses,
             )}

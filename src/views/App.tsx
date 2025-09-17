@@ -60,7 +60,7 @@ const Main = () => {
                     '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
                     'relative flex items-center justify-center text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
                     routeName === ROUTE.category
-                        ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,62.5vw)] sm:w-auto 2xl:aspect-[1/0.75]'
+                        ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,72.5vw)] sm:w-auto 2xl:aspect-[1/0.75]'
                         : routeName === ROUTE.post
                           ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]'
                           : // ROUTE.home

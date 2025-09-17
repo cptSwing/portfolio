@@ -4,7 +4,6 @@ import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
 import useMountTransition from '../../hooks/useMountTransition.ts';
-import FlippedBrand from '../Brand.tsx';
 import CategoryCards from '../CategoryCards.tsx';
 import { usePreviousPersistent } from '../../hooks/usePrevious.ts';
 

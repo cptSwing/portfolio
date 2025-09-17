@@ -447,44 +447,13 @@ export const regularHexagons: HexagonRouteData[] = [
             shouldOffset: false,
         },
     },
+];
 
+export const halfRegularHexagons: HexagonRouteData[] = [
     // Half hexes in ROUTE.category
     {
         [ROUTE.home]: {
             position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: -30,
-            isHalf: true,
-            scale: 0.866,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: 90,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
                 x: 225,
                 y: 259.8,
             },
@@ -495,14 +464,14 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 225,
-                y: 259.8,
+                x: 100,
+                y: 43.3,
             },
-            rotation: 150,
+            rotation: 120,
             isHalf: true,
-            scale: 0.866,
+            scale: 2,
             shouldOffset: true,
-        }, // R7
+        },
         [ROUTE.post]: {
             position: {
                 x: 150,
@@ -519,6 +488,39 @@ export const regularHexagons: HexagonRouteData[] = [
         [ROUTE.home]: {
             position: {
                 x: 75,
+                y: 0,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 200,
+                y: 43.3,
+            },
+            rotation: 180,
+            isHalf: true,
+            scale: 2,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 75,
                 y: 259.8,
             },
             rotation: 0,
@@ -528,14 +530,14 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 75,
-                y: 259.8,
+                x: 50,
+                y: 129.9,
             },
-            rotation: -150,
+            rotation: 60,
             isHalf: true,
-            scale: 0.866,
+            scale: 2,
             shouldOffset: false,
-        }, // L8
+        },
         [ROUTE.post]: {
             position: {
                 x: 75,
@@ -551,6 +553,39 @@ export const regularHexagons: HexagonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
+                x: 225,
+                y: 0,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 250,
+                y: 129.9,
+            },
+            rotation: -120,
+            isHalf: true,
+            scale: 2,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 345,
+                y: 290,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: true,
+        }, // Bottom right
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
                 x: 300,
                 y: 129.9,
             },
@@ -561,14 +596,14 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 300,
-                y: 129.9,
+                x: 100,
+                y: 216.5,
             },
-            rotation: 90,
+            rotation: 0,
             isHalf: true,
-            scale: 0.866,
+            scale: 2,
             shouldOffset: true,
-        }, // R4
+        },
         [ROUTE.post]: {
             position: {
                 x: -45,
@@ -594,14 +629,14 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 0,
-                y: 129.9,
+                x: 200,
+                y: 216.5,
             },
-            rotation: -90,
+            rotation: -60,
             isHalf: true,
-            scale: 0.866,
+            scale: 2,
             shouldOffset: false,
-        }, // L2
+        },
         [ROUTE.post]: {
             position: {
                 x: 150,
@@ -609,6 +644,109 @@ export const regularHexagons: HexagonRouteData[] = [
             },
             rotation: -90,
             isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+];
+
+/*
+At Scale 1, perfectly set up
+    
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 225,
+                y: 259.8,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 125,
+                y: 86.6,
+            },
+            rotation: 120,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: 216.5,
+            },
+            rotation: 30,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 175,
+                y: 86.6,
+            },
+            rotation: 180,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 75,
+                y: 259.8,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 100,
+                y: 129.9,
+            },
+            rotation: 60,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 173.2,
+            },
+            rotation: 60,
+            isHalf: false,
             scale: 0,
             shouldOffset: false,
         },
@@ -627,14 +765,14 @@ export const regularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 225,
-                y: 0,
+                x: 200,
+                y: 129.9,
             },
-            rotation: 30,
+            rotation: -120,
             isHalf: true,
-            scale: 0.866,
+            scale: 1,
             shouldOffset: false,
-        }, // L6
+        },
         [ROUTE.post]: {
             position: {
                 x: 345,
@@ -646,7 +784,74 @@ export const regularHexagons: HexagonRouteData[] = [
             shouldOffset: true,
         }, // Bottom right
     },
-];
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: 129.9,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 125,
+                y: 173.2,
+            },
+            rotation: 0,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -45,
+                y: 290,
+            },
+            rotation: -90,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: false,
+        }, // Bottom Left
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 0,
+                y: 129.9,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 175,
+                y: 173.2,
+            },
+            rotation: -60,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: -43.3,
+            },
+            rotation: -90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+*/
 
 export const categoryNavigationButtonPositions: Record<'active' | 'left' | 'right', Omit<Partial<HexagonTransformData>, 'isHalf'>> = {
     active: {
@@ -1414,11 +1619,11 @@ export const hexagonRouteOffsetValues: Record<ROUTE, Record<BreakpointName | 'ba
 export const categoryCardActiveHexagon: HexagonTransformData = {
     position: {
         x: 150,
-        y: 95,
+        y: 129.9,
     },
     rotation: 0,
     isHalf: false,
-    scale: 1.8,
+    scale: 2.5,
     shouldOffset: false,
 };
 
@@ -1426,7 +1631,7 @@ export const categoryCardActiveHexagon: HexagonTransformData = {
 const categoryCardInactiveHexagon: HexagonTransformData = {
     position: {
         x: 0,
-        y: 205,
+        y: 0,
     },
     rotation: 0,
     isHalf: false,
@@ -1516,7 +1721,9 @@ export function getCategoryHexagons(count: number): HexagonTransformData[] {
 export const roundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5);
 export const halfRoundedHexagonPath = getHexagonPath(hexHalfWidth, hexHalfWidth / 5, true);
 export const widerRoundedHexagonPath = getHexagonPath(hexHalfWidth * 0.45, (hexHalfWidth * 0.45) / 5, false, 1.1);
-export const widerNarrowRoundedHexagonPath = getHexagonPath(hexHalfWidth * 0.2, (hexHalfWidth * 0.2) / 5, false, 2.875);
+export const widerNarrowRoundedHexagonPath = getHexagonPath(hexHalfWidth * 1, (hexHalfWidth * 1) / 5, false, 0.1);
+export const roundedSideHexagonPathRight = getHexagonalSidePath(hexHalfWidth * 0.6, hexHalfWidth / 7, 0.1, true);
+export const roundedSideHexagonPathLeft = getHexagonalSidePath(hexHalfWidth * 0.6, hexHalfWidth / 7, 0.1);
 
 export const subMenuButtonHexagonPath = getHexagonPath(0.5, 0.1);
 
@@ -1792,15 +1999,9 @@ function getHexagonPath(sideLength = 1, cornerRadius = 8, isHalf = false, wider 
 
         if (wider) {
             switch (i) {
-                // case 0:
-                //     xRounded += extraWidth;
-                //     break;
-                // case 1:
-                //     xRounded += extraWidth;
-                //     break;
-                // case 5:
-                //     xRounded += extraWidth;
-                //     break;
+                case 0:
+                    xRounded = 30;
+                    break;
                 case 2:
                     xRounded += extraWidth;
                     break;
@@ -1855,6 +2056,95 @@ function getHexagonPath(sideLength = 1, cornerRadius = 8, isHalf = false, wider 
             \
             L ${points[5]!.x + cornerSinOffsetRounded * 2},${points[5]!.y} \
             Q ${points[5]!.x},${points[5]!.y} ${points[5]!.x - cornerSinOffsetRounded},${points[5]!.y - cornerCosOffsetRounded} \
+            \
+            Z`;
+}
+
+function getHexagonalSidePath(sideLength = 1, cornerRadius = 8, shorter = 0, isRightSide = false): string {
+    const points: { x: number; y: number }[] = [];
+    const moveZeroPoint = 180;
+    const centerX = sideLength;
+    const centerY = sideLength * staticValues.heightAspect.flatTop;
+
+    const extraWidth = shorter ? sideLength * (isRightSide ? 2 : 2) * shorter : 0;
+
+    for (let i = 0; i < 6; i++) {
+        const angle_deg = 60 * i + moveZeroPoint;
+        const x = centerX + sideLength * cos(angle_deg);
+        const y = centerY + sideLength * sin(angle_deg);
+
+        let xRounded = roundToDecimal(x, 4);
+        const yRounded = roundToDecimal(y, 4);
+
+        if (shorter) {
+            if (isRightSide) {
+                switch (i) {
+                    case 0:
+                        xRounded = sideLength / 1.1547;
+                        break;
+                    case 2:
+                        xRounded += extraWidth;
+                        break;
+                    case 3:
+                        xRounded += extraWidth;
+                        break;
+                    case 4:
+                        xRounded += extraWidth;
+                        break;
+                }
+            } else {
+                switch (i) {
+                    case 2:
+                        xRounded += extraWidth;
+                        break;
+                    case 3:
+                        xRounded -= sideLength / 2;
+                        break;
+                    case 4:
+                        xRounded += extraWidth;
+                        break;
+                }
+            }
+        }
+        points.push({ x: xRounded, y: yRounded });
+    }
+
+    const cornerSinOffsetRounded = roundToDecimal(cornerRadius * sin30, 4);
+    const cornerCosOffsetRounded = roundToDecimal(cornerRadius * cos30, 4);
+
+    return isRightSide
+        ? ` M ${points[0]!.x - cornerSinOffsetRounded},${points[0]!.y + cornerCosOffsetRounded} \
+            Q ${points[0]!.x},${points[0]!.y} ${points[0]!.x - cornerSinOffsetRounded},${points[0]!.y - cornerCosOffsetRounded} \
+            \
+            L ${points[1]!.x - cornerSinOffsetRounded},${points[1]!.y}  \
+            \
+            L ${points[2]!.x - cornerSinOffsetRounded * 2},${points[2]!.y} \
+            Q ${points[2]!.x},${points[2]!.y} ${points[2]!.x + cornerSinOffsetRounded},${points[2]!.y + cornerCosOffsetRounded} \
+            \
+            L ${points[3]!.x - cornerSinOffsetRounded},${points[3]!.y - cornerCosOffsetRounded} \
+            Q ${points[3]!.x},${points[3]!.y} ${points[3]!.x - cornerSinOffsetRounded},${points[3]!.y + cornerCosOffsetRounded} \
+            \
+            L ${points[4]!.x + cornerSinOffsetRounded},${points[4]!.y - cornerCosOffsetRounded} \
+            Q ${points[4]!.x},${points[4]!.y} ${points[4]!.x - cornerSinOffsetRounded * 2},${points[4]!.y} \
+            \
+            L ${points[5]!.x - cornerSinOffsetRounded},${points[5]!.y} \
+            \
+            Z`
+        : ` M ${points[0]!.x + cornerSinOffsetRounded * 2},${points[0]!.y + cornerCosOffsetRounded} \
+            Q ${points[0]!.x + cornerSinOffsetRounded},${points[0]!.y} ${points[0]!.x + cornerSinOffsetRounded * 2},${points[0]!.y - cornerCosOffsetRounded} \
+            \
+            L ${points[1]!.x},${points[1]!.y + cornerCosOffsetRounded} \
+            Q ${points[1]!.x + cornerSinOffsetRounded},${points[1]!.y} ${points[1]!.x + cornerSinOffsetRounded * 3},${points[1]!.y} \
+            \
+            L ${points[2]!.x + cornerSinOffsetRounded * 2},${points[2]!.y} \
+            \
+            L ${points[3]!.x + cornerSinOffsetRounded / 2},${points[3]!.y - cornerCosOffsetRounded} \
+            Q ${points[3]!.x - cornerSinOffsetRounded / 3},${points[3]!.y} ${points[3]!.x + cornerSinOffsetRounded / 2},${points[3]!.y + cornerCosOffsetRounded} \
+            \
+            L ${points[4]!.x + cornerSinOffsetRounded * 2},${points[4]!.y} \
+            \
+            L ${points[5]!.x + cornerSinOffsetRounded * 3},${points[5]!.y} \
+            Q ${points[5]!.x + cornerSinOffsetRounded},${points[5]!.y} ${points[5]!.x},${points[5]!.y - cornerCosOffsetRounded} \
             \
             Z`;
 }
