@@ -54,204 +54,7 @@ const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scale
 // viewBoxes['hexFlat'] : 0 0 400 346.4 --> (400x0.866)
 
 export const regularHexagons: HexagonRouteData[] = [
-    // Only in Category
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 37.5,
-                y: 64.95,
-            },
-            rotation: 90,
-            isHalf: false,
-            scale: 1.732,
-            shouldOffset: true,
-        }, // R3
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: -43.3,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 296,
-                y: 46,
-            },
-            rotation: -30,
-            isHalf: false,
-            scale: 1.732,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: 90,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 300,
-                y: 216.5,
-            },
-            rotation: 120,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 262.5,
-                y: 194.85,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 1.732,
-            shouldOffset: true,
-        }, // R6
-        [ROUTE.post]: {
-            position: {
-                x: 225,
-                y: 173.2,
-            },
-            rotation: -90,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 303.1,
-            },
-            rotation: 180,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 150,
-                y: 259.8,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 1.732,
-            shouldOffset: true,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -45,
-                y: -32,
-            },
-            rotation: -30,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-
     // Appear everywhere:
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: -30,
-            isHalf: true,
-            scale: 0.866,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: 90,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 225,
-                y: 0,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 225,
-                y: 0,
-            },
-            rotation: 30,
-            isHalf: true,
-            scale: 0.866,
-            shouldOffset: false,
-        }, // L6
-        [ROUTE.post]: {
-            position: {
-                x: 345,
-                y: 290,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.35,
-            shouldOffset: true,
-        }, // Bottom right
-    },
 
     {
         [ROUTE.home]: {
@@ -353,39 +156,6 @@ export const regularHexagons: HexagonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
-                x: 0,
-                y: 129.9,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 0,
-                y: 129.9,
-            },
-            rotation: -90,
-            isHalf: true,
-            scale: 0.866,
-            shouldOffset: false,
-        }, // L2
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: -43.3,
-            },
-            rotation: -90,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
                 x: 150,
                 y: -43.3,
             },
@@ -414,39 +184,6 @@ export const regularHexagons: HexagonRouteData[] = [
             scale: 0,
             shouldOffset: false,
         },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 300,
-                y: 129.9,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 300,
-                y: 129.9,
-            },
-            rotation: 90,
-            isHalf: true,
-            scale: 0.866,
-            shouldOffset: true,
-        }, // R4
-        [ROUTE.post]: {
-            position: {
-                x: -45,
-                y: 290,
-            },
-            rotation: -90,
-            isHalf: false,
-            scale: 0.35,
-            shouldOffset: false,
-        }, // Bottom Left
     },
 
     {
@@ -583,71 +320,6 @@ export const regularHexagons: HexagonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
-                x: 75,
-                y: 259.8,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 75,
-                y: 259.8,
-            },
-            rotation: -150,
-            isHalf: true,
-            scale: 0.866,
-            shouldOffset: false,
-        }, // L8
-        [ROUTE.post]: {
-            position: {
-                x: 75,
-                y: 173.2,
-            },
-            rotation: 60,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 225,
-                y: 259.8,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 225,
-                y: 259.8,
-            },
-            rotation: 150,
-            isHalf: true,
-            scale: 0.866,
-            shouldOffset: true,
-        }, // R7
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: 216.5,
-            },
-            rotation: 30,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
                 x: 150,
                 y: 303.1,
             },
@@ -774,6 +446,205 @@ export const regularHexagons: HexagonRouteData[] = [
             scale: 0,
             shouldOffset: false,
         },
+    },
+
+    // Half hexes in ROUTE.category
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: -30,
+            isHalf: true,
+            scale: 0.866,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 225,
+                y: 259.8,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 225,
+                y: 259.8,
+            },
+            rotation: 150,
+            isHalf: true,
+            scale: 0.866,
+            shouldOffset: true,
+        }, // R7
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: 216.5,
+            },
+            rotation: 30,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 75,
+                y: 259.8,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 75,
+                y: 259.8,
+            },
+            rotation: -150,
+            isHalf: true,
+            scale: 0.866,
+            shouldOffset: false,
+        }, // L8
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 173.2,
+            },
+            rotation: 60,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: 129.9,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 300,
+                y: 129.9,
+            },
+            rotation: 90,
+            isHalf: true,
+            scale: 0.866,
+            shouldOffset: true,
+        }, // R4
+        [ROUTE.post]: {
+            position: {
+                x: -45,
+                y: 290,
+            },
+            rotation: -90,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: false,
+        }, // Bottom Left
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 0,
+                y: 129.9,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 0,
+                y: 129.9,
+            },
+            rotation: -90,
+            isHalf: true,
+            scale: 0.866,
+            shouldOffset: false,
+        }, // L2
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: -43.3,
+            },
+            rotation: -90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 225,
+                y: 0,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 225,
+                y: 0,
+            },
+            rotation: 30,
+            isHalf: true,
+            scale: 0.866,
+            shouldOffset: false,
+        }, // L6
+        [ROUTE.post]: {
+            position: {
+                x: 345,
+                y: 290,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: true,
+        }, // Bottom right
     },
 ];
 
@@ -1397,6 +1268,141 @@ export const postNavigationButtons: PostNavigationButtonRouteData[] = [
     },
 ];
 
+export const backgroundHexagons: HexagonRouteData[] = [
+    // Only in Category
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: -43.3,
+            },
+            rotation: 0,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 37.5,
+                y: 64.95,
+            },
+            rotation: 90,
+            isHalf: false,
+            scale: 1.732,
+            shouldOffset: true,
+        }, // R3
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: -43.3,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 296,
+                y: 46,
+            },
+            rotation: -30,
+            isHalf: false,
+            scale: 1.732,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: 216.5,
+            },
+            rotation: 120,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 262.5,
+                y: 194.85,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 1.732,
+            shouldOffset: true,
+        }, // R6
+        [ROUTE.post]: {
+            position: {
+                x: 225,
+                y: 173.2,
+            },
+            rotation: -90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 303.1,
+            },
+            rotation: 180,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 150,
+                y: 259.8,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 1.732,
+            shouldOffset: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -45,
+                y: -32,
+            },
+            rotation: -30,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+];
+
 // TODO likely not needed?
 export const hexagonRouteOffsetValues: Record<ROUTE, Record<BreakpointName | 'base', number>> = {
     [ROUTE.home]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 0 },
@@ -1735,6 +1741,8 @@ export function calcCSSVariables(
         '--hexagon-rotate': rotation + 'deg',
         '--hexagon-scale-x': mappedScaleX,
         '--hexagon-scale-y': mappedScaleY,
+        // '--hexagon-scale-x': `calc(${insetByStrokeWidth} * var(--hexagon-width-container-to-viewbox) * var(--hexagon-ratio-of-aspects))`,
+        // '--hexagon-scale-y': `calc(${insetByStrokeWidth} * var(--hexagon-height-container-to-viewbox))`,
         '--hexagon-lighting-gradient-counter-rotation': `calc(${-rotation}deg - var(--home-menu-rotation, 0deg))`,
         '--hexagon-clip-path': isHalf ? halfHexagonClipPathStatic : hexagonClipPathStatic,
     };
