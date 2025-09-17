@@ -132,19 +132,19 @@
     }
 
     .glassmorphic-level-1 {
-        @apply [--glassmorphic-backdrop-blur:1px] [--glassmorphic-backdrop-saturate:1.25];
+        @apply [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.25];
     }
 
     .glassmorphic-level-2 {
-        @apply [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5];
+        @apply [--glassmorphic-backdrop-blur:4px] [--glassmorphic-backdrop-saturate:1.5];
     }
 
     .glassmorphic-level-3 {
-        @apply [--glassmorphic-backdrop-blur:3px] [--glassmorphic-backdrop-saturate:1.75];
+        @apply [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:1.5];
     }
 
     .glassmorphic-level-4 {
-        @apply [--glassmorphic-backdrop-blur:4px] [--glassmorphic-backdrop-saturate:2];
+        @apply [--glassmorphic-backdrop-blur:16px] [--glassmorphic-backdrop-saturate:1.5];
     }
 }
 

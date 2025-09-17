@@ -49,7 +49,7 @@ export const Hexagon: FC<{
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category
-                      ? '!glassmorphic-level-1 !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.3)]'
+                      ? '!glassmorphic-level-1 !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.4)]'
                       : 'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]', // ROUTE.post
             )}
             style={
@@ -94,7 +94,7 @@ export const HamburgerBackgroundHexagon: FC<{
                 routeName === ROUTE.home
                     ? ''
                     : routeName === ROUTE.category
-                      ? '!glassmorphic-level-none !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.4)]'
+                      ? '!glassmorphic-level-1 !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.4)]'
                       : 'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]', // ROUTE.post
             )}
             style={cssVariables_Memo as CSSProperties}

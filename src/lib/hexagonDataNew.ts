@@ -54,6 +54,140 @@ const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scale
 // viewBoxes['hexFlat'] : 0 0 400 346.4 --> (400x0.866)
 
 export const regularHexagons: HexagonRouteData[] = [
+    // Only in Category
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: -43.3,
+            },
+            rotation: 0,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 37.5,
+                y: 64.95,
+            },
+            rotation: 90,
+            isHalf: false,
+            scale: 1.732,
+            shouldOffset: true,
+        }, // R3
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: -43.3,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 296,
+                y: 46,
+            },
+            rotation: -30,
+            isHalf: false,
+            scale: 1.732,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: 216.5,
+            },
+            rotation: 120,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 262.5,
+                y: 194.85,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 1.732,
+            shouldOffset: true,
+        }, // R6
+        [ROUTE.post]: {
+            position: {
+                x: 225,
+                y: 173.2,
+            },
+            rotation: -90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 303.1,
+            },
+            rotation: 180,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 150,
+                y: 259.8,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 1.732,
+            shouldOffset: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -45,
+                y: -32,
+            },
+            rotation: -30,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    // Appear everywhere:
     {
         [ROUTE.home]: {
             position: {
@@ -74,7 +208,7 @@ export const regularHexagons: HexagonRouteData[] = [
             isHalf: true,
             scale: 0.866,
             shouldOffset: false,
-        }, // L4
+        },
         [ROUTE.post]: {
             position: {
                 x: 75,
@@ -531,7 +665,7 @@ export const regularHexagons: HexagonRouteData[] = [
             isHalf: false,
             scale: 0.866,
             shouldOffset: true,
-        }, // R8
+        },
         [ROUTE.post]: {
             position: {
                 x: -45,
@@ -541,7 +675,7 @@ export const regularHexagons: HexagonRouteData[] = [
             isHalf: false,
             scale: 0.35,
             shouldOffset: false,
-        }, // Top left
+        },
     },
 
     // Appear only after "Home"  (replace Nav menu buttons)
