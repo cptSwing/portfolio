@@ -1,5 +1,5 @@
 import { classNames, keyDownA11y } from 'cpts-javascript-utilities';
-import { CSSProperties, FC, memo, useMemo } from 'react';
+import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
 import { ROUTE } from '../types/enums';
 import {
     calcCSSVariables,
@@ -11,6 +11,7 @@ import {
 import { useZustand } from '../lib/zustand';
 import { HexagonRouteData, MenuButtonRouteData, PostNavigationButtonRouteData } from '../types/types';
 import { useNavigate } from 'react-router-dom';
+import GetChildSizeContext from '../contexts/GetChildSizeContext';
 
 const baseClasses =
     /* tw */ 'glassmorphic-backdrop glassmorphic-level-3 lighting-gradient transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] ';
@@ -21,13 +22,10 @@ const baseTransitionClasses =
 export const Hexagon: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
-    containerSize: {
-        width: number;
-        height: number;
-    };
     hamburgerMenuIsActive?: boolean;
-}> = memo(({ data, routeName, containerSize, hamburgerMenuIsActive = false }) => {
+}> = memo(({ data, routeName, hamburgerMenuIsActive = false }) => {
     const breakpoint = useZustand((state) => state.values.breakpoint);
+    const containerSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(() => {
         const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
@@ -68,13 +66,10 @@ export const Hexagon: FC<{
 
 export const HamburgerBackgroundHexagon: FC<{
     routeName: ROUTE;
-    containerSize: {
-        width: number;
-        height: number;
-    };
     hamburgerMenuIsActive: boolean;
-}> = memo(({ routeName, containerSize, hamburgerMenuIsActive }) => {
+}> = memo(({ routeName, hamburgerMenuIsActive }) => {
     const breakpoint = useZustand((state) => state.values.breakpoint);
+    const containerSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(() => {
         let backgroundRouteData = hamburgerBackgroundHexagon;
@@ -109,15 +104,13 @@ export const HamburgerBackgroundHexagon: FC<{
 export const MenuButtonHexagon: FC<{
     buttonData: MenuButtonRouteData | PostNavigationButtonRouteData;
     routeName: ROUTE;
-    containerSize: {
-        width: number;
-        height: number;
-    };
+
     hamburgerMenuIsActive?: boolean;
-}> = memo(({ buttonData, routeName, containerSize, hamburgerMenuIsActive = false }) => {
+}> = memo(({ buttonData, routeName, hamburgerMenuIsActive = false }) => {
     const { svgIconPath, target } = buttonData;
     const title = 'title' in buttonData ? buttonData.title : undefined;
     const breakpoint = useZustand((state) => state.values.breakpoint);
+    const containerSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(() => {
         const { position, rotation, scale, isHalf, shouldOffset } = buttonData[routeName];

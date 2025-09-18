@@ -1,24 +1,13 @@
-import { FC, memo, useContext, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { classNames, cycleThrough } from 'cpts-javascript-utilities';
-import { Category, CategoryName, CategoryNavigationButtonRouteData } from '../types/types';
-import {
-    regularHexagons,
-    categoryNavigationButtons,
-    calcCSSVariables,
-    categoryNavigationButtonPositions,
-    postNavigationButtons,
-    hexagonRouteOffsetValues,
-    backgroundHexagons,
-    halfRegularHexagons,
-} from '../lib/hexagonDataNew';
+import { useEffect, useMemo, useState } from 'react';
+import { classNames } from 'cpts-javascript-utilities';
+import { CategoryName } from '../types/types';
+import { regularHexagons, postNavigationButtons, backgroundHexagons, halfRegularHexagons } from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
-import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import HamburgerMenu from './HamburgerMenu';
-import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { Hexagon, MenuButtonHexagon } from './HexagonShapes';
+import MenuBar from './MenuBar';
 
 const HexagonTiles = () => {
     const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
@@ -26,8 +15,6 @@ const HexagonTiles = () => {
 
     const routeName = useZustand((store) => store.values.routeData.name);
     const hamburgerMenuIsActive = useZustand((store) => store.values.hamburgerIsOpen);
-
-    const containerSize = useContext(GetChildSizeContext);
 
     useEffect(() => {
         if (routeName !== ROUTE.home) {
@@ -61,161 +48,31 @@ const HexagonTiles = () => {
         >
             <div className="opacity-15">
                 {backgroundHexagons.map((regularHexagonData, idx) => (
-                    <Hexagon
-                        key={`hex-background-index-${idx}`}
-                        data={regularHexagonData}
-                        routeName={routeName}
-                        containerSize={containerSize}
-                        hamburgerMenuIsActive={false}
-                    />
+                    <Hexagon key={`hex-background-index-${idx}`} data={regularHexagonData} routeName={routeName} hamburgerMenuIsActive={false} />
                 ))}
             </div>
 
             {regularHexagons.map((regularHexagonData, idx) => (
-                <Hexagon
-                    key={`hex-regular-index-${idx}`}
-                    data={regularHexagonData}
-                    routeName={routeName}
-                    containerSize={containerSize}
-                    hamburgerMenuIsActive={hamburgerMenuIsActive}
-                />
+                <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
             ))}
 
-            {/* Background */}
-            <div
-                className={classNames(
-                    'before-glassmorphic-backdrop glassmorphic-level-4 before:!bottom-[3.5%] before:!left-[37%] before:!top-auto before:!h-[6%] before:!w-[26%] before:origin-bottom before:rounded-[8%_8%_8%_8%/35%_35%_35%_35%] before:border before:border-theme-text-background/[0.04] before:bg-theme-root-background/30 before:shadow-xl before:transition-transform before:delay-[--ui-animation-menu-transition-duration] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)]',
-                    'absolute size-full',
-                    'glassmorphic-grain-after after:!bottom-[3.5%] after:!left-[37%] after:!top-auto after:!h-[6%] after:!w-[26%] after:origin-bottom after:rounded-[8%_8%_8%_8%/35%_35%_35%_35%] after:transition-transform after:delay-[--ui-animation-menu-transition-duration] after:duration-[--ui-animation-menu-transition-duration]',
-                    routeName === ROUTE.category ? 'before:scale-y-100 after:scale-y-100' : 'before:scale-y-0 after:scale-y-0',
-                )}
-            >
-                {categoryNavigationButtons.map((categoryNavigationButtonData, idx) => (
-                    <CategoryNavigationButton
-                        key={`hex-nav-index-${idx}`}
-                        buttonData={categoryNavigationButtonData}
-                        containerSize={containerSize}
-                        homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates}
-                    />
-                ))}
-            </div>
-
             {halfRegularHexagons.map((regularHexagonData, idx) => (
-                <Hexagon
-                    key={`hex-half-regular-index-${idx}`}
-                    data={regularHexagonData}
-                    routeName={routeName}
-                    containerSize={containerSize}
-                    hamburgerMenuIsActive={hamburgerMenuIsActive}
-                />
+                <Hexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
             ))}
 
             {/* Hamburger Menu, includes further <RegularHexagon> and <MenuButton>s */}
-            <HamburgerMenu routeName={routeName} containerSize={containerSize} hamburgerMenuIsActive={hamburgerMenuIsActive} />
+            <HamburgerMenu routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
+
+            <MenuBar routeName={routeName} homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
 
             {postNavigationButtons.map((postNavigationButtonData, idx) => (
-                <MenuButtonHexagon
-                    key={`hex-post-navigation-index-${idx}`}
-                    buttonData={postNavigationButtonData}
-                    routeName={routeName}
-                    containerSize={containerSize}
-                />
+                <MenuButtonHexagon key={`hex-post-navigation-index-${idx}`} buttonData={postNavigationButtonData} routeName={routeName} />
             ))}
         </div>
     );
 };
 
 export default HexagonTiles;
-
-const CategoryNavigationButton: FC<{
-    buttonData: CategoryNavigationButtonRouteData;
-    containerSize: {
-        width: number;
-        height: number;
-    };
-    homeMenuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
-}> = memo(({ buttonData, containerSize, homeMenuTransitionStateUpdates }) => {
-    const { title, name, target } = buttonData;
-    const { name: routeName, content: routeContent } = useZustand((store) => store.values.routeData);
-
-    const breakpoint = useZustand((state) => state.values.breakpoint);
-    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
-    const navigate = useNavigate();
-
-    const isActiveCategoryButton = routeName === ROUTE.category ? isActiveCategory(name, routeContent.category) : false;
-
-    const cssVariables_Memo = useMemo(() => {
-        if (routeName === ROUTE.category) {
-            const previousCategory = cycleThrough(
-                Object.values(CATEGORY).filter((val) => !isNaN(val as number)),
-                routeContent.category.id,
-                'previous',
-            );
-
-            let newTransforms, z;
-            if (isActiveCategoryButton) {
-                newTransforms = categoryNavigationButtonPositions['active'];
-                z = 20;
-            } else if (CATEGORY[name] === previousCategory) {
-                newTransforms = categoryNavigationButtonPositions['left'];
-                z = 0;
-            } else {
-                newTransforms = categoryNavigationButtonPositions['right'];
-                z = 10;
-            }
-
-            const offsetTransforms = { ...buttonData[routeName], ...newTransforms };
-            const { position, rotation, scale, isHalf, shouldOffset } = offsetTransforms;
-            const style = calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-                strokeWidth: 0,
-                shouldOffset,
-                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-            });
-            return { ...style, zIndex: z };
-        } else {
-            const { position, rotation, scale, isHalf, shouldOffset } = buttonData[routeName];
-
-            return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-                shouldOffset,
-                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-            });
-        }
-    }, [breakpoint, buttonData, containerSize, isActiveCategoryButton, name, routeContent.category?.id, routeName]);
-
-    function handleClick() {
-        navigate(target);
-    }
-
-    function handleMouseEnter() {
-        if (routeName === ROUTE.home && menuTransitionTargetReached && menuTransitionTarget !== name) {
-            setMenuTransitionStates([name as CategoryName, false]);
-            // ^^^  Prevent parent from prematurely rotating again, and again, and again
-        }
-    }
-
-    return (
-        <GlassmorphicButtonWrapper
-            name={name}
-            isActive={isActiveCategoryButton}
-            style={cssVariables_Memo}
-            isRouteNavigation
-            clickHandler={handleClick}
-            mouseEnterHandler={handleMouseEnter}
-            lightingGradient
-            strokeRadius={1}
-            innerShadowRadius={6}
-        >
-            <span
-                className={classNames(
-                    'absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75 transition-transform duration-[--ui-animation-menu-transition-duration]',
-                    routeName === ROUTE.home ? '' : 'rotate-[calc(var(--hexagon-rotate)*-1)]',
-                )}
-            >
-                {title}
-            </span>
-        </GlassmorphicButtonWrapper>
-    );
-});
 
 // Local Functions
 
@@ -227,10 +84,6 @@ function getHomeMenuTransitionClasses(category: CategoryName | null, transitionC
         if (transitionCompleted) classNames += ` ${homeMenuTransitionClasses[category].completed}`;
     }
     return classNames;
-}
-
-function isActiveCategory(name: CategoryName, category: Category) {
-    return CATEGORY[name] === category.id;
 }
 
 // Local Values

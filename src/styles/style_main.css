@@ -181,7 +181,6 @@
 }
 
 #root {
-    @apply before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-primary/10 before:blur-lg before:[clip-path:inset(10%_50%_40%_15%_round_1rem_2rem_3rem_4rem)];
     @apply background-gradients flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather;
     @apply [--hexagon-fill-color:theme(colors.theme.primary/0.05)] [--hexagon-inner-shadow-color:theme(colors.white/0.1)] [--hexagon-stroke-color:theme(colors.theme.secondary/0.1)];
     animation-name: animate-linear, animate-radial-1, animate-radial-2, animate-radial-3;
@@ -239,14 +238,14 @@
 }
 
 @property --hexagon-container-property-100cqw {
-  syntax: "<length>";
-  initial-value: 0px;
-  inherits: false;
+    syntax: '<length>';
+    initial-value: 0px;
+    inherits: false;
 }
 @property --hexagon-container-property-100cqh {
-  syntax: "<length>";
-  initial-value: 0px;
-  inherits: false;
+    syntax: '<length>';
+    initial-value: 0px;
+    inherits: false;
 }
 
 /* SVG Filters */

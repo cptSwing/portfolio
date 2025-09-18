@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, useMemo } from 'react';
+import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { ROUTE } from '../types/enums';
 import { useZustand } from '../lib/zustand';
@@ -11,15 +11,12 @@ import {
     offsetHexagonTransforms,
 } from '../lib/hexagonDataNew';
 import { HamburgerBackgroundHexagon, MenuButtonHexagon, MenuButtonSvg } from './HexagonShapes';
+import GetChildSizeContext from '../contexts/GetChildSizeContext';
 
 const HamburgerMenu: FC<{
     routeName: ROUTE;
-    containerSize: {
-        width: number;
-        height: number;
-    };
     hamburgerMenuIsActive: boolean;
-}> = memo(({ routeName, containerSize, hamburgerMenuIsActive }) => {
+}> = memo(({ routeName, hamburgerMenuIsActive }) => {
     const menuButtons_Memo = useMemo(() => {
         if (hamburgerMenuIsActive) {
             return offsetHexagonTransforms(menuButtons, menuButtonsHamburgerTransformOffsets);
@@ -38,7 +35,7 @@ const HamburgerMenu: FC<{
             }
         >
             {/* Background Hexagon, to fit into existing grid of hexes */}
-            <HamburgerBackgroundHexagon routeName={routeName} containerSize={containerSize} hamburgerMenuIsActive={hamburgerMenuIsActive} />
+            <HamburgerBackgroundHexagon routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
 
             {menuButtons_Memo.map((menuButtonData, idx) => {
                 return (
@@ -46,13 +43,12 @@ const HamburgerMenu: FC<{
                         key={`hex-menu-button-index-${idx}`}
                         buttonData={menuButtonData}
                         routeName={routeName}
-                        containerSize={containerSize}
                         hamburgerMenuIsActive={hamburgerMenuIsActive}
                     />
                 );
             })}
 
-            <HamburgerButton routeName={routeName} containerSize={containerSize} hamburgerMenuIsActive={hamburgerMenuIsActive} />
+            <HamburgerButton routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
         </div>
     );
 });
@@ -62,12 +58,9 @@ export default HamburgerMenu;
 const HamburgerButton: FC<{
     routeName: ROUTE;
     hamburgerMenuIsActive: boolean;
-    containerSize: {
-        width: number;
-        height: number;
-    };
-}> = ({ routeName, hamburgerMenuIsActive, containerSize }) => {
+}> = ({ routeName, hamburgerMenuIsActive }) => {
     const { name, svgIconPath, target } = hamburgerButton;
+    const containerSize = useContext(GetChildSizeContext);
 
     const breakpoint = useZustand((state) => state.values.breakpoint);
 
