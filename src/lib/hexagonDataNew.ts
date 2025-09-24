@@ -857,16 +857,18 @@ export const categoryNavigationButtonPositions: Record<'active' | 'left' | 'righ
     active: {
         position: {
             x: 150,
-            y: 260,
+            y: 267.5,
         },
         rotation: -90,
-        scale: 0.6,
+        // scale: 0.6,
+        scale: 0.4,
     },
     left: {
         position: {
             x: 115,
             y: 267.5,
         },
+        rotation: 90,
         scale: 0.4,
     },
     right: {
@@ -874,6 +876,7 @@ export const categoryNavigationButtonPositions: Record<'active' | 'left' | 'righ
             x: 185,
             y: 267.5,
         },
+        rotation: 150,
         scale: 0.4,
     },
 };
@@ -893,12 +896,13 @@ export const categoryNavigationButtons: CategoryNavigationButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 150,
-                y: 260,
+                x: 112.5,
+
+                y: 272,
             },
-            rotation: 0,
+            rotation: -90,
             isHalf: false,
-            scale: 0.6,
+            scale: 0.37,
             shouldOffset: false,
         }, // "Active" position
         [ROUTE.post]: {
@@ -928,12 +932,12 @@ export const categoryNavigationButtons: CategoryNavigationButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 112.5,
-                y: 260,
+                x: 150,
+                y: 272,
             },
-            rotation: 0,
+            rotation: 90,
             isHalf: false,
-            scale: 0.425,
+            scale: 0.37,
             shouldOffset: false,
         },
         [ROUTE.post]: {
@@ -964,11 +968,11 @@ export const categoryNavigationButtons: CategoryNavigationButtonRouteData[] = [
         [ROUTE.category]: {
             position: {
                 x: 187.5,
-                y: 260,
+                y: 272,
             },
-            rotation: 0,
+            rotation: -150,
             isHalf: false,
-            scale: 0.425,
+            scale: 0.37,
             shouldOffset: false,
         },
         [ROUTE.post]: {
