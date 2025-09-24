@@ -55,6 +55,38 @@ const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scale
 
 export const regularHexagons: HexagonRouteData[] = [
     // Appear everywhere:
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 120,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 150,
+                y: 0,
+            },
+            rotation: 210,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
 
     {
         [ROUTE.home]: {
@@ -88,6 +120,7 @@ export const regularHexagons: HexagonRouteData[] = [
             shouldOffset: false,
         },
     },
+
     {
         [ROUTE.home]: {
             position: {
@@ -120,6 +153,7 @@ export const regularHexagons: HexagonRouteData[] = [
             shouldOffset: true,
         }, // Top right
     },
+
     {
         [ROUTE.home]: {
             position: {
@@ -449,8 +483,8 @@ export const regularHexagons: HexagonRouteData[] = [
     },
 ];
 
+// Half hexes in ROUTE.category
 export const halfRegularHexagons: HexagonRouteData[] = [
-    // Half hexes in ROUTE.category
     {
         [ROUTE.home]: {
             position: {
@@ -464,10 +498,10 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 100,
+                x: 0,
                 y: 43.3,
             },
-            rotation: 120,
+            rotation: -60,
             isHalf: true,
             scale: 2,
             shouldOffset: true,
@@ -497,10 +531,10 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 200,
+                x: 300,
                 y: 43.3,
             },
-            rotation: 180,
+            rotation: 60,
             isHalf: true,
             scale: 2,
             shouldOffset: false,
@@ -530,10 +564,10 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 50,
-                y: 129.9,
+                x: 150,
+                y: -43.3,
             },
-            rotation: 60,
+            rotation: -360,
             isHalf: true,
             scale: 2,
             shouldOffset: false,
@@ -563,8 +597,8 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 250,
-                y: 129.9,
+                x: 0,
+                y: 216.5,
             },
             rotation: -120,
             isHalf: true,
@@ -596,10 +630,10 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 100,
+                x: 300,
                 y: 216.5,
             },
-            rotation: 0,
+            rotation: 120,
             isHalf: true,
             scale: 2,
             shouldOffset: true,
@@ -629,10 +663,10 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 200,
-                y: 216.5,
+                x: 150,
+                y: 303.1,
             },
-            rotation: -60,
+            rotation: 180,
             isHalf: true,
             scale: 2,
             shouldOffset: false,
@@ -645,6 +679,87 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: -90,
             isHalf: true,
             scale: 0,
+            shouldOffset: false,
+        },
+    },
+];
+
+export const halfRegularHexagonsRotatedIris: HexagonRouteDataTransformOffsets[] = [
+    // Half hexes in ROUTE.category
+    {
+        [ROUTE.category]: {
+            position: {
+                x: 100,
+                y: 43.3,
+            },
+            rotation: 120,
+            isHalf: true,
+            scale: 2,
+            shouldOffset: true,
+        },
+    },
+
+    {
+        [ROUTE.category]: {
+            position: {
+                x: 200,
+                y: 43.3,
+            },
+            rotation: 180,
+            isHalf: true,
+            scale: 2,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.category]: {
+            position: {
+                x: 50,
+                y: 129.9,
+            },
+            rotation: 60,
+            isHalf: true,
+            scale: 2,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.category]: {
+            position: {
+                x: 250,
+                y: 129.9,
+            },
+            rotation: -120,
+            isHalf: true,
+            scale: 2,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.category]: {
+            position: {
+                x: 100,
+                y: 216.5,
+            },
+            rotation: 0,
+            isHalf: true,
+            scale: 2,
+            shouldOffset: true,
+        },
+    },
+
+    {
+        [ROUTE.category]: {
+            position: {
+                x: 200,
+                y: 216.5,
+            },
+            rotation: -60,
+            isHalf: true,
+            scale: 2,
             shouldOffset: false,
         },
     },
@@ -881,7 +996,47 @@ export const categoryNavigationButtonPositions: Record<'active' | 'left' | 'righ
     },
 };
 
-export const categoryNavigationButtons: CategoryNavigationButtonRouteData[] = [
+export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | MenuButtonRouteData)[] = [
+    // Hamburger Icon
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 130,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 80,
+                y: 272,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -50,
+                y: 211,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.2,
+            shouldOffset: false,
+        },
+        name: 'hamburger',
+        title: '',
+        svgIconPath: '/svg/Bars3Outline.svg',
+        target: () => {
+            store_toggleHamburgerMenu();
+        },
+    },
+
     // Category Links
     {
         [ROUTE.home]: {
@@ -897,7 +1052,6 @@ export const categoryNavigationButtons: CategoryNavigationButtonRouteData[] = [
         [ROUTE.category]: {
             position: {
                 x: 112.5,
-
                 y: 272,
             },
             rotation: -90,
@@ -989,6 +1143,48 @@ export const categoryNavigationButtons: CategoryNavigationButtonRouteData[] = [
         title: 'log',
         target: '/3',
     },
+
+    // Appears only in '[ROUTE.category]' and '[ROUTE.post]' routeData:
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 180,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 220,
+                y: 272,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -50,
+                y: 211,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.2,
+            shouldOffset: false,
+        },
+        name: 'home',
+        title: 'home',
+        svgIconPath: '/svg/HomeOutline.svg',
+        target: () => {
+            store_toggleSubMenu({ name: null });
+            store_toggleHamburgerMenu(false);
+            return '/';
+        },
+    },
 ];
 
 export const hamburgerButton: MenuButtonRouteData = {
@@ -1004,8 +1200,8 @@ export const hamburgerButton: MenuButtonRouteData = {
     },
     [ROUTE.category]: {
         position: {
-            x: 150,
-            y: -24,
+            x: 75,
+            y: 272,
         },
         rotation: 30,
         isHalf: false,
@@ -1191,48 +1387,6 @@ export const menuButtons: MenuButtonRouteData[] = [
         title: 'contact',
         svgIconPath: '/svg/ChatBubbleLeftRightOutline.svg',
         target: (ev) => store_toggleSubMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
-    },
-
-    // Appears only in '[ROUTE.category]' and '[ROUTE.post]' routeData:
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: 180,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 150,
-                y: 30,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -50,
-                y: 211,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.2,
-            shouldOffset: false,
-        },
-        name: 'home',
-        title: 'home',
-        svgIconPath: '/svg/HomeOutline.svg',
-        target: () => {
-            store_toggleSubMenu({ name: null });
-            store_toggleHamburgerMenu(false);
-            return '/';
-        },
     },
 ];
 

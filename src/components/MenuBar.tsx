@@ -2,11 +2,12 @@ import { classNames, cycleThrough } from 'cpts-javascript-utilities';
 import { CSSProperties, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
 import { calcCSSVariables, categoryNavigationButtonPositions, categoryNavigationButtons, hexagonRouteOffsetValues } from '../lib/hexagonDataNew';
 import { CATEGORY, ROUTE } from '../types/enums';
-import { Category, CategoryName, CategoryNavigationButtonRouteData } from '../types/types';
+import { Category, CategoryName, CategoryNavigationButtonRouteData, MenuButtonRouteData } from '../types/types';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { useZustand } from '../lib/zustand';
 import { useNavigate } from 'react-router-dom';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
+import { MenuButtonSvg } from './HexagonShapes';
 
 const MenuBar: FC<{
     homeMenuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
@@ -36,7 +37,7 @@ const MenuBar: FC<{
             // )}
         >
             {categoryNavigationButtons.map((categoryNavigationButtonData, idx) => (
-                <CategoryNavigationButton
+                <MenuButton
                     key={`hex-nav-index-${idx}`}
                     buttonData={categoryNavigationButtonData}
                     homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates}
@@ -49,12 +50,13 @@ const MenuBar: FC<{
 
 export default MenuBar;
 
-const CategoryNavigationButton: FC<{
-    buttonData: CategoryNavigationButtonRouteData;
+const MenuButton: FC<{
+    buttonData: CategoryNavigationButtonRouteData | MenuButtonRouteData;
     homeMenuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
     setPositionOnMenuBar: React.Dispatch<React.SetStateAction<[string, string]>>;
 }> = memo(({ buttonData, homeMenuTransitionStateUpdates, setPositionOnMenuBar }) => {
     const { title, name, target } = buttonData;
+    const svgIconPath = (buttonData as MenuButtonRouteData).svgIconPath ? (buttonData as MenuButtonRouteData).svgIconPath : undefined;
     const { name: routeName, content: routeContent } = useZustand((store) => store.values.routeData);
 
     const containerSize = useContext(GetChildSizeContext);
@@ -112,8 +114,15 @@ const CategoryNavigationButton: FC<{
         }
     }, [cssVariables_Memo, isActiveCategoryButton, setPositionOnMenuBar]);
 
-    function handleClick() {
-        navigate(target);
+    function handleClick(ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) {
+        let specificTarget: string | ((ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) => string | void);
+        if (!svgIconPath) {
+            specificTarget = target as string;
+            navigate(specificTarget);
+        } else {
+            specificTarget = target as (ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) => string | void;
+            navigate(specificTarget(ev));
+        }
     }
 
     function handleMouseEnter() {
@@ -135,14 +144,21 @@ const CategoryNavigationButton: FC<{
             strokeRadius={1}
             innerShadowRadius={6}
         >
-            <span
-                className={classNames(
-                    'absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75 transition-transform duration-[--ui-animation-menu-transition-duration]',
-                    routeName === ROUTE.home ? '' : 'rotate-[calc(var(--hexagon-rotate)*-1)]',
-                )}
-            >
-                {title}
-            </span>
+            {svgIconPath ? (
+                <MenuButtonSvg
+                    svgIconPath={svgIconPath}
+                    // counterRotate={routeName === ROUTE.home ? hamburgerMenuIsActive : true}
+                />
+            ) : (
+                <span
+                    className={classNames(
+                        'absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75 transition-transform duration-[--ui-animation-menu-transition-duration]',
+                        routeName === ROUTE.home ? '' : 'rotate-[calc(var(--hexagon-rotate)*-1)]',
+                    )}
+                >
+                    {title}
+                </span>
+            )}
         </GlassmorphicButtonWrapper>
         // <div className="nav-item" style={{ '--i': index } as CSSProperties}>
 

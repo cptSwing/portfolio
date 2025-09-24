@@ -64,43 +64,6 @@ export const Hexagon: FC<{
     );
 });
 
-export const HamburgerBackgroundHexagon: FC<{
-    routeName: ROUTE;
-    hamburgerMenuIsActive: boolean;
-}> = memo(({ routeName, hamburgerMenuIsActive }) => {
-    const breakpoint = useZustand((state) => state.values.breakpoint);
-    const containerSize = useContext(GetChildSizeContext);
-
-    const cssVariables_Memo = useMemo(() => {
-        let backgroundRouteData = hamburgerBackgroundHexagon;
-        if (hamburgerMenuIsActive && hamburgerBackgroundHexagonOffsets[routeName]) {
-            backgroundRouteData = offsetHexagonTransforms(hamburgerBackgroundHexagon, hamburgerBackgroundHexagonOffsets);
-        }
-        const { position, rotation, scale, isHalf, shouldOffset } = backgroundRouteData[routeName];
-        return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-            shouldOffset,
-            offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-        });
-    }, [hamburgerMenuIsActive, routeName, containerSize, breakpoint]);
-
-    return (
-        <div
-            className={classNames(
-                baseClasses,
-                baseTransitionClasses,
-                '!to-white/10 [--regular-hexagon-transition-random-factor:0.5]',
-                hamburgerMenuIsActive ? '!glassmorphic-level-4' : 'regular-hexagon-named-class glassmorphic-grain-after after:![background-size:150%]',
-                routeName === ROUTE.home
-                    ? ''
-                    : routeName === ROUTE.category
-                      ? '!glassmorphic-level-1 !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.4)]'
-                      : 'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]', // ROUTE.post
-            )}
-            style={cssVariables_Memo as CSSProperties}
-        />
-    );
-});
-
 export const MenuButtonHexagon: FC<{
     buttonData: MenuButtonRouteData | PostNavigationButtonRouteData;
     routeName: ROUTE;

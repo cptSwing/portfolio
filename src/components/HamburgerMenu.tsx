@@ -10,7 +10,7 @@ import {
     menuButtonsHamburgerTransformOffsets,
     offsetHexagonTransforms,
 } from '../lib/hexagonDataNew';
-import { HamburgerBackgroundHexagon, MenuButtonHexagon, MenuButtonSvg } from './HexagonShapes';
+import { MenuButtonHexagon, MenuButtonSvg } from './HexagonShapes';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 
 const HamburgerMenu: FC<{
@@ -34,9 +34,6 @@ const HamburgerMenu: FC<{
                 } as CSSProperties
             }
         >
-            {/* Background Hexagon, to fit into existing grid of hexes */}
-            <HamburgerBackgroundHexagon routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
-
             {menuButtons_Memo.map((menuButtonData, idx) => {
                 return (
                     <MenuButtonHexagon
@@ -48,7 +45,7 @@ const HamburgerMenu: FC<{
                 );
             })}
 
-            <HamburgerButton routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
+            {/* <HamburgerButton routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} /> */}
         </div>
     );
 });

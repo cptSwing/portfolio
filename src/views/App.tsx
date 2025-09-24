@@ -73,7 +73,7 @@ const Main = () => {
 
                 <Post show={routeName === ROUTE.post} />
                 <HexagonTiles />
-                <Category show={routeName === ROUTE.category} />
+                {/* <Category show={routeName === ROUTE.category} /> */}
 
                 <MenuModal />
             </div>
