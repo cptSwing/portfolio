@@ -107,8 +107,8 @@ const CategoryHexagons: FC<{
                     {/* Extending wide hexagon */}
                     <div
                         className={classNames(
-                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute left-[76%] top-[20%] flex h-[60%] w-[calc(60%*1.1547)] origin-left scale-x-0 flex-col items-center justify-center gap-y-[10%] !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,transform,background-color] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path]',
-                            isLoaded ? '!glassmorphic-level-2 !scale-x-100 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
+                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute left-[76%] top-[20%] flex h-[60%] w-[calc(60%*1.1547)] origin-left -translate-x-full flex-col items-center justify-center gap-y-[10%] !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,transform,background-color] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path]',
+                            isLoaded ? '!glassmorphic-level-2 !translate-x-0 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
                             hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
                         )}
                         style={
@@ -125,8 +125,8 @@ const CategoryHexagons: FC<{
                     {/* Extending wide hexagon */}
                     <div
                         className={classNames(
-                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute right-[87.5%] top-[20%] flex h-[60%] w-[58%] origin-right scale-x-0 flex-col items-center justify-center !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,background-color,transform] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] [clip-path:--hexagon-animated-clip-path]',
-                            isLoaded ? '!glassmorphic-level-3 !scale-x-100 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
+                            'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute right-[87.5%] top-[20%] flex h-[60%] w-[58%] origin-right translate-x-full flex-col items-center justify-center !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,background-color,transform] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] [clip-path:--hexagon-animated-clip-path]',
+                            isLoaded ? '!glassmorphic-level-3 !translate-x-0 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
                             hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
                         )}
                         style={

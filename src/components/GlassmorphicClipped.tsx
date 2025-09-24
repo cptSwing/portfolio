@@ -1,4 +1,4 @@
-import { ComponentPropsWithRef, CSSProperties, FC, forwardRef, ReactNode, useMemo } from 'react';
+import { ComponentPropsWithRef, CSSProperties, FC, ReactNode, useMemo } from 'react';
 import { valueof } from '../types/types';
 import { useZustand } from '../lib/zustand';
 import { classNames } from 'cpts-javascript-utilities';
@@ -11,13 +11,12 @@ interface GlassmorphicProps extends ComponentPropsWithRef<'div'> {
     strokeRadius?: number;
 }
 
-const GlassmorphicClipped = forwardRef<HTMLDivElement, GlassmorphicProps>((props, ref) => {
+const GlassmorphicClipped: FC<GlassmorphicProps> = (props) => {
     const { children, clipPath, innerShadowRadius = 0, strokeRadius = 0, className, style, ...rest } = props;
     const uuid = useMemo(() => self.crypto.randomUUID(), []);
 
     return (
         <div
-            ref={ref}
             {...rest}
             className={`${className} glassmorphic-backdrop glassmorphic-level-3 relative [clip-path:--glassmorphic-clipped-clip-path]`}
             style={{ ...style, '--glassmorphic-clipped-clip-path': clipPath } as CSSProperties}
@@ -31,7 +30,7 @@ const GlassmorphicClipped = forwardRef<HTMLDivElement, GlassmorphicProps>((props
             />
         </div>
     );
-});
+};
 
 export default GlassmorphicClipped;
 
