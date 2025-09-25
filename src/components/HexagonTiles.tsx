@@ -1,12 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { classNames } from 'cpts-javascript-utilities';
 import { CategoryName } from '../types/types';
-import { regularHexagons, postNavigationButtons, backgroundHexagons, halfRegularHexagons } from '../lib/hexagonDataNew';
+import {
+    regularHexagons,
+    postNavigationButtons,
+    backgroundHexagons,
+    halfRegularHexagons,
+    offsetHexagonTransforms,
+    transformCategoryHalfHexagons,
+} from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
 import HamburgerMenu from './HamburgerMenu';
-import { Hexagon, MenuButtonHexagon } from './HexagonShapes';
+import { Hexagon, HexagonModalMenuButton } from './HexagonShapes';
 import MenuBar from './MenuBar';
 
 const HexagonTiles = () => {
@@ -52,13 +59,22 @@ const HexagonTiles = () => {
                 ))}
             </div>
 
+            {/* "Regular" Hexagons at ROUTE.category */}
             {regularHexagons.map((regularHexagonData, idx) => (
                 <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
             ))}
 
-            {halfRegularHexagons.map((regularHexagonData, idx) => (
-                <Hexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
-            ))}
+            {/* "Half" Hexagons at ROUTE.category */}
+            {halfRegularHexagons.map((regularHexagonData, idx) => {
+                // if route is Category, transform positions and scale of these halfHexes in relation to an (imaginary? PostView?) Centered Hexagon
+                let hexagonData = regularHexagonData;
+                if (routeName === ROUTE.category) {
+                    const halfHexagonCategoryOffsets = transformCategoryHalfHexagons(hexagonData[routeName], 2);
+                    hexagonData = offsetHexagonTransforms(hexagonData, halfHexagonCategoryOffsets);
+                }
+
+                return <Hexagon key={`hex-half-regular-index-${idx}`} data={hexagonData} routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />;
+            })}
 
             {/* Hamburger Menu, includes further <RegularHexagon> and <MenuButton>s */}
             <HamburgerMenu routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
@@ -66,7 +82,7 @@ const HexagonTiles = () => {
             <MenuBar homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
 
             {postNavigationButtons.map((postNavigationButtonData, idx) => (
-                <MenuButtonHexagon key={`hex-post-navigation-index-${idx}`} buttonData={postNavigationButtonData} routeName={routeName} />
+                <HexagonModalMenuButton key={`hex-post-navigation-index-${idx}`} buttonData={postNavigationButtonData} routeName={routeName} />
             ))}
         </div>
     );
@@ -78,9 +94,8 @@ export default HexagonTiles;
 
 function getHomeMenuTransitionClasses(category: CategoryName | null, transitionCompleted: boolean) {
     let classNames = 'rotate-0';
-    if (category) {
+    if (category && Object.keys(CATEGORY).includes(category)) {
         classNames = homeMenuTransitionClasses[category].base;
-
         if (transitionCompleted) classNames += ` ${homeMenuTransitionClasses[category].completed}`;
     }
     return classNames;
@@ -116,5 +131,3 @@ const homeMenuTransitionClasses = {
 // Local Types
 
 type TransitionTargetReached = boolean;
-
-// delay-[--regular-hexagon-transition-delay] duration-[--regular-hexagon-transition-duration]

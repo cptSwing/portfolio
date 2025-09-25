@@ -51,8 +51,29 @@ const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scale
 // x: -50 = hex sits on the parent's X:0; total width = 100
 // y: -43.3 = hex sits on parent's Y:0 (total height 86.6)
 
+/**
+ * Pre-scaled-positioning notes:
+ *
+ * X Axis / width
+ * ==============
+ * Single: 100
+ * Half: 50
+ * Xpos: minus 50
+ * --->>> So, at total width of 400, to position a hexagon at horizontal center: (400 / 2 = 200) - 50 = 150 !!
+ *
+ *
+ * Y Axis / height
+ * ==============
+ * Single: 86.6
+ * Half: 43.3
+ * Ypos: minus 43.3
+ * --->>> So, at total height of 346.4, to position a hexagon at vertical center: (346.4 / 2 = 173.2) - 43.3 = 129.9
+ *
+ */
+
 // viewBoxes['hexFlat'] : 0 0 400 346.4 --> (400x0.866)
 
+// "Regular" Hexagons in Category ROUTE to be precise
 export const regularHexagons: HexagonRouteData[] = [
     // Appear everywhere:
     {
@@ -385,6 +406,7 @@ export const regularHexagons: HexagonRouteData[] = [
     },
 
     // Appear only after "Home"  (replace Nav menu buttons)
+    // TODO remove in lieu of others up there?? depends on re-design of ROUTE.category
     {
         [ROUTE.home]: {
             position: {
@@ -483,7 +505,7 @@ export const regularHexagons: HexagonRouteData[] = [
     },
 ];
 
-// Half hexes in ROUTE.category
+// Half hexes in ROUTE.category. Do not necessarily want to have half hexagons always be half hexagons, for some cool clip-path transitions in-between ROUTEs
 export const halfRegularHexagons: HexagonRouteData[] = [
     {
         [ROUTE.home]: {
@@ -498,12 +520,12 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 0,
-                y: 43.3,
+                x: 112.5,
+                y: 108.25,
             },
             rotation: -60,
             isHalf: true,
-            scale: 2,
+            scale: 0.5,
             shouldOffset: true,
         },
         [ROUTE.post]: {
@@ -522,39 +544,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         [ROUTE.home]: {
             position: {
                 x: 75,
-                y: 0,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 300,
-                y: 43.3,
-            },
-            rotation: 60,
-            isHalf: true,
-            scale: 2,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: 90,
-            isHalf: true,
-            scale: 0,
-            shouldOffset: false,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 75,
                 y: 259.8,
             },
             rotation: 0,
@@ -565,11 +554,11 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         [ROUTE.category]: {
             position: {
                 x: 150,
-                y: -43.3,
+                y: 86.6,
             },
             rotation: -360,
             isHalf: true,
-            scale: 2,
+            scale: 0.5,
             shouldOffset: false,
         },
         [ROUTE.post]: {
@@ -587,6 +576,39 @@ export const halfRegularHexagons: HexagonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 187.5,
+                y: 108.25,
+            },
+            rotation: 60,
+            isHalf: true,
+            scale: 0.5,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
                 x: 225,
                 y: 0,
             },
@@ -597,12 +619,12 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 0,
-                y: 216.5,
+                x: 112.5,
+                y: 151.55,
             },
             rotation: -120,
             isHalf: true,
-            scale: 2,
+            scale: 0.5,
             shouldOffset: false,
         },
         [ROUTE.post]: {
@@ -620,39 +642,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
-                x: 300,
-                y: 129.9,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 300,
-                y: 216.5,
-            },
-            rotation: 120,
-            isHalf: true,
-            scale: 2,
-            shouldOffset: true,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -45,
-                y: 290,
-            },
-            rotation: -90,
-            isHalf: false,
-            scale: 0.35,
-            shouldOffset: false,
-        }, // Bottom Left
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
                 x: 0,
                 y: 129.9,
             },
@@ -664,11 +653,11 @@ export const halfRegularHexagons: HexagonRouteData[] = [
         [ROUTE.category]: {
             position: {
                 x: 150,
-                y: 303.1,
+                y: 173.2,
             },
             rotation: 180,
             isHalf: true,
-            scale: 2,
+            scale: 0.5,
             shouldOffset: false,
         },
         [ROUTE.post]: {
@@ -681,6 +670,39 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             scale: 0,
             shouldOffset: false,
         },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: 129.9,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 187.5,
+                y: 151.55,
+            },
+            rotation: 120,
+            isHalf: true,
+            scale: 0.5,
+            shouldOffset: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -45,
+                y: 290,
+            },
+            rotation: -90,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: false,
+        }, // Bottom Left
     },
 ];
 
@@ -1815,23 +1837,63 @@ export function offsetHexagonTransforms<T = HexagonRouteData | CategoryNavigatio
     } else {
         throw new Error('invalid input arguments');
     }
+}
 
-    function offsetRoute<T>(routeData: T, routeOffset?: HexagonRouteDataTransformOffsets) {
-        const newRouteData: T = { ...routeData };
+function offsetRoute<T>(routeData: T, routeOffset?: HexagonRouteDataTransformOffsets) {
+    const newRouteData: T = { ...routeData };
 
-        let key: keyof T;
-        for (key in routeData) {
-            if (key in ROUTE && routeOffset && key in routeOffset) {
-                const route = key as unknown as ROUTE;
-                (newRouteData as HexagonRouteData)[route] = {
-                    ...(newRouteData as HexagonRouteData)[route],
-                    ...routeOffset[route],
-                };
-            }
+    let key: keyof T;
+    for (key in routeData) {
+        if (key in ROUTE && routeOffset && key in routeOffset) {
+            const route = key as unknown as ROUTE;
+            (newRouteData as HexagonRouteData)[route] = {
+                ...(newRouteData as HexagonRouteData)[route],
+                ...routeOffset[route],
+            };
+        }
+    }
+
+    return newRouteData;
+}
+
+const hexagonGridTransformCenter = {
+    x: 150,
+    y: 129.9,
+};
+export function transformCategoryHalfHexagons(
+    routeTransforms: HexagonTransformData,
+    imaginaryHexagonScale?: number,
+    center = hexagonGridTransformCenter,
+): HexagonRouteDataTransformOffsets {
+    let returnOffsets = routeTransforms;
+
+    if (typeof imaginaryHexagonScale === 'number') {
+        const newScale = imaginaryHexagonScale / 2;
+        const newPosition = returnOffsets.position;
+
+        if (newPosition.x < center.x) {
+            newPosition.x = center.x - 37.5 * imaginaryHexagonScale;
+        } else if (newPosition.x > center.x) {
+            newPosition.x = center.x + 37.5 * imaginaryHexagonScale;
         }
 
-        return newRouteData;
+        let yOffset;
+        if (newPosition.x === center.x) {
+            yOffset = 43.3;
+        } else {
+            yOffset = 21.65;
+        }
+
+        if (newPosition.y < center.y) {
+            newPosition.y = center.y - yOffset * imaginaryHexagonScale;
+        } else if (newPosition.y > center.y) {
+            newPosition.y = center.y + yOffset * imaginaryHexagonScale;
+        }
+
+        returnOffsets = { ...returnOffsets, position: newPosition, scale: newScale };
     }
+
+    return { [ROUTE.category]: returnOffsets };
 }
 
 export function getCategoryHexagons(count: number): HexagonTransformData[] {
