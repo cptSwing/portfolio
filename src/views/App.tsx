@@ -3,7 +3,6 @@ import { useZustand } from '../lib/zustand';
 // import useOutsideClick from '../hooks/useOutsideClick';
 import RoundedHexagonSVG from '../components/RoundedHexagonSVG';
 import { classNames } from 'cpts-javascript-utilities';
-import Category from '../components/routes/Category';
 import MenuModal from '../components/MenuModal';
 import Post from '../components/routes/Post';
 import BundleRoutes from '../components/routes/BundleRoutes';
@@ -43,28 +42,19 @@ const Main = () => {
     useSetRouteData();
     const routeName = useZustand((store) => store.values.routeData.name);
 
-    // const _navigate = useNavigate();
-    /* Contract <Category> when click outside */
-    // const _ref = useOutsideClick(() => {
-    // if (!param_postId) {
-    // should not trigger when post is displayed
-    // navigate('/');
-    // setExpansionState('home');
-    // }
-    // }) as MutableRefObject<HTMLDivElement | null>;
-
     return (
+        // TODO could replace with container queries?
         <GetChildSize context={GetChildSizeContext}>
             <div
                 className={classNames(
                     '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
                     'relative flex items-center justify-center text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
-                    routeName === ROUTE.category
-                        ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,72.5vw)] sm:w-auto 2xl:aspect-[1/0.75]'
-                        : routeName === ROUTE.post
-                          ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]'
-                          : // ROUTE.home
-                            'aspect-hex-flat h-[min(80vh,80vw)] sm:h-[min(70vh,70vw)]',
+                    routeName === ROUTE.home
+                        ? 'aspect-hex-flat h-[min(80vh,80vw)] sm:h-[min(70vh,70vw)]'
+                        : routeName === ROUTE.category
+                          ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,72.5vw)] sm:w-auto 2xl:aspect-[1/0.75]'
+                          : // ROUTE.post
+                            'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]',
                 )}
                 style={globalCssVariables}
             >
@@ -73,7 +63,6 @@ const Main = () => {
 
                 <Post show={routeName === ROUTE.post} />
                 <HexagonTiles />
-                {/* <Category show={routeName === ROUTE.category} /> */}
 
                 <MenuModal />
             </div>

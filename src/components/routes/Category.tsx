@@ -1,26 +1,31 @@
 import { Category as Category_T, Post } from '../../types/types';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, memo, useLayoutEffect, useRef, useState } from 'react';
 import useMouseWheelDirection from '../../hooks/useMouseWheelDirection';
 import { useZustand } from '../../lib/zustand.ts';
 import useDebugButton from '../../hooks/useDebugButton.ts';
 import useMountTransition from '../../hooks/useMountTransition.ts';
 import CategoryCards from '../CategoryCards.tsx';
 import { usePreviousPersistent } from '../../hooks/usePrevious.ts';
+import useTimeout from '../../hooks/useTimeout.ts';
+import { config } from '../../types/exportTyped.ts';
 
-const { store_setDebugValues, store_toggleHamburgerMenu } = useZustand.getState().methods;
+const { store_setDebugValues, store_setRunIrisTransition, store_toggleHamburgerMenu } = useZustand.getState().methods;
+const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
-const Category: FC<{ show: boolean }> = ({ show }) => {
+const Category: FC<{ show: boolean }> = memo(({ show }) => {
     const category = useZustand((store) => store.values.routeData.content.category) ?? emptyCategory;
+    const runIrisTransition = useZustand((state) => state.values.runIrisTransition);
     const previousCategoryId = usePreviousPersistent(category.id);
 
     const categoryRef = useRef<HTMLDivElement | null>(null);
     const isMounted = useMountTransition(categoryRef, show, '!clip-inset-x-[-50%]');
+    const [wheelDirection, wheelDistance] = useMouseWheelDirection();
+    useTimeout(() => store_setRunIrisTransition(false), runIrisTransition ? transitionDuration_MS * 2 : null);
 
     const activeIndexState = useState(0);
     const [activeIndex, setActiveIndex] = activeIndexState;
 
-    const [wheelDirection, wheelDistance] = useMouseWheelDirection();
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (wheelDirection !== null) {
             setActiveIndex((previous) => loopFlipValues(previous, category.posts.length, wheelDirection));
             store_toggleHamburgerMenu(false);
@@ -28,7 +33,7 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
     }, [category.posts.length, wheelDirection, setActiveIndex, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
 
     /* Run after the wheel-direction effect to ensure activeIndex is at 0 when switching categories/unmounting */
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (category.id !== previousCategoryId) {
             setActiveIndex(0);
         }
@@ -38,19 +43,19 @@ const Category: FC<{ show: boolean }> = ({ show }) => {
         };
     }, [category.id, previousCategoryId, setActiveIndex]);
 
-    return isMounted ? (
-        <div
-            ref={categoryRef}
-            className="pointer-events-none absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%]"
-        >
-            <CategoryCards posts={category.posts} activeIndexState={activeIndexState} />
+    useLayoutEffect(() => {
+        store_setRunIrisTransition(true);
+        return () => store_setRunIrisTransition(false);
+    }, [activeIndex]);
 
-            {/* <div className="mx-auto mt-[40%] flex h-1/4 w-[90%] bg-black/80" /> */}
+    return isMounted ? (
+        <div ref={categoryRef} className="contents transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%]">
+            <CategoryCards posts={category.posts} activeIndexState={activeIndexState} />
 
             {/* {category.posts[activeIndex] && <PostPreview post={category.posts[activeIndex]} />} */}
         </div>
     ) : null;
-};
+});
 
 export default Category;
 

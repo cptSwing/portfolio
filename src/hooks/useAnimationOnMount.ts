@@ -2,7 +2,7 @@ import { CSSProperties, useCallback, useRef, useState } from 'react';
 
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config.ts';
-import { removeCssProperties, setCssProperties } from '../lib/cssProperties.ts';
+import { removeCssProperties, setCssProperties } from 'cpts-javascript-utilities';
 
 const themeTransitionTiming = resolveConfig(tailwindConfig).theme.transitionTimingFunction;
 
@@ -44,7 +44,7 @@ const useAnimationOnMount = (props: UseAnimationOnMountProps) => {
 
         element.addEventListener('animationend', () => {
             const animName = element.style.animationName;
-            removeCssProperties(element, Object.keys(animProps));
+            removeCssProperties(element, animProps);
             setHasEnded(animName);
         });
     }, []);

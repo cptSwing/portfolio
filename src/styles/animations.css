@@ -1,20 +1,3 @@
-@keyframes float-background {
-    0%,
-    100% {
-        transform: translateX(0) translateY(0);
-    }
-    25% {
-        transform: translateX(-20%) translateY(20%);
-    }
-    50% {
-        transform: translateX(20%) translateY(-20%);
-    }
-    75% {
-        transform: translateX(-10%) translateY(10%);
-    }
-}
-
-
 @keyframes animate-linear {
     25% {
         --background-gradient-linear-angle: 185deg;
@@ -35,7 +18,6 @@
         --background-gradient-radial-1-position: 80% 25%;
     }
 }
-
 
 @keyframes animate-radial-2 {
     33% {

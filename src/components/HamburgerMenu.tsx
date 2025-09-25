@@ -10,7 +10,7 @@ import {
     menuButtonsHamburgerTransformOffsets,
     offsetHexagonTransforms,
 } from '../lib/hexagonDataNew';
-import { MenuButtonHexagon, MenuButtonSvg } from './HexagonShapes';
+import { HexagonModalMenuButton, MenuButtonSvg } from './HexagonShapes';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 
 const HamburgerMenu: FC<{
@@ -36,7 +36,7 @@ const HamburgerMenu: FC<{
         >
             {menuButtons_Memo.map((menuButtonData, idx) => {
                 return (
-                    <MenuButtonHexagon
+                    <HexagonModalMenuButton
                         key={`hex-menu-button-index-${idx}`}
                         buttonData={menuButtonData}
                         routeName={routeName}

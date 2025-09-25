@@ -27,7 +27,7 @@
 
 @layer components {
     .after-glassmorphic-grain {
-        @apply after:absolute after:left-0 after:top-0 after:size-full after:bg-repeat after:opacity-5 after:[background-size:calc(300%*var(--glassmorphic-grain-scale,1))] after:[z-index:-100] after:blur-[0px];
+        @apply after:absolute after:left-0 after:top-0 after:size-full after:bg-repeat after:opacity-5 after:blur-[0px] after:[background-size:calc(300%*var(--glassmorphic-grain-scale,1))] after:[z-index:-100];
         @apply after:[background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20150%20150%22%3E%0A%20%20%20%20%3Cfilter%20id%3D%22a%22%3E%0A%20%20%20%20%20%20%20%20%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.95%22%20numOctaves%3D%221%22%20stitchTiles%3D%22stitch%22%2F%3E%0A%20%20%20%20%3C%2Ffilter%3E%0A%20%20%20%20%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23a)%22%2F%3E%0A%3C%2Fsvg%3E%0A")];
     }
 
@@ -236,17 +236,12 @@
     inherits: true;
     initial-value: 0deg;
 }
-
-@property --hexagon-container-property-100cqw {
-    syntax: '<length>';
-    initial-value: 0px;
+/* 
+@property --tw-rotate {
+    syntax: '<angle>';
     inherits: false;
-}
-@property --hexagon-container-property-100cqh {
-    syntax: '<length>';
-    initial-value: 0px;
-    inherits: false;
-}
+    initial-value: 0deg;
+} */
 
 /* SVG Filters */
 

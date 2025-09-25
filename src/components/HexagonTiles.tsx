@@ -1,20 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { classNames } from 'cpts-javascript-utilities';
 import { CategoryName } from '../types/types';
-import {
-    regularHexagons,
-    postNavigationButtons,
-    backgroundHexagons,
-    halfRegularHexagons,
-    offsetHexagonTransforms,
-    transformCategoryHalfHexagons,
-} from '../lib/hexagonDataNew';
+import { regularHexagons, postNavigationButtons, backgroundHexagons, halfRegularHexagons } from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
 import HamburgerMenu from './HamburgerMenu';
-import { Hexagon, HexagonModalMenuButton } from './HexagonShapes';
+import { HalfHexagon, Hexagon, HexagonModalMenuButton } from './HexagonShapes';
 import MenuBar from './MenuBar';
+import Category from './routes/Category';
 
 const HexagonTiles = () => {
     const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
@@ -37,9 +31,7 @@ const HexagonTiles = () => {
     return (
         <div
             className={classNames(
-                // 'container-size  [--hexagon-container-aspect:calc(var(--hexagon-container-unitless-width-px)/var(--hexagon-container-unitless-height-px))] [--hexagon-container-property-100cqh:100cqh] [--hexagon-container-property-100cqw:100cqw] [--hexagon-container-unitless-height-px:calc(10000*tan(atan2(var(--hexagon-container-property-100cqh),10000px)))] [--hexagon-container-unitless-width-px:calc(10000*tan(atan2(var(--hexagon-container-property-100cqw),10000px)))] [--hexagon-height-container-to-viewbox:calc(var(--hexagon-container-unitless-height-px)/346.6)] [--hexagon-ratio-of-aspects:calc((400/346.6)/var(--hexagon-container-aspect))] [--hexagon-width-container-to-viewbox:calc(var(--hexagon-container-unitless-width-px)/400)]',
-                // 'after:absolute after:right-0 after:top-0 after:h-[50px] after:w-[200px] after:content-["w:_"_counter(w)_"h:_"_counter(h)_"aspect:_"_counter(aspect)] after:[counter-reset:w_var(--hexagon-container-unitless-width-px)_h_var(--hexagon-container-unitless-height-px)_aspect_var(--hexagon-container-aspect)]',
-                'container-size pointer-events-none absolute size-full transform-gpu overflow-hidden transition-transform duration-[--ui-animation-menu-transition-duration]',
+                'container-size pointer-events-none absolute z-0 size-full transform-gpu overflow-visible transition-transform duration-[--ui-animation-menu-transition-duration]',
                 routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'rotate-90 sm:rotate-0',
             )}
             onTransitionEnd={({ target, currentTarget }) => {
@@ -55,26 +47,21 @@ const HexagonTiles = () => {
         >
             <div className="opacity-15">
                 {backgroundHexagons.map((regularHexagonData, idx) => (
-                    <Hexagon key={`hex-background-index-${idx}`} data={regularHexagonData} routeName={routeName} hamburgerMenuIsActive={false} />
+                    <Hexagon key={`hex-background-index-${idx}`} data={regularHexagonData} routeName={routeName} />
                 ))}
             </div>
 
             {/* "Regular" Hexagons at ROUTE.category */}
             {regularHexagons.map((regularHexagonData, idx) => (
-                <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
+                <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
             ))}
 
-            {/* "Half" Hexagons at ROUTE.category */}
-            {halfRegularHexagons.map((regularHexagonData, idx) => {
-                // if route is Category, transform positions and scale of these halfHexes in relation to an (imaginary? PostView?) Centered Hexagon
-                let hexagonData = regularHexagonData;
-                if (routeName === ROUTE.category) {
-                    const halfHexagonCategoryOffsets = transformCategoryHalfHexagons(hexagonData[routeName], 2);
-                    hexagonData = offsetHexagonTransforms(hexagonData, halfHexagonCategoryOffsets);
-                }
+            <Category show={routeName === ROUTE.category} />
 
-                return <Hexagon key={`hex-half-regular-index-${idx}`} data={hexagonData} routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />;
-            })}
+            {/* "Half" Hexagons at ROUTE.category */}
+            {halfRegularHexagons.map((regularHexagonData, idx) => (
+                <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
+            ))}
 
             {/* Hamburger Menu, includes further <RegularHexagon> and <MenuButton>s */}
             <HamburgerMenu routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />

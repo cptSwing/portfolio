@@ -1,14 +1,20 @@
 import { classNames, keyDownA11y } from 'cpts-javascript-utilities';
 import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
 import { ROUTE } from '../types/enums';
-import { calcCSSVariables, hexagonRouteOffsetValues } from '../lib/hexagonDataNew';
+import {
+    calcCSSVariables,
+    categoryCardActiveHexagon,
+    hexagonRouteOffsetValues,
+    offsetHexagonTransforms,
+    transformCategoryHalfHexagons,
+} from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import { HexagonRouteData, MenuButtonRouteData, PostNavigationButtonRouteData } from '../types/types';
 import { useNavigate } from 'react-router-dom';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 
 const baseClasses =
-    /* tw */ 'glassmorphic-backdrop glassmorphic-level-3 lighting-gradient transform-hexagon pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] ';
+    /* tw */ 'glassmorphic-backdrop pointer-events-none glassmorphic-level-3 lighting-gradient transform-hexagon  absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] ';
 const baseTransitionClasses =
     /* tw */
     'transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms,_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]';
@@ -17,16 +23,30 @@ export const Hexagon: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
 }> = memo(({ data, routeName }) => {
+    const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
+
+    const runIrisTransition = useZustand((state) => state.values.runIrisTransition);
     const breakpoint = useZustand((state) => state.values.breakpoint);
+
     const containerSize = useContext(GetChildSizeContext);
 
-    const cssVariables_Memo = useMemo(() => {
-        const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
-        return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-            shouldOffset,
-            offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-        });
-    }, [data, routeName, containerSize, breakpoint]);
+    const cssVariables_Memo = useMemo(
+        () =>
+            calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
+                shouldOffset,
+                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
+            }),
+        [position, rotation, scale, isHalf, containerSize, shouldOffset, routeName, breakpoint],
+    );
+
+    const centerHexagonCssVariables_Memo = useMemo(
+        () =>
+            calcCSSVariables(categoryCardActiveHexagon.position, 0, scale, false, containerSize, {
+                shouldOffset,
+                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
+            }),
+        [breakpoint, containerSize, routeName, scale, shouldOffset],
+    );
 
     const random_Memo = useMemo(() => Math.random(), []);
 
@@ -39,21 +59,54 @@ export const Hexagon: FC<{
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category
-                      ? data[routeName].isHalf
-                          ? '!to-white/[0.075] ![--glassmorphic-backdrop-blur:2px] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.5)]'
-                          : 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.5)]'
-                      : 'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]', // ROUTE.post
+                      ? isHalf
+                          ? '!to-white/[0.075] ![--glassmorphic-backdrop-blur:1px] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.25)]'
+                          : 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      : // ROUTE.post
+                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
             style={
                 {
                     ...cssVariables_Memo,
                     '--regular-hexagon-transition-random-factor': random_Memo,
-                    '--glassmorphic-grain-scale': 0.5 / data[routeName].scale,
+                    '--glassmorphic-grain-scale': 0.5 / scale,
+                    ...(routeName === ROUTE.category && isHalf
+                        ? {
+                              '--hexagon-translate-x': runIrisTransition
+                                  ? centerHexagonCssVariables_Memo['--hexagon-translate-x']
+                                  : cssVariables_Memo['--hexagon-translate-x'],
+                              '--hexagon-translate-y': runIrisTransition
+                                  ? centerHexagonCssVariables_Memo['--hexagon-translate-y']
+                                  : cssVariables_Memo['--hexagon-translate-y'],
+                              '--hexagon-rotate': `calc(${cssVariables_Memo['--hexagon-rotate']} + (240deg * ${runIrisTransition ? 1 : 0}))`,
+                              '--hexagon-scale-x': `calc(${cssVariables_Memo['--hexagon-scale-x']} * ${runIrisTransition ? 1.2 : 1})`,
+                              '--hexagon-scale-y': `calc(${cssVariables_Memo['--hexagon-scale-y']} * ${runIrisTransition ? 1.2 : 1})`,
+
+                              'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) / ${runIrisTransition ? 1.5 : 1}), calc(var(--ui-animation-menu-transition-duration) * (${random_Memo} + 1)), calc(var(--ui-animation-menu-transition-duration) * (${random_Memo} + 1)), var(--ui-animation-menu-transition-duration), var(--ui-animation-menu-transition-duration)`,
+                              'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo} * ${runIrisTransition ? 0 : 1}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), 0ms, 0ms`,
+                          }
+                        : {}),
                 } as CSSProperties
             }
         />
     );
 });
+
+export const HalfHexagon: FC<{
+    data: HexagonRouteData;
+    routeName: ROUTE;
+}> = ({ data, routeName }) => {
+    const categoryAdjustedData_Memo = useMemo(() => {
+        if (routeName === ROUTE.category) {
+            const halfHexagonCategoryOffsets = transformCategoryHalfHexagons(data[routeName], 4, true);
+            return offsetHexagonTransforms(data, halfHexagonCategoryOffsets);
+        } else {
+            return data;
+        }
+    }, [data, routeName]);
+
+    return <Hexagon data={categoryAdjustedData_Memo} routeName={routeName} />;
+};
 
 export const HexagonModalMenuButton: FC<{
     buttonData: MenuButtonRouteData | PostNavigationButtonRouteData;

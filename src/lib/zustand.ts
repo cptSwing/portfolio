@@ -9,6 +9,7 @@ export const useZustand = create<ZustandStore>()(
         values: {
             theme: 'pink',
             routeData: { name: ROUTE.home, content: {} },
+            runIrisTransition: false,
             breakpoint: null,
             hamburgerIsOpen: false,
             activeSubMenuButton: { name: null },
@@ -39,6 +40,12 @@ export const useZustand = create<ZustandStore>()(
 
                 set((draftState) => {
                     draftState.values.routeData = newRouteData as { name: ROUTE.home; content: { category?: Category; post?: Post } }; // most permissive of the three types
+                });
+            },
+
+            store_setRunIrisTransition: (isReady) => {
+                set((draftState) => {
+                    draftState.values.runIrisTransition = isReady;
                 });
             },
 

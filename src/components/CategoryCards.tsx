@@ -1,5 +1,5 @@
-import { cloneElement, CSSProperties, FC, ReactElement, useContext, useEffect, useMemo, useState } from 'react';
-import { getCategoryHexagons, calcCSSVariables, roundedSideHexagonPathRight, roundedSideHexagonPathLeft } from '../lib/hexagonDataNew';
+import { cloneElement, CSSProperties, FC, ReactElement, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { getCategoryHexagons, calcCSSVariables } from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { HexagonTransformData, Post } from '../types/types';
@@ -8,13 +8,17 @@ import { config } from '../types/exportTyped';
 import { useNavigate } from 'react-router-dom';
 import FitText from './utilityComponents/FitText';
 import { Clients } from './PostDetails';
+import useTimeout from '../hooks/useTimeout';
 
-const CategoryCards: FC<{ posts: Post[]; activeIndexState: [number, React.Dispatch<React.SetStateAction<number>>] }> = ({ posts, activeIndexState }) => {
+const CategoryCards: FC<{
+    posts: Post[];
+    activeIndexState: [number, React.Dispatch<React.SetStateAction<number>>];
+}> = ({ posts, activeIndexState }) => {
     const containerSize = useContext(GetChildSizeContext);
     const categoryHexagons_Memo = useMemo(() => getCategoryHexagons(posts.length), [posts]);
 
     return posts.map((post, idx) => (
-        <CategoryHexagons
+        <CategoryHexagon
             key={`hex-post-card-index-${idx}`}
             allButtons={categoryHexagons_Memo}
             post={post}
@@ -29,7 +33,7 @@ export default CategoryCards;
 
 const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
-const CategoryHexagons: FC<{
+const CategoryHexagon: FC<{
     allButtons: HexagonTransformData[];
     post: Post;
     containerSize: {
@@ -39,23 +43,33 @@ const CategoryHexagons: FC<{
     cardIndex: number;
     activeIndexState: [number, React.Dispatch<React.SetStateAction<number>>];
 }> = ({ allButtons, post, containerSize, cardIndex, activeIndexState }) => {
-    const hamburgerMenuIsActive = useZustand((store) => store.values.hamburgerIsOpen);
-
-    const [activeIndex, setActiveIndex] = activeIndexState;
-    const thisButtonIndex = getGridAreaIndex(activeIndex, cardIndex, allButtons.length);
-
     const { title, subTitle, cardImage, clients } = post;
+    const [activeIndex, setActiveIndex] = activeIndexState;
+
+    const runIrisTransition = useZustand((state) => state.values.runIrisTransition);
+    const [transitionIsCompleted, setTransitionIsCompleted] = useState(false);
+    const [runPanelsTransition, setRunPanelsTransition] = useState(false);
 
     const isAtFront = activeIndex === cardIndex;
+    const thisButtonIndex = getGridAreaIndex(activeIndex, cardIndex, allButtons.length);
+
+    const navigate = useNavigate();
+    useTimeout(() => setRunPanelsTransition(true), isAtFront && !runIrisTransition && transitionIsCompleted ? transitionDuration_MS * 1.5 : null);
 
     const cssVariables_Memo = useMemo(() => {
         const { position, rotation, scale, isHalf } = allButtons[thisButtonIndex]!;
-        return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
+        return calcCSSVariables(position, rotation, runPanelsTransition && isAtFront ? 3 : scale, isHalf, containerSize, {
             strokeWidth: 0,
         });
-    }, [allButtons, containerSize, thisButtonIndex]);
+    }, [allButtons, containerSize, isAtFront, runPanelsTransition, thisButtonIndex]);
 
-    const navigate = useNavigate();
+    useLayoutEffect(() => {
+        if (isAtFront) {
+            setTransitionIsCompleted(false);
+        }
+        return () => setRunPanelsTransition(false);
+    }, [activeIndex, isAtFront, setTransitionIsCompleted]);
+
     function handleClick() {
         if (isAtFront) {
             navigate(post.id.toString());
@@ -64,21 +78,13 @@ const CategoryHexagons: FC<{
         }
     }
 
-    // Triggered once transitions on parent element are finished
-    const [isLoaded, setIsLoaded] = useState(false);
-    useEffect(() => {
-        setIsLoaded(false);
-    }, [activeIndex]);
-
     return (
         <button
             className={classNames(
-                'transform-hexagon group pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration]',
-                hamburgerMenuIsActive && isAtFront
-                    ? '!translate-x-[calc(var(--hexagon-translate-x)*0.725)] !translate-y-[calc(var(--hexagon-translate-y)*1.425)] !scale-x-[calc(var(--hexagon-scale-x)*0.75)] !scale-y-[calc(var(--hexagon-scale-y)*0.75)]'
-                    : '', // !translate-y-[calc(var(--hexagon-translate-y)*0.9)]
+                'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,filter] duration-[--ui-animation-menu-transition-duration]',
+
                 isAtFront
-                    ? isLoaded
+                    ? transitionIsCompleted
                         ? '' // !translate-x-[calc(var(--hexagon-translate-x)-(33.333%*var(--hexagon-scale-x)))]
                         : ''
                     : 'hover-active:!z-50 hover-active:scale-[calc(var(--hexagon-scale-x)*1.35)]',
@@ -86,30 +92,19 @@ const CategoryHexagons: FC<{
             style={
                 {
                     ...cssVariables_Memo,
-                    zIndex: 20 - thisButtonIndex,
+                    zIndex: (isAtFront ? (runPanelsTransition ? 20 : 0) : 0) - thisButtonIndex,
                 } as CSSProperties
             }
-            onTransitionEnd={({ target, currentTarget }) => target === currentTarget && setIsLoaded(true)}
+            onTransitionEnd={({ target, currentTarget }) => target === currentTarget && setTransitionIsCompleted(true)}
             onClick={handleClick}
         >
             {isAtFront ? (
                 <>
-                    {/* Background */}
+                    {/* Extending wide hexagon */}
                     {/* <div
                         className={classNames(
-                            'glassmorphic-backdrop glassmorphic-level-2 absolute left-[60%] top-[20%] flex h-3/4 w-full origin-left flex-col items-end justify-around rounded-[15%_15%_15%_15%/20%_20%_20%_20%] bg-theme-secondary/10 pr-4 transition-transform duration-[--ui-animation-menu-transition-duration]',
-                            isLoaded ? 'scale-x-100' : 'scale-x-0',
-                        )}
-                    >
-                        <div className="float-left h-full w-[42.5%] [shape-outside:polygon(0_0,100%_50%,0_100%)]" />
-                    </div> */}
-
-                    {/* Extending wide hexagon */}
-                    <div
-                        className={classNames(
                             'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute left-[76%] top-[20%] flex h-[60%] w-[calc(60%*1.1547)] origin-left -translate-x-full flex-col items-center justify-center gap-y-[10%] !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,transform,background-color] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-animated-clip-path]',
-                            isLoaded ? '!glassmorphic-level-2 !translate-x-0 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
-                            hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
+                            runPanelsTransition ? '!glassmorphic-level-2 !translate-x-0 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
                         )}
                         style={
                             {
@@ -120,14 +115,13 @@ const CategoryHexagons: FC<{
                         {clients && <Clients clients={clients} dataBlockId=" " extraClassNames="w-1/2 basis-1/3 overflow-hidden" />}
 
                         <div className="ml-[0%] text-pretty text-left font-fjalla-one leading-[1.1] text-theme-primary [font-size:4px]">{subTitle}</div>
-                    </div>
+                    </div> */}
 
                     {/* Extending wide hexagon */}
-                    <div
+                    {/* <div
                         className={classNames(
                             'lighting-gradient glassmorphic-backdrop pointer-events-auto absolute right-[87.5%] top-[20%] flex h-[60%] w-[58%] origin-right translate-x-full flex-col items-center justify-center !from-black/15 from-40% !to-white/15 to-60% transition-[backdrop-filter,background-color,transform] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] [clip-path:--hexagon-animated-clip-path]',
-                            isLoaded ? '!glassmorphic-level-3 !translate-x-0 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
-                            hamburgerMenuIsActive ? '!from-black/5 !to-white/5' : '',
+                            runPanelsTransition ? '!glassmorphic-level-3 !translate-x-0 bg-theme-secondary/15' : 'glassmorphic-level-none bg-theme-secondary/5',
                         )}
                         style={
                             {
@@ -142,7 +136,7 @@ const CategoryHexagons: FC<{
                         >
                             {title}
                         </div>
-                    </div>
+                    </div> */}
 
                     <StrokedClipPath
                         wrapperClasses="size-full group before:group-hover-active:matrix-scale-[0.95] before:transition-transform"
