@@ -1,13 +1,7 @@
 import { classNames, keyDownA11y } from 'cpts-javascript-utilities';
 import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
 import { ROUTE } from '../types/enums';
-import {
-    calcCSSVariables,
-    hamburgerBackgroundHexagon,
-    hamburgerBackgroundHexagonOffsets,
-    hexagonRouteOffsetValues,
-    offsetHexagonTransforms,
-} from '../lib/hexagonDataNew';
+import { calcCSSVariables, hexagonRouteOffsetValues } from '../lib/hexagonDataNew';
 import { useZustand } from '../lib/zustand';
 import { HexagonRouteData, MenuButtonRouteData, PostNavigationButtonRouteData } from '../types/types';
 import { useNavigate } from 'react-router-dom';
@@ -22,8 +16,7 @@ const baseTransitionClasses =
 export const Hexagon: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
-    hamburgerMenuIsActive?: boolean;
-}> = memo(({ data, routeName, hamburgerMenuIsActive = false }) => {
+}> = memo(({ data, routeName }) => {
     const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
 
@@ -42,29 +35,27 @@ export const Hexagon: FC<{
             className={classNames(
                 baseClasses,
                 baseTransitionClasses,
-                'regular-hexagon-named-class glassmorphic-grain-after after:![background-size:150%]',
-
+                'regular-hexagon-named-class after-glassmorphic-grain',
                 routeName === ROUTE.home
-                    ? hamburgerMenuIsActive
-                        ? '!to-white/10 ![--glassmorphic-backdrop-blur:2px] ![--glassmorphic-backdrop-saturate:0.75]'
-                        : '!to-white/10'
+                    ? '!to-white/10'
                     : routeName === ROUTE.category
-                      ? hamburgerMenuIsActive
-                          ? '!to-white/[0.075] ![--glassmorphic-backdrop-blur:2px] ![--glassmorphic-backdrop-saturate:0.75] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.2)]'
-                          : '!to-white/[0.075] ![--glassmorphic-backdrop-blur:4px] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.4)]'
+                      ? data[routeName].isHalf
+                          ? '!to-white/[0.075] ![--glassmorphic-backdrop-blur:2px] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.5)]'
+                          : 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.5)]'
                       : 'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]', // ROUTE.post
             )}
             style={
                 {
                     ...cssVariables_Memo,
                     '--regular-hexagon-transition-random-factor': random_Memo,
+                    '--glassmorphic-grain-scale': 0.5 / data[routeName].scale,
                 } as CSSProperties
             }
         />
     );
 });
 
-export const MenuButtonHexagon: FC<{
+export const HexagonModalMenuButton: FC<{
     buttonData: MenuButtonRouteData | PostNavigationButtonRouteData;
     routeName: ROUTE;
 
