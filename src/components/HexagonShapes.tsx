@@ -1,23 +1,26 @@
 import { classNames, keyDownA11y } from 'cpts-javascript-utilities';
-import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
+import { CSSProperties, FC, memo, useContext, useMemo, useState } from 'react';
 import { ROUTE } from '../types/enums';
 import {
     calcCSSVariables,
-    categoryCardActiveHexagon,
+    halfStrokedHexagonClipPathStatic,
     hexagonRouteOffsetValues,
     offsetHexagonTransforms,
+    strokedHexagonClipPathStatic,
     transformCategoryHalfHexagons,
-} from '../lib/hexagonDataNew';
+} from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
 import { HexagonRouteData, MenuButtonRouteData, PostNavigationButtonRouteData } from '../types/types';
 import { useNavigate } from 'react-router-dom';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
+import { categoryCardActiveHexagon } from '../lib/hexagonElements';
+import useTimeout from '../hooks/useTimeout';
 
 const baseClasses =
     /* tw */ 'glassmorphic-backdrop pointer-events-none glassmorphic-level-3 lighting-gradient transform-hexagon  absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] ';
 const baseTransitionClasses =
     /* tw */
-    'transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms,_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]';
+    'transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]';
 
 export const Hexagon: FC<{
     data: HexagonRouteData;
@@ -25,10 +28,60 @@ export const Hexagon: FC<{
 }> = memo(({ data, routeName }) => {
     const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
 
+    const breakpoint = useZustand((state) => state.values.breakpoint);
+    const containerSize = useContext(GetChildSizeContext);
+
+    const cssVariables_Memo = useMemo(
+        () =>
+            calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
+                shouldOffset,
+                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
+            }),
+        [position, rotation, scale, isHalf, containerSize, shouldOffset, routeName, breakpoint],
+    );
+
+    const random_Memo = useMemo(() => Math.random(), []);
+
+    return (
+        <div
+            className={classNames(
+                baseClasses,
+                baseTransitionClasses,
+                'regular-hexagon-named-class after-glassmorphic-grain',
+                routeName === ROUTE.home
+                    ? '!to-white/10'
+                    : routeName === ROUTE.category
+                      ? 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      : // ROUTE.post
+                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
+            )}
+            style={
+                { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
+            }
+        />
+    );
+});
+
+export const HalfHexagon: FC<{
+    data: HexagonRouteData;
+    routeName: ROUTE;
+}> = ({ data, routeName }) => {
+    const categoryAdjustedData_Memo = useMemo(() => {
+        if (routeName === ROUTE.category) {
+            const halfHexagonCategoryOffsets = transformCategoryHalfHexagons(data[routeName], 4, true);
+            return offsetHexagonTransforms(data, halfHexagonCategoryOffsets);
+        } else {
+            return data;
+        }
+    }, [data, routeName]);
+
+    const { position, rotation, scale, isHalf, shouldOffset } = categoryAdjustedData_Memo[routeName];
+
     const runIrisTransition = useZustand((state) => state.values.runIrisTransition);
     const breakpoint = useZustand((state) => state.values.breakpoint);
-
     const containerSize = useContext(GetChildSizeContext);
+
+    const random_Memo = useMemo(() => Math.random() + 1, []);
 
     const cssVariables_Memo = useMemo(
         () =>
@@ -48,8 +101,6 @@ export const Hexagon: FC<{
         [breakpoint, containerSize, routeName, scale, shouldOffset],
     );
 
-    const random_Memo = useMemo(() => Math.random(), []);
-
     return (
         <div
             className={classNames(
@@ -59,9 +110,7 @@ export const Hexagon: FC<{
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category
-                      ? isHalf
-                          ? '!to-white/[0.075] ![--glassmorphic-backdrop-blur:1px] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.25)]'
-                          : 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      ? '!to-white/0 ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.secondary-darker/0.5)] ![clip-path:--hexagon-clip-path-half-stroked]'
                       : // ROUTE.post
                         'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
@@ -70,7 +119,7 @@ export const Hexagon: FC<{
                     ...cssVariables_Memo,
                     '--regular-hexagon-transition-random-factor': random_Memo,
                     '--glassmorphic-grain-scale': 0.5 / scale,
-                    ...(routeName === ROUTE.category && isHalf
+                    ...(routeName === ROUTE.category
                         ? {
                               '--hexagon-translate-x': runIrisTransition
                                   ? centerHexagonCssVariables_Memo['--hexagon-translate-x']
@@ -82,31 +131,151 @@ export const Hexagon: FC<{
                               '--hexagon-scale-x': `calc(${cssVariables_Memo['--hexagon-scale-x']} * ${runIrisTransition ? 1.2 : 1})`,
                               '--hexagon-scale-y': `calc(${cssVariables_Memo['--hexagon-scale-y']} * ${runIrisTransition ? 1.2 : 1})`,
 
-                              'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) / ${runIrisTransition ? 1.5 : 1}), calc(var(--ui-animation-menu-transition-duration) * (${random_Memo} + 1)), calc(var(--ui-animation-menu-transition-duration) * (${random_Memo} + 1)), var(--ui-animation-menu-transition-duration), var(--ui-animation-menu-transition-duration)`,
-                              'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * ${random_Memo} * ${runIrisTransition ? 0 : 1}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), calc(var(--ui-animation-menu-transition-duration) * ${random_Memo}), 0ms, 0ms`,
+                              'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) / ${runIrisTransition ? 1.5 : 1}), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), var(--ui-animation-menu-transition-duration), var(--ui-animation-menu-transition-duration)`,
+                              'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${runIrisTransition ? 0 : 1}), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), 0ms, 0ms`,
                           }
                         : {}),
                 } as CSSProperties
             }
         />
     );
-});
+};
 
-export const HalfHexagon: FC<{
+export const HexagonDebugOne: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
-}> = ({ data, routeName }) => {
-    const categoryAdjustedData_Memo = useMemo(() => {
-        if (routeName === ROUTE.category) {
-            const halfHexagonCategoryOffsets = transformCategoryHalfHexagons(data[routeName], 4, true);
-            return offsetHexagonTransforms(data, halfHexagonCategoryOffsets);
-        } else {
-            return data;
-        }
-    }, [data, routeName]);
+}> = memo(({ data, routeName }) => {
+    const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
 
-    return <Hexagon data={categoryAdjustedData_Memo} routeName={routeName} />;
-};
+    const breakpoint = useZustand((state) => state.values.breakpoint);
+    const containerSize = useContext(GetChildSizeContext);
+
+    const [shouldStroke, setShouldStroke] = useState(false);
+    useTimeout(() => setShouldStroke((oldState) => !oldState), shouldStroke ? 3000 : 1500);
+
+    const cssVariables_Memo = useMemo(
+        () =>
+            calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
+                clipStroke: shouldStroke,
+                shouldOffset,
+                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
+            }),
+        [position, rotation, scale, isHalf, containerSize, shouldStroke, shouldOffset, routeName, breakpoint],
+    );
+
+    const random_Memo = useMemo(() => Math.random(), []);
+
+    return (
+        <div
+            className={classNames(
+                baseClasses,
+                baseTransitionClasses,
+                'regular-hexagon-named-class after-glassmorphic-grain',
+                routeName === ROUTE.home
+                    ? '!to-white/10'
+                    : routeName === ROUTE.category
+                      ? 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      : // ROUTE.post
+                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
+            )}
+            style={
+                { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
+            }
+        />
+    );
+});
+
+export const HexagonDebugTwo: FC<{
+    data: HexagonRouteData;
+    routeName: ROUTE;
+}> = memo(({ data, routeName }) => {
+    const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
+
+    const breakpoint = useZustand((state) => state.values.breakpoint);
+    const containerSize = useContext(GetChildSizeContext);
+
+    const [shouldBeHalf, setShouldBeHalf] = useState(false);
+    useTimeout(() => setShouldBeHalf((oldState) => !oldState), shouldBeHalf ? 3000 : 1500);
+
+    const cssVariables_Memo = useMemo(
+        () =>
+            calcCSSVariables({ x: position.x - 200, y: position.y }, rotation, scale * 0.75, shouldBeHalf, containerSize, {
+                shouldOffset,
+                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
+            }),
+        [position, rotation, scale, containerSize, shouldBeHalf, shouldOffset, routeName, breakpoint],
+    );
+
+    const random_Memo = useMemo(() => Math.random(), []);
+
+    return (
+        <div
+            className={classNames(
+                baseClasses,
+                baseTransitionClasses,
+                'regular-hexagon-named-class after-glassmorphic-grain',
+                routeName === ROUTE.home
+                    ? '!to-white/10'
+                    : routeName === ROUTE.category
+                      ? 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      : // ROUTE.post
+                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
+            )}
+            style={
+                { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
+            }
+        >
+            <div
+                className={baseTransitionClasses + ' absolute size-full bg-red-400 transition-[clip-path]'}
+                style={{ clipPath: shouldBeHalf ? halfStrokedHexagonClipPathStatic : strokedHexagonClipPathStatic }}
+            />
+        </div>
+    );
+});
+
+export const HexagonDebugThree: FC<{
+    data: HexagonRouteData;
+    routeName: ROUTE;
+}> = memo(({ data, routeName }) => {
+    const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
+
+    const breakpoint = useZustand((state) => state.values.breakpoint);
+    const containerSize = useContext(GetChildSizeContext);
+
+    const [shouldStroke, setShouldStroke] = useState(false);
+    useTimeout(() => setShouldStroke((oldState) => !oldState), shouldStroke ? 3000 : 1500);
+
+    const cssVariables_Memo = useMemo(
+        () =>
+            calcCSSVariables({ x: position.x + 200, y: position.y }, rotation, scale * 0.75, true, containerSize, {
+                clipStroke: shouldStroke,
+                shouldOffset,
+                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
+            }),
+        [position, rotation, scale, containerSize, shouldStroke, shouldOffset, routeName, breakpoint],
+    );
+
+    const random_Memo = useMemo(() => Math.random(), []);
+
+    return (
+        <div
+            className={classNames(
+                baseClasses,
+                baseTransitionClasses,
+                'regular-hexagon-named-class after-glassmorphic-grain',
+                routeName === ROUTE.home
+                    ? '!to-white/10'
+                    : routeName === ROUTE.category
+                      ? 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      : // ROUTE.post
+                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
+            )}
+            style={
+                { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
+            }
+        />
+    );
+});
 
 export const HexagonModalMenuButton: FC<{
     buttonData: MenuButtonRouteData | PostNavigationButtonRouteData;
@@ -123,7 +292,7 @@ export const HexagonModalMenuButton: FC<{
         const { position, rotation, scale, isHalf, shouldOffset } = buttonData[routeName];
 
         return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-            strokeWidth: 0,
+            gutterWidth: 0,
             shouldOffset,
             offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
         });

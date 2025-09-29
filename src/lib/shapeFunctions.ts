@@ -11,11 +11,10 @@ import {
 import roundToDecimal from './roundToDecimal';
 import { BreakpointName } from '../hooks/useBreakPoint';
 import { categoryCardActiveHexagon, categoryCardInactiveHexagon, hexagonGridTransformCenter } from './hexagonElements';
-import { stringify } from 'postcss';
 
 const {
     ui: {
-        hexMenu: { columns, rows, scaleUp, strokeWidth: strokeWidthDefault },
+        hexMenu: { columns, rows, scaleUp, gutterWidth: strokeWidthDefault },
     },
 } = config;
 
@@ -406,7 +405,7 @@ function _getOffsetsAndScale(column: number, row: number): { x: number; y: numbe
 }
 
 const roundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5 });
-const strokedRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, inner: 'stroke', innerSize: 0.9 });
+const strokedRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, inner: 'stroke', innerSize: 0.97 });
 const halfRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, isHalf: true });
 const halfStrokedRoundedHexagonPath = getHexagonPath({
     sideLength: hexHalfWidth,
@@ -415,6 +414,11 @@ const halfStrokedRoundedHexagonPath = getHexagonPath({
     inner: 'stroke',
     innerSize: 0.9,
 });
+
+export const hexagonClipPathStatic = `path("${roundedHexagonPath}")`;
+export const halfHexagonClipPathStatic = `path("${halfRoundedHexagonPath}")`;
+export const strokedHexagonClipPathStatic = `path("${strokedRoundedHexagonPath}")`;
+export const halfStrokedHexagonClipPathStatic = `path("${halfStrokedRoundedHexagonPath}")`;
 
 export const subMenuButtonHexagonPath = getHexagonPath({ sideLength: 0.5, cornerRadius: 1 });
 
@@ -778,11 +782,6 @@ export function cos(deg: number, clampTo?: number): number {
     return clampTo ? parseFloat(cosNum.toFixed(clampTo)) : cosNum;
 }
 
-const hexagonClipPathStatic = `path("${roundedHexagonPath}")`;
-const halfHexagonClipPathStatic = `path("${halfRoundedHexagonPath}")`;
-export const strokedHexagonClipPathStatic = `path("${strokedRoundedHexagonPath}")`;
-export const halfStrokedHexagonClipPathStatic = `path("${halfStrokedRoundedHexagonPath}")`;
-
 export function calcCSSVariables(
     translate: { x: number; y: number },
     rotation: number,
@@ -792,9 +791,9 @@ export function calcCSSVariables(
         width: number;
         height: number;
     },
-    options?: { strokeWidth?: number; clipStroke?: boolean; shouldOffset?: boolean; offset?: number; clampTo?: number },
+    options?: { gutterWidth?: number; clipStroke?: boolean; shouldOffset?: boolean; offset?: number; clampTo?: number },
 ) {
-    const { strokeWidth = strokeWidthDefault, clipStroke, shouldOffset, offset, clampTo: _clampTo } = options ?? {};
+    const { gutterWidth = strokeWidthDefault, clipStroke, shouldOffset, offset, clampTo: _clampTo } = options ?? {};
 
     let { width, height } = parentSize;
 
@@ -809,7 +808,7 @@ export function calcCSSVariables(
 
     const parentToViewboxWidth = width / viewBoxWidth;
     const parentToViewboxHeight = height / viewBoxHeight;
-    const insetByStrokeWidth = (1 - strokeWidth) * scale;
+    const insetByStrokeWidth = (1 - gutterWidth) * scale;
 
     const mappedScaleX = roundToDecimal(insetByStrokeWidth * parentToViewboxWidth * ratio, 3);
     const mappedScaleY = roundToDecimal(insetByStrokeWidth * parentToViewboxHeight, 3);
@@ -821,15 +820,15 @@ export function calcCSSVariables(
 
     if (isHalf) {
         if (clipStroke) {
-            clipPath = halfStrokedHexagonClipPathStatic;
+            clipPath = 'var(--hexagon-clip-path-half-stroked)';
         } else {
-            clipPath = halfHexagonClipPathStatic;
+            clipPath = 'var(--hexagon-clip-path-half)';
         }
     } else {
         if (clipStroke) {
-            clipPath = strokedHexagonClipPathStatic;
+            clipPath = 'var(--hexagon-clip-path-full-stroked)';
         } else {
-            clipPath = hexagonClipPathStatic;
+            clipPath = 'var(--hexagon-clip-path-full)';
         }
     }
 

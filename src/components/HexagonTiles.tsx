@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { classNames } from 'cpts-javascript-utilities';
 import { CategoryName } from '../types/types';
-import { regularHexagons, postNavigationButtons, backgroundHexagons, halfRegularHexagons } from '../lib/hexagonDataNew';
+import { regularHexagons, postNavigationButtons, backgroundHexagons, halfRegularHexagons, categoryCardActiveHexagon } from '../lib/hexagonElements';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
 import HamburgerMenu from './HamburgerMenu';
-import { HalfHexagon, Hexagon, HexagonModalMenuButton } from './HexagonShapes';
+import { HalfHexagon, Hexagon, HexagonDebugOne, HexagonDebugThree, HexagonDebugTwo, HexagonModalMenuButton } from './HexagonShapes';
 import MenuBar from './MenuBar';
 import Category from './routes/Category';
 
@@ -45,23 +45,23 @@ const HexagonTiles = () => {
                 }
             }}
         >
-            <div className="opacity-15">
+            {/* <div className="opacity-15">
                 {backgroundHexagons.map((regularHexagonData, idx) => (
                     <Hexagon key={`hex-background-index-${idx}`} data={regularHexagonData} routeName={routeName} />
                 ))}
-            </div>
+            </div> */}
 
             {/* "Regular" Hexagons at ROUTE.category */}
             {regularHexagons.map((regularHexagonData, idx) => (
                 <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
             ))}
 
-            <Category show={routeName === ROUTE.category} />
-
             {/* "Half" Hexagons at ROUTE.category */}
             {halfRegularHexagons.map((regularHexagonData, idx) => (
                 <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
             ))}
+
+            <Category show={routeName === ROUTE.category} />
 
             {/* Hamburger Menu, includes further <RegularHexagon> and <MenuButton>s */}
             <HamburgerMenu routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
@@ -71,6 +71,21 @@ const HexagonTiles = () => {
             {postNavigationButtons.map((postNavigationButtonData, idx) => (
                 <HexagonModalMenuButton key={`hex-post-navigation-index-${idx}`} buttonData={postNavigationButtonData} routeName={routeName} />
             ))}
+
+            {/* <HexagonDebugOne
+                data={{ [ROUTE.home]: categoryCardActiveHexagon, [ROUTE.category]: categoryCardActiveHexagon, [ROUTE.post]: categoryCardActiveHexagon }}
+                routeName={routeName}
+            />
+
+            <HexagonDebugTwo
+                data={{ [ROUTE.home]: categoryCardActiveHexagon, [ROUTE.category]: categoryCardActiveHexagon, [ROUTE.post]: categoryCardActiveHexagon }}
+                routeName={routeName}
+            />
+
+            <HexagonDebugThree
+                data={{ [ROUTE.home]: categoryCardActiveHexagon, [ROUTE.category]: categoryCardActiveHexagon, [ROUTE.post]: categoryCardActiveHexagon }}
+                routeName={routeName}
+            /> */}
         </div>
     );
 };

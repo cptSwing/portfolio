@@ -39,7 +39,342 @@ const { store_toggleSubMenu, store_toggleHamburgerMenu, store_setPostNavigationS
 // viewBoxes['hexFlat'] : 0 0 400 346.4 --> (400x0.866)
 
 // "Regular" Hexagons in Category ROUTE to be precise
+// Most hexagons positioned on outside at thirds:
 export const regularHexagons: HexagonRouteData[] = [
+    // Appear everywhere:
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 120,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 75,
+                y: 259.8,
+            },
+            rotation: -30,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 0,
+                y: 43.3,
+            },
+            rotation: -60,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 225,
+                y: 0,
+            },
+            rotation: 90,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: -43.3,
+            },
+            rotation: 30,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 43.3,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 0,
+                y: 129.9,
+            },
+            rotation: -30,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: false,
+        }, // L3
+        [ROUTE.post]: {
+            position: {
+                x: 345,
+                y: -32,
+            },
+            rotation: -90,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: true,
+        }, // Top right
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: 43.3,
+            },
+            rotation: 60,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 225,
+                y: 259.8,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: false,
+        }, // R2
+        [ROUTE.post]: {
+            position: {
+                x: 225,
+                y: 0,
+            },
+            rotation: 90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: -43.3,
+            },
+            rotation: 0,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 37.5,
+                y: 64.95,
+            },
+            rotation: 90,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: true,
+        }, // R3
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: -43.3,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 75,
+                y: 173.2,
+            },
+            rotation: -60,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 90,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: false,
+        }, // L7
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 150,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 225,
+                y: 173.2,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 300,
+                y: 129.9,
+            },
+            rotation: 90,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: true,
+        }, // R5
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: -90,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 0,
+                y: 216.5,
+            },
+            rotation: -120,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 262.5,
+                y: 64.95,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: false,
+        }, // L5
+        [ROUTE.post]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: -90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: 216.5,
+            },
+            rotation: 120,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 75,
+                y: 0,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 225,
+                y: 173.2,
+            },
+            rotation: -90,
+            isHalf: true,
+            scale: 0,
+            shouldOffset: false,
+        },
+    },
+
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 303.1,
+            },
+            rotation: 180,
+            isHalf: true,
+            scale: 1,
+            shouldOffset: false,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 150,
+                y: 259.8,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.866,
+            shouldOffset: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -45,
+                y: -32,
+            },
+            rotation: -30,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: false,
+        },
+    },
+];
+
+// "Regular" Hexagons in Category ROUTE to be precise
+// Hexagons positioned as triangle
+export const regularHexagonsTriangle: HexagonRouteData[] = [
     // Appear everywhere:
     {
         [ROUTE.home]: {
@@ -1380,7 +1715,7 @@ export const categoryCardActiveHexagon: HexagonTransformData = {
     position: hexagonGridTransformCenter,
     rotation: 0,
     isHalf: false,
-    scale: 2.5,
+    scale: 1.9,
     shouldOffset: false,
 };
 
