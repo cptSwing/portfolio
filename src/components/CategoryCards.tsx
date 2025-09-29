@@ -77,7 +77,7 @@ const CategoryHexagon: FC<{
                 'transform-hexagon glassmorphic-backdrop pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,backdrop-filter] delay-[0ms,var(--ui-animation-menu-transition-duration)] duration-[calc(var(--ui-animation-menu-transition-duration)*2),calc(var(--ui-animation-menu-transition-duration)*4)] [clip-path:--hexagon-clip-path]',
                 parentTransitionCompletedWhenAtFront
                     ? '!scale-x-[calc(var(--hexagon-scale-x)*2.125)] !scale-y-[calc(var(--hexagon-scale-y)*2.125)] [--glassmorphic-backdrop-blur:3px] [--glassmorphic-backdrop-saturate:1.5]'
-                    : '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.35)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.35)]',
+                    : '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1.25] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.35)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.35)]',
             )}
             style={
                 {
