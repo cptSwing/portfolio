@@ -32,11 +32,11 @@
     }
 
     .glassmorphic-backdrop {
-        @apply backdrop-blur-[--glassmorphic-backdrop-blur,4px] backdrop-saturate-[--glassmorphic-backdrop-saturate,2];
+        @apply backdrop-blur-[--glassmorphic-backdrop-blur,4px] backdrop-saturate-[--glassmorphic-backdrop-saturate,1.5];
     }
 
     .before-glassmorphic-backdrop {
-        @apply before:absolute before:left-0 before:top-0 before:size-full before:backdrop-blur-[--glassmorphic-backdrop-blur,4px] before:backdrop-saturate-[--glassmorphic-backdrop-saturate,2];
+        @apply before:absolute before:left-0 before:top-0 before:size-full before:backdrop-blur-[--glassmorphic-backdrop-blur,4px] before:backdrop-saturate-[--glassmorphic-backdrop-saturate,1.5];
     }
 
     .glassmorphic-off {

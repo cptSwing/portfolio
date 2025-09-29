@@ -2,16 +2,10 @@ import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { ROUTE } from '../types/enums';
 import { useZustand } from '../lib/zustand';
-import {
-    calcCSSVariables,
-    hamburgerButton,
-    hexagonRouteOffsetValues,
-    menuButtons,
-    menuButtonsHamburgerTransformOffsets,
-    offsetHexagonTransforms,
-} from '../lib/hexagonDataNew';
+import { calcCSSVariables, hexagonRouteOffsetValues, offsetHexagonTransforms } from '../lib/shapeFunctions';
 import { HexagonModalMenuButton, MenuButtonSvg } from './HexagonShapes';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
+import { hamburgerButton, menuButtons, menuButtonsHamburgerTransformOffsets } from '../lib/hexagonElements';
 
 const HamburgerMenu: FC<{
     routeName: ROUTE;

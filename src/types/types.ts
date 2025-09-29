@@ -12,7 +12,7 @@ export type Config = {
         hexMenu: {
             columns: number;
             rows: number;
-            strokeWidth: number;
+            gutterWidth: number;
             scaleUp: number;
             clipPathWidth: number;
             clipPathHeight: number;

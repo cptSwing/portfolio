@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { subMenuButtonHexagonPath } from '../lib/hexagonDataNew';
+import { subMenuButtonHexagonPath } from '../lib/shapeFunctions';
 
 /**
  * For clipping with CSS `clip-path`: Set useClipPath to `true`, and refer to `url(#svgRoundedHexagonClipPath)` in the element's `clip-path` property.

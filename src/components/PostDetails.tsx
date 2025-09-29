@@ -5,7 +5,7 @@ import Markdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import GetChildSize from './utilityComponents/GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import { getHexagonalClipPath } from '../lib/hexagonDataNew';
+import { getHexagonalClipPath } from '../lib/shapeFunctions';
 import { TOOL } from '../types/enums';
 
 const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive: Post['viewLive']; viewSource: Post['viewSource'] }> = ({

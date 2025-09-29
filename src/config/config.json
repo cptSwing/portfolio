@@ -9,7 +9,7 @@
         "hexMenu": {
             "columns": 3,
             "rows": 9,
-            "strokeWidth": 0.05,
+            "gutterWidth": 0.05,
             "scaleUp": 100,
             "clipPathWidth": 100,
             "clipPathHeight": 86.6

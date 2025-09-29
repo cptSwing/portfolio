@@ -1,6 +1,6 @@
 import { classNames } from 'cpts-javascript-utilities';
 import { CSSProperties, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
-import { calcCSSVariables, categoryNavigationButtons, hexagonRouteOffsetValues } from '../lib/hexagonDataNew';
+import { calcCSSVariables, hexagonRouteOffsetValues } from '../lib/shapeFunctions';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { Category, CategoryName, CategoryNavigationButtonRouteData, MenuButtonRouteData } from '../types/types';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
@@ -8,6 +8,7 @@ import { useZustand } from '../lib/zustand';
 import { useNavigate } from 'react-router-dom';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { MenuButtonSvg } from './HexagonShapes';
+import { categoryNavigationButtons } from '../lib/hexagonElements';
 
 const MenuBar: FC<{
     homeMenuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
@@ -17,7 +18,7 @@ const MenuBar: FC<{
     return (
         <div
             className={classNames(
-                'before:lighting-gradient before-menu-bar-dimensions before:absolute before:left-[--menu-bar-dimensions-left] before:top-[--menu-bar-dimensions-top] before:h-[--menu-bar-dimensions-height] before:w-[--menu-bar-dimensions-width] before:rounded-[3%_3%_3%_3%/10%_10%_10%_10%] before:bg-theme-primary-lighter/50 before:to-white/5 before:transition-[transform,--menu-bar-mask-marker-position-x] before:delay-[--ui-animation-menu-transition-duration] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)] before:[--glassmorphic-backdrop-blur:8px] before:[--glassmorphic-backdrop-saturate:1.5]',
+                'before:lighting-gradient before-menu-bar-dimensions z-50 before:absolute before:left-[--menu-bar-dimensions-left] before:top-[--menu-bar-dimensions-top] before:h-[--menu-bar-dimensions-height] before:w-[--menu-bar-dimensions-width] before:rounded-[3%_3%_3%_3%/10%_10%_10%_10%] before:bg-theme-primary-lighter/50 before:to-white/5 before:transition-[transform,--menu-bar-mask-marker-position-x] before:delay-[--ui-animation-menu-transition-duration] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)] before:[--glassmorphic-backdrop-blur:8px] before:[--glassmorphic-backdrop-saturate:1.5]',
                 'before:nav-test-masks before:glassmorphic-backdrop',
                 'absolute size-[inherit]',
             )}

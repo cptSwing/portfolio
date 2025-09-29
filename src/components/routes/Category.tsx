@@ -44,31 +44,19 @@ const Category: FC<{ show: boolean }> = memo(({ show }) => {
     }, [category.id, previousCategoryId, setActiveIndex]);
 
     useLayoutEffect(() => {
-        store_setRunIrisTransition(true);
+        // store_setRunIrisTransition(true);
         return () => store_setRunIrisTransition(false);
     }, [activeIndex]);
 
     return isMounted ? (
         <div ref={categoryRef} className="contents transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%]">
             <CategoryCards posts={category.posts} activeIndexState={activeIndexState} />
-
             {/* {category.posts[activeIndex] && <PostPreview post={category.posts[activeIndex]} />} */}
         </div>
     ) : null;
 });
 
 export default Category;
-
-const PostPreview: FC<{ post: Post }> = ({ post }) => {
-    const { title, subTitle } = post;
-
-    return (
-        <div className="absolute top-1/2 z-50 flex h-1/2 w-full -translate-y-1/2 flex-col items-center justify-around">
-            <div className="glassmorphic-backdrop w-fit rounded-xl bg-blue-500/10 p-4 text-3xl text-theme-text-background">{title}</div>
-            <div className="glassmorphic-backdrop w-fit rounded-xl bg-blue-500/10 p-4 text-3xl text-theme-text-background">{subTitle}</div>
-        </div>
-    );
-};
 
 const DebugWrapper: FC<{
     category: Category_T;

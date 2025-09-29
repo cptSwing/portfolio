@@ -10,10 +10,13 @@ const useTimeout = (callback: () => void, delay_MS: number | null) => {
     }, [callback]);
 
     useEffect(() => {
-        const tick = () => savedCallback.current();
+        const cb = () => {
+            savedCallback.current();
+            clearTimeout(timeout_Ref.current);
+        };
 
         if (typeof delay_MS === 'number') {
-            timeout_Ref.current = setTimeout(tick, delay_MS);
+            timeout_Ref.current = setTimeout(cb, delay_MS);
             return () => clearTimeout(timeout_Ref.current);
         }
     }, [delay_MS]);
