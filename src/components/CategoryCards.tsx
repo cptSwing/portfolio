@@ -50,7 +50,6 @@ const CategoryHexagon: FC<{
     const { title, subTitle, cardImage, clients } = post;
     const [activeIndex, setActiveIndex] = activeIndexState;
 
-    // const runIrisTransition = useZustand((state) => state.values.runIrisTransition);
     const [parentTransitionCompletedWhenAtFront, setParentTransitionCompletedWhenAtFront] = useState(false);
 
     const isAtFront = activeIndex === cardIndex;
@@ -77,7 +76,7 @@ const CategoryHexagon: FC<{
                 'transform-hexagon glassmorphic-backdrop pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,backdrop-filter] delay-[0ms,var(--ui-animation-menu-transition-duration)] duration-[calc(var(--ui-animation-menu-transition-duration)*2),calc(var(--ui-animation-menu-transition-duration)*4)] [clip-path:--hexagon-clip-path]',
                 parentTransitionCompletedWhenAtFront
                     ? '!scale-x-[calc(var(--hexagon-scale-x)*2.125)] !scale-y-[calc(var(--hexagon-scale-y)*2.125)] [--glassmorphic-backdrop-blur:3px] [--glassmorphic-backdrop-saturate:1.5]'
-                    : '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1.25] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.35)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.35)]',
+                    : '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1.5] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.75)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.75)]',
             )}
             style={
                 {
@@ -100,7 +99,7 @@ const CategoryHexagon: FC<{
             {/* Inner Stroke */}
             <div
                 className={classNames(
-                    'absolute left-0 top-0 size-full bg-theme-primary transition-[transform,clip-path,filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] peer-hover-active:brightness-150 peer-hover-active:!delay-0',
+                    'absolute left-0 top-0 size-full bg-theme-primary transition-[transform,clip-path,filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] peer-hover-active:brightness-150 peer-hover-active:!delay-0 peer-hover-active:duration-200',
                     isAtFront
                         ? parentTransitionCompletedWhenAtFront
                             ? 'matrix-scale-[0.65] [clip-path:--hexagon-clip-path-full-stroked] peer-hover-active:duration-[calc(var(--ui-animation-menu-transition-duration)/2)] peer-hover-active:matrix-scale-[0.675]'
@@ -140,7 +139,7 @@ const TitleClients: FC<{ post: Post }> = ({ post }) => {
             <BannerTitle
                 title={post.title}
                 subTitle={post.subTitle}
-                classes=/* tw */ "fixed left-[25cqw] right-[25cqw] top-[3.5cqh] bottom-[18cqh] z-50 transform-gpu flex-col items-center justify-between "
+                classes=/* tw */ "fixed left-[20cqw] right-[20cqw] top-[3.5cqh] bottom-[6cqh] z-50 transform-gpu flex-col items-center justify-between "
             />
             {/* Clients here somewhere too */}
         </>
@@ -204,13 +203,29 @@ const BannerTitle: FC<{
             </div>
 
             {subTitle && (
-                <FitText
-                    text={subTitle}
-                    className={classNames(
-                        'glassmorphic-backdrop h-auto max-h-[30cqh] w-auto max-w-[50cqw] rounded-bl-lg rounded-tr-lg border border-white/5 bg-theme-root-background/30 px-[2%] pb-[0.5%] pt-[1%] font-fjalla-one leading-none text-theme-primary-lighter transition-[transform,clip-path] duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*1.5)] [--glassmorphic-backdrop-blur:12px] [--glassmorphic-backdrop-saturate:1.25]',
-                        isSwitching ? 'translate-x-[25%] clip-inset-r-[105%]' : 'translate-x-0 delay-200 clip-inset-[-15%]',
-                    )}
-                />
+                <div className="relative max-h-[20cqh] w-auto min-w-[20cqw] max-w-[30cqw]">
+                    <span
+                        className={classNames(
+                            'inline-block h-full w-full pt-px text-center font-fjalla-one tracking-normal drop-shadow-lg transition-[transform,clip-path,color] [font-size:calc(1cqh*2.5)] [line-height:calc(1cqh*3)]',
+                            isSwitching
+                                ? 'translate-y-[200%] text-theme-primary-darker duration-0 clip-inset-b-full'
+                                : 'translate-y-0 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1.5),calc(var(--ui-animation-menu-transition-duration)*2),0ms] duration-500 clip-inset-0',
+                        )}
+                    >
+                        {subTitle}
+                    </span>
+
+                    <div
+                        className={classNames(
+                            'bg-theme-primary-darker',
+                            // 'glassmorphic-backdrop bg-theme-primary-darker/10 [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:0.5]',
+                            'absolute left-[-5%] top-1/2 -z-10 h-full w-[110%] rounded-sm shadow-lg transition-[transform]',
+                            isSwitching
+                                ? '-translate-y-[10cqh] scale-x-75 scale-y-0 text-theme-primary-darker delay-0 duration-150'
+                                : '-translate-y-1/2 scale-100 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1)] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)]',
+                        )}
+                    />
+                </div>
             )}
         </div>
     );

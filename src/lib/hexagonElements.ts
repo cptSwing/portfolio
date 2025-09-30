@@ -950,10 +950,10 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
         },
         [ROUTE.category]: {
             position: {
-                x: 80,
-                y: 272,
+                x: -6,
+                y: 210,
             },
-            rotation: 30,
+            rotation: -30,
             isHalf: false,
             scale: 0.25,
             shouldOffset: false,
@@ -990,8 +990,8 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
         },
         [ROUTE.category]: {
             position: {
-                x: 112.5,
-                y: 272,
+                x: 315,
+                y: 191,
             },
             rotation: -90,
             isHalf: false,
@@ -1025,8 +1025,8 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
         },
         [ROUTE.category]: {
             position: {
-                x: 150,
-                y: 272,
+                x: 299,
+                y: 220,
             },
             rotation: 90,
             isHalf: false,
@@ -1060,8 +1060,8 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
         },
         [ROUTE.category]: {
             position: {
-                x: 187.5,
-                y: 272,
+                x: 283,
+                y: 248,
             },
             rotation: -150,
             isHalf: false,
@@ -1097,8 +1097,8 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
         },
         [ROUTE.category]: {
             position: {
-                x: 220,
-                y: 272,
+                x: 5.5,
+                y: 230,
             },
             rotation: 30,
             isHalf: false,
@@ -1723,10 +1723,53 @@ export const categoryCardActiveHexagon: HexagonTransformData = {
 export const categoryCardInactiveHexagon: HexagonTransformData = {
     position: {
         x: 0,
-        y: 0,
+        y: -50,
     },
     rotation: 0,
     isHalf: false,
     scale: 1,
     shouldOffset: false,
+};
+
+export const brandTransformData: HexagonRouteData = {
+    [ROUTE.home]: {
+        position: {
+            x: 150,
+            y: 42.5,
+        },
+        rotation: 0,
+        isHalf: true,
+        scale: 0.85,
+        shouldOffset: false,
+    },
+    [ROUTE.category]: {
+        position: {
+            x: 335,
+            y: -55,
+        },
+        rotation: -360,
+        isHalf: false,
+        scale: 1,
+        shouldOffset: false,
+    },
+    //     [ROUTE.category]: {
+    //     position: {
+    //         x: 312.5,
+    //         y: 227.5,
+    //     },
+    //     rotation: -420,
+    //     isHalf: false,
+    //     scale: 1,
+    //     shouldOffset: false,
+    // },
+    [ROUTE.post]: {
+        position: {
+            x: -45,
+            y: -32,
+        },
+        rotation: -30,
+        isHalf: false,
+        scale: 0,
+        shouldOffset: false,
+    },
 };

@@ -349,7 +349,7 @@ export const MenuButtonSvg: FC<{
             )}
         >
             <div
-                className="w-full flex-auto bg-theme-primary-lighter/50 matrix-transform matrix-scale-x-[calc(0.5/var(--hexagon-scale-x))] matrix-scale-y-[calc(0.5/var(--hexagon-scale-y))] [mask-position:50%_40%] [mask-repeat:no-repeat] [mask-size:75%] group-hover-active:bg-theme-text-background/50"
+                className="w-full flex-auto bg-theme-primary-lighter/50 matrix-transform matrix-scale-x-[calc(0.5/var(--hexagon-scale-x))] matrix-scale-y-[calc(0.5/var(--hexagon-scale-y))] [mask-position:50%_50%] [mask-repeat:no-repeat] [mask-size:calc(var(--hexagon-clip-path-width)*1.25*var(--hexagon-scale-x))] group-hover-active:bg-theme-text-background/50"
                 style={
                     {
                         maskImage: `url(${svgIconPath})`,

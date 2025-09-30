@@ -782,6 +782,12 @@ export function cos(deg: number, clampTo?: number): number {
     return clampTo ? parseFloat(cosNum.toFixed(clampTo)) : cosNum;
 }
 
+// swiped from : https://github.com/pmndrs/drei/pull/2541/files
+function roundToPixelRatio(value: number): number {
+    const ratio = window.devicePixelRatio || 1;
+    return Math.round(value * ratio) / ratio;
+}
+
 export function calcCSSVariables(
     translate: { x: number; y: number },
     rotation: number,
@@ -810,11 +816,11 @@ export function calcCSSVariables(
     const parentToViewboxHeight = height / viewBoxHeight;
     const insetByStrokeWidth = (1 - gutterWidth) * scale;
 
-    const mappedScaleX = roundToDecimal(insetByStrokeWidth * parentToViewboxWidth * ratio, 3);
-    const mappedScaleY = roundToDecimal(insetByStrokeWidth * parentToViewboxHeight, 3);
+    const mappedScaleX = roundToDecimal(insetByStrokeWidth * parentToViewboxWidth * ratio, 2);
+    const mappedScaleY = roundToDecimal(insetByStrokeWidth * parentToViewboxHeight, 2);
 
-    const mappedTranslateX = roundToDecimal(translate.x * parentToViewboxWidth * ratio + getOffset(parentToViewboxWidth * ratio), 0);
-    const mappedTranslateY = roundToDecimal(translate.y * parentToViewboxHeight + getOffset(parentToViewboxHeight) * (viewBoxHeight / viewBoxWidth), 0);
+    const mappedTranslateX = roundToPixelRatio(translate.x * parentToViewboxWidth * ratio + getOffset(parentToViewboxWidth * ratio));
+    const mappedTranslateY = roundToPixelRatio(translate.y * parentToViewboxHeight + getOffset(parentToViewboxHeight) * (viewBoxHeight / viewBoxWidth));
 
     let clipPath;
 

@@ -18,9 +18,9 @@ const MenuBar: FC<{
     return (
         <div
             className={classNames(
-                'before:lighting-gradient before-menu-bar-dimensions z-50 before:absolute before:left-[--menu-bar-dimensions-left] before:top-[--menu-bar-dimensions-top] before:h-[--menu-bar-dimensions-height] before:w-[--menu-bar-dimensions-width] before:rounded-[3%_3%_3%_3%/10%_10%_10%_10%] before:bg-theme-primary-lighter/50 before:to-white/5 before:transition-[transform,--menu-bar-mask-marker-position-x] before:delay-[--ui-animation-menu-transition-duration] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)] before:[--glassmorphic-backdrop-blur:8px] before:[--glassmorphic-backdrop-saturate:1.5]',
-                'before:nav-test-masks before:glassmorphic-backdrop',
-                'absolute size-[inherit]',
+                // 'before:lighting-gradient before-menu-bar-dimensions z-50 before:absolute before:left-[--menu-bar-dimensions-left] before:top-[--menu-bar-dimensions-top] before:h-[--menu-bar-dimensions-height] before:w-[--menu-bar-dimensions-width] before:rounded-[3%_3%_3%_3%/10%_10%_10%_10%] before:bg-theme-primary-lighter/50 before:to-white/5 before:transition-[transform,--menu-bar-mask-marker-position-x] before:delay-[--ui-animation-menu-transition-duration] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)] before:[--glassmorphic-backdrop-blur:8px] before:[--glassmorphic-backdrop-saturate:1.5]',
+                // 'before:nav-test-masks before:glassmorphic-backdrop',
+                'absolute z-20 size-[inherit]',
             )}
             style={{ '--menu-bar-mask-marker-position-x': positionOnMenuBar[0], '--menu-bar-mask-marker-position-y': positionOnMenuBar[1] } as CSSProperties}
             // onClick={(e) => {
@@ -73,34 +73,6 @@ const MenuButton: FC<{
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
 
     const cssVariables_Memo = useMemo(() => {
-        // if (routeName === ROUTE.category) {
-        //     const previousCategory = cycleThrough(
-        //         Object.values(CATEGORY).filter((val) => !isNaN(val as number)),
-        //         routeContent.category.id,
-        //         'previous',
-        //     );
-
-        //     let newTransforms, z;
-        //     if (isActiveCategoryNavigationButton) {
-        //         newTransforms = categoryNavigationButtonPositions['active'];
-        //         z = 20;
-        //     } else if (CATEGORY[name] === previousCategory) {
-        //         newTransforms = categoryNavigationButtonPositions['left'];
-        //         z = 0;
-        //     } else {
-        //         newTransforms = categoryNavigationButtonPositions['right'];
-        //         z = 10;
-        //     }
-
-        //     const offsetTransforms = { ...buttonData[routeName], ...newTransforms };
-        //     const { position, rotation, scale, isHalf, shouldOffset } = offsetTransforms;
-        //     const style = calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-        //         strokeWidth: 0,
-        //         shouldOffset,
-        //         offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-        //     });
-        //     return { ...style, zIndex: z };
-        // } else {
         const { position, rotation, scale, isHalf, shouldOffset } = buttonData[routeName];
 
         return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {

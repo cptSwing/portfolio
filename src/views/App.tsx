@@ -52,7 +52,7 @@ const Main = () => {
                     routeName === ROUTE.home
                         ? 'aspect-hex-flat h-[min(80vh,80vw)] sm:h-[min(70vh,70vw)]'
                         : routeName === ROUTE.category
-                          ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,72.5vw)] sm:w-auto 2xl:aspect-[1/0.75]'
+                          ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(80vh,72.5vw)] sm:w-auto'
                           : // ROUTE.post
                             'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]',
                 )}

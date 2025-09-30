@@ -9,6 +9,7 @@ import HamburgerMenu from './HamburgerMenu';
 import { HalfHexagon, Hexagon, HexagonDebugOne, HexagonDebugThree, HexagonDebugTwo, HexagonModalMenuButton } from './HexagonShapes';
 import MenuBar from './MenuBar';
 import Category from './routes/Category';
+import Brand from './Brand';
 
 const HexagonTiles = () => {
     const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
@@ -65,6 +66,8 @@ const HexagonTiles = () => {
 
             {/* Hamburger Menu, includes further <RegularHexagon> and <MenuButton>s */}
             <HamburgerMenu routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
+
+            <Brand />
 
             <MenuBar homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
 
