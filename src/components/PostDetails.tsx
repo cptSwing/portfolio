@@ -60,7 +60,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive
                     <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
                             title={'Clients / Users'}
-                            jsx={<Clients clients={clients} dataBlockId="clients-content-parent" />}
+                            jsx={<Clients clients={clients} dataBlockId="clients-content-parent" extraClassNames="gap-x-0.5 " />}
                             isLast={true}
                             content={content}
                             setContent={setContent}
@@ -201,17 +201,25 @@ export const Clients: FC<{ clients: NonNullable<Post['clients']>; extraClassName
     return (
         <div
             data-block-id={dataBlockId}
-            className={`relative grid gap-x-0.5 ${extraClassNames}`}
+            className={`relative grid ${extraClassNames}`}
             style={{ gridTemplateColumns: `repeat(${clients.length < 4 ? clients.length : 4}, minmax(0, 1fr)` }}
         >
             {clients.map(({ abbreviation, name, svgUrl }, idx) => (
-                <div key={idx + abbreviation + name} className="group relative flex flex-col items-center justify-start gap-y-1">
-                    <div className="relative flex aspect-hex-flat w-[100px] items-center justify-center bg-theme-secondary-darker/50 text-theme-primary-darker [clip-path:--hexagon-clip-path] group-hover-active:bg-theme-primary/50 group-hover-active:text-theme-secondary-darker">
-                        <div className="flex aspect-square w-3/5 select-none items-center justify-center rounded-full bg-theme-text-background text-center text-lg font-semibold">
+                <div key={idx + abbreviation + name} className="group relative flex flex-col items-center justify-start">
+                    <div
+                        className={classNames(
+                            'before:absolute before:left-0 before:top-0 before:z-10 before:size-full before:scale-90 before:bg-theme-primary-lighter before:transition-transform before:[clip-path:--hexagon-clip-path-full-stroked] hover-active:before:scale-100',
+                            'client-hexagon-class pointer-events-auto relative flex aspect-hex-flat w-[--hexagon-clip-path-width] items-center justify-center bg-theme-secondary-darker [clip-path:--hexagon-clip-path-full] group-hover-active:bg-theme-primary group-hover-active:text-theme-secondary-darker',
+                        )}
+                    >
+                        <div className="flex aspect-square w-1/2 select-none items-center justify-center rounded-2xl border border-[inherit] bg-theme-text-background text-center font-lato text-lg text-theme-secondary-darker group-hover-active:rounded-xl">
                             {abbreviation}
                         </div>
                     </div>
-                    <span className="pointer-events-none text-2xs text-theme-primary opacity-0 group-hover-active:opacity-100">{name}</span>
+
+                    <span className="pointer-events-none -mt-[12.5%] scale-y-90 text-center font-fjalla-one text-xs text-theme-secondary-darker opacity-0 before:absolute before:left-0 before:top-0 before:-z-10 before:-mt-px before:size-full before:rounded-sm before:bg-theme-text-background/50 group-hover-active:opacity-100">
+                        {name}
+                    </span>
                 </div>
             ))}
         </div>

@@ -30,7 +30,7 @@ export type ZustandStore = {
     values: {
         theme: Theme;
         routeData: RouteData;
-        runIrisTransition: boolean;
+        cardTransition: boolean;
         breakpoint: BreakpointName | null;
         hamburgerIsOpen: boolean;
         activeSubMenuButton: { name: MenuName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
@@ -42,7 +42,7 @@ export type ZustandStore = {
     methods: {
         store_cycleTheme: () => void;
         store_setRouteData: (routeData: RouteData) => void;
-        store_setRunIrisTransition: (isReady: boolean) => void;
+        store_setTimedCardTransition: (isReady: boolean) => void;
         store_setBreakpoint: (breakpoint: BreakpointName | null) => void;
         store_toggleHamburgerMenu: (isOpen?: boolean) => void;
         store_toggleSubMenu: (newMenuState: ZustandStore['values']['activeSubMenuButton']) => void;

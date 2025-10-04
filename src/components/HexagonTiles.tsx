@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { classNames } from 'cpts-javascript-utilities';
 import { CategoryName } from '../types/types';
-import { regularHexagons, postNavigationButtons, backgroundHexagons, halfRegularHexagons, categoryCardActiveHexagon } from '../lib/hexagonElements';
+import { regularHexagons, postNavigationButtons, backgroundHexagons, halfRegularHexagons } from '../lib/hexagonElements';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
-import HamburgerMenu from './HamburgerMenu';
-import { HalfHexagon, Hexagon, HexagonDebugOne, HexagonDebugThree, HexagonDebugTwo, HexagonModalMenuButton } from './HexagonShapes';
+import { HalfHexagon, Hexagon, HexagonModalMenuButton } from './HexagonShapes';
 import MenuBar from './MenuBar';
 import Category from './routes/Category';
 import Brand from './Brand';
@@ -16,7 +15,6 @@ const HexagonTiles = () => {
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
 
     const routeName = useZustand((store) => store.values.routeData.name);
-    const hamburgerMenuIsActive = useZustand((store) => store.values.hamburgerIsOpen);
 
     useEffect(() => {
         if (routeName !== ROUTE.home) {
@@ -65,7 +63,7 @@ const HexagonTiles = () => {
             <Category show={routeName === ROUTE.category} />
 
             {/* Hamburger Menu, includes further <RegularHexagon> and <MenuButton>s */}
-            <HamburgerMenu routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} />
+            {/* <HamburgerMenu routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} /> */}
 
             <Brand />
 

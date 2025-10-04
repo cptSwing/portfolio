@@ -3,13 +3,16 @@ import { immer } from 'zustand/middleware/immer';
 import { Category, Post, Theme, themes, ZustandStore } from '../types/types';
 import { ROUTE } from '../types/enums';
 import { cycleThrough } from 'cpts-javascript-utilities';
+import { config } from '../types/exportTyped';
+
+const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
 export const useZustand = create<ZustandStore>()(
     immer((set, get) => ({
         values: {
             theme: 'pink',
             routeData: { name: ROUTE.home, content: {} },
-            runIrisTransition: false,
+            cardTransition: false,
             breakpoint: null,
             hamburgerIsOpen: false,
             activeSubMenuButton: { name: null },
@@ -43,10 +46,17 @@ export const useZustand = create<ZustandStore>()(
                 });
             },
 
-            store_setRunIrisTransition: (isReady) => {
+            store_setTimedCardTransition: (cardTransition) => {
                 set((draftState) => {
-                    draftState.values.runIrisTransition = isReady;
+                    draftState.values.cardTransition = cardTransition;
                 });
+
+                const timer = setTimeout(() => {
+                    set((draftState) => {
+                        draftState.values.cardTransition = false;
+                    });
+                    clearTimeout(timer);
+                }, transitionDuration_MS);
             },
 
             store_setBreakpoint: (newBreakpoint) => {

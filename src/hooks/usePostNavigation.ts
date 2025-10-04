@@ -1,43 +1,42 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
 import { useEffect } from 'react';
+import { cycleThrough } from 'cpts-javascript-utilities';
 
 const store_setPostNavigationState = useZustand.getState().methods.store_setPostNavigationState;
 
-function usePostNavigation(postId: number) {
-    const param_categoryId = useParams().param_categoryId;
+function usePostNavigation() {
     const postNavigationState = useZustand((store) => store.values.postNavigationState);
-    const posts = useZustand((store) => store.values.routeData.content.category?.posts);
+    const { category, post } = useZustand((store) => store.values.routeData.content);
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (postNavigationState && posts) {
-            const postIds = posts.map((post) => post.id);
-            const currentIndex = postIds.findIndex((index) => index === postId);
-            const previousInArray = postIds[currentIndex - 1 >= 0 ? currentIndex - 1 : postIds.length - 1];
-            const nextInArray = postIds[currentIndex + 1 < postIds.length ? currentIndex + 1 : 0];
+        if (postNavigationState && category && post) {
+            const previousId = cycleThrough(category.posts, post, 'previous').id;
+            const nextId = cycleThrough(category.posts, post, 'next').id;
 
             switch (postNavigationState) {
-                case 'prev':
+                case 'previous':
                     store_setPostNavigationState(null);
-                    navigate(`/${param_categoryId}/${previousInArray}`);
+                    navigate(`/${category.id}/${previousId}`);
 
                     break;
                 case 'next':
                     store_setPostNavigationState(null);
-                    navigate(`/${param_categoryId}/${nextInArray}`);
+                    navigate(`/${category.id}/${nextId}`);
 
                     break;
                 case 'close':
                     store_setPostNavigationState(null);
-                    navigate(`/${param_categoryId}`);
+                    navigate(`/${category.id}`);
 
                     break;
                 default:
                     break;
             }
         }
-    }, [postId, posts, navigate, postNavigationState, param_categoryId]);
+    }, [navigate, postNavigationState, category, post]);
 }
 
 export default usePostNavigation;

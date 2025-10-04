@@ -960,10 +960,10 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
         },
         [ROUTE.post]: {
             position: {
-                x: -50,
-                y: 211,
+                x: -45.1,
+                y: -32,
             },
-            rotation: 0,
+            rotation: 30,
             isHalf: false,
             scale: 0.2,
             shouldOffset: false,
@@ -1107,12 +1107,12 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
         },
         [ROUTE.post]: {
             position: {
-                x: -50,
-                y: 211,
+                x: 150,
+                y: 129,
             },
             rotation: 0,
             isHalf: false,
-            scale: 0.2,
+            scale: 0,
             shouldOffset: false,
         },
         name: 'home',
@@ -1484,12 +1484,12 @@ export const postNavigationButtons: PostNavigationButtonRouteData[] = [
         },
         [ROUTE.post]: {
             position: {
-                x: 312,
-                y: -29.5,
+                x: -47,
+                y: 291,
             },
-            rotation: 0,
+            rotation: 30,
             isHalf: false,
-            scale: 0.2,
+            scale: 0.25,
             shouldOffset: true,
         },
         name: 'previous',
@@ -1520,8 +1520,8 @@ export const postNavigationButtons: PostNavigationButtonRouteData[] = [
         },
         [ROUTE.post]: {
             position: {
-                x: 342,
-                y: -29.5,
+                x: 347,
+                y: 291,
             },
             rotation: 0,
             isHalf: false,
@@ -1723,9 +1723,9 @@ export const categoryCardActiveHexagon: HexagonTransformData = {
 export const categoryCardInactiveHexagon: HexagonTransformData = {
     position: {
         x: 0,
-        y: -50,
+        y: -45,
     },
-    rotation: 0,
+    rotation: 30,
     isHalf: false,
     scale: 1,
     shouldOffset: false,

@@ -77,7 +77,7 @@ export const HalfHexagon: FC<{
 
     const { position, rotation, scale, isHalf, shouldOffset } = categoryAdjustedData_Memo[routeName];
 
-    const runIrisTransition = useZustand((state) => state.values.runIrisTransition);
+    const cardTransition = useZustand((state) => state.values.cardTransition);
     const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
 
@@ -110,7 +110,7 @@ export const HalfHexagon: FC<{
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category
-                      ? '!to-white/0 ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.secondary-darker/0.5)] ![clip-path:--hexagon-clip-path-half-stroked]'
+                      ? '!to-white/0 ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.secondary-darker/0.5)]'
                       : // ROUTE.post
                         'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
@@ -121,18 +121,19 @@ export const HalfHexagon: FC<{
                     '--glassmorphic-grain-scale': 0.5 / scale,
                     ...(routeName === ROUTE.category
                         ? {
-                              '--hexagon-translate-x': runIrisTransition
+                              '--hexagon-translate-x': cardTransition
                                   ? centerHexagonCssVariables_Memo['--hexagon-translate-x']
                                   : cssVariables_Memo['--hexagon-translate-x'],
-                              '--hexagon-translate-y': runIrisTransition
+                              '--hexagon-translate-y': cardTransition
                                   ? centerHexagonCssVariables_Memo['--hexagon-translate-y']
                                   : cssVariables_Memo['--hexagon-translate-y'],
-                              '--hexagon-rotate': `calc(${cssVariables_Memo['--hexagon-rotate']} + (240deg * ${runIrisTransition ? 1 : 0}))`,
-                              '--hexagon-scale-x': `calc(${cssVariables_Memo['--hexagon-scale-x']} * ${runIrisTransition ? 1.2 : 1})`,
-                              '--hexagon-scale-y': `calc(${cssVariables_Memo['--hexagon-scale-y']} * ${runIrisTransition ? 1.2 : 1})`,
+                              '--hexagon-rotate': `calc(${cssVariables_Memo['--hexagon-rotate']} + (240deg * ${cardTransition ? 1 : 0}))`,
+                              '--hexagon-scale-x': `calc(${cssVariables_Memo['--hexagon-scale-x']} * ${cardTransition ? 1.2 : 1})`,
+                              '--hexagon-scale-y': `calc(${cssVariables_Memo['--hexagon-scale-y']} * ${cardTransition ? 1.2 : 1})`,
+                              '--hexagon-clip-path': cardTransition ? 'var(--hexagon-clip-path-half)' : 'var(--hexagon-clip-path-half-stroked)',
 
-                              'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) / ${runIrisTransition ? 1.5 : 1}), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), var(--ui-animation-menu-transition-duration), var(--ui-animation-menu-transition-duration)`,
-                              'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${runIrisTransition ? 0 : 1}), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), 0ms, 0ms`,
+                              'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 4}), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 10}), var(--ui-animation-menu-transition-duration)`,
+                              'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${cardTransition ? 0 : 1}), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${cardTransition ? 0 : 0.5}), 0ms`,
                           }
                         : {}),
                 } as CSSProperties
@@ -189,7 +190,7 @@ export const HexagonDebugTwo: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
 }> = memo(({ data, routeName }) => {
-    const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
+    const { position, rotation, scale, shouldOffset } = data[routeName];
 
     const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
@@ -312,7 +313,7 @@ export const HexagonModalMenuButton: FC<{
             className={classNames(
                 baseClasses,
                 baseTransitionClasses,
-                'hover-active:delay-0 hover-active:duration-100 hover-active:[--tw-scale-x:calc(var(--hexagon-scale-x)*1.1)] hover-active:[--tw-scale-y:calc(var(--hexagon-scale-y)*1.1)]',
+                'pointer-events-auto hover-active:delay-0 hover-active:duration-100 hover-active:[--tw-scale-x:calc(var(--hexagon-scale-x)*1.1)] hover-active:[--tw-scale-y:calc(var(--hexagon-scale-y)*1.1)]',
                 hamburgerMenuIsActive ? '!glassmorphic-level-3' : 'glassmorphic-level-4',
                 routeName === ROUTE.home
                     ? '!to-white/10'

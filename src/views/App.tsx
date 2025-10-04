@@ -1,7 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
-// import useOutsideClick from '../hooks/useOutsideClick';
-import RoundedHexagonSVG from '../components/RoundedHexagonSVG';
 import { classNames } from 'cpts-javascript-utilities';
 import MenuModal from '../components/MenuModal';
 import Post from '../components/routes/Post';
@@ -58,12 +56,8 @@ const Main = () => {
                 )}
                 style={globalCssVariables}
             >
-                {/* TODO Used as clip-shape multiple times down the line, could be served in HexagonTiles as well? */}
-                <RoundedHexagonSVG showPath={false} useClipPath idSuffix="-default" />
-
                 <Post show={routeName === ROUTE.post} />
                 <HexagonTiles />
-
                 <MenuModal />
             </div>
         </GetChildSize>

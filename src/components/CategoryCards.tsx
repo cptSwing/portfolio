@@ -1,13 +1,12 @@
-import { cloneElement, CSSProperties, FC, ReactElement, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { getCategoryHexagons, calcCSSVariables } from '../lib/shapeFunctions';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { HexagonTransformData, Post } from '../types/types';
 import { classNames } from 'cpts-javascript-utilities';
-import { config } from '../types/exportTyped';
 import { useNavigate } from 'react-router-dom';
 import FitText from './utilityComponents/FitText';
 import { Clients } from './PostDetails';
-import useTimeout from '../hooks/useTimeout';
+import { useZustand } from '../lib/zustand';
 
 const CategoryCards: FC<{
     posts: Post[];
@@ -28,14 +27,17 @@ const CategoryCards: FC<{
                     activeIndexState={activeIndexState}
                 />
             ))}
-            <TitleClients post={posts[activeIndexState[0]]!} />
+            <TitleClients
+                title={posts[activeIndexState[0]]!.title}
+                containerSize={containerSize}
+                subTitle={posts[activeIndexState[0]]?.subTitle}
+                clients={posts[activeIndexState[0]]?.clients}
+            />
         </>
     );
 };
 
 export default CategoryCards;
-
-const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
 const CategoryHexagon: FC<{
     allButtons: HexagonTransformData[];
@@ -47,7 +49,7 @@ const CategoryHexagon: FC<{
     cardIndex: number;
     activeIndexState: [number, React.Dispatch<React.SetStateAction<number>>];
 }> = ({ allButtons, post, containerSize, cardIndex, activeIndexState }) => {
-    const { title, subTitle, cardImage, clients } = post;
+    const { title, cardImage } = post;
     const [activeIndex, setActiveIndex] = activeIndexState;
 
     const [parentTransitionCompletedWhenAtFront, setParentTransitionCompletedWhenAtFront] = useState(false);
@@ -59,7 +61,6 @@ const CategoryHexagon: FC<{
 
     const cssVariables_Memo = useMemo(() => {
         const { position, rotation, scale, isHalf } = allButtons[thisButtonIndex]!;
-        //  runPanelsTransition && isAtFront ? 3 : scale
         return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
             clipStroke: false,
             gutterWidth: 0,
@@ -68,15 +69,16 @@ const CategoryHexagon: FC<{
 
     useLayoutEffect(() => {
         setParentTransitionCompletedWhenAtFront(false);
+        return () => setParentTransitionCompletedWhenAtFront(false);
     }, [activeIndex]);
 
     return (
         <button
             className={classNames(
-                'transform-hexagon glassmorphic-backdrop pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,backdrop-filter] delay-[0ms,var(--ui-animation-menu-transition-duration)] duration-[calc(var(--ui-animation-menu-transition-duration)*2),calc(var(--ui-animation-menu-transition-duration)*4)] [clip-path:--hexagon-clip-path]',
+                'transform-hexagon glassmorphic-backdrop pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] bg-theme-primary/100 transition-[transform,background-color,backdrop-filter] delay-[0ms,var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*2)] duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*3),calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-clip-path]',
                 parentTransitionCompletedWhenAtFront
-                    ? '!scale-x-[calc(var(--hexagon-scale-x)*2.125)] !scale-y-[calc(var(--hexagon-scale-y)*2.125)] [--glassmorphic-backdrop-blur:3px] [--glassmorphic-backdrop-saturate:1.5]'
-                    : '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1.5] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.75)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.75)]',
+                    ? '!scale-x-[calc(var(--hexagon-scale-x)*2.125)] !scale-y-[calc(var(--hexagon-scale-y)*2.125)] !bg-theme-primary/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5]'
+                    : '[--glassmorphic-backdrop-blur:12px] [--glassmorphic-backdrop-saturate:2.5] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.5)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.5)]',
             )}
             style={
                 {
@@ -85,7 +87,7 @@ const CategoryHexagon: FC<{
                 } as CSSProperties
             }
             onClick={handleClick}
-            onTransitionEnd={isAtFront ? handleTransitionEnd : undefined}
+            onTransitionEnd={handleTransitionEndWhenAtFront.bind(null, isAtFront)}
         >
             <img
                 src={cardImage}
@@ -99,7 +101,7 @@ const CategoryHexagon: FC<{
             {/* Inner Stroke */}
             <div
                 className={classNames(
-                    'absolute left-0 top-0 size-full bg-theme-primary transition-[transform,clip-path,filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] peer-hover-active:brightness-150 peer-hover-active:!delay-0 peer-hover-active:duration-200',
+                    'absolute left-0 top-0 size-full bg-theme-primary transition-[transform,clip-path,filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] peer-hover-active:brightness-150 peer-hover-active:!delay-0 peer-hover-active:duration-[--ui-animation-menu-transition-duration]',
                     isAtFront
                         ? parentTransitionCompletedWhenAtFront
                             ? 'matrix-scale-[0.65] [clip-path:--hexagon-clip-path-full-stroked] peer-hover-active:duration-[calc(var(--ui-animation-menu-transition-duration)/2)] peer-hover-active:matrix-scale-[0.675]'
@@ -111,8 +113,7 @@ const CategoryHexagon: FC<{
             {/* Outer Stroke */}
             <div
                 className={classNames(
-                    'absolute left-0 top-0 size-full bg-white/[0.2] matrix-translate-x-[-0.15] matrix-translate-y-[-0.09] matrix-rotate-0 matrix-scale-[1.029] [clip-path:--hexagon-clip-path-full-stroked]',
-                    // isAtFront ? 'opacity-100' : 'opacity-0',
+                    'absolute left-0 top-0 size-full bg-white/[0.2] matrix-translate-x-[-0.075] matrix-translate-y-[-0.05] matrix-rotate-0 matrix-scale-[1.029] [clip-path:--hexagon-clip-path-full-stroked]',
                 )}
             />
         </button>
@@ -126,65 +127,33 @@ const CategoryHexagon: FC<{
         }
     }
 
-    function handleTransitionEnd(ev: React.TransitionEvent) {
-        if (ev.target === ev.currentTarget) {
+    function handleTransitionEndWhenAtFront(isAtFront: boolean, ev: React.TransitionEvent) {
+        if (isAtFront && ev.target === ev.currentTarget) {
             setParentTransitionCompletedWhenAtFront(true);
         }
     }
 };
 
-const TitleClients: FC<{ post: Post }> = ({ post }) => {
-    return (
-        <>
-            <BannerTitle
-                title={post.title}
-                subTitle={post.subTitle}
-                classes=/* tw */ "fixed left-[20cqw] right-[20cqw] top-[3.5cqh] bottom-[6cqh] z-50 transform-gpu flex-col items-center justify-between "
-            />
-            {/* Clients here somewhere too */}
-        </>
-    );
-};
-
-const BannerTitle: FC<{
-    title: string;
-    subTitle?: string;
+const TitleClients: FC<{
+    title: Post['title'];
+    containerSize: {
+        width: number;
+        height: number;
+    };
+    subTitle?: Post['subTitle'];
+    clients?: Post['clients'];
     noClip?: boolean;
-    classes?: string;
-}> = ({ title, subTitle, classes }) => {
-    const [isSwitching, setIsSwitching] = useState(false);
-    const [titleText, setTitleText] = useState(title);
-
-    useEffect(() => {
-        setIsSwitching(true);
-
-        const timer = setTimeout(() => {
-            setIsSwitching(false);
-            setTitleText(title);
-        }, transitionDuration_MS * 5);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [title]);
+}> = ({ title, containerSize, subTitle, clients }) => {
+    const cardTransition = useZustand((state) => state.values.cardTransition);
 
     return (
-        <div
-            className={classNames('flex', classes)}
-            style={
-                isSwitching
-                    ? ({
-                          //   '--ui-animation-menu-transition-duration': '0ms',
-                      } as CSSProperties)
-                    : undefined
-            }
-        >
+        <div className="fixed bottom-[3.5cqh] left-[20cqw] right-[20cqw] top-[3.5cqh] z-50 flex transform-gpu flex-col items-center justify-start">
             <div className="relative h-[12.5cqh] w-auto min-w-[40cqw] max-w-[45cqw]">
                 <FitText
-                    text={titleText}
+                    text={title}
                     className={classNames(
                         'h-full w-full text-nowrap pt-px font-fjalla-one leading-none tracking-normal drop-shadow-lg transition-[transform,clip-path,color]',
-                        isSwitching
+                        cardTransition
                             ? 'translate-y-[200%] text-theme-primary-darker duration-0 clip-inset-b-full'
                             : 'translate-y-0 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1),calc(var(--ui-animation-menu-transition-duration)*1.5),0ms] duration-500 clip-inset-0',
                     )}
@@ -192,39 +161,60 @@ const BannerTitle: FC<{
 
                 <div
                     className={classNames(
-                        'bg-theme-primary-darker',
-                        // 'glassmorphic-backdrop bg-theme-primary-darker/10 [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:0.5]',
-                        'absolute left-[-5%] top-1/2 -z-10 h-[50%] w-[110%] rounded-sm shadow-lg transition-[transform]',
-                        isSwitching
-                            ? 'translate-y-1/2 scale-x-75 scale-y-0 text-theme-primary-darker delay-0 duration-150'
-                            : '-translate-y-1/2 scale-100 text-theme-secondary-lighter duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)]',
+                        'glassmorphic-backdrop absolute left-[-5%] top-1/2 -z-10 h-[50%] w-[110%] -translate-y-1/2 rounded-sm border text-theme-secondary-lighter transition-[opacity,background-color,backdrop-filter,border-color] [--glassmorphic-backdrop-blur:4px]',
+                        cardTransition
+                            ? 'border-transparent bg-theme-primary opacity-0 delay-0 duration-[calc(var(--ui-animation-menu-transition-duration)/10)] [--glassmorphic-backdrop-saturate:1]'
+                            : 'border-white/5 border-b-black/20 border-t-white/10 bg-theme-primary/40 opacity-100 delay-[calc(var(--ui-animation-menu-transition-duration)/1.25),calc(var(--ui-animation-menu-transition-duration)*2),calc(var(--ui-animation-menu-transition-duration)*2),calc(var(--ui-animation-menu-transition-duration)*2)] duration-[0ms,1000ms,1000ms,1000ms] [--glassmorphic-backdrop-saturate:2]',
                     )}
                 />
             </div>
 
-            {subTitle && (
-                <div className="relative max-h-[20cqh] w-auto min-w-[20cqw] max-w-[30cqw]">
-                    <span
-                        className={classNames(
-                            'inline-block h-full w-full pt-px text-center font-fjalla-one tracking-normal drop-shadow-lg transition-[transform,clip-path,color] [font-size:calc(1cqh*2.5)] [line-height:calc(1cqh*3)]',
-                            isSwitching
-                                ? 'translate-y-[200%] text-theme-primary-darker duration-0 clip-inset-b-full'
-                                : 'translate-y-0 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1.5),calc(var(--ui-animation-menu-transition-duration)*2),0ms] duration-500 clip-inset-0',
-                        )}
-                    >
-                        {subTitle}
-                    </span>
+            {(subTitle || clients) && (
+                <div className="relative mt-[71.5cqh] flex w-auto min-w-[20cqw] max-w-[30cqw] flex-col items-center justify-start">
+                    {clients && (
+                        <div
+                            className={classNames(
+                                'absolute top-[-17.5cqh] flex h-full w-3/4 flex-col transition-[transform,clip-path]',
+                                cardTransition
+                                    ? 'translate-y-[200%] duration-0 clip-inset-b-full'
+                                    : 'translate-y-0 delay-[calc(var(--ui-animation-menu-transition-duration)*1.5),calc(var(--ui-animation-menu-transition-duration)*2),0ms] duration-500 clip-inset-y-[-150%]',
+                            )}
+                            style={{ '--client-hexagon-scale': `${containerSize.width / 1100}` } as CSSProperties}
+                        >
+                            <span className="relative mx-auto mt-[-1.25cqh] inline-block scale-y-90 font-fjalla-one tracking-wider text-theme-secondary-lighter [font-size:calc(1cqh*1.75)] [line-height:calc(1cqh*2)] before:absolute before:left-[-10%] before:top-[-15%] before:-z-10 before:h-[125%] before:w-[120%] before:bg-theme-primary-darker">
+                                Clients:
+                            </span>
+                            <Clients
+                                clients={clients}
+                                dataBlockId={''}
+                                extraClassNames="!absolute w-full  [&_.client-hexagon-class]:backdrop-blur-[--glassmorphic-backdrop-blur,4px] [&_.client-hexagon-class]:backdrop-saturate-[--glassmorphic-backdrop-saturate,1.5] [&_.client-hexagon-class]:bg-theme-secondary-darker/10 [&_.client-hexagon-class]:scale-[var(--client-hexagon-scale,1)]"
+                            />
+                        </div>
+                    )}
 
-                    <div
-                        className={classNames(
-                            'bg-theme-primary-darker',
-                            // 'glassmorphic-backdrop bg-theme-primary-darker/10 [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:0.5]',
-                            'absolute left-[-5%] top-1/2 -z-10 h-full w-[110%] rounded-sm shadow-lg transition-[transform]',
-                            isSwitching
-                                ? '-translate-y-[10cqh] scale-x-75 scale-y-0 text-theme-primary-darker delay-0 duration-150'
-                                : '-translate-y-1/2 scale-100 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1)] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)]',
-                        )}
-                    />
+                    {subTitle && (
+                        <div className="relative max-h-[10cqh] w-auto">
+                            <span
+                                className={classNames(
+                                    'inline-block h-full w-full pt-px text-center font-fjalla-one tracking-normal transition-[transform,clip-path,color] [font-size:calc(1cqh*2.5)] [line-height:calc(1cqh*3)]',
+                                    cardTransition
+                                        ? 'translate-y-[-100%] text-theme-primary-darker duration-0 clip-inset-t-full'
+                                        : 'translate-y-0 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1.5),calc(var(--ui-animation-menu-transition-duration)*2),0ms] duration-500 clip-inset-0',
+                                )}
+                            >
+                                {subTitle}
+                            </span>
+
+                            <div
+                                className={classNames(
+                                    'glassmorphic-backdrop absolute left-[-5%] top-1/2 -z-10 h-full w-[110%] -translate-y-1/2 rounded-sm border text-theme-secondary-lighter transition-[opacity,background-color,backdrop-filter,border-color] [--glassmorphic-backdrop-blur:4px]',
+                                    cardTransition
+                                        ? 'border-transparent bg-theme-primary opacity-0 delay-0 duration-[calc(var(--ui-animation-menu-transition-duration)/10)] [--glassmorphic-backdrop-saturate:1]'
+                                        : 'border-white/5 border-b-black/20 border-t-white/10 bg-theme-primary/40 opacity-100 delay-[calc(var(--ui-animation-menu-transition-duration)/1.25),calc(var(--ui-animation-menu-transition-duration)*2),calc(var(--ui-animation-menu-transition-duration)*2),calc(var(--ui-animation-menu-transition-duration)*2)] duration-[0ms,1000ms,1000ms,1000ms] [--glassmorphic-backdrop-saturate:2]',
+                                )}
+                            />
+                        </div>
+                    )}
                 </div>
             )}
         </div>
