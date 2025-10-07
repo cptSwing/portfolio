@@ -118,6 +118,7 @@
                 },
                 "clients": [
                     {
+                        "svgUrl": "/svg/Deutsche_Welle_Logo.svg",
                         "abbreviation": "DW",
                         "name": "Deutsche Welle"
                     },
@@ -252,6 +253,21 @@
                     "parcel",
                     "posthtml",
                     "tailwindcss"
+                ],
+                    "clients": [
+                    {
+                        "svgUrl": "/svg/Amadeu_Antonio_Logo.svg",
+                        "abbreviation": "DW",
+                        "name": "Amadeu Antonio Stiftung"
+                    },
+                    {
+                        "abbreviation": "DW",
+                        "name": "Deutsche Welle"
+                    },
+                    {
+                        "abbreviation": "DW",
+                        "name": "Deutsche Welle"
+                    }
                 ]
             },
             {

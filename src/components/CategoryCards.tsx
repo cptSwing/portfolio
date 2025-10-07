@@ -28,7 +28,7 @@ const CategoryCards: FC<{
                 />
             ))}
             <TitleClients
-                title={posts[activeIndexState[0]]!.title}
+                title={posts[activeIndexState[0]]?.title}
                 containerSize={containerSize}
                 subTitle={posts[activeIndexState[0]]?.subTitle}
                 clients={posts[activeIndexState[0]]?.clients}
@@ -77,7 +77,7 @@ const CategoryHexagon: FC<{
             className={classNames(
                 'transform-hexagon glassmorphic-backdrop pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] bg-theme-primary/100 transition-[transform,background-color,backdrop-filter] delay-[0ms,var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*2)] duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*3),calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-clip-path]',
                 parentTransitionCompletedWhenAtFront
-                    ? '!scale-x-[calc(var(--hexagon-scale-x)*2.125)] !scale-y-[calc(var(--hexagon-scale-y)*2.125)] !bg-theme-primary/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5]'
+                    ? '!scale-x-[calc(var(--hexagon-scale-x)*1.76)] !scale-y-[calc(var(--hexagon-scale-y)*1.76)] !bg-theme-primary/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5]'
                     : '[--glassmorphic-backdrop-blur:12px] [--glassmorphic-backdrop-saturate:2.5] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.5)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.5)]',
             )}
             style={
@@ -135,7 +135,7 @@ const CategoryHexagon: FC<{
 };
 
 const TitleClients: FC<{
-    title: Post['title'];
+    title: Post['title'] | undefined;
     containerSize: {
         width: number;
         height: number;
@@ -147,15 +147,22 @@ const TitleClients: FC<{
     const cardTransition = useZustand((state) => state.values.cardTransition);
 
     return (
-        <div className="fixed bottom-[3.5cqh] left-[20cqw] right-[20cqw] top-[3.5cqh] z-50 flex transform-gpu flex-col items-center justify-start">
+        <div
+            className={classNames(
+                'fixed bottom-[3.5cqh] left-[20cqw] right-[20cqw] top-[3.5cqh] z-50 flex transform-gpu flex-col items-center justify-start transition-[filter]',
+                cardTransition
+                    ? 'blur-xl duration-0'
+                    : 'blur-0 delay-[--ui-animation-menu-transition-duration] duration-[calc(var(--ui-animation-menu-transition-duration)*2)]',
+            )}
+        >
             <div className="relative h-[12.5cqh] w-auto min-w-[40cqw] max-w-[45cqw]">
                 <FitText
-                    text={title}
+                    text={title ?? ''}
                     className={classNames(
                         'h-full w-full text-nowrap pt-px font-fjalla-one leading-none tracking-normal drop-shadow-lg transition-[transform,clip-path,color]',
                         cardTransition
                             ? 'translate-y-[200%] text-theme-primary-darker duration-0 clip-inset-b-full'
-                            : 'translate-y-0 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1),calc(var(--ui-animation-menu-transition-duration)*1.5),0ms] duration-500 clip-inset-0',
+                            : 'translate-y-0 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1),calc(var(--ui-animation-menu-transition-duration)*1.5),0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] clip-inset-0',
                     )}
                 />
 
@@ -177,9 +184,9 @@ const TitleClients: FC<{
                                 'absolute top-[-17.5cqh] flex h-full w-3/4 flex-col transition-[transform,clip-path]',
                                 cardTransition
                                     ? 'translate-y-[200%] duration-0 clip-inset-b-full'
-                                    : 'translate-y-0 delay-[calc(var(--ui-animation-menu-transition-duration)*1.5),calc(var(--ui-animation-menu-transition-duration)*2),0ms] duration-500 clip-inset-y-[-150%]',
+                                    : 'translate-y-0 delay-[calc(var(--ui-animation-menu-transition-duration)*1.5),calc(var(--ui-animation-menu-transition-duration)*2),0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] clip-inset-y-[-150%]',
                             )}
-                            style={{ '--client-hexagon-scale': `${containerSize.width / 1100}` } as CSSProperties}
+                            style={{ '--client-hexagon-scale': `${containerSize.width / 1150}` } as CSSProperties}
                         >
                             <span className="relative mx-auto mt-[-1.25cqh] inline-block scale-y-90 font-fjalla-one tracking-wider text-theme-secondary-lighter [font-size:calc(1cqh*1.75)] [line-height:calc(1cqh*2)] before:absolute before:left-[-10%] before:top-[-15%] before:-z-10 before:h-[125%] before:w-[120%] before:bg-theme-primary-darker">
                                 Clients:
@@ -187,7 +194,7 @@ const TitleClients: FC<{
                             <Clients
                                 clients={clients}
                                 dataBlockId={''}
-                                extraClassNames="!absolute w-full  [&_.client-hexagon-class]:backdrop-blur-[--glassmorphic-backdrop-blur,4px] [&_.client-hexagon-class]:backdrop-saturate-[--glassmorphic-backdrop-saturate,1.5] [&_.client-hexagon-class]:bg-theme-secondary-darker/10 [&_.client-hexagon-class]:scale-[var(--client-hexagon-scale,1)]"
+                                extraClassNames="[&_.client-hexagon-class]:before:matrix-scale-[var(--client-hexagon-scale,1)]"
                             />
                         </div>
                     )}
@@ -199,7 +206,7 @@ const TitleClients: FC<{
                                     'inline-block h-full w-full pt-px text-center font-fjalla-one tracking-normal transition-[transform,clip-path,color] [font-size:calc(1cqh*2.5)] [line-height:calc(1cqh*3)]',
                                     cardTransition
                                         ? 'translate-y-[-100%] text-theme-primary-darker duration-0 clip-inset-t-full'
-                                        : 'translate-y-0 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1.5),calc(var(--ui-animation-menu-transition-duration)*2),0ms] duration-500 clip-inset-0',
+                                        : 'translate-y-0 text-theme-secondary-lighter delay-[calc(var(--ui-animation-menu-transition-duration)*1.5),calc(var(--ui-animation-menu-transition-duration)*2),0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] clip-inset-0',
                                 )}
                             >
                                 {subTitle}

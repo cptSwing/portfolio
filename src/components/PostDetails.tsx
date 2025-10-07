@@ -96,7 +96,10 @@ const SinglePostDetailElement: FC<{
     const isSelected = jsx.props.dataBlockId === content?.props.dataBlockId;
 
     const parentSize = useContext(GetChildSizeContext);
-    const clipPath_Memo = useMemo(() => getHexagonalClipPath(1, parentSize, { shape: isLast ? 'top-left' : 'slant-right' }), [isLast, parentSize]);
+    const clipPath_Memo = useMemo(
+        () => getHexagonalClipPath(1, { width: parentSize.width, height: parentSize.height }, { shape: isLast ? 'top-left' : 'slant-right' }),
+        [isLast, parentSize.width, parentSize.height],
+    );
 
     return (
         <button
@@ -208,16 +211,20 @@ export const Clients: FC<{ clients: NonNullable<Post['clients']>; extraClassName
                 <div key={idx + abbreviation + name} className="group relative flex flex-col items-center justify-start">
                     <div
                         className={classNames(
-                            'before:absolute before:left-0 before:top-0 before:z-10 before:size-full before:scale-90 before:bg-theme-primary-lighter before:transition-transform before:[clip-path:--hexagon-clip-path-full-stroked] hover-active:before:scale-100',
-                            'client-hexagon-class pointer-events-auto relative flex aspect-hex-flat w-[--hexagon-clip-path-width] items-center justify-center bg-theme-secondary-darker [clip-path:--hexagon-clip-path-full] group-hover-active:bg-theme-primary group-hover-active:text-theme-secondary-darker',
+                            'before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-theme-primary-darker before:matrix-rotate-90 before:[clip-path:--hexagon-clip-path-full-stroked]',
+                            'client-hexagon-class pointer-events-auto relative flex aspect-hex-flat w-[--hexagon-clip-path-width] items-center justify-center matrix-scale-[0.9]',
                         )}
                     >
-                        <div className="flex aspect-square w-1/2 select-none items-center justify-center rounded-2xl border border-[inherit] bg-theme-text-background text-center font-lato text-lg text-theme-secondary-darker group-hover-active:rounded-xl">
-                            {abbreviation}
-                        </div>
+                        {svgUrl ? (
+                            <img className="w-2/5" alt={abbreviation} src={svgUrl} />
+                        ) : (
+                            <span className="flex select-none items-center justify-center rounded-2xl font-lato text-lg text-theme-text-background">
+                                {abbreviation}
+                            </span>
+                        )}
                     </div>
 
-                    <span className="pointer-events-none -mt-[12.5%] scale-y-90 text-center font-fjalla-one text-xs text-theme-secondary-darker opacity-0 before:absolute before:left-0 before:top-0 before:-z-10 before:-mt-px before:size-full before:rounded-sm before:bg-theme-text-background/50 group-hover-active:opacity-100">
+                    <span className="pointer-events-none -mt-[12.5%] scale-y-90 text-center font-fjalla-one text-xs text-theme-text opacity-0 before:absolute before:left-0 before:top-0 before:-z-10 before:-mt-px before:size-full before:rounded-sm before:bg-theme-text-background/50 group-hover-active:opacity-100">
                         {name}
                     </span>
                 </div>
