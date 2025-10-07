@@ -3,14 +3,7 @@
 // y: -43.3 = hex sits on parent's Y:0 (total height 86.6)
 
 import { ROUTE } from '../types/enums';
-import {
-    HexagonRouteData,
-    HexagonTransformData,
-    CategoryNavigationButtonRouteData,
-    MenuButtonRouteData,
-    HexagonRouteDataTransformOffsets,
-    PostNavigationButtonRouteData,
-} from '../types/types';
+import { HexagonRouteData, HexagonTransformData, CategoryNavigationButtonRouteData, MenuButtonRouteData } from '../types/types';
 import { getMenuButtonPosition } from './menuFunctions';
 import { useZustand } from './zustand';
 
@@ -907,75 +900,7 @@ export const halfRegularHexagons: HexagonRouteData[] = [
     },
 ];
 
-export const categoryNavigationButtonPositions: Record<'active' | 'left' | 'right', Omit<Partial<HexagonTransformData>, 'isHalf'>> = {
-    active: {
-        position: {
-            x: 150,
-            y: 267.5,
-        },
-        rotation: -90,
-        // scale: 0.6,
-        scale: 0.4,
-    },
-    left: {
-        position: {
-            x: 115,
-            y: 267.5,
-        },
-        rotation: 90,
-        scale: 0.4,
-    },
-    right: {
-        position: {
-            x: 185,
-            y: 267.5,
-        },
-        rotation: 150,
-        scale: 0.4,
-    },
-};
-
 export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | MenuButtonRouteData)[] = [
-    // Hamburger Icon
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 130,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.35,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: -6,
-                y: 210,
-            },
-            rotation: -30,
-            isHalf: false,
-            scale: 0.25,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -45.1,
-                y: -32,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.2,
-            shouldOffset: false,
-        },
-        name: 'hamburger',
-        title: '',
-        svgIconPath: '/svg/Bars3Outline.svg',
-        target: () => {
-            store_toggleHamburgerMenu();
-        },
-    },
-
     // Category Links
     {
         [ROUTE.home]: {
@@ -1083,7 +1008,51 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
         target: '/3',
     },
 
-    // Appears only in '[ROUTE.category]' and '[ROUTE.post]' routeData:
+    // Hamburger Icon
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 130,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0.35,
+            shouldOffset: false,
+            counterRotate: true,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: -6,
+                y: 210,
+            },
+            rotation: -30,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: false,
+            counterRotate: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -45.5,
+                y: -32,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: false,
+            counterRotate: true,
+        },
+        name: 'hamburger',
+        title: '',
+        svgIconPath: '/svg/Bars3Outline.svg',
+        target: () => {
+            store_toggleHamburgerMenu();
+        },
+    },
+
+    // These appear only in '[ROUTE.category]' or even just '[ROUTE.post]' routeData:
+    // Home
     {
         [ROUTE.home]: {
             position: {
@@ -1094,6 +1063,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             isHalf: false,
             scale: 0,
             shouldOffset: false,
+            counterRotate: true,
         },
         [ROUTE.category]: {
             position: {
@@ -1104,6 +1074,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             isHalf: false,
             scale: 0.25,
             shouldOffset: false,
+            counterRotate: true,
         },
         [ROUTE.post]: {
             position: {
@@ -1112,8 +1083,9 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             },
             rotation: 0,
             isHalf: false,
-            scale: 0,
+            scale: 0.25,
             shouldOffset: false,
+            counterRotate: true,
         },
         name: 'home',
         title: 'home',
@@ -1124,94 +1096,127 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             return '/';
         },
     },
+
+    // Previous
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: -43.3,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+            counterRotate: true,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 17,
+                y: 249.5,
+            },
+            rotation: 90,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: false,
+            counterRotate: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: -45.5,
+                y: 290.5,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: true,
+            counterRotate: true,
+        },
+        name: 'previous',
+        svgIconPath: '/svg/ChevronLeftOutline.svg',
+        target: () => store_setPostNavigationState('previous'),
+    },
+
+    // Next
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: -43.3,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+            counterRotate: true,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 27.75,
+                y: 268.9,
+            },
+            rotation: 90,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: false,
+            counterRotate: false,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 345.25,
+                y: 290.5,
+            },
+            rotation: 30,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: true,
+            counterRotate: true,
+        },
+        name: 'next',
+        svgIconPath: '/svg/ChevronRightOutline.svg',
+        target: () => store_setPostNavigationState('next'),
+    },
+
+    // Close Post
+    {
+        [ROUTE.home]: {
+            position: {
+                x: 300,
+                y: -43.3,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+            counterRotate: true,
+        },
+        [ROUTE.category]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 0,
+            isHalf: false,
+            scale: 0,
+            shouldOffset: false,
+            counterRotate: true,
+        },
+        [ROUTE.post]: {
+            position: {
+                x: 345.25,
+                y: -32,
+            },
+            rotation: 90,
+            isHalf: false,
+            scale: 0.25,
+            shouldOffset: true,
+            counterRotate: true,
+        },
+        name: 'close',
+        svgIconPath: '/svg/XMarkOutline.svg',
+        target: () => store_setPostNavigationState('close'),
+    },
 ];
-
-export const hamburgerButton: MenuButtonRouteData = {
-    [ROUTE.home]: {
-        position: {
-            x: 150,
-            y: 130,
-        },
-        rotation: 0,
-        isHalf: false,
-        scale: 0.35,
-        shouldOffset: false,
-    },
-    [ROUTE.category]: {
-        position: {
-            x: 75,
-            y: 272,
-        },
-        rotation: 30,
-        isHalf: false,
-        scale: 0.25,
-        shouldOffset: false,
-    },
-    [ROUTE.post]: {
-        position: {
-            x: -50,
-            y: 211,
-        },
-        rotation: 0,
-        isHalf: false,
-        scale: 0.2,
-        shouldOffset: false,
-    },
-    name: 'hamburger',
-    title: '',
-    svgIconPath: '/svg/Bars3Outline.svg',
-    target: () => {
-        store_toggleHamburgerMenu();
-    },
-};
-
-export const hamburgerBackgroundHexagon: HexagonRouteData = {
-    [ROUTE.home]: {
-        position: {
-            x: 150,
-            y: 129.9,
-        },
-        rotation: 120,
-        isHalf: false,
-        scale: 1,
-        shouldOffset: false,
-    },
-    [ROUTE.category]: {
-        position: {
-            x: 150,
-            y: 0,
-        },
-        rotation: 210,
-        isHalf: false,
-        scale: 0.866,
-        shouldOffset: false,
-    },
-    [ROUTE.post]: {
-        position: {
-            x: 75,
-            y: 0,
-        },
-        rotation: 30,
-        isHalf: false,
-        scale: 0,
-        shouldOffset: false,
-    },
-};
-
-export const hamburgerBackgroundHexagonOffsets: HexagonRouteDataTransformOffsets = {
-    [ROUTE.home]: {
-        rotation: 360,
-        scale: 1.3,
-    },
-    [ROUTE.category]: {
-        position: {
-            x: 150,
-            y: 10,
-        },
-        rotation: 360,
-        scale: 1.1,
-    },
-};
 
 export const menuButtons: MenuButtonRouteData[] = [
     // User Login (inactive), disappears after ROUTE.home
@@ -1326,247 +1331,6 @@ export const menuButtons: MenuButtonRouteData[] = [
         title: 'contact',
         svgIconPath: '/svg/ChatBubbleLeftRightOutline.svg',
         target: (ev) => store_toggleSubMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
-    },
-];
-
-export const menuButtonsHamburgerTransformOffsets: HexagonRouteDataTransformOffsets[] = [
-    // User Login (inactive), disappears after ROUTE.home
-    {
-        [ROUTE.home]: {
-            rotation: 0,
-            scale: 0.35,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 375,
-                y: 0,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: 216.5,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-        },
-    },
-
-    // Settings
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 180,
-                y: 140,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.35,
-            shouldOffset: true,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 175,
-                y: 15,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.3,
-            shouldOffset: true,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -50,
-                y: 232.5,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.25,
-            shouldOffset: false,
-        },
-    },
-
-    // Contact
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 120,
-                y: 140,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.35,
-            shouldOffset: true,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 125,
-                y: 15,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.3,
-            shouldOffset: true,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -50,
-                y: 257.5,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.275,
-            shouldOffset: false,
-        },
-    },
-
-    // Appears only in '[ROUTE.category]' and '[ROUTE.post]' routeData:
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: 180,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 150,
-                y: 30,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.3,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -50,
-                y: 211,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.2,
-            shouldOffset: false,
-        },
-    },
-];
-
-// Only available in Post route
-export const postNavigationButtons: PostNavigationButtonRouteData[] = [
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 300,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 225,
-                y: 0,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -47,
-                y: 291,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.25,
-            shouldOffset: true,
-        },
-        name: 'previous',
-        svgIconPath: '/svg/ChevronLeftOutline.svg',
-        target: () => store_setPostNavigationState('previous'),
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 300,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 375,
-                y: 86.6,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 347,
-                y: 291,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.2,
-            shouldOffset: true,
-        },
-        name: 'next',
-        svgIconPath: '/svg/ChevronRightOutline.svg',
-        target: () => store_setPostNavigationState('next'),
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 300,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 300,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-            shouldOffset: false,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 327,
-                y: -37.5,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.2,
-            shouldOffset: true,
-        },
-        name: 'close',
-        svgIconPath: '/svg/XMarkOutline.svg',
-        target: () => store_setPostNavigationState('close'),
     },
 ];
 
@@ -1715,7 +1479,7 @@ export const categoryCardActiveHexagon: HexagonTransformData = {
     position: hexagonGridTransformCenter,
     rotation: 0,
     isHalf: false,
-    scale: 1.9,
+    scale: 2.3,
     shouldOffset: false,
 };
 

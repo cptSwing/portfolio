@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { classNames } from 'cpts-javascript-utilities';
 import { CategoryName } from '../types/types';
-import { regularHexagons, postNavigationButtons, backgroundHexagons, halfRegularHexagons } from '../lib/hexagonElements';
+import { regularHexagons, halfRegularHexagons } from '../lib/hexagonElements';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
-import { HalfHexagon, Hexagon, HexagonModalMenuButton } from './HexagonShapes';
+import { HalfHexagon, Hexagon } from './HexagonShapes';
 import MenuBar from './MenuBar';
 import Category from './routes/Category';
 import Brand from './Brand';
@@ -69,9 +69,9 @@ const HexagonTiles = () => {
 
             <MenuBar homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
 
-            {postNavigationButtons.map((postNavigationButtonData, idx) => (
+            {/* {postNavigationButtons.map((postNavigationButtonData, idx) => (
                 <HexagonModalMenuButton key={`hex-post-navigation-index-${idx}`} buttonData={postNavigationButtonData} routeName={routeName} />
-            ))}
+            ))} */}
 
             {/* <HexagonDebugOne
                 data={{ [ROUTE.home]: categoryCardActiveHexagon, [ROUTE.category]: categoryCardActiveHexagon, [ROUTE.post]: categoryCardActiveHexagon }}

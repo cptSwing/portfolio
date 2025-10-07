@@ -60,6 +60,8 @@ const MenuButton: FC<{
     const svgIconPath = (buttonData as MenuButtonRouteData).svgIconPath ? (buttonData as MenuButtonRouteData).svgIconPath : undefined;
 
     const { name: routeName, content: routeContent } = useZustand((store) => store.values.routeData);
+    const { position, rotation, scale, isHalf, shouldOffset, counterRotate } = buttonData[routeName];
+
     const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
     const navigate = useNavigate();
@@ -73,14 +75,12 @@ const MenuButton: FC<{
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
 
     const cssVariables_Memo = useMemo(() => {
-        const { position, rotation, scale, isHalf, shouldOffset } = buttonData[routeName];
-
         return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
             shouldOffset,
             offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
         });
         // }
-    }, [breakpoint, buttonData, containerSize, routeName]);
+    }, [position, rotation, scale, isHalf, shouldOffset, breakpoint, buttonData, containerSize, routeName]);
 
     useEffect(() => {
         if (isActiveCategoryNavigationButton) {
@@ -90,22 +90,6 @@ const MenuButton: FC<{
             ]);
         }
     }, [cssVariables_Memo, isActiveCategoryNavigationButton, setPositionOnMenuBar]);
-
-    function handleClick(ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) {
-        if (isCategoryNavigationButton) {
-            navigate(target as string);
-        } else {
-            const targetResult = (target as (ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) => string | void)(ev);
-            targetResult && navigate(targetResult);
-        }
-    }
-
-    function handleMouseEnter() {
-        if (routeName === ROUTE.home && menuTransitionTargetReached && menuTransitionTarget !== name) {
-            setMenuTransitionStates([name as CategoryName, false]);
-            // ^^^  Prevent parent from prematurely rotating again, and again, and again
-        }
-    }
 
     return (
         <GlassmorphicButtonWrapper
@@ -129,13 +113,26 @@ const MenuButton: FC<{
                     {title}
                 </span>
             ) : (
-                <MenuButtonSvg
-                    svgIconPath={svgIconPath}
-                    // counterRotate={routeName === ROUTE.home ? hamburgerMenuIsActive : true}
-                />
+                <MenuButtonSvg svgIconPath={svgIconPath} counterRotate={counterRotate} />
             )}
         </GlassmorphicButtonWrapper>
     );
+
+    function handleClick(ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) {
+        if (isCategoryNavigationButton) {
+            navigate(target as string);
+        } else {
+            const targetResult = (target as (ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) => string | void)(ev);
+            targetResult && navigate(targetResult);
+        }
+    }
+
+    function handleMouseEnter() {
+        if (routeName === ROUTE.home && menuTransitionTargetReached && menuTransitionTarget !== name) {
+            setMenuTransitionStates([name as CategoryName, false]);
+            // ^^^  Prevent parent from prematurely rotating again, and again, and again
+        }
+    }
 });
 
 function isActiveCategory(name: CategoryName, category: Category) {

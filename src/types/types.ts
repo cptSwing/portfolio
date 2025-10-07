@@ -109,34 +109,37 @@ export type HexagonTransformData = {
     isHalf: boolean;
     shouldOffset: boolean;
 };
+
+interface ButtonTransformData extends HexagonTransformData {
+    counterRotate?: boolean;
+}
+
 export type HexagonRouteData = Record<ROUTE, HexagonTransformData>;
 export type HexagonRouteDataTransformOffsets = Partial<Record<ROUTE, Partial<HexagonTransformData>>>;
 
-interface CategoryNavigationButtonData {
+export type ButtonRouteData = Record<ROUTE, ButtonTransformData>;
+
+interface ButtonData {
+    name: ButtonName;
+}
+
+interface CategoryNavigationButtonData extends ButtonData {
     name: CategoryName;
-    title: string;
+    title: CategoryName;
     target: string;
 }
 /** A Button for navigating to/from a CATEGORY */
-export interface CategoryNavigationButtonRouteData extends HexagonRouteData, CategoryNavigationButtonData {}
+export interface CategoryNavigationButtonRouteData extends ButtonRouteData, CategoryNavigationButtonData {}
 
-interface MenuButtonData {
-    name: MenuName;
+interface MenuButtonData extends ButtonData {
+    name: MenuName & PostNavigationName;
     title?: string;
     svgIconPath: string;
     target: (ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>) => string | void;
 }
 /** A Button that executes a function (which can also return a navigatable target) */
-export interface MenuButtonRouteData extends HexagonRouteData, MenuButtonData {}
+export interface MenuButtonRouteData extends ButtonRouteData, MenuButtonData {}
 export interface MenuButtonRouteDataTransformOffsets extends HexagonRouteDataTransformOffsets, MenuButtonData {}
-
-interface PostNavigationButtonData {
-    name: PostNavigationName;
-    svgIconPath: string;
-    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
-/** A Button on POST route, switches between posts, or returns to CATEGORY route */
-export interface PostNavigationButtonRouteData extends HexagonRouteData, PostNavigationButtonData {}
 
 export type GridAreaPathData = {
     width: number;

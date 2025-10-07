@@ -10,7 +10,7 @@ import {
     transformCategoryHalfHexagons,
 } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
-import { HexagonRouteData, MenuButtonRouteData, PostNavigationButtonRouteData } from '../types/types';
+import { HexagonRouteData, MenuButtonRouteData } from '../types/types';
 import { useNavigate } from 'react-router-dom';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { categoryCardActiveHexagon } from '../lib/hexagonElements';
@@ -132,8 +132,8 @@ export const HalfHexagon: FC<{
                               '--hexagon-scale-y': `calc(${cssVariables_Memo['--hexagon-scale-y']} * ${cardTransition ? 1.2 : 1})`,
                               '--hexagon-clip-path': cardTransition ? 'var(--hexagon-clip-path-half)' : 'var(--hexagon-clip-path-half-stroked)',
 
-                              'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 4}), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 10}), var(--ui-animation-menu-transition-duration)`,
-                              'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${cardTransition ? 0 : 1}), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${cardTransition ? 0 : 0.5}), 0ms`,
+                              'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1.1 : 4}), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 8}), var(--ui-animation-menu-transition-duration)`,
+                              'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${cardTransition ? 0 : 1}), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${cardTransition ? 0 : 0.75}), 0ms`,
                           }
                         : {}),
                 } as CSSProperties
@@ -279,7 +279,7 @@ export const HexagonDebugThree: FC<{
 });
 
 export const HexagonModalMenuButton: FC<{
-    buttonData: MenuButtonRouteData | PostNavigationButtonRouteData;
+    buttonData: MenuButtonRouteData;
     routeName: ROUTE;
 
     hamburgerMenuIsActive?: boolean;
@@ -303,7 +303,6 @@ export const HexagonModalMenuButton: FC<{
 
     const navigate = useNavigate();
     function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
-        // @ts-expect-error this will not lead to problems, trust me
         const targetResult = typeof target === 'string' ? target : target(ev);
         targetResult && navigate(targetResult);
     }

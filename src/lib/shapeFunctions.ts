@@ -38,6 +38,7 @@ export const viewBoxWidth = 400;
 export const viewBoxHeight = viewBoxWidth * staticValues.heightAspect.flatTop;
 export const viewBoxAspect = viewBoxWidth / viewBoxHeight;
 
+const tan30 = Math.tan(degToRad(30));
 const tan60 = Math.tan(degToRad(60));
 const sin30 = sin(30);
 const cos30 = cos(30);
@@ -747,7 +748,7 @@ export function getHexagonalClipPath(
     const aspectRatio = clipWidth / clipHeight;
 
     const y_Percent = y_NormalizedPercent * 100;
-    const x_Percent = y_Percent / aspectRatio / tan60;
+    const x_Percent = (y_Percent / aspectRatio) * tan30;
 
     const actualShape = shape ?? 'full';
 
