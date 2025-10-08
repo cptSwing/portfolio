@@ -2,16 +2,11 @@ import { BreakpointName } from '../hooks/useBreakPoint';
 import { CATEGORY, ROUTE, TOOL } from './enums';
 
 export type Config = {
-    categoryGrid: {
-        areaCount: number;
-    };
     placeholders: {
         cardImage: string;
     };
     ui: {
-        hexMenu: {
-            columns: number;
-            rows: number;
+        hexGrid: {
             gutterWidth: number;
             scaleUp: number;
             clipPathWidth: number;
@@ -32,8 +27,8 @@ export type ZustandStore = {
         routeData: RouteData;
         cardTransition: boolean;
         breakpoint: BreakpointName | null;
-        hamburgerIsOpen: boolean;
-        activeSubMenuButton: { name: MenuName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
+        hamburgerMenuOpen: boolean;
+        activeSubMenuButton: { name: HamburgerMenuButtonName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
         postNavigationState: PostNavigationName | null;
         debug: {
             applyTransformMatrixFix: boolean;
@@ -98,53 +93,47 @@ export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
 export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
 type PostNavigationName = 'previous' | 'close' | 'next';
-type MenuName = 'home' | 'hamburger' | 'config' | 'contact' | 'login';
+type FunctionalButtonName = 'home' | 'hamburger' | PostNavigationName;
+type HamburgerMenuButtonName = 'config' | 'contact' | 'login';
 export type CategoryName = keyof typeof CATEGORY;
-export type ButtonName = CategoryName | MenuName | PostNavigationName;
+export type AllButtonNames = CategoryName | FunctionalButtonName | HamburgerMenuButtonName;
 
 export type HexagonTransformData = {
     position: { x: number; y: number };
     rotation: number;
     scale: number;
     isHalf: boolean;
-    shouldOffset: boolean;
 };
+
+export type HexagonRouteData = Record<ROUTE, HexagonTransformData>;
+export type HexagonRouteDataTransformOffsets = Partial<Record<ROUTE, Partial<HexagonTransformData>>>;
 
 interface ButtonTransformData extends HexagonTransformData {
     counterRotate?: boolean;
 }
 
-export type HexagonRouteData = Record<ROUTE, HexagonTransformData>;
-export type HexagonRouteDataTransformOffsets = Partial<Record<ROUTE, Partial<HexagonTransformData>>>;
-
 export type ButtonRouteData = Record<ROUTE, ButtonTransformData>;
 
 interface ButtonData {
-    name: ButtonName;
+    name: AllButtonNames;
 }
 
-interface CategoryNavigationButtonData extends ButtonData {
+interface CategoryLinkButtonData extends ButtonData {
     name: CategoryName;
     title: CategoryName;
     target: string;
 }
 /** A Button for navigating to/from a CATEGORY */
-export interface CategoryNavigationButtonRouteData extends ButtonRouteData, CategoryNavigationButtonData {}
+export interface CategoryLinkButtonRouteData extends ButtonRouteData, CategoryLinkButtonData {}
 
-interface MenuButtonData extends ButtonData {
-    name: MenuName & PostNavigationName;
+interface FunctionalButtonData extends ButtonData {
+    name: FunctionalButtonName;
     title?: string;
     svgIconPath: string;
     target: (ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>) => string | void;
 }
 /** A Button that executes a function (which can also return a navigatable target) */
-export interface MenuButtonRouteData extends ButtonRouteData, MenuButtonData {}
-export interface MenuButtonRouteDataTransformOffsets extends HexagonRouteDataTransformOffsets, MenuButtonData {}
-
-export type GridAreaPathData = {
-    width: number;
-    height: number;
-    path: string;
-};
+export interface FunctionalButtonRouteData extends ButtonRouteData, FunctionalButtonData {}
+export interface FunctionalButtonRouteDataTransformOffsets extends HexagonRouteDataTransformOffsets, FunctionalButtonData {}
 
 export type valueof<T> = T[keyof T];

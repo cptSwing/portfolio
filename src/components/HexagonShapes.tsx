@@ -4,13 +4,12 @@ import { ROUTE } from '../types/enums';
 import {
     calcCSSVariables,
     halfStrokedHexagonClipPathStatic,
-    hexagonRouteOffsetValues,
     offsetHexagonTransforms,
     strokedHexagonClipPathStatic,
     transformCategoryHalfHexagons,
 } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
-import { HexagonRouteData, MenuButtonRouteData } from '../types/types';
+import { FunctionalButtonRouteData, HexagonRouteData } from '../types/types';
 import { useNavigate } from 'react-router-dom';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { categoryCardActiveHexagon } from '../lib/hexagonElements';
@@ -26,18 +25,12 @@ export const Hexagon: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
 }> = memo(({ data, routeName }) => {
-    const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
-
-    const breakpoint = useZustand((state) => state.values.breakpoint);
+    const { position, rotation, scale, isHalf } = data[routeName];
     const containerSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(
-        () =>
-            calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-                shouldOffset,
-                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-            }),
-        [position, rotation, scale, isHalf, containerSize, shouldOffset, routeName, breakpoint],
+        () => calcCSSVariables(position, rotation, scale, isHalf, containerSize),
+        [position, rotation, scale, isHalf, containerSize],
     );
 
     const random_Memo = useMemo(() => Math.random(), []);
@@ -75,30 +68,21 @@ export const HalfHexagon: FC<{
         }
     }, [data, routeName]);
 
-    const { position, rotation, scale, isHalf, shouldOffset } = categoryAdjustedData_Memo[routeName];
+    const { position, rotation, scale, isHalf } = categoryAdjustedData_Memo[routeName];
 
     const cardTransition = useZustand((state) => state.values.cardTransition);
-    const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
 
     const random_Memo = useMemo(() => Math.random() + 1, []);
 
     const cssVariables_Memo = useMemo(
-        () =>
-            calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-                shouldOffset,
-                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-            }),
-        [position, rotation, scale, isHalf, containerSize, shouldOffset, routeName, breakpoint],
+        () => calcCSSVariables(position, rotation, scale, isHalf, containerSize),
+        [position, rotation, scale, isHalf, containerSize],
     );
 
     const centerHexagonCssVariables_Memo = useMemo(
-        () =>
-            calcCSSVariables(categoryCardActiveHexagon.position, 0, scale, false, containerSize, {
-                shouldOffset,
-                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-            }),
-        [breakpoint, containerSize, routeName, scale, shouldOffset],
+        () => calcCSSVariables(categoryCardActiveHexagon.position, 0, scale, false, containerSize),
+        [containerSize, scale],
     );
 
     return (
@@ -146,9 +130,8 @@ export const HexagonDebugOne: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
 }> = memo(({ data, routeName }) => {
-    const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
+    const { position, rotation, scale, isHalf } = data[routeName];
 
-    const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
 
     const [shouldStroke, setShouldStroke] = useState(false);
@@ -158,10 +141,8 @@ export const HexagonDebugOne: FC<{
         () =>
             calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
                 clipStroke: shouldStroke,
-                shouldOffset,
-                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
             }),
-        [position, rotation, scale, isHalf, containerSize, shouldStroke, shouldOffset, routeName, breakpoint],
+        [position, rotation, scale, isHalf, containerSize, shouldStroke],
     );
 
     const random_Memo = useMemo(() => Math.random(), []);
@@ -190,21 +171,16 @@ export const HexagonDebugTwo: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
 }> = memo(({ data, routeName }) => {
-    const { position, rotation, scale, shouldOffset } = data[routeName];
+    const { position, rotation, scale } = data[routeName];
 
-    const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
 
     const [shouldBeHalf, setShouldBeHalf] = useState(false);
     useTimeout(() => setShouldBeHalf((oldState) => !oldState), shouldBeHalf ? 3000 : 1500);
 
     const cssVariables_Memo = useMemo(
-        () =>
-            calcCSSVariables({ x: position.x - 200, y: position.y }, rotation, scale * 0.75, shouldBeHalf, containerSize, {
-                shouldOffset,
-                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-            }),
-        [position, rotation, scale, containerSize, shouldBeHalf, shouldOffset, routeName, breakpoint],
+        () => calcCSSVariables({ x: position.x - 200, y: position.y }, rotation, scale * 0.75, shouldBeHalf, containerSize),
+        [position, rotation, scale, containerSize, shouldBeHalf],
     );
 
     const random_Memo = useMemo(() => Math.random(), []);
@@ -238,9 +214,8 @@ export const HexagonDebugThree: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
 }> = memo(({ data, routeName }) => {
-    const { position, rotation, scale, isHalf, shouldOffset } = data[routeName];
+    const { position, rotation, scale } = data[routeName];
 
-    const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
 
     const [shouldStroke, setShouldStroke] = useState(false);
@@ -250,10 +225,8 @@ export const HexagonDebugThree: FC<{
         () =>
             calcCSSVariables({ x: position.x + 200, y: position.y }, rotation, scale * 0.75, true, containerSize, {
                 clipStroke: shouldStroke,
-                shouldOffset,
-                offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
             }),
-        [position, rotation, scale, containerSize, shouldStroke, shouldOffset, routeName, breakpoint],
+        [position, rotation, scale, containerSize, shouldStroke],
     );
 
     const random_Memo = useMemo(() => Math.random(), []);
@@ -279,25 +252,22 @@ export const HexagonDebugThree: FC<{
 });
 
 export const HexagonModalMenuButton: FC<{
-    buttonData: MenuButtonRouteData;
+    buttonData: FunctionalButtonRouteData;
     routeName: ROUTE;
 
     hamburgerMenuIsActive?: boolean;
 }> = memo(({ buttonData, routeName, hamburgerMenuIsActive = false }) => {
     const { svgIconPath, target } = buttonData;
     const title = 'title' in buttonData ? buttonData.title : undefined;
-    const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(() => {
-        const { position, rotation, scale, isHalf, shouldOffset } = buttonData[routeName];
+        const { position, rotation, scale, isHalf } = buttonData[routeName];
 
         return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
             gutterWidth: 0,
-            shouldOffset,
-            offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
         });
-    }, [buttonData, routeName, containerSize, breakpoint]);
+    }, [buttonData, routeName, containerSize]);
 
     const random_Memo = useMemo(() => Math.random(), []);
 

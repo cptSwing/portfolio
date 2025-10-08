@@ -5,7 +5,7 @@ import { useZustand } from '../lib/zustand';
 import { calcCSSVariables, hexagonRouteOffsetValues, offsetHexagonTransforms } from '../lib/shapeFunctions';
 import { HexagonModalMenuButton, MenuButtonSvg } from './HexagonShapes';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import { hamburgerButton, menuButtons, menuButtonsHamburgerTransformOffsets } from '../lib/hexagonElements';
+import { hamburgerButton, hamburgerMenuButtons, menuButtonsHamburgerTransformOffsets } from '../lib/hexagonElements';
 
 const HamburgerMenu: FC<{
     routeName: ROUTE;
@@ -13,9 +13,9 @@ const HamburgerMenu: FC<{
 }> = memo(({ routeName, hamburgerMenuIsActive }) => {
     const menuButtons_Memo = useMemo(() => {
         if (hamburgerMenuIsActive) {
-            return offsetHexagonTransforms(menuButtons, menuButtonsHamburgerTransformOffsets);
+            return offsetHexagonTransforms(hamburgerMenuButtons, menuButtonsHamburgerTransformOffsets);
         } else {
-            return menuButtons;
+            return hamburgerMenuButtons;
         }
     }, [hamburgerMenuIsActive]);
 

@@ -46,13 +46,13 @@ const Main = () => {
             <div
                 className={classNames(
                     '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
-                    'relative flex items-center justify-center text-theme-text transition-[aspect-ratio,height] scrollbar-track-transparent',
+                    'relative flex aspect-hex-flat items-center justify-center text-theme-text transition-[height] scrollbar-track-transparent',
                     routeName === ROUTE.home
-                        ? 'aspect-hex-flat h-[min(80vh,80vw)] sm:h-[min(70vh,70vw)]'
+                        ? 'h-[min(70vh,70vw)] w-auto'
                         : routeName === ROUTE.category
-                          ? 'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(80vh,72.5vw)] sm:w-auto'
+                          ? 'h-[min(80vh,72.5vw)] w-auto'
                           : // ROUTE.post
-                            'aspect-[0.55/1] h-auto w-[min(100vw,80vh)] sm:aspect-hex-flat sm:h-[min(95vh,80vw)] sm:w-auto 2xl:aspect-[1/0.75]',
+                            'h-[min(95vh,80vw)] w-auto',
                 )}
                 style={globalCssVariables}
             >

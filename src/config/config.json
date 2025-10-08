@@ -1,14 +1,9 @@
 {
-    "categoryGrid": {
-        "areaCount": 6
-    },
     "placeholders": {
         "cardImage": "images/utility/1x1.png"
     },
     "ui": {
-        "hexMenu": {
-            "columns": 3,
-            "rows": 9,
+        "hexGrid": {
             "gutterWidth": 0.05,
             "scaleUp": 100,
             "clipPathWidth": 100,

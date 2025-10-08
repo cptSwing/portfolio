@@ -14,7 +14,7 @@ export const useZustand = create<ZustandStore>()(
             routeData: { name: ROUTE.home, content: {} },
             cardTransition: false,
             breakpoint: null,
-            hamburgerIsOpen: false,
+            hamburgerMenuOpen: false,
             activeSubMenuButton: { name: null },
             postNavigationState: null,
             debug: {
@@ -66,10 +66,10 @@ export const useZustand = create<ZustandStore>()(
             },
 
             store_toggleHamburgerMenu: (isOpen) => {
-                const newValue = isOpen === true || isOpen === false ? isOpen : !get().values.hamburgerIsOpen;
+                const newValue = isOpen === true || isOpen === false ? isOpen : !get().values.hamburgerMenuOpen;
 
                 set((draftState) => {
-                    draftState.values.hamburgerIsOpen = newValue;
+                    draftState.values.hamburgerMenuOpen = newValue;
                 });
             },
 

@@ -6,9 +6,10 @@ import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { HalfHexagon, Hexagon } from './HexagonShapes';
-import MenuBar from './MenuBar';
 import Category from './routes/Category';
 import Brand from './Brand';
+import CategoryLinks from './CategoryLinks';
+import FunctionalButtons from './FunctionalButtons';
 
 const HexagonTiles = () => {
     const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
@@ -44,12 +45,6 @@ const HexagonTiles = () => {
                 }
             }}
         >
-            {/* <div className="opacity-15">
-                {backgroundHexagons.map((regularHexagonData, idx) => (
-                    <Hexagon key={`hex-background-index-${idx}`} data={regularHexagonData} routeName={routeName} />
-                ))}
-            </div> */}
-
             {/* "Regular" Hexagons at ROUTE.category */}
             {regularHexagons.map((regularHexagonData, idx) => (
                 <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
@@ -61,32 +56,10 @@ const HexagonTiles = () => {
             ))}
 
             <Category show={routeName === ROUTE.category} />
-
-            {/* Hamburger Menu, includes further <RegularHexagon> and <MenuButton>s */}
-            {/* <HamburgerMenu routeName={routeName} hamburgerMenuIsActive={hamburgerMenuIsActive} /> */}
-
             <Brand />
 
-            <MenuBar homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
-
-            {/* {postNavigationButtons.map((postNavigationButtonData, idx) => (
-                <HexagonModalMenuButton key={`hex-post-navigation-index-${idx}`} buttonData={postNavigationButtonData} routeName={routeName} />
-            ))} */}
-
-            {/* <HexagonDebugOne
-                data={{ [ROUTE.home]: categoryCardActiveHexagon, [ROUTE.category]: categoryCardActiveHexagon, [ROUTE.post]: categoryCardActiveHexagon }}
-                routeName={routeName}
-            />
-
-            <HexagonDebugTwo
-                data={{ [ROUTE.home]: categoryCardActiveHexagon, [ROUTE.category]: categoryCardActiveHexagon, [ROUTE.post]: categoryCardActiveHexagon }}
-                routeName={routeName}
-            />
-
-            <HexagonDebugThree
-                data={{ [ROUTE.home]: categoryCardActiveHexagon, [ROUTE.category]: categoryCardActiveHexagon, [ROUTE.post]: categoryCardActiveHexagon }}
-                routeName={routeName}
-            /> */}
+            <CategoryLinks homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
+            <FunctionalButtons />
         </div>
     );
 };

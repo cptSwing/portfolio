@@ -2,18 +2,17 @@ import { classNames } from 'cpts-javascript-utilities';
 import { CSSProperties, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
 import { calcCSSVariables, hexagonRouteOffsetValues } from '../lib/shapeFunctions';
 import { CATEGORY, ROUTE } from '../types/enums';
-import { Category, CategoryName, CategoryNavigationButtonRouteData, MenuButtonRouteData } from '../types/types';
+import { Category, CategoryName, CategoryLinkButtonRouteData } from '../types/types';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { useZustand } from '../lib/zustand';
 import { useNavigate } from 'react-router-dom';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import { MenuButtonSvg } from './HexagonShapes';
-import { categoryNavigationButtons } from '../lib/hexagonElements';
+import { categoryLinkButtons } from '../lib/hexagonElements';
 
-const MenuBar: FC<{
+const CategoryLinks: FC<{
     homeMenuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
 }> = ({ homeMenuTransitionStateUpdates }) => {
-    const [positionOnMenuBar, setPositionOnMenuBar] = useState<[string, string]>(['-100px', '-86.6px']);
+    const [positionOnCategoryLinks, setPositionOnCategoryLinks] = useState<[string, string]>(['-100px', '-86.6px']);
 
     return (
         <div
@@ -22,10 +21,15 @@ const MenuBar: FC<{
                 // 'before:nav-test-masks before:glassmorphic-backdrop',
                 'absolute z-20 size-[inherit]',
             )}
-            style={{ '--menu-bar-mask-marker-position-x': positionOnMenuBar[0], '--menu-bar-mask-marker-position-y': positionOnMenuBar[1] } as CSSProperties}
+            style={
+                {
+                    '--menu-bar-mask-marker-position-x': positionOnCategoryLinks[0],
+                    '--menu-bar-mask-marker-position-y': positionOnCategoryLinks[1],
+                } as CSSProperties
+            }
             // onClick={(e) => {
             //     const _t = e.target;
-            //     console.log('%c[MenuBar]', 'color: #9431e8', `click , _t.style.getPropertyValue('--i'):`, e, _t.style.getPropertyValue('--i'));
+            //     console.log('%c[CategoryLinks]', 'color: #9431e8', `click , _t.style.getPropertyValue('--i'):`, e, _t.style.getPropertyValue('--i'));
             //     // if (_t.hasAttribute('href')) {
             //     _t.parentNode.style.setProperty('--menu-bar-mask-marker-position-x', +_t.style.getPropertyValue('--i'));
             //     // }
@@ -37,94 +41,76 @@ const MenuBar: FC<{
             //     routeName === ROUTE.category ? 'before:scale-y-100 after:scale-y-100' : 'before:scale-y-0 after:scale-y-0',
             // )}
         >
-            {categoryNavigationButtons.map((categoryNavigationButtonData, idx) => (
-                <MenuButton
-                    key={`hex-nav-index-${idx}`}
-                    buttonData={categoryNavigationButtonData}
+            {categoryLinkButtons.map((categoryLinkButtonData, idx) => (
+                <CategoryLinkButton
+                    key={`hex-category-link-button-index-${idx}`}
+                    buttonData={categoryLinkButtonData}
                     homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates}
-                    setPositionOnMenuBar={setPositionOnMenuBar}
+                    setPositionOnCategoryLinks={setPositionOnCategoryLinks}
                 />
             ))}
         </div>
     );
 };
 
-export default MenuBar;
+export default CategoryLinks;
 
-const MenuButton: FC<{
-    buttonData: CategoryNavigationButtonRouteData | MenuButtonRouteData;
+const CategoryLinkButton: FC<{
+    buttonData: CategoryLinkButtonRouteData;
     homeMenuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
-    setPositionOnMenuBar: React.Dispatch<React.SetStateAction<[string, string]>>;
-}> = memo(({ buttonData, homeMenuTransitionStateUpdates, setPositionOnMenuBar }) => {
+    setPositionOnCategoryLinks: React.Dispatch<React.SetStateAction<[string, string]>>;
+}> = memo(({ buttonData, homeMenuTransitionStateUpdates, setPositionOnCategoryLinks }) => {
     const { title, name, target } = buttonData;
-    const svgIconPath = (buttonData as MenuButtonRouteData).svgIconPath ? (buttonData as MenuButtonRouteData).svgIconPath : undefined;
-
     const { name: routeName, content: routeContent } = useZustand((store) => store.values.routeData);
-    const { position, rotation, scale, isHalf, shouldOffset, counterRotate } = buttonData[routeName];
+    const { position, rotation, scale, isHalf } = buttonData[routeName];
 
-    const breakpoint = useZustand((state) => state.values.breakpoint);
     const containerSize = useContext(GetChildSizeContext);
     const navigate = useNavigate();
 
-    const isCategoryNavigationButton = !svgIconPath;
-    const isActiveCategoryNavigationButton =
-        isCategoryNavigationButton && routeName === ROUTE.category
-            ? isActiveCategory(name as CategoryNavigationButtonRouteData['name'], routeContent.category)
-            : false;
+    const isActiveCategoryLinkButton =
+        routeName === ROUTE.category ? isActiveCategory(name as CategoryLinkButtonRouteData['name'], routeContent.category) : false;
 
     const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
 
     const cssVariables_Memo = useMemo(() => {
-        return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-            shouldOffset,
-            offset: hexagonRouteOffsetValues[routeName][breakpoint ?? 'base'],
-        });
+        return calcCSSVariables(position, rotation, scale, isHalf, containerSize);
         // }
-    }, [position, rotation, scale, isHalf, shouldOffset, breakpoint, buttonData, containerSize, routeName]);
+    }, [position, rotation, scale, isHalf, containerSize]);
 
     useEffect(() => {
-        if (isActiveCategoryNavigationButton) {
-            setPositionOnMenuBar([
+        if (isActiveCategoryLinkButton) {
+            setPositionOnCategoryLinks([
                 `calc(${cssVariables_Memo['--hexagon-translate-x']} - var(--menu-bar-dimensions-left) + 50px)`,
                 `calc(${cssVariables_Memo['--hexagon-translate-y']} - var(--menu-bar-dimensions-top) + 43.3px)`,
             ]);
         }
-    }, [cssVariables_Memo, isActiveCategoryNavigationButton, setPositionOnMenuBar]);
+    }, [cssVariables_Memo, isActiveCategoryLinkButton, setPositionOnCategoryLinks]);
 
     return (
         <GlassmorphicButtonWrapper
             name={name}
-            isActive={isActiveCategoryNavigationButton}
+            isActive={isActiveCategoryLinkButton}
             style={{ ...cssVariables_Memo }}
-            isRouteNavigation={isCategoryNavigationButton}
+            isRouteNavigation={true}
             clickHandler={handleClick}
-            mouseEnterHandler={isCategoryNavigationButton ? handleMouseEnter : undefined}
+            mouseEnterHandler={handleMouseEnter}
             lightingGradient
             strokeRadius={1}
             innerShadowRadius={6}
         >
-            {isCategoryNavigationButton ? (
-                <span
-                    className={classNames(
-                        'absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75 transition-transform duration-[--ui-animation-menu-transition-duration]',
-                        routeName === ROUTE.home ? '' : 'rotate-[calc(var(--hexagon-rotate)*-1)]',
-                    )}
-                >
-                    {title}
-                </span>
-            ) : (
-                <MenuButtonSvg svgIconPath={svgIconPath} counterRotate={counterRotate} />
-            )}
+            <span
+                className={classNames(
+                    'absolute left-0 top-0 flex size-full select-none items-center justify-center font-fjalla-one text-4xl font-semibold text-theme-secondary-lighter/75 transition-transform duration-[--ui-animation-menu-transition-duration]',
+                    routeName === ROUTE.home ? '' : 'rotate-[calc(var(--hexagon-rotate)*-1)]',
+                )}
+            >
+                {title}
+            </span>
         </GlassmorphicButtonWrapper>
     );
 
-    function handleClick(ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) {
-        if (isCategoryNavigationButton) {
-            navigate(target as string);
-        } else {
-            const targetResult = (target as (ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) => string | void)(ev);
-            targetResult && navigate(targetResult);
-        }
+    function handleClick() {
+        navigate(target as string);
     }
 
     function handleMouseEnter() {

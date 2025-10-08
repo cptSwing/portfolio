@@ -3,7 +3,7 @@ import { config } from '../types/exportTyped';
 import { hexagonClipPathStatic, strokedHexagonClipPathStatic, halfHexagonClipPathStatic, halfStrokedHexagonClipPathStatic } from '../lib/shapeFunctions';
 
 const menuTransition_Ms = config.ui.animation.menuTransition_Ms;
-const { clipPathWidth, clipPathHeight } = config.ui.hexMenu;
+const { clipPathWidth, clipPathHeight } = config.ui.hexGrid;
 
 export const globalCssVariables = {
     '--hexagon-clip-path-width': `${clipPathWidth}px`,

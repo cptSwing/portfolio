@@ -3,7 +3,7 @@
 // y: -43.3 = hex sits on parent's Y:0 (total height 86.6)
 
 import { ROUTE } from '../types/enums';
-import { HexagonRouteData, HexagonTransformData, CategoryNavigationButtonRouteData, MenuButtonRouteData } from '../types/types';
+import { HexagonRouteData, HexagonTransformData, CategoryLinkButtonRouteData, FunctionalButtonRouteData } from '../types/types';
 import { getMenuButtonPosition } from './menuFunctions';
 import { useZustand } from './zustand';
 
@@ -44,7 +44,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 120,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -54,7 +53,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
@@ -64,7 +62,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -77,7 +74,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -60,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -87,7 +83,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: true,
         },
         [ROUTE.post]: {
             position: {
@@ -97,7 +92,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -110,7 +104,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -120,7 +113,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         }, // L3
         [ROUTE.post]: {
             position: {
@@ -130,7 +122,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -90,
             isHalf: false,
             scale: 0.35,
-            shouldOffset: true,
         }, // Top right
     },
 
@@ -143,7 +134,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 60,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -153,7 +143,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         }, // R2
         [ROUTE.post]: {
             position: {
@@ -163,7 +152,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -176,7 +164,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -186,7 +173,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: true,
         }, // R3
         [ROUTE.post]: {
             position: {
@@ -196,7 +182,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -209,7 +194,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -60,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -219,7 +203,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         }, // L7
         [ROUTE.post]: {
             position: {
@@ -229,7 +212,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 150,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
     {
@@ -241,7 +223,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -251,7 +232,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: true,
         }, // R5
         [ROUTE.post]: {
             position: {
@@ -261,7 +241,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -90,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -274,7 +253,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -120,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -284,7 +262,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         }, // L5
         [ROUTE.post]: {
             position: {
@@ -294,7 +271,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -307,7 +283,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 120,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -317,7 +292,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
@@ -327,7 +301,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -340,7 +313,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 180,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -350,7 +322,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: true,
         },
         [ROUTE.post]: {
             position: {
@@ -360,7 +331,6 @@ export const regularHexagons: HexagonRouteData[] = [
             rotation: -30,
             isHalf: false,
             scale: 0.35,
-            shouldOffset: false,
         },
     },
 ];
@@ -378,7 +348,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 120,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -388,7 +357,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
@@ -398,7 +366,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -411,7 +378,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -60,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -421,7 +387,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: true,
         },
         [ROUTE.post]: {
             position: {
@@ -431,7 +396,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 30,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -444,7 +408,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -454,7 +417,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         }, // L3
         [ROUTE.post]: {
             position: {
@@ -464,7 +426,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -90,
             isHalf: false,
             scale: 0.35,
-            shouldOffset: true,
         }, // Top right
     },
 
@@ -477,7 +438,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 60,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -487,7 +447,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         }, // R2
         [ROUTE.post]: {
             position: {
@@ -497,7 +456,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -510,7 +468,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 0,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -520,7 +477,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: true,
         }, // R3
         [ROUTE.post]: {
             position: {
@@ -530,7 +486,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -543,7 +498,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -60,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -553,7 +507,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         }, // L7
         [ROUTE.post]: {
             position: {
@@ -563,7 +516,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 150,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
     {
@@ -575,7 +527,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -585,7 +536,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: true,
         }, // R5
         [ROUTE.post]: {
             position: {
@@ -595,7 +545,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -90,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -608,7 +557,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -120,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -618,7 +566,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         }, // L5
         [ROUTE.post]: {
             position: {
@@ -628,7 +575,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -641,7 +587,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 120,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -651,7 +596,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
@@ -661,7 +605,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -674,7 +617,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 180,
             isHalf: true,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -684,7 +626,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.866,
-            shouldOffset: true,
         },
         [ROUTE.post]: {
             position: {
@@ -694,7 +635,6 @@ export const regularHexagonsTriangle: HexagonRouteData[] = [
             rotation: -30,
             isHalf: false,
             scale: 0.35,
-            shouldOffset: false,
         },
     },
 ];
@@ -710,7 +650,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -720,7 +659,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: -60,
             isHalf: true,
             scale: 0.5,
-            shouldOffset: true,
         }, // Top left
         [ROUTE.post]: {
             position: {
@@ -730,7 +668,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -743,7 +680,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -753,7 +689,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: -360,
             isHalf: true,
             scale: 0.5,
-            shouldOffset: false,
         }, // Top center
         [ROUTE.post]: {
             position: {
@@ -763,7 +698,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 60,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -776,7 +710,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -786,7 +719,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 60,
             isHalf: true,
             scale: 0.5,
-            shouldOffset: false,
         }, // Top right
         [ROUTE.post]: {
             position: {
@@ -796,7 +728,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -809,7 +740,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -819,7 +749,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 120,
             isHalf: true,
             scale: 0.5,
-            shouldOffset: true,
         }, // Bottom right
         [ROUTE.post]: {
             position: {
@@ -829,7 +758,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: -90,
             isHalf: false,
             scale: 0.35,
-            shouldOffset: false,
         },
     },
 
@@ -842,7 +770,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -852,7 +779,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 180,
             isHalf: true,
             scale: 0.5,
-            shouldOffset: false,
         }, // Bottom center
         [ROUTE.post]: {
             position: {
@@ -862,7 +788,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: -90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -875,7 +800,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -885,7 +809,6 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: -120,
             isHalf: true,
             scale: 0.5,
-            shouldOffset: false,
         }, // Bottom Left
         [ROUTE.post]: {
             position: {
@@ -895,13 +818,11 @@ export const halfRegularHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.35,
-            shouldOffset: true,
         },
     },
 ];
 
-export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | MenuButtonRouteData)[] = [
-    // Category Links
+export const categoryLinkButtons: CategoryLinkButtonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
@@ -911,7 +832,6 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: -60,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -921,8 +841,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: -90,
             isHalf: false,
             scale: 0.37,
-            shouldOffset: false,
-        }, // "Active" position
+        },
         [ROUTE.post]: {
             position: {
                 x: 75,
@@ -931,7 +850,6 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
         name: 'code',
         title: 'code',
@@ -946,7 +864,6 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 60,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -956,7 +873,6 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 90,
             isHalf: false,
             scale: 0.37,
-            shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
@@ -966,7 +882,6 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
         name: '3d',
         title: '3d',
@@ -981,7 +896,6 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 180,
             isHalf: false,
             scale: 1,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -991,7 +905,6 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: -150,
             isHalf: false,
             scale: 0.37,
-            shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
@@ -1001,13 +914,14 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
         name: 'log',
         title: 'log',
         target: '/3',
     },
+];
 
+export const functionalButtons: FunctionalButtonRouteData[] = [
     // Hamburger Icon
     {
         [ROUTE.home]: {
@@ -1018,7 +932,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 0,
             isHalf: false,
             scale: 0.35,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -1029,7 +943,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: -30,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         [ROUTE.post]: {
@@ -1040,7 +954,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 30,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         name: 'hamburger',
@@ -1062,7 +976,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 180,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -1073,7 +987,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 30,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         [ROUTE.post]: {
@@ -1084,7 +998,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 0,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         name: 'home',
@@ -1107,7 +1021,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -1118,7 +1032,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 90,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: false,
+
             counterRotate: false,
         },
         [ROUTE.post]: {
@@ -1129,7 +1043,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 30,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: true,
+
             counterRotate: true,
         },
         name: 'previous',
@@ -1147,7 +1061,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -1158,7 +1072,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 90,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: false,
+
             counterRotate: false,
         },
         [ROUTE.post]: {
@@ -1169,7 +1083,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 30,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: true,
+
             counterRotate: true,
         },
         name: 'next',
@@ -1187,7 +1101,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -1198,7 +1112,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
+
             counterRotate: true,
         },
         [ROUTE.post]: {
@@ -1209,7 +1123,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
             rotation: 90,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: true,
+
             counterRotate: true,
         },
         name: 'close',
@@ -1218,7 +1132,7 @@ export const categoryNavigationButtons: (CategoryNavigationButtonRouteData | Men
     },
 ];
 
-export const menuButtons: MenuButtonRouteData[] = [
+export const hamburgerMenuButtons: FunctionalButtonRouteData[] = [
     // User Login (inactive), disappears after ROUTE.home
     {
         [ROUTE.home]: {
@@ -1229,7 +1143,6 @@ export const menuButtons: MenuButtonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -1239,7 +1152,6 @@ export const menuButtons: MenuButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
@@ -1249,7 +1161,6 @@ export const menuButtons: MenuButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
         name: 'login',
         title: 'login',
@@ -1267,7 +1178,6 @@ export const menuButtons: MenuButtonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: true,
         },
         [ROUTE.category]: {
             position: {
@@ -1277,7 +1187,6 @@ export const menuButtons: MenuButtonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: true,
         },
         [ROUTE.post]: {
             position: {
@@ -1287,7 +1196,6 @@ export const menuButtons: MenuButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0.25,
-            shouldOffset: false,
         },
         name: 'config',
         title: 'options',
@@ -1305,7 +1213,6 @@ export const menuButtons: MenuButtonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: true,
         },
         [ROUTE.category]: {
             position: {
@@ -1315,7 +1222,6 @@ export const menuButtons: MenuButtonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: true,
         },
         [ROUTE.post]: {
             position: {
@@ -1325,7 +1231,6 @@ export const menuButtons: MenuButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0.275,
-            shouldOffset: false,
         },
         name: 'contact',
         title: 'contact',
@@ -1345,7 +1250,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -1355,7 +1259,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 1.732,
-            shouldOffset: true,
         }, // R3
         [ROUTE.post]: {
             position: {
@@ -1365,7 +1268,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -1378,7 +1280,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -1388,7 +1289,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: -30,
             isHalf: false,
             scale: 1.732,
-            shouldOffset: false,
         },
         [ROUTE.post]: {
             position: {
@@ -1398,7 +1298,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: 90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -1411,7 +1310,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: 120,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -1421,7 +1319,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 1.732,
-            shouldOffset: true,
         }, // R6
         [ROUTE.post]: {
             position: {
@@ -1431,7 +1328,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: -90,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
     },
 
@@ -1444,7 +1340,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: 180,
             isHalf: true,
             scale: 0,
-            shouldOffset: false,
         },
         [ROUTE.category]: {
             position: {
@@ -1454,7 +1349,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 1.732,
-            shouldOffset: true,
         },
         [ROUTE.post]: {
             position: {
@@ -1464,7 +1358,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
             rotation: -30,
             isHalf: false,
             scale: 0,
-            shouldOffset: false,
         },
     },
 ];
@@ -1480,7 +1373,6 @@ export const categoryCardActiveHexagon: HexagonTransformData = {
     rotation: 0,
     isHalf: false,
     scale: 2.3,
-    shouldOffset: false,
 };
 
 /* inactive (small) Hexagons in Category route */
@@ -1492,7 +1384,6 @@ export const categoryCardInactiveHexagon: HexagonTransformData = {
     rotation: 30,
     isHalf: false,
     scale: 1,
-    shouldOffset: false,
 };
 
 export const brandTransformData: HexagonRouteData = {
@@ -1504,7 +1395,6 @@ export const brandTransformData: HexagonRouteData = {
         rotation: 0,
         isHalf: true,
         scale: 0.85,
-        shouldOffset: false,
     },
     [ROUTE.category]: {
         position: {
@@ -1514,7 +1404,6 @@ export const brandTransformData: HexagonRouteData = {
         rotation: -360,
         isHalf: false,
         scale: 1,
-        shouldOffset: false,
     },
     //     [ROUTE.category]: {
     //     position: {
@@ -1524,7 +1413,7 @@ export const brandTransformData: HexagonRouteData = {
     //     rotation: -420,
     //     isHalf: false,
     //     scale: 1,
-    //     shouldOffset: false,
+    //
     // },
     [ROUTE.post]: {
         position: {
@@ -1534,6 +1423,5 @@ export const brandTransformData: HexagonRouteData = {
         rotation: -30,
         isHalf: false,
         scale: 0,
-        shouldOffset: false,
     },
 };

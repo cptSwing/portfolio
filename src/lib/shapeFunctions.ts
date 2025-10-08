@@ -1,20 +1,18 @@
 import { config } from '../types/exportTyped';
 import { ROUTE } from '../types/enums';
 import {
-    CategoryNavigationButtonRouteData,
+    CategoryLinkButtonRouteData,
     HexagonRouteData,
     HexagonRouteDataTransformOffsets,
     HexagonTransformData,
-    MenuButtonRouteData,
-    PostNavigationButtonRouteData,
+    FunctionalButtonRouteData,
 } from '../types/types';
 import roundToDecimal from './roundToDecimal';
-import { BreakpointName } from '../hooks/useBreakPoint';
 import { categoryCardActiveHexagon, categoryCardInactiveHexagon, hexagonGridTransformCenter } from './hexagonElements';
 
 const {
     ui: {
-        hexMenu: { columns, rows, scaleUp, gutterWidth: strokeWidthDefault },
+        hexGrid: { scaleUp, gutterWidth: strokeWidthDefault, clipPathWidth, clipPathHeight },
     },
 } = config;
 
@@ -44,20 +42,29 @@ const sin30 = sin(30);
 const cos30 = cos(30);
 
 const hexHalfWidth = (staticValues.tilingMultiplierVertical.flatTop / 2) * scaleUp;
-
-// TODO likely not needed?
-export const hexagonRouteOffsetValues: Record<ROUTE, Record<BreakpointName | 'base', number>> = {
-    [ROUTE.home]: { 'base': 0, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 0 },
-    [ROUTE.category]: { 'base': 160, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 28 },
-    [ROUTE.post]: { 'base': 163, 'sm': 0, 'md': 0, 'lg': 0, 'xl': 0, '2xl': 31.5 },
-};
-
-const { clipPathWidth, clipPathHeight } = config.ui.hexMenu;
 const centerPosition = viewBoxWidth / 2 - hexHalfWidth; // 100 width hexagon, transform top left corner, 400 width viewbox = 150 (hence spans 150 to 250)
+
+const roundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5 });
+const strokedRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, inner: 'stroke', innerSize: 0.97 });
+const halfRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, isHalf: true });
+const halfStrokedRoundedHexagonPath = getHexagonPath({
+    sideLength: hexHalfWidth,
+    cornerRadius: hexHalfWidth / 5,
+    isHalf: true,
+    inner: 'stroke',
+    innerSize: 0.9,
+});
+
+export const hexagonClipPathStatic = `path("${roundedHexagonPath}")`;
+export const halfHexagonClipPathStatic = `path("${halfRoundedHexagonPath}")`;
+export const strokedHexagonClipPathStatic = `path("${strokedRoundedHexagonPath}")`;
+export const halfStrokedHexagonClipPathStatic = `path("${halfStrokedRoundedHexagonPath}")`;
+
+export const subMenuButtonHexagonPath = getHexagonPath({ sideLength: 0.5, cornerRadius: 1 });
 
 export function offsetHexagonTransforms<T>(baseTransforms: T, offsets: HexagonRouteDataTransformOffsets): T;
 export function offsetHexagonTransforms<T>(baseTransforms: T[], offsets: HexagonRouteDataTransformOffsets[]): T[];
-export function offsetHexagonTransforms<T = HexagonRouteData | CategoryNavigationButtonRouteData | MenuButtonRouteData | PostNavigationButtonRouteData>(
+export function offsetHexagonTransforms<T = HexagonRouteData | CategoryLinkButtonRouteData | FunctionalButtonRouteData>(
     baseTransforms: T | T[],
     offsets: HexagonRouteDataTransformOffsets | HexagonRouteDataTransformOffsets[],
 ): T | T[] {
@@ -70,23 +77,6 @@ export function offsetHexagonTransforms<T = HexagonRouteData | CategoryNavigatio
     } else {
         throw new Error('invalid input arguments');
     }
-}
-
-function offsetRoute<T>(routeData: T, routeOffset?: HexagonRouteDataTransformOffsets) {
-    const newRouteData: T = { ...routeData };
-
-    let key: keyof T;
-    for (key in routeData) {
-        if (key in ROUTE && routeOffset && key in routeOffset) {
-            const route = key as unknown as ROUTE;
-            (newRouteData as HexagonRouteData)[route] = {
-                ...(newRouteData as HexagonRouteData)[route],
-                ...routeOffset[route],
-            };
-        }
-    }
-
-    return newRouteData;
 }
 
 export function transformCategoryHalfHexagons(
@@ -373,55 +363,13 @@ function getCategoryCardPath(styleIndex: number, aspectRatio: number): string {
     return path;
 }
 
-export function getIndexCategoryCardPath(gridAreaIndex: number, width: number, height: number): string {
+export function _getIndexCategoryCardPath(gridAreaIndex: number, width: number, height: number): string {
     const aspectRatio = width / height;
     const path = getCategoryCardPath(gridAreaIndex, aspectRatio);
     return path;
 }
 
-function getOffset(scale: number) {
-    const baseline = 1;
-    const factor = 50;
-    return factor * (scale - baseline);
-}
-
-const _allOffsets = Array.from({ length: rows }).map((_, rowIndex) =>
-    Array.from({ length: rowIndex % 2 === 0 ? 3 : 4 }).map((_, colIndex) => _getOffsetsAndScale(colIndex, rowIndex)),
-);
-
 /* Local functions */
-
-function _getOffsetsAndScale(column: number, row: number): { x: number; y: number } {
-    const shouldAdjustGlobalXOffset = ((columns * 3 - 1) / 2) % 2 == 0;
-    const xOffsetPerRow = row % 2 === 0 ? (shouldAdjustGlobalXOffset ? 0 : 0.75) : shouldAdjustGlobalXOffset ? -0.75 : 0;
-    const xValue = (1.5 * column + xOffsetPerRow) * scaleUp;
-
-    const yOffsetPerRow = (staticValues.heightAspect.flatTop * scaleUp) / 2;
-    const yValue = (row - 1) * yOffsetPerRow;
-
-    return {
-        x: xValue,
-        y: yValue,
-    };
-}
-
-const roundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5 });
-const strokedRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, inner: 'stroke', innerSize: 0.97 });
-const halfRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, isHalf: true });
-const halfStrokedRoundedHexagonPath = getHexagonPath({
-    sideLength: hexHalfWidth,
-    cornerRadius: hexHalfWidth / 5,
-    isHalf: true,
-    inner: 'stroke',
-    innerSize: 0.9,
-});
-
-export const hexagonClipPathStatic = `path("${roundedHexagonPath}")`;
-export const halfHexagonClipPathStatic = `path("${halfRoundedHexagonPath}")`;
-export const strokedHexagonClipPathStatic = `path("${strokedRoundedHexagonPath}")`;
-export const halfStrokedHexagonClipPathStatic = `path("${halfStrokedRoundedHexagonPath}")`;
-
-export const subMenuButtonHexagonPath = getHexagonPath({ sideLength: 0.5, cornerRadius: 1 });
 
 type GetHexagonPathParams = { sideLength: number; cornerRadius: number; isHalf?: boolean; width?: number; inner?: 'invert' | 'stroke'; innerSize?: number };
 function getHexagonPath(params: GetHexagonPathParams): string {
@@ -643,6 +591,31 @@ function getHexagonPath(params: GetHexagonPathParams): string {
     return hexagonPath;
 }
 
+function offsetRoute<T>(routeData: T, routeOffset?: HexagonRouteDataTransformOffsets) {
+    const newRouteData: T = { ...routeData };
+
+    let key: keyof T;
+    for (key in routeData) {
+        if (key in ROUTE && routeOffset && key in routeOffset) {
+            const route = key as unknown as ROUTE;
+            (newRouteData as HexagonRouteData)[route] = {
+                ...(newRouteData as HexagonRouteData)[route],
+                ...routeOffset[route],
+            };
+        }
+    }
+
+    return newRouteData;
+}
+
+function getOffset(scale: number) {
+    const baseline = 1;
+    const factor = 50;
+    return factor * (scale - baseline);
+}
+
+/** Unused Functions (for now) */
+
 function _getHexagonalSidePath(sideLength = 1, cornerRadius = 8, shorter = 0, isRightSide = false): string {
     const points: { x: number; y: number }[] = [];
     const moveZeroPoint = 180;
@@ -798,9 +771,9 @@ export function calcCSSVariables(
         width: number;
         height: number;
     },
-    options?: { gutterWidth?: number; clipStroke?: boolean; shouldOffset?: boolean; offset?: number; clampTo?: number },
+    options?: { gutterWidth?: number; clipStroke?: boolean; clampTo?: number },
 ) {
-    const { gutterWidth = strokeWidthDefault, clipStroke, shouldOffset, offset, clampTo: _clampTo } = options ?? {};
+    const { gutterWidth = strokeWidthDefault, clipStroke, clampTo: _clampTo } = options ?? {};
 
     let { width, height } = parentSize;
 
