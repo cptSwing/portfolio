@@ -959,7 +959,7 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
         svgIconPath: '/svg/Bars3Outline.svg',
         target: (ev) => {
             store_toggleHamburgerMenu(true);
-            store_toggleSubMenu({ name: null, positionAndSize: ev && getMenuButtonPosition(ev) });
+            store_toggleSubMenu({ name: 'close', positionAndSize: ev && getMenuButtonPosition(ev) });
         },
     },
 
