@@ -10,12 +10,13 @@ import { ROUTE } from '../types/enums';
 import { globalCssVariables } from '../styles/globalCssVariables';
 import { useBreakpoint } from '../hooks/useBreakPoint';
 import HexagonTiles from '../components/HexagonTiles';
-import { useEffect } from 'react';
+import useUpdateTheme from '../hooks/useUpdateTheme';
 
 const store_setBreakpoint = useZustand.getState().methods.store_setBreakpoint;
 
 const App = () => {
     useBreakpoint(store_setBreakpoint);
+    useUpdateTheme();
 
     return (
         <BrowserRouter
@@ -26,9 +27,7 @@ const App = () => {
         >
             <Routes>
                 <Route path="/:param_categoryId?/:param_postId?" element={<Main />} />
-
                 <Route path="/bundles/:bundlePath" element={<BundleRoutes />} />
-
                 <Route path="*" element={<NoRouteMatched />} />
             </Routes>
         </BrowserRouter>
