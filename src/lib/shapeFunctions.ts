@@ -757,7 +757,7 @@ export function cos(deg: number, clampTo?: number): number {
 }
 
 // swiped from : https://github.com/pmndrs/drei/pull/2541/files
-function roundToPixelRatio(value: number): number {
+export function roundToPixelRatio(value: number): number {
     const ratio = window.devicePixelRatio || 1;
     return Math.round(value * ratio) / ratio;
 }

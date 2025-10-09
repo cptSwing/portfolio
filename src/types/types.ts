@@ -94,7 +94,7 @@ export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
 type PostNavigationName = 'previous' | 'close' | 'next';
 type FunctionalButtonName = 'home' | 'hamburger' | PostNavigationName;
-type HamburgerMenuButtonName = 'config' | 'contact' | 'login';
+export type HamburgerMenuButtonName = 'config' | 'contact' | 'login' | 'close';
 export type CategoryName = keyof typeof CATEGORY;
 export type AllButtonNames = CategoryName | FunctionalButtonName | HamburgerMenuButtonName;
 
@@ -130,7 +130,7 @@ interface FunctionalButtonData extends ButtonData {
     name: FunctionalButtonName;
     title?: string;
     svgIconPath: string;
-    target: (ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>) => string | void;
+    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => string | void;
 }
 /** A Button that executes a function (which can also return a navigatable target) */
 export interface FunctionalButtonRouteData extends ButtonRouteData, FunctionalButtonData {}

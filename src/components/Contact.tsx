@@ -2,14 +2,12 @@ import { Link } from 'react-router-dom';
 import { CSSProperties, useCallback, useState } from 'react';
 import { useZustand } from '../lib/zustand';
 import useOutsideClick from '../hooks/useOutsideClick'; // TODO replace with useClickAway ?
-import { CloseSubMenu } from './MenuModal';
 import { classNames } from 'cpts-javascript-utilities';
+import { CloseSubMenu } from './HamburgerMenu';
 
 const Contact = () => {
     const menuButtonPosAndSize = useZustand((store) => store.values.activeSubMenuButton.positionAndSize);
-
     const [hasMounted, setHasMounted] = useState(false);
-
     const [_mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
     const clickRef = useOutsideClick(() => setMobileMenuIsOpen(false));
 

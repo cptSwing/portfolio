@@ -932,7 +932,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0.35,
-
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -943,7 +942,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: -30,
             isHalf: false,
             scale: 0.25,
-
             counterRotate: true,
         },
         [ROUTE.post]: {
@@ -954,14 +952,14 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.25,
-
             counterRotate: true,
         },
         name: 'hamburger',
         title: '',
         svgIconPath: '/svg/Bars3Outline.svg',
-        target: () => {
-            store_toggleHamburgerMenu();
+        target: (ev) => {
+            store_toggleHamburgerMenu(true);
+            store_toggleSubMenu({ name: null, positionAndSize: ev && getMenuButtonPosition(ev) });
         },
     },
 
@@ -976,7 +974,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 180,
             isHalf: false,
             scale: 0,
-
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -987,7 +984,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.25,
-
             counterRotate: true,
         },
         [ROUTE.post]: {
@@ -998,7 +994,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0.25,
-
             counterRotate: true,
         },
         name: 'home',
@@ -1021,7 +1016,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0,
-
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -1032,7 +1026,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.25,
-
             counterRotate: false,
         },
         [ROUTE.post]: {
@@ -1043,7 +1036,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.25,
-
             counterRotate: true,
         },
         name: 'previous',
@@ -1061,7 +1053,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0,
-
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -1072,7 +1063,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.25,
-
             counterRotate: false,
         },
         [ROUTE.post]: {
@@ -1083,7 +1073,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.25,
-
             counterRotate: true,
         },
         name: 'next',
@@ -1101,7 +1090,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0,
-
             counterRotate: true,
         },
         [ROUTE.category]: {
@@ -1112,7 +1100,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 0,
             isHalf: false,
             scale: 0,
-
             counterRotate: true,
         },
         [ROUTE.post]: {
@@ -1123,7 +1110,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
             rotation: 90,
             isHalf: false,
             scale: 0.25,
-
             counterRotate: true,
         },
         name: 'close',

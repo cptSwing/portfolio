@@ -32,13 +32,12 @@ const FunctionalButton: FC<{
 
     const cssVariables_Memo = useMemo(() => {
         return calcCSSVariables(position, rotation, scale, isHalf, containerSize);
-        // }
     }, [position, rotation, scale, isHalf, containerSize]);
 
     return (
         <GlassmorphicButtonWrapper
             name={name}
-            style={{ ...cssVariables_Memo }}
+            style={cssVariables_Memo}
             isRouteNavigation={false}
             clickHandler={handleClick}
             lightingGradient

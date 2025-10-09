@@ -10,6 +10,8 @@ import Category from './routes/Category';
 import Brand from './Brand';
 import CategoryLinks from './CategoryLinks';
 import FunctionalButtons from './FunctionalButtons';
+import GetChildSize from './utilityComponents/GetChildSize';
+import GetChildSizeContext from '../contexts/GetChildSizeContext';
 
 const HexagonTiles = () => {
     const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
@@ -29,38 +31,40 @@ const HexagonTiles = () => {
     );
 
     return (
-        <div
-            className={classNames(
-                'container-size pointer-events-none absolute z-0 size-full transform-gpu overflow-visible transition-transform duration-[--ui-animation-menu-transition-duration]',
-                routeName === ROUTE.home ? navMenuTransitionClasses_Memo : 'rotate-90 sm:rotate-0',
-            )}
-            onTransitionEnd={({ target, currentTarget }) => {
-                if (target === currentTarget) {
-                    // ^^^  condition filters out bubbled child events
-                    const elementRotation = getCurrentElementRotation(currentTarget);
-                    if (menuTransitionTarget && navRotationValues[menuTransitionTarget].deg === elementRotation) {
-                        // Set transition target as reached:
-                        setMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
+        <GetChildSize context={GetChildSizeContext}>
+            <div
+                className={classNames(
+                    'container-size pointer-events-none absolute z-0 size-full transform-gpu overflow-visible transition-transform duration-[--ui-animation-menu-transition-duration]',
+                    routeName === ROUTE.home ? navMenuTransitionClasses_Memo : '',
+                )}
+                onTransitionEnd={({ target, currentTarget }) => {
+                    if (target === currentTarget) {
+                        // ^^^  condition filters out bubbled child events
+                        const elementRotation = getCurrentElementRotation(currentTarget);
+                        if (menuTransitionTarget && navRotationValues[menuTransitionTarget].deg === elementRotation) {
+                            // Set transition target as reached:
+                            setMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
+                        }
                     }
-                }
-            }}
-        >
-            {/* "Regular" Hexagons at ROUTE.category */}
-            {regularHexagons.map((regularHexagonData, idx) => (
-                <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
-            ))}
+                }}
+            >
+                {/* "Regular" Hexagons at ROUTE.category */}
+                {regularHexagons.map((regularHexagonData, idx) => (
+                    <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
+                ))}
 
-            {/* "Half" Hexagons at ROUTE.category */}
-            {halfRegularHexagons.map((regularHexagonData, idx) => (
-                <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
-            ))}
+                {/* "Half" Hexagons at ROUTE.category */}
+                {halfRegularHexagons.map((regularHexagonData, idx) => (
+                    <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
+                ))}
 
-            <Category show={routeName === ROUTE.category} />
-            <Brand />
+                <Category show={routeName === ROUTE.category} />
+                <Brand />
 
-            <CategoryLinks homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
-            <FunctionalButtons />
-        </div>
+                <CategoryLinks homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
+                <FunctionalButtons />
+            </div>
+        </GetChildSize>
     );
 };
 

@@ -236,17 +236,10 @@
     inherits: true;
     initial-value: 0deg;
 }
-/* 
-@property --tw-rotate {
-    syntax: '<angle>';
-    inherits: false;
-    initial-value: 0deg;
-} */
 
 /* SVG Filters */
 
 .bloom-svg {
-    /* filter: saturate(200%) url(src/assets/filters.svg#bloom-svg-filter); */
     @apply [filter:saturate(200%)_url(/svg/filters.svg#bloom-svg-filter)];
 }
 

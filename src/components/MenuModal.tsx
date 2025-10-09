@@ -1,59 +1,35 @@
 import { useZustand } from '../lib/zustand';
-import Settings from './Settings';
-import Contact from './Contact';
 import { useEffect, useRef } from 'react';
+import HamburgerMenu from './HamburgerMenu';
 
-const store_toggleSubMenu = useZustand.getState().methods.store_toggleSubMenu;
+const store_toggleHamburgerMenu = useZustand.getState().methods.store_toggleHamburgerMenu;
 
 const MenuModal = () => {
-    const name = useZustand((store) => store.values.activeSubMenuButton.name);
+    const hamburgerMenuOpen = useZustand((store) => store.values.hamburgerMenuOpen);
     const dialogRef = useRef<HTMLDialogElement | null>(null);
 
     useEffect(() => {
         if (dialogRef.current) {
-            if (name) {
+            if (hamburgerMenuOpen) {
                 dialogRef.current.showModal();
-                dialogRef.current.style.setProperty('--tw-bg-opacity', '0.75');
+                dialogRef.current.style.setProperty('--tw-bg-opacity', '0.666');
             } else {
                 dialogRef.current.close();
                 dialogRef.current.style.setProperty('--tw-bg-opacity', '0');
             }
         }
-    }, [name]);
+    }, [hamburgerMenuOpen]);
 
     return (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
         <dialog
             ref={dialogRef}
-            className="glassmorphic-backdrop size-full overflow-hidden bg-gray-950 transition-[background-color]" // backdrop-blur-md
-            onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleSubMenu({ name: null })}
+            className="glassmorphic-backdrop size-full overflow-hidden bg-gray-950 transition-[background-color] duration-500" // backdrop-blur-md
+            onClick={({ target, currentTarget }) => target === currentTarget && currentTarget.open && store_toggleHamburgerMenu(false)}
         >
-            {name && (name === 'config' ? <Settings /> : name === 'contact' ? <Contact /> : null)}
+            {hamburgerMenuOpen && <HamburgerMenu />}
         </dialog>
     );
 };
 
 export default MenuModal;
-
-/* Used in child components: */
-export const CloseSubMenu = () => {
-    const handleClick = () => store_toggleSubMenu({ name: null });
-
-    return (
-        <button
-            className="group absolute flex size-full cursor-pointer items-center justify-center peer-hover-active:[--x-mark-opacity:0]"
-            onClick={handleClick}
-        >
-            <svg
-                className="fill-theme-secondary-darker stroke-theme-secondary/25 transition-[fill] group-hover-active:fill-theme-secondary"
-                strokeWidth={0.1}
-                viewBox="0 0 1 0.866"
-            >
-                <use href="#svgRoundedHexagon-default-path" clipPath="url(#svgRoundedHexagon-default-clipPath)" />
-            </svg>
-
-            {/* XMark */}
-            <div className="absolute size-full bg-theme-primary-lighter/50 opacity-[--x-mark-opacity] transition-[background-color,opacity] [mask-image:url(/svg/XMarkOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:55%] group-hover-active:bg-theme-primary-lighter" />
-        </button>
-    );
-};
