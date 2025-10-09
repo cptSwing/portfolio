@@ -27,12 +27,14 @@ const HamburgerMenu = () => {
     }, []);
 
     useEffect(() => {
-        if (name === 'close' && positionAndSize) {
+        if (name === 'root-close' && positionAndSize) {
             hamburgerMenuPositionAndSize_Ref.current = positionAndSize;
             setCloseButtonOffset(getCenterOffset(hamburgerMenuPositionAndSize_Ref.current.width, hamburgerMenuPositionAndSize_Ref.current.height));
         }
 
-        return () => setCanTransition(false);
+        // return () => {
+        //     hamburgerMenuPositionAndSize_Ref.current = undefined;
+        // };
     }, [name, positionAndSize]);
 
     return (
@@ -55,7 +57,7 @@ const HamburgerMenu = () => {
             }
         >
             {hamburgerMenuPositionAndSize_Ref.current && closeButtonOffset && (
-                <HamburgerMenuButton menuItem={rootHamburgerItem} arrayIndex={0} centerOffset={closeButtonOffset} parentCanTransition={canTransition} />
+                <HamburgerMenuButton menuItem={rootHamburgerItem} arrayIndex={-1} centerOffset={closeButtonOffset} canTransition={canTransition} />
             )}
         </menu>
     );
@@ -67,18 +69,19 @@ const HamburgerMenuButton: FC<{
     arrayIndex: number;
     menuItem: MenuItem;
     centerOffset: Offset;
-    parentCanTransition: boolean;
-}> = ({ arrayIndex, menuItem, centerOffset, parentCanTransition }) => {
-    const { name: menuItemName, iconPath: menuItemIconPath, clickHandler: menuItemClickHandler, subMenuItems: menuSubItems } = menuItem;
+    canTransition: boolean;
+}> = ({ arrayIndex, menuItem, centerOffset, canTransition }) => {
+    const { name: menuItemName, iconPath: menuItemIconPath, iconSize: menuIconSize, clickHandler: menuItemClickHandler, subMenuItems: menuSubItems } = menuItem;
     const { name: activeMenuItemName, positionAndSize: activePositionAndSize } = useZustand((store) => store.values.activeSubMenuButton);
     const radialPositionAndSize_Ref = useRef<ZustandStore['values']['activeSubMenuButton']['positionAndSize']>();
 
+    const isRootItem = menuItemName === 'root-close';
     const [isRadialCenter, setIsRadialCenter] = useState(false);
     const [offsets, setOffsets] = useState<Offset>(centerOffset);
 
     useEffect(() => {
-        if (activePositionAndSize && parentCanTransition) {
-            if ((menuItemName === activeMenuItemName || menuItemName === 'close') && menuSubItems?.length) {
+        if (activePositionAndSize && canTransition) {
+            if ((menuItemName === activeMenuItemName || isRootItem) && menuSubItems?.length) {
                 setIsRadialCenter(true);
                 radialPositionAndSize_Ref.current = activePositionAndSize;
             } else {
@@ -87,19 +90,24 @@ const HamburgerMenuButton: FC<{
             }
         }
 
-        // return () => setOffsets(centerOffset);
-    }, [activeMenuItemName, activePositionAndSize, arrayIndex, centerOffset, menuItemName, menuSubItems?.length, parentCanTransition]);
+        return () => {
+            radialPositionAndSize_Ref.current = undefined;
+        };
+    }, [activeMenuItemName, activePositionAndSize, arrayIndex, canTransition, centerOffset, isRootItem, menuItemName, menuSubItems?.length]);
 
     return (
         <div
             className={classNames(
-                'before:absolute before:left-0 before:top-0 before:-z-20 before:size-full before:bg-red-500/50 before:[clip-path:--hexagon-clip-path-full]',
-                'pointer-events-auto absolute flex aspect-hex-flat w-[--hexagon-clip-path-width] items-center justify-center capitalize transition-transform delay-[calc(var(--ui-animation-menu-transition-duration)*var(--hamburger-menu-button-transition-delay-multiplier))] duration-[--ui-animation-menu-transition-duration] matrix-scale-[--hamburger-menu-button-scale] hover-active:after:bg-theme-primary-lighter',
-                'after:absolute after:left-0 after:top-0 after:-z-10 after:size-full after:bg-theme-primary-lighter/50 after:transition-[background-color,opacity] after:[mask-image:--hamburger-menu-button-icon-mask] after:[mask-position:center] after:[mask-repeat:no-repeat] after:[mask-size:55%]',
+                'before:absolute before:left-0 before:top-0 before:-z-20 before:size-full before:bg-red-500',
+                'absolute flex aspect-hex-flat w-[--hexagon-clip-path-width] select-none justify-center font-fjalla-one text-sm capitalize tracking-wide text-blue-600 transition-transform delay-[calc(var(--ui-animation-menu-transition-duration)/3*var(--hamburger-menu-button-transition-delay-multiplier))] duration-[--ui-animation-menu-transition-duration] matrix-scale-[--hamburger-menu-button-scale] hover-active:after:bg-theme-primary-lighter',
+                'after:absolute after:left-0 after:top-0 after:-z-10 after:size-full after:bg-theme-primary-lighter/50 after:transition-[background-color,opacity] after:[mask-image:--hamburger-menu-button-icon-mask] after:[mask-position:center] after:[mask-repeat:no-repeat] after:[mask-size:--hamburger-menu-button-icon-size]',
+                menuIconSize ? 'items-end' : 'items-center',
+                isRadialCenter ? 'before:[clip-path:--hexagon-clip-path-full-stroked]' : 'before:[clip-path:--hexagon-clip-path-full]',
             )}
             style={
                 {
                     '--hamburger-menu-button-icon-mask': menuItemIconPath,
+                    '--hamburger-menu-button-icon-size': menuIconSize + '%',
                     '--hamburger-menu-button-transition-delay-multiplier': isRadialCenter ? 0 : arrayIndex,
                     '--tw-matrix-e': `${roundToPixelRatio(offsets.left)}`,
                     '--tw-matrix-f': `${roundToPixelRatio(offsets.top)}`,
@@ -116,7 +124,7 @@ const HamburgerMenuButton: FC<{
         >
             {menuItemName}
             {isRadialCenter && (
-                <RadialMenu
+                <RadialMenuButtons
                     menuItems={menuSubItems!}
                     parentWidth={radialPositionAndSize_Ref.current!.width}
                     parentHeight={radialPositionAndSize_Ref.current!.width}
@@ -127,7 +135,7 @@ const HamburgerMenuButton: FC<{
 };
 
 const defaultCenterOffset = { left: 0, top: 0 };
-const RadialMenu: FC<{ menuItems: MenuItem[]; parentWidth: number; parentHeight: number }> = ({ menuItems }) => {
+const RadialMenuButtons: FC<{ menuItems: MenuItem[]; parentWidth: number; parentHeight: number }> = ({ menuItems }) => {
     const [canTransition, setCanTransition] = useState(false);
 
     const refCallback = useCallback((elem: HTMLDivElement | null) => {
@@ -145,14 +153,14 @@ const RadialMenu: FC<{ menuItems: MenuItem[]; parentWidth: number; parentHeight:
     }, []);
 
     return (
-        <div ref={refCallback} className="pointer-events-none absolute size-full" style={{ '--hamburger-menu-button-scale': 1 } as CSSProperties}>
+        <div ref={refCallback} className="absolute size-full" style={{ '--hamburger-menu-button-scale': 1 } as CSSProperties}>
             {menuItems.map((menuItem, idx) => (
                 <HamburgerMenuButton
                     key={`hamburger-menu-item-key-${idx}`}
                     menuItem={menuItem}
                     arrayIndex={idx}
                     centerOffset={defaultCenterOffset}
-                    parentCanTransition={canTransition}
+                    canTransition={canTransition}
                 />
             ))}
         </div>
@@ -160,10 +168,10 @@ const RadialMenu: FC<{ menuItems: MenuItem[]; parentWidth: number; parentHeight:
 };
 
 const rootHamburgerItem: MenuItem = {
-    name: 'close',
+    name: 'root-close',
     iconPath: 'url(/svg/XMarkOutline.svg)',
+    iconSize: 65,
     clickHandler: () => store_toggleHamburgerMenu(false),
-
     subMenuItems: [
         {
             name: 'config',
@@ -171,15 +179,18 @@ const rootHamburgerItem: MenuItem = {
                 {
                     name: 'radius',
                     iconPath: 'url(/svg/PercentBadgeOutline.svg)',
+                    iconSize: 65,
                     clickHandler: () => {},
                 },
                 {
                     name: 'theme',
                     iconPath: 'url(/svg/PaintBrushOutline.svg)',
+                    iconSize: 65,
                     clickHandler: () => store_cycleTheme(),
                 },
             ],
             iconPath: 'url(/svg/AdjustmentsHorizontalOutline.svg)',
+            iconSize: 65,
             clickHandler: (ev) => store_toggleSubMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
@@ -188,35 +199,48 @@ const rootHamburgerItem: MenuItem = {
                 {
                     name: 'linkedin',
                     iconPath: 'url(/svg/logo_linkedin.svg)',
+                    iconSize: 55,
                     clickHandler: () => (window.location.href = 'https://www.linkedin.com/in/jensbrandenburg'),
                 },
                 {
                     name: 'github',
                     iconPath: 'url(/svg/logo_github.svg)',
+                    iconSize: 55,
                     clickHandler: () => (window.location.href = 'https://github.com/cptSwing'),
                 },
                 {
                     name: 'email',
                     iconPath: 'url(/svg/EnvelopeOutline.svg)',
+                    iconSize: 60,
                     clickHandler: () => (window.location.href = 'mailto:jens@jbrandenburg.de'),
                 },
                 {
                     name: '3D Stores',
                     iconPath: 'url(/svg/CubeOutline.svg)',
+                    iconSize: 65,
                     clickHandler: () => {},
                 },
             ],
             iconPath: 'url(/svg/ChatBubbleLeftRightOutline.svg)',
+            iconSize: 65,
             clickHandler: (ev) => store_toggleSubMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
             name: 'login',
             iconPath: 'url(/svg/UserIconOutline.svg)',
-            clickHandler: (ev) => store_toggleSubMenu({ name: 'login', positionAndSize: ev && getMenuButtonPosition(ev) }),
+            iconSize: 0,
+            clickHandler: () => {},
         },
-        { name: 'empty1', iconPath: 'url(/svg/XMarkOutline.svg)', clickHandler: () => store_toggleHamburgerMenu(false) },
-        { name: 'empty2', iconPath: 'url(/svg/XMarkOutline.svg)', clickHandler: () => store_toggleHamburgerMenu(false) },
-        { name: 'empty3', iconPath: 'url(/svg/XMarkOutline.svg)', clickHandler: () => store_toggleHamburgerMenu(false) },
+        {
+            name: 'empty1',
+            iconPath: 'url(/svg/XMarkOutline.svg)',
+            iconSize: 65,
+            clickHandler: () => {
+                console.log('%c[HamburgerMenu]', 'color: #c4cab8', `oh HAI :`);
+            },
+        },
+        { name: 'empty2', iconPath: 'url(/svg/XMarkOutline.svg)', iconSize: 65, clickHandler: () => {} },
+        { name: 'empty3', iconPath: 'url(/svg/XMarkOutline.svg)', iconSize: 65, clickHandler: () => {} },
     ],
 };
 
@@ -246,6 +270,7 @@ type MenuItem = {
     name: HamburgerMenuButtonName;
     subMenuItems?: MenuItem[];
     iconPath: string;
+    iconSize: number;
     clickHandler: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 

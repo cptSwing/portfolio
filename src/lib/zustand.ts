@@ -68,6 +68,7 @@ export const useZustand = create<ZustandStore>()(
             store_toggleHamburgerMenu: (isOpen) => {
                 const newValue = isOpen === true || isOpen === false ? isOpen : !get().values.hamburgerMenuOpen;
 
+                console.log('%c[zustand]', 'color: #a89a4f', `store_toggleHamburgerMenu ->`, newValue);
                 set((draftState) => {
                     draftState.values.hamburgerMenuOpen = newValue;
                 });

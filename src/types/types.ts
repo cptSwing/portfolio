@@ -94,7 +94,7 @@ export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
 type PostNavigationName = 'previous' | 'close' | 'next';
 type FunctionalButtonName = 'home' | 'hamburger' | PostNavigationName;
-export type HamburgerMenuButtonName = 'config' | 'contact' | 'login' | 'close';
+export type HamburgerMenuButtonName = 'config' | 'contact' | 'login' | 'root-close' | 'radius' | 'theme' | 'linkedin' | 'github' | 'email' | '3D Stores';
 export type CategoryName = keyof typeof CATEGORY;
 export type AllButtonNames = CategoryName | FunctionalButtonName | HamburgerMenuButtonName;
 
