@@ -74,13 +74,9 @@ export const useZustand = create<ZustandStore>()(
             },
 
             store_toggleSubMenu: (newMenuState) => {
-                const { name, positionAndSize } = get().values.activeSubMenuButton;
-                const toggledName = newMenuState.name === name ? null : newMenuState.name;
-                const toggledPositionAndSize = positionAndSize ? undefined : newMenuState.positionAndSize;
-
+                const current = get().values.activeSubMenuButton;
                 set((draftState) => {
-                    // draftState.values.activeSubMenuButton = { name: toggledName, positionAndSize: toggledPositionAndSize };
-                    draftState.values.activeSubMenuButton = { ...newMenuState };
+                    draftState.values.activeSubMenuButton = { ...current, ...newMenuState };
                 });
             },
 

@@ -1,6 +1,6 @@
 import { classNames } from 'cpts-javascript-utilities';
 import { CSSProperties, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
-import { calcCSSVariables, hexagonRouteOffsetValues } from '../lib/shapeFunctions';
+import { calcCSSVariables } from '../lib/shapeFunctions';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { Category, CategoryName, CategoryLinkButtonRouteData } from '../types/types';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
