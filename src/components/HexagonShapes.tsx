@@ -16,7 +16,7 @@ import { categoryCardActiveHexagon } from '../lib/hexagonElements';
 import useTimeout from '../hooks/useTimeout';
 
 const baseClasses =
-    /* tw */ 'glassmorphic-backdrop pointer-events-none glassmorphic-level-3 lighting-gradient transform-hexagon  absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] ';
+    /* tw */ 'glassmorphic-backdrop pointer-events-none glassmorphic-level-3 lighting-gradient transform-hexagon  absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] regular-hexagon-named-class after-glassmorphic-grain';
 const baseTransitionClasses =
     /* tw */
     'transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]';
@@ -40,11 +40,10 @@ export const Hexagon: FC<{
             className={classNames(
                 baseClasses,
                 baseTransitionClasses,
-                'regular-hexagon-named-class after-glassmorphic-grain',
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category
-                      ? 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      ? '!to-white/[0.025] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
                       : // ROUTE.post
                         'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
@@ -90,7 +89,6 @@ export const HalfHexagon: FC<{
             className={classNames(
                 baseClasses,
                 baseTransitionClasses,
-                'regular-hexagon-named-class after-glassmorphic-grain',
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category
@@ -116,7 +114,7 @@ export const HalfHexagon: FC<{
                               '--hexagon-scale-y': `calc(${cssVariables_Memo['--hexagon-scale-y']} * ${cardTransition ? 1.2 : 1})`,
                               '--hexagon-clip-path': cardTransition ? 'var(--hexagon-clip-path-half)' : 'var(--hexagon-clip-path-half-stroked)',
 
-                              'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1.1 : 4}), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 8}), var(--ui-animation-menu-transition-duration)`,
+                              'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 4}), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 8}), var(--ui-animation-menu-transition-duration)`,
                               'transitionDelay': `calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${cardTransition ? 0 : 1}), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor)), calc(var(--ui-animation-menu-transition-duration) * var(--regular-hexagon-transition-random-factor) * ${cardTransition ? 0 : 0.75}), 0ms`,
                           }
                         : {}),
@@ -152,7 +150,6 @@ export const HexagonDebugOne: FC<{
             className={classNames(
                 baseClasses,
                 baseTransitionClasses,
-                'regular-hexagon-named-class after-glassmorphic-grain',
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category
@@ -190,7 +187,6 @@ export const HexagonDebugTwo: FC<{
             className={classNames(
                 baseClasses,
                 baseTransitionClasses,
-                'regular-hexagon-named-class after-glassmorphic-grain',
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category
@@ -236,7 +232,6 @@ export const HexagonDebugThree: FC<{
             className={classNames(
                 baseClasses,
                 baseTransitionClasses,
-                'regular-hexagon-named-class after-glassmorphic-grain',
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category

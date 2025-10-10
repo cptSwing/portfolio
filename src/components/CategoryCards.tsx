@@ -39,6 +39,11 @@ const CategoryCards: FC<{
 
 export default CategoryCards;
 
+const scaling = {
+    wrapperAtFront: 1.75,
+    imageAtFront: 0.7,
+};
+
 const CategoryHexagon: FC<{
     allButtons: HexagonTransformData[];
     post: Post;
@@ -51,12 +56,10 @@ const CategoryHexagon: FC<{
 }> = ({ allButtons, post, containerSize, cardIndex, activeIndexState }) => {
     const { title, cardImage } = post;
     const [activeIndex, setActiveIndex] = activeIndexState;
-
-    const [parentTransitionCompletedWhenAtFront, setParentTransitionCompletedWhenAtFront] = useState(false);
-
     const isAtFront = activeIndex === cardIndex;
-    const thisButtonIndex = getGridAreaIndex(activeIndex, cardIndex, allButtons.length);
+    const cardTransition = useZustand((state) => state.values.cardTransition);
 
+    const thisButtonIndex = getGridAreaIndex(activeIndex, cardIndex, allButtons.length);
     const navigate = useNavigate();
 
     const cssVariables_Memo = useMemo(() => {
@@ -67,53 +70,61 @@ const CategoryHexagon: FC<{
         });
     }, [allButtons, containerSize, thisButtonIndex]);
 
-    useLayoutEffect(() => {
-        setParentTransitionCompletedWhenAtFront(false);
-        return () => setParentTransitionCompletedWhenAtFront(false);
-    }, [activeIndex]);
-
     return (
         <button
             className={classNames(
-                'transform-hexagon glassmorphic-backdrop pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] bg-theme-primary/100 transition-[transform,background-color,backdrop-filter] delay-[0ms,var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*2)] duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*3),calc(var(--ui-animation-menu-transition-duration)*2)] [clip-path:--hexagon-clip-path]',
-                parentTransitionCompletedWhenAtFront
-                    ? '!scale-x-[calc(var(--hexagon-scale-x)*1.76)] !scale-y-[calc(var(--hexagon-scale-y)*1.76)] !bg-theme-primary/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5]'
-                    : '[--glassmorphic-backdrop-blur:12px] [--glassmorphic-backdrop-saturate:2.5] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.5)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.5)]',
+                'transform-hexagon glassmorphic-backdrop absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,background-color,backdrop-filter] [clip-path:--hexagon-clip-path] hover-active:!duration-75',
+                isAtFront
+                    ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
+                        ? 'bg-theme-primary/100 !delay-0 !duration-[--ui-animation-menu-transition-duration] [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1]'
+                        : '!scale-x-[--card-wrapper-at-front-scaling-x] !scale-y-[--card-wrapper-at-front-scaling-y] bg-theme-primary/10 duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*4),calc(var(--ui-animation-menu-transition-duration)*8)] [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5]'
+                    : 'bg-none backdrop-filter-none duration-[--ui-animation-menu-transition-duration] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.5)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.5)]',
             )}
             style={
                 {
                     ...cssVariables_Memo,
-                    zIndex: (isAtFront ? 20 : 10) - thisButtonIndex,
+                    'zIndex': (isAtFront ? 20 : 10) - thisButtonIndex,
+                    '--card-wrapper-at-front-scaling-x': `calc(var(--hexagon-scale-x) * ${scaling.wrapperAtFront})`,
+                    '--card-wrapper-at-front-scaling-y': `calc(var(--hexagon-scale-y) * ${scaling.wrapperAtFront})`,
+                    '--card-image-at-front-scaling': scaling.imageAtFront,
                 } as CSSProperties
             }
             onClick={handleClick}
-            onTransitionEnd={handleTransitionEndWhenAtFront.bind(null, isAtFront)}
         >
             <img
                 src={cardImage}
                 alt={title}
                 className={classNames(
-                    'peer pointer-events-auto absolute left-0 top-0 size-full object-cover transition-transform duration-[calc(var(--ui-animation-menu-transition-duration)/2)] [clip-path:--hexagon-clip-path-full]',
-                    isAtFront ? 'matrix-scale-[0.635] hover-active:matrix-scale-[0.67]' : 'grayscale matrix-scale-[0.98]',
+                    'peer pointer-events-auto absolute left-0 top-0 z-0 size-full object-cover transition-transform duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path-full] hover-active:delay-0 hover-active:duration-75',
+                    isAtFront
+                        ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
+                            ? '!delay-0 !duration-[--ui-animation-menu-transition-duration]'
+                            : 'matrix-scale-[--card-image-at-front-scaling] hover-active:matrix-scale-[calc(var(--card-image-at-front-scaling)*1.025)]'
+                        : 'grayscale hover-active:grayscale-0',
                 )}
             />
 
             {/* Inner Stroke */}
             <div
                 className={classNames(
-                    'absolute left-0 top-0 size-full bg-theme-primary transition-[transform,clip-path,filter] duration-[calc(var(--ui-animation-menu-transition-duration)*2)] peer-hover-active:brightness-150 peer-hover-active:!delay-0 peer-hover-active:duration-[--ui-animation-menu-transition-duration]',
+                    'absolute left-0 top-0 size-full transition-[transform,clip-path,filter,background-color] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path-full] peer-hover-active:brightness-150',
                     isAtFront
-                        ? parentTransitionCompletedWhenAtFront
-                            ? 'matrix-scale-[0.65] [clip-path:--hexagon-clip-path-full-stroked] peer-hover-active:duration-[calc(var(--ui-animation-menu-transition-duration)/2)] peer-hover-active:matrix-scale-[0.675]'
-                            : 'delay-[200ms,0ms,0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*2),50ms,var(--ui-animation-menu-transition-duration)] matrix-scale-[1.25] [clip-path:--hexagon-clip-path-full]'
-                        : 'bg-theme-primary/50 [clip-path:--hexagon-clip-path-full] peer-hover-active:[clip-path:--hexagon-clip-path-full-stroked]',
+                        ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
+                            ? 'bg-theme-primary/80 !delay-0 !duration-[--ui-animation-menu-transition-duration]'
+                            : 'bg-theme-primary matrix-scale-[calc(var(--card-image-at-front-scaling)*1.01)] ![clip-path:--hexagon-clip-path-full-stroke] peer-hover-active:matrix-scale-[calc(var(--card-image-at-front-scaling)*1.05)]'
+                        : 'bg-theme-primary/50 peer-hover-active:[clip-path:--hexagon-clip-path-full-stroke]',
                 )}
             />
 
             {/* Outer Stroke */}
             <div
                 className={classNames(
-                    'absolute left-0 top-0 size-full bg-white/[0.2] matrix-translate-x-[-0.075] matrix-translate-y-[-0.05] matrix-rotate-0 matrix-scale-[1.029] [clip-path:--hexagon-clip-path-full-stroked]',
+                    'absolute left-0 top-0 size-full transition-[background-color,clip-path] duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path-full-stroke]',
+                    isAtFront
+                        ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
+                            ? 'bg-white/20 !delay-0 !duration-[--ui-animation-menu-transition-duration]'
+                            : 'bg-white/20 matrix-translate-x-[-0.075] matrix-translate-y-[-0.05] matrix-scale-[1.029]'
+                        : 'bg-theme-primary/75 matrix-scale-[1.029] ![clip-path:--hexagon-clip-path-full-wider-stroke]',
                 )}
             />
         </button>
@@ -124,12 +135,6 @@ const CategoryHexagon: FC<{
             navigate(post.id.toString());
         } else {
             setActiveIndex(cardIndex);
-        }
-    }
-
-    function handleTransitionEndWhenAtFront(isAtFront: boolean, ev: React.TransitionEvent) {
-        if (isAtFront && ev.target === ev.currentTarget) {
-            setParentTransitionCompletedWhenAtFront(true);
         }
     }
 };

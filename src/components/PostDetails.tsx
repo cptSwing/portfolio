@@ -211,7 +211,7 @@ export const Clients: FC<{ clients: NonNullable<Post['clients']>; extraClassName
                 <div key={idx + abbreviation + name} className="group relative flex flex-col items-center justify-start">
                     <div
                         className={classNames(
-                            'before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-theme-primary-darker before:matrix-rotate-90 before:[clip-path:--hexagon-clip-path-full-stroked]',
+                            'before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-theme-primary-darker before:matrix-rotate-90 before:[clip-path:--hexagon-clip-path-full-stroke]',
                             'client-hexagon-class pointer-events-auto relative flex aspect-hex-flat w-[--hexagon-clip-path-width] items-center justify-center matrix-scale-[0.9]',
                         )}
                     >

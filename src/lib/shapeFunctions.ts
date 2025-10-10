@@ -46,6 +46,7 @@ const centerPosition = viewBoxWidth / 2 - hexHalfWidth; // 100 width hexagon, tr
 
 const roundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5 });
 const strokedRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, inner: 'stroke', innerSize: 0.97 });
+const wideStrokedRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, inner: 'stroke', innerSize: 0.9 });
 const halfRoundedHexagonPath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 5, isHalf: true });
 const halfStrokedRoundedHexagonPath = getHexagonPath({
     sideLength: hexHalfWidth,
@@ -58,6 +59,7 @@ const halfStrokedRoundedHexagonPath = getHexagonPath({
 export const hexagonClipPathStatic = `path("${roundedHexagonPath}")`;
 export const halfHexagonClipPathStatic = `path("${halfRoundedHexagonPath}")`;
 export const strokedHexagonClipPathStatic = `path("${strokedRoundedHexagonPath}")`;
+export const wideStrokedHexagonClipPathStatic = `path("${wideStrokedRoundedHexagonPath}")`;
 export const halfStrokedHexagonClipPathStatic = `path("${halfStrokedRoundedHexagonPath}")`;
 
 export const subMenuButtonHexagonPath = getHexagonPath({ sideLength: 0.5, cornerRadius: 1 });
@@ -806,7 +808,7 @@ export function calcCSSVariables(
         }
     } else {
         if (clipStroke) {
-            clipPath = 'var(--hexagon-clip-path-full-stroked)';
+            clipPath = 'var(--hexagon-clip-path-full-stroke)';
         } else {
             clipPath = 'var(--hexagon-clip-path-full)';
         }

@@ -18,7 +18,7 @@ const HamburgerMenu = () => {
 
     const refCallback = useCallback((elem: HTMLMenuElement | null) => {
         if (elem) {
-            /* delaying for one tick so <div>'s transition takes place */
+            /* delaying for one tick so <div>'s transition is triggered safely after mount */
             const timer = setTimeout(() => {
                 setCanTransition(true);
                 clearTimeout(timer);
@@ -31,10 +31,6 @@ const HamburgerMenu = () => {
             hamburgerMenuPositionAndSize_Ref.current = positionAndSize;
             setCloseButtonOffset(getCenterOffset(hamburgerMenuPositionAndSize_Ref.current.width, hamburgerMenuPositionAndSize_Ref.current.height));
         }
-
-        // return () => {
-        //     hamburgerMenuPositionAndSize_Ref.current = undefined;
-        // };
     }, [name, positionAndSize]);
 
     return (
@@ -57,7 +53,13 @@ const HamburgerMenu = () => {
             }
         >
             {hamburgerMenuPositionAndSize_Ref.current && closeButtonOffset && (
-                <HamburgerMenuButton menuItem={rootHamburgerItem} arrayIndex={-1} centerOffset={closeButtonOffset} canTransition={canTransition} />
+                <HamburgerMenuButton
+                    menuItem={rootHamburgerItem}
+                    scale={hamburgerMenuPositionAndSize_Ref.current.width / clipPathWidth}
+                    arrayIndex={-1}
+                    centerOffset={closeButtonOffset}
+                    canTransition={canTransition}
+                />
             )}
         </menu>
     );
@@ -69,91 +71,104 @@ const HamburgerMenuButton: FC<{
     arrayIndex: number;
     menuItem: MenuItem;
     centerOffset: Offset;
+    scale?: number;
     canTransition: boolean;
-}> = ({ arrayIndex, menuItem, centerOffset, canTransition }) => {
+}> = ({ arrayIndex, menuItem, centerOffset, scale, canTransition }) => {
     const { name: menuItemName, iconPath: menuItemIconPath, iconSize: menuIconSize, clickHandler: menuItemClickHandler, subMenuItems: menuSubItems } = menuItem;
-    const { name: activeMenuItemName, positionAndSize: activePositionAndSize } = useZustand((store) => store.values.activeSubMenuButton);
-    const radialPositionAndSize_Ref = useRef<ZustandStore['values']['activeSubMenuButton']['positionAndSize']>();
+    const activeMenuItemName = useZustand((store) => store.values.activeSubMenuButton.name);
 
     const isRootItem = menuItemName === 'root-close';
     const [isRadialCenter, setIsRadialCenter] = useState(false);
-    const [offsets, setOffsets] = useState<Offset>(centerOffset);
+    const [isActiveRadialCenter, setIsActiveRadialCenter] = useState(false);
+    const [offset, setOffset] = useState<Offset>(centerOffset);
 
     useEffect(() => {
-        if (activePositionAndSize && canTransition) {
-            if ((menuItemName === activeMenuItemName || isRootItem) && menuSubItems?.length) {
-                setIsRadialCenter(true);
-                radialPositionAndSize_Ref.current = activePositionAndSize;
+        if (menuSubItems?.length) {
+            setIsRadialCenter(true);
+            if (activeMenuItemName === menuItemName) {
+                setIsActiveRadialCenter(true);
             } else {
-                setIsRadialCenter(false);
-                setOffsets(getRadialOffset(arrayIndex, centerOffset));
+                setIsActiveRadialCenter(false);
             }
+        } else {
+            setIsRadialCenter(false);
         }
+    }, [activeMenuItemName, menuItemName, menuSubItems?.length]);
 
-        return () => {
-            radialPositionAndSize_Ref.current = undefined;
-        };
-    }, [activeMenuItemName, activePositionAndSize, arrayIndex, canTransition, centerOffset, isRootItem, menuItemName, menuSubItems?.length]);
+    useEffect(() => {
+        if (canTransition && !isActiveRadialCenter) {
+            setOffset(getRadialOffset(arrayIndex, centerOffset));
+        }
+    }, [arrayIndex, canTransition, centerOffset, isActiveRadialCenter, isRadialCenter]);
+
+    useEffect(() => {
+        isRadialCenter &&
+            console.log('%c[HamburgerMenu]', 'color: #894f95', `isRadialCenter! --> menuItemName, isActiveRadialCenter :`, menuItemName, isActiveRadialCenter);
+    }, [isActiveRadialCenter, isRadialCenter, menuItemName]);
 
     return (
         <div
             className={classNames(
-                'before:absolute before:left-0 before:top-0 before:-z-20 before:size-full before:bg-red-500',
-                'absolute flex aspect-hex-flat w-[--hexagon-clip-path-width] select-none justify-center font-fjalla-one text-sm capitalize tracking-wide text-blue-600 transition-transform delay-[calc(var(--ui-animation-menu-transition-duration)/3*var(--hamburger-menu-button-transition-delay-multiplier))] duration-[--ui-animation-menu-transition-duration] matrix-scale-[--hamburger-menu-button-scale] hover-active:after:bg-theme-primary-lighter',
-                'after:absolute after:left-0 after:top-0 after:-z-10 after:size-full after:bg-theme-primary-lighter/50 after:transition-[background-color,opacity] after:[mask-image:--hamburger-menu-button-icon-mask] after:[mask-position:center] after:[mask-repeat:no-repeat] after:[mask-size:--hamburger-menu-button-icon-size]',
-                menuIconSize ? 'items-end' : 'items-center',
-                isRadialCenter ? 'before:[clip-path:--hexagon-clip-path-full-stroked]' : 'before:[clip-path:--hexagon-clip-path-full]',
+                'pointer-events-auto absolute flex aspect-hex-flat w-[--hexagon-clip-path-width] select-none justify-center font-fjalla-one text-sm capitalize tracking-wide transition-transform delay-[calc(var(--ui-animation-menu-transition-duration)/3*var(--hamburger-menu-button-transition-delay-multiplier))] duration-[--ui-animation-menu-transition-duration] matrix-scale-[--hamburger-menu-button-scale] hover-active:after:bg-theme-primary-lighter',
+                menuItemIconPath ? 'items-end' : 'items-center',
+                isActiveRadialCenter
+                    ? 'text-green-600 [--hamburger-menu-button-color:red] [--hamburger-menu-button-opacity:1]'
+                    : isRadialCenter
+                      ? 'text-blue-600 [--hamburger-menu-button-color:blue]'
+                      : 'text-white [--hamburger-menu-button-color:_]',
             )}
             style={
                 {
+                    '--hamburger-menu-button-scale': isRootItem ? scale : 1,
                     '--hamburger-menu-button-icon-mask': menuItemIconPath,
-                    '--hamburger-menu-button-icon-size': menuIconSize + '%',
+                    '--hamburger-menu-button-icon-size': (menuIconSize ?? 50) + '%',
                     '--hamburger-menu-button-transition-delay-multiplier': isRadialCenter ? 0 : arrayIndex,
-                    '--tw-matrix-e': `${roundToPixelRatio(offsets.left)}`,
-                    '--tw-matrix-f': `${roundToPixelRatio(offsets.top)}`,
+                    '--tw-matrix-e': `${roundToPixelRatio(offset.left)}`,
+                    '--tw-matrix-f': `${roundToPixelRatio(offset.top)}`,
                 } as CSSProperties
             }
-            role="button"
-            tabIndex={-1}
-            onClick={(ev) => {
-                if (ev.target === ev.currentTarget) {
-                    menuItemClickHandler(ev);
-                }
-            }}
-            onKeyDown={keyDownA11y(menuItemClickHandler)}
         >
+            {(isActiveRadialCenter || isRootItem) && <RadialMenuButtons menuItems={menuSubItems!} />}
+
+            {/* Hex Background and Hex Stroke */}
+            <div
+                className={classNames(
+                    'absolute left-0 top-0 -z-30 size-full bg-[--hamburger-menu-button-color,transparent] opacity-[--hamburger-menu-button-opacity,0.25] transition-[background-color,clip-path] [clip-path:--hexagon-clip-path-full]',
+                    'after:absolute after:left-0 after:top-0 after:-z-10 after:size-full after:transition-[background-color] after:[clip-path:--hexagon-clip-path-full-wider-stroke]',
+                    menuItemIconPath
+                        ? 'before:absolute before:left-0 before:top-0 before:-z-20 before:size-full before:bg-theme-primary-darker before:transition-[background-color,opacity] before:[mask-image:--hamburger-menu-button-icon-mask] before:[mask-position:center] before:[mask-repeat:no-repeat] before:[mask-size:--hamburger-menu-button-icon-size]'
+                        : 'before:content-none',
+                    isActiveRadialCenter ? 'after:bg-white' : isRadialCenter ? 'after:bg-blue-800' : 'after:bg-blue-400',
+                )}
+                role="button"
+                tabIndex={-1}
+                onClick={(ev) => {
+                    if (ev.target === ev.currentTarget) {
+                        menuItemClickHandler(ev);
+                    }
+                }}
+                onKeyDown={keyDownA11y(menuItemClickHandler)}
+            />
             {menuItemName}
-            {isRadialCenter && (
-                <RadialMenuButtons
-                    menuItems={menuSubItems!}
-                    parentWidth={radialPositionAndSize_Ref.current!.width}
-                    parentHeight={radialPositionAndSize_Ref.current!.width}
-                />
-            )}
         </div>
     );
 };
 
 const defaultCenterOffset = { left: 0, top: 0 };
-const RadialMenuButtons: FC<{ menuItems: MenuItem[]; parentWidth: number; parentHeight: number }> = ({ menuItems }) => {
+const RadialMenuButtons: FC<{ menuItems: MenuItem[] }> = ({ menuItems }) => {
     const [canTransition, setCanTransition] = useState(false);
 
-    const refCallback = useCallback((elem: HTMLDivElement | null) => {
-        if (elem) {
-            /* delaying for one tick so <div>'s transition takes place */
-            const timer = setTimeout(() => {
-                setCanTransition(true);
-                clearTimeout(timer);
-            }, 10);
-        }
-    }, []);
-
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setCanTransition(true);
+            clearTimeout(timer);
+        }, 100);
+
         return () => setCanTransition(false);
     }, []);
 
     return (
-        <div ref={refCallback} className="absolute size-full" style={{ '--hamburger-menu-button-scale': 1 } as CSSProperties}>
+        <>
             {menuItems.map((menuItem, idx) => (
                 <HamburgerMenuButton
                     key={`hamburger-menu-item-key-${idx}`}
@@ -163,7 +178,7 @@ const RadialMenuButtons: FC<{ menuItems: MenuItem[]; parentWidth: number; parent
                     canTransition={canTransition}
                 />
             ))}
-        </div>
+        </>
     );
 };
 
@@ -179,18 +194,18 @@ const rootHamburgerItem: MenuItem = {
                 {
                     name: 'radius',
                     iconPath: 'url(/svg/PercentBadgeOutline.svg)',
-                    iconSize: 65,
+                    iconSize: 60,
                     clickHandler: () => {},
                 },
                 {
                     name: 'theme',
                     iconPath: 'url(/svg/PaintBrushOutline.svg)',
-                    iconSize: 65,
+                    iconSize: 60,
                     clickHandler: () => store_cycleTheme(),
                 },
             ],
             iconPath: 'url(/svg/AdjustmentsHorizontalOutline.svg)',
-            iconSize: 65,
+            iconSize: 60,
             clickHandler: (ev) => store_toggleSubMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
@@ -199,7 +214,7 @@ const rootHamburgerItem: MenuItem = {
                 {
                     name: 'linkedin',
                     iconPath: 'url(/svg/logo_linkedin.svg)',
-                    iconSize: 55,
+                    iconSize: 50,
                     clickHandler: () => (window.location.href = 'https://www.linkedin.com/in/jensbrandenburg'),
                 },
                 {
@@ -216,61 +231,123 @@ const rootHamburgerItem: MenuItem = {
                 },
                 {
                     name: '3D Stores',
+                    subMenuItems: [
+                        {
+                            name: 'CGTrader',
+                            clickHandler: () => (window.location.href = 'https://www.cgtrader.com/designers/cptswing'),
+                        },
+                        {
+                            name: 'TurboSquid',
+                            clickHandler: () => (window.location.href = 'https://www.turbosquid.com/Search/Artists/cptSwing'),
+                        },
+                        {
+                            name: 'Printables',
+                            clickHandler: () => (window.location.href = 'https://www.printables.com/@cptSwing_2552270'),
+                        },
+                        {
+                            name: 'Thingiverse',
+                            clickHandler: () => (window.location.href = 'https://www.thingiverse.com/cptswing/designs'),
+                        },
+                    ],
                     iconPath: 'url(/svg/CubeOutline.svg)',
-                    iconSize: 65,
+                    iconSize: 60,
                     clickHandler: () => {},
                 },
             ],
             iconPath: 'url(/svg/ChatBubbleLeftRightOutline.svg)',
-            iconSize: 65,
+            iconSize: 60,
             clickHandler: (ev) => store_toggleSubMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
         },
         {
             name: 'login',
             iconPath: 'url(/svg/UserIconOutline.svg)',
-            iconSize: 0,
+            iconSize: 60,
             clickHandler: () => {},
         },
         {
             name: 'empty1',
             iconPath: 'url(/svg/XMarkOutline.svg)',
-            iconSize: 65,
+            iconSize: 60,
             clickHandler: () => {
                 console.log('%c[HamburgerMenu]', 'color: #c4cab8', `oh HAI :`);
             },
         },
-        { name: 'empty2', iconPath: 'url(/svg/XMarkOutline.svg)', iconSize: 65, clickHandler: () => {} },
-        { name: 'empty3', iconPath: 'url(/svg/XMarkOutline.svg)', iconSize: 65, clickHandler: () => {} },
+        { name: 'empty2', clickHandler: () => {} },
+        { name: 'empty3', iconPath: 'url(/svg/XMarkOutline.svg)', clickHandler: () => {} },
     ],
 };
 
-const radialPositions: Offset[] = [
-    { left: -80, top: 45.465 },
-    { left: 0, top: 90.93 },
-    { left: 80, top: 45.465 },
-    { left: 80, top: -45.465 },
-    { left: 0, top: -90.93 },
-    { left: -80, top: -45.465 },
+const defaultRadialOffsets: Offset[] = [
+    { left: -75, top: 43.3 },
+    { left: 0, top: 86.6 },
+    { left: 75, top: 43.3 },
+    { left: 75, top: -43.3 },
+    { left: 0, top: -86.6 },
+    { left: -75, top: -43.3 },
 ];
+
+const radialOffsetsWithGutter = getRadialOffsetsWithGutter(0.1);
+
+function getRadialOffsetsWithGutter(gutter: number) {
+    const xGutter = clipPathWidth * gutter;
+    const yGutter = clipPathHeight * gutter;
+
+    return defaultRadialOffsets.map((offset, idx) => {
+        switch (idx) {
+            case 0:
+                offset.left -= xGutter;
+                offset.top += yGutter / 2;
+                break;
+
+            case 1:
+                offset.top += yGutter;
+                break;
+
+            case 2:
+                offset.left += xGutter;
+                offset.top += yGutter / 2;
+                break;
+
+            case 3:
+                offset.left += xGutter;
+                offset.top -= yGutter / 2;
+                break;
+
+            case 4:
+                offset.top -= yGutter;
+                break;
+
+            case 5:
+                offset.left -= xGutter;
+                offset.top -= yGutter / 2;
+                break;
+        }
+        return offset;
+    });
+}
 
 function getCenterOffset(width: number, height: number) {
     return { left: roundToPixelRatio((width - clipPathWidth) / 2), top: roundToPixelRatio((height - clipPathHeight) / 2) };
 }
 
 function getRadialOffset(index: number, center: Offset) {
-    const { left, top } = radialPositions[index];
+    if (index === -1) {
+        return center;
+    } else {
+        const { left, top } = radialOffsetsWithGutter[index];
 
-    return {
-        left: center.left + left,
-        top: center.top - top,
-    };
+        return {
+            left: center.left + left,
+            top: center.top - top,
+        };
+    }
 }
 
 type MenuItem = {
     name: HamburgerMenuButtonName;
     subMenuItems?: MenuItem[];
-    iconPath: string;
-    iconSize: number;
+    iconPath?: string;
+    iconSize?: number;
     clickHandler: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
