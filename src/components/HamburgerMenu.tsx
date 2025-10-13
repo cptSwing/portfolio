@@ -170,7 +170,7 @@ const HamburgerMenuButton: FC<{
                     isActiveRadialCenter ? 'z-[110] text-theme-secondary-darker' : 'z-10 text-neutral-100/[--hamburger-menu-button-opacity,0.25]',
                 )}
             >
-                {menuItemName}
+                {menuItemName !== 'DEFAULT' && menuItemName}
             </span>
 
             {(isActiveRadialCenter || isRootItem || keepTreeOpen) && <RadialMenuButtons menuItems={menuSubItems!} zSortingIndex={zIndex} />}
