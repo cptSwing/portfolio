@@ -14,8 +14,8 @@ export const useZustand = create<ZustandStore>()(
             routeData: { name: ROUTE.home, content: {} },
             cardTransition: false,
             breakpoint: null,
-            hamburgerMenuOpen: false,
-            activeSubMenuButton: { name: null },
+            hamburgerMenuRect: null,
+            activeHamburgerMenuItemName: 'DEFAULT',
             postNavigationState: null,
             debug: {
                 applyTransformMatrixFix: true,
@@ -65,18 +65,18 @@ export const useZustand = create<ZustandStore>()(
                 });
             },
 
-            store_toggleHamburgerMenu: (isOpen) => {
-                const newValue = isOpen === true || isOpen === false ? isOpen : !get().values.hamburgerMenuOpen;
-
+            store_toggleHamburgerMenu: (hamburgerMenuRect) => {
                 set((draftState) => {
-                    draftState.values.hamburgerMenuOpen = newValue;
+                    draftState.values.hamburgerMenuRect = hamburgerMenuRect;
                 });
             },
 
-            store_toggleSubMenu: (newMenuState) => {
-                const current = get().values.activeSubMenuButton;
+            store_toggleActiveHamburgerItem: (newMenuItem) => {
+                const current = get().values.activeHamburgerMenuItemName;
+                const newName = current === newMenuItem ? 'DEFAULT' : newMenuItem;
+
                 set((draftState) => {
-                    draftState.values.activeSubMenuButton = { ...current, ...newMenuState };
+                    draftState.values.activeHamburgerMenuItemName = newName;
                 });
             },
 

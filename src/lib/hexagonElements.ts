@@ -7,7 +7,7 @@ import { HexagonRouteData, HexagonTransformData, CategoryLinkButtonRouteData, Fu
 import { getMenuButtonPosition } from './menuFunctions';
 import { useZustand } from './zustand';
 
-const { store_toggleSubMenu, store_toggleHamburgerMenu, store_setPostNavigationState } = useZustand.getState().methods;
+const { store_toggleActiveHamburgerItem, store_toggleHamburgerMenu, store_setPostNavigationState } = useZustand.getState().methods;
 
 /**
  * Pre-scaled-positioning notes:
@@ -958,8 +958,8 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
         title: '',
         svgIconPath: '/svg/Bars3Outline.svg',
         target: (ev) => {
-            store_toggleHamburgerMenu(true);
-            store_toggleSubMenu({ name: 'root-close', positionAndSize: ev && getMenuButtonPosition(ev) });
+            store_toggleHamburgerMenu(ev ? getMenuButtonPosition(ev) : null);
+            store_toggleActiveHamburgerItem('DEFAULT');
         },
     },
 
@@ -999,11 +999,7 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
         name: 'home',
         title: 'home',
         svgIconPath: '/svg/HomeOutline.svg',
-        target: () => {
-            store_toggleSubMenu({ name: null });
-            store_toggleHamburgerMenu(false);
-            return '/';
-        },
+        target: () => '/',
     },
 
     // Previous
@@ -1115,113 +1111,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
         name: 'close',
         svgIconPath: '/svg/XMarkOutline.svg',
         target: () => store_setPostNavigationState('close'),
-    },
-];
-
-export const hamburgerMenuButtons: FunctionalButtonRouteData[] = [
-    // User Login (inactive), disappears after ROUTE.home
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 157.5,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 375,
-                y: 0,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: 216.5,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0,
-        },
-        name: 'login',
-        title: 'login',
-        svgIconPath: '/svg/UserIconOutline.svg',
-        target: () => {},
-    },
-
-    // Settings
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 180,
-                y: 140,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 175,
-                y: 15,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -50,
-                y: 232.5,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.25,
-        },
-        name: 'config',
-        title: 'options',
-        svgIconPath: '/svg/AdjustmentsHorizontalOutline.svg',
-        target: (ev) => store_toggleSubMenu({ name: 'config', positionAndSize: ev && getMenuButtonPosition(ev) }),
-    },
-
-    // Contact
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 120,
-                y: 140,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 125,
-                y: 15,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -50,
-                y: 257.5,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.275,
-        },
-        name: 'contact',
-        title: 'contact',
-        svgIconPath: '/svg/ChatBubbleLeftRightOutline.svg',
-        target: (ev) => store_toggleSubMenu({ name: 'contact', positionAndSize: ev && getMenuButtonPosition(ev) }),
     },
 ];
 

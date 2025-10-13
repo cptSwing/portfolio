@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, useContext, useMemo } from 'react';
 import { getCategoryHexagons, calcCSSVariables } from '../lib/shapeFunctions';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { HexagonTransformData, Post } from '../types/types';

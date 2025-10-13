@@ -6,7 +6,7 @@ import { classNames } from 'cpts-javascript-utilities';
 import { CloseSubMenu } from './HamburgerMenu';
 
 const Contact = () => {
-    const menuButtonPosAndSize = useZustand((store) => store.values.activeSubMenuButton.positionAndSize);
+    const menuButtonPosAndSize = useZustand((store) => store.values.activeHamburgerMenuItemName.positionAndSize);
     const [hasMounted, setHasMounted] = useState(false);
     const [_mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
     const clickRef = useOutsideClick(() => setMobileMenuIsOpen(false));

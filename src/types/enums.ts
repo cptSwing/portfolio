@@ -23,3 +23,25 @@ export enum TOOL {
     '3ds Max' = 'https://www.autodesk.com/products/3ds-max',
     'Substance Designer' = 'https://www.adobe.com/products/substance3d/apps/designer.html',
 }
+
+export enum HAMBURGERMENUITEMS {
+    '__empty' = '',
+    'DEFAULT' = '/svg/XMarkOutline.svg',
+    'Config' = '/svg/AdjustmentsHorizontalOutline.svg',
+    'Corners' = '/svg/PercentBadgeOutline.svg',
+    'Theme' = '/svg/PaintBrushOutline.svg',
+    'Contact' = '/svg/ChatBubbleBottomCenterOutline.svg',
+    'Linkedin' = '/svg/logo_linkedin.svg',
+    'Github' = '/svg/logo_github.svg',
+    'Email' = '/svg/EnvelopeOutline.svg',
+    'Me' = '/svg/UserIconOutline.svg',
+    'Bio / CV' = '/svg/AcademicCapOutline.svg',
+    'CV (English)' = '/svg/DocumentArrowDownOutline.svg',
+    'Bio' = '/svg/UserGroupOutline.svg',
+    'Lebenslauf' = HAMBURGERMENUITEMS['CV (English)'],
+    '3D Stores' = '/svg/CubeOutline.svg',
+    'CGTrader' = HAMBURGERMENUITEMS['__empty'],
+    'TurboSquid' = HAMBURGERMENUITEMS['__empty'],
+    'Printables' = HAMBURGERMENUITEMS['__empty'],
+    'Thingiverse' = HAMBURGERMENUITEMS['__empty'],
+}

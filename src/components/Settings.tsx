@@ -4,7 +4,7 @@ import { CSSProperties, useCallback, useEffect, useState } from 'react';
 const store_cycleTheme = useZustand.getState().methods.store_cycleTheme;
 
 const Settings = () => {
-    const menuButtonPosAndSize = useZustand((store) => store.values.activeSubMenuButton.positionAndSize);
+    const menuButtonPosAndSize = useZustand((store) => store.values.activeHamburgerMenuItemName.positionAndSize);
 
     const [hasMounted, setHasMounted] = useState(false);
 

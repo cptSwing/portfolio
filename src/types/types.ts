@@ -1,5 +1,5 @@
 import { BreakpointName } from '../hooks/useBreakPoint';
-import { CATEGORY, ROUTE, TOOL } from './enums';
+import { CATEGORY, HAMBURGERMENUITEMS, ROUTE, TOOL } from './enums';
 
 export type Config = {
     placeholders: {
@@ -27,8 +27,8 @@ export type ZustandStore = {
         routeData: RouteData;
         cardTransition: boolean;
         breakpoint: BreakpointName | null;
-        hamburgerMenuOpen: boolean;
-        activeSubMenuButton: { name: HamburgerMenuButtonName | null; positionAndSize?: { x: number; y: number; width: number; height: number } };
+        hamburgerMenuRect: Pick<DOMRect, 'x' | 'y' | 'width' | 'height'> | null;
+        activeHamburgerMenuItemName: HamburgerMenuItem['name'];
         postNavigationState: PostNavigationName | null;
         debug: {
             applyTransformMatrixFix: boolean;
@@ -39,8 +39,8 @@ export type ZustandStore = {
         store_setRouteData: (routeData: RouteData) => void;
         store_setTimedCardTransition: (isReady: boolean) => void;
         store_setBreakpoint: (breakpoint: BreakpointName | null) => void;
-        store_toggleHamburgerMenu: (isOpen?: boolean) => void;
-        store_toggleSubMenu: (newMenuState: ZustandStore['values']['activeSubMenuButton']) => void;
+        store_toggleHamburgerMenu: (rect: ZustandStore['values']['hamburgerMenuRect']) => void;
+        store_toggleActiveHamburgerItem: (newMenuState: ZustandStore['values']['activeHamburgerMenuItemName']) => void;
         store_setPostNavigationState: (postNavigationState: PostNavigationName | null) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
@@ -77,6 +77,15 @@ export type Post = {
     };
 };
 
+export type HamburgerMenuItem = {
+    name: Omit<keyof typeof HAMBURGERMENUITEMS, '__empty'>;
+    startOffset?: number;
+    subMenuItems?: HamburgerMenuItem[];
+    iconPath?: string;
+    iconSize?: number;
+    clickHandler: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+};
+
 type Post_ShowCase_Base = {
     caption?: string;
 };
@@ -94,9 +103,8 @@ export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 
 type PostNavigationName = 'previous' | 'close' | 'next';
 type FunctionalButtonName = 'home' | 'hamburger' | PostNavigationName;
-export type HamburgerMenuButtonName = 'config' | 'contact' | 'login' | 'root-close' | 'radius' | 'theme' | 'linkedin' | 'github' | 'email' | '3D Stores';
 export type CategoryName = keyof typeof CATEGORY;
-export type AllButtonNames = CategoryName | FunctionalButtonName | HamburgerMenuButtonName;
+export type AllButtonNames = CategoryName | FunctionalButtonName | HamburgerMenuItem['name'];
 
 export type HexagonTransformData = {
     position: { x: number; y: number };
