@@ -192,3 +192,13 @@
         clip-path: inset(0 100% 0 0);
     }
 }
+
+@keyframes grow-shrink {
+    0%,
+    100% {
+        scale: 1;
+    }
+    50% {
+        scale: 0.95;
+    }
+}

@@ -53,7 +53,7 @@ const FunctionalButton: FC<{
             }}
             isRouteNavigation={false}
             clickHandler={handleClick}
-            lightingGradient
+            lightingGradient={routeName === ROUTE.home}
             strokeRadius={1}
             innerShadowRadius={6}
         >

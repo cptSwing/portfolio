@@ -2,7 +2,7 @@
     "code": {
         "id": 0,
         "title": "Code",
-        "categoryBlurb": "React,\nTypescript,\nThree.js",
+        "categoryBlurb": "React, Typescript, Three.js",
         "posts": [
             {
                 "id": 0,
@@ -371,7 +371,7 @@
     "3d": {
         "id": 1,
         "title": "3D",
-        "categoryBlurb": "Game Art,\n3d Models,\nShading",
+        "categoryBlurb": "Game Art, 3d Models, Shading",
         "posts": [
             {
                 "id": 5,

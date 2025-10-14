@@ -82,6 +82,10 @@
     .rotate-text {
         @apply writing-mode-vert-lr rotate-180;
     }
+
+    .animate-grow-shrink {
+        animation: grow-shrink 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
 }
 
 @layer utilities {

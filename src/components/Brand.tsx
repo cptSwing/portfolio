@@ -1,5 +1,4 @@
 import { CSSProperties, FC, memo, useContext, useLayoutEffect, useState } from 'react';
-import FitText from './utilityComponents/FitText';
 import { calcCSSVariables, offsetHexagonTransforms } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
 import { brandBlurbOffsets, brandTransformData, brandTransformOffsets, categoryLinkButtons } from '../lib/hexagonElements';
@@ -99,16 +98,20 @@ const Brand: FC<{ homeMenuTransitionStates: ['code' | '3d' | 'log' | null, boole
         <>
             <div
                 className={classNames(
-                    'transform-hexagon pointer-events-none absolute z-50 flex aspect-hex-flat w-[--hexagon-clip-path-width] select-none flex-col justify-center transition-[transform,opacity,clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*3)] clip-inset-0 before:absolute before:left-[-25%] before:top-[34.5%] before:-z-10 before:h-[35%] before:w-[150%] before:rounded-2xl before:mask-edges-x-[5%] before:mask-edges-y-[15%]',
-                    routeName === ROUTE.home ? 'items-center before:bg-transparent' : 'items-end before:bg-theme-root-background/[0.1]',
+                    'transform-hexagon pointer-events-none absolute z-50 flex aspect-hex-flat w-[--hexagon-clip-path-width] select-none flex-col justify-center transition-[transform,opacity,clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*3)] clip-inset-0',
+                    routeName === ROUTE.home
+                        ? 'items-center before:content-none'
+                        : 'items-end before:absolute before:left-[-25%] before:top-[34.5%] before:-z-10 before:h-[35%] before:w-[150%] before:rounded-2xl before:bg-theme-root-background/[0.1] before:mask-edges-x-[5%] before:mask-edges-y-[15%]',
                 )}
                 style={cssVariablesBrand as CSSProperties}
             >
-                <FitText text="jens brandenburg" className="h-1/5 w-full font-lato leading-none tracking-tighter text-theme-primary/20" />
-                <FitText
-                    text="web developer & 3d artist"
-                    className="-mt-[2%] mr-[2%] h-[10%] w-auto max-w-full font-lato leading-none tracking-tighter text-theme-primary-darker/20"
-                />
+                <span className="w-full text-center font-lato text-[length:calc(var(--hexagon-clip-path-height)/6)] leading-none tracking-tighter text-theme-primary/100">
+                    jens brandenburg
+                </span>
+                <span className="-mb-[5%] w-full text-center font-lato text-[length:calc(var(--hexagon-clip-path-height)/10)] leading-none tracking-tighter text-theme-primary/50">
+                    web developer & 3d artist
+                </span>
+                {homeMenuTransitionTarget && <div className="basis-[42.5%]" />}
             </div>
 
             <Blurb cssVariables={cssVariablesBlurb} transitionTarget={homeMenuTransitionTarget} />
@@ -124,15 +127,15 @@ const Blurb: FC<{ cssVariables?: ReturnType<typeof calcCSSVariables> | CSSProper
 }) => {
     return (
         <div
-            className="transform-hexagon pointer-events-none absolute z-50 flex aspect-hex-flat w-[--hexagon-clip-path-width] select-none flex-col items-center justify-end transition-[transform,opacity,clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*3)] clip-inset-0"
+            className="transform-hexagon pointer-events-none absolute z-50 flex aspect-hex-flat w-[--hexagon-clip-path-width] select-none flex-col items-center justify-end transition-[transform,opacity,clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*3)] clip-inset-[-100%]"
             style={cssVariables as CSSProperties}
         >
             {transitionTarget && (
                 <>
-                    <span className="w-full whitespace-pre-wrap text-center font-fjalla-one text-sm leading-tight tracking-tight text-theme-root-background/50">
+                    <span className="w-[200%] text-center font-fjalla-one text-sm leading-tight tracking-tight text-theme-root-background/50">
                         {database[transitionTarget].categoryBlurb}
                     </span>
-                    <div className="basis-[40%]" />
+                    <div className="basis-[60%]" />
                 </>
             )}
         </div>

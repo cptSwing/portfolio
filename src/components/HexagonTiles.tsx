@@ -35,27 +35,27 @@ const HexagonTiles = () => {
         <GetChildSize context={GetChildSizeContext}>
             <div
                 className={classNames(
-                    'container-size pointer-events-none absolute z-0 size-full transform-gpu overflow-visible transition-transform duration-[--ui-animation-menu-transition-duration]',
+                    'container-size pointer-events-none absolute z-0 size-full transform-gpu overflow-visible transition-transform duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)]',
                     routeName === ROUTE.home ? navMenuTransitionClasses_Memo : '',
                 )}
                 onTransitionEnd={({ target, currentTarget }) => {
                     if (target === currentTarget) {
                         const elementRotation = getCurrentElementRotation(currentTarget);
-                        if (homeMenuTransitionTarget && navRotationValues[homeMenuTransitionTarget].deg === elementRotation) {
+                        if (homeMenuTransitionTarget && homeMenuRotationValues[homeMenuTransitionTarget].deg === elementRotation) {
                             // Set transition target as reached:
                             setHomeMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
                         }
                     }
                 }}
             >
-                {/* "Half" Hexagons at ROUTE.category */}
-                {halfRegularHexagons.map((regularHexagonData, idx) => (
-                    <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
-                ))}
-
                 {/* "Regular" Hexagons at ROUTE.category */}
                 {regularHexagons.map((regularHexagonData, idx) => (
                     <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
+                ))}
+
+                {/* "Half" Hexagons at ROUTE.category */}
+                {halfRegularHexagons.map((regularHexagonData, idx) => (
+                    <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
                 ))}
 
                 <Category show={routeName === ROUTE.category} />
@@ -73,40 +73,56 @@ export default HexagonTiles;
 // Local Functions
 
 function getHomeMenuTransitionClasses(category: CategoryName | null, transitionCompleted: boolean) {
-    let classNames = 'rotate-0';
+    let classNames = homeMenuTransitionGenericClasses.base;
+
     if (category && Object.keys(CATEGORY).includes(category)) {
-        classNames = homeMenuTransitionClasses[category].base;
-        if (transitionCompleted) classNames += ` ${homeMenuTransitionClasses[category].completed}`;
+        classNames = `${classNames} ${homeMenuRotationValues[category].class}`;
+
+        if (transitionCompleted) {
+            classNames = `${classNames} ${homeMenuTransitionGenericClasses.completed} ${homeMenuTransitionBespokeClasses[category].completed}`;
+        } else {
+            classNames = `${classNames} ${homeMenuTransitionGenericClasses.transitioning} ${homeMenuTransitionBespokeClasses[category].transitioning}`;
+        }
     }
     return classNames;
 }
 
 // Local Values
 
-const navRotationValues: Record<CategoryName, { deg: number }> = {
-    'code': { deg: 60 },
-    '3d': { deg: -60 },
-    'log': { deg: 180 },
+const homeMenuRotationValues: Record<CategoryName, { deg: number; class: string }> = {
+    'code': { deg: 60, class: /* tw */ '[--home-menu-rotation:60deg]' },
+    '3d': { deg: -60, class: /* tw */ '[--home-menu-rotation:-60deg]' },
+    'log': { deg: 180, class: /* tw */ '[--home-menu-rotation:180deg]' },
+};
+
+const homeMenuTransitionGenericClasses = {
+    base: /* tw */ 'rotate-[--home-menu-rotation,0deg] ',
+    transitioning:
+        /* tw */ '[&_.regular-hexagon-named-class]:[--glassmorphic-backdrop-saturate:4] [&_.regular-hexagon-center-named-class]:z-0 [&_.regular-hexagon-center-named-class]:scale-x-[calc(var(--hexagon-scale-x)*0.8)] [&_.regular-hexagon-center-named-class]:scale-y-[calc(var(--hexagon-scale-y)*0.8)]',
+    completed:
+        /* tw */ '[&_.regular-hexagon-center-named-class]:z-10 [&_.regular-hexagon-center-named-class]:[--glassmorphic-backdrop-blur:4px] [&_.regular-hexagon-center-named-class]:[--glassmorphic-backdrop-saturate:1.25] [&_.regular-hexagon-center-named-class]:scale-x-[calc(var(--hexagon-scale-x)*2.2)] [&_.regular-hexagon-center-named-class]:scale-y-[calc(var(--hexagon-scale-y)*2.2)]',
 };
 
 // TODO filter lighter-inner to be replaced
-const homeMenuTransitionClasses = {
+const homeMenuTransitionBespokeClasses: Record<CategoryName, { transitioning: string; completed: string }> = {
     'code': {
-        base: /* tw */ '[--home-menu-rotation:60deg] rotate-[--home-menu-rotation] [&_.navigation-button-hexagon-class-code]:[filter:url(#lighter-inner)]',
+        transitioning: /* tw */ '[&_.navigation-button-hexagon-class-code]:[--glassmorphic-backdrop-saturate:1.5]',
         completed:
-            /* tw */ '[&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-code:hover]:[--glassmorphic-backdrop-saturate:0.75] [&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-code:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/4*var(--regular-hexagon-transition-random-factor))]',
+            /* tw */ '[&_:is(.navigation-button-hexagon-class-3d,.navigation-button-hexagon-class-log)]:[--glassmorphic-backdrop-blur:3px] [&_:is(.navigation-button-hexagon-class-3d,.navigation-button-hexagon-class-log)]:[--glassmorphic-backdrop-saturate:2] [&_:is(.navigation-button-hexagon-class-3d,.navigation-button-hexagon-class-log)]:scale-95 [&_.navigation-button-hexagon-class-code]:animate-grow-shrink [&_.navigation-button-hexagon-class-code]:[--glassmorphic-backdrop-saturate:4] [&_.navigation-button-hexagon-class-code]:scale-[1.2] [&_.regular-hexagon-named-class:not(.regular-hexagon-center-named-class)]:has-[.navigation-button-hexagon-class-code:hover]:[--glassmorphic-backdrop-saturate:1.25] [&_.regular-hexagon-named-class:not(.regular-hexagon-center-named-class)]:has-[.navigation-button-hexagon-class-code:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/2*var(--regular-hexagon-transition-random-factor))]',
     },
     '3d': {
-        base: /* tw */ '[--home-menu-rotation:-60deg] rotate-[--home-menu-rotation] [&_.navigation-button-hexagon-class-3d]:[filter:url(#lighter-inner)]',
+        transitioning: /* tw */ '[&_.navigation-button-hexagon-class-3d]:[--glassmorphic-backdrop-saturate:1.5]',
         completed:
-            /* tw */ '[&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-3d:hover]:[--glassmorphic-backdrop-saturate:0.75] [&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-3d:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/4*var(--regular-hexagon-transition-random-factor))]',
+            /* tw */ '[&_:is(.navigation-button-hexagon-class-code,.navigation-button-hexagon-class-log)]:[--glassmorphic-backdrop-blur:3px] [&_:is(.navigation-button-hexagon-class-code,.navigation-button-hexagon-class-log)]:[--glassmorphic-backdrop-saturate:2] [&_:is(.navigation-button-hexagon-class-code,.navigation-button-hexagon-class-log)]:scale-95 [&_.navigation-button-hexagon-class-3d]:animate-grow-shrink [&_.navigation-button-hexagon-class-3d]:[--glassmorphic-backdrop-saturate:4] [&_.navigation-button-hexagon-class-3d]:scale-[1.2] [&_.regular-hexagon-named-class:not(.regular-hexagon-center-named-class)]:has-[.navigation-button-hexagon-class-3d:hover]:[--glassmorphic-backdrop-saturate:1.25] [&_.regular-hexagon-named-class:not(.regular-hexagon-center-named-class)]:has-[.navigation-button-hexagon-class-3d:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/2*var(--regular-hexagon-transition-random-factor))]',
     },
     'log': {
-        base: /* tw */ '[--home-menu-rotation:180deg] rotate-[--home-menu-rotation] [&_.navigation-button-hexagon-class-log]:[filter:url(#lighter-inner)]',
+        transitioning: /* tw */ '[&_.navigation-button-hexagon-class-log]:[--glassmorphic-backdrop-saturate:1.5]',
         completed:
-            /* tw */ '[&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-log:hover]:[--glassmorphic-backdrop-saturate:0.75] [&_.regular-hexagon-named-class]:has-[.navigation-button-hexagon-class-log:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/4*var(--regular-hexagon-transition-random-factor))]',
+            /* tw */ '[&_:is(.navigation-button-hexagon-class-code,.navigation-button-hexagon-class-3d)]:[--glassmorphic-backdrop-blur:3px] [&_:is(.navigation-button-hexagon-class-code,.navigation-button-hexagon-class-3d)]:[--glassmorphic-backdrop-saturate:2] [&_:is(.navigation-button-hexagon-class-code,.navigation-button-hexagon-class-3d)]:scale-95 [&_.navigation-button-hexagon-class-log]:animate-grow-shrink [&_.navigation-button-hexagon-class-log]:[--glassmorphic-backdrop-saturate:4] [&_.navigation-button-hexagon-class-log]:scale-[1.2] [&_.regular-hexagon-named-class:not(.regular-hexagon-center-named-class)]:has-[.navigation-button-hexagon-class-log:hover]:[--glassmorphic-backdrop-saturate:1.25] [&_.regular-hexagon-named-class:not(.regular-hexagon-center-named-class)]:has-[.navigation-button-hexagon-class-log:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/2*var(--regular-hexagon-transition-random-factor))]',
     },
 };
+
+// [&_.navigation-button-hexagon-class-3d]:[--glassmorphic-backdrop-blur:3px]
 
 // Local Types
 

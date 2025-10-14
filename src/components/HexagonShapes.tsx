@@ -12,11 +12,11 @@ import { useZustand } from '../lib/zustand';
 import { FunctionalButtonRouteData, HexagonRouteData } from '../types/types';
 import { useNavigate } from 'react-router-dom';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import { categoryCardActiveHexagon } from '../lib/hexagonElements';
+import { categoryCardActiveHexagon, hexagonGridTransformCenter } from '../lib/hexagonElements';
 import useTimeout from '../hooks/useTimeout';
 
 const baseClasses =
-    /* tw */ 'glassmorphic-backdrop pointer-events-none lighting-gradient transform-hexagon absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] regular-hexagon-named-class after-glassmorphic-grain';
+    /* tw */ 'glassmorphic-backdrop pointer-events-none regular-hexagon-named-class lighting-gradient transform-hexagon absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path]  after-glassmorphic-grain';
 const baseTransitionClasses =
     /* tw */
     'transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]';
@@ -26,6 +26,7 @@ export const Hexagon: FC<{
     routeName: ROUTE;
 }> = memo(({ data, routeName }) => {
     const { position, rotation, scale, isHalf } = data[routeName];
+    const isCenterHex = data[routeName].position.x === hexagonGridTransformCenter.x && data[routeName].position.y === hexagonGridTransformCenter.y;
     const containerSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(
@@ -40,10 +41,11 @@ export const Hexagon: FC<{
             className={classNames(
                 baseClasses,
                 baseTransitionClasses,
+                isCenterHex ? 'regular-hexagon-center-named-class' : '',
                 routeName === ROUTE.home
-                    ? '!to-white/10 [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:3]'
+                    ? '!to-white/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2]'
                     : routeName === ROUTE.category
-                      ? '!to-white/[0.025] ![--glassmorphic-backdrop-blur:2px] ![--glassmorphic-backdrop-saturate:1.25] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      ? '!to-white/[0.025] backdrop-blur-none [--glassmorphic-backdrop-saturate:1.5] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
                       : // ROUTE.post
                         'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
@@ -90,7 +92,7 @@ export const HalfHexagon: FC<{
                 baseClasses,
                 baseTransitionClasses,
                 routeName === ROUTE.home
-                    ? '!to-white/10 [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:3]'
+                    ? '!to-white/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2]'
                     : routeName === ROUTE.category
                       ? '!to-white/0 ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.secondary-darker/0.5)]'
                       : // ROUTE.post
