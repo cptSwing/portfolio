@@ -13,7 +13,7 @@ const Category: FC<{ show: boolean }> = memo(({ show }) => {
     const previousCategoryId = usePreviousPersistent(category.id);
 
     const categoryRef = useRef<HTMLDivElement | null>(null);
-    const isMounted = useMountTransition(categoryRef, show, '!clip-inset-x-[-50%]');
+    const isMounted = useMountTransition(categoryRef, show, ['!clip-inset-[-10%]']); // 'clip-inset-x-[-50%]'
     const [wheelDirection, wheelDistance] = useMouseWheelDirection();
 
     const activeIndexState = useState(0);
@@ -23,7 +23,7 @@ const Category: FC<{ show: boolean }> = memo(({ show }) => {
         if (wheelDirection !== null) {
             setActiveIndex((previous) => loopFlipValues(previous, category.posts.length, wheelDirection));
             store_setTimedCardTransition(true);
-            store_toggleHamburgerMenu(false);
+            store_toggleHamburgerMenu(null);
         }
     }, [category.posts.length, wheelDirection, setActiveIndex, wheelDistance]); // wheelDistance needed as dependency to have this useEffect update at all
 
@@ -39,7 +39,10 @@ const Category: FC<{ show: boolean }> = memo(({ show }) => {
     }, [category.id, previousCategoryId, setActiveIndex]);
 
     return isMounted ? (
-        <div ref={categoryRef} className="contents transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-x-[50%]">
+        <div
+            ref={categoryRef}
+            className="absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-[50%]" //
+        >
             <CategoryCards posts={category.posts} activeIndexState={activeIndexState} />
         </div>
     ) : null;

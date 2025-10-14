@@ -48,14 +48,14 @@ const HexagonTiles = () => {
                     }
                 }}
             >
-                {/* "Regular" Hexagons at ROUTE.category */}
-                {regularHexagons.map((regularHexagonData, idx) => (
-                    <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
-                ))}
-
                 {/* "Half" Hexagons at ROUTE.category */}
                 {halfRegularHexagons.map((regularHexagonData, idx) => (
                     <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
+                ))}
+
+                {/* "Regular" Hexagons at ROUTE.category */}
+                {regularHexagons.map((regularHexagonData, idx) => (
+                    <Hexagon key={`hex-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
                 ))}
 
                 <Category show={routeName === ROUTE.category} />

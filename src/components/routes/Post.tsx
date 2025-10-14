@@ -27,7 +27,7 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
     const post = useZustand((store) => store.values.routeData.content.post) ?? emptyPost;
 
     const postRef = useRef<HTMLDivElement | null>(null);
-    const shouldMount = useMountTransition(postRef, show, '!clip-inset-x-0');
+    const shouldMount = useMountTransition(postRef, show, ['!clip-inset-x-0']);
 
     const { title, subTitle, stack, clients, viewLive, viewSource, showCases, textBlocks, date } = post;
     usePostNavigation();

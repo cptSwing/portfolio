@@ -43,7 +43,7 @@ export const Hexagon: FC<{
                 routeName === ROUTE.home
                     ? '!to-white/10 [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:3]'
                     : routeName === ROUTE.category
-                      ? '!to-white/[0.025] ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      ? '!to-white/[0.025] ![--glassmorphic-backdrop-blur:2px] ![--glassmorphic-backdrop-saturate:1.25] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
                       : // ROUTE.post
                         'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
@@ -110,8 +110,8 @@ export const HalfHexagon: FC<{
                                   ? centerHexagonCssVariables_Memo['--hexagon-translate-y']
                                   : cssVariables_Memo['--hexagon-translate-y'],
                               '--hexagon-rotate': `calc(${cssVariables_Memo['--hexagon-rotate']} + (240deg * ${cardTransition ? 1 : 0}))`,
-                              '--hexagon-scale-x': `calc(${cssVariables_Memo['--hexagon-scale-x']} * ${cardTransition ? 1.2 : 1})`,
-                              '--hexagon-scale-y': `calc(${cssVariables_Memo['--hexagon-scale-y']} * ${cardTransition ? 1.2 : 1})`,
+                              '--hexagon-scale-x': `calc(${cssVariables_Memo['--hexagon-scale-x']} * ${cardTransition ? 0.5 : 1})`,
+                              '--hexagon-scale-y': `calc(${cssVariables_Memo['--hexagon-scale-y']} * ${cardTransition ? 0.5 : 1})`,
                               '--hexagon-clip-path': cardTransition ? 'var(--hexagon-clip-path-half)' : 'var(--hexagon-clip-path-half-stroked)',
 
                               'transitionDuration': `calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 4}), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * (var(--regular-hexagon-transition-random-factor) + 1)), calc(var(--ui-animation-menu-transition-duration) * ${cardTransition ? 1 : 8}), var(--ui-animation-menu-transition-duration)`,

@@ -206,9 +206,9 @@ export const regularHexagons: HexagonRouteData[] = [
                 x: 150,
                 y: 129.9,
             },
-            rotation: 90,
+            rotation: 0,
             isHalf: false,
-            scale: 0.866,
+            scale: 2.15,
         }, // L7
         [ROUTE.post]: {
             position: {
