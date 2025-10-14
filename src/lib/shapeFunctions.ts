@@ -81,6 +81,23 @@ export function offsetHexagonTransforms<T = HexagonRouteData | CategoryLinkButto
     }
 }
 
+function offsetRoute<T>(routeData: T, routeOffset?: HexagonRouteDataTransformOffsets) {
+    const newRouteData: T = { ...routeData };
+
+    let key: keyof T;
+    for (key in routeData) {
+        if (key in ROUTE && routeOffset && key in routeOffset) {
+            const route = key as unknown as ROUTE;
+            (newRouteData as HexagonRouteData)[route] = {
+                ...(newRouteData as HexagonRouteData)[route],
+                ...routeOffset[route],
+            };
+        }
+    }
+
+    return newRouteData;
+}
+
 export function transformCategoryHalfHexagons(
     routeTransforms: HexagonTransformData,
     imaginaryHexagonScale?: number,
@@ -591,23 +608,6 @@ function getHexagonPath(params: GetHexagonPathParams): string {
     hexagonPath += ' Z';
 
     return hexagonPath;
-}
-
-function offsetRoute<T>(routeData: T, routeOffset?: HexagonRouteDataTransformOffsets) {
-    const newRouteData: T = { ...routeData };
-
-    let key: keyof T;
-    for (key in routeData) {
-        if (key in ROUTE && routeOffset && key in routeOffset) {
-            const route = key as unknown as ROUTE;
-            (newRouteData as HexagonRouteData)[route] = {
-                ...(newRouteData as HexagonRouteData)[route],
-                ...routeOffset[route],
-            };
-        }
-    }
-
-    return newRouteData;
 }
 
 function getOffset(scale: number) {

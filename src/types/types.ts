@@ -138,7 +138,7 @@ interface FunctionalButtonData extends ButtonData {
     name: FunctionalButtonName;
     title?: string;
     svgIconPath: string;
-    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => string | void;
+    target: (ev?: React.MouseEvent<HTMLDivElement, MouseEvent>) => string | void;
 }
 /** A Button that executes a function (which can also return a navigatable target) */
 export interface FunctionalButtonRouteData extends ButtonRouteData, FunctionalButtonData {}

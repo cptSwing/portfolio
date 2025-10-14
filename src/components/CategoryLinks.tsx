@@ -16,30 +16,13 @@ const CategoryLinks: FC<{
 
     return (
         <div
-            className={classNames(
-                // 'before:lighting-gradient before-menu-bar-dimensions z-50 before:absolute before:left-[--menu-bar-dimensions-left] before:top-[--menu-bar-dimensions-top] before:h-[--menu-bar-dimensions-height] before:w-[--menu-bar-dimensions-width] before:rounded-[3%_3%_3%_3%/10%_10%_10%_10%] before:bg-theme-primary-lighter/50 before:to-white/5 before:transition-[transform,--menu-bar-mask-marker-position-x] before:delay-[--ui-animation-menu-transition-duration] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)] before:[--glassmorphic-backdrop-blur:8px] before:[--glassmorphic-backdrop-saturate:1.5]',
-                // 'before:nav-test-masks before:glassmorphic-backdrop',
-                'absolute z-20 size-[inherit]',
-            )}
+            className={classNames('absolute z-20 size-[inherit]')}
             style={
                 {
                     '--menu-bar-mask-marker-position-x': positionOnCategoryLinks[0],
                     '--menu-bar-mask-marker-position-y': positionOnCategoryLinks[1],
                 } as CSSProperties
             }
-            // onClick={(e) => {
-            //     const _t = e.target;
-            //     console.log('%c[CategoryLinks]', 'color: #9431e8', `click , _t.style.getPropertyValue('--i'):`, e, _t.style.getPropertyValue('--i'));
-            //     // if (_t.hasAttribute('href')) {
-            //     _t.parentNode.style.setProperty('--menu-bar-mask-marker-position-x', +_t.style.getPropertyValue('--i'));
-            //     // }
-            // }}
-            // className={classNames(
-            //     'before-glassmorphic-backdrop glassmorphic-level-4 before:!bottom-[3.5%] before:!left-[37%] before:!top-auto before:!h-[6%] before:!w-[26%] before:origin-bottom before:rounded-[8%_8%_8%_8%/35%_35%_35%_35%] before:border before:border-theme-text-background/[0.04] before:bg-theme-root-background/30 before:shadow-xl before:transition-transform before:delay-[--ui-animation-menu-transition-duration] before:duration-[calc(var(--ui-animation-menu-transition-duration)*2)]',
-            //     'absolute size-full',
-            //     'after-glassmorphic-grain after:!bottom-[3.5%] after:!left-[37%] after:!top-auto after:!h-[6%] after:!w-[26%] after:origin-bottom after:rounded-[8%_8%_8%_8%/35%_35%_35%_35%] after:transition-transform after:delay-[--ui-animation-menu-transition-duration] after:duration-[--ui-animation-menu-transition-duration]',
-            //     routeName === ROUTE.category ? 'before:scale-y-100 after:scale-y-100' : 'before:scale-y-0 after:scale-y-0',
-            // )}
         >
             {categoryLinkButtons.map((categoryLinkButtonData, idx) => (
                 <CategoryLinkButton

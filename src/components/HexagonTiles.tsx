@@ -15,19 +15,20 @@ import GetChildSizeContext from '../contexts/GetChildSizeContext';
 
 const HexagonTiles = () => {
     const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
-    const [[menuTransitionTarget, menuTransitionTargetReached], setMenuTransitionStates] = homeMenuTransitionStateUpdates;
+    const [homeMenuTransitionStates, setHomeMenuTransitionStates] = homeMenuTransitionStateUpdates;
+    const [homeMenuTransitionTarget, homeMenuTransitionTargetReached] = homeMenuTransitionStates;
 
     const routeName = useZustand((store) => store.values.routeData.name);
 
     useEffect(() => {
         if (routeName !== ROUTE.home) {
-            setMenuTransitionStates([null, true]);
+            setHomeMenuTransitionStates([null, true]);
         }
-    }, [routeName, setMenuTransitionStates]);
+    }, [routeName, setHomeMenuTransitionStates]);
 
     const navMenuTransitionClasses_Memo = useMemo(
-        () => getHomeMenuTransitionClasses(menuTransitionTarget, menuTransitionTargetReached),
-        [menuTransitionTarget, menuTransitionTargetReached],
+        () => getHomeMenuTransitionClasses(homeMenuTransitionTarget, homeMenuTransitionTargetReached),
+        [homeMenuTransitionTarget, homeMenuTransitionTargetReached],
     );
 
     return (
@@ -39,11 +40,10 @@ const HexagonTiles = () => {
                 )}
                 onTransitionEnd={({ target, currentTarget }) => {
                     if (target === currentTarget) {
-                        // ^^^  condition filters out bubbled child events
                         const elementRotation = getCurrentElementRotation(currentTarget);
-                        if (menuTransitionTarget && navRotationValues[menuTransitionTarget].deg === elementRotation) {
+                        if (homeMenuTransitionTarget && navRotationValues[homeMenuTransitionTarget].deg === elementRotation) {
                             // Set transition target as reached:
-                            setMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
+                            setHomeMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
                         }
                     }
                 }}
@@ -59,10 +59,10 @@ const HexagonTiles = () => {
                 ))}
 
                 <Category show={routeName === ROUTE.category} />
-                <Brand />
+                <Brand homeMenuTransitionStates={homeMenuTransitionStates} />
 
                 <CategoryLinks homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
-                <FunctionalButtons />
+                <FunctionalButtons homeMenuTransitionStates={homeMenuTransitionStates} />
             </div>
         </GetChildSize>
     );

@@ -16,7 +16,7 @@ import { categoryCardActiveHexagon } from '../lib/hexagonElements';
 import useTimeout from '../hooks/useTimeout';
 
 const baseClasses =
-    /* tw */ 'glassmorphic-backdrop pointer-events-none glassmorphic-level-3 lighting-gradient transform-hexagon  absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] regular-hexagon-named-class after-glassmorphic-grain';
+    /* tw */ 'glassmorphic-backdrop pointer-events-none lighting-gradient transform-hexagon absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path] regular-hexagon-named-class after-glassmorphic-grain';
 const baseTransitionClasses =
     /* tw */
     'transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)]';
@@ -41,9 +41,9 @@ export const Hexagon: FC<{
                 baseClasses,
                 baseTransitionClasses,
                 routeName === ROUTE.home
-                    ? '!to-white/10'
+                    ? '!to-white/10 [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:3]'
                     : routeName === ROUTE.category
-                      ? '!to-white/[0.025] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
+                      ? '!to-white/[0.025] ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
                       : // ROUTE.post
                         'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
@@ -90,7 +90,7 @@ export const HalfHexagon: FC<{
                 baseClasses,
                 baseTransitionClasses,
                 routeName === ROUTE.home
-                    ? '!to-white/10'
+                    ? '!to-white/10 [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:3]'
                     : routeName === ROUTE.category
                       ? '!to-white/0 ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.secondary-darker/0.5)]'
                       : // ROUTE.post
@@ -249,7 +249,6 @@ export const HexagonDebugThree: FC<{
 export const HexagonModalMenuButton: FC<{
     buttonData: FunctionalButtonRouteData;
     routeName: ROUTE;
-
     hamburgerMenuIsActive?: boolean;
 }> = memo(({ buttonData, routeName, hamburgerMenuIsActive = false }) => {
     const { svgIconPath, target } = buttonData;
@@ -278,11 +277,10 @@ export const HexagonModalMenuButton: FC<{
                 baseClasses,
                 baseTransitionClasses,
                 'pointer-events-auto hover-active:delay-0 hover-active:duration-100 hover-active:[--tw-scale-x:calc(var(--hexagon-scale-x)*1.1)] hover-active:[--tw-scale-y:calc(var(--hexagon-scale-y)*1.1)]',
-                hamburgerMenuIsActive ? '!glassmorphic-level-3' : 'glassmorphic-level-4',
                 routeName === ROUTE.home
                     ? '!to-white/10'
                     : routeName === ROUTE.category
-                      ? '!glassmorphic-level-none !to-white/10 [--hexagon-fill-color:theme(colors.theme.primary-darker/0.1)]'
+                      ? '!to-white/10 ![--glassmorphic-backdrop-blur:0] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.1)]'
                       : 'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]', // ROUTE.post
             )}
             style={

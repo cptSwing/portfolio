@@ -18,7 +18,7 @@ const GlassmorphicClipped: FC<GlassmorphicProps> = (props) => {
     return (
         <div
             {...rest}
-            className={`${className} glassmorphic-backdrop glassmorphic-level-3 relative [clip-path:--glassmorphic-clipped-clip-path]`}
+            className={`${className} glassmorphic-backdrop relative [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:3] [clip-path:--glassmorphic-clipped-clip-path]`}
             style={{ ...style, '--glassmorphic-clipped-clip-path': clipPath } as CSSProperties}
         >
             <SvgGlassFilter name={uuid} innerShadowRadius={innerShadowRadius} strokeRadius={strokeRadius} />
@@ -80,7 +80,9 @@ export const GlassmorphicButtonWrapper: FC<{
                     lightingGradient ? 'lighting-gradient' : '',
                     'pointer-events-auto aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[--hexagon-inner-shadow-color,--hexagon-lighting-gradient-counter-rotation,backdrop-filter]',
                     'group-hover-active:!scale-x-[1.05] group-hover-active:!scale-y-[1.05] group-hover-active:![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]',
-                    isActive ? 'glassmorphic-level-4 ![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]' : 'glassmorphic-level-3',
+                    isActive
+                        ? '[--glassmorphic-backdrop-blur:16px] [--glassmorphic-backdrop-saturate:1.5] ![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]'
+                        : '[--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:3]',
                     routeName === ROUTE.post
                         ? '[--hexagon-fill-color:theme(colors.theme.primary/0.5)] [--hexagon-inner-shadow-color:transparent] [--hexagon-stroke-color:transparent]'
                         : '[--hexagon-fill-color:theme(colors.theme.secondary/0.35)] [--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter/0.25)] [--hexagon-stroke-color:theme(colors.theme.primary-lighter/0.5)]',

@@ -122,7 +122,7 @@ const HamburgerMenuButton: FC<{
             style={
                 {
                     zIndex,
-                    '--hamburger-menu-button-scale': canTransition ? (isRootItem ? scale : 1) : 0.75,
+                    '--hamburger-menu-button-scale': canTransition ? (isRootItem ? Math.max(scale ?? 0, 0.65) : 1) : 0.75,
                     '--hamburger-menu-button-icon-mask': menuItemIconPath,
                     '--hamburger-menu-button-icon-size': (menuIconSize ?? 50) + '%',
                     '--hamburger-menu-button-transition-delay-multiplier': isRadialCenter ? 0 : arrayIndex,

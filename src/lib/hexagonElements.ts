@@ -2,8 +2,14 @@
 // x: -50 = hex sits on the parent's X:0; total width = 100
 // y: -43.3 = hex sits on parent's Y:0 (total height 86.6)
 
-import { ROUTE } from '../types/enums';
-import { HexagonRouteData, HexagonTransformData, CategoryLinkButtonRouteData, FunctionalButtonRouteData } from '../types/types';
+import { CATEGORY, ROUTE } from '../types/enums';
+import {
+    HexagonRouteData,
+    HexagonTransformData,
+    CategoryLinkButtonRouteData,
+    FunctionalButtonRouteData,
+    HexagonRouteDataTransformOffsets,
+} from '../types/types';
 import { getMenuButtonPosition } from './menuFunctions';
 import { useZustand } from './zustand';
 
@@ -927,12 +933,12 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
         [ROUTE.home]: {
             position: {
                 x: 150,
-                y: 130,
+                y: 129.9,
             },
             rotation: 0,
             isHalf: false,
             scale: 0.35,
-            counterRotate: true,
+            counterRotate: false,
         },
         [ROUTE.category]: {
             position: {
@@ -1114,6 +1120,39 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
     },
 ];
 
+export const functionalButtonHamburgerOffsets: Record<keyof typeof CATEGORY, HexagonRouteDataTransformOffsets> = {
+    'code': {
+        [ROUTE.home]: {
+            position: {
+                x: 170.5,
+                y: 141.5,
+            },
+            rotation: -60,
+            scale: 0.25,
+        },
+    },
+    '3d': {
+        [ROUTE.home]: {
+            position: {
+                x: 129.5,
+                y: 142.5,
+            },
+            rotation: 60,
+            scale: 0.25,
+        },
+    },
+    'log': {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 106,
+            },
+            rotation: 180,
+            scale: 0.25,
+        },
+    },
+};
+
 export const backgroundHexagons: HexagonRouteData[] = [
     // Only in Category
     {
@@ -1280,16 +1319,6 @@ export const brandTransformData: HexagonRouteData = {
         isHalf: false,
         scale: 1,
     },
-    //     [ROUTE.category]: {
-    //     position: {
-    //         x: 312.5,
-    //         y: 227.5,
-    //     },
-    //     rotation: -420,
-    //     isHalf: false,
-    //     scale: 1,
-    //
-    // },
     [ROUTE.post]: {
         position: {
             x: -45,
@@ -1298,5 +1327,65 @@ export const brandTransformData: HexagonRouteData = {
         rotation: -30,
         isHalf: false,
         scale: 0,
+    },
+};
+
+export const brandTransformOffsets: Record<keyof typeof CATEGORY, HexagonRouteDataTransformOffsets> = {
+    'code': {
+        [ROUTE.home]: {
+            position: {
+                x: 225,
+                y: 173.2,
+            },
+            rotation: -60,
+        },
+    },
+    '3d': {
+        [ROUTE.home]: {
+            position: {
+                x: 75,
+                y: 173.2,
+            },
+            rotation: 60,
+        },
+    },
+    'log': {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 43.3,
+            },
+            rotation: 180,
+        },
+    },
+};
+
+export const brandBlurbOffsets: Record<keyof typeof CATEGORY, HexagonRouteDataTransformOffsets> = {
+    'code': {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: -60,
+        },
+    },
+    '3d': {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 60,
+        },
+    },
+    'log': {
+        [ROUTE.home]: {
+            position: {
+                x: 150,
+                y: 129.9,
+            },
+            rotation: 180,
+        },
     },
 };

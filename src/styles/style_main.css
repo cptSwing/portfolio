@@ -138,46 +138,6 @@
     .transform-hexagon {
         @apply !transform-3d translate-x-[--hexagon-translate-x] translate-y-[--hexagon-translate-y] rotate-[--hexagon-rotate] scale-x-[--hexagon-scale-x] scale-y-[--hexagon-scale-y];
     }
-
-    .glassmorphic-level-none {
-        @apply [--glassmorphic-backdrop-blur:0] [--glassmorphic-backdrop-saturate:1];
-    }
-
-    .glassmorphic-level-1 {
-        @apply [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.25];
-    }
-
-    .glassmorphic-level-2 {
-        @apply [--glassmorphic-backdrop-blur:4px] [--glassmorphic-backdrop-saturate:1.5];
-    }
-
-    .glassmorphic-level-3 {
-        @apply [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:1.5];
-    }
-
-    .glassmorphic-level-4 {
-        @apply [--glassmorphic-backdrop-blur:16px] [--glassmorphic-backdrop-saturate:1.5];
-    }
-}
-
-.\!glassmorphic-level-none {
-    @apply ![--glassmorphic-backdrop-blur:0] ![--glassmorphic-backdrop-saturate:1];
-}
-
-.\!glassmorphic-level-1 {
-    @apply ![--glassmorphic-backdrop-blur:2px] ![--glassmorphic-backdrop-saturate:1.25];
-}
-
-.\!glassmorphic-level-2 {
-    @apply ![--glassmorphic-backdrop-blur:4px] ![--glassmorphic-backdrop-saturate:1.5];
-}
-
-.\!glassmorphic-level-3 {
-    @apply ![--glassmorphic-backdrop-blur:8px] ![--glassmorphic-backdrop-saturate:1.5];
-}
-
-.\!glassmorphic-level-4 {
-    @apply ![--glassmorphic-backdrop-blur:16px] ![--glassmorphic-backdrop-saturate:1.5];
 }
 
 #root {

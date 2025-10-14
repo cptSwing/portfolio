@@ -2,7 +2,7 @@
     "code": {
         "id": 0,
         "title": "Code",
-        "categoryBlurb": "A frontend Javascript & React dev with a slant towards 3d content..",
+        "categoryBlurb": "React,\nTypescript,\nThree.js",
         "posts": [
             {
                 "id": 0,
@@ -371,7 +371,7 @@
     "3d": {
         "id": 1,
         "title": "3D",
-        "categoryBlurb": "..a natural transition since I started out as a game artist / 3D generalist.",
+        "categoryBlurb": "Game Art,\n3d Models,\nShading",
         "posts": [
             {
                 "id": 5,
@@ -958,7 +958,7 @@
     "log": {
         "id": 3,
         "title": "Log",
-        "categoryBlurb": "And in other news..",
+        "categoryBlurb": "In other news..",
         "posts": [
             {
                 "id": 18,
