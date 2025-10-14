@@ -1,23 +1,22 @@
 import { RefObject, useEffect, useState } from 'react';
 
-function useMountTransition(targetElement: RefObject<Element | null>, showTargetElement: boolean, transitionClassName: string) {
+const useMountTransition = (target: RefObject<Element | null>, showTarget: boolean, classesOnMount: string[]) => {
     const [shouldMount, setShouldMount] = useState(false);
 
     useEffect(() => {
-        if (showTargetElement) {
+        if (showTarget) {
             setShouldMount(true);
         }
-    }, [showTargetElement]);
+    }, [showTarget]);
 
     useEffect(() => {
-        if (targetElement.current) {
+        if (target.current) {
             if (shouldMount) {
-                targetElement.current.classList.add(transitionClassName);
+                target.current.classList.add(...classesOnMount);
             }
 
-            if (!showTargetElement) {
-                targetElement.current.classList.remove(transitionClassName);
-                targetElement.current.addEventListener('transitionend', handleTransitionEnd);
+            if (!showTarget) {
+                target.current.classList.remove(...classesOnMount);
 
                 function handleTransitionEnd(this: Element, event: Event) {
                     if (event.target === event.currentTarget) {
@@ -25,11 +24,13 @@ function useMountTransition(targetElement: RefObject<Element | null>, showTarget
                         setShouldMount(false);
                     }
                 }
+
+                target.current.addEventListener('transitionend', handleTransitionEnd);
             }
         }
-    }, [shouldMount, showTargetElement, targetElement, transitionClassName]);
+    }, [shouldMount, showTarget, target, classesOnMount]);
 
     return shouldMount;
-}
+};
 
 export default useMountTransition;
