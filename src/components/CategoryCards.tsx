@@ -10,10 +10,10 @@ import { useZustand } from '../lib/zustand';
 
 const CategoryCards: FC<{
     posts: Post[];
-    activeIndexState: [number, React.Dispatch<React.SetStateAction<number>>];
-}> = ({ posts, activeIndexState }) => {
+}> = ({ posts }) => {
     const containerSize = useContext(GetChildSizeContext);
     const categoryHexagons_Memo = useMemo(() => getCategoryHexagons(posts.length), [posts]);
+    const postIndex = useZustand((store) => store.values.postIndex);
 
     return (
         <>
@@ -24,14 +24,14 @@ const CategoryCards: FC<{
                     post={post}
                     containerSize={containerSize}
                     cardIndex={idx}
-                    activeIndexState={activeIndexState}
+                    activePostCardIndex={postIndex}
                 />
             ))}
             <TitleClients
-                title={posts[activeIndexState[0]]?.title}
+                title={posts[postIndex]?.title}
                 containerSize={containerSize}
-                subTitle={posts[activeIndexState[0]]?.subTitle}
-                clients={posts[activeIndexState[0]]?.clients}
+                subTitle={posts[postIndex]?.subTitle}
+                clients={posts[postIndex]?.clients}
             />
         </>
     );
@@ -44,6 +44,8 @@ const scaling = {
     imageAtFront: 0.7,
 };
 
+const store_setPostIndex = useZustand.getState().methods.store_setPostIndex;
+
 const CategoryHexagon: FC<{
     allButtons: HexagonTransformData[];
     post: Post;
@@ -52,14 +54,14 @@ const CategoryHexagon: FC<{
         height: number;
     };
     cardIndex: number;
-    activeIndexState: [number, React.Dispatch<React.SetStateAction<number>>];
-}> = ({ allButtons, post, containerSize, cardIndex, activeIndexState }) => {
+    activePostCardIndex: number;
+}> = ({ allButtons, post, containerSize, cardIndex, activePostCardIndex }) => {
     const { title, cardImage } = post;
-    const [activeIndex, setActiveIndex] = activeIndexState;
-    const isAtFront = activeIndex === cardIndex;
+
+    const isAtFront = activePostCardIndex === cardIndex;
     const cardTransition = useZustand((state) => state.values.cardTransition);
 
-    const thisButtonIndex = getGridAreaIndex(activeIndex, cardIndex, allButtons.length);
+    const thisButtonIndex = getGridAreaIndex(activePostCardIndex, cardIndex, allButtons.length);
     const navigate = useNavigate();
 
     const cssVariables_Memo = useMemo(() => {
@@ -134,7 +136,7 @@ const CategoryHexagon: FC<{
         if (isAtFront) {
             navigate(post.id.toString());
         } else {
-            setActiveIndex(cardIndex);
+            store_setPostIndex(cardIndex);
         }
     }
 };
