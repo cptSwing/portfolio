@@ -8,10 +8,11 @@ import { ROUTE } from '../types/enums';
 import { database } from '../types/exportTyped';
 import { config } from '../types/exportTyped';
 import useTimeout from '../hooks/useTimeout';
+import { CategoryName, RotateShortestDistance, TransitionTargetReached } from '../types/types';
 const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
-const Brand: FC<{ homeMenuTransitionStates: ['code' | '3d' | 'log' | null, boolean] }> = memo(({ homeMenuTransitionStates }) => {
-    const [homeMenuTransitionTarget, homeMenuTransitionTargetReached] = homeMenuTransitionStates;
+const Brand: FC<{ homeMenuTransitionState: [CategoryName | null, TransitionTargetReached, RotateShortestDistance] }> = memo(({ homeMenuTransitionState }) => {
+    const [homeMenuTransitionTarget, homeMenuTransitionTargetReached] = homeMenuTransitionState;
 
     const routeName = useZustand((store) => store.values.routeData.name);
     const containerSize = useContext(GetChildSizeContext);

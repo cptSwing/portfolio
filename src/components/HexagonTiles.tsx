@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useLayoutEffect, useMemo, useState } from 'react';
 import { classNames } from 'cpts-javascript-utilities';
-import { CategoryName } from '../types/types';
+import { CategoryName, RotateShortestDistance, TransitionTargetReached } from '../types/types';
 import { regularHexagons, halfRegularHexagons } from '../lib/hexagonElements';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
@@ -12,19 +12,24 @@ import CategoryLinks from './CategoryLinks';
 import FunctionalButtons from './FunctionalButtons';
 import GetChildSize from './utilityComponents/GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
+import useRotateDegrees from '../hooks/useRotateDegrees';
+import useMouseRotate from '../hooks/useMouseRotate';
 
 const HexagonTiles = () => {
-    const homeMenuTransitionStateUpdates = useState<[keyof typeof CATEGORY | null, TransitionTargetReached]>([null, true]);
-    const [homeMenuTransitionStates, setHomeMenuTransitionStates] = homeMenuTransitionStateUpdates;
-    const [homeMenuTransitionTarget, homeMenuTransitionTargetReached] = homeMenuTransitionStates;
-
     const routeName = useZustand((store) => store.values.routeData.name);
 
-    useEffect(() => {
+    const homeMenuTransitionStateUpdates = useState<[CategoryName | null, TransitionTargetReached, RotateShortestDistance]>([null, true, true]);
+    const [homeMenuTransitionState, setHomeMenuTransitionState] = homeMenuTransitionStateUpdates;
+    const [homeMenuTransitionTarget, homeMenuTransitionTargetReached, shortestDistance] = homeMenuTransitionState;
+
+    useMouseRotate(setHomeMenuTransitionState, routeName === ROUTE.home);
+    const rotationDegrees = useRotateDegrees(homeMenuTransitionTarget, shortestDistance, routeName === ROUTE.home);
+
+    useLayoutEffect(() => {
         if (routeName !== ROUTE.home) {
-            setHomeMenuTransitionStates([null, true]);
+            setHomeMenuTransitionState([null, true, true]);
         }
-    }, [routeName, setHomeMenuTransitionStates]);
+    }, [routeName, setHomeMenuTransitionState]);
 
     const navMenuTransitionClasses_Memo = useMemo(
         () => getHomeMenuTransitionClasses(homeMenuTransitionTarget, homeMenuTransitionTargetReached),
@@ -38,12 +43,12 @@ const HexagonTiles = () => {
                     'container-size pointer-events-none absolute z-0 size-full transform-gpu overflow-visible transition-transform duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)]',
                     routeName === ROUTE.home ? navMenuTransitionClasses_Memo : '',
                 )}
+                style={{ '--home-menu-rotation': rotationDegrees + 'deg' } as CSSProperties}
                 onTransitionEnd={({ target, currentTarget }) => {
                     if (target === currentTarget) {
                         const elementRotation = getCurrentElementRotation(currentTarget);
-                        if (homeMenuTransitionTarget && homeMenuRotationValues[homeMenuTransitionTarget].deg === elementRotation) {
-                            // Set transition target as reached:
-                            setHomeMenuTransitionStates(([prevTarget, _prevReached]) => [prevTarget, true]);
+                        if (homeMenuTransitionTarget && homeMenuRotationValues[homeMenuTransitionTarget] === elementRotation) {
+                            setHomeMenuTransitionState(([prevTarget]) => [prevTarget, true, true]); // Set transition target as reached
                         }
                     }
                 }}
@@ -59,10 +64,10 @@ const HexagonTiles = () => {
                 ))}
 
                 <Category show={routeName === ROUTE.category} />
-                <Brand homeMenuTransitionStates={homeMenuTransitionStates} />
+                <Brand homeMenuTransitionState={homeMenuTransitionState} />
 
                 <CategoryLinks homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
-                <FunctionalButtons homeMenuTransitionStates={homeMenuTransitionStates} />
+                <FunctionalButtons homeMenuTransitionState={homeMenuTransitionState} />
             </div>
         </GetChildSize>
     );
@@ -76,8 +81,6 @@ function getHomeMenuTransitionClasses(category: CategoryName | null, transitionC
     let classNames = homeMenuTransitionGenericClasses.base;
 
     if (category && Object.keys(CATEGORY).includes(category)) {
-        classNames = `${classNames} ${homeMenuRotationValues[category].class}`;
-
         if (transitionCompleted) {
             classNames = `${classNames} ${homeMenuTransitionGenericClasses.completed} ${homeMenuTransitionBespokeClasses[category].completed}`;
         } else {
@@ -89,10 +92,10 @@ function getHomeMenuTransitionClasses(category: CategoryName | null, transitionC
 
 // Local Values
 
-const homeMenuRotationValues: Record<CategoryName, { deg: number; class: string }> = {
-    'code': { deg: 60, class: /* tw */ '[--home-menu-rotation:60deg]' },
-    '3d': { deg: -60, class: /* tw */ '[--home-menu-rotation:-60deg]' },
-    'log': { deg: 180, class: /* tw */ '[--home-menu-rotation:180deg]' },
+const homeMenuRotationValues: Record<CategoryName, number> = {
+    'code': 60,
+    '3d': -60,
+    'log': 180,
 };
 
 const homeMenuTransitionGenericClasses = {
@@ -121,9 +124,3 @@ const homeMenuTransitionBespokeClasses: Record<CategoryName, { transitioning: st
             /* tw */ '[&_:is(.navigation-button-hexagon-class-code,.navigation-button-hexagon-class-3d)]:[--glassmorphic-backdrop-blur:3px] [&_:is(.navigation-button-hexagon-class-code,.navigation-button-hexagon-class-3d)]:[--glassmorphic-backdrop-saturate:2] [&_:is(.navigation-button-hexagon-class-code,.navigation-button-hexagon-class-3d)]:scale-95 [&_.navigation-button-hexagon-class-log]:animate-grow-shrink [&_.navigation-button-hexagon-class-log]:[--glassmorphic-backdrop-saturate:4] [&_.navigation-button-hexagon-class-log]:scale-[1.2] [&_.regular-hexagon-named-class:not(.regular-hexagon-center-named-class)]:has-[.navigation-button-hexagon-class-log:hover]:[--glassmorphic-backdrop-saturate:1.25] [&_.regular-hexagon-named-class:not(.regular-hexagon-center-named-class)]:has-[.navigation-button-hexagon-class-log:hover]:!delay-[calc(var(--ui-animation-menu-transition-duration)/2*var(--regular-hexagon-transition-random-factor))]',
     },
 };
-
-// [&_.navigation-button-hexagon-class-3d]:[--glassmorphic-backdrop-blur:3px]
-
-// Local Types
-
-type TransitionTargetReached = boolean;

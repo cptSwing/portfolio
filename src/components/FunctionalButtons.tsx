@@ -2,19 +2,21 @@ import { functionalButtonHamburgerOffsets, functionalButtons } from '../lib/hexa
 import { useZustand } from '../lib/zustand';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { FC, memo, useContext, useMemo } from 'react';
-import { FunctionalButtonRouteData } from '../types/types';
+import { CategoryName, FunctionalButtonRouteData, RotateShortestDistance, TransitionTargetReached } from '../types/types';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { calcCSSVariables, offsetHexagonTransforms } from '../lib/shapeFunctions';
 import { useNavigate } from 'react-router-dom';
 import { MenuButtonSvg } from './HexagonShapes';
 import { ROUTE } from '../types/enums';
 
-const FunctionalButtons: FC<{ homeMenuTransitionStates: ['code' | '3d' | 'log' | null, boolean] }> = ({ homeMenuTransitionStates }) =>
+const FunctionalButtons: FC<{ homeMenuTransitionState: [CategoryName | null, TransitionTargetReached, RotateShortestDistance] }> = ({
+    homeMenuTransitionState,
+}) =>
     functionalButtons.map((functionalButtonData, idx) => (
         <FunctionalButton
             key={`hex-functional-button-index-${idx}`}
             buttonData={functionalButtonData}
-            homeMenuTransitionStates={functionalButtonData.name === 'hamburger' ? homeMenuTransitionStates : undefined}
+            homeMenuTransitionState={functionalButtonData.name === 'hamburger' ? homeMenuTransitionState : undefined}
         />
     ));
 
@@ -22,10 +24,10 @@ export default FunctionalButtons;
 
 const FunctionalButton: FC<{
     buttonData: FunctionalButtonRouteData;
-    homeMenuTransitionStates?: ['code' | '3d' | 'log' | null, boolean];
-}> = memo(({ buttonData, homeMenuTransitionStates }) => {
+    homeMenuTransitionState?: [CategoryName | null, TransitionTargetReached, RotateShortestDistance];
+}> = memo(({ buttonData, homeMenuTransitionState }) => {
     const { name, target, svgIconPath } = buttonData;
-    const [homeMenuTransitionTarget, homeMenuTransitionTargetReached] = homeMenuTransitionStates ?? [];
+    const [homeMenuTransitionTarget, homeMenuTransitionTargetReached] = homeMenuTransitionState ?? [];
     const routeName = useZustand((store) => store.values.routeData.name);
     const counterRotate = buttonData[routeName].counterRotate;
 

@@ -2,7 +2,7 @@ import { classNames } from 'cpts-javascript-utilities';
 import { CSSProperties, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
 import { calcCSSVariables } from '../lib/shapeFunctions';
 import { CATEGORY, ROUTE } from '../types/enums';
-import { Category, CategoryName, CategoryLinkButtonRouteData } from '../types/types';
+import { Category, CategoryName, CategoryLinkButtonRouteData, TransitionTargetReached, RotateShortestDistance } from '../types/types';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { useZustand } from '../lib/zustand';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,10 @@ import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { categoryLinkButtons } from '../lib/hexagonElements';
 
 const CategoryLinks: FC<{
-    homeMenuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
+    homeMenuTransitionStateUpdates: [
+        [CategoryName | null, TransitionTargetReached, RotateShortestDistance],
+        React.Dispatch<React.SetStateAction<[CategoryName | null, TransitionTargetReached, RotateShortestDistance]>>,
+    ];
 }> = ({ homeMenuTransitionStateUpdates }) => {
     const [positionOnCategoryLinks, setPositionOnCategoryLinks] = useState<[string, string]>(['-100px', '-86.6px']);
 
@@ -40,7 +43,10 @@ export default CategoryLinks;
 
 const CategoryLinkButton: FC<{
     buttonData: CategoryLinkButtonRouteData;
-    homeMenuTransitionStateUpdates: [[CategoryName | null, boolean], React.Dispatch<React.SetStateAction<[CategoryName | null, boolean]>>];
+    homeMenuTransitionStateUpdates: [
+        [CategoryName | null, TransitionTargetReached, RotateShortestDistance],
+        React.Dispatch<React.SetStateAction<[CategoryName | null, TransitionTargetReached, RotateShortestDistance]>>,
+    ];
     setPositionOnCategoryLinks: React.Dispatch<React.SetStateAction<[string, string]>>;
 }> = memo(({ buttonData, homeMenuTransitionStateUpdates, setPositionOnCategoryLinks }) => {
     const { title, name, target } = buttonData;
@@ -97,8 +103,8 @@ const CategoryLinkButton: FC<{
     }
 
     function handleMouseEnter() {
-        if (routeName === ROUTE.home && menuTransitionTargetReached && menuTransitionTarget !== name) {
-            setMenuTransitionStates([name as CategoryName, false]);
+        if (routeName === ROUTE.home && menuTransitionTarget !== name && menuTransitionTargetReached) {
+            setMenuTransitionStates([name, false, true]);
             // ^^^  Prevent parent from prematurely rotating again, and again, and again
         }
     }
