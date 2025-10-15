@@ -15,11 +15,11 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive
     viewSource,
 }) => {
     const [content, setContent] = useState<PostDetailElementContent | null>(null);
-    useEffect(() => () => setContent(null), []);
+    useEffect(() => setContent(null), [stack, clients, viewLive, viewSource]);
 
     return (
         <>
-            <div className="relative flex items-start justify-end font-lato leading-none tracking-tight">
+            <div className="relative flex items-start justify-end">
                 {stack && (
                     <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
@@ -60,7 +60,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive
                     <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
                             title={'Clients / Users'}
-                            jsx={<Clients clients={clients} dataBlockId="clients-content-parent" extraClassNames="gap-x-0.5 " />}
+                            jsx={<Clients clients={clients} dataBlockId="clients-content-parent" />}
                             isLast={true}
                             content={content}
                             setContent={setContent}
@@ -74,7 +74,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive
 
             <div
                 className={classNames(
-                    'relative ml-auto mr-0 font-lato text-theme-primary transition-[clip-path] clip-inset-b-[-100%] sm:text-2xs lg:text-xs',
+                    'relative -mt-2 ml-auto mr-0 min-h-fit font-lato text-theme-primary transition-[clip-path] clip-inset-b-[-100%] sm:text-2xs lg:text-xs',
                     content ? 'clip-inset-l-0' : 'clip-inset-l-full',
                 )}
             >
@@ -102,16 +102,25 @@ const SinglePostDetailElement: FC<{
     );
 
     return (
-        <button
+        <div
             className={classNames(
-                'group flex size-full cursor-pointer items-center justify-end pl-4 hover-active:bg-theme-primary/75 sm:-ml-1.5 xl:-ml-1',
+                'group flex size-full cursor-pointer items-center justify-end pb-px pl-4 hover-active:bg-theme-primary/75 sm:-ml-1.5 xl:-ml-1',
                 isSelected ? 'bg-theme-primary' : 'bg-theme-primary-lighter',
-                isLast ? 'pr-1' : 'pr-2',
+                isLast ? 'pr-0.5' : 'pr-3',
             )}
             style={{
                 clipPath: clipPath_Memo,
             }}
+            role="button"
+            tabIndex={-1}
             onClick={() => {
+                if (!content || !isSelected) {
+                    setContent(jsx);
+                } else {
+                    setContent(null);
+                }
+            }}
+            onKeyDown={() => {
                 if (!content || !isSelected) {
                     setContent(jsx);
                 } else {
@@ -121,7 +130,7 @@ const SinglePostDetailElement: FC<{
         >
             <div
                 className={classNames(
-                    'inline-block text-nowrap pt-px font-semibold uppercase leading-none group-hover-active:text-theme-text-background sm:text-3xs md:text-2xs xl:text-xs',
+                    'inline-block text-nowrap pt-px uppercase group-hover-active:text-theme-text-background',
                     isSelected ? 'text-theme-text-background' : 'text-theme-primary-darker',
                 )}
             >
@@ -131,11 +140,11 @@ const SinglePostDetailElement: FC<{
             {/* ChevronDown */}
             <div
                 className={classNames(
-                    'ml-1 inline-block aspect-square h-4 transform-gpu transition-transform [mask-image:url(/svg/ChevronDownOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%] group-hover-active:bg-theme-text-background',
+                    'ml-1 inline-block aspect-square h-[90%] transform-gpu transition-transform [mask-image:url(/svg/ChevronDownOutline.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%] group-hover-active:bg-theme-text-background',
                     isSelected ? 'rotate-0 bg-theme-text-background' : 'rotate-90 bg-theme-primary-darker',
                 )}
             />
-        </button>
+        </div>
     );
 };
 
@@ -143,8 +152,8 @@ const ToolStack: FC<{ stack: NonNullable<Post['stack']> } & PostDetailElementCon
     return (
         <div
             data-block-id={dataBlockId}
-            className="grid gap-1"
-            // dir='rtl'
+            className="grid max-h-14 min-h-6 gap-1"
+            dir="rtl"
             style={{ gridTemplateColumns: `repeat(${stack.length < 4 ? stack.length : 4}, minmax(0, 1fr)` }}
         >
             {stack.map((enumKey, idx) => (
@@ -162,17 +171,17 @@ const ToolStack: FC<{ stack: NonNullable<Post['stack']> } & PostDetailElementCon
 
 const ViewLive: FC<{ viewLive: NonNullable<Post['viewLive']> } & PostDetailElementContentProps> = ({ viewLive, dataBlockId }) => {
     return (
-        <div data-block-id={dataBlockId} dir="rtl" className="grid grid-cols-3 items-start gap-1">
+        <div data-block-id={dataBlockId} dir="rtl" className="grid h-16 grid-cols-3 items-start gap-1">
             {viewLive.map(({ url, title, description }, idx) => (
                 <div
                     key={idx}
-                    className="group max-h-[4vh] bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker outline outline-1 -outline-offset-2 outline-theme-text-background transition-[max-height,color,background-color,outline-color] hover-active:max-h-full hover-active:bg-theme-primary/50 hover-active:text-theme-text-background"
+                    className="group h-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker outline outline-1 -outline-offset-2 outline-theme-text-background transition-[max-height,color,background-color,outline-color] hover-active:max-h-full hover-active:bg-theme-primary/50 hover-active:text-theme-text-background"
                 >
                     <a className="leading-none no-underline group-hover-active:underline" href={url}>
                         {title}
                     </a>
                     <Markdown
-                        className="overflow-hidden pt-px text-left text-theme-text/60 transition-[clip-path] [clip-path:polygon(0%_0%,100%_0%,100%_1.25vh,0%_1.25vh)] group-hover-active:text-theme-text-background/70 group-hover-active:[clip-path:polygon(0%_0%,100%_0%,100%_100%,0%_100%)]"
+                        className="overflow-hidden pt-px text-left text-theme-text/60 group-hover-active:text-theme-text-background/70"
                         remarkPlugins={[remarkBreaks]}
                     >
                         {description}
@@ -185,9 +194,9 @@ const ViewLive: FC<{ viewLive: NonNullable<Post['viewLive']> } & PostDetailEleme
 
 const ViewSource: FC<{ viewSource: NonNullable<Post['viewSource']> } & PostDetailElementContentProps> = ({ viewSource, dataBlockId }) => {
     return (
-        <div data-block-id={dataBlockId}>
+        <div data-block-id={dataBlockId} className="h-6">
             <a
-                className="block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline"
+                className="block w-full bg-theme-secondary-darker/20 px-2 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline"
                 href={viewSource.href}
             >
                 {viewSource.alt}
@@ -196,35 +205,32 @@ const ViewSource: FC<{ viewSource: NonNullable<Post['viewSource']> } & PostDetai
     );
 };
 
-export const Clients: FC<{ clients: NonNullable<Post['clients']>; extraClassNames?: string } & PostDetailElementContentProps> = ({
-    clients,
-    extraClassNames,
-    dataBlockId,
-}) => {
+const Clients: FC<{ clients: NonNullable<Post['clients']> } & PostDetailElementContentProps> = ({ clients, dataBlockId }) => {
     return (
         <div
             data-block-id={dataBlockId}
-            className={`relative grid ${extraClassNames}`}
+            className={'relative grid h-20 gap-x-0'}
             style={{ gridTemplateColumns: `repeat(${clients.length < 4 ? clients.length : 4}, minmax(0, 1fr)` }}
         >
             {clients.map(({ abbreviation, name, svgUrl }, idx) => (
                 <div key={idx + abbreviation + name} className="group relative flex flex-col items-center justify-start">
                     <div
                         className={classNames(
-                            'before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-theme-primary-darker before:matrix-rotate-90 before:[clip-path:--hexagon-clip-path-full-stroke]',
-                            'client-hexagon-class pointer-events-auto relative flex aspect-hex-flat w-[--hexagon-clip-path-width] items-center justify-center matrix-scale-[0.9]',
+                            'before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-theme-text-background before:[clip-path:--hexagon-clip-path-full-wider-stroke]',
+                            'pointer-events-auto relative -mx-2 flex aspect-hex-flat w-[--hexagon-clip-path-width] items-center justify-center bg-theme-secondary-darker/20 matrix-scale-[0.85] [clip-path:--hexagon-clip-path-full] group-hover-active:bg-theme-primary/50',
+                            'after:absolute after:left-0 after:top-0 after:-z-10 after:size-full after:bg-theme-secondary-darker/20 after:[clip-path:--hexagon-clip-path-full-stroke]',
                         )}
                     >
                         {svgUrl ? (
-                            <img className="w-2/5" alt={abbreviation} src={svgUrl} />
+                            <img className="size-full matrix-scale-50" alt={abbreviation} src={svgUrl} />
                         ) : (
-                            <span className="flex select-none items-center justify-center rounded-2xl font-lato text-lg text-theme-text-background">
+                            <span className="flex select-none items-center justify-center rounded-2xl font-lato text-lg font-normal text-theme-primary-darker before:absolute before:left-[25%] before:top-[25%] before:-z-10 before:size-[50%] before:rounded-2xl before:bg-theme-text-background">
                                 {abbreviation}
                             </span>
                         )}
                     </div>
 
-                    <span className="pointer-events-none -mt-[12.5%] scale-y-90 text-center font-fjalla-one text-xs text-theme-text opacity-0 before:absolute before:left-0 before:top-0 before:-z-10 before:-mt-px before:size-full before:rounded-sm before:bg-theme-text-background/50 group-hover-active:opacity-100">
+                    <span className="pointer-events-none absolute bottom-0 z-10 w-full text-center font-fjalla-one text-2xs font-light tracking-wide text-theme-root-background/70 opacity-0 group-hover-active:opacity-100">
                         {name}
                     </span>
                 </div>

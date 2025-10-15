@@ -5,7 +5,6 @@ import { HexagonTransformData, Post } from '../types/types';
 import { classNames } from 'cpts-javascript-utilities';
 import { useNavigate } from 'react-router-dom';
 import FitText from './utilityComponents/FitText';
-import { Clients } from './PostDetails';
 import { useZustand } from '../lib/zustand';
 
 const CategoryCards: FC<{
@@ -198,11 +197,7 @@ const TitleClients: FC<{
                             <span className="relative mx-auto mt-[-1.25cqh] inline-block scale-y-90 font-fjalla-one tracking-wider text-theme-secondary-lighter [font-size:calc(1cqh*1.75)] [line-height:calc(1cqh*2)] before:absolute before:left-[-10%] before:top-[-15%] before:-z-10 before:h-[125%] before:w-[120%] before:bg-theme-primary-darker">
                                 Clients:
                             </span>
-                            <Clients
-                                clients={clients}
-                                dataBlockId={''}
-                                extraClassNames="[&_.client-hexagon-class]:before:matrix-scale-[var(--client-hexagon-scale,1)]"
-                            />
+                            <CategoryCardClients clients={clients} />
                         </div>
                     )}
 
@@ -231,6 +226,35 @@ const TitleClients: FC<{
                     )}
                 </div>
             )}
+        </div>
+    );
+};
+
+const CategoryCardClients: FC<{ clients: NonNullable<Post['clients']> }> = ({ clients }) => {
+    return (
+        <div className={'relative grid h-20'} style={{ gridTemplateColumns: `repeat(${clients.length < 4 ? clients.length : 4}, minmax(0, 1fr)` }}>
+            {clients.map(({ abbreviation, name, svgUrl }, idx) => (
+                <div key={idx + abbreviation + name} className="group relative flex flex-col items-center justify-start">
+                    <div
+                        className={classNames(
+                            'before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-theme-primary-darker before:matrix-rotate-90 before:matrix-scale-[var(--client-hexagon-scale,1)] before:[clip-path:--hexagon-clip-path-full-stroke]',
+                            'pointer-events-auto relative flex aspect-hex-flat w-[--hexagon-clip-path-width] items-center justify-center matrix-scale-[0.9]',
+                        )}
+                    >
+                        {svgUrl ? (
+                            <img className="w-2/5" alt={abbreviation} src={svgUrl} />
+                        ) : (
+                            <span className="flex select-none items-center justify-center rounded-2xl font-lato text-lg text-theme-text-background">
+                                {abbreviation}
+                            </span>
+                        )}
+                    </div>
+
+                    <span className="pointer-events-none -mt-[12.5%] scale-y-90 text-center font-fjalla-one text-xs text-theme-text opacity-0 before:absolute before:left-0 before:top-0 before:-z-10 before:-mt-px before:size-full before:rounded-sm before:bg-theme-text-background/50 group-hover-active:opacity-100">
+                        {name}
+                    </span>
+                </div>
+            ))}
         </div>
     );
 };
