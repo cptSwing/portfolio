@@ -30,7 +30,7 @@ export type ZustandStore = {
         breakpoint: BreakpointName | null;
         hamburgerMenuRect: Pick<DOMRect, 'x' | 'y' | 'width' | 'height'> | null;
         activeHamburgerMenuItemName: HamburgerMenuItem['name'];
-        postIndex: number | null;
+        postIndex: number;
         debug: {
             applyTransformMatrixFix: boolean;
         };
@@ -42,7 +42,7 @@ export type ZustandStore = {
         store_setBreakpoint: (breakpoint: BreakpointName | null) => void;
         store_toggleHamburgerMenu: (rect: ZustandStore['values']['hamburgerMenuRect']) => void;
         store_toggleActiveHamburgerItem: (newMenuState: ZustandStore['values']['activeHamburgerMenuItemName']) => void;
-        store_setPostIndex: (directionOrIndex: ('previous' | 'next') | number | null) => void;
+        store_setPostIndex: (directionOrIndex: ('previous' | 'next') | number) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
 };

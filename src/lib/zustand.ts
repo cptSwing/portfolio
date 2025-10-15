@@ -17,7 +17,7 @@ export const useZustand = create<ZustandStore>()(
             breakpoint: null,
             hamburgerMenuRect: null,
             activeHamburgerMenuItemName: 'DEFAULT',
-            postIndex: null,
+            postIndex: 0,
             debug: {
                 applyTransformMatrixFix: true,
             },
@@ -96,8 +96,8 @@ export const useZustand = create<ZustandStore>()(
     })),
 );
 
-function getNewPostIndex(oldIndex: number, postCount: number, directionOrIndex: number | 'previous' | 'next' | null) {
-    let newIndex: number | null;
+function getNewPostIndex(oldIndex: number, postCount: number, directionOrIndex: number | 'previous' | 'next') {
+    let newIndex: number;
     if (directionOrIndex === 'previous' || directionOrIndex === 'next') {
         newIndex = wrapAroundArray(oldIndex, postCount, directionOrIndex);
     } else {
