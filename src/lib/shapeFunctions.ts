@@ -9,6 +9,7 @@ import {
 } from '../types/types';
 import roundToDecimal from './roundToDecimal';
 import { categoryCardActive, categoryCardInactive, hexagonGridTransformCenter } from './hexagonElements';
+import isNumber from './isNumber';
 
 const {
     ui: {
@@ -106,36 +107,37 @@ export function transformCategoryHalfHexagons(
 ): HexagonRouteDataTransformOffsets {
     let returnOffsets = routeTransforms;
 
-    if (typeof imaginaryHexagonScale === 'number') {
+    if (isNumber(imaginaryHexagonScale)) {
+        const imaginaryHexagonScaleTyped = imaginaryHexagonScale as number;
         const oldPosition = returnOffsets.position;
         const newPosition = { ...oldPosition };
 
         let newRotation = returnOffsets.rotation;
-        const newScale = imaginaryHexagonScale / 2;
+        const newScale = imaginaryHexagonScaleTyped / 2;
 
         if (iris) {
             if (oldPosition.x < center.x) {
                 if (oldPosition.y < center.y) {
-                    newPosition.x = center.x - 12.5 * imaginaryHexagonScale;
-                    newPosition.y = center.y - 21.65 * imaginaryHexagonScale;
+                    newPosition.x = center.x - 12.5 * imaginaryHexagonScaleTyped;
+                    newPosition.y = center.y - 21.65 * imaginaryHexagonScaleTyped;
                 } else {
-                    newPosition.x = center.x - 25 * imaginaryHexagonScale;
+                    newPosition.x = center.x - 25 * imaginaryHexagonScaleTyped;
                     newPosition.y = center.y;
                 }
             } else if (oldPosition.x === center.x) {
                 if (newPosition.y < center.y) {
-                    newPosition.x = center.x + 12.5 * imaginaryHexagonScale;
-                    newPosition.y = center.y - 21.65 * imaginaryHexagonScale;
+                    newPosition.x = center.x + 12.5 * imaginaryHexagonScaleTyped;
+                    newPosition.y = center.y - 21.65 * imaginaryHexagonScaleTyped;
                 } else {
-                    newPosition.x = center.x - 12.5 * imaginaryHexagonScale;
-                    newPosition.y = center.y + 21.65 * imaginaryHexagonScale;
+                    newPosition.x = center.x - 12.5 * imaginaryHexagonScaleTyped;
+                    newPosition.y = center.y + 21.65 * imaginaryHexagonScaleTyped;
                 }
             } else {
                 if (oldPosition.y > center.y) {
-                    newPosition.x = center.x + 12.5 * imaginaryHexagonScale;
-                    newPosition.y = center.y + 21.65 * imaginaryHexagonScale;
+                    newPosition.x = center.x + 12.5 * imaginaryHexagonScaleTyped;
+                    newPosition.y = center.y + 21.65 * imaginaryHexagonScaleTyped;
                 } else {
-                    newPosition.x = center.x + 25 * imaginaryHexagonScale;
+                    newPosition.x = center.x + 25 * imaginaryHexagonScaleTyped;
                     newPosition.y = center.y;
                 }
             }
@@ -143,9 +145,9 @@ export function transformCategoryHalfHexagons(
             newRotation -= 120;
         } else {
             if (oldPosition.x < center.x) {
-                newPosition.x = center.x - 37.5 * imaginaryHexagonScale;
+                newPosition.x = center.x - 37.5 * imaginaryHexagonScaleTyped;
             } else if (oldPosition.x > center.x) {
-                newPosition.x = center.x + 37.5 * imaginaryHexagonScale;
+                newPosition.x = center.x + 37.5 * imaginaryHexagonScaleTyped;
             }
 
             let yOffset;
@@ -156,9 +158,9 @@ export function transformCategoryHalfHexagons(
             }
 
             if (oldPosition.y < center.y) {
-                newPosition.y = center.y - yOffset * imaginaryHexagonScale;
+                newPosition.y = center.y - yOffset * imaginaryHexagonScaleTyped;
             } else if (oldPosition.y > center.y) {
-                newPosition.y = center.y + yOffset * imaginaryHexagonScale;
+                newPosition.y = center.y + yOffset * imaginaryHexagonScaleTyped;
             }
         }
 

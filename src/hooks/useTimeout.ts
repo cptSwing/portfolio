@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import isNumber from '../lib/isNumber';
 
 // based on https://www.joshwcomeau.com/snippets/react-hooks/use-timeout/
 const useTimeout = (callback: () => void, delay_MS: number | null) => {
@@ -15,8 +16,8 @@ const useTimeout = (callback: () => void, delay_MS: number | null) => {
             clearTimeout(timeout_Ref.current);
         };
 
-        if (typeof delay_MS === 'number') {
-            timeout_Ref.current = setTimeout(cb, delay_MS);
+        if (isNumber(delay_MS)) {
+            timeout_Ref.current = setTimeout(cb, delay_MS!);
             return () => clearTimeout(timeout_Ref.current);
         }
     }, [delay_MS]);

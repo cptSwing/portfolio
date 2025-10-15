@@ -15,6 +15,7 @@ import GetChildSizeContext from '../../contexts/GetChildSizeContext';
 import usePostIndexNavigation from '../../hooks/usePostIndexNavigation';
 import useMountTransition from '../../hooks/useMountTransition';
 import { useZustand } from '../../lib/zustand';
+import isNumber from '../../lib/isNumber';
 
 const emptyPost: Post_T = {
     id: -1,
@@ -85,14 +86,14 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
                     <>
                         {/* Text/Image Blocks */}
                         {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
-                            const showCase = showCases && typeof useShowCaseIndex === 'number' ? showCases[useShowCaseIndex] : undefined;
+                            const showCase = showCases && isNumber(useShowCaseIndex) ? showCases[useShowCaseIndex!] : undefined;
                             return (
                                 <TextImageBlock
                                     key={`${idx}-${useShowCaseIndex}`}
                                     text={text}
                                     blockIndex={idx}
                                     showCase={showCase}
-                                    lightboxCallback={() => typeof useShowCaseIndex === 'number' && setLightBoxSlide_Cb(useShowCaseIndex)}
+                                    lightboxCallback={() => isNumber(useShowCaseIndex) && setLightBoxSlide_Cb(useShowCaseIndex!)}
                                 />
                             );
                         })}
