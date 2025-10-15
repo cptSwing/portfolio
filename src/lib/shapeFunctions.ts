@@ -8,7 +8,7 @@ import {
     FunctionalButtonRouteData,
 } from '../types/types';
 import roundToDecimal from './roundToDecimal';
-import { categoryCardActiveHexagon, categoryCardInactiveHexagon, hexagonGridTransformCenter } from './hexagonElements';
+import { categoryCardActive, categoryCardInactive, hexagonGridTransformCenter } from './hexagonElements';
 
 const {
     ui: {
@@ -169,10 +169,10 @@ export function transformCategoryHalfHexagons(
 }
 
 export function getCategoryHexagons(count: number): HexagonTransformData[] {
-    const activeHexagonScale = categoryCardActiveHexagon.scale;
+    const activeHexagonScale = categoryCardActive.scale;
     const inactiveHexagonScale = activeHexagonScale / Math.max(count - 1, 8);
 
-    const allHexagons = [categoryCardActiveHexagon];
+    const allHexagons = [categoryCardActive];
 
     if (count > 1) {
         const extraHexagons = count - 1;
@@ -199,8 +199,8 @@ export function getCategoryHexagons(count: number): HexagonTransformData[] {
             const centered = extraHexagons % 2 === 0 ? extraHexagons / 4 : Math.floor(extraHexagons / 2);
             const inactiveHexagonStartingPositionX = inactiveHexagonWidthOffset * i + (centerPosition - centered * inactiveHexagonWidthOffset);
 
-            const inactiveHexagon = { ...categoryCardInactiveHexagon };
-            inactiveHexagon.position = { ...categoryCardInactiveHexagon.position, x: inactiveHexagonStartingPositionX };
+            const inactiveHexagon = { ...categoryCardInactive };
+            inactiveHexagon.position = { ...categoryCardInactive.position, x: inactiveHexagonStartingPositionX };
             inactiveHexagon.scale = inactiveHexagonScale;
 
             allHexagons.push(inactiveHexagon);

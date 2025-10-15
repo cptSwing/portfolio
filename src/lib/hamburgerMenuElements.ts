@@ -1,5 +1,6 @@
 import { HAMBURGERMENUITEMS } from '../types/enums';
 import { HamburgerMenuItem } from '../types/types';
+import { historyRouter } from './historyRouter';
 import { useZustand } from './zustand';
 
 const { store_toggleHamburgerMenu, store_toggleActiveHamburgerItem, store_cycleTheme } = useZustand.getState().methods;
@@ -120,7 +121,21 @@ const hamburgerMenuItems: HamburgerMenuItem = {
                         },
                     ],
                 },
+                {
+                    name: 'Imprint',
+                    iconPath: `url(${HAMBURGERMENUITEMS.Imprint})`,
+                    iconSize: 50,
+                    startOffset: 2,
+                    clickHandler: () => historyRouter.navigate && historyRouter.navigate('/'),
+                },
             ],
+        },
+        {
+            name: 'Home',
+            iconPath: `url(${HAMBURGERMENUITEMS.Home})`,
+            iconSize: 50,
+            startOffset: 1,
+            clickHandler: () => historyRouter.navigate && historyRouter.navigate('/'),
         },
     ],
 };

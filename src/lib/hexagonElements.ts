@@ -1,22 +1,7 @@
-// Hex-Flat Orientation: Scale 1, Hex-Pointy Orientation: 1.154734 (??)
-// x: -50 = hex sits on the parent's X:0; total width = 100
-// y: -43.3 = hex sits on parent's Y:0 (total height 86.6)
-
-import { CATEGORY, ROUTE } from '../types/enums';
-import {
-    HexagonRouteData,
-    HexagonTransformData,
-    CategoryLinkButtonRouteData,
-    FunctionalButtonRouteData,
-    HexagonRouteDataTransformOffsets,
-} from '../types/types';
-import { getMenuButtonPosition } from './menuFunctions';
-import { useZustand } from './zustand';
-
-const { store_toggleActiveHamburgerItem, store_toggleHamburgerMenu, store_setPostIndex } = useZustand.getState().methods;
-
 /**
  * Pre-scaled-positioning notes:
+ *
+ * 4x4 Grid -->>> Total Width: 400; Total Height: 346.4
  *
  * X Axis / width
  * ==============
@@ -25,21 +10,35 @@ const { store_toggleActiveHamburgerItem, store_toggleHamburgerMenu, store_setPos
  * Xpos: minus 50
  * --->>> So, at total width of 400, to position a hexagon at horizontal center: (400 / 2 = 200) - 50 = 150 !!
  *
- *
  * Y Axis / height
  * ==============
  * Single: 86.6
  * Half: 43.3
  * Ypos: minus 43.3
- * --->>> So, at total height of 346.4, to position a hexagon at vertical center: (346.4 / 2 = 173.2) - 43.3 = 129.9
+ * --->>> So, at total height of 346.4, to position a hexagon at vertical center: (346.4 / 2 = 173.2) - 43.3 = 129.9 !!
+ *
+ *
+ *  - How does scale figure into the above?
+ *  - Hex-Flat Orientation: Scale 1, Hex-Pointy Orientation: 1.154734 (??)
  *
  */
 
-// viewBoxes['hexFlat'] : 0 0 400 346.4 --> (400x0.866)
+import { ROUTE } from '../types/enums';
+import {
+    HexagonRouteData,
+    HexagonTransformData,
+    CategoryLinkButtonRouteData,
+    FunctionalButtonRouteData,
+    HexagonRouteDataTransformOffsets,
+    CategoryName,
+} from '../types/types';
+import { getMenuButtonPosition } from './menuFunctions';
+import { useZustand } from './zustand';
 
-// "Regular" Hexagons in Category ROUTE to be precise
-// Most hexagons positioned on outside at thirds:
-export const regularHexagons: HexagonRouteData[] = [
+const { store_toggleActiveHamburgerItem, store_toggleHamburgerMenu, store_setPostIndex } = useZustand.getState().methods;
+
+// "Regular" Hexagons (ONLY IN ROUTE.category)
+export const regularHexagonElements: HexagonRouteData[] = [
     // Appear everywhere:
     {
         [ROUTE.home]: {
@@ -341,312 +340,8 @@ export const regularHexagons: HexagonRouteData[] = [
     },
 ];
 
-// "Regular" Hexagons in Category ROUTE to be precise
-// Hexagons positioned as triangle
-export const regularHexagonsTriangle: HexagonRouteData[] = [
-    // Appear everywhere:
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: 120,
-            isHalf: false,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 112.5,
-                y: 194.85,
-            },
-            rotation: -30,
-            isHalf: false,
-            scale: 0.866,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 75,
-                y: 0,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 0,
-                y: 43.3,
-            },
-            rotation: -60,
-            isHalf: true,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 187.5,
-                y: 64.95,
-            },
-            rotation: 90,
-            isHalf: false,
-            scale: 0.866,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: -43.3,
-            },
-            rotation: 30,
-            isHalf: true,
-            scale: 0,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 43.3,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 75,
-                y: 129.9,
-            },
-            rotation: -30,
-            isHalf: false,
-            scale: 0.866,
-        }, // L3
-        [ROUTE.post]: {
-            position: {
-                x: 345,
-                y: -32,
-            },
-            rotation: -90,
-            isHalf: false,
-            scale: 0.35,
-        }, // Top right
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 300,
-                y: 43.3,
-            },
-            rotation: 60,
-            isHalf: true,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 187.5,
-                y: 194.85,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.866,
-        }, // R2
-        [ROUTE.post]: {
-            position: {
-                x: 225,
-                y: 0,
-            },
-            rotation: 90,
-            isHalf: true,
-            scale: 0,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: -43.3,
-            },
-            rotation: 0,
-            isHalf: true,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 37.5,
-                y: 64.95,
-            },
-            rotation: 90,
-            isHalf: false,
-            scale: 0.866,
-        }, // R3
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: -43.3,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 75,
-                y: 173.2,
-            },
-            rotation: -60,
-            isHalf: false,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: 90,
-            isHalf: false,
-            scale: 0.866,
-        }, // L7
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: 150,
-            isHalf: true,
-            scale: 0,
-        },
-    },
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 225,
-                y: 173.2,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 225,
-                y: 129.9,
-            },
-            rotation: 90,
-            isHalf: false,
-            scale: 0.866,
-        }, // R5
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: -90,
-            isHalf: false,
-            scale: 0,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 0,
-                y: 216.5,
-            },
-            rotation: -120,
-            isHalf: true,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 262.5,
-                y: 64.95,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.866,
-        }, // L5
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: -90,
-            isHalf: true,
-            scale: 0,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 300,
-                y: 216.5,
-            },
-            rotation: 120,
-            isHalf: true,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 112.5,
-                y: 64.5,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.866,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 225,
-                y: 173.2,
-            },
-            rotation: -90,
-            isHalf: true,
-            scale: 0,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 303.1,
-            },
-            rotation: 180,
-            isHalf: true,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 150,
-                y: 259.8,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.866,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -45,
-                y: -32,
-            },
-            rotation: -30,
-            isHalf: false,
-            scale: 0.35,
-        },
-    },
-];
-
-// Half hexes in ROUTE.category. Do not necessarily want to have half hexagons always be half hexagons, for some cool clip-path transitions in-between ROUTEs
-export const halfRegularHexagons: HexagonRouteData[] = [
+// "Half" Hexagons (ONLY IN ROUTE.category - these perform iris animations)
+export const halfregularHexagonElements: HexagonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
@@ -828,7 +523,7 @@ export const halfRegularHexagons: HexagonRouteData[] = [
     },
 ];
 
-export const categoryLinkButtons: CategoryLinkButtonRouteData[] = [
+export const categoryLinkButtonElements: CategoryLinkButtonRouteData[] = [
     {
         [ROUTE.home]: {
             position: {
@@ -859,7 +554,7 @@ export const categoryLinkButtons: CategoryLinkButtonRouteData[] = [
         },
         name: 'code',
         title: 'code',
-        target: '/0',
+        target: ['/0'],
     },
     {
         [ROUTE.home]: {
@@ -891,7 +586,7 @@ export const categoryLinkButtons: CategoryLinkButtonRouteData[] = [
         },
         name: '3d',
         title: '3d',
-        target: '/1',
+        target: ['/1'],
     },
     {
         [ROUTE.home]: {
@@ -923,11 +618,11 @@ export const categoryLinkButtons: CategoryLinkButtonRouteData[] = [
         },
         name: 'log',
         title: 'log',
-        target: '/3',
+        target: ['/3'],
     },
 ];
 
-export const functionalButtons: FunctionalButtonRouteData[] = [
+export const functionalButtonElements: FunctionalButtonRouteData[] = [
     // Hamburger Icon
     {
         [ROUTE.home]: {
@@ -970,44 +665,6 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
     },
 
     // These appear only in '[ROUTE.category]' or even just '[ROUTE.post]' routeData:
-    // Home
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: 180,
-            isHalf: false,
-            scale: 0,
-            counterRotate: true,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 5.5,
-                y: 230,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.25,
-            counterRotate: true,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: 129,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.25,
-            counterRotate: true,
-        },
-        name: 'home',
-        title: 'home',
-        svgIconPath: '/svg/HomeOutline.svg',
-        target: () => '/',
-    },
-
     // Previous
     {
         [ROUTE.home]: {
@@ -1116,11 +773,13 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
         },
         name: 'close',
         svgIconPath: '/svg/XMarkOutline.svg',
-        target: () => store_setPostIndex(null),
+        target: () => ['..'],
+        // target: () => historyRouter.navigate && historyRouter.navigate('../'),
+        // target: () => store_setPostIndex(null),
     },
 ];
 
-export const functionalButtonHamburgerOffsets: Record<keyof typeof CATEGORY, HexagonRouteDataTransformOffsets> = {
+export const hamburgerButtonOffsets: Record<CategoryName, HexagonRouteDataTransformOffsets> = {
     'code': {
         [ROUTE.home]: {
             position: {
@@ -1282,7 +941,7 @@ export const hexagonGridTransformCenter = {
 };
 
 /* Active (ie front) Hex in Category route */
-export const categoryCardActiveHexagon: HexagonTransformData = {
+export const categoryCardActive: HexagonTransformData = {
     position: hexagonGridTransformCenter,
     rotation: 0,
     isHalf: false,
@@ -1290,7 +949,7 @@ export const categoryCardActiveHexagon: HexagonTransformData = {
 };
 
 /* inactive (small) Hexagons in Category route */
-export const categoryCardInactiveHexagon: HexagonTransformData = {
+export const categoryCardInactive: HexagonTransformData = {
     position: {
         x: 0,
         y: -45,
@@ -1300,7 +959,7 @@ export const categoryCardInactiveHexagon: HexagonTransformData = {
     scale: 1,
 };
 
-export const brandTransformData: HexagonRouteData = {
+export const brandElement: HexagonRouteData = {
     [ROUTE.home]: {
         position: {
             x: 150,
@@ -1330,7 +989,7 @@ export const brandTransformData: HexagonRouteData = {
     },
 };
 
-export const brandTransformOffsets: Record<keyof typeof CATEGORY, HexagonRouteDataTransformOffsets> = {
+export const brandElementOffsets: Record<CategoryName, HexagonRouteDataTransformOffsets> = {
     'code': {
         [ROUTE.home]: {
             position: {
@@ -1360,7 +1019,7 @@ export const brandTransformOffsets: Record<keyof typeof CATEGORY, HexagonRouteDa
     },
 };
 
-export const brandBlurbOffsets: Record<keyof typeof CATEGORY, HexagonRouteDataTransformOffsets> = {
+export const brandBlurbOffsets: Record<CategoryName, HexagonRouteDataTransformOffsets> = {
     'code': {
         [ROUTE.home]: {
             position: {

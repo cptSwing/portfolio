@@ -1,19 +1,11 @@
-import { classNames, keyDownA11y } from 'cpts-javascript-utilities';
-import { CSSProperties, FC, memo, useContext, useMemo, useState } from 'react';
+import { classNames } from 'cpts-javascript-utilities';
+import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
 import { ROUTE } from '../types/enums';
-import {
-    calcCSSVariables,
-    halfStrokedHexagonClipPathStatic,
-    offsetHexagonTransforms,
-    strokedHexagonClipPathStatic,
-    transformCategoryHalfHexagons,
-} from '../lib/shapeFunctions';
+import { calcCSSVariables, offsetHexagonTransforms, transformCategoryHalfHexagons } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
-import { FunctionalButtonRouteData, HexagonRouteData } from '../types/types';
-import { useNavigate } from 'react-router-dom';
+import { HexagonRouteData } from '../types/types';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import { categoryCardActiveHexagon, hexagonGridTransformCenter } from '../lib/hexagonElements';
-import useTimeout from '../hooks/useTimeout';
+import { categoryCardActive, hexagonGridTransformCenter } from '../lib/hexagonElements';
 
 const baseClasses =
     /* tw */ 'glassmorphic-backdrop pointer-events-none regular-hexagon-named-class lighting-gradient transform-hexagon absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path]  after-glassmorphic-grain';
@@ -81,10 +73,7 @@ export const HalfHexagon: FC<{
         [position, rotation, scale, isHalf, containerSize],
     );
 
-    const centerHexagonCssVariables_Memo = useMemo(
-        () => calcCSSVariables(categoryCardActiveHexagon.position, 0, scale, false, containerSize),
-        [containerSize, scale],
-    );
+    const centerHexagonCssVariables_Memo = useMemo(() => calcCSSVariables(categoryCardActive.position, 0, scale, false, containerSize), [containerSize, scale]);
 
     return (
         <div
@@ -125,181 +114,6 @@ export const HalfHexagon: FC<{
         />
     );
 };
-
-export const HexagonDebugOne: FC<{
-    data: HexagonRouteData;
-    routeName: ROUTE;
-}> = memo(({ data, routeName }) => {
-    const { position, rotation, scale, isHalf } = data[routeName];
-
-    const containerSize = useContext(GetChildSizeContext);
-
-    const [shouldStroke, setShouldStroke] = useState(false);
-    useTimeout(() => setShouldStroke((oldState) => !oldState), shouldStroke ? 3000 : 1500);
-
-    const cssVariables_Memo = useMemo(
-        () =>
-            calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-                clipStroke: shouldStroke,
-            }),
-        [position, rotation, scale, isHalf, containerSize, shouldStroke],
-    );
-
-    const random_Memo = useMemo(() => Math.random(), []);
-
-    return (
-        <div
-            className={classNames(
-                baseClasses,
-                baseTransitionClasses,
-                routeName === ROUTE.home
-                    ? '!to-white/10'
-                    : routeName === ROUTE.category
-                      ? 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
-                      : // ROUTE.post
-                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
-            )}
-            style={
-                { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
-            }
-        />
-    );
-});
-
-export const HexagonDebugTwo: FC<{
-    data: HexagonRouteData;
-    routeName: ROUTE;
-}> = memo(({ data, routeName }) => {
-    const { position, rotation, scale } = data[routeName];
-
-    const containerSize = useContext(GetChildSizeContext);
-
-    const [shouldBeHalf, setShouldBeHalf] = useState(false);
-    useTimeout(() => setShouldBeHalf((oldState) => !oldState), shouldBeHalf ? 3000 : 1500);
-
-    const cssVariables_Memo = useMemo(
-        () => calcCSSVariables({ x: position.x - 200, y: position.y }, rotation, scale * 0.75, shouldBeHalf, containerSize),
-        [position, rotation, scale, containerSize, shouldBeHalf],
-    );
-
-    const random_Memo = useMemo(() => Math.random(), []);
-
-    return (
-        <div
-            className={classNames(
-                baseClasses,
-                baseTransitionClasses,
-                routeName === ROUTE.home
-                    ? '!to-white/10'
-                    : routeName === ROUTE.category
-                      ? 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
-                      : // ROUTE.post
-                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
-            )}
-            style={
-                { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
-            }
-        >
-            <div
-                className={baseTransitionClasses + ' absolute size-full bg-red-400 transition-[clip-path]'}
-                style={{ clipPath: shouldBeHalf ? halfStrokedHexagonClipPathStatic : strokedHexagonClipPathStatic }}
-            />
-        </div>
-    );
-});
-
-export const HexagonDebugThree: FC<{
-    data: HexagonRouteData;
-    routeName: ROUTE;
-}> = memo(({ data, routeName }) => {
-    const { position, rotation, scale } = data[routeName];
-
-    const containerSize = useContext(GetChildSizeContext);
-
-    const [shouldStroke, setShouldStroke] = useState(false);
-    useTimeout(() => setShouldStroke((oldState) => !oldState), shouldStroke ? 3000 : 1500);
-
-    const cssVariables_Memo = useMemo(
-        () =>
-            calcCSSVariables({ x: position.x + 200, y: position.y }, rotation, scale * 0.75, true, containerSize, {
-                clipStroke: shouldStroke,
-            }),
-        [position, rotation, scale, containerSize, shouldStroke],
-    );
-
-    const random_Memo = useMemo(() => Math.random(), []);
-
-    return (
-        <div
-            className={classNames(
-                baseClasses,
-                baseTransitionClasses,
-                routeName === ROUTE.home
-                    ? '!to-white/10'
-                    : routeName === ROUTE.category
-                      ? 'glassmorphic-off !to-white/[0.075] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
-                      : // ROUTE.post
-                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
-            )}
-            style={
-                { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
-            }
-        />
-    );
-});
-
-export const HexagonModalMenuButton: FC<{
-    buttonData: FunctionalButtonRouteData;
-    routeName: ROUTE;
-    hamburgerMenuIsActive?: boolean;
-}> = memo(({ buttonData, routeName, hamburgerMenuIsActive = false }) => {
-    const { svgIconPath, target } = buttonData;
-    const title = 'title' in buttonData ? buttonData.title : undefined;
-    const containerSize = useContext(GetChildSizeContext);
-
-    const cssVariables_Memo = useMemo(() => {
-        const { position, rotation, scale, isHalf } = buttonData[routeName];
-
-        return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-            gutterWidth: 0,
-        });
-    }, [buttonData, routeName, containerSize]);
-
-    const random_Memo = useMemo(() => Math.random(), []);
-
-    const navigate = useNavigate();
-    function handleClick(ev: React.MouseEvent<HTMLDivElement>) {
-        const targetResult = typeof target === 'string' ? target : target(ev);
-        targetResult && navigate(targetResult);
-    }
-
-    return (
-        <div
-            className={classNames(
-                baseClasses,
-                baseTransitionClasses,
-                'pointer-events-auto hover-active:delay-0 hover-active:duration-100 hover-active:[--tw-scale-x:calc(var(--hexagon-scale-x)*1.1)] hover-active:[--tw-scale-y:calc(var(--hexagon-scale-y)*1.1)]',
-                routeName === ROUTE.home
-                    ? '!to-white/10'
-                    : routeName === ROUTE.category
-                      ? '!to-white/10 ![--glassmorphic-backdrop-blur:0] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.primary-darker/0.1)]'
-                      : 'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]', // ROUTE.post
-            )}
-            style={
-                {
-                    ...cssVariables_Memo,
-                    '--regular-hexagon-transition-random-factor': random_Memo,
-                } as CSSProperties
-            }
-            onClick={handleClick}
-            onKeyDown={keyDownA11y(handleClick)}
-            role={'button'}
-            tabIndex={-1}
-        >
-            <MenuButtonSvg svgIconPath={svgIconPath} title={title} />
-        </div>
-    );
-});
 
 export const MenuButtonSvg: FC<{
     svgIconPath: string;

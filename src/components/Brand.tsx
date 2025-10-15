@@ -1,7 +1,7 @@
 import { CSSProperties, FC, memo, useContext, useLayoutEffect, useState } from 'react';
 import { calcCSSVariables, offsetHexagonTransforms } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
-import { brandBlurbOffsets, brandTransformData, brandTransformOffsets, categoryLinkButtons } from '../lib/hexagonElements';
+import { brandBlurbOffsets, brandElement, brandElementOffsets, categoryLinkButtonElements } from '../lib/hexagonElements';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { classNames } from 'cpts-javascript-utilities';
 import { ROUTE } from '../types/enums';
@@ -22,7 +22,7 @@ const Brand: FC<{ homeMenuTransitionState: [CategoryName | null, TransitionTarge
     useLayoutEffect(() => {
         let routeTransformsBrand;
         if (routeName === ROUTE.home && homeMenuTransitionTarget) {
-            routeTransformsBrand = offsetHexagonTransforms(brandTransformData, brandTransformOffsets[homeMenuTransitionTarget!])[routeName];
+            routeTransformsBrand = offsetHexagonTransforms(brandElement, brandElementOffsets[homeMenuTransitionTarget!])[routeName];
             setCssVariablesBrand({
                 ...calcCSSVariables(
                     routeTransformsBrand.position,
@@ -37,7 +37,7 @@ const Brand: FC<{ homeMenuTransitionState: [CategoryName | null, TransitionTarge
                 '--tw-clip-inset-r': '50%',
             });
 
-            const routeTransformsBlurb = categoryLinkButtons.find((linkButton) => linkButton.name === homeMenuTransitionTarget)![routeName];
+            const routeTransformsBlurb = categoryLinkButtonElements.find((linkButton) => linkButton.name === homeMenuTransitionTarget)![routeName];
             setCssVariablesBlurb({
                 ...calcCSSVariables(
                     routeTransformsBlurb.position,
@@ -51,7 +51,7 @@ const Brand: FC<{ homeMenuTransitionState: [CategoryName | null, TransitionTarge
                 '--tw-clip-inset-t': '100%',
             });
         } else {
-            routeTransformsBrand = brandTransformData[routeName];
+            routeTransformsBrand = brandElement[routeName];
             setCssVariablesBrand(
                 calcCSSVariables(
                     routeTransformsBrand.position,
@@ -68,8 +68,8 @@ const Brand: FC<{ homeMenuTransitionState: [CategoryName | null, TransitionTarge
     const timer_Ref = useTimeout(
         () => {
             clearTimeout(timer_Ref.current);
-            const routeTransformsBrand = offsetHexagonTransforms(brandTransformData, brandTransformOffsets[homeMenuTransitionTarget!])[routeName];
-            const routeTransformsBlurb = offsetHexagonTransforms(brandTransformData, brandBlurbOffsets[homeMenuTransitionTarget!])[routeName];
+            const routeTransformsBrand = offsetHexagonTransforms(brandElement, brandElementOffsets[homeMenuTransitionTarget!])[routeName];
+            const routeTransformsBlurb = offsetHexagonTransforms(brandElement, brandBlurbOffsets[homeMenuTransitionTarget!])[routeName];
 
             setCssVariablesBrand(
                 calcCSSVariables(
