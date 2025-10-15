@@ -43,19 +43,19 @@ const hamburgerMenuItems: HamburgerMenuItem = {
                     name: 'Linkedin',
                     iconPath: `url(${HAMBURGERMENUITEMS.Linkedin})`,
                     iconSize: 45,
-                    clickHandler: () => (window.location.href = 'https://www.linkedin.com/in/jensbrandenburg'),
+                    clickHandler: () => openNewWindowOrRedirect('https://www.linkedin.com/in/jensbrandenburg'),
                 },
                 {
                     name: 'Github',
                     iconPath: `url(${HAMBURGERMENUITEMS.Github})`,
                     iconSize: 50,
-                    clickHandler: () => (window.location.href = 'https://github.com/cptSwing'),
+                    clickHandler: () => openNewWindowOrRedirect('https://github.com/cptSwing'),
                 },
                 {
                     name: 'Email',
                     iconPath: `url(${HAMBURGERMENUITEMS.Email})`,
                     iconSize: 50,
-                    clickHandler: () => (window.location.href = 'mailto:jens@jbrandenburg.de'),
+                    clickHandler: () => openNewWindowOrRedirect('mailto:jens@jbrandenburg.de'),
                 },
             ],
         },
@@ -76,19 +76,19 @@ const hamburgerMenuItems: HamburgerMenuItem = {
                             name: 'CV (English)',
                             iconPath: `url(${HAMBURGERMENUITEMS['CV (English)']})`,
                             iconSize: 45,
-                            clickHandler: () => (window.location.href = './public/pdfs/Jens_Brandenburg_WebDev_1-Page_CV_EN.pdf'),
+                            clickHandler: () => openNewWindowOrRedirect('./public/pdfs/Jens_Brandenburg_WebDev_1-Page_CV_EN.pdf'),
                         },
                         {
                             name: 'Bio',
                             iconPath: `url(${HAMBURGERMENUITEMS.Bio})`,
                             iconSize: 45,
-                            clickHandler: () => (window.location.href = 'https://www.turbosquid.com/Search/Artists/cptSwing'),
+                            clickHandler: () => openNewWindowOrRedirect('https://www.turbosquid.com/Search/Artists/cptSwing'),
                         },
                         {
                             name: 'Lebenslauf',
                             iconPath: `url(${HAMBURGERMENUITEMS.Lebenslauf})`,
                             iconSize: 45,
-                            clickHandler: () => (window.location.href = './public/pdfs/Jens_Brandenburg_WebDev_1-Page_CV_DE.pdf'),
+                            clickHandler: () => openNewWindowOrRedirect('./public/pdfs/Jens_Brandenburg_WebDev_1-Page_CV_DE.pdf'),
                         },
                     ],
                 },
@@ -101,22 +101,23 @@ const hamburgerMenuItems: HamburgerMenuItem = {
                     subMenuItems: [
                         {
                             name: 'CGTrader',
-                            clickHandler: () => (window.location.href = 'https://www.cgtrader.com/designers/cptswing'),
+                            clickHandler: () => openNewWindowOrRedirect('https://www.cgtrader.com/designers/cptswing'),
+
                             startOffset: 2,
                         },
                         {
                             name: 'TurboSquid',
-                            clickHandler: () => (window.location.href = 'https://www.turbosquid.com/Search/Artists/cptSwing'),
+                            clickHandler: () => openNewWindowOrRedirect('https://www.turbosquid.com/Search/Artists/cptSwing'),
                             startOffset: 2,
                         },
                         {
                             name: 'Printables',
-                            clickHandler: () => (window.location.href = 'https://www.printables.com/@cptSwing_2552270'),
+                            clickHandler: () => openNewWindowOrRedirect('https://www.printables.com/@cptSwing_2552270'),
                             startOffset: 2,
                         },
                         {
                             name: 'Thingiverse',
-                            clickHandler: () => (window.location.href = 'https://www.thingiverse.com/cptswing/designs'),
+                            clickHandler: () => openNewWindowOrRedirect('https://www.thingiverse.com/cptswing/designs'),
                             startOffset: 2,
                         },
                     ],
@@ -141,3 +142,7 @@ const hamburgerMenuItems: HamburgerMenuItem = {
 };
 
 export default hamburgerMenuItems;
+
+function openNewWindowOrRedirect(url: string) {
+    if (!window.open(url)) window.location.href = url;
+}
