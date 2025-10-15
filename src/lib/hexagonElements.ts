@@ -773,9 +773,7 @@ export const functionalButtonElements: FunctionalButtonRouteData[] = [
         },
         name: 'close',
         svgIconPath: '/svg/XMarkOutline.svg',
-        target: () => ['..'],
-        // target: () => historyRouter.navigate && historyRouter.navigate('../'),
-        // target: () => store_setPostIndex(null),
+        target: () => ['..', { relative: 'path' }],
     },
 ];
 

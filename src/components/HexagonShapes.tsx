@@ -114,33 +114,3 @@ export const HalfHexagon: FC<{
         />
     );
 };
-
-export const MenuButtonSvg: FC<{
-    svgIconPath: string;
-    title?: string;
-    counterRotate?: boolean;
-}> = ({ svgIconPath, title, counterRotate = true }) => {
-    return (
-        <div
-            className={classNames(
-                'group flex size-full flex-col items-center justify-center',
-                counterRotate ? 'rotate-[calc(var(--hexagon-rotate)*-1)] transition-transform duration-[--ui-animation-menu-transition-duration]' : '',
-            )}
-        >
-            <div
-                className="w-full flex-auto bg-theme-primary-lighter/50 matrix-transform matrix-scale-x-[calc(0.5/var(--hexagon-scale-x))] matrix-scale-y-[calc(0.5/var(--hexagon-scale-y))] [mask-position:50%_50%] [mask-repeat:no-repeat] [mask-size:calc(var(--hexagon-clip-path-width)*1.25*var(--hexagon-scale-x))] group-hover-active:bg-theme-text-background/50"
-                style={
-                    {
-                        maskImage: `url(${svgIconPath})`,
-                    } as CSSProperties
-                }
-            />
-
-            {title && (
-                <span className="-mt-2 select-none pb-2 font-lato text-2xl leading-none tracking-tighter text-theme-primary matrix-transform matrix-scale-x-[calc(0.5/var(--hexagon-scale-x))] matrix-scale-y-[calc(0.5/var(--hexagon-scale-y))] group-hover-active:text-theme-secondary-lighter">
-                    {title}
-                </span>
-            )}
-        </div>
-    );
-};

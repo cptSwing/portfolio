@@ -1,4 +1,4 @@
-import { FC, memo, useContext, useEffect, useMemo } from 'react';
+import { CSSProperties, FC, memo, useContext, useEffect, useMemo } from 'react';
 import {
     Category,
     CategoryLinkButtonRouteData,
@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import { calcCSSVariables, offsetHexagonTransforms } from '../lib/shapeFunctions';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
-import { MenuButtonSvg } from './HexagonShapes';
 import { hamburgerButtonOffsets } from '../lib/hexagonElements';
 import { classNames } from 'cpts-javascript-utilities';
 
@@ -57,9 +56,9 @@ export const FunctionalButton: FC<{
         </GlassmorphicButtonWrapper>
     );
 
-    function handleClick(ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) {
-        const targetResult = (target as (ev?: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent> | undefined) => string | void)(ev);
-        targetResult && navigate(targetResult);
+    function handleClick(ev?: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined) {
+        const targetResult = target(ev);
+        targetResult && navigate(...targetResult);
     }
 });
 
@@ -87,8 +86,7 @@ export const CategoryLinkButton: FC<{
 
     // TODO clean up / get rid of this menu bar stuff
     const category = useZustand((store) => store.values.routeData.content.category);
-    const isActiveCategoryLinkButton =
-        routeName === ROUTE.category && category ? isActiveCategory(name as CategoryLinkButtonRouteData['name'], category) : false;
+    const isActiveCategoryLinkButton = routeName === ROUTE.category && category ? isActiveCategory(name, category) : false;
     useEffect(() => {
         if (isActiveCategoryLinkButton) {
             setPositionOnCategoryLinks([
@@ -132,6 +130,38 @@ export const CategoryLinkButton: FC<{
         }
     }
 });
+
+const MenuButtonSvg: FC<{
+    svgIconPath: string;
+    title?: string;
+    counterRotate?: boolean;
+}> = ({ svgIconPath, title, counterRotate = true }) => {
+    return (
+        <div
+            className={classNames(
+                'group flex size-full flex-col items-center justify-center',
+                counterRotate ? 'rotate-[calc(var(--hexagon-rotate)*-1)] transition-transform duration-[--ui-animation-menu-transition-duration]' : '',
+            )}
+        >
+            <div
+                className="w-full flex-auto bg-theme-primary-lighter/50 matrix-transform matrix-scale-x-[calc(0.5/var(--hexagon-scale-x))] matrix-scale-y-[calc(0.5/var(--hexagon-scale-y))] [mask-position:50%_50%] [mask-repeat:no-repeat] [mask-size:calc(var(--hexagon-clip-path-width)*1.25*var(--hexagon-scale-x))] group-hover-active:bg-theme-text-background/50"
+                style={
+                    {
+                        maskImage: `url(${svgIconPath})`,
+                    } as CSSProperties
+                }
+            />
+
+            {title && (
+                <span className="-mt-2 select-none pb-2 font-lato text-2xl leading-none tracking-tighter text-theme-primary matrix-transform matrix-scale-x-[calc(0.5/var(--hexagon-scale-x))] matrix-scale-y-[calc(0.5/var(--hexagon-scale-y))] group-hover-active:text-theme-secondary-lighter">
+                    {title}
+                </span>
+            )}
+        </div>
+    );
+};
+
+/* Local Functions */
 
 function isActiveCategory(name: CategoryName, category: Category) {
     return CATEGORY[name] === category.id;

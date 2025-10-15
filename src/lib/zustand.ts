@@ -39,7 +39,7 @@ export const useZustand = create<ZustandStore>()(
                 };
 
                 set((draftState) => {
-                    draftState.values.routeData = newRouteData as { name: ROUTE.home; content: { category?: Category; post?: Post } }; // most permissive of the three types
+                    draftState.values.routeData = newRouteData as { name: ROUTE.home; content: { category?: Category; post?: Post } };
                 });
             },
 
@@ -103,5 +103,6 @@ function getNewPostIndex(oldIndex: number, postCount: number, directionOrIndex: 
     } else {
         newIndex = directionOrIndex;
     }
+
     return newIndex;
 }

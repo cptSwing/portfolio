@@ -17,7 +17,7 @@ const useMouseRotate = (
             if (direction) {
                 setTransitionState((oldTransitionState) => {
                     const oldTarget = oldTransitionState[0] ?? 'code';
-                    const advanceOne = cycleThrough(categoryNames, oldTarget, direction === 'down' ? 'next' : 'previous') as keyof typeof CATEGORY;
+                    const advanceOne = cycleThrough(categoryNames, oldTarget, direction === 'down' ? 'next' : 'previous') as CategoryName;
                     return [advanceOne, false, false];
                 });
                 resetDirection();

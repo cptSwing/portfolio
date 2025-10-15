@@ -22,7 +22,7 @@ const useRotateDegrees = (transitionTarget: CategoryName | null, shortestDistanc
 
                     setRotationDegrees((oldRotation) => oldRotation + shortestDegreeDelta(oldRotation, targetRotation));
                 } else {
-                    const nextTarget = cycleThrough(categoryNames, previousTransitionTarget ?? 'code', 'next') as keyof typeof CATEGORY;
+                    const nextTarget = cycleThrough(categoryNames, previousTransitionTarget ?? 'code', 'next') as CategoryName;
                     const offsetSign = transitionTarget === nextTarget ? -1 : 1;
                     const degreeStep = firstTurn ? defaultDegreeStep / 2 : defaultDegreeStep;
 

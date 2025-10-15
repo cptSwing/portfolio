@@ -1,3 +1,4 @@
+import { NavigateOptions, To } from 'react-router-dom';
 import { BreakpointName } from '../hooks/useBreakPoint';
 import { CATEGORY, HAMBURGERMENUITEMS, ROUTE, TOOL } from './enums';
 
@@ -51,7 +52,7 @@ export type RouteData =
     | { name: ROUTE.category; content: { category: Category; post?: Post } }
     | { name: ROUTE.post; content: { category: Category; post: Post } };
 
-export type DataBase = Record<keyof typeof CATEGORY, Category>;
+export type DataBase = Record<CategoryName, Category>;
 
 export type Category = {
     id: number;
@@ -83,6 +84,8 @@ export type HamburgerMenuItem = {
     subMenuItems?: HamburgerMenuItem[];
     iconPath?: string;
     iconSize?: number;
+    isActive?: boolean;
+    isLink?: boolean;
     clickHandler: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
@@ -129,7 +132,7 @@ interface ButtonData {
 interface CategoryLinkButtonData extends ButtonData {
     name: CategoryName;
     title: CategoryName;
-    target: string;
+    target: [To, NavigateOptions?];
 }
 /** A Button for navigating to/from a CATEGORY */
 export interface CategoryLinkButtonRouteData extends ButtonRouteData, CategoryLinkButtonData {}
@@ -138,7 +141,7 @@ interface FunctionalButtonData extends ButtonData {
     name: FunctionalButtonName;
     title?: string;
     svgIconPath: string;
-    target: (ev?: React.MouseEvent<HTMLDivElement, MouseEvent>) => string | void;
+    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => [To, NavigateOptions?] | void;
 }
 /** A Button that executes a function (which can also return a navigatable target) */
 export interface FunctionalButtonRouteData extends ButtonRouteData, FunctionalButtonData {}

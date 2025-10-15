@@ -5,20 +5,20 @@ import { usePrevious } from './usePrevious';
 
 const store_setPostIndex = useZustand.getState().methods.store_setPostIndex;
 
-const useSwitchCategoryCard = (categoryId: number, categoryPostsCount: number) => {
-    const postIndex = useZustand((store) => store.values.postIndex);
+const useSwitchCategoryCard = (categoryId: number) => {
+    const post = useZustand((store) => store.values.routeData.content.post);
     const { direction, resetDirection } = useMouseWheelDirection();
 
     const previousCategoryId = usePrevious(categoryId);
 
     useLayoutEffect(() => {
-        if (categoryId !== previousCategoryId) {
+        if (categoryId !== previousCategoryId && !post?.id) {
             store_setPostIndex(0);
         } else if (direction !== null) {
             store_setPostIndex(direction === 'down' ? 'next' : 'previous');
             resetDirection();
         }
-    }, [categoryId, categoryPostsCount, direction, postIndex, previousCategoryId, resetDirection]); // wheelDistance needed as dependency to have this useEffect update at all
+    }, [categoryId, direction, post?.id, previousCategoryId, resetDirection]);
 };
 
 export default useSwitchCategoryCard;

@@ -12,7 +12,7 @@ import { getHexagonalClipPath } from '../../lib/shapeFunctions';
 import PostDetails from '../PostDetails';
 import GetChildSize from '../utilityComponents/GetChildSize';
 import GetChildSizeContext from '../../contexts/GetChildSizeContext';
-import usePostNavigation from '../../hooks/usePostNavigation';
+import usePostIndexNavigation from '../../hooks/usePostIndexNavigation';
 import useMountTransition from '../../hooks/useMountTransition';
 import { useZustand } from '../../lib/zustand';
 
@@ -25,14 +25,11 @@ const emptyPost: Post_T = {
 
 const Post: FC<{ show: boolean }> = ({ show }) => {
     const post = useZustand((store) => store.values.routeData.content.post) ?? emptyPost;
+    const { title, subTitle, stack, clients, viewLive, viewSource, showCases, textBlocks, date } = post;
 
     const postRef = useRef<HTMLDivElement | null>(null);
+    usePostIndexNavigation(show);
     const shouldMount = useMountTransition(postRef, show, ['!clip-inset-x-0']);
-
-    const { title, subTitle, stack, clients, viewLive, viewSource, showCases, textBlocks, date } = post;
-    usePostNavigation();
-
-    const date_Memo = useMemo(() => parseDateString(date ?? ''), [date]);
 
     const filteredImages_Memo = useMemo(
         () =>
@@ -78,7 +75,7 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
                     <span className="block sm:text-lg md:text-xl lg:text-2xl">{subTitle}</span>
                     <div className="flex flex-wrap items-center justify-between sm:my-1 sm:gap-y-0.5 lg:my-2 lg:gap-y-1">
                         <GetChildSize context={GetChildSizeContext}>
-                            <PostDate date={date_Memo} />
+                            <PostDate date={parseDateString(date ?? '')} />
                         </GetChildSize>
                         <PostDetails stack={stack} clients={clients} viewLive={viewLive} viewSource={viewSource} />
                     </div>

@@ -11,6 +11,7 @@ import { globalCssVariables } from '../styles/globalCssVariables';
 import { useBreakpoint } from '../hooks/useBreakPoint';
 import HexagonTiles from '../components/HexagonTiles';
 import useUpdateTheme from '../hooks/useUpdateTheme';
+import useSetHistoryRouter from '../hooks/useSetHistoryRouter';
 
 const store_setBreakpoint = useZustand.getState().methods.store_setBreakpoint;
 
@@ -35,8 +36,10 @@ const App = () => {
 };
 
 const Main = () => {
-    useSetRouteData();
     const routeName = useZustand((store) => store.values.routeData.name);
+
+    useSetRouteData();
+    useSetHistoryRouter();
 
     return (
         // TODO could replace with container queries?
