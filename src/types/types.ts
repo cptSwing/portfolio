@@ -29,7 +29,7 @@ export type ZustandStore = {
         breakpoint: BreakpointName | null;
         hamburgerMenuRect: Pick<DOMRect, 'x' | 'y' | 'width' | 'height'> | null;
         activeHamburgerMenuItemName: HamburgerMenuItem['name'];
-        postNavigationState: PostNavigationName | null;
+        postIndex: number | null;
         debug: {
             applyTransformMatrixFix: boolean;
         };
@@ -41,7 +41,7 @@ export type ZustandStore = {
         store_setBreakpoint: (breakpoint: BreakpointName | null) => void;
         store_toggleHamburgerMenu: (rect: ZustandStore['values']['hamburgerMenuRect']) => void;
         store_toggleActiveHamburgerItem: (newMenuState: ZustandStore['values']['activeHamburgerMenuItemName']) => void;
-        store_setPostNavigationState: (postNavigationState: PostNavigationName | null) => void;
+        store_setPostIndex: (directionOrIndex: ('previous' | 'next') | number | null) => void;
         store_setDebugValues: (debugValues: Partial<ZustandStore['values']['debug']>) => void;
     };
 };
@@ -145,3 +145,6 @@ export interface FunctionalButtonRouteData extends ButtonRouteData, FunctionalBu
 export interface FunctionalButtonRouteDataTransformOffsets extends HexagonRouteDataTransformOffsets, FunctionalButtonData {}
 
 export type valueof<T> = T[keyof T];
+
+export type TransitionTargetReached = boolean;
+export type RotateShortestDistance = boolean;

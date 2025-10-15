@@ -13,7 +13,7 @@ const CategoryCards: FC<{
 }> = ({ posts }) => {
     const containerSize = useContext(GetChildSizeContext);
     const categoryHexagons_Memo = useMemo(() => getCategoryHexagons(posts.length), [posts]);
-    const postIndex = useZustand((store) => store.values.postIndex);
+    const postIndex = useZustand((store) => store.values.postIndex) ?? 0;
 
     return (
         <>
@@ -61,7 +61,7 @@ const CategoryHexagon: FC<{
     const isAtFront = activePostCardIndex === cardIndex;
     const cardTransition = useZustand((state) => state.values.cardTransition);
 
-    const thisButtonIndex = getGridAreaIndex(activePostCardIndex, cardIndex, allButtons.length);
+    const thisButtonIndex = getThisButtonIndex(activePostCardIndex, cardIndex, allButtons.length);
     const navigate = useNavigate();
 
     const cssVariables_Memo = useMemo(() => {
@@ -235,15 +235,13 @@ const TitleClients: FC<{
     );
 };
 
-// TODO rename
-/** Match the flipIndex to the correct style preset */
-function getGridAreaIndex(flipIndex: number, cardIndex: number, cardCount: number) {
-    if (flipIndex > cardCount) return 0;
+function getThisButtonIndex(activeIndex: number, cardIndex: number, cardCount: number) {
+    if (activeIndex > cardCount) return 0;
 
-    if (flipIndex > cardIndex) {
-        return cardCount + (cardIndex - flipIndex);
-    } else if (flipIndex < cardIndex) {
-        return cardIndex - flipIndex;
+    if (activeIndex > cardIndex) {
+        return cardCount + (cardIndex - activeIndex);
+    } else if (activeIndex < cardIndex) {
+        return cardIndex - activeIndex;
     } else {
         return 0;
     }

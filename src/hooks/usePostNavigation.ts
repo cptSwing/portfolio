@@ -1,42 +1,34 @@
 import { useNavigate } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
-import { useEffect } from 'react';
-import { cycleThrough } from 'cpts-javascript-utilities';
+import { useLayoutEffect } from 'react';
+import { usePrevious } from './usePrevious';
 
-const store_setPostNavigationState = useZustand.getState().methods.store_setPostNavigationState;
+const store_setPostIndex = useZustand.getState().methods.store_setPostIndex;
 
-function usePostNavigation() {
-    const postNavigationState = useZustand((store) => store.values.postNavigationState);
+const usePostNavigation = () => {
+    const postIndex = useZustand((store) => store.values.postIndex);
+    const previousPostIndex = usePrevious(postIndex);
+
     const { category, post } = useZustand((store) => store.values.routeData.content);
-
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (postNavigationState && category && post) {
-            const previousId = cycleThrough(category.posts, post, 'previous').id;
-            const nextId = cycleThrough(category.posts, post, 'next').id;
+    useLayoutEffect(() => {
+        if (category && post) {
+            if (postIndex === null) {
+                // Close Post view
+                navigate(`/${category.id}`);
 
-            switch (postNavigationState) {
-                case 'previous':
-                    store_setPostNavigationState(null);
-                    navigate(`/${category.id}/${previousId}`);
-
-                    break;
-                case 'next':
-                    store_setPostNavigationState(null);
-                    navigate(`/${category.id}/${nextId}`);
-
-                    break;
-                case 'close':
-                    store_setPostNavigationState(null);
-                    navigate(`/${category.id}`);
-
-                    break;
-                default:
-                    break;
+                // Set back to last active post index
+                const timer = setTimeout(() => {
+                    store_setPostIndex(category.posts.findIndex((elem) => elem.id === post.id));
+                    clearTimeout(timer);
+                }, 10);
+            } else {
+                const newId = category.posts[postIndex].id;
+                navigate(`/${category.id}/${newId}`);
             }
         }
-    }, [navigate, postNavigationState, category, post]);
-}
+    }, [category, navigate, post, postIndex, previousPostIndex]);
+};
 
 export default usePostNavigation;

@@ -4,6 +4,7 @@ import { Category, Post, Theme, themes, ZustandStore } from '../types/types';
 import { ROUTE } from '../types/enums';
 import { cycleThrough } from 'cpts-javascript-utilities';
 import { config } from '../types/exportTyped';
+import wrapAroundArray from './wrapAroundArray';
 
 const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
@@ -16,7 +17,7 @@ export const useZustand = create<ZustandStore>()(
             breakpoint: null,
             hamburgerMenuRect: null,
             activeHamburgerMenuItemName: 'DEFAULT',
-            postNavigationState: null,
+            postIndex: null,
             debug: {
                 applyTransformMatrixFix: true,
             },
@@ -32,13 +33,9 @@ export const useZustand = create<ZustandStore>()(
             },
 
             store_setRouteData: ({ name, content }) => {
-                const oldContent = get().values.routeData.content;
                 const newRouteData = {
                     name,
-                    content: {
-                        ...oldContent,
-                        ...content,
-                    },
+                    content,
                 };
 
                 set((draftState) => {
@@ -80,10 +77,14 @@ export const useZustand = create<ZustandStore>()(
                 });
             },
 
-            store_setPostNavigationState: (postNavigationState) => {
+            store_setPostIndex: (directionOrIndex) => {
+                const newIndex = getNewPostIndex(get().values.postIndex ?? 0, get().values.routeData.content.category?.posts.length ?? 0, directionOrIndex);
+
                 set((draftState) => {
-                    draftState.values.postNavigationState = postNavigationState;
+                    draftState.values.postIndex = newIndex;
                 });
+
+                get().methods.store_setTimedCardTransition(true);
             },
 
             store_setDebugValues: (debugValues) => {
@@ -94,3 +95,13 @@ export const useZustand = create<ZustandStore>()(
         },
     })),
 );
+
+function getNewPostIndex(oldIndex: number, postCount: number, directionOrIndex: number | 'previous' | 'next' | null) {
+    let newIndex: number | null;
+    if (directionOrIndex === 'previous' || directionOrIndex === 'next') {
+        newIndex = wrapAroundArray(oldIndex, postCount, directionOrIndex);
+    } else {
+        newIndex = directionOrIndex;
+    }
+    return newIndex;
+}

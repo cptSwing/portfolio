@@ -13,7 +13,7 @@ import {
 import { getMenuButtonPosition } from './menuFunctions';
 import { useZustand } from './zustand';
 
-const { store_toggleActiveHamburgerItem, store_toggleHamburgerMenu, store_setPostNavigationState } = useZustand.getState().methods;
+const { store_toggleActiveHamburgerItem, store_toggleHamburgerMenu, store_setPostIndex } = useZustand.getState().methods;
 
 /**
  * Pre-scaled-positioning notes:
@@ -1042,7 +1042,7 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
         },
         name: 'previous',
         svgIconPath: '/svg/ChevronLeftOutline.svg',
-        target: () => store_setPostNavigationState('previous'),
+        target: () => store_setPostIndex('previous'),
     },
 
     // Next
@@ -1079,7 +1079,7 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
         },
         name: 'next',
         svgIconPath: '/svg/ChevronRightOutline.svg',
-        target: () => store_setPostNavigationState('next'),
+        target: () => store_setPostIndex('next'),
     },
 
     // Close Post
@@ -1116,7 +1116,7 @@ export const functionalButtons: FunctionalButtonRouteData[] = [
         },
         name: 'close',
         svgIconPath: '/svg/XMarkOutline.svg',
-        target: () => store_setPostNavigationState('close'),
+        target: () => store_setPostIndex(null),
     },
 ];
 

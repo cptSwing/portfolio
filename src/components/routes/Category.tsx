@@ -8,7 +8,6 @@ import useSwitchCategoryCard from '../../hooks/useSwitchCategoryCard.ts';
 const Category: FC<{ show: boolean }> = memo(({ show }) => {
     const category = useZustand((store) => store.values.routeData.content.category) ?? emptyCategory;
     useSwitchCategoryCard(category.id, category.posts.length);
-
     const categoryRef = useRef<HTMLDivElement | null>(null);
     const isMounted = useMountTransition(categoryRef, show, ['!clip-inset-[-10%]']);
 
