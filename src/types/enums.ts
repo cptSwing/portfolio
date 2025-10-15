@@ -29,6 +29,7 @@ export enum HAMBURGERMENUITEMS {
     'DEFAULT' = '/svg/XMarkOutline.svg',
     'Config' = '/svg/AdjustmentsHorizontalOutline.svg',
     'Corners' = '/svg/PercentBadgeOutline.svg',
+    'Login' = '/svg/KeyOutline.svg',
     'Theme' = '/svg/PaintBrushOutline.svg',
     '_NotDecided' = HAMBURGERMENUITEMS['__empty'],
     'Home' = '/svg/HomeOutline.svg',

@@ -76,6 +76,8 @@ const HamburgerMenuButton: FC<{
         iconSize: menuIconSize,
         clickHandler: menuItemClickHandler,
         subMenuItems: menuSubItems,
+        isLink,
+        isWorking = true,
     } = menuItem;
     const activeMenuItemName = useZustand((store) => store.values.activeHamburgerMenuItemName);
 
@@ -137,16 +139,22 @@ const HamburgerMenuButton: FC<{
             <div
                 className={classNames(
                     'absolute left-0 top-0 size-full opacity-[--hamburger-menu-button-opacity,0.25] transition-[background-color,clip-path,opacity] [clip-path:--hexagon-clip-path-full]',
+                    isWorking ? 'pointer-events-auto' : 'pointer-events-none',
                     'after:absolute after:left-0 after:top-0 after:size-full after:scale-[1.05] after:transition-[background-color] after:[clip-path:--hexagon-clip-path-full-wider-stroke] hover-active:opacity-100',
                     menuItemIconPath
                         ? 'before:absolute before:left-0 before:top-0 before:size-full before:bg-theme-secondary before:transition-[background-color,opacity] before:[mask-image:--hamburger-menu-button-icon-mask] before:[mask-repeat:no-repeat] before:[mask-size:--hamburger-menu-button-icon-size]' +
-                              (isRootItem ? ' before:[mask-position:50%_50%]' : ' before:[mask-position:50%_35%]')
+                              ' ' +
+                              (isRootItem ? 'before:[mask-position:50%_50%]' : 'before:[mask-position:50%_35%]') +
+                              ' ' +
+                              (isWorking ? 'before:bg-theme-secondary' : 'before:bg-theme-secondary/20')
                         : 'before:content-none',
                     isActiveRadialCenter
                         ? 'z-[100] bg-theme-primary-darker before:z-[110] after:z-[120] after:bg-theme-secondary-lighter'
                         : isRadialCenter
                           ? 'z-0 bg-neutral-600 before:z-10 after:z-20 after:bg-theme-primary-darker hover-active:bg-theme-primary-darker after:hover-active:bg-theme-primary'
-                          : 'z-0 bg-neutral-600 before:z-10 after:z-20 after:bg-theme-primary-darker after:hover-active:bg-theme-primary',
+                          : 'z-0 bg-neutral-600 before:z-10 after:z-20' +
+                            ' ' +
+                            (isWorking ? 'after:bg-theme-primary-darker after:hover-active:bg-theme-primary' : 'after:bg-theme-primary-darker/50'),
                 )}
                 role="button"
                 tabIndex={-1}
@@ -161,18 +169,23 @@ const HamburgerMenuButton: FC<{
                     }
                 }}
             />
-
             {/* Text */}
             <span
                 className={classNames(
                     'pointer-events-none text-center font-fjalla-one text-sm tracking-widest',
                     menuItemIconPath ? 'pb-0.5' : 'self-center',
-                    isActiveRadialCenter ? 'z-[110] text-theme-secondary-darker' : 'z-10 text-neutral-100/[--hamburger-menu-button-opacity,0.25]',
+                    isActiveRadialCenter
+                        ? 'z-[110] text-theme-secondary-darker'
+                        : isWorking
+                          ? 'z-10 text-neutral-100/[--hamburger-menu-button-opacity,0.25]'
+                          : 'z-10 text-neutral-100/10',
                 )}
             >
                 {menuItemName !== 'DEFAULT' && menuItemName}
             </span>
-
+            {isLink && (
+                <div className="pointer-events-none absolute left-0 top-0 size-full translate-x-[3%] translate-y-[2%] rotate-[-7deg] bg-neutral-400/[--hamburger-menu-button-opacity,0.1] [mask-image:url('/svg/LinkMicro.svg')] [mask-repeat:no-repeat] [mask-size:27.5%]" />
+            )}
             {(isActiveRadialCenter || isRootItem || keepTreeOpen) && <RadialMenuButtons menuItems={menuSubItems!} zSortingIndex={zIndex} />}
         </div>
     );

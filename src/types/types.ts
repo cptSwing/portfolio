@@ -84,7 +84,7 @@ export type HamburgerMenuItem = {
     subMenuItems?: HamburgerMenuItem[];
     iconPath?: string;
     iconSize?: number;
-    isActive?: boolean;
+    isWorking?: boolean;
     isLink?: boolean;
     clickHandler: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
@@ -107,7 +107,7 @@ export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
 type PostNavigationName = 'previous' | 'close' | 'next';
 type FunctionalButtonName = 'home' | 'hamburger' | PostNavigationName;
 export type CategoryName = keyof typeof CATEGORY;
-export type AllButtonNames = CategoryName | FunctionalButtonName | HamburgerMenuItem['name'];
+export type AllButtonNames = CategoryName | FunctionalButtonName;
 
 export type HexagonTransformData = {
     position: { x: number; y: number };
