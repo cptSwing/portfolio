@@ -8,47 +8,47 @@ import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { getHexagonalClipPath } from '../lib/shapeFunctions';
 import { TOOL } from '../types/enums';
 
-const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive: Post['viewLive']; viewSource: Post['viewSource'] }> = ({
+const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; liveViews: Post['liveViews']; source: Post['source'] }> = ({
     stack,
     clients,
-    viewLive,
-    viewSource,
+    liveViews,
+    source,
 }) => {
     const [content, setContent] = useState<PostDetailElementContent | null>(null);
-    useEffect(() => setContent(null), [stack, clients, viewLive, viewSource]);
+    useEffect(() => setContent(null), [stack, clients, liveViews, source]);
 
     return (
         <>
-            <div className="relative flex items-start justify-end">
+            <div className="relative flex select-none items-start justify-end">
                 {stack && (
                     <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
                             title={'Stack'}
-                            jsx={<ToolStack stack={stack} dataBlockId="stack-content-parent" />}
-                            isLast={!viewLive && !viewSource && !clients}
+                            jsx={<Stack stack={stack} dataBlockId="stack-entries-content-parent" />}
+                            isLast={!liveViews && !source && !clients}
                             content={content}
                             setContent={setContent}
                         />
                     </GetChildSize>
                 )}
 
-                {viewLive && (
+                {liveViews && (
                     <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
                             title={'View Live'}
-                            jsx={<ViewLive viewLive={viewLive} dataBlockId="view-live-content-parent" />}
-                            isLast={!viewSource && !clients}
+                            jsx={<ViewLive liveViews={liveViews} dataBlockId="view-live-content-parent" />}
+                            isLast={!source && !clients}
                             content={content}
                             setContent={setContent}
                         />
                     </GetChildSize>
                 )}
 
-                {viewSource && (
+                {source && (
                     <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
                             title={'View Source'}
-                            jsx={<ViewSource viewSource={viewSource} dataBlockId="view-source-content-parent" />}
+                            jsx={<Source source={source} dataBlockId="source-content-parent" />}
                             isLast={!clients}
                             content={content}
                             setContent={setContent}
@@ -59,7 +59,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; viewLive
                 {clients && (
                     <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
-                            title={'Clients / Users'}
+                            title={'Clients'}
                             jsx={<Clients clients={clients} dataBlockId="clients-content-parent" />}
                             isLast={true}
                             content={content}
@@ -148,7 +148,7 @@ const SinglePostDetailElement: FC<{
     );
 };
 
-const ToolStack: FC<{ stack: NonNullable<Post['stack']> } & PostDetailElementContentProps> = ({ stack, dataBlockId }) => {
+const Stack: FC<{ stack: NonNullable<Post['stack']> } & PostDetailElementContentProps> = ({ stack, dataBlockId }) => {
     return (
         <div
             data-block-id={dataBlockId}
@@ -156,34 +156,33 @@ const ToolStack: FC<{ stack: NonNullable<Post['stack']> } & PostDetailElementCon
             dir="rtl"
             style={{ gridTemplateColumns: `repeat(${stack.length < 4 ? stack.length : 4}, minmax(0, 1fr)` }}
         >
-            {stack.map((enumKey, idx) => (
+            {stack.map((stackEntry, idx) => (
                 <a
                     key={idx}
-                    href={TOOL[enumKey]}
+                    href={TOOL[stackEntry]}
                     className="block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline"
                 >
-                    {enumKey}
+                    {stackEntry}
                 </a>
             ))}
         </div>
     );
 };
 
-const ViewLive: FC<{ viewLive: NonNullable<Post['viewLive']> } & PostDetailElementContentProps> = ({ viewLive, dataBlockId }) => {
+const ViewLive: FC<{ liveViews: NonNullable<Post['liveViews']> } & PostDetailElementContentProps> = ({ liveViews, dataBlockId }) => {
     return (
         <div data-block-id={dataBlockId} dir="rtl" className="grid h-16 grid-cols-3 items-start gap-1">
-            {viewLive.map(({ url, title, description }, idx) => (
+            {liveViews.map(({ url, title, description }, idx) => (
                 <div
                     key={idx}
-                    className="group h-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker outline outline-1 -outline-offset-2 outline-theme-text-background transition-[max-height,color,background-color,outline-color] hover-active:max-h-full hover-active:bg-theme-primary/50 hover-active:text-theme-text-background"
+                    dir="ltr"
+                    className="group h-fit bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker outline outline-1 -outline-offset-2 outline-theme-text-background transition-[max-height,color,background-color,outline-color] hover-active:max-h-full hover-active:bg-theme-primary/50 hover-active:text-theme-text-background"
                 >
-                    <a className="leading-none no-underline group-hover-active:underline" href={url}>
+                    <a className="no-underline group-hover-active:underline" href={url}>
                         {title}
                     </a>
-                    <Markdown
-                        className="overflow-hidden pt-px text-left text-theme-text/60 group-hover-active:text-theme-text-background/70"
-                        remarkPlugins={[remarkBreaks]}
-                    >
+
+                    <Markdown className="pt-px text-justify text-theme-text/60 group-hover-active:text-theme-text-background/70" remarkPlugins={[remarkBreaks]}>
                         {description}
                     </Markdown>
                 </div>
@@ -192,14 +191,14 @@ const ViewLive: FC<{ viewLive: NonNullable<Post['viewLive']> } & PostDetailEleme
     );
 };
 
-const ViewSource: FC<{ viewSource: NonNullable<Post['viewSource']> } & PostDetailElementContentProps> = ({ viewSource, dataBlockId }) => {
+const Source: FC<{ source: NonNullable<Post['source']> } & PostDetailElementContentProps> = ({ source, dataBlockId }) => {
     return (
         <div data-block-id={dataBlockId} className="h-6">
             <a
                 className="block w-full bg-theme-secondary-darker/20 px-2 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline"
-                href={viewSource.href}
+                href={source.href}
             >
-                {viewSource.alt}
+                {source.alt}
             </a>
         </div>
     );
@@ -208,6 +207,7 @@ const ViewSource: FC<{ viewSource: NonNullable<Post['viewSource']> } & PostDetai
 const Clients: FC<{ clients: NonNullable<Post['clients']> } & PostDetailElementContentProps> = ({ clients, dataBlockId }) => {
     return (
         <div
+            dir="rtl"
             data-block-id={dataBlockId}
             className={'relative grid h-20 gap-x-0'}
             style={{ gridTemplateColumns: `repeat(${clients.length < 4 ? clients.length : 4}, minmax(0, 1fr)` }}

@@ -22,6 +22,8 @@ export const FunctionalButton: FC<{
 }> = memo(({ buttonData, homeMenuTransitionTarget }) => {
     const { name, target, svgIconPath } = buttonData;
     const routeName = useZustand((store) => store.values.routeData.name);
+    // const cardTransition = useZustand((store) => store.values.cardTransition);
+
     const counterRotate = buttonData[routeName].counterRotate;
 
     const containerSize = useContext(GetChildSizeContext);
@@ -52,7 +54,7 @@ export const FunctionalButton: FC<{
             strokeRadius={1}
             innerShadowRadius={6}
         >
-            <MenuButtonSvg svgIconPath={svgIconPath} counterRotate={counterRotate} />
+            <MenuButton svgIconPath={svgIconPath} counterRotate={counterRotate} />
         </GlassmorphicButtonWrapper>
     );
 
@@ -131,7 +133,7 @@ export const CategoryLinkButton: FC<{
     }
 });
 
-const MenuButtonSvg: FC<{
+const MenuButton: FC<{
     svgIconPath: string;
     title?: string;
     counterRotate?: boolean;
@@ -144,7 +146,7 @@ const MenuButtonSvg: FC<{
             )}
         >
             <div
-                className="w-full flex-auto bg-theme-primary-lighter/50 matrix-transform matrix-scale-x-[calc(0.5/var(--hexagon-scale-x))] matrix-scale-y-[calc(0.5/var(--hexagon-scale-y))] [mask-position:50%_50%] [mask-repeat:no-repeat] [mask-size:calc(var(--hexagon-clip-path-width)*1.25*var(--hexagon-scale-x))] group-hover-active:bg-theme-text-background/50"
+                className="w-full flex-auto bg-theme-secondary-darker/75 transition-[background-color] duration-75 matrix-transform matrix-scale-x-[calc(0.5/var(--hexagon-scale-x))] matrix-scale-y-[calc(0.5/var(--hexagon-scale-y))] [mask-position:50%_50%] [mask-repeat:no-repeat] [mask-size:calc(var(--hexagon-clip-path-width)*1.25*var(--hexagon-scale-x))] group-hover-active:bg-theme-secondary"
                 style={
                     {
                         maskImage: `url(${svgIconPath})`,

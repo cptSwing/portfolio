@@ -127,7 +127,7 @@ const CategoryHexagon: FC<{
             {/* Image Element, stroke around image in :after element */}
             <div
                 className={classNames(
-                    'pointer-events-auto relative left-0 top-0 z-0 size-full bg-theme-secondary-darker/50 bg-cover transition-transform duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path-full] hover-active:delay-0 hover-active:duration-75',
+                    'pointer-events-auto relative left-0 top-0 z-0 size-full bg-theme-secondary-darker/50 bg-cover bg-center transition-transform duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path-full] hover-active:delay-0 hover-active:duration-75',
                     'after:absolute after:left-0 after:top-0 after:z-50 after:size-full after:transition-[transform,clip-path,filter,background-color] after:duration-[--ui-animation-menu-transition-duration] after:[background-image:--card-image-background-gradient] after:hover-active:brightness-150',
                     isAtFront
                         ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!

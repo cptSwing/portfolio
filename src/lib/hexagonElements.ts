@@ -211,14 +211,15 @@ export const regularHexagonElements: HexagonRouteData[] = [
         }, // L7
         [ROUTE.post]: {
             position: {
-                x: 150,
-                y: 129.9,
+                x: 345,
+                y: 290,
             },
-            rotation: 150,
-            isHalf: true,
-            scale: 0,
+            rotation: 30,
+            isHalf: false,
+            scale: 0.35,
         },
     },
+
     {
         [ROUTE.home]: {
             position: {
@@ -300,12 +301,12 @@ export const regularHexagonElements: HexagonRouteData[] = [
         },
         [ROUTE.post]: {
             position: {
-                x: 225,
-                y: 173.2,
+                x: -45,
+                y: 290,
             },
             rotation: -90,
-            isHalf: true,
-            scale: 0,
+            isHalf: false,
+            scale: 0.35,
         },
     },
 
@@ -453,12 +454,12 @@ export const halfregularHexagonElements: HexagonRouteData[] = [
         }, // Bottom right
         [ROUTE.post]: {
             position: {
-                x: -45,
-                y: 290,
+                x: 225,
+                y: 173.2,
             },
             rotation: -90,
-            isHalf: false,
-            scale: 0.35,
+            isHalf: true,
+            scale: 0,
         },
     },
 
@@ -513,12 +514,12 @@ export const halfregularHexagonElements: HexagonRouteData[] = [
         }, // Bottom Left
         [ROUTE.post]: {
             position: {
-                x: 345,
-                y: 290,
+                x: 150,
+                y: 129.9,
             },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.35,
+            rotation: 150,
+            isHalf: true,
+            scale: 0,
         },
     },
 ];

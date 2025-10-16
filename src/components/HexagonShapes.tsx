@@ -39,7 +39,7 @@ export const Hexagon: FC<{
                     : routeName === ROUTE.category
                       ? '!to-white/[0.025] backdrop-blur-none [--glassmorphic-backdrop-saturate:1.5] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
                       : // ROUTE.post
-                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
+                        '![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
             style={
                 { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
@@ -83,9 +83,9 @@ export const HalfHexagon: FC<{
                 routeName === ROUTE.home
                     ? '!to-white/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2]'
                     : routeName === ROUTE.category
-                      ? '!to-white/0 ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.secondary-darker/0.5)]'
+                      ? '!to-white/0 ![--glassmorphic-backdrop-blur:2px] ![--glassmorphic-backdrop-saturate:1.5] [--hexagon-fill-color:theme(colors.theme.secondary-darker/0.5)]'
                       : // ROUTE.post
-                        'glassmorphic-off [--hexagon-fill-color:theme(colors.theme.text-background)]',
+                        '![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
             style={
                 {

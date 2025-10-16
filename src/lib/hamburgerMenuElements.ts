@@ -102,7 +102,7 @@ const hamburgerMenuItems: HamburgerMenuItem = {
                             iconPath: `url(${HAMBURGERMENUITEMS.Bio})`,
                             iconSize: 45,
                             clickHandler: () => openNewWindowOrRedirect('https://www.turbosquid.com/Search/Artists/cptSwing'),
-                            isLink: true,
+                            isWorking: false,
                         },
                         {
                             name: 'Lebenslauf',

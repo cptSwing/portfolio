@@ -65,14 +65,14 @@ export type Post = {
     id: number;
     title: string;
     date: string | string[];
-    textBlocks: { text: string; useShowCaseIndex?: number }[];
-    showCases?: Post_ShowCase[];
+    textBlocks: { text: string; showcaseIndex?: number }[];
+    showcases?: Post_Showcase[];
     subTitle?: string;
     cardImage?: string;
     clients?: { abbreviation: string; svgUrl?: string; name: string }[];
     stack?: (keyof typeof TOOL)[];
-    viewLive?: { url: string; title: string; description: string }[];
-    viewSource?: {
+    liveViews?: { url: string; title: string; description: string }[];
+    source?: {
         href: string;
         alt: string;
     };
@@ -89,20 +89,19 @@ export type HamburgerMenuItem = {
     clickHandler: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
-type Post_ShowCase_Base = {
+type Post_Showcase_Base = {
     caption?: string;
 };
 
-export interface Post_ShowCase_Image extends Post_ShowCase_Base {
+export interface Post_Showcase_Image extends Post_Showcase_Base {
     imgUrl: string;
 }
 
-export interface Post_ShowCase_Youtube extends Post_ShowCase_Base {
+export interface Post_Showcase_Youtube extends Post_Showcase_Base {
     youtubeUrl: string;
 }
 
-/* NOTE Easy, if non-generic, method to build a Type that has EITHER key1 OR key2. Mind the "?"" in the key to be excluded in the helper types above. */
-export type Post_ShowCase = Post_ShowCase_Image | Post_ShowCase_Youtube;
+export type Post_Showcase = Post_Showcase_Image | Post_Showcase_Youtube;
 
 type PostNavigationName = 'previous' | 'close' | 'next';
 type FunctionalButtonName = 'home' | 'hamburger' | PostNavigationName;

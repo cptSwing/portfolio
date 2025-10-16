@@ -151,8 +151,8 @@ const HamburgerMenuButton: FC<{
                     isActiveRadialCenter
                         ? 'z-[100] bg-theme-primary-darker before:z-[110] after:z-[120] after:bg-theme-secondary-lighter'
                         : isRadialCenter
-                          ? 'z-0 bg-neutral-600 before:z-10 after:z-20 after:bg-theme-primary-darker hover-active:bg-theme-primary-darker after:hover-active:bg-theme-primary'
-                          : 'z-0 bg-neutral-600 before:z-10 after:z-20' +
+                          ? 'z-0 bg-neutral-700 before:z-10 after:z-20 after:bg-theme-primary-darker hover-active:bg-theme-primary-darker after:hover-active:bg-theme-primary'
+                          : 'z-0 bg-neutral-700 before:z-10 after:z-20' +
                             ' ' +
                             (isWorking ? 'after:bg-theme-primary-darker after:hover-active:bg-theme-primary' : 'after:bg-theme-primary-darker/50'),
                 )}

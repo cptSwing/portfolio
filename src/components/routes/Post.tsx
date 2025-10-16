@@ -1,13 +1,11 @@
-import { CSSProperties, FC, useCallback, useContext, useMemo, useRef, useState } from 'react';
-import Markdown from 'react-markdown';
-import remarkBreaks from 'remark-breaks';
+import { CSSProperties, FC, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import Lightbox, { SlideImage } from 'yet-another-react-lightbox';
 import { Captions, Counter } from 'yet-another-react-lightbox/plugins';
 import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/counter.css';
-import { classNames, parseDateString } from 'cpts-javascript-utilities';
-import { Post as Post_T, Post_ShowCase, Post_ShowCase_Image, Post_ShowCase_Youtube } from '../../types/types';
+import { parseDateString } from 'cpts-javascript-utilities';
+import { Post_Showcase_Image, Post as Post_T } from '../../types/types';
 import { getHexagonalClipPath } from '../../lib/shapeFunctions';
 import PostDetails from '../PostDetails';
 import GetChildSize from '../utilityComponents/GetChildSize';
@@ -15,7 +13,8 @@ import GetChildSizeContext from '../../contexts/GetChildSizeContext';
 import usePostIndexNavigation from '../../hooks/usePostIndexNavigation';
 import useMountTransition from '../../hooks/useMountTransition';
 import { useZustand } from '../../lib/zustand';
-import isNumber from '../../lib/isNumber';
+import PostContents from '../PostContents';
+import constructThumbnailUrl from '../../lib/constructThumbnailUrl';
 
 const emptyPost: Post_T = {
     id: -1,
@@ -26,43 +25,58 @@ const emptyPost: Post_T = {
 
 const Post: FC<{ show: boolean }> = ({ show }) => {
     const post = useZustand((store) => store.values.routeData.content.post) ?? emptyPost;
-    const { title, subTitle, stack, clients, viewLive, viewSource, showCases, textBlocks, date } = post;
+    const { title, cardImage, subTitle, stack, clients, liveViews, source, showcases, textBlocks, date } = post;
 
     const postRef = useRef<HTMLDivElement | null>(null);
+    const shouldMount = useMountTransition(postRef, show, ['!clip-inset-[-10%]']);
     usePostIndexNavigation(show);
-    const shouldMount = useMountTransition(postRef, show, ['!clip-inset-x-0']);
 
-    const filteredImages_Memo = useMemo(
-        () =>
-            showCases &&
-            (showCases
-                .map((showCase, idx) => {
-                    if ('imgUrl' in showCase) {
-                        return {
-                            src: showCase.imgUrl,
-                            title: <div style={{ textAlign: 'center' }}>{showCase.caption}</div>,
-                            scIndx: idx,
-                        };
+    const [lightboxImages, setLightboxImages] = useState<LightboxSlideImage[]>();
+    const [remainingImages, setRemainingImages] = useState<[Post_Showcase_Image, number][]>();
+
+    useEffect(() => {
+        if (showcases?.length) {
+            const lightboxImgs: LightboxSlideImage[] = [];
+            const remainingImgs: [Post_Showcase_Image, number][] = [];
+
+            showcases.forEach((showcase, showcaseIndex) => {
+                if ('imgUrl' in showcase) {
+                    lightboxImgs.push({
+                        src: showcase.imgUrl,
+                        title: <div style={{ textAlign: 'center' }}>{showcase.caption}</div>,
+                        scIndx: showcaseIndex,
+                    });
+
+                    if (!textBlocks.find((textBlock) => showcaseIndex === textBlock.showcaseIndex)) {
+                        remainingImgs.push([showcase, showcaseIndex]);
                     }
-                })
-                .filter(Boolean) as (SlideImage & { scIndx: number })[]),
-        [showCases],
-    );
+                }
+            });
+
+            if (lightboxImgs.length) setLightboxImages(lightboxImgs);
+            if (remainingImgs.length) setRemainingImages(remainingImgs);
+        }
+
+        return () => {
+            setLightboxImages(undefined);
+            setRemainingImages(undefined);
+        };
+    }, [showcases, textBlocks]);
 
     const [lightboxTo, setLightboxTo] = useState<number | null>(null);
 
-    /* NOTE Lightbox uses SlideImage Type (see above), so we need to jump through some hoops to pick correct SlideImage index from Post_ShowCase index */
+    /* Lightbox uses SlideImage Type, so pick correct SlideImage index from Post_Showcase index */
     const setLightBoxSlide_Cb = useCallback(
-        (showCaseIndex: number) => {
-            filteredImages_Memo && setLightboxTo(filteredImages_Memo.findIndex((slide) => slide.scIndx === showCaseIndex));
+        (showcaseIndex: number) => {
+            lightboxImages && setLightboxTo(lightboxImages.findIndex((slide) => slide.scIndx === showcaseIndex));
         },
-        [filteredImages_Memo],
+        [lightboxImages],
     );
 
     return shouldMount ? (
         <div
             ref={postRef}
-            className="absolute top-0 mx-auto h-full w-[86.66%] bg-theme-text-background px-[5%] pb-4 text-theme-text transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-t-[-10%] clip-inset-x-[100%] sm:size-full sm:px-[4.7%] sm:pt-10 md:px-[4.95%] lg:px-[5%] lg:pt-12 2xl:px-[4.2%]"
+            className="absolute left-0 top-0 mx-auto aspect-hex-flat h-full bg-theme-text-background px-[4.75%] py-[1%] text-theme-text transition-[clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] clip-inset-x-[45%]"
         >
             <header className="pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center">
                 <GetChildSize context={GetChildSizeContext}>
@@ -70,44 +84,28 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
                 </GetChildSize>
             </header>
 
-            <main className="scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll scrollbar-thin sm:pr-[2%] xl:pr-[1.5%]">
+            <main className="scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pt-[5%] scrollbar-thin sm:pr-[2%]">
                 {/* (Sub-)Header, date, "Stack" etc  */}
                 <div>
-                    <span className="block sm:text-lg md:text-xl lg:text-2xl">{subTitle}</span>
-                    <div className="flex flex-wrap items-center justify-between sm:my-1 sm:gap-y-0.5 lg:my-2 lg:gap-y-1">
+                    <div className="my-2 flex h-auto flex-wrap items-center justify-between font-lato font-semibold leading-none tracking-tight text-theme-primary-darker *:h-4 sm:text-3xs md:text-2xs xl:text-xs">
                         <GetChildSize context={GetChildSizeContext}>
                             <PostDate date={parseDateString(date ?? '')} />
                         </GetChildSize>
-                        <PostDetails stack={stack} clients={clients} viewLive={viewLive} viewSource={viewSource} />
+                        <PostDetails stack={stack} clients={clients} liveViews={liveViews} source={source} />
                     </div>
+                    <span className="block font-fjalla-one sm:text-lg sm:tracking-normal md:text-xl lg:text-2xl">{subTitle}</span>
                 </div>
 
-                {textBlocks && (
-                    <>
-                        {/* Text/Image Blocks */}
-                        {textBlocks?.map(({ text, useShowCaseIndex }, idx) => {
-                            const showCase = showCases && isNumber(useShowCaseIndex) ? showCases[useShowCaseIndex!] : undefined;
-                            return (
-                                <TextImageBlock
-                                    key={`${idx}-${useShowCaseIndex}`}
-                                    text={text}
-                                    blockIndex={idx}
-                                    showCase={showCase}
-                                    lightboxCallback={() => isNumber(useShowCaseIndex) && setLightBoxSlide_Cb(useShowCaseIndex!)}
-                                />
-                            );
-                        })}
+                <PostContents textBlocks={textBlocks} showcases={showcases} cardImage={cardImage} setLightBoxSlide={setLightBoxSlide_Cb} />
 
-                        {/* Gallery below text */}
-                        {showCases && <RemainingImages showCases={showCases} textBlocks={textBlocks} setLightBoxSlide={setLightBoxSlide_Cb} />}
-                    </>
-                )}
+                {/* Gallery below text */}
+                {remainingImages && <RemainingImages remainingImages={remainingImages} setLightBoxSlide={setLightBoxSlide_Cb} />}
 
                 <Lightbox
                     open={Number.isInteger(lightboxTo)}
                     index={lightboxTo ?? 0}
                     close={() => setLightboxTo(null)}
-                    slides={filteredImages_Memo}
+                    slides={lightboxImages}
                     plugins={[Captions, Counter]}
                     captions={{ descriptionTextAlign: 'center' }}
                 />
@@ -123,8 +121,8 @@ const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
     const clipPath_Memo = useMemo(() => getHexagonalClipPath(0.6, parentSize, { multipliers: { y: 0.9 }, shape: 'bottom' }), [parentSize]);
 
     return (
-        <span
-            className="select-none px-[4%] font-fjalla-one font-semibold text-theme-text-background drop-shadow-lg before:absolute before:left-0 before:top-1.5 before:-z-10 before:h-[90%] before:w-full before:bg-theme-primary before:[clip-path:--post-title-clip-path] sm:text-2xl sm:tracking-wider lg:text-3xl lg:tracking-wide"
+        <div
+            className="before-glassmorphic-backdrop relative select-none px-[4%] font-fjalla-one font-semibold text-theme-text-background before:absolute before:!top-1.5 before:left-[-10%] before:-z-10 before:!h-[90%] before:!w-[120%] before:bg-theme-primary-darker/15 before:[--glassmorphic-backdrop-blur:4px] before:[--glassmorphic-backdrop-saturate:2.5] before:[clip-path:--post-title-clip-path] sm:text-2xl sm:tracking-wider lg:text-4xl lg:tracking-wide"
             style={
                 {
                     '--post-title-clip-path': clipPath_Memo,
@@ -132,7 +130,7 @@ const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
             }
         >
             {title}
-        </span>
+        </div>
     );
 };
 
@@ -141,10 +139,7 @@ const PostDate: FC<{ date: { year?: string; month?: string; day?: string } }> = 
     const clipPath_Memo = useMemo(() => getHexagonalClipPath(1, parentSize, { shape: 'top-right' }), [parentSize]);
 
     return (
-        <span
-            className="block bg-theme-primary-lighter py-1 pl-2 pr-4 font-lato text-sm leading-none text-theme-primary-darker"
-            style={{ clipPath: clipPath_Memo }}
-        >
+        <span className="block bg-theme-primary-lighter pl-2 pr-4" style={{ clipPath: clipPath_Memo }}>
             {day && `${day}.`}
             {month && `${month}.`}
             {year && `${year}`}
@@ -152,116 +147,31 @@ const PostDate: FC<{ date: { year?: string; month?: string; day?: string } }> = 
     );
 };
 
-const TextImageBlock: FC<{ text: string; blockIndex: number; showCase?: Post_ShowCase; lightboxCallback: () => void }> = ({
-    text,
-    blockIndex,
-    showCase,
-    lightboxCallback,
-}) => {
-    const isBlockIndexEven = blockIndex % 2 === 0;
-    const handleClick = () => (showCase as Post_ShowCase_Image).imgUrl && lightboxCallback();
-
-    return (
-        <div className="first-of-type:mt-0 sm:my-3 sm:text-xs md:my-5 md:text-sm">
-            {showCase && (
-                <div
-                    className={classNames('group max-h-64 w-full max-w-[40%]', isBlockIndexEven ? 'float-right sm:ml-4 md:ml-5' : 'float-left sm:mr-4 md:mr-5')}
-                >
-                    {(showCase as Post_ShowCase_Youtube).youtubeUrl ? (
-                        <iframe
-                            src={(showCase as Post_ShowCase_Youtube).youtubeUrl.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')}
-                            title="YouTube video player"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            loading="lazy"
-                            allowFullScreen
-                            className="aspect-video size-full shadow-md shadow-theme-primary-darker/10 transition-[box-shadow] duration-75 group-hover-active:shadow-theme-primary-darker/20"
-                        />
-                    ) : (
-                        <button
-                            onClick={handleClick}
-                            className="relative transform-gpu shadow-md shadow-theme-primary-darker/10 transition-[box-shadow,transform] duration-75 group-hover-active:scale-[1.01] group-hover-active:shadow-theme-primary-darker/20 group-hover-active:brightness-105"
-                        >
-                            <img src={constructThumbsUrl((showCase as Post_ShowCase_Image).imgUrl)} alt={showCase.caption} className="size-full object-cover" />
-                            {showCase.caption && (
-                                <div
-                                    className={classNames(
-                                        'pointer-events-none absolute top-full w-full p-1 text-xs text-neutral-600 opacity-50',
-                                        isBlockIndexEven ? 'text-right' : 'text-left',
-                                    )}
-                                >
-                                    {showCase.caption}
-                                </div>
-                            )}
-                        </button>
-                    )}
-                </div>
-            )}
-
-            <Markdown
-                components={{
-                    p: ({ children }) => (
-                        <p
-                            className={classNames(
-                                'text-pretty text-justify sm:mb-4 md:mb-5',
-                                blockIndex === 0
-                                    ? 'first-of-type:first-letter:-ml-0.5 first-of-type:first-letter:align-text-bottom first-of-type:first-letter:text-[1.5rem] first-of-type:first-letter:leading-[1.475rem] first-of-type:first-letter:text-red-800'
-                                    : '',
-                            )}
-                        >
-                            {children}
-                        </p>
-                    ),
-                    h5: ({ children }) => <h5 className="w-fit">{children}</h5>,
-                }}
-                remarkPlugins={[remarkBreaks]}
-            >
-                {text}
-            </Markdown>
-        </div>
-    );
-};
-
 const RemainingImages: FC<{
-    showCases: Post_ShowCase[];
-    textBlocks: Post_T['textBlocks'];
-    setLightBoxSlide: (showCaseIndex: number) => void;
-}> = ({ showCases, textBlocks, setLightBoxSlide }) => {
-    const remaining_Memo = useMemo(
-        () =>
-            showCases.map((showCase, idx) =>
-                !textBlocks.find((textBlock) => idx === textBlock.useShowCaseIndex) ? ([showCase, idx] as [Post_ShowCase_Image, number]) : undefined,
-            ),
-        [showCases, textBlocks],
-    );
+    remainingImages: [Post_Showcase_Image, number][];
+    setLightBoxSlide: (showcaseIndex: number) => void;
+}> = ({ remainingImages, setLightBoxSlide }) => (
+    <div className="grid items-start gap-3 pb-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        {remainingImages.map(([{ imgUrl, caption }, imageIndex]) => {
+            return (
+                <button
+                    key={imgUrl + imageIndex}
+                    className="group max-h-48 w-full transform-gpu overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.01] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110"
+                    onClick={handleClick}
+                >
+                    <img src={constructThumbnailUrl(imgUrl)} alt={caption} className="object-cover" />
+                </button>
+            );
 
-    return (
-        <div className="grid items-start gap-3 pb-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {remaining_Memo.map((remain) => {
-                const [showCase, imageIndex] = remain || [];
+            function handleClick() {
+                setLightBoxSlide(imageIndex);
+            }
+        })}
+    </div>
+);
 
-                function handleClick() {
-                    imageIndex && setLightBoxSlide(imageIndex);
-                }
+/* Local Types */
 
-                if (!showCase || typeof imageIndex != 'number') {
-                    return null;
-                } else {
-                    return (
-                        <button
-                            key={showCase.imgUrl + imageIndex}
-                            className="group max-h-48 w-full transform-gpu overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.01] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110"
-                            onClick={handleClick}
-                        >
-                            <img src={constructThumbsUrl(showCase.imgUrl)} alt={showCase.caption} className="object-cover" />
-                        </button>
-                    );
-                }
-            })}
-        </div>
-    );
+type LightboxSlideImage = SlideImage & {
+    scIndx: number;
 };
-
-function constructThumbsUrl(url: string) {
-    const splitStrings = url.split('.');
-    return splitStrings[0] + '_thumb.' + splitStrings[1];
-}
