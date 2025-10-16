@@ -14,6 +14,7 @@ import GetChildSize from './utilityComponents/GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import useRotateDegrees from '../hooks/useRotateDegrees';
 import useMouseRotate from '../hooks/useMouseRotate';
+import CategoryBlurb from './CategoryBlurb';
 
 const HexagonTiles = () => {
     const routeName = useZustand((store) => store.values.routeData.name);
@@ -63,10 +64,14 @@ const HexagonTiles = () => {
                     <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
                 ))}
 
+                <CategoryBlurb show={routeName === ROUTE.home} homeMenuTransitionState={homeMenuTransitionState} />
+
                 <Category show={routeName === ROUTE.category} />
+
                 <Brand homeMenuTransitionState={homeMenuTransitionState} />
 
                 <CategoryLinkButtons homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
+
                 <FunctionalButtons homeMenuTransitionTarget={homeMenuTransitionTarget} />
             </div>
         </GetChildSize>

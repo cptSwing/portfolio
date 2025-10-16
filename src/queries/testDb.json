@@ -8,15 +8,7 @@
                 "id": 0,
                 "title": "Design Your Ring",
                 "cardImage": "/images/hd_dyr/hd_dyr_card.jpg",
-                "stack": [
-                    "react",
-                    "react-router",
-                    "react-three-fiber",
-                    "react-three-drei",
-                    "react-postprocessing",
-                    "three-bvh-csg",
-                    "tailwindcss"
-                ],
+                "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
                 "subTitle": "Customizable Wedding-Rings in 3D",
                 "date": "2024-09-12",
                 "showCases": [
@@ -66,18 +58,19 @@
                         "text": "For this, I needed to dust off an older library allowing parsing of the *DXF* files which our client exported, and also, for instance, was tasked with modifying **three.js**'s *ExtrudeGeometry* class to allow for completely closed meshes.\nA customer could now initially choose a ring's width and circumference, and the mesh displayed on-screen would be created precisely according the input values, and limited by constraints set in the backend.\nIn order to realize all capabilities the client asked for, we had to implement more precise extrusion of said ring profiles, allowing for several colors/alloys on one single ring mesh - splitting the extrusion profiles according to segmentation values coming from the backend."
                     },
                     {
-                        "useShowCaseIndex": 3,
+                        "useShowCaseIndex": 2,
                         "text": "\n\nObviously material management was an important part of achieving the desired look. Over the course of the project, I extended three.js' standard materials with a custom TriPlanar shader which allows us to display a wide range of surfaces on a ring without pre-made UV coordinates (a ring's surface can be brushed, or hammered, or any number of further techniques).\n\nUsing [Substance Designer](https://www.adobe.com/products/substance3d/apps/designer.html), I also created the necessary normal and roughness maps for the various surface looks."
                     },
                     {
-                        "useShowCaseIndex": 4,
+                        "useShowCaseIndex": 3,
                         "text": "Another challenge was displaying diamonds on the ring. Visually, achieving a satisfying look for a diamond - a special type of surface whose interaction with light is costly to even *approximate* in realtime 3d applications - was a challenge. In the end, I went with a custom implementation of [react-drei](https://github.com/pmndrs/drei)'s [MeshRefractionMaterial](https://drei.docs.pmnd.rs/shaders/mesh-refraction-material), and coupled this with a hand-ported version of the 'Kawase light-streak' post-processing effect (example seen [here](https://github.com/XJINE/Unity_StarGlow))."
                     },
                     {
-                        "useShowCaseIndex": 5,
+                        "useShowCaseIndex": 4,
                         "text": "For a realistic look though, diamonds would need to be 'physically' inset into the ring. For this step, we decided to use boolean operations, cutting channels or individual settings into the ring - thankfully, [three-bvh-csg](https://github.com/gkjohnson/three-bvh-csg) was making great strides, and I was able to build atop this library's boolean results. Said results would have to be worked on, merging geometry groups and juggling materials."
                     },
                     {
+                        "useShowCaseIndex": 5,
                         "text": "I am still working on this project regularly, and new challenges keep cropping up :)\nI'll gladly provide further access on demand, the current state of the project is not yet publicly viewable, unfortunately."
                     }
                 ]
@@ -86,15 +79,7 @@
                 "id": 1,
                 "title": "This site!",
                 "cardImage": "/images/portfolio/portfolio_featured.jpg",
-                "stack": [
-                    "react",
-                    "react-router",
-                    "react-three-fiber",
-                    "react-three-drei",
-                    "react-postprocessing",
-                    "three-bvh-csg",
-                    "tailwindcss"
-                ],
+                "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
                 "subTitle": "Rebuilt Portfolio from Scratch",
                 "date": "2024-07-30",
                 "viewSource": {
@@ -121,24 +106,9 @@
                         "svgUrl": "/svg/Deutsche_Welle_Logo.svg",
                         "abbreviation": "DW",
                         "name": "Deutsche Welle"
-                    },
-                    {
-                        "abbreviation": "DW",
-                        "name": "Deutsche Welle"
-                    },
-                    {
-                        "abbreviation": "DW",
-                        "name": "Deutsche Welle"
                     }
                 ],
-                "stack": [
-                    "react",
-                    "react-three-fiber",
-                    "react-three-drei",
-                    "leva-gui",
-                    "tailwindcss",
-                    "3ds Max"
-                ],
+                "stack": ["react", "react-three-fiber", "react-three-drei", "leva-gui", "tailwindcss", "3ds Max"],
                 "viewLive": [
                     {
                         "url": "https://fader360.vrgmnts.net/editor/view?project_id=83001b60-2125-4e53-983b-8e1f7cd845f2",
@@ -238,23 +208,19 @@
                 ],
                 "textBlocks": [
                     {
-                        "text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), a photo project by [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. The project explores biographies of the so-called ['Vertragsarbeiter'](https://www.politische-bildung-brandenburg.de/ausstellungen/als-arbeitskraft-willkommen) after the fall of the GDR, and their plight amid steadily worsening racism and economic turmoil. \n\nThe project was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
+                        "text": "I had the honor of building the website which serves as a digital extension of [\"Brotherland\"](https://www.brotherland.info/), a photo project by [Martina Zaninelli](https://martinazaninelli.com/) and Thomas Jakobs. \n\nThe project explores biographies of the so-called ['Vertragsarbeiter'](https://www.politische-bildung-brandenburg.de/ausstellungen/als-arbeitskraft-willkommen) after the fall of the GDR, and their plight amid steadily worsening racism and economic turmoil. \n\nThe project was made possible with the support of the [Amadeu Antonio Stiftung](https://www.amadeu-antonio-stiftung.de/) and [Lichtenhagen im Gedächtnis](https://soziale-bildung.org/ueber_uns/politische-bildung/dokumentationszentrum-lichtenhagen-im-gedaechtnis/)."
                     },
                     {
                         "useShowCaseIndex": 0,
-                        "text": "The site's ['virtual exhibits'](https://www.brotherland.info/html/virtual-exhibits/ve2.html) are inspired by the actual exhibit's various placards,\nwhile the large archive of [playable interviews](https://www.brotherland.info/html/interviews/intrvw_dhn01.html) and their transcriptions are linked to via QR code at actual exhibitions, and independantly browsable online. Short [biographies](https://www.brotherland.info/html/bio.html) of the interviewees round things off. Since the website is to be used as a companion the the photo exhibit (the aforementioned QR links to audio), it is mobile ready."
+                        "text": "The site's ['virtual exhibits'](https://www.brotherland.info/html/virtual-exhibits/ve2.html) are inspired by the actual exhibit's various placards, while the large archive of [playable interviews](https://www.brotherland.info/html/interviews/intrvw_dhn01.html) and their transcriptions are linked to via QR code at actual exhibitions, and independantly browsable online.\n\nShort [biographies](https://www.brotherland.info/html/bio.html) of the interviewees round things off. Since the website is to be used as a companion the the photo exhibit (the aforementioned QR links to audio), it is mobile ready."
                     },
                     {
                         "useShowCaseIndex": 1,
                         "text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
                     }
                 ],
-                "stack": [
-                    "parcel",
-                    "posthtml",
-                    "tailwindcss"
-                ],
-                    "clients": [
+                "stack": ["parcel", "posthtml", "tailwindcss"],
+                "clients": [
                     {
                         "svgUrl": "/svg/Amadeu_Antonio_Logo.svg",
                         "abbreviation": "DW",
@@ -276,10 +242,7 @@
                 "subTitle": "Scroll through 3D experiences",
                 "cardImage": "/images/scrollmersives/scrollmersives_featured.jpg",
                 "date": "2022",
-                "stack": [
-                    "three.js",
-                    "3ds Max"
-                ],
+                "stack": ["three.js", "3ds Max"],
                 "showCases": [
                     {
                         "caption": "electric scooter, early proof of concept",

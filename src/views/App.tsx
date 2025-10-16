@@ -50,9 +50,9 @@ const Main = () => {
                 routeName === ROUTE.home
                     ? 'h-[min(70vh,70vw)] w-auto'
                     : routeName === ROUTE.category
-                      ? 'h-[min(80vh,72.5vw)] w-auto'
-                      : // ROUTE.post
-                        'h-[min(95vh,80vw)] w-auto',
+                      ? 'h-[min(80vh,80vw)] w-auto'
+                      : // ROUTE.post // TODO expand to full height?
+                        'h-[min(95vh,90vw)] w-auto',
             )}
             style={globalCssVariables}
         >
