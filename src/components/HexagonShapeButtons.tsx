@@ -13,13 +13,12 @@ import { useNavigate } from 'react-router-dom';
 import { calcCSSVariables, offsetHexagonTransforms } from '../lib/shapeFunctions';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
-import { hamburgerButtonOffsets } from '../lib/hexagonElements';
+import { openHamburgerMenuButtonOffsets } from '../lib/hexagonElements';
 import { classNames } from 'cpts-javascript-utilities';
 
 export const FunctionalButton: FC<{
     buttonData: FunctionalButtonRouteData;
-    homeMenuTransitionTarget?: CategoryName | null;
-}> = memo(({ buttonData, homeMenuTransitionTarget }) => {
+}> = memo(({ buttonData }) => {
     const { name, target, svgIconPath } = buttonData;
     const routeName = useZustand((store) => store.values.routeData.name);
     // const cardTransition = useZustand((store) => store.values.cardTransition);
@@ -30,9 +29,49 @@ export const FunctionalButton: FC<{
     const navigate = useNavigate();
 
     const cssVariables_Memo = useMemo(() => {
+        const { position, rotation, scale, isHalf } = buttonData[routeName];
+        return calcCSSVariables(position, rotation, scale, isHalf, containerSize);
+    }, [buttonData, containerSize, routeName]);
+
+    return (
+        <GlassmorphicButtonWrapper
+            name={name}
+            style={{
+                ...cssVariables_Memo,
+                zIndex: 20,
+            }}
+            isRouteNavigation={false}
+            clickHandler={handleClick}
+            lightingGradient={routeName === ROUTE.home}
+            strokeRadius={1}
+            innerShadowRadius={6}
+        >
+            <MenuButton svgIconPath={svgIconPath} counterRotate={counterRotate} />
+        </GlassmorphicButtonWrapper>
+    );
+
+    function handleClick(ev?: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined) {
+        const targetResult = target(ev);
+        targetResult && navigate(...targetResult);
+    }
+});
+
+export const FunctionalButtonOpenHamburgerMenu: FC<{
+    buttonData: FunctionalButtonRouteData;
+    homeMenuTransitionTarget?: CategoryName | null;
+}> = memo(({ buttonData, homeMenuTransitionTarget }) => {
+    const { name, target, svgIconPath } = buttonData;
+    const routeName = useZustand((store) => store.values.routeData.name);
+
+    const counterRotate = buttonData[routeName].counterRotate;
+
+    const containerSize = useContext(GetChildSizeContext);
+    const navigate = useNavigate();
+
+    const cssVariables_Memo = useMemo(() => {
         let routeTransforms;
         if (routeName === ROUTE.home && homeMenuTransitionTarget) {
-            routeTransforms = offsetHexagonTransforms(buttonData, hamburgerButtonOffsets[homeMenuTransitionTarget])[routeName];
+            routeTransforms = offsetHexagonTransforms(buttonData, openHamburgerMenuButtonOffsets[homeMenuTransitionTarget])[routeName];
         } else {
             routeTransforms = buttonData[routeName];
         }

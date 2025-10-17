@@ -623,49 +623,8 @@ export const categoryLinkButtonElements: CategoryLinkButtonRouteData[] = [
     },
 ];
 
+// These appear only in '[ROUTE.category]' or even just '[ROUTE.post]' routeData:
 export const functionalButtonElements: FunctionalButtonRouteData[] = [
-    // Hamburger Icon
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 0.35,
-            counterRotate: false,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: -6,
-                y: 210,
-            },
-            rotation: -30,
-            isHalf: false,
-            scale: 0.25,
-            counterRotate: true,
-        },
-        [ROUTE.post]: {
-            position: {
-                x: -45.5,
-                y: -32,
-            },
-            rotation: 30,
-            isHalf: false,
-            scale: 0.25,
-            counterRotate: true,
-        },
-        name: 'hamburger',
-        title: '',
-        svgIconPath: '/svg/Bars3Outline.svg',
-        target: (ev) => {
-            store_toggleHamburgerMenu(ev ? getMenuButtonPosition(ev) : null);
-            store_toggleActiveHamburgerItem('DEFAULT');
-        },
-    },
-
-    // These appear only in '[ROUTE.category]' or even just '[ROUTE.post]' routeData:
     // Previous
     {
         [ROUTE.home]: {
@@ -778,7 +737,47 @@ export const functionalButtonElements: FunctionalButtonRouteData[] = [
     },
 ];
 
-export const hamburgerButtonOffsets: Record<CategoryName, HexagonRouteDataTransformOffsets> = {
+export const openHamburgerButtonElement: FunctionalButtonRouteData = {
+    [ROUTE.home]: {
+        position: {
+            x: 150,
+            y: 129.9,
+        },
+        rotation: 0,
+        isHalf: false,
+        scale: 0.35,
+        counterRotate: false,
+    },
+    [ROUTE.category]: {
+        position: {
+            x: -6,
+            y: 210,
+        },
+        rotation: -30,
+        isHalf: false,
+        scale: 0.25,
+        counterRotate: true,
+    },
+    [ROUTE.post]: {
+        position: {
+            x: -45.5,
+            y: -32,
+        },
+        rotation: 30,
+        isHalf: false,
+        scale: 0.25,
+        counterRotate: true,
+    },
+    name: 'hamburger',
+    title: '',
+    svgIconPath: '/svg/Bars3Outline.svg',
+    target: (ev) => {
+        store_toggleHamburgerMenu(ev ? getMenuButtonPosition(ev) : null);
+        store_toggleActiveHamburgerItem('DEFAULT');
+    },
+};
+
+export const openHamburgerMenuButtonOffsets: Record<CategoryName, HexagonRouteDataTransformOffsets> = {
     'code': {
         [ROUTE.home]: {
             position: {
@@ -934,7 +933,7 @@ export const backgroundHexagons: HexagonRouteData[] = [
     },
 ];
 
-export const hexagonGridTransformCenter = {
+export const hexagonGridTransformCenter: HexagonTransformData['position'] = {
     x: 150,
     y: 129.9,
 };
@@ -956,6 +955,25 @@ export const categoryCardInactive: HexagonTransformData = {
     rotation: 30,
     isHalf: false,
     scale: 1,
+};
+
+export const outerStrokeHexagonElement: HexagonRouteData = {
+    [ROUTE.home]: {
+        position: hexagonGridTransformCenter,
+        rotation: 0,
+        isHalf: false,
+        scale: 2,
+    },
+    [ROUTE.category]: categoryCardActive,
+    [ROUTE.post]: {
+        position: {
+            x: 150,
+            y: 129.9,
+        },
+        rotation: 150,
+        isHalf: false,
+        scale: 0,
+    },
 };
 
 export const brandElement: HexagonRouteData = {

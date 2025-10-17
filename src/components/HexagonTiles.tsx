@@ -1,20 +1,20 @@
 import { CSSProperties, useLayoutEffect, useMemo, useState } from 'react';
 import { classNames } from 'cpts-javascript-utilities';
 import { CategoryName, RotateShortestDistance, TransitionTargetReached } from '../types/types';
-import { regularHexagonElements, halfregularHexagonElements } from '../lib/hexagonElements';
+import { regularHexagonElements, halfregularHexagonElements, functionalButtonElements, openHamburgerButtonElement } from '../lib/hexagonElements';
 import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
-import { HalfHexagon, Hexagon } from './HexagonShapes';
+import { HalfHexagon, Hexagon, OuterStrokeHexagon } from './HexagonShapes';
 import Category from './routes/Category';
 import Brand from './Brand';
 import CategoryLinkButtons from './CategoryLinkButtons';
-import FunctionalButtons from './FunctionalButtons';
 import GetChildSize from './utilityComponents/GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import useRotateDegrees from '../hooks/useRotateDegrees';
 import useMouseRotate from '../hooks/useMouseRotate';
 import CategoryBlurb from './CategoryBlurb';
+import { FunctionalButton, FunctionalButtonOpenHamburgerMenu } from './HexagonShapeButtons';
 
 const HexagonTiles = () => {
     const routeName = useZustand((store) => store.values.routeData.name);
@@ -65,6 +65,7 @@ const HexagonTiles = () => {
                 ))}
 
                 <CategoryBlurb show={routeName === ROUTE.home} homeMenuTransitionState={homeMenuTransitionState} />
+                <OuterStrokeHexagon routeName={routeName} />
 
                 <Category show={routeName === ROUTE.category} />
 
@@ -72,7 +73,11 @@ const HexagonTiles = () => {
 
                 <CategoryLinkButtons homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates} />
 
-                <FunctionalButtons homeMenuTransitionTarget={homeMenuTransitionTarget} />
+                {functionalButtonElements.map((functionalButtonData, idx) => (
+                    <FunctionalButton key={`hex-functional-button-index-${idx}`} buttonData={functionalButtonData} />
+                ))}
+
+                <FunctionalButtonOpenHamburgerMenu buttonData={openHamburgerButtonElement} homeMenuTransitionTarget={homeMenuTransitionTarget} />
             </div>
         </GetChildSize>
     );

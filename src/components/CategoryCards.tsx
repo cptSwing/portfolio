@@ -5,7 +5,6 @@ import { HexagonTransformData, Post } from '../types/types';
 import { classNames } from 'cpts-javascript-utilities';
 import { useNavigate } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
-import { CategoryOuterStroke } from './HexagonShapes';
 
 const CategoryCards: FC<{
     posts: Post[];
@@ -14,23 +13,16 @@ const CategoryCards: FC<{
     const categoryHexagons_Memo = useMemo(() => getCategoryHexagons(posts.length), [posts]);
     const postIndex = useZustand((store) => store.values.postIndex);
 
-    return (
-        <>
-            {/* Stroke, Outer, Fat */}
-            <CategoryOuterStroke transformData={categoryHexagons_Memo[0]} containerSize={containerSize} />
-
-            {posts.map((post, idx) => (
-                <CategoryHexagon
-                    key={`hex-post-card-index-${idx}`}
-                    allButtons={categoryHexagons_Memo}
-                    post={post}
-                    containerSize={containerSize}
-                    cardIndex={idx}
-                    activePostCardIndex={postIndex}
-                />
-            ))}
-        </>
-    );
+    return posts.map((post, idx) => (
+        <CategoryHexagon
+            key={`hex-post-card-index-${idx}`}
+            allButtons={categoryHexagons_Memo}
+            post={post}
+            containerSize={containerSize}
+            cardIndex={idx}
+            activePostCardIndex={postIndex}
+        />
+    ));
 };
 
 export default CategoryCards;
@@ -66,7 +58,7 @@ const CategoryHexagon: FC<{
     return (
         <button
             className={classNames(
-                'transform-hexagon absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,background-color,backdrop-filter] hover-active:!duration-75',
+                'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,background-color,backdrop-filter] hover-active:!duration-75',
                 isAtFront
                     ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
                         ? '!delay-0 !duration-[--ui-animation-menu-transition-duration]'
@@ -85,34 +77,37 @@ const CategoryHexagon: FC<{
             {/* Glassmorphism Segment, thin 'rim' for depth in the :after element */}
             <div
                 className={classNames(
-                    'glassmorphic-backdrop absolute left-0 top-0 -z-10 aspect-hex-flat size-full w-[--hexagon-clip-path-width] transition-[transform,background-color,backdrop-filter] [clip-path:--hexagon-clip-path-full] hover-active:!duration-75',
-                    'after:absolute after:left-0 after:top-0 after:size-full after:bg-white/20 after:matrix-translate-x-[-0.075] after:matrix-translate-y-[-0.05] after:matrix-scale-[1.029] after:[clip-path:--hexagon-clip-path-full-stroke]',
+                    'glassmorphic-backdrop absolute left-0 top-0 -z-10 aspect-hex-flat size-full w-[--hexagon-clip-path-width] transition-[transform,background-color,backdrop-filter] [clip-path:--hexagon-clip-path-full] group-hover-active:!duration-75',
+                    'after:absolute after:left-0 after:top-0 after:size-full after:transition-[transform,clip-path,background-color] after:duration-[--ui-animation-menu-transition-duration]',
                     isAtFront
                         ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
-                            ? 'bg-theme-primary/20 !delay-0 !duration-[--ui-animation-menu-transition-duration] [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1.25]'
-                            : 'bg-theme-primary/10 duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*4),calc(var(--ui-animation-menu-transition-duration)*8)] [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5]'
-                        : 'bg-none backdrop-filter-none duration-[--ui-animation-menu-transition-duration]',
+                            ? 'bg-theme-primary/20 delay-0 duration-[--ui-animation-menu-transition-duration] [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1.25] ' +
+                              'after:bg-white/10 after:matrix-scale-[1.029] after:[clip-path:--hexagon-clip-path-full-stroke]'
+                            : 'bg-theme-primary/10 duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*4),calc(var(--ui-animation-menu-transition-duration)*8)] [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5] ' +
+                              'after:bg-white/20 after:matrix-translate-x-[-0.075] after:matrix-translate-y-[-0.05] after:matrix-scale-[1.029] after:[clip-path:--hexagon-clip-path-full-stroke]'
+                        : 'bg-none backdrop-filter-none duration-[--ui-animation-menu-transition-duration] ' +
+                              'after:bg-theme-primary-darker after:[clip-path:--hexagon-clip-path-full-wider-stroke] after:group-hover-active:bg-theme-primary',
                 )}
             />
 
             {/* Image Element, stroke around image in :after element */}
             <div
                 className={classNames(
-                    'pointer-events-auto relative left-0 top-0 z-0 size-full bg-theme-secondary-darker/50 bg-cover bg-center transition-transform duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path-full] hover-active:delay-0 hover-active:duration-75',
-                    'after:absolute after:left-0 after:top-0 after:z-50 after:size-full after:transition-[transform,clip-path,filter,background-color] after:duration-[--ui-animation-menu-transition-duration] after:[background-image:--card-image-background-gradient] after:hover-active:brightness-150',
+                    'relative left-0 top-0 z-0 size-full bg-theme-secondary-darker/50 bg-cover bg-center transition-transform duration-[--ui-animation-menu-transition-duration] [clip-path:--hexagon-clip-path-full] group-hover-active:delay-0 group-hover-active:duration-75',
+                    'after:absolute after:left-0 after:top-0 after:z-50 after:size-full after:transition-[transform,clip-path,filter,background-color] after:duration-[--ui-animation-menu-transition-duration] after:[background-image:--card-image-background-gradient]',
                     isAtFront
                         ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
                             ? '!delay-0 !duration-[--ui-animation-menu-transition-duration] ' +
                               'after:!delay-0 after:!duration-[--ui-animation-menu-transition-duration] after:[clip-path:--hexagon-clip-path-full]'
-                            : 'matrix-scale-[--carousel-card-at-front-image-scale] hover-active:matrix-scale-[calc(var(--carousel-card-at-front-image-scale)*1.025)] ' +
-                              'after:[clip-path:--hexagon-clip-path-full-stroke]'
-                        : 'z-20 grayscale hover-active:grayscale-0 ' +
-                              'after:bg-theme-primary/50 after:![background-image:none] after:[clip-path:--hexagon-clip-path-full] after:hover-active:[clip-path:--hexagon-clip-path-full-stroke]',
+                            : 'matrix-scale-[--carousel-card-at-front-image-scale] group-hover-active:matrix-scale-[calc(var(--carousel-card-at-front-image-scale)*1.02)] after:group-hover-active:brightness-150 ' +
+                              'after:matrix-scale-[1.001] after:[clip-path:--hexagon-clip-path-full-stroke]'
+                        : 'z-20 grayscale-[0.75] matrix-scale-[0.925] group-hover-active:grayscale-0 ' +
+                              'after:bg-theme-primary/50 after:![background-image:none] after:[clip-path:--hexagon-clip-path-full] after:group-hover-active:bg-theme-primary after:group-hover-active:[clip-path:--hexagon-clip-path-full-stroke]',
                 )}
                 style={
                     {
                         '--card-image-background-gradient':
-                            'radial-gradient(circle, rgb(var(--theme-primary-darker) / 0.75) 0%, rgb(var(--theme-primary)) 70%)',
+                            'radial-gradient(circle, rgb(var(--theme-primary-darker) / 0.65) 0%, rgb(var(--theme-primary)) 70%)',
                         'backgroundImage': `url("${cardImage}"), var(--card-image-background-gradient)`,
                     } as CSSProperties
                 }

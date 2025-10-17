@@ -3,9 +3,9 @@ import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
 import { ROUTE } from '../types/enums';
 import { calcCSSVariables, carouselCssVariables, offsetHexagonTransforms, shutterAnimationTransforms } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
-import { HexagonRouteData, HexagonTransformData } from '../types/types';
+import { HexagonRouteData } from '../types/types';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import { categoryCardActive, hexagonGridTransformCenter } from '../lib/hexagonElements';
+import { categoryCardActive, hexagonGridTransformCenter, outerStrokeHexagonElement } from '../lib/hexagonElements';
 
 const baseClasses =
     /* tw */ 'glassmorphic-backdrop pointer-events-none regular-hexagon-named-class lighting-gradient transform-hexagon absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path]  after-glassmorphic-grain';
@@ -115,27 +115,24 @@ export const HalfHexagon: FC<{
     );
 };
 
-export const CategoryOuterStroke: FC<{
-    transformData: HexagonTransformData;
-    containerSize: {
-        width: number;
-        height: number;
-    };
-}> = ({ transformData, containerSize }) => {
+export const OuterStrokeHexagon: FC<{
+    routeName: ROUTE;
+}> = ({ routeName }) => {
     const cardTransition = useZustand((state) => state.values.cardTransition);
+    const containerSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(() => {
-        const { position, rotation, scale, isHalf } = transformData!;
+        const { position, rotation, scale, isHalf } = outerStrokeHexagonElement[routeName];
         return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
             clipStroke: false,
             gutterWidth: 0,
         });
-    }, [containerSize, transformData]);
+    }, [containerSize, routeName]);
 
     return (
         <div
             className={classNames(
-                'transform-hexagon absolute -z-50 aspect-hex-flat w-[--hexagon-clip-path-width] transition-[background-color,clip-path,transform] duration-[--ui-animation-menu-transition-duration]',
+                'transform-hexagon absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[background-color,clip-path,transform] duration-[--ui-animation-menu-transition-duration]',
                 cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
                     ? '!scale-[calc(var(--carousel-card-at-front-scale-x)*1.06)] bg-transparent [clip-path:--hexagon-clip-path-full-wider-stroke]'
                     : '!scale-[calc(var(--carousel-card-at-front-scale-x)*1.02)] bg-neutral-400/10 [clip-path:--hexagon-clip-path-full-stroke]',
