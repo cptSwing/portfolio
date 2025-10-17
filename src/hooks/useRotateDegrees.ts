@@ -3,6 +3,9 @@ import { CATEGORY } from '../types/enums';
 import { usePrevious } from './usePrevious';
 import { cycleThrough } from 'cpts-javascript-utilities';
 import { CategoryName, RotateShortestDistance } from '../types/types';
+import { useZustand } from '../lib/zustand';
+
+const store_setTimedCardTransition = useZustand.getState().methods.store_setTimedCardTransition;
 
 const categoryNames = Object.keys(CATEGORY).slice(3);
 const defaultDegreeStep = 120;
@@ -28,6 +31,8 @@ const useRotateDegrees = (transitionTarget: CategoryName | null, shortestDistanc
 
                     setRotationDegrees((oldRotation) => oldRotation + degreeStep * offsetSign);
                 }
+
+                store_setTimedCardTransition(true);
             }
         } else {
             setRotationDegrees(0);

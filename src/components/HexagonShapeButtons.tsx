@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, useContext, useEffect, useMemo } from 'react';
+import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
 import { CategoryLinkButtonRouteData, CategoryName, FunctionalButtonRouteData, RotateShortestDistance, TransitionTargetReached } from '../types/types';
 import { useZustand } from '../lib/zustand';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
@@ -8,7 +8,6 @@ import { ROUTE } from '../types/enums';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { openHamburgerMenuButtonOffsets } from '../lib/hexagonElements';
 import { classNames } from 'cpts-javascript-utilities';
-import { isActiveCategory } from '../lib/menuFunctions';
 
 export const FunctionalButton: FC<{
     buttonData: FunctionalButtonRouteData;
@@ -103,8 +102,7 @@ export const CategoryLinkButton: FC<{
         [CategoryName | null, TransitionTargetReached, RotateShortestDistance],
         React.Dispatch<React.SetStateAction<[CategoryName | null, TransitionTargetReached, RotateShortestDistance]>>,
     ];
-    setPositionOnCategoryLinks: React.Dispatch<React.SetStateAction<[string, string]>>;
-}> = memo(({ buttonData, homeMenuTransitionStateUpdates, setPositionOnCategoryLinks }) => {
+}> = memo(({ buttonData, homeMenuTransitionStateUpdates }) => {
     const { title, name, target } = buttonData;
     const routeName = useZustand((store) => store.values.routeData.name);
     const { position, rotation, scale, isHalf } = buttonData[routeName];
@@ -119,22 +117,9 @@ export const CategoryLinkButton: FC<{
         [position, rotation, scale, isHalf, containerSize],
     );
 
-    // TODO clean up / get rid of this menu bar stuff
-    const category = useZustand((store) => store.values.routeData.content.category);
-    const isActiveCategoryLinkButton = routeName === ROUTE.category && category ? isActiveCategory(name, category) : false;
-    useEffect(() => {
-        if (isActiveCategoryLinkButton) {
-            setPositionOnCategoryLinks([
-                `calc(${cssVariables_Memo['--hexagon-translate-x']} - var(--menu-bar-dimensions-left) + 50px)`,
-                `calc(${cssVariables_Memo['--hexagon-translate-y']} - var(--menu-bar-dimensions-top) + 43.3px)`,
-            ]);
-        }
-    }, [cssVariables_Memo, isActiveCategoryLinkButton, setPositionOnCategoryLinks]);
-
     return (
         <GlassmorphicButtonWrapper
             name={name}
-            isActive={isActiveCategoryLinkButton}
             style={{ ...cssVariables_Memo }}
             isRouteNavigation={true}
             clickHandler={handleClick}

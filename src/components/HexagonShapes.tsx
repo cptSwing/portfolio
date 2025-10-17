@@ -1,11 +1,19 @@
 import { classNames } from 'cpts-javascript-utilities';
-import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
+import { CSSProperties, FC, memo, useContext, useLayoutEffect, useMemo, useState } from 'react';
 import { ROUTE } from '../types/enums';
-import { calcCSSVariables, carouselCssVariables, offsetHexagonTransforms, shutterAnimationTransforms } from '../lib/shapeFunctions';
+import { calcCSSVariables, offsetHexagonTransforms, shutterAnimationTransforms } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
-import { HexagonRouteData } from '../types/types';
+import { CategoryName, HexagonRouteData, RotateShortestDistance, TransitionTargetReached } from '../types/types';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import { categoryCardActive, hexagonGridTransformCenter, outerStrokeHexagonElement } from '../lib/hexagonElements';
+import {
+    categoryCardActive,
+    categoryLinkButtonElements,
+    centerHexagonElement,
+    centerHexagonElementOffsets,
+    markActiveHexagonElement,
+    markActiveHexagonElementOffsets,
+} from '../lib/hexagonElements';
+import { database } from '../types/exportTyped';
 
 const baseClasses =
     /* tw */ 'glassmorphic-backdrop pointer-events-none regular-hexagon-named-class lighting-gradient transform-hexagon absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path]  after-glassmorphic-grain';
@@ -18,7 +26,6 @@ export const Hexagon: FC<{
     routeName: ROUTE;
 }> = memo(({ data, routeName }) => {
     const { position, rotation, scale, isHalf } = data[routeName];
-    const isCenterHex = data[routeName].position.x === hexagonGridTransformCenter.x && data[routeName].position.y === hexagonGridTransformCenter.y;
     const containerSize = useContext(GetChildSizeContext);
 
     const cssVariables_Memo = useMemo(
@@ -33,7 +40,6 @@ export const Hexagon: FC<{
             className={classNames(
                 baseClasses,
                 baseTransitionClasses,
-                isCenterHex ? 'regular-hexagon-center-named-class' : '',
                 routeName === ROUTE.home
                     ? '!to-white/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2]'
                     : routeName === ROUTE.category
@@ -44,6 +50,58 @@ export const Hexagon: FC<{
             style={
                 { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
             }
+        />
+    );
+});
+
+export const CenterHexagon: FC<{
+    routeName: ROUTE;
+    homeMenuTransitionTargetReached: boolean;
+}> = memo(({ routeName, homeMenuTransitionTargetReached }) => {
+    const scale = centerHexagonElement[routeName].scale;
+    const cardTransition = useZustand((state) => state.values.cardTransition);
+    const containerSize = useContext(GetChildSizeContext);
+
+    const cssVariables_Memo = useMemo(() => {
+        let routeTransforms = centerHexagonElement[routeName];
+        if (routeName === ROUTE.home && !cardTransition && homeMenuTransitionTargetReached) {
+            routeTransforms = offsetHexagonTransforms(centerHexagonElement, centerHexagonElementOffsets)[routeName];
+        } else if (cardTransition) {
+            routeTransforms = offsetHexagonTransforms(centerHexagonElement, centerHexagonElementOffsets)[routeName];
+        }
+        const { position, rotation, scale, isHalf } = routeTransforms;
+        return calcCSSVariables(
+            position,
+            rotation,
+            scale,
+            isHalf,
+            containerSize,
+            routeName === ROUTE.category
+                ? {
+                      clipStroke: true,
+                      gutterWidth: 0,
+                  }
+                : {},
+        );
+    }, [cardTransition, containerSize, homeMenuTransitionTargetReached, routeName]);
+
+    return (
+        <div
+            className={classNames(
+                baseClasses,
+                baseTransitionClasses,
+                'regular-hexagon-center-named-class',
+                routeName === ROUTE.home
+                    ? '!to-white/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2]'
+                    : routeName === ROUTE.category
+                      ? '!to-white/0 [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:transparent] ' +
+                        (cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
+                            ? 'bg-transparent ![clip-path:--hexagon-clip-path-full-wider-stroke]'
+                            : 'bg-neutral-400/15 ![clip-path:--hexagon-clip-path-full-stroke]')
+                      : // ROUTE.post
+                        '![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)]',
+            )}
+            style={{ ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': 0, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties}
         />
     );
 });
@@ -115,29 +173,68 @@ export const HalfHexagon: FC<{
     );
 };
 
-export const OuterStrokeHexagon: FC<{
-    routeName: ROUTE;
-}> = ({ routeName }) => {
+export const MarkActiveCategoryHexagon: FC<{
+    homeMenuTransitionState: [CategoryName | null, TransitionTargetReached, RotateShortestDistance];
+}> = ({ homeMenuTransitionState }) => {
+    const [homeMenuTransitionTarget, homeMenuTransitionTargetReached] = homeMenuTransitionState;
+
     const cardTransition = useZustand((state) => state.values.cardTransition);
+    const {
+        name: routeName,
+        content: { category },
+    } = useZustand((state) => state.values.routeData);
+
     const containerSize = useContext(GetChildSizeContext);
 
+    const [activeCategory, setActiveCategory] = useState<CategoryName | null>(null);
+    useLayoutEffect(() => {
+        if (routeName === ROUTE.home && homeMenuTransitionTargetReached) {
+            setActiveCategory(homeMenuTransitionTarget);
+        } else if (routeName === ROUTE.category && category) {
+            const activeCategory = Object.keys(database).find((categoryName) => database[categoryName as CategoryName].id === category.id) as CategoryName;
+            setActiveCategory(activeCategory);
+        }
+    }, [category, homeMenuTransitionTarget, homeMenuTransitionTargetReached, routeName]);
+
     const cssVariables_Memo = useMemo(() => {
-        const { position, rotation, scale, isHalf } = outerStrokeHexagonElement[routeName];
+        let routeTransforms = markActiveHexagonElement[routeName];
+
+        if (activeCategory) {
+            const categoryIndex = categoryIndices[activeCategory] ?? 0;
+            const categoryPosition = categoryLinkButtonElements[categoryIndex][routeName].position;
+            const updatedOffsets = {
+                ...markActiveHexagonElementOffsets,
+                [routeName]: { ...markActiveHexagonElementOffsets[routeName], position: categoryPosition },
+            };
+
+            routeTransforms = offsetHexagonTransforms(markActiveHexagonElement, updatedOffsets)[routeName];
+        } else if (cardTransition) {
+            routeTransforms = offsetHexagonTransforms(markActiveHexagonElement, markActiveHexagonElementOffsets)[routeName];
+        }
+
+        const { position, rotation, scale, isHalf } = routeTransforms;
         return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-            clipStroke: false,
+            clipStroke: true,
             gutterWidth: 0,
         });
-    }, [containerSize, routeName]);
+    }, [activeCategory, cardTransition, containerSize, routeName]);
 
     return (
         <div
             className={classNames(
-                'transform-hexagon absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[background-color,clip-path,transform] duration-[--ui-animation-menu-transition-duration]',
-                cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
-                    ? '!scale-[calc(var(--carousel-card-at-front-scale-x)*1.06)] bg-transparent [clip-path:--hexagon-clip-path-full-wider-stroke]'
-                    : '!scale-[calc(var(--carousel-card-at-front-scale-x)*1.02)] bg-neutral-400/10 [clip-path:--hexagon-clip-path-full-stroke]',
+                'transform-hexagon absolute z-50 aspect-hex-flat w-[--hexagon-clip-path-width] transition-[background-color,clip-path,transform] duration-[--ui-animation-menu-transition-duration]',
+                routeName === ROUTE.home
+                    ? 'bg-theme-secondary-lighter/70 [clip-path:--hexagon-clip-path-full-stroke]'
+                    : routeName === ROUTE.category
+                      ? 'bg-theme-secondary-lighter/50 [clip-path:--hexagon-clip-path-full-wider-stroke]'
+                      : '',
             )}
-            style={{ ...cssVariables_Memo, ...carouselCssVariables } as CSSProperties}
+            style={{ ...cssVariables_Memo } as CSSProperties}
         />
     );
 };
+
+const categoryIndices: Partial<Record<CategoryName, number>> = {};
+categoryLinkButtonElements.forEach((routeData, index) => {
+    categoryIndices[routeData.name] = index;
+});

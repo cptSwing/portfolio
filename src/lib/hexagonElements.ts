@@ -24,6 +24,7 @@
  */
 
 import { ROUTE } from '../types/enums';
+import { config } from '../types/exportTyped';
 import {
     HexagonRouteData,
     HexagonTransformData,
@@ -35,18 +36,22 @@ import {
 import { getMenuButtonPosition } from './menuFunctions';
 import { useZustand } from './zustand';
 
-const { store_toggleActiveHamburgerItem, store_toggleHamburgerMenu, store_setPostIndex } = useZustand.getState().methods;
+const { store_toggleActiveHamburgerItem, store_toggleHamburgerMenu, store_setPostIndexAndTransitionTrue } = useZustand.getState().methods;
+
+export const hexagonGridTransformCenter: HexagonTransformData['position'] = {
+    x: 150,
+    y: 129.9,
+};
 
 // "Regular" Hexagons (ONLY IN ROUTE.category)
 export const regularHexagonElements: HexagonRouteData[] = [
-    // Appear everywhere:
     {
         [ROUTE.home]: {
             position: {
-                x: 150,
-                y: 129.9,
+                x: 225,
+                y: 173.2,
             },
-            rotation: 120,
+            rotation: 0,
             isHalf: false,
             scale: 1,
         },
@@ -202,13 +207,13 @@ export const regularHexagonElements: HexagonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 150,
+                x: 300,
                 y: 129.9,
             },
-            rotation: 0,
+            rotation: 90,
             isHalf: false,
-            scale: 2.15,
-        }, // L7
+            scale: 0.866,
+        },
         [ROUTE.post]: {
             position: {
                 x: 345,
@@ -217,36 +222,6 @@ export const regularHexagonElements: HexagonRouteData[] = [
             rotation: 30,
             isHalf: false,
             scale: 0.35,
-        },
-    },
-
-    {
-        [ROUTE.home]: {
-            position: {
-                x: 225,
-                y: 173.2,
-            },
-            rotation: 0,
-            isHalf: false,
-            scale: 1,
-        },
-        [ROUTE.category]: {
-            position: {
-                x: 300,
-                y: 129.9,
-            },
-            rotation: 90,
-            isHalf: false,
-            scale: 0.866,
-        }, // R5
-        [ROUTE.post]: {
-            position: {
-                x: 150,
-                y: 129.9,
-            },
-            rotation: -90,
-            isHalf: false,
-            scale: 0,
         },
     },
 
@@ -659,7 +634,7 @@ export const functionalButtonElements: FunctionalButtonRouteData[] = [
         },
         name: 'previous',
         svgIconPath: '/svg/ChevronLeftOutline.svg',
-        target: () => store_setPostIndex('previous'),
+        target: () => store_setPostIndexAndTransitionTrue('previous'),
     },
 
     // Next
@@ -696,7 +671,7 @@ export const functionalButtonElements: FunctionalButtonRouteData[] = [
         },
         name: 'next',
         svgIconPath: '/svg/ChevronRightOutline.svg',
-        target: () => store_setPostIndex('next'),
+        target: () => store_setPostIndexAndTransitionTrue('next'),
     },
 
     // Close Post
@@ -804,7 +779,7 @@ export const openHamburgerMenuButtonOffsets: Record<CategoryName, HexagonRouteDa
                 x: 150,
                 y: 106,
             },
-            rotation: 180,
+            rotation: -180,
             scale: 0.25,
         },
     },
@@ -933,11 +908,6 @@ export const backgroundHexagons: HexagonRouteData[] = [
     },
 ];
 
-export const hexagonGridTransformCenter: HexagonTransformData['position'] = {
-    x: 150,
-    y: 129.9,
-};
-
 /* Active (ie front) Hex in Category route */
 export const categoryCardActive: HexagonTransformData = {
     position: hexagonGridTransformCenter,
@@ -957,14 +927,72 @@ export const categoryCardInactive: HexagonTransformData = {
     scale: 1,
 };
 
-export const outerStrokeHexagonElement: HexagonRouteData = {
+export const centerHexagonElement: HexagonRouteData = {
     [ROUTE.home]: {
         position: hexagonGridTransformCenter,
         rotation: 0,
         isHalf: false,
-        scale: 2,
+        scale: 1,
     },
-    [ROUTE.category]: categoryCardActive,
+    [ROUTE.category]: {
+        position: hexagonGridTransformCenter,
+        rotation: 0,
+        isHalf: false,
+        scale: categoryCardActive.scale * config.ui.carousel.frontScale * 1.02,
+    },
+    [ROUTE.post]: {
+        position: hexagonGridTransformCenter,
+        rotation: -90,
+        isHalf: false,
+        scale: 0,
+    },
+};
+
+export const centerHexagonElementOffsets: HexagonRouteDataTransformOffsets = {
+    [ROUTE.home]: {
+        scale: 2.2,
+    },
+    [ROUTE.category]: {
+        scale: categoryCardActive.scale * config.ui.carousel.frontScale * 1.06,
+    },
+    [ROUTE.post]: {
+        rotation: 180,
+    },
+};
+
+export const markActiveHexagonElement: HexagonRouteData = {
+    [ROUTE.home]: {
+        position: hexagonGridTransformCenter,
+        rotation: 0,
+        isHalf: false,
+        scale: 0.1,
+    },
+    [ROUTE.category]: {
+        position: hexagonGridTransformCenter,
+        rotation: 30,
+        isHalf: false,
+        scale: 1,
+    },
+
+    [ROUTE.post]: {
+        position: {
+            x: 150,
+            y: 129.9,
+        },
+        rotation: 150,
+        isHalf: false,
+        scale: 0,
+    },
+};
+
+export const markActiveHexagonElementOffsets: HexagonRouteDataTransformOffsets = {
+    [ROUTE.home]: {
+        scale: 1.25,
+    },
+    [ROUTE.category]: {
+        scale: 0.39,
+        rotation: -30,
+    },
     [ROUTE.post]: {
         position: {
             x: 150,

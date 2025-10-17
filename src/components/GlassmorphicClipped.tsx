@@ -39,24 +39,12 @@ export const GlassmorphicButtonWrapper: FC<{
     name: string;
     style: Record<string, valueof<CSSProperties>>;
     clickHandler: (ev: React.MouseEvent<HTMLButtonElement>) => void;
-    isActive?: boolean;
     isRouteNavigation?: boolean;
     mouseEnterHandler?: () => void;
     innerShadowRadius?: number;
     strokeRadius?: number;
     lightingGradient?: boolean;
-}> = ({
-    children,
-    name,
-    style,
-    clickHandler,
-    isActive = false,
-    isRouteNavigation = false,
-    mouseEnterHandler,
-    innerShadowRadius,
-    strokeRadius,
-    lightingGradient = false,
-}) => {
+}> = ({ children, name, style, clickHandler, isRouteNavigation = false, mouseEnterHandler, innerShadowRadius, strokeRadius, lightingGradient = false }) => {
     const routeName = useZustand((store) => store.values.routeData.name);
     const cardTransition = useZustand((store) => store.values.cardTransition);
 
@@ -80,12 +68,8 @@ export const GlassmorphicButtonWrapper: FC<{
                 className={classNames(
                     isRouteNavigation ? `navigation-button-hexagon-class-${name}` : '',
                     lightingGradient ? 'lighting-gradient' : '',
-                    'pointer-events-auto aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[--hexagon-inner-shadow-color,--hexagon-lighting-gradient-counter-rotation,backdrop-filter] group-hover-active:matrix-scale-x-[1.05] group-hover-active:matrix-scale-y-[1.05] group-hover-active:![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]',
+                    'pointer-events-auto aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[--hexagon-inner-shadow-color,--hexagon-lighting-gradient-counter-rotation,backdrop-filter] [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:2] group-hover-active:matrix-scale-x-[1.05] group-hover-active:matrix-scale-y-[1.05] group-hover-active:![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]',
                     cardTransition ? 'group-hover-active:!matrix-scale-[0.9]' : '',
-
-                    isActive
-                        ? '[--glassmorphic-backdrop-blur:16px] [--glassmorphic-backdrop-saturate:8] ![--hexagon-inner-shadow-color:theme(colors.theme.root-background)]'
-                        : '[--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:2]',
                     routeName === ROUTE.post
                         ? '[--hexagon-fill-color:transparent] [--hexagon-inner-shadow-color:transparent] [--hexagon-stroke-color:transparent] group-hover-active:![--hexagon-stroke-color:theme(colors.theme.primary)]'
                         : '[--hexagon-fill-color:theme(colors.theme.secondary/0.35)] [--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter/0.25)] [--hexagon-stroke-color:theme(colors.theme.primary-lighter/0.5)]',
