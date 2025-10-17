@@ -94,10 +94,10 @@ export const CenterHexagon: FC<{
                 routeName === ROUTE.home
                     ? '!to-white/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2]'
                     : routeName === ROUTE.category
-                      ? '!to-white/0 [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:transparent] ' +
+                      ? '!to-white/0 [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] ' +
                         (cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
-                            ? 'bg-transparent ![clip-path:--hexagon-clip-path-full-wider-stroke]'
-                            : 'bg-neutral-400/15 ![clip-path:--hexagon-clip-path-full-stroke]')
+                            ? '[--hexagon-fill-color:transparent] ![clip-path:--hexagon-clip-path-full-wider-stroke]'
+                            : '[--hexagon-fill-color:theme(colors.neutral.400/0.10)] ![clip-path:--hexagon-clip-path-full-stroke]')
                       : // ROUTE.post
                         '![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
