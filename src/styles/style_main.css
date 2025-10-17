@@ -50,25 +50,25 @@
     .background-gradients {
         background-image:
             radial-gradient(
-                ellipse 10% 10% at var(--background-gradient-radial-3-position),
-                theme(colors.theme.primary/0.5) 0%,
-                theme(colors.theme.primary-darker/0.7) 40%,
+                ellipse 17.5% 12.5% at var(--background-gradient-radial-3-position),
+                theme(colors.theme.primary/0.2) 0%,
+                theme(colors.theme.primary-darker/0.35) 30%,
                 transparent 100%
-            ),
-            /* radial-3 */
+            )     /* radial-3 */,
+        
                 radial-gradient(
                     ellipse 50% 70% at var(--background-gradient-radial-2-position),
                     theme(colors.theme.root-background/0.5) 0%,
                     theme(colors.theme.root-background/0.25) 50%
-                ),
-            /* radial-2 */
+                )     /* radial-2 */,
+        
                 radial-gradient(
                     ellipse 20% 30% at var(--background-gradient-radial-1-position),
                     theme(colors.theme.primary-lighter/0.15) 0%,
                     theme(colors.theme.primary/0.1) 50%,
                     transparent 100%
-                ),
-            /* radial-1 */
+                ) /* radial-1 */,
+            
                 linear-gradient(
                     var(--background-gradient-linear-angle),
                     transparent 0%,
