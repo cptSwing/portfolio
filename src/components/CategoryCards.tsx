@@ -1,10 +1,11 @@
 import { CSSProperties, FC, useContext, useMemo } from 'react';
-import { getCategoryHexagons, calcCSSVariables } from '../lib/shapeFunctions';
+import { getCategoryHexagons, calcCSSVariables, carouselCssVariables } from '../lib/shapeFunctions';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { HexagonTransformData, Post } from '../types/types';
 import { classNames } from 'cpts-javascript-utilities';
 import { useNavigate } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
+import { CategoryOuterStroke } from './HexagonShapes';
 
 const CategoryCards: FC<{
     posts: Post[];
@@ -29,36 +30,6 @@ const CategoryCards: FC<{
                 />
             ))}
         </>
-    );
-};
-
-const CategoryOuterStroke: FC<{
-    transformData: HexagonTransformData;
-    containerSize: {
-        width: number;
-        height: number;
-    };
-}> = ({ transformData, containerSize }) => {
-    const cardTransition = useZustand((state) => state.values.cardTransition);
-
-    const cssVariables_Memo = useMemo(() => {
-        const { position, rotation, scale, isHalf } = transformData!;
-        return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
-            clipStroke: false,
-            gutterWidth: 0,
-        });
-    }, [containerSize, transformData]);
-
-    return (
-        <div
-            className={classNames(
-                'transform-hexagon absolute -z-50 aspect-hex-flat w-[--hexagon-clip-path-width] transition-[background-color,clip-path,transform] duration-[--ui-animation-menu-transition-duration]',
-                cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
-                    ? '!scale-[calc(var(--card-wrapper-at-front-scaling-x)*1.06)] bg-transparent [clip-path:--hexagon-clip-path-full-wider-stroke]'
-                    : '!scale-[calc(var(--card-wrapper-at-front-scaling-x)*1.02)] bg-neutral-400/10 [clip-path:--hexagon-clip-path-full-stroke]',
-            )}
-            style={{ ...cssVariables_Memo, ...cardWrapperCssVariables } as CSSProperties}
-        />
     );
 };
 
@@ -99,13 +70,13 @@ const CategoryHexagon: FC<{
                 isAtFront
                     ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
                         ? '!delay-0 !duration-[--ui-animation-menu-transition-duration]'
-                        : '!scale-[--card-wrapper-at-front-scaling-x] duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*4),calc(var(--ui-animation-menu-transition-duration)*8)]'
+                        : '!scale-[--carousel-card-at-front-scale-x] duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*4),calc(var(--ui-animation-menu-transition-duration)*8)]'
                     : 'duration-[--ui-animation-menu-transition-duration] hover-active:!z-50 hover-active:scale-x-[calc(var(--hexagon-scale-x)*1.5)] hover-active:scale-y-[calc(var(--hexagon-scale-y)*1.5)]',
             )}
             style={
                 {
                     ...cssVariables_Memo,
-                    ...cardWrapperCssVariables,
+                    ...carouselCssVariables,
                     zIndex: (isAtFront ? 1 : 0) - thisButtonIndex,
                 } as CSSProperties
             }
@@ -133,7 +104,7 @@ const CategoryHexagon: FC<{
                         ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
                             ? '!delay-0 !duration-[--ui-animation-menu-transition-duration] ' +
                               'after:!delay-0 after:!duration-[--ui-animation-menu-transition-duration] after:[clip-path:--hexagon-clip-path-full]'
-                            : 'matrix-scale-[--card-image-at-front-scaling] hover-active:matrix-scale-[calc(var(--card-image-at-front-scaling)*1.025)] ' +
+                            : 'matrix-scale-[--carousel-card-at-front-image-scale] hover-active:matrix-scale-[calc(var(--carousel-card-at-front-image-scale)*1.025)] ' +
                               'after:[clip-path:--hexagon-clip-path-full-stroke]'
                         : 'z-20 grayscale hover-active:grayscale-0 ' +
                               'after:bg-theme-primary/50 after:![background-image:none] after:[clip-path:--hexagon-clip-path-full] after:hover-active:[clip-path:--hexagon-clip-path-full-stroke]',
@@ -156,17 +127,6 @@ const CategoryHexagon: FC<{
             store_setPostIndex(cardIndex);
         }
     }
-};
-
-const scaling = {
-    wrapperAtFront: 1.75,
-    imageAtFront: 0.7,
-};
-
-const cardWrapperCssVariables = {
-    '--card-wrapper-at-front-scaling-x': `calc(var(--hexagon-scale-x) * ${scaling.wrapperAtFront})`,
-    '--card-wrapper-at-front-scaling-y': `calc(var(--hexagon-scale-y) * ${scaling.wrapperAtFront})`,
-    '--card-image-at-front-scaling': scaling.imageAtFront,
 };
 
 function getThisButtonIndex(activeIndex: number, cardIndex: number, cardCount: number) {

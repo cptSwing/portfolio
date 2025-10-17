@@ -10,14 +10,17 @@ import {
 import roundToDecimal from './roundToDecimal';
 import { categoryCardActive, categoryCardInactive, hexagonGridTransformCenter } from './hexagonElements';
 import isNumber from './isNumber';
+import roundToPixelRatio from './roundToPixelRatio';
+import { degreeToRadian } from 'cpts-javascript-utilities';
 
 const {
     ui: {
-        hexGrid: { scaleUp, gutterWidth: strokeWidthDefault, clipPathWidth, clipPathHeight },
+        hexagonPaths: { scaleUp, gutterWidth: strokeWidthDefault, clipPathWidth, clipPathHeight },
+        carousel: { frontScale, frontScaleImage },
     },
 } = config;
 
-export const staticValues = {
+const staticValues = {
     heightAspect: {
         flatTop: 0.866,
         pointyTop: 1.1547,
@@ -32,13 +35,12 @@ export const staticValues = {
     },
 };
 
-// TODO put to config? or a static.json?
-export const viewBoxWidth = 400;
-export const viewBoxHeight = viewBoxWidth * staticValues.heightAspect.flatTop;
-export const viewBoxAspect = viewBoxWidth / viewBoxHeight;
+const viewBoxWidth = 400;
+const viewBoxHeight = viewBoxWidth * staticValues.heightAspect.flatTop;
+const viewBoxAspect = viewBoxWidth / viewBoxHeight;
 
-const tan30 = Math.tan(degToRad(30));
-const tan60 = Math.tan(degToRad(60));
+const tan30 = Math.tan(degreeToRadian(30));
+const _tan60 = Math.tan(degreeToRadian(60));
 const sin30 = sin(30);
 const cos30 = cos(30);
 
@@ -63,8 +65,19 @@ export const strokedHexagonClipPathStatic = `path("${strokedRoundedHexagonPath}"
 export const wideStrokedHexagonClipPathStatic = `path("${wideStrokedRoundedHexagonPath}")`;
 export const halfStrokedHexagonClipPathStatic = `path("${halfStrokedRoundedHexagonPath}")`;
 
-export const subMenuButtonHexagonPath = getHexagonPath({ sideLength: 0.5, cornerRadius: 1 });
+export const carouselCssVariables = {
+    '--carousel-card-at-front-scale-x': `calc(var(--hexagon-scale-x) * ${frontScale})`,
+    '--carousel-card-at-front-scale-y': `calc(var(--hexagon-scale-y) * ${frontScale})`,
+    '--carousel-card-at-front-image-scale': frontScaleImage,
+};
 
+/**
+ * Applies HexagonRouteDataTransformOffsets to a base HexagonRouteData
+ *
+ * @param {(HexagonRouteData | HexagonRouteData[])} baseTransforms
+ * @param {(HexagonRouteDataTransformOffsets | HexagonRouteDataTransformOffsets[])} offsets
+ * @returns {(HexagonRouteData | HexagonRouteData[])}
+ */
 export function offsetHexagonTransforms<T>(baseTransforms: T, offsets: HexagonRouteDataTransformOffsets): T;
 export function offsetHexagonTransforms<T>(baseTransforms: T[], offsets: HexagonRouteDataTransformOffsets[]): T[];
 export function offsetHexagonTransforms<T = HexagonRouteData | CategoryLinkButtonRouteData | FunctionalButtonRouteData>(
@@ -99,7 +112,7 @@ function offsetRoute<T>(routeData: T, routeOffset?: HexagonRouteDataTransformOff
     return newRouteData;
 }
 
-export function transformCategoryHalfHexagons(
+export function shutterAnimationTransforms(
     routeTransforms: HexagonTransformData,
     imaginaryHexagonScale?: number,
     iris = false,
@@ -170,6 +183,12 @@ export function transformCategoryHalfHexagons(
     return { [ROUTE.category]: returnOffsets };
 }
 
+/**
+ * Generates Hexagon buttons for ROUTE.category - more specifically, adds required number of inactive Hexagons and calculates their transforms
+ *
+ * @param {number} count Number of inactive Hexagon buttons needed (posts.length -1, basically)
+ * @returns {HexagonTransformData[]}
+ */
 export function getCategoryHexagons(count: number): HexagonTransformData[] {
     const activeHexagonScale = categoryCardActive.scale;
     const inactiveHexagonScale = activeHexagonScale / Math.max(count - 1, 8);
@@ -212,187 +231,169 @@ export function getCategoryHexagons(count: number): HexagonTransformData[] {
     return allHexagons;
 }
 
-type Point = [number, number];
-type PointOpts = {
-    point: Point;
-    customRadius?: number;
-    useAspectRatio?: boolean;
-};
+/**
+ * Cuts of corners of a given Rectangle and returns a polygon() for use in CSS clip-path
+ *
+ * @param {number} y_NormalizedPercent
+ * @param {{ width: number; height: number }} size
+ * @param {?{
+ *         multipliers?: { x?: number; y?: number };
+ *         shape?: 'full' | 'top-left' | 'top-right' | 'bottom' | 'slant-right';
+ *     }} [options]
+ * @returns {string}
+ */
+export function getHexagonalClipPath(
+    y_NormalizedPercent: number,
+    size: { width: number; height: number },
+    options?: {
+        multipliers?: { x?: number; y?: number };
+        shape?: 'full' | 'top-left' | 'top-right' | 'bottom' | 'slant-right';
+    },
+): string {
+    const { multipliers, shape } = options ?? {};
+    const { width, height } = size;
 
-function roundedPolygon(points: PointOpts[], cornerRadius: number, aspectRatio = 1): string {
-    if (points.length < 3) return '';
+    const clipWidth = width * (multipliers?.x ?? 1);
+    const clipHeight = height * (multipliers?.y ?? 1);
+    const aspectRatio = clipWidth / clipHeight;
 
-    const pathParts: string[] = [];
-    const length = points.length;
+    const y_Percent = y_NormalizedPercent * 100;
+    const x_Percent = (y_Percent / aspectRatio) * tan30;
 
-    const radius = cornerRadius;
+    const actualShape = shape ?? 'full';
 
-    for (let i = 0; i < length; i++) {
-        const withOpts = points[i]!;
-        const r = withOpts.customRadius ?? radius;
-        const aspect = withOpts.useAspectRatio ? aspectRatio : 1;
+    switch (actualShape) {
+        case 'full':
+            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, calc(100% - ${x_Percent}%) 0%, 100% ${y_Percent}%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, ${x_Percent}% 100%, 0% calc
+            (100% - ${y_Percent}%))`;
 
-        const previous = points[(i - 1 + length) % length]!.point;
-        const current = points[i]!.point;
-        const next = points[(i + 1) % length]!.point;
+        case 'top-left':
+            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, 100% 0%, 100% 100%, 0% 100%)`;
 
-        // Direction vectors
-        const inVector: Point = [current[0] - previous[0], current[1] - previous[1]];
-        const outVector: Point = [next[0] - current[0], next[1] - current[1]];
+        case 'top-right':
+            return `polygon(0% 0%, calc(100% - ${x_Percent}%) 0%, 100% ${y_Percent}%, 100% 100%, 0% 100%)`;
 
-        // Normalize vectors
-        const inLength = Math.hypot(inVector[0], inVector[1]);
-        const outLength = Math.hypot(outVector[0], outVector[1]);
+        case 'bottom':
+            return `polygon(0% 0%, 100% 0%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, ${x_Percent}% 100%, 0% calc(100% - ${y_Percent}%))`;
 
-        const inDirection: Point = [inVector[0] / inLength, inVector[1] / inLength];
-        const outDirection: Point = [outVector[0] / outLength, outVector[1] / outLength];
+        case 'slant-right':
+            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, 100% 0%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, 0% 100%)`;
+    }
+}
 
-        // Entry and exit points
-        const entry: Point = [current[0] - inDirection[0] * r, current[1] - inDirection[1] * r];
-        const exit: Point = [current[0] + outDirection[0] * r, current[1] + outDirection[1] * r];
+/**
+ * Returns polygon() in a hexagonal shape, see https://css-tip.com/hexagon-shape/
+ *
+ * @param {boolean} [flatTop=true]
+ * @returns {{ aspectRatio: string; polygon: string; }}
+ */
+export function getSimpleHexagonalPolygon(flatTop = true) {
+    const aspectRatio = flatTop ? 1 / cos30 : cos30;
+    const polygon = flatTop ? 'polygon(50% -50%,100% 50%,50% 150%,0 50%)' : 'polygon(-50% 50%,50% 100%,150% 50%,50% 0)';
 
-        if (i === 0) {
-            pathParts.push(`M ${entry[0] / aspect},${entry[1]}`);
+    return {
+        aspectRatio,
+        polygon,
+    };
+}
+
+export function sin(deg: number, clampTo?: number): number {
+    const sinNum = Math.sin(degreeToRadian(deg));
+    return clampTo ? parseFloat(sinNum.toFixed(clampTo)) : sinNum;
+}
+export function cos(deg: number, clampTo?: number): number {
+    const cosNum = Math.cos(degreeToRadian(deg));
+    return clampTo ? parseFloat(cosNum.toFixed(clampTo)) : cosNum;
+}
+
+/**
+ * Calculates required scale and translation values for placing hexagons in a grid. Returns collection of CSS variables.
+ *
+ * @param {{ x: number; y: number }} translate
+ * @param {number} rotation in DEG
+ * @param {number} scale
+ * @param {boolean} isHalf
+ * @param {{
+ *         width: number;
+ *         height: number;
+ *     }} containerSize
+ * @param {?{ gutterWidth?: number; clipStroke?: boolean; clampTo?: number }} [options]
+ * @returns {{ ...; }}
+ */
+export function calcCSSVariables(
+    translate: { x: number; y: number },
+    rotation: number,
+    scale: number,
+    isHalf: boolean,
+    containerSize: {
+        width: number;
+        height: number;
+    },
+    options?: { gutterWidth?: number; clipStroke?: boolean; clampTo?: number },
+) {
+    const { gutterWidth = strokeWidthDefault, clipStroke, clampTo: _clampTo } = options ?? {};
+
+    let { width, height } = containerSize;
+
+    // TODO better than the top left stack-spawn, bu
+    if (!width || !height) {
+        width = viewBoxWidth;
+        height = viewBoxHeight;
+    }
+
+    const parentAspect = width / height;
+    const ratio = viewBoxAspect / parentAspect;
+
+    const parentToViewboxWidth = width / viewBoxWidth;
+    const parentToViewboxHeight = height / viewBoxHeight;
+    const insetByStrokeWidth = (1 - gutterWidth) * scale;
+
+    const mappedScaleX = roundToDecimal(insetByStrokeWidth * parentToViewboxWidth * ratio, 2);
+    const mappedScaleY = roundToDecimal(insetByStrokeWidth * parentToViewboxHeight, 2);
+
+    const mappedTranslateX = roundToPixelRatio(translate.x * parentToViewboxWidth * ratio + getOffset(parentToViewboxWidth * ratio));
+    const mappedTranslateY = roundToPixelRatio(translate.y * parentToViewboxHeight + getOffset(parentToViewboxHeight) * (viewBoxHeight / viewBoxWidth));
+
+    let clipPath;
+
+    if (isHalf) {
+        if (clipStroke) {
+            clipPath = 'var(--hexagon-clip-path-half-stroked)';
         } else {
-            pathParts.push(`L ${entry[0] / aspect},${entry[1]}`);
+            clipPath = 'var(--hexagon-clip-path-half)';
         }
-
-        pathParts.push(`Q ${current[0]},${current[1]} ${exit[0] / aspect},${exit[1]}`);
+    } else {
+        if (clipStroke) {
+            clipPath = 'var(--hexagon-clip-path-full-stroke)';
+        } else {
+            clipPath = 'var(--hexagon-clip-path-full)';
+        }
     }
 
-    pathParts.push('Z');
-    return pathParts.join(' ');
-}
-
-function getCategoryCardPath(styleIndex: number, aspectRatio: number): string {
-    const cornerRadius = 0.0175;
-
-    let path;
-
-    switch (styleIndex) {
-        // isFirst
-        case 0:
-            // top left; top right; bottom right; bottom left
-            path = roundedPolygon(
-                [
-                    { point: [0, 0.41] },
-                    { point: [0.41 / aspectRatio / tan60, 0] },
-
-                    { point: [1, 0] },
-
-                    { point: [1, 1] },
-                    { point: [0.9075, 1] },
-                    { point: [0.9075, 0.91] },
-                    { point: [0.51, 0.91] },
-                    { point: [0.51, 1] },
-
-                    { point: [0, 1] },
-                ],
-                cornerRadius,
-                aspectRatio,
-            );
-            break;
-        case 1:
-            // top left; top right; bottom right; bottom left
-            path = roundedPolygon(
-                [
-                    { point: [0, 0] },
-
-                    { point: [0.645, 0] },
-                    { point: [0.645, 0.12] },
-                    { point: [1, 0.12] },
-
-                    { point: [1, 1] },
-
-                    { point: [0.325 / aspectRatio / tan60, 1] },
-                    { point: [0, 1 - 0.325] },
-                ],
-                cornerRadius,
-                aspectRatio,
-            );
-            break;
-        case 2:
-            // top left; top right; bottom right; bottom left
-            path = roundedPolygon(
-                [
-                    { point: [0, 0.12] },
-                    { point: [0.215, 0.12] },
-                    { point: [0.215, 0] },
-
-                    { point: [1, 0] },
-
-                    { point: [1, 1 - 0.19] },
-                    { point: [1 - 0.19 / aspectRatio / tan60, 1] },
-
-                    { point: [0, 1], useAspectRatio: true },
-                ],
-                cornerRadius,
-                aspectRatio,
-            );
-            break;
-        case 3:
-            // top left; top right; bottom right; bottom left
-            path = roundedPolygon([{ point: [0, 0] }, { point: [1, 0] }, { point: [1, 1] }, { point: [0, 1] }], cornerRadius, aspectRatio);
-            break;
-        case 4:
-            // top left; top right; bottom right; bottom left
-            path = roundedPolygon(
-                [{ point: [0, 0], useAspectRatio: true }, { point: [1, 0] }, { point: [1, 1] }, { point: [0, 1], useAspectRatio: true }],
-                cornerRadius,
-                aspectRatio,
-            );
-            break;
-
-        case 5:
-            // top left; top right; bottom right; bottom left
-            path = roundedPolygon(
-                [
-                    { point: [0, 0], useAspectRatio: true },
-
-                    { point: [1 - 0.2 / aspectRatio / tan60, 0] },
-                    { point: [1, 0.2] },
-
-                    { point: [1, 1] },
-
-                    { point: [0, 1], useAspectRatio: true },
-                ],
-                cornerRadius,
-                aspectRatio,
-            );
-            break;
-        case 6:
-            // top left; top right; bottom right; bottom left
-            path = roundedPolygon(
-                [{ point: [0, 0], useAspectRatio: true }, { point: [1, 0] }, { point: [1, 1] }, { point: [0, 1], useAspectRatio: true }],
-                cornerRadius,
-                aspectRatio,
-            );
-            break;
-        case 7:
-            // top left; top right; bottom right; bottom left
-            path = roundedPolygon(
-                [{ point: [0, 0], useAspectRatio: true }, { point: [1, 0] }, { point: [1, 1] }, { point: [0, 1], useAspectRatio: true }],
-                cornerRadius,
-                aspectRatio,
-            );
-            break;
-
-        default:
-            path = 'M0,0 L1,0 L1,1 L0,1 Z';
-    }
-
-    return path;
-}
-
-export function _getIndexCategoryCardPath(gridAreaIndex: number, width: number, height: number): string {
-    const aspectRatio = width / height;
-    const path = getCategoryCardPath(gridAreaIndex, aspectRatio);
-    return path;
+    return {
+        '--hexagon-translate-x': mappedTranslateX + 'px',
+        '--hexagon-translate-y': mappedTranslateY + 'px',
+        '--hexagon-rotate': rotation + 'deg',
+        '--hexagon-scale-x': mappedScaleX,
+        '--hexagon-scale-y': mappedScaleY,
+        // TODO use container query values here instead of all that other jazz?
+        // '--hexagon-scale-x': `calc(${insetByStrokeWidth} * var(--hexagon-width-container-to-viewbox) * var(--hexagon-ratio-of-aspects))`,
+        // '--hexagon-scale-y': `calc(${insetByStrokeWidth} * var(--hexagon-height-container-to-viewbox))`,
+        '--hexagon-lighting-gradient-counter-rotation': `calc(${-rotation}deg - var(--home-menu-rotation, 0deg))`,
+        '--hexagon-clip-path': clipPath,
+    };
 }
 
 /* Local functions */
 
 type GetHexagonPathParams = { sideLength: number; cornerRadius: number; isHalf?: boolean; width?: number; inner?: 'invert' | 'stroke'; innerSize?: number };
+
+/**
+ * Generates path() strings that describe various forms of rounded Hexagon, for use in clip-path etc.
+ *
+ * @param {GetHexagonPathParams} params
+ * @returns {string}
+ */
 function getHexagonPath(params: GetHexagonPathParams): string {
     const { sideLength, cornerRadius, isHalf = false, width = 1, inner = null, innerSize = 0 } = params;
 
@@ -618,216 +619,82 @@ function getOffset(scale: number) {
     return factor * (scale - baseline);
 }
 
-/** Unused Functions (for now) */
+/* Unused Functions (for now) */
 
-function _getHexagonalSidePath(sideLength = 1, cornerRadius = 8, shorter = 0, isRightSide = false): string {
-    const points: { x: number; y: number }[] = [];
-    const moveZeroPoint = 180;
-    const centerX = sideLength;
-    const centerY = sideLength * staticValues.heightAspect.flatTop;
+function _getHexagonalPolygon(angleDeg = 0) {
+    const angleRad = degreeToRadian(angleDeg);
+    const sides = 6;
 
-    const extraWidth = shorter ? sideLength * (isRightSide ? 2 : 2) * shorter : 0;
-
-    for (let i = 0; i < 6; i++) {
-        const angle_deg = 60 * i + moveZeroPoint;
-        const x = centerX + sideLength * cos(angle_deg);
-        const y = centerY + sideLength * sin(angle_deg);
-
-        let xRounded = roundToDecimal(x, 4);
-        const yRounded = roundToDecimal(y, 4);
-
-        if (shorter) {
-            if (isRightSide) {
-                switch (i) {
-                    case 0:
-                        xRounded = sideLength / 1.1547;
-                        break;
-                    case 2:
-                        xRounded += extraWidth;
-                        break;
-                    case 3:
-                        xRounded += extraWidth;
-                        break;
-                    case 4:
-                        xRounded += extraWidth;
-                        break;
-                }
-            } else {
-                switch (i) {
-                    case 2:
-                        xRounded += extraWidth;
-                        break;
-                    case 3:
-                        xRounded -= sideLength / 2;
-                        break;
-                    case 4:
-                        xRounded += extraWidth;
-                        break;
-                }
-            }
-        }
-        points.push({ x: xRounded, y: yRounded });
+    let shape = `polygon(`;
+    for (let i = 0; i < sides; i++) {
+        const x = 50 + 50 * Math.cos(angleRad + (i * 2 * Math.PI) / sides);
+        const y = 50 + 50 * Math.sin(angleRad + (i * 2 * Math.PI) / sides);
+        shape += `${+x.toFixed(2)}% ${+y.toFixed(2)}%,`;
     }
+    shape = shape.slice(0, -1);
+    shape += `)`;
 
-    const cornerSinOffsetRounded = roundToDecimal(cornerRadius * sin30, 4);
-    const cornerCosOffsetRounded = roundToDecimal(cornerRadius * cos30, 4);
-
-    return isRightSide
-        ? ` M ${points[0]!.x - cornerSinOffsetRounded},${points[0]!.y + cornerCosOffsetRounded} \
-            Q ${points[0]!.x},${points[0]!.y} ${points[0]!.x - cornerSinOffsetRounded},${points[0]!.y - cornerCosOffsetRounded} \
-            \
-            L ${points[1]!.x - cornerSinOffsetRounded},${points[1]!.y}  \
-            \
-            L ${points[2]!.x - cornerSinOffsetRounded * 2},${points[2]!.y} \
-            Q ${points[2]!.x},${points[2]!.y} ${points[2]!.x + cornerSinOffsetRounded},${points[2]!.y + cornerCosOffsetRounded} \
-            \
-            L ${points[3]!.x - cornerSinOffsetRounded},${points[3]!.y - cornerCosOffsetRounded} \
-            Q ${points[3]!.x},${points[3]!.y} ${points[3]!.x - cornerSinOffsetRounded},${points[3]!.y + cornerCosOffsetRounded} \
-            \
-            L ${points[4]!.x + cornerSinOffsetRounded},${points[4]!.y - cornerCosOffsetRounded} \
-            Q ${points[4]!.x},${points[4]!.y} ${points[4]!.x - cornerSinOffsetRounded * 2},${points[4]!.y} \
-            \
-            L ${points[5]!.x - cornerSinOffsetRounded},${points[5]!.y} \
-            \
-            Z`
-        : ` M ${points[0]!.x + cornerSinOffsetRounded * 2},${points[0]!.y + cornerCosOffsetRounded} \
-            Q ${points[0]!.x + cornerSinOffsetRounded},${points[0]!.y} ${points[0]!.x + cornerSinOffsetRounded * 2},${points[0]!.y - cornerCosOffsetRounded} \
-            \
-            L ${points[1]!.x},${points[1]!.y + cornerCosOffsetRounded} \
-            Q ${points[1]!.x + cornerSinOffsetRounded},${points[1]!.y} ${points[1]!.x + cornerSinOffsetRounded * 3},${points[1]!.y} \
-            \
-            L ${points[2]!.x + cornerSinOffsetRounded * 2},${points[2]!.y} \
-            \
-            L ${points[3]!.x + cornerSinOffsetRounded / 2},${points[3]!.y - cornerCosOffsetRounded} \
-            Q ${points[3]!.x - cornerSinOffsetRounded / 3},${points[3]!.y} ${points[3]!.x + cornerSinOffsetRounded / 2},${points[3]!.y + cornerCosOffsetRounded} \
-            \
-            L ${points[4]!.x + cornerSinOffsetRounded * 2},${points[4]!.y} \
-            \
-            L ${points[5]!.x + cornerSinOffsetRounded * 3},${points[5]!.y} \
-            Q ${points[5]!.x + cornerSinOffsetRounded},${points[5]!.y} ${points[5]!.x},${points[5]!.y - cornerCosOffsetRounded} \
-            \
-            Z`;
+    return shape;
 }
 
-export function getHexagonalClipPath(
-    y_NormalizedPercent: number,
-    size: { width: number; height: number },
-    options?: {
-        multipliers?: { x?: number; y?: number };
-        shape?: 'full' | 'top-left' | 'top-right' | 'bottom' | 'slant-right';
-    },
-): string {
-    const { multipliers, shape } = options ?? {};
-    const { width, height } = size;
+type Point = [number, number];
+type PointOpts = {
+    point: Point;
+    customRadius?: number;
+    useAspectRatio?: boolean;
+};
 
-    const clipWidth = width * (multipliers?.x ?? 1);
-    const clipHeight = height * (multipliers?.y ?? 1);
-    const aspectRatio = clipWidth / clipHeight;
+/**
+ * Rounds corners of a shape (unreliably so)
+ *
+ * @param {PointOpts[]} points
+ * @param {number} cornerRadius
+ * @param {number} [aspectRatio=1]
+ * @returns {string}
+ */
+function _roundedPolygon(points: PointOpts[], cornerRadius: number, aspectRatio = 1): string {
+    if (points.length < 3) return '';
 
-    const y_Percent = y_NormalizedPercent * 100;
-    const x_Percent = (y_Percent / aspectRatio) * tan30;
+    const pathParts: string[] = [];
+    const length = points.length;
 
-    const actualShape = shape ?? 'full';
+    const radius = cornerRadius;
 
-    switch (actualShape) {
-        case 'full':
-            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, calc(100% - ${x_Percent}%) 0%, 100% ${y_Percent}%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, ${x_Percent}% 100%, 0% calc
-            (100% - ${y_Percent}%))`;
+    for (let i = 0; i < length; i++) {
+        const withOpts = points[i]!;
+        const r = withOpts.customRadius ?? radius;
+        const aspect = withOpts.useAspectRatio ? aspectRatio : 1;
 
-        case 'top-left':
-            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, 100% 0%, 100% 100%, 0% 100%)`;
+        const previous = points[(i - 1 + length) % length]!.point;
+        const current = points[i]!.point;
+        const next = points[(i + 1) % length]!.point;
 
-        case 'top-right':
-            return `polygon(0% 0%, calc(100% - ${x_Percent}%) 0%, 100% ${y_Percent}%, 100% 100%, 0% 100%)`;
+        // Direction vectors
+        const inVector: Point = [current[0] - previous[0], current[1] - previous[1]];
+        const outVector: Point = [next[0] - current[0], next[1] - current[1]];
 
-        case 'bottom':
-            return `polygon(0% 0%, 100% 0%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, ${x_Percent}% 100%, 0% calc(100% - ${y_Percent}%))`;
+        // Normalize vectors
+        const inLength = Math.hypot(inVector[0], inVector[1]);
+        const outLength = Math.hypot(outVector[0], outVector[1]);
 
-        case 'slant-right':
-            return `polygon(0% ${y_Percent}%, ${x_Percent}% 0%, 100% 0%, 100% calc(100% - ${y_Percent}%), calc(100% - ${x_Percent}%) 100%, 0% 100%)`;
-    }
-}
+        const inDirection: Point = [inVector[0] / inLength, inVector[1] / inLength];
+        const outDirection: Point = [outVector[0] / outLength, outVector[1] / outLength];
 
-export function degToRad(deg: number): number {
-    return (Math.PI / 180) * deg;
-}
-export function sin(deg: number, clampTo?: number): number {
-    const sinNum = Math.sin(degToRad(deg));
-    return clampTo ? parseFloat(sinNum.toFixed(clampTo)) : sinNum;
-}
-export function cos(deg: number, clampTo?: number): number {
-    const cosNum = Math.cos(degToRad(deg));
-    return clampTo ? parseFloat(cosNum.toFixed(clampTo)) : cosNum;
-}
+        // Entry and exit points
+        const entry: Point = [current[0] - inDirection[0] * r, current[1] - inDirection[1] * r];
+        const exit: Point = [current[0] + outDirection[0] * r, current[1] + outDirection[1] * r];
 
-// swiped from : https://github.com/pmndrs/drei/pull/2541/files
-export function roundToPixelRatio(value: number): number {
-    const ratio = window.devicePixelRatio || 1;
-    return Math.round(value * ratio) / ratio;
-}
-
-export function calcCSSVariables(
-    translate: { x: number; y: number },
-    rotation: number,
-    scale: number,
-    isHalf: boolean,
-    parentSize: {
-        width: number;
-        height: number;
-    },
-    options?: { gutterWidth?: number; clipStroke?: boolean; clampTo?: number },
-) {
-    const { gutterWidth = strokeWidthDefault, clipStroke, clampTo: _clampTo } = options ?? {};
-
-    let { width, height } = parentSize;
-
-    // TODO better than the top left stack-spawn, bu
-    if (!width || !height) {
-        width = viewBoxWidth;
-        height = viewBoxHeight;
-    }
-
-    const parentAspect = width / height;
-    const ratio = viewBoxAspect / parentAspect;
-
-    const parentToViewboxWidth = width / viewBoxWidth;
-    const parentToViewboxHeight = height / viewBoxHeight;
-    const insetByStrokeWidth = (1 - gutterWidth) * scale;
-
-    const mappedScaleX = roundToDecimal(insetByStrokeWidth * parentToViewboxWidth * ratio, 2);
-    const mappedScaleY = roundToDecimal(insetByStrokeWidth * parentToViewboxHeight, 2);
-
-    const mappedTranslateX = roundToPixelRatio(translate.x * parentToViewboxWidth * ratio + getOffset(parentToViewboxWidth * ratio));
-    const mappedTranslateY = roundToPixelRatio(translate.y * parentToViewboxHeight + getOffset(parentToViewboxHeight) * (viewBoxHeight / viewBoxWidth));
-
-    let clipPath;
-
-    if (isHalf) {
-        if (clipStroke) {
-            clipPath = 'var(--hexagon-clip-path-half-stroked)';
+        if (i === 0) {
+            pathParts.push(`M ${entry[0] / aspect},${entry[1]}`);
         } else {
-            clipPath = 'var(--hexagon-clip-path-half)';
+            pathParts.push(`L ${entry[0] / aspect},${entry[1]}`);
         }
-    } else {
-        if (clipStroke) {
-            clipPath = 'var(--hexagon-clip-path-full-stroke)';
-        } else {
-            clipPath = 'var(--hexagon-clip-path-full)';
-        }
+
+        pathParts.push(`Q ${current[0]},${current[1]} ${exit[0] / aspect},${exit[1]}`);
     }
 
-    return {
-        '--hexagon-translate-x': mappedTranslateX + 'px',
-        '--hexagon-translate-y': mappedTranslateY + 'px',
-        '--hexagon-rotate': rotation + 'deg',
-        '--hexagon-scale-x': mappedScaleX,
-        '--hexagon-scale-y': mappedScaleY,
-        // TODO use container query values here instead of all that other jazz?
-        // '--hexagon-scale-x': `calc(${insetByStrokeWidth} * var(--hexagon-width-container-to-viewbox) * var(--hexagon-ratio-of-aspects))`,
-        // '--hexagon-scale-y': `calc(${insetByStrokeWidth} * var(--hexagon-height-container-to-viewbox))`,
-        '--hexagon-lighting-gradient-counter-rotation': `calc(${-rotation}deg - var(--home-menu-rotation, 0deg))`,
-        '--hexagon-clip-path': clipPath,
-    };
+    pathParts.push('Z');
+    return pathParts.join(' ');
 }
 
 function _toSvgTransform(
@@ -853,7 +720,7 @@ function _toSvgTransformMatrix(
 ) {
     const { shouldOffset, offset, clampTo } = options ?? {};
 
-    const angle = degToRad(rotate_DEG); // Convert to radians
+    const angle = degreeToRadian(rotate_DEG); // Convert to radians
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
 

@@ -1,9 +1,9 @@
 import { classNames } from 'cpts-javascript-utilities';
 import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
 import { ROUTE } from '../types/enums';
-import { calcCSSVariables, offsetHexagonTransforms, transformCategoryHalfHexagons } from '../lib/shapeFunctions';
+import { calcCSSVariables, carouselCssVariables, offsetHexagonTransforms, shutterAnimationTransforms } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
-import { HexagonRouteData } from '../types/types';
+import { HexagonRouteData, HexagonTransformData } from '../types/types';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { categoryCardActive, hexagonGridTransformCenter } from '../lib/hexagonElements';
 
@@ -54,7 +54,7 @@ export const HalfHexagon: FC<{
 }> = ({ data, routeName }) => {
     const categoryAdjustedData_Memo = useMemo(() => {
         if (routeName === ROUTE.category) {
-            const halfHexagonCategoryOffsets = transformCategoryHalfHexagons(data[routeName], 4, true);
+            const halfHexagonCategoryOffsets = shutterAnimationTransforms(data[routeName], 4, true);
             return offsetHexagonTransforms(data, halfHexagonCategoryOffsets);
         } else {
             return data;
@@ -111,6 +111,36 @@ export const HalfHexagon: FC<{
                         : {}),
                 } as CSSProperties
             }
+        />
+    );
+};
+
+export const CategoryOuterStroke: FC<{
+    transformData: HexagonTransformData;
+    containerSize: {
+        width: number;
+        height: number;
+    };
+}> = ({ transformData, containerSize }) => {
+    const cardTransition = useZustand((state) => state.values.cardTransition);
+
+    const cssVariables_Memo = useMemo(() => {
+        const { position, rotation, scale, isHalf } = transformData!;
+        return calcCSSVariables(position, rotation, scale, isHalf, containerSize, {
+            clipStroke: false,
+            gutterWidth: 0,
+        });
+    }, [containerSize, transformData]);
+
+    return (
+        <div
+            className={classNames(
+                'transform-hexagon absolute -z-50 aspect-hex-flat w-[--hexagon-clip-path-width] transition-[background-color,clip-path,transform] duration-[--ui-animation-menu-transition-duration]',
+                cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
+                    ? '!scale-[calc(var(--carousel-card-at-front-scale-x)*1.06)] bg-transparent [clip-path:--hexagon-clip-path-full-wider-stroke]'
+                    : '!scale-[calc(var(--carousel-card-at-front-scale-x)*1.02)] bg-neutral-400/10 [clip-path:--hexagon-clip-path-full-stroke]',
+            )}
+            style={{ ...cssVariables_Memo, ...carouselCssVariables } as CSSProperties}
         />
     );
 };

@@ -25,7 +25,8 @@ const Category: FC<{ show: boolean }> = memo(({ show }) => {
     return isMounted ? (
         <div ref={categoryRef} className="absolute size-full transition-[clip-path] duration-[--ui-animation-menu-transition-duration] clip-inset-[50%]">
             <CategoryCards posts={safeCategory.posts} />
-            <TitleClients
+
+            <TitleAndClients
                 title={safeCategory.posts[postIndex]?.title}
                 containerSize={containerSize}
                 subTitle={safeCategory.posts[postIndex]?.subTitle}
@@ -37,7 +38,7 @@ const Category: FC<{ show: boolean }> = memo(({ show }) => {
 
 export default Category;
 
-const TitleClients: FC<{
+const TitleAndClients: FC<{
     title: Post['title'] | undefined;
     containerSize: {
         width: number;

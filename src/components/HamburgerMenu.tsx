@@ -2,11 +2,11 @@ import { CSSProperties, FC, useCallback, useEffect, useState } from 'react';
 import { useZustand } from '../lib/zustand';
 import { classNames, keyDownA11y } from 'cpts-javascript-utilities';
 import { config } from '../types/exportTyped';
-import { roundToPixelRatio } from '../lib/shapeFunctions';
 import hamburgerMenuElements from '../lib/hamburgerMenuElements';
 import { HamburgerMenuItem } from '../types/types';
+import roundToPixelRatio from '../lib/roundToPixelRatio';
 
-const { clipPathWidth, clipPathHeight } = config.ui.hexGrid;
+const { clipPathWidth, clipPathHeight } = config.ui.hexagonPaths;
 
 const HamburgerMenu = () => {
     const hamburgerMenuRect = useZustand((store) => store.values.hamburgerMenuRect);

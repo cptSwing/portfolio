@@ -117,8 +117,8 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
 export default Post;
 
 const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
-    const parentSize = useContext(GetChildSizeContext);
-    const clipPath_Memo = useMemo(() => getHexagonalClipPath(0.6, parentSize, { multipliers: { y: 0.9 }, shape: 'bottom' }), [parentSize]);
+    const containerSize = useContext(GetChildSizeContext);
+    const clipPath_Memo = useMemo(() => getHexagonalClipPath(0.6, containerSize, { multipliers: { y: 0.9 }, shape: 'bottom' }), [containerSize]);
 
     return (
         <div
@@ -135,8 +135,8 @@ const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
 };
 
 const PostDate: FC<{ date: { year?: string; month?: string; day?: string } }> = ({ date: { year, month, day } }) => {
-    const parentSize = useContext(GetChildSizeContext);
-    const clipPath_Memo = useMemo(() => getHexagonalClipPath(1, parentSize, { shape: 'top-right' }), [parentSize]);
+    const containerSize = useContext(GetChildSizeContext);
+    const clipPath_Memo = useMemo(() => getHexagonalClipPath(1, containerSize, { shape: 'top-right' }), [containerSize]);
 
     return (
         <span className="block bg-theme-primary-lighter pl-2 pr-4" style={{ clipPath: clipPath_Memo }}>

@@ -95,10 +95,10 @@ const SinglePostDetailElement: FC<{
 }> = ({ title, jsx, isLast, content, setContent }) => {
     const isSelected = jsx.props.dataBlockId === content?.props.dataBlockId;
 
-    const parentSize = useContext(GetChildSizeContext);
+    const containerSize = useContext(GetChildSizeContext);
     const clipPath_Memo = useMemo(
-        () => getHexagonalClipPath(1, { width: parentSize.width, height: parentSize.height }, { shape: isLast ? 'top-left' : 'slant-right' }),
-        [isLast, parentSize.width, parentSize.height],
+        () => getHexagonalClipPath(1, { width: containerSize.width, height: containerSize.height }, { shape: isLast ? 'top-left' : 'slant-right' }),
+        [isLast, containerSize.width, containerSize.height],
     );
 
     return (

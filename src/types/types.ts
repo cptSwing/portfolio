@@ -3,15 +3,16 @@ import { BreakpointName } from '../hooks/useBreakPoint';
 import { CATEGORY, HAMBURGERMENUITEMS, ROUTE, TOOL } from './enums';
 
 export type Config = {
-    placeholders: {
-        cardImage: string;
-    };
     ui: {
-        hexGrid: {
+        hexagonPaths: {
             gutterWidth: number;
             scaleUp: number;
             clipPathWidth: number;
             clipPathHeight: number;
+        };
+        carousel: {
+            frontScale: number;
+            frontScaleImage: number;
         };
         animation: {
             menuTransition_Ms: number;

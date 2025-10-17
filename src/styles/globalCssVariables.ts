@@ -9,7 +9,7 @@ import {
 } from '../lib/shapeFunctions';
 
 const menuTransition_Ms = config.ui.animation.menuTransition_Ms;
-const { clipPathWidth, clipPathHeight } = config.ui.hexGrid;
+const { clipPathWidth, clipPathHeight } = config.ui.hexagonPaths;
 
 export const globalCssVariables = {
     '--hexagon-clip-path-width': `${clipPathWidth}px`,
