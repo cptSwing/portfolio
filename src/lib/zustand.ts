@@ -77,7 +77,7 @@ export const useZustand = create<ZustandStore>()(
                 });
             },
 
-            store_setPostIndex: (directionOrIndex) => {
+            store_setPostIndexAndTransitionTrue: (directionOrIndex) => {
                 const newIndex = getNewPostIndex(get().values.postIndex ?? 0, get().values.routeData.content.category?.posts.length ?? 0, directionOrIndex);
 
                 set((draftState) => {

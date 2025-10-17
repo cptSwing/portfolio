@@ -1,20 +1,14 @@
 import { CSSProperties, FC, memo, useContext, useEffect, useMemo } from 'react';
-import {
-    Category,
-    CategoryLinkButtonRouteData,
-    CategoryName,
-    FunctionalButtonRouteData,
-    RotateShortestDistance,
-    TransitionTargetReached,
-} from '../types/types';
+import { CategoryLinkButtonRouteData, CategoryName, FunctionalButtonRouteData, RotateShortestDistance, TransitionTargetReached } from '../types/types';
 import { useZustand } from '../lib/zustand';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { useNavigate } from 'react-router-dom';
 import { calcCSSVariables, offsetHexagonTransforms } from '../lib/shapeFunctions';
-import { CATEGORY, ROUTE } from '../types/enums';
+import { ROUTE } from '../types/enums';
 import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
 import { openHamburgerMenuButtonOffsets } from '../lib/hexagonElements';
 import { classNames } from 'cpts-javascript-utilities';
+import { isActiveCategory } from '../lib/menuFunctions';
 
 export const FunctionalButton: FC<{
     buttonData: FunctionalButtonRouteData;
@@ -201,9 +195,3 @@ const MenuButton: FC<{
         </div>
     );
 };
-
-/* Local Functions */
-
-function isActiveCategory(name: CategoryName, category: Category) {
-    return CATEGORY[name] === category.id;
-}

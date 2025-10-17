@@ -81,7 +81,7 @@ export const GlassmorphicButtonWrapper: FC<{
                     isRouteNavigation ? `navigation-button-hexagon-class-${name}` : '',
                     lightingGradient ? 'lighting-gradient' : '',
                     'pointer-events-auto aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[--hexagon-inner-shadow-color,--hexagon-lighting-gradient-counter-rotation,backdrop-filter] group-hover-active:matrix-scale-x-[1.05] group-hover-active:matrix-scale-y-[1.05] group-hover-active:![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]',
-                    cardTransition ? 'group-hover-active:!matrix-scale-[0.9]' + (isActive ? ' !matrix-scale-[0.9]' : '') : '',
+                    cardTransition ? 'group-hover-active:!matrix-scale-[0.9]' : '',
 
                     isActive
                         ? '[--glassmorphic-backdrop-blur:16px] [--glassmorphic-backdrop-saturate:8] ![--hexagon-inner-shadow-color:theme(colors.theme.root-background)]'

@@ -27,7 +27,7 @@ const CategoryCards: FC<{
 
 export default CategoryCards;
 
-const store_setPostIndex = useZustand.getState().methods.store_setPostIndex;
+const store_setPostIndexAndTransitionTrue = useZustand.getState().methods.store_setPostIndexAndTransitionTrue;
 
 const CategoryHexagon: FC<{
     allButtons: HexagonTransformData[];
@@ -119,7 +119,7 @@ const CategoryHexagon: FC<{
         if (isAtFront) {
             navigate(post.id.toString());
         } else {
-            store_setPostIndex(cardIndex);
+            store_setPostIndexAndTransitionTrue(cardIndex);
         }
     }
 };

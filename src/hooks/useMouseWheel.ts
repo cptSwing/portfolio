@@ -29,9 +29,7 @@ export const useThrottledMouseWheel = (delay_Ms = 200) => {
 
         window.addEventListener('wheel', throttledHandler);
 
-        return () => {
-            window.removeEventListener('wheel', throttledHandler);
-        };
+        return () => window.removeEventListener('wheel', throttledHandler);
     }, [delay_Ms]);
 
     return mouseWheelScrolled;

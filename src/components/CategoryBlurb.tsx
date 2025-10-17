@@ -38,7 +38,7 @@ const CategoryBlurb: FC<{ show: boolean; homeMenuTransitionState: [CategoryName 
                 ),
                 'opacity': 0,
                 '--tw-clip-inset-t': '100%',
-            });
+            } as CSSProperties);
         }
     }, [containerSize, homeMenuTransitionTarget, routeName]);
 

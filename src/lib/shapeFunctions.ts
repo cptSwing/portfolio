@@ -102,10 +102,13 @@ function offsetRoute<T>(routeData: T, routeOffset?: HexagonRouteDataTransformOff
     for (key in routeData) {
         if (key in ROUTE && routeOffset && key in routeOffset) {
             const route = key as unknown as ROUTE;
-            (newRouteData as HexagonRouteData)[route] = {
-                ...(newRouteData as HexagonRouteData)[route],
+            let newRouteDataSpecific = (newRouteData as HexagonRouteData)[route];
+            newRouteDataSpecific = {
+                ...newRouteDataSpecific,
                 ...routeOffset[route],
             };
+
+            (newRouteData as HexagonRouteData)[route] = newRouteDataSpecific;
         }
     }
 
