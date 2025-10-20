@@ -94,7 +94,7 @@ const hamburgerMenuItems: HamburgerMenuItem = {
                             name: 'CV (English)',
                             iconPath: `url(${HAMBURGERMENUITEMS['CV (English)']})`,
                             iconSize: 45,
-                            clickHandler: () => openNewWindowOrRedirect('./public/pdfs/Jens_Brandenburg_WebDev_1-Page_CV_EN.pdf'),
+                            clickHandler: () => openNewWindowOrRedirect('./public/pdfs/Jens_Brandenburg_CV.pdf'),
                             isLink: true,
                         },
                         {
@@ -108,7 +108,7 @@ const hamburgerMenuItems: HamburgerMenuItem = {
                             name: 'Lebenslauf',
                             iconPath: `url(${HAMBURGERMENUITEMS.Lebenslauf})`,
                             iconSize: 45,
-                            clickHandler: () => openNewWindowOrRedirect('./public/pdfs/Jens_Brandenburg_WebDev_1-Page_CV_DE.pdf'),
+                            clickHandler: () => openNewWindowOrRedirect('./public/pdfs/Jens_Brandenburg_Lebenslauf.pdf'),
                             isLink: true,
                         },
                     ],
