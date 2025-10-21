@@ -6,6 +6,7 @@ import {
     wideStrokedHexagonClipPathStatic,
     halfHexagonClipPathStatic,
     halfStrokedHexagonClipPathStatic,
+    hexagonalEndsRectangleClipPathStatic,
 } from '../lib/shapeFunctions';
 
 const menuTransition_Ms = config.ui.animation.menuTransition_Ms;
@@ -19,5 +20,7 @@ export const globalCssVariables = {
     '--hexagon-clip-path-full-wider-stroke': wideStrokedHexagonClipPathStatic,
     '--hexagon-clip-path-half': halfHexagonClipPathStatic,
     '--hexagon-clip-path-half-stroked': halfStrokedHexagonClipPathStatic,
+    '--hexagon-clip-path-rectangle': hexagonalEndsRectangleClipPathStatic,
+
     '--ui-animation-menu-transition-duration': `${menuTransition_Ms}ms`,
 } as CSSProperties;

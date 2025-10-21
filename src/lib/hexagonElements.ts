@@ -950,7 +950,7 @@ export const centerHexagonElement: HexagonRouteData = {
 
 export const centerHexagonElementOffsets: HexagonRouteDataTransformOffsets = {
     [ROUTE.home]: {
-        scale: 2.2,
+        scale: 4.35,
     },
     [ROUTE.category]: {
         scale: categoryCardActive.scale * config.ui.carousel.frontScale * 1.06,

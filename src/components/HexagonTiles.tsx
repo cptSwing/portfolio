@@ -46,7 +46,7 @@ const HexagonTiles = () => {
         <GetChildSize context={GetChildSizeContext}>
             <div
                 className={classNames(
-                    'container-size pointer-events-none absolute z-0 size-full transform-gpu overflow-visible transition-transform duration-[--ui-animation-menu-transition-duration]',
+                    'container-size pointer-events-none absolute z-0 size-full transform-gpu overflow-visible duration-[--ui-animation-menu-transition-duration]',
                     routeName === ROUTE.home ? navMenuTransitionClasses_Memo : '',
                 )}
                 style={{ '--home-menu-rotation': rotationDegrees + 'deg' } as CSSProperties}
@@ -80,7 +80,7 @@ const HexagonTiles = () => {
                     <CategoryLinkButton
                         key={`hex-category-link-button-index-${idx}`}
                         buttonData={categoryLinkButtonData}
-                        homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates}
+                        setHomeMenuTransitionState={setHomeMenuTransitionState}
                     />
                 ))}
 
@@ -108,9 +108,8 @@ const homeMenuRotationValues: Record<CategoryName, number> = {
 
 const homeMenuTransitionGenericClasses = {
     base: /* tw */ 'rotate-[--home-menu-rotation,0deg] ',
-    transitioning: /* tw */ '[&_.regular-hexagon-named-class]:[--glassmorphic-backdrop-saturate:4]',
-    completed:
-        /* tw */ '[&_.regular-hexagon-center-named-class]:[--glassmorphic-backdrop-blur:4px] [&_.regular-hexagon-center-named-class]:[--glassmorphic-backdrop-saturate:3]',
+    transitioning: /* tw */ '', // [&_.regular-hexagon-named-class]:[--glassmorphic-backdrop-saturate:4]
+    completed: /* tw */ '',
 };
 
 const homeMenuTransitionBespokeClasses: Record<CategoryName, { transitioning: string; completed: string }> = {

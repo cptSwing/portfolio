@@ -32,7 +32,7 @@
     }
 
     .glassmorphic-backdrop {
-        @apply backdrop-blur-[--glassmorphic-backdrop-blur,4px] backdrop-saturate-[--glassmorphic-backdrop-saturate,1.5];
+        @apply backdrop-blur-[--glassmorphic-backdrop-blur,4px] backdrop-saturate-[--glassmorphic-backdrop-saturate,2];
     }
 
     .before-glassmorphic-backdrop {
@@ -44,7 +44,7 @@
     }
 
     .lighting-gradient {
-        @apply from-transparent via-transparent to-white/40 [background-image:linear-gradient(var(--hexagon-lighting-gradient-counter-rotation),var(--tw-gradient-stops))];
+        @apply from-transparent via-transparent to-[--lighting-gradient-to,theme(colors.white/0.4)] [background-image:linear-gradient(var(--hexagon-lighting-gradient-counter-rotation),var(--tw-gradient-stops))];
     }
 
     .background-gradients {
@@ -197,16 +197,22 @@
     initial-value: 0deg;
 }
 
-/* SVG Filters */
-
-.bloom-svg {
-    @apply [filter:saturate(200%)_url(/svg/filters.svg#bloom-svg-filter)];
-}
-
 @property --menu-bar-mask-marker-position-x {
     syntax: '<length>';
     initial-value: 0px;
     inherits: true;
+}
+
+.regular-hexagon-base {
+    @apply glassmorphic-backdrop lighting-gradient transform-hexagon after-glassmorphic-grain pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path];
+}
+
+.regular-hexagon-transitions {
+    @apply transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)];
+}
+
+.full-hexagon-stroke-before {
+    @apply before:absolute before:top-0 before:left-0 before:bg-[--hexagon-fill-color] before:hover-active:bg-theme-secondary/50 before:origin-center  before:transition-[background-color] before:duration-75 before:size-full before:[clip-path:--hexagon-clip-path-full-wider-stroke] before:z-10;
 }
 
 .before-menu-bar-dimensions {
@@ -240,4 +246,10 @@
 
     mask-repeat: no-repeat;
     mask-mode: luminance;
+}
+
+/* SVG Filters */
+
+.bloom-svg {
+    @apply [filter:saturate(200%)_url(/svg/filters.svg#bloom-svg-filter)];
 }

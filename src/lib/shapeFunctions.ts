@@ -20,6 +20,12 @@ const {
     },
 } = config;
 
+export const carouselCssVariables = {
+    '--carousel-card-at-front-scale-x': `calc(var(--hexagon-scale-x) * ${frontScale})`,
+    '--carousel-card-at-front-scale-y': `calc(var(--hexagon-scale-y) * ${frontScale})`,
+    '--carousel-card-at-front-image-scale': frontScaleImage,
+};
+
 const staticValues = {
     heightAspect: {
         flatTop: 0.866,
@@ -58,18 +64,15 @@ const halfStrokedRoundedHexagonPath = getHexagonPath({
     inner: 'stroke',
     innerSize: 0.9,
 });
+// const hexagonalEndsRectanglePath = getHexagonPath({ sideLength: hexHalfWidth / 2, cornerRadius: hexHalfWidth / 10, width: 4 });
+const hexagonalEndsRectanglePath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 15 });
 
 export const hexagonClipPathStatic = `path("${roundedHexagonPath}")`;
 export const halfHexagonClipPathStatic = `path("${halfRoundedHexagonPath}")`;
 export const strokedHexagonClipPathStatic = `path("${strokedRoundedHexagonPath}")`;
 export const wideStrokedHexagonClipPathStatic = `path("${wideStrokedRoundedHexagonPath}")`;
 export const halfStrokedHexagonClipPathStatic = `path("${halfStrokedRoundedHexagonPath}")`;
-
-export const carouselCssVariables = {
-    '--carousel-card-at-front-scale-x': `calc(var(--hexagon-scale-x) * ${frontScale})`,
-    '--carousel-card-at-front-scale-y': `calc(var(--hexagon-scale-y) * ${frontScale})`,
-    '--carousel-card-at-front-image-scale': frontScaleImage,
-};
+export const hexagonalEndsRectangleClipPathStatic = `path("${hexagonalEndsRectanglePath}")`;
 
 /**
  * Applies HexagonRouteDataTransformOffsets to a base HexagonRouteData
