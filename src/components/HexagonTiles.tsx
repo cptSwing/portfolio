@@ -80,7 +80,7 @@ const HexagonTiles = () => {
                     <CategoryLinkButton
                         key={`hex-category-link-button-index-${idx}`}
                         buttonData={categoryLinkButtonData}
-                        setHomeMenuTransitionState={setHomeMenuTransitionState}
+                        homeMenuTransitionStateUpdates={homeMenuTransitionStateUpdates}
                     />
                 ))}
 

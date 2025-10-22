@@ -30,7 +30,9 @@ export const FunctionalButton: FC<{
         <button
             className={classNames(
                 'regular-hexagon-base regular-hexagon-transitions full-hexagon-stroke-before !pointer-events-auto [--regular-hexagon-transition-random-factor:0] before:!bg-theme-secondary/10 hover-active:[--glassmorphic-backdrop-saturate:3] before:hover-active:!bg-theme-secondary/50',
-                cardTransition ? 'scale-[calc(var(--hexagon-scale-x)*0.95)]' : 'hover-active:scale-[calc(var(--hexagon-scale-x)*1.05)]',
+                cardTransition
+                    ? 'scale-[calc(var(--hexagon-scale-x)*0.95)]'
+                    : 'hover-active:scale-[calc(var(--hexagon-scale-x)*1.05)] hover-active:duration-75',
                 routeName === ROUTE.home
                     ? '!to-white/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2]'
                     : routeName === ROUTE.category
@@ -101,11 +103,16 @@ export const FunctionalButtonOpenHamburgerMenu: FC<{
 
 export const CategoryLinkButton: FC<{
     buttonData: CategoryLinkButtonRouteData;
-    setHomeMenuTransitionState: React.Dispatch<React.SetStateAction<[CategoryName | null, TransitionTargetReached, RotateShortestDistance]>>;
-}> = memo(({ buttonData, setHomeMenuTransitionState }) => {
+    homeMenuTransitionStateUpdates: [
+        [CategoryName | null, TransitionTargetReached, RotateShortestDistance],
+        React.Dispatch<React.SetStateAction<[CategoryName | null, TransitionTargetReached, RotateShortestDistance]>>,
+    ];
+}> = memo(({ buttonData, homeMenuTransitionStateUpdates }) => {
     const { title, name, target } = buttonData;
     const routeName = useZustand((store) => store.values.routeData.name);
     const { position, rotation, scale, isHalf } = buttonData[routeName];
+
+    const [[homeMenuTransitionTarget], setHomeMenuTransitionState] = homeMenuTransitionStateUpdates;
 
     const containerSize = useContext(GetChildSizeContext);
     const navigate = useNavigate();
@@ -137,7 +144,7 @@ export const CategoryLinkButton: FC<{
     );
 
     function handleClick() {
-        if (routeName === ROUTE.home) {
+        if (routeName === ROUTE.home && homeMenuTransitionTarget !== name) {
             setHomeMenuTransitionState([name, false, true]);
         } else {
             navigate(...target);

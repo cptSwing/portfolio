@@ -15,37 +15,63 @@ import {
 } from '../lib/hexagonElements';
 import { database } from '../types/exportTyped';
 
+const _ = ' ';
+
+const hexagonBaseClasses = 'regular-hexagon-base regular-hexagon-transitions regular-hexagon-center-named-class [--regular-hexagon-transition-random-factor:0]';
+
 export const Hexagon: FC<{
     data: HexagonRouteData;
     routeName: ROUTE;
 }> = memo(({ data, routeName }) => {
-    const { position, rotation, scale, isHalf } = data[routeName];
     const containerSize = useContext(GetChildSizeContext);
-
-    const cssVariables_Memo = useMemo(
-        () => calcCSSVariables(position, rotation, scale, isHalf, containerSize),
-        [position, rotation, scale, isHalf, containerSize],
-    );
-
     const random_Memo = useMemo(() => Math.random(), []);
 
-    return (
-        <div
-            className={classNames(
-                'regular-hexagon-base regular-hexagon-transitions regular-hexagon-named-class',
-                routeName === ROUTE.home
-                    ? '[--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2] [--lighting-gradient-to:theme(colors.white/0.1)]'
-                    : routeName === ROUTE.category
-                      ? '!to-white/[0.025] backdrop-blur-none [--glassmorphic-backdrop-saturate:1.5] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]'
-                      : // ROUTE.post
-                        '!to-transparent ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] ![--hexagon-fill-color:theme(colors.theme.text-background)] after:!content-none',
-            )}
-            style={
-                { ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': random_Memo, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties
-            }
-        />
+    const [classes, setClasses] = useState(hexagonBaseClasses);
+    const [styles, setStyles] = useState<HexagonStyleObject>(
+        calcCSSVariables(data[routeName].position, data[routeName].rotation, data[routeName].scale, data[routeName].isHalf, containerSize),
     );
+
+    useLayoutEffect(() => {
+        let classes = hexagonBaseClasses;
+        let routeTransforms;
+
+        switch (routeName) {
+            case ROUTE.home: {
+                classes += _ + '[--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2] [--lighting-gradient-to:theme(colors.white/0.1)]';
+                routeTransforms = data[ROUTE.home];
+                break;
+            }
+            case ROUTE.category: {
+                classes +=
+                    _ +
+                    '[--lighting-gradient-to:theme(colors.white/0.025)] backdrop-blur-none [--glassmorphic-backdrop-saturate:1.5] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]';
+                routeTransforms = data[ROUTE.category];
+                break;
+            }
+            case ROUTE.post: {
+                classes +=
+                    _ +
+                    '[--lighting-gradient-to:transparent] [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)] after:!content-none';
+                routeTransforms = data[ROUTE.post];
+                break;
+            }
+        }
+
+        setClasses(classes);
+        const { position, rotation, scale, isHalf } = routeTransforms;
+        const newStyle = calcCSSVariables(position, rotation, scale, isHalf, containerSize);
+        setStyles({
+            ...newStyle,
+            '--glassmorphic-grain-scale': 0.5 / scale,
+            '--regular-hexagon-transition-random-factor': random_Memo,
+        });
+    }, [containerSize, data, random_Memo, routeName]);
+
+    return <div className={classes} style={styles as CSSProperties} />;
 });
+
+const centerHexagonBaseClasses =
+    'regular-hexagon-base regular-hexagon-transitions regular-hexagon-center-named-class [--regular-hexagon-transition-random-factor:0]';
 
 export const CenterHexagon: FC<{
     routeName: ROUTE;
@@ -53,51 +79,73 @@ export const CenterHexagon: FC<{
 }> = memo(({ routeName, homeMenuTransitionTargetReached }) => {
     const cardTransition = useZustand((state) => state.values.cardTransition);
     const containerSize = useContext(GetChildSizeContext);
-    const [scale, setScale] = useState(centerHexagonElement[routeName].scale);
 
-    const cssVariables_Memo = useMemo(() => {
-        let routeTransforms = centerHexagonElement[routeName];
-        if (routeName === ROUTE.home && homeMenuTransitionTargetReached) {
-            routeTransforms = offsetHexagonTransforms(centerHexagonElement, centerHexagonElementOffsets)[routeName];
-        } else if (routeName === ROUTE.category && cardTransition) {
-            routeTransforms = offsetHexagonTransforms(centerHexagonElement, centerHexagonElementOffsets)[routeName];
+    const [classes, setClasses] = useState(centerHexagonBaseClasses);
+    const [styles, setStyles] = useState<HexagonStyleObject>(
+        calcCSSVariables(
+            centerHexagonElement[routeName].position,
+            centerHexagonElement[routeName].rotation,
+            centerHexagonElement[routeName].scale,
+            centerHexagonElement[routeName].isHalf,
+            containerSize,
+        ),
+    );
+
+    useLayoutEffect(() => {
+        let classes = centerHexagonBaseClasses;
+        let routeTransforms;
+        let routeOptions: {
+            gutterWidth?: number | undefined;
+            clipStroke?: boolean | undefined;
+            clampTo?: number | undefined;
+        } = {};
+
+        switch (routeName) {
+            case ROUTE.home: {
+                classes += _ + '[--glassmorphic-backdrop-saturate:2] [--lighting-gradient-to:theme(colors.white/0.1)]';
+                routeTransforms = centerHexagonElement[ROUTE.home];
+
+                if (homeMenuTransitionTargetReached) {
+                    if (!cardTransition) {
+                        classes += _ + '[--glassmorphic-backdrop-blur:2px] ![--hexagon-clip-path:--hexagon-clip-path-rectangle]';
+                    }
+                    routeTransforms = offsetHexagonTransforms(centerHexagonElement, centerHexagonElementOffsets)[ROUTE.home];
+                } else {
+                    classes += _ + '[--glassmorphic-backdrop-blur:1px]';
+                }
+                break;
+            }
+            case ROUTE.category: {
+                classes +=
+                    _ +
+                    '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--lighting-gradient-to:transparent] [--hexagon-fill-color:theme(colors.neutral.400/0.10)] ![clip-path:--hexagon-clip-path-full-stroke]';
+                routeTransforms = centerHexagonElement[ROUTE.category];
+                routeOptions = { gutterWidth: 0 };
+
+                if (cardTransition) {
+                    classes += _ + '[--hexagon-fill-color:transparent] ![clip-path:--hexagon-clip-path-full-wider-stroke]';
+                    routeTransforms = offsetHexagonTransforms(centerHexagonElement, centerHexagonElementOffsets)[ROUTE.category];
+                }
+                break;
+            }
+            case ROUTE.post: {
+                classes +=
+                    _ + '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)]';
+                routeTransforms = centerHexagonElement[ROUTE.post];
+                break;
+            }
         }
 
+        setClasses(classes);
         const { position, rotation, scale, isHalf } = routeTransforms;
-        setScale(scale);
-
-        return calcCSSVariables(
-            position,
-            rotation,
-            scale,
-            isHalf,
-            containerSize,
-            routeName === ROUTE.category
-                ? {
-                      clipStroke: true,
-                      gutterWidth: 0,
-                  }
-                : {},
-        );
+        const newStyle = calcCSSVariables(position, rotation, scale, isHalf, containerSize, routeOptions);
+        setStyles({
+            ...newStyle,
+            '--glassmorphic-grain-scale': 0.5 / scale,
+        });
     }, [cardTransition, containerSize, homeMenuTransitionTargetReached, routeName]);
 
-    return (
-        <div
-            className={classNames(
-                'regular-hexagon-base regular-hexagon-transitions regular-hexagon-center-named-class',
-                routeName === ROUTE.home
-                    ? `[--glassmorphic-backdrop-saturate:2] [--lighting-gradient-to:theme(colors.white/0.1)] ${!cardTransition && homeMenuTransitionTargetReached ? '[--glassmorphic-backdrop-blur:2px] ![--hexagon-clip-path:--hexagon-clip-path-rectangle]' : '[--glassmorphic-backdrop-blur:1px]'}` // '!to-white/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2]' //
-                    : routeName === ROUTE.category
-                      ? '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--lighting-gradient-to:transparent] ' +
-                        (cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
-                            ? '[--hexagon-fill-color:transparent] ![clip-path:--hexagon-clip-path-full-wider-stroke]'
-                            : '[--hexagon-fill-color:theme(colors.neutral.400/0.10)] ![clip-path:--hexagon-clip-path-full-stroke]')
-                      : // ROUTE.post
-                        '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)]',
-            )}
-            style={{ ...cssVariables_Memo, '--regular-hexagon-transition-random-factor': 0, '--glassmorphic-grain-scale': 0.5 / scale } as CSSProperties}
-        />
-    );
+    return <div className={classes} style={styles as CSSProperties} />;
 });
 
 export const HalfHexagon: FC<{
@@ -231,3 +279,15 @@ const categoryIndices: Partial<Record<CategoryName, number>> = {};
 categoryLinkButtonElements.forEach((routeData, index) => {
     categoryIndices[routeData.name] = index;
 });
+
+type HexagonStyleObject = {
+    '--hexagon-translate-x': string;
+    '--hexagon-translate-y': string;
+    '--hexagon-rotate': string;
+    '--hexagon-scale-x': number;
+    '--hexagon-scale-y': number;
+    '--hexagon-lighting-gradient-counter-rotation': string;
+    '--hexagon-clip-path': string;
+    '--glassmorphic-grain-scale'?: number;
+    '--regular-hexagon-transition-random-factor'?: number;
+};
