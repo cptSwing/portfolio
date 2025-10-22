@@ -96,6 +96,7 @@ type Post_Showcase_Base = {
 
 export interface Post_Showcase_Image extends Post_Showcase_Base {
     imgUrl: string;
+    hasThumbnail?: boolean;
 }
 
 export interface Post_Showcase_Youtube extends Post_Showcase_Base {

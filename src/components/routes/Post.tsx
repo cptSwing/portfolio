@@ -152,14 +152,14 @@ const RemainingImages: FC<{
     setLightBoxSlide: (showcaseIndex: number) => void;
 }> = ({ remainingImages, setLightBoxSlide }) => (
     <div className="grid items-start gap-3 pb-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {remainingImages.map(([{ imgUrl, caption }, imageIndex]) => {
+        {remainingImages.map(([{ imgUrl, caption, hasThumbnail }, imageIndex]) => {
             return (
                 <button
                     key={imgUrl + imageIndex}
                     className="group max-h-48 w-full transform-gpu overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.01] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110"
                     onClick={handleClick}
                 >
-                    <img src={constructThumbnailUrl(imgUrl)} alt={caption} className="object-cover" />
+                    <img src={hasThumbnail === false ? imgUrl : constructThumbnailUrl(imgUrl)} alt={caption} className="object-cover" />
                 </button>
             );
 

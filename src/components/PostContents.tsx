@@ -115,7 +115,11 @@ const InlineImageButton: FC<{ showcase: Post_Showcase_Image; isEvenIndex: boolea
                 showcase ? ' ' : 'pointer-events-none',
             )}
         >
-            <img src={constructThumbnailUrl(showcase.imgUrl)} alt={showcase.caption} className="size-full object-cover" />
+            <img
+                src={showcase.hasThumbnail === false ? showcase.imgUrl : constructThumbnailUrl(showcase.imgUrl)}
+                alt={showcase.caption}
+                className="size-full object-cover"
+            />
             {showcase.caption && (
                 <span
                     className={classNames(

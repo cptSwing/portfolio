@@ -182,7 +182,7 @@ const ViewLive: FC<{ liveViews: NonNullable<Post['liveViews']> } & PostDetailEle
                         {title}
                     </a>
 
-                    <Markdown className="pt-px text-justify text-theme-text/60 group-hover-active:text-theme-text-background/70" remarkPlugins={[remarkBreaks]}>
+                    <Markdown className="pt-px text-center text-theme-text/60 group-hover-active:text-theme-text-background/70" remarkPlugins={[remarkBreaks]}>
                         {description}
                     </Markdown>
                 </div>
