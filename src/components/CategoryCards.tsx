@@ -11,7 +11,7 @@ const CategoryCards: FC<{
 }> = ({ posts }) => {
     const containerSize = useContext(GetChildSizeContext);
     const categoryHexagons_Memo = useMemo(() => getCategoryHexagons(posts.length), [posts]);
-    const postIndex = useZustand((store) => store.values.postIndex);
+    const postIndex = useZustand((store) => store.values.postIndex) ?? 0;
 
     return posts.map((post, idx) => (
         <CategoryHexagon

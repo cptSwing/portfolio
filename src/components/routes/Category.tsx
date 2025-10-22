@@ -14,7 +14,7 @@ const Category: FC<{ show: boolean }> = memo(({ show }) => {
         name: routeName,
         content: { category },
     } = useZustand((store) => store.values.routeData);
-    const postIndex = useZustand((store) => store.values.postIndex);
+    const postIndex = useZustand((store) => store.values.postIndex) ?? 0;
     const containerSize = useContext(GetChildSizeContext);
 
     const safeCategory = category ?? emptyCategory;

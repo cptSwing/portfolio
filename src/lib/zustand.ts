@@ -17,7 +17,7 @@ export const useZustand = create<ZustandStore>()(
             breakpoint: null,
             hamburgerMenuRect: null,
             activeHamburgerMenuItemName: 'DEFAULT',
-            postIndex: 0,
+            postIndex: null,
             debug: {
                 applyTransformMatrixFix: true,
             },

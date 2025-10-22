@@ -31,7 +31,7 @@ export type ZustandStore = {
         breakpoint: BreakpointName | null;
         hamburgerMenuRect: Pick<DOMRect, 'x' | 'y' | 'width' | 'height'> | null;
         activeHamburgerMenuItemName: HamburgerMenuItem['name'];
-        postIndex: number;
+        postIndex: number | null;
         debug: {
             applyTransformMatrixFix: boolean;
         };
