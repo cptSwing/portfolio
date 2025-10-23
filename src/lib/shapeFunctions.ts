@@ -15,7 +15,7 @@ import { degreeToRadian } from 'cpts-javascript-utilities';
 
 const {
     ui: {
-        hexagonPaths: { scaleUp, gutterWidth: strokeWidthDefault, clipPathWidth, clipPathHeight },
+        hexagonPaths: { scaleUp, gutterWidth: strokeWidthDefault, clipPathWidth },
         carousel: { frontScale, frontScaleImage },
     },
 } = config;
@@ -203,27 +203,16 @@ export function getCategoryHexagons(count: number): HexagonTransformData[] {
 
     if (count > 1) {
         const extraHexagons = count - 1;
+        const centered = extraHexagons % 2 === 0 ? extraHexagons / 2 - 0.5 : Math.floor(extraHexagons / 2);
 
         const activeHexagonWidthInViewBox = clipPathWidth * activeHexagonScale;
-        const activeHexagonHeightInViewBox = clipPathHeight * activeHexagonScale;
-
-        const _activeHexagonHalfWidth = activeHexagonWidthInViewBox / 2;
         const activeHexagonThreeQuarterWidth = activeHexagonWidthInViewBox * 0.75;
-        const _activeHexagonQuarterWidth = activeHexagonWidthInViewBox / 4;
-        const activeHexagonHalfHeight = activeHexagonHeightInViewBox / 2;
-
         const inactiveHexagonWidth = clipPathWidth * inactiveHexagonScale;
-        const inactiveHexagonHeight = clipPathHeight * inactiveHexagonScale;
 
-        const _inactiveHexagonHeightOffset = Math.min(inactiveHexagonHeight, (activeHexagonHalfHeight - inactiveHexagonHeight) / count);
         const inactiveHexagonWidthOffset =
             Math.min(inactiveHexagonWidth, (activeHexagonThreeQuarterWidth - inactiveHexagonWidth) / count) + inactiveHexagonWidth / 8;
 
         for (let i = 0; i < extraHexagons; i++) {
-            // const additionalHexagonStartingPositionY = 5 + inactiveHexagonHeightOffset * (i);
-            // const additionalHexagonStartingPositionX = additionalHexagonStartingPositionY / -tan60 + position.x - activeHexagonQuarterWidth - inactiveHexagonWidth;
-
-            const centered = extraHexagons % 2 === 0 ? extraHexagons / 4 : Math.floor(extraHexagons / 2);
             const inactiveHexagonStartingPositionX = inactiveHexagonWidthOffset * i + (centerPosition - centered * inactiveHexagonWidthOffset);
 
             const inactiveHexagon = { ...categoryCardInactive };
