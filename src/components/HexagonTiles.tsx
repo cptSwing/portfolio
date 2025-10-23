@@ -65,13 +65,13 @@ const HexagonTiles = () => {
                 ))}
 
                 <CenterHexagon routeName={routeName} homeMenuTransitionTargetReached={homeMenuTransitionTargetReached} />
+                <CategoryBlurb show={routeName === ROUTE.home} homeMenuTransitionTarget={homeMenuTransitionTarget} />
 
                 {/* "Half" Hexagons at ROUTE.category */}
                 {halfregularHexagonElements.map((regularHexagonData, idx) => (
                     <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
                 ))}
 
-                <CategoryBlurb show={routeName === ROUTE.home} homeMenuTransitionState={homeMenuTransitionState} />
                 <Category show={routeName === ROUTE.category} />
 
                 <Brand homeMenuTransitionState={homeMenuTransitionState} />

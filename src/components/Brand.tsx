@@ -15,7 +15,9 @@ const Brand: FC<{ homeMenuTransitionState: [CategoryName | null, TransitionTarge
 
     const routeName = useZustand((store) => store.values.routeData.name);
     const containerSize = useContext(GetChildSizeContext);
-    const [cssVariablesBrand, setCssVariablesBrand] = useState<ReturnType<typeof calcCSSVariables> | CSSProperties>();
+    const [cssVariablesBrand, setCssVariablesBrand] = useState<
+        ReturnType<typeof calcCSSVariables> | CSSProperties | { '--tw-clip-inset-r'?: string; '--tw-clip-inset-l'?: string }
+    >();
 
     useLayoutEffect(() => {
         let routeTransformsBrand;
@@ -78,7 +80,7 @@ const Brand: FC<{ homeMenuTransitionState: [CategoryName | null, TransitionTarge
             )}
             style={cssVariablesBrand as CSSProperties}
         >
-            <span className="w-full text-center font-lato text-[length:calc(var(--hexagon-clip-path-height)/6)] leading-none tracking-tighter text-theme-primary/100">
+            <span className="w-full text-center font-fjalla-one text-[length:calc(var(--hexagon-clip-path-height)/6)] leading-none tracking-tighter text-theme-primary/100">
                 jens brandenburg
             </span>
             <span className="-mb-[5%] w-full text-center font-lato text-[length:calc(var(--hexagon-clip-path-height)/10)] leading-none tracking-tighter text-theme-primary/50">

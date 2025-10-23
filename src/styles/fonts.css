@@ -3,7 +3,5 @@
 @font-face {
     font-display: block;
     font-family: 'Miriam Libre Variable';
-    /* font-style: normal; */
-    /* font-weight: 100; */
     src: url('/fonts/MiriamLibre-VariableFont_wght.woff2') format('woff2');
 }

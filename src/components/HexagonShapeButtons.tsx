@@ -5,7 +5,7 @@ import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { useNavigate } from 'react-router-dom';
 import { calcCSSVariables, offsetHexagonTransforms } from '../lib/shapeFunctions';
 import { ROUTE } from '../types/enums';
-import { GlassmorphicButtonWrapper } from './GlassmorphicClipped';
+import { GlassmorphicButton } from './GlassmorphicClipped';
 import { openHamburgerMenuButtonOffsets } from '../lib/hexagonElements';
 import { classNames } from 'cpts-javascript-utilities';
 
@@ -59,7 +59,6 @@ export const FunctionalButtonOpenHamburgerMenu: FC<{
 }> = memo(({ buttonData, homeMenuTransitionTarget }) => {
     const { target, svgIconPath } = buttonData;
     const routeName = useZustand((store) => store.values.routeData.name);
-
     const counterRotate = buttonData[routeName].counterRotate;
 
     const containerSize = useContext(GetChildSizeContext);
@@ -123,7 +122,7 @@ export const CategoryLinkButton: FC<{
     );
 
     return (
-        <GlassmorphicButtonWrapper
+        <GlassmorphicButton
             name={name}
             style={{ ...cssVariables_Memo }}
             isRouteNavigation={true}
@@ -140,7 +139,7 @@ export const CategoryLinkButton: FC<{
             >
                 {title}
             </span>
-        </GlassmorphicButtonWrapper>
+        </GlassmorphicButton>
     );
 
     function handleClick() {

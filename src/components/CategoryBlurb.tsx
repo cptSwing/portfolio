@@ -1,82 +1,68 @@
-import { CSSProperties, FC, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { CSSProperties, FC, useContext, useLayoutEffect, useState } from 'react';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
-import useTimeout from '../hooks/useTimeout';
-import { brandElement, categoryLinkButtonElements, brandBlurbOffsets } from '../lib/hexagonElements';
-import { calcCSSVariables, offsetHexagonTransforms } from '../lib/shapeFunctions';
+import { categoryLinkButtonElements } from '../lib/hexagonElements';
+import { calcCSSVariables } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
-import { ROUTE } from '../types/enums';
-import { CategoryName, TransitionTargetReached, RotateShortestDistance } from '../types/types';
+import { CategoryName, CategoryLinkButtonRouteData } from '../types/types';
 import { config, database } from '../types/exportTyped';
-import useMountTransition from '../hooks/useMountTransition';
+import { classNames } from 'cpts-javascript-utilities';
+import useTimeout from '../hooks/useTimeout';
 
 const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
-const CategoryBlurb: FC<{ show: boolean; homeMenuTransitionState: [CategoryName | null, TransitionTargetReached, RotateShortestDistance] }> = ({
-    show,
-    homeMenuTransitionState,
-}) => {
-    const [homeMenuTransitionTarget, homeMenuTransitionTargetReached] = homeMenuTransitionState;
-    const categoryBlurbRef = useRef<HTMLDivElement | null>(null);
+const namedRouteTransforms: Partial<Record<CategoryName, CategoryLinkButtonRouteData>> = {};
+categoryLinkButtonElements.forEach((categoryLinkButtonElem) => {
+    namedRouteTransforms[categoryLinkButtonElem.name] = categoryLinkButtonElem;
+});
 
+const CategoryBlurb: FC<{ show: boolean; homeMenuTransitionTarget: CategoryName | null }> = ({ show, homeMenuTransitionTarget }) => {
     const routeName = useZustand((store) => store.values.routeData.name);
-    const containerSize = useContext(GetChildSizeContext);
-    const isMounted = useMountTransition(categoryBlurbRef, show, ['!clip-inset-[-10%]']);
+    const cardTransition = useZustand((state) => state.values.cardTransition);
 
+    const containerSize = useContext(GetChildSizeContext);
     const [cssVariables, setCssVariables] = useState<ReturnType<typeof calcCSSVariables> | CSSProperties>();
+    const [transitionFinished, setTransitionFinished] = useState(true);
 
     useLayoutEffect(() => {
-        if (routeName === ROUTE.home && homeMenuTransitionTarget) {
-            const routeTransformsBlurb = categoryLinkButtonElements.find((linkButton) => linkButton.name === homeMenuTransitionTarget)![routeName];
-            setCssVariables({
-                ...calcCSSVariables(
-                    routeTransformsBlurb.position,
-                    routeTransformsBlurb.rotation + 30,
-                    routeTransformsBlurb.scale,
-                    routeTransformsBlurb.isHalf,
-                    containerSize,
-                    {},
-                ),
-                'opacity': 0,
-                '--tw-clip-inset-t': '100%',
-            } as CSSProperties);
+        if (homeMenuTransitionTarget) {
+            const routeTransformsBlurb = namedRouteTransforms[homeMenuTransitionTarget]?.[routeName];
+            routeTransformsBlurb &&
+                setCssVariables(
+                    calcCSSVariables(
+                        routeTransformsBlurb.position,
+                        routeTransformsBlurb.rotation,
+                        routeTransformsBlurb.scale,
+                        routeTransformsBlurb.isHalf,
+                        containerSize,
+                    ) as CSSProperties,
+                );
         }
     }, [containerSize, homeMenuTransitionTarget, routeName]);
+
+    useLayoutEffect(() => {
+        if (cardTransition) setTransitionFinished(false);
+    }, [cardTransition]);
 
     const timer_Ref = useTimeout(
         () => {
             clearTimeout(timer_Ref.current);
-            const routeTransformsBlurb = offsetHexagonTransforms(brandElement, brandBlurbOffsets[homeMenuTransitionTarget!])[routeName];
-
-            setCssVariables(
-                calcCSSVariables(
-                    routeTransformsBlurb.position,
-                    routeTransformsBlurb.rotation,
-                    routeTransformsBlurb.scale,
-                    routeTransformsBlurb.isHalf,
-                    containerSize,
-                    {},
-                ),
-            );
+            setTransitionFinished(true);
         },
-        homeMenuTransitionTargetReached ? transitionDuration_MS * 2 : null,
+        transitionFinished ? null : transitionDuration_MS * 1.5,
     );
 
-    return isMounted ? (
+    return show ? (
         <div
-            ref={categoryBlurbRef}
-            className="transform-hexagon pointer-events-none absolute z-50 flex aspect-hex-flat w-[--hexagon-clip-path-width] select-none flex-col items-center justify-end transition-[transform,opacity,clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*3)] clip-inset-[-100%]"
+            className={classNames(
+                'transform-hexagon pointer-events-none absolute flex aspect-hex-flat w-[--hexagon-clip-path-width] select-none transition-[transform,filter,opacity] duration-[calc(var(--ui-animation-menu-transition-duration)*2)]',
+                transitionFinished ? 'opacity-100 blur-0' : 'opacity-0 blur-sm',
+            )}
             style={cssVariables as CSSProperties}
         >
-            {homeMenuTransitionTarget && (
-                <>
-                    <span className="w-[200%] text-center font-fjalla-one text-sm leading-tight tracking-tight text-theme-root-background/50">
-                        {database[homeMenuTransitionTarget].categoryBlurb}
-                    </span>
-                    <div className="basis-[60%]" />
-                </>
-            )}
+            <span className="inline-block h-full w-[200%] translate-y-[125%] text-center font-fjalla-one text-sm leading-tight tracking-tight text-theme-root-background/50">
+                {homeMenuTransitionTarget && database[homeMenuTransitionTarget].categoryBlurb}
+            </span>
         </div>
     ) : null;
 };
-
 export default CategoryBlurb;

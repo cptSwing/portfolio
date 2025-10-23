@@ -1,40 +1,10 @@
-import { ComponentPropsWithRef, CSSProperties, FC, ReactNode, useMemo } from 'react';
+import { CSSProperties, FC, ReactNode, useMemo } from 'react';
 import { valueof } from '../types/types';
 import { useZustand } from '../lib/zustand';
 import { classNames } from 'cpts-javascript-utilities';
 import { ROUTE } from '../types/enums';
 
-interface GlassmorphicProps extends ComponentPropsWithRef<'div'> {
-    children?: ReactNode;
-    clipPath: string;
-    innerShadowRadius?: number;
-    strokeRadius?: number;
-}
-
-const GlassmorphicClipped: FC<GlassmorphicProps> = (props) => {
-    const { children, clipPath, innerShadowRadius = 0, strokeRadius = 0, className, style, ...rest } = props;
-    const uuid = useMemo(() => self.crypto.randomUUID(), []);
-
-    return (
-        <div
-            {...rest}
-            className={`${className} glassmorphic-backdrop relative [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:3] [clip-path:--glassmorphic-clipped-clip-path]`}
-            style={{ ...style, '--glassmorphic-clipped-clip-path': clipPath } as CSSProperties}
-        >
-            <SvgGlassFilter name={uuid} innerShadowRadius={innerShadowRadius} strokeRadius={strokeRadius} />
-            {children}
-
-            <div
-                className="absolute left-0 top-0 size-full before:absolute before:left-0 before:top-0 before:-z-50 before:size-full before:bg-black before:[clip-path:--glassmorphic-clipped-clip-path]"
-                style={{ filter: `url(#svg-hexagon-filter-${uuid})` }}
-            />
-        </div>
-    );
-};
-
-export default GlassmorphicClipped;
-
-export const GlassmorphicButtonWrapper: FC<{
+export const GlassmorphicButton: FC<{
     children: ReactNode;
     name: string;
     style: Record<string, valueof<CSSProperties>>;
@@ -49,6 +19,7 @@ export const GlassmorphicButtonWrapper: FC<{
     const cardTransition = useZustand((store) => store.values.cardTransition);
 
     const random_Memo = useMemo(() => Math.random(), []);
+    const uuid = useMemo(() => self.crypto.randomUUID(), []);
 
     return (
         <button
@@ -61,14 +32,12 @@ export const GlassmorphicButtonWrapper: FC<{
             onClick={clickHandler}
             onMouseEnter={mouseEnterHandler}
         >
-            <GlassmorphicClipped
-                clipPath="var(--hexagon-clip-path)"
-                innerShadowRadius={innerShadowRadius}
-                strokeRadius={strokeRadius}
+            <div
                 className={classNames(
+                    'glassmorphic-backdrop relative [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:3] [clip-path:--hexagon-clip-path]',
                     isRouteNavigation ? `navigation-button-hexagon-class-${name}` : '',
                     lightingGradient ? 'lighting-gradient' : '',
-                    'pointer-events-auto aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[--hexagon-inner-shadow-color,--hexagon-lighting-gradient-counter-rotation,backdrop-filter] [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:2] group-hover-active:matrix-scale-x-[1.05] group-hover-active:matrix-scale-y-[1.05] group-hover-active:![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]',
+                    'pointer-events-auto aspect-hex-flat w-[--hexagon-clip-path-width] origin-center transition-[--hexagon-inner-shadow-color,--hexagon-lighting-gradient-counter-rotation,backdrop-filter] [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:2] group-hover-active:![--hexagon-inner-shadow-color:theme(colors.theme.primary-lighter)]',
                     cardTransition ? 'group-hover-active:!matrix-scale-[0.9]' : '',
                     routeName === ROUTE.post
                         ? '[--hexagon-fill-color:transparent] [--hexagon-inner-shadow-color:transparent] [--hexagon-stroke-color:transparent] group-hover-active:![--hexagon-stroke-color:theme(colors.theme.primary)]'
@@ -80,8 +49,14 @@ export const GlassmorphicButtonWrapper: FC<{
                     } as CSSProperties
                 }
             >
+                <SvgGlassFilter name={uuid} innerShadowRadius={innerShadowRadius} strokeRadius={strokeRadius} />
                 {children}
-            </GlassmorphicClipped>
+
+                <div
+                    className="absolute left-0 top-0 size-full before:absolute before:left-0 before:top-0 before:-z-50 before:size-full before:bg-black before:[clip-path:--hexagon-clip-path]"
+                    style={{ filter: `url(#svg-hexagon-filter-${uuid})` }}
+                />
+            </div>
         </button>
     );
 };
