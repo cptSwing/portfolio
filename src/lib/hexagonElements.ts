@@ -512,8 +512,8 @@ export const categoryLinkButtonElements: CategoryLinkButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 315,
-                y: 191,
+                x: 321,
+                y: 184.025,
             },
             rotation: -90,
             isHalf: false,
@@ -544,8 +544,8 @@ export const categoryLinkButtonElements: CategoryLinkButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 299,
-                y: 220,
+                x: 302,
+                y: 216.5,
             },
             rotation: 90,
             isHalf: false,
@@ -614,8 +614,8 @@ export const functionalButtonElements: FunctionalButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 17,
-                y: 249.5,
+                x: -9,
+                y: 205.675,
             },
             rotation: 90,
             isHalf: false,
@@ -651,8 +651,8 @@ export const functionalButtonElements: FunctionalButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 27.75,
-                y: 268.9,
+                x: 2,
+                y: 225.675,
             },
             rotation: 90,
             isHalf: false,
@@ -725,10 +725,10 @@ export const openHamburgerButtonElement: FunctionalButtonRouteData = {
     },
     [ROUTE.category]: {
         position: {
-            x: -6,
-            y: 210,
+            x: -42,
+            y: 129.9,
         },
-        rotation: -30,
+        rotation: 0,
         isHalf: false,
         scale: 0.25,
         counterRotate: true,
@@ -973,7 +973,6 @@ export const markActiveHexagonElement: HexagonRouteData = {
         isHalf: false,
         scale: 1,
     },
-
     [ROUTE.post]: {
         position: {
             x: 150,
@@ -990,7 +989,7 @@ export const markActiveHexagonElementOffsets: HexagonRouteDataTransformOffsets =
         scale: 1.25,
     },
     [ROUTE.category]: {
-        scale: 0.39,
+        scale: 0.42,
         rotation: -30,
     },
     [ROUTE.post]: {
