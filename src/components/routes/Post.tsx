@@ -157,7 +157,7 @@ const RemainingImages: FC<{
     remainingImages: [Post_Showcase_Image, number][];
     setLightBoxSlide: (showcaseIndex: number) => void;
 }> = ({ remainingImages, setLightBoxSlide }) => (
-    <div className="grid items-start gap-3 pb-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div className="mt-12 grid items-start gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {remainingImages.map(([{ imgUrl, caption, hasThumbnail }, imageIndex]) => {
             return (
                 <button

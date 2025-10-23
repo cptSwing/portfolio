@@ -225,7 +225,7 @@ const Clients: FC<{ clients: NonNullable<Post['clients']> } & PostDetailElementC
                         )}
                     >
                         {svgUrl ? (
-                            <img className="size-full matrix-scale-[0.55]" alt={abbreviation} src={svgUrl} />
+                            <img className="size-[60%]" alt={abbreviation} src={svgUrl} />
                         ) : (
                             <span className="flex select-none items-center justify-center rounded-2xl font-lato text-lg font-normal text-theme-primary-darker before:absolute before:left-[25%] before:top-[25%] before:-z-10 before:size-[50%] before:rounded-2xl before:bg-theme-text-background">
                                 {abbreviation}
