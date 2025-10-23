@@ -10,8 +10,9 @@ const PostContents: FC<{
     textBlocks: Post['textBlocks'];
     showcases?: Post_Showcase[];
     cardImage?: Post['cardImage'];
+    cardImagePosition: Post['cardImagePosition'];
     setLightBoxSlide: (showcaseIndex: number) => void;
-}> = ({ textBlocks, showcases, cardImage, setLightBoxSlide }) =>
+}> = ({ textBlocks, showcases, cardImage, cardImagePosition, setLightBoxSlide }) =>
     textBlocks.map(({ text, showcaseIndex }, blockIndex) => {
         const showcase = showcases && isNumber(showcaseIndex) ? showcases[showcaseIndex!] : undefined;
         return (
@@ -21,6 +22,7 @@ const PostContents: FC<{
                 blockIndex={blockIndex}
                 showcase={showcase}
                 cardImage={cardImage}
+                cardImagePosition={cardImagePosition}
                 lightboxCallback={() => isNumber(showcaseIndex) && setLightBoxSlide(showcaseIndex!)}
             />
         );
@@ -33,15 +35,16 @@ const TextImageBlock: FC<{
     blockIndex: number;
     showcase?: Post_Showcase;
     cardImage?: string;
+    cardImagePosition: Post['cardImagePosition'];
     lightboxCallback: () => void;
-}> = ({ text, blockIndex, showcase, cardImage, lightboxCallback }) => {
+}> = ({ text, blockIndex, showcase, cardImage, cardImagePosition, lightboxCallback }) => {
     const isFirst = blockIndex === 0;
     const isEvenIndex = blockIndex % 2 === 0;
 
     return (
         <div className="flow-root sm:my-4 sm:text-xs md:my-8 md:text-sm">
             {isFirst && cardImage ? (
-                <CardImageClipped cardImage={cardImage} />
+                <CardImageClipped cardImage={cardImage} cardImagePosition={cardImagePosition} />
             ) : showcase ? (
                 <Showcase showcase={showcase} isEvenIndex={isEvenIndex} lightboxCallback={lightboxCallback} />
             ) : null}
@@ -70,11 +73,11 @@ const TextImageBlock: FC<{
 };
 
 // TODO adjust scale per screen size
-const CardImageClipped: FC<{ cardImage: string }> = ({ cardImage }) => {
+const CardImageClipped: FC<{ cardImage: string; cardImagePosition: Post['cardImagePosition'] }> = ({ cardImage, cardImagePosition }) => {
     return (
         <div className="relative float-right h-[calc(var(--hexagon-clip-path-height)*var(--post-contents-card-image-scale))] w-[calc(var(--hexagon-clip-path-width)*var(--post-contents-card-image-scale))] [--post-contents-card-image-scale:2.5] [shape-outside:circle(calc(var(--hexagon-clip-path-width)/2*var(--post-contents-card-image-scale)))]">
             <div className="aspect-hex-flat w-[--hexagon-clip-path-width] origin-top-left matrix-scale-[--post-contents-card-image-scale] [clip-path:--hexagon-clip-path-full] after:absolute after:left-0 after:top-0 after:size-full after:bg-theme-primary-lighter after:matrix-scale-[1.07] after:[clip-path:--hexagon-clip-path-full-wider-stroke]">
-                <img src={cardImage} alt=" " className="size-full object-cover" />
+                <img src={cardImage} alt=" " className="size-full object-cover" style={{ objectPosition: cardImagePosition }} />
             </div>
         </div>
     );
@@ -97,7 +100,7 @@ const Showcase: FC<{
             loading="lazy"
             allowFullScreen
             className={classNames(
-                'aspect-video w-[55%] outline outline-2 outline-offset-2 outline-theme-secondary/30 hover-active:outline-theme-secondary',
+                'aspect-video w-[55%] outline outline-2 outline-offset-2 outline-theme-primary-lighter hover-active:outline-theme-primary/50',
                 isEvenIndex ? 'float-right sm:ml-4 md:ml-6' : 'float-left sm:mr-4 md:mr-6',
             )}
         />
@@ -113,7 +116,7 @@ const InlineImageButton: FC<{ showcase: Post_Showcase_Image; isEvenIndex: boolea
         <button
             onClick={showcase ? handleClick : undefined}
             className={classNames(
-                'group relative aspect-video w-[55%] outline outline-2 outline-offset-2 outline-theme-secondary/30 hover-active:outline-theme-secondary',
+                'group relative aspect-video w-[55%] outline outline-2 outline-offset-2 outline-theme-primary-lighter hover-active:outline-theme-primary/50',
                 isEvenIndex ? 'float-right sm:ml-4 md:ml-6' : 'float-left sm:mr-4 md:mr-6',
                 showcase ? ' ' : 'pointer-events-none',
             )}

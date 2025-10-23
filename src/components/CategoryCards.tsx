@@ -39,7 +39,7 @@ const CategoryHexagon: FC<{
     cardIndex: number;
     activePostCardIndex: number;
 }> = ({ allButtons, post, containerSize, cardIndex, activePostCardIndex }) => {
-    const cardImage = post.cardImage;
+    const { cardImage, cardImagePosition } = post;
 
     const isAtFront = activePostCardIndex === cardIndex;
     const cardTransition = useZustand((state) => state.values.cardTransition);
@@ -109,6 +109,7 @@ const CategoryHexagon: FC<{
                         '--card-image-background-gradient':
                             'radial-gradient(circle, rgb(var(--theme-primary-darker) / 0.65) 0%, rgb(var(--theme-primary)) 70%)',
                         'backgroundImage': `url("${cardImage}"), var(--card-image-background-gradient)`,
+                        'backgroundPosition': cardImagePosition,
                     } as CSSProperties
                 }
             />

@@ -160,7 +160,7 @@ const Stack: FC<{ stack: NonNullable<Post['stack']> } & PostDetailElementContent
                 <a
                     key={idx}
                     href={TOOL[stackEntry]}
-                    className="block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline"
+                    className="block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline hover-active:decoration-theme-text-background"
                 >
                     {stackEntry}
                 </a>
@@ -178,7 +178,10 @@ const ViewLive: FC<{ liveViews: NonNullable<Post['liveViews']> } & PostDetailEle
                     dir="ltr"
                     className="group h-fit bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker outline outline-1 -outline-offset-2 outline-theme-text-background transition-[max-height,color,background-color,outline-color] hover-active:max-h-full hover-active:bg-theme-primary/50 hover-active:text-theme-text-background"
                 >
-                    <a className="no-underline group-hover-active:underline" href={url}>
+                    <a
+                        className="text-theme-primary-darker no-underline hover-active:text-theme-text-background group-hover-active:underline group-hover-active:decoration-theme-text-background"
+                        href={url}
+                    >
                         {title}
                     </a>
 
@@ -195,7 +198,7 @@ const Source: FC<{ source: NonNullable<Post['source']> } & PostDetailElementCont
     return (
         <div data-block-id={dataBlockId} className="h-6">
             <a
-                className="block w-full bg-theme-secondary-darker/20 px-2 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline"
+                className="block w-full bg-theme-secondary-darker/20 px-2 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline hover-active:decoration-theme-text-background"
                 href={source.href}
             >
                 {source.alt}
@@ -222,7 +225,7 @@ const Clients: FC<{ clients: NonNullable<Post['clients']> } & PostDetailElementC
                         )}
                     >
                         {svgUrl ? (
-                            <img className="size-full matrix-scale-50" alt={abbreviation} src={svgUrl} />
+                            <img className="size-full matrix-scale-[0.55]" alt={abbreviation} src={svgUrl} />
                         ) : (
                             <span className="flex select-none items-center justify-center rounded-2xl font-lato text-lg font-normal text-theme-primary-darker before:absolute before:left-[25%] before:top-[25%] before:-z-10 before:size-[50%] before:rounded-2xl before:bg-theme-text-background">
                                 {abbreviation}
@@ -230,7 +233,7 @@ const Clients: FC<{ clients: NonNullable<Post['clients']> } & PostDetailElementC
                         )}
                     </div>
 
-                    <span className="pointer-events-none absolute bottom-0 z-10 w-full text-center font-fjalla-one text-2xs font-light tracking-wide text-theme-root-background/70 opacity-0 group-hover-active:opacity-100">
+                    <span className="pointer-events-none absolute top-[95%] z-10 w-full text-center font-fjalla-one text-2xs font-light tracking-wide text-theme-root-background/70 opacity-0 group-hover-active:opacity-100">
                         {name}
                     </span>
                 </div>

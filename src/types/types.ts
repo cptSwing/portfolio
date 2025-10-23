@@ -70,6 +70,7 @@ export type Post = {
     showcases?: Post_Showcase[];
     subTitle?: string;
     cardImage?: string;
+    cardImagePosition?: string;
     clients?: { abbreviation: string; svgUrl?: string; name: string }[];
     stack?: (keyof typeof TOOL)[];
     liveViews?: { url: string; title: string; description: string }[];

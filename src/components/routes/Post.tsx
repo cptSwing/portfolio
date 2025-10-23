@@ -25,7 +25,7 @@ const emptyPost: Post_T = {
 
 const Post: FC<{ show: boolean }> = ({ show }) => {
     const post = useZustand((store) => store.values.routeData.content.post) ?? emptyPost;
-    const { title, cardImage, subTitle, stack, clients, liveViews, source, showcases, textBlocks, date } = post;
+    const { title, cardImage, cardImagePosition, subTitle, stack, clients, liveViews, source, showcases, textBlocks, date } = post;
 
     const postRef = useRef<HTMLDivElement | null>(null);
     const shouldMount = useMountTransition(postRef, show, ['!clip-inset-[-10%]']);
@@ -96,7 +96,13 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
                     <span className="block font-fjalla-one sm:text-lg sm:tracking-normal md:text-xl lg:text-2xl">{subTitle}</span>
                 </div>
 
-                <PostContents textBlocks={textBlocks} showcases={showcases} cardImage={cardImage} setLightBoxSlide={setLightBoxSlide_Cb} />
+                <PostContents
+                    textBlocks={textBlocks}
+                    showcases={showcases}
+                    cardImage={cardImage}
+                    cardImagePosition={cardImagePosition}
+                    setLightBoxSlide={setLightBoxSlide_Cb}
+                />
 
                 {/* Gallery below text */}
                 {remainingImages && <RemainingImages remainingImages={remainingImages} setLightBoxSlide={setLightBoxSlide_Cb} />}
