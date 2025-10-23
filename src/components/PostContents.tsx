@@ -96,7 +96,10 @@ const Showcase: FC<{
             referrerPolicy="strict-origin-when-cross-origin"
             loading="lazy"
             allowFullScreen
-            className="aspect-video size-full shadow-md shadow-theme-primary-darker/10 transition-[box-shadow] duration-75 group-hover-active:shadow-theme-primary-darker/20"
+            className={classNames(
+                'aspect-video w-[55%] outline outline-2 outline-offset-2 outline-theme-secondary/30 hover-active:outline-theme-secondary',
+                isEvenIndex ? 'float-right sm:ml-4 md:ml-6' : 'float-left sm:mr-4 md:mr-6',
+            )}
         />
     );
 };
@@ -110,7 +113,7 @@ const InlineImageButton: FC<{ showcase: Post_Showcase_Image; isEvenIndex: boolea
         <button
             onClick={showcase ? handleClick : undefined}
             className={classNames(
-                'relative aspect-video w-[55%] shadow-md shadow-theme-primary/20',
+                'group relative aspect-video w-[55%] outline outline-2 outline-offset-2 outline-theme-secondary/30 hover-active:outline-theme-secondary',
                 isEvenIndex ? 'float-right sm:ml-4 md:ml-6' : 'float-left sm:mr-4 md:mr-6',
                 showcase ? ' ' : 'pointer-events-none',
             )}
@@ -123,7 +126,7 @@ const InlineImageButton: FC<{ showcase: Post_Showcase_Image; isEvenIndex: boolea
             {showcase.caption && (
                 <span
                     className={classNames(
-                        'absolute bottom-0 left-0 z-10 h-4 w-full bg-theme-secondary/10 font-lato text-xs font-bold text-theme-primary-darker',
+                        'absolute bottom-0 left-0 z-10 h-4 w-full bg-theme-secondary/30 font-lato text-xs font-bold text-theme-primary-darker group-hover-active:bg-theme-secondary',
                         isEvenIndex ? 'pr-1.5 text-right' : 'pl-1.5 text-left',
                     )}
                 >
