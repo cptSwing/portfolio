@@ -19,7 +19,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; liveView
 
     return (
         <>
-            <div className="relative flex select-none items-start justify-end">
+            <div className="relative flex h-4 select-none items-start justify-end">
                 {stack && (
                     <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
@@ -74,7 +74,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; liveView
 
             <div
                 className={classNames(
-                    'relative -mt-2 ml-auto mr-0 min-h-fit font-lato text-theme-primary transition-[clip-path] clip-inset-b-[-100%] sm:text-2xs lg:text-xs',
+                    'relative ml-auto mr-0 min-h-fit font-lato text-theme-primary transition-[clip-path] clip-inset-b-[-100%] sm:text-2xs lg:text-xs',
                     content ? 'clip-inset-l-0' : 'clip-inset-l-full',
                 )}
             >
@@ -152,7 +152,7 @@ const Stack: FC<{ stack: NonNullable<Post['stack']> } & PostDetailElementContent
     return (
         <div
             data-block-id={dataBlockId}
-            className="grid max-h-14 min-h-6 gap-1"
+            className="mt-2 grid max-h-14 min-h-6 gap-1"
             dir="rtl"
             style={{ gridTemplateColumns: `repeat(${stack.length < 4 ? stack.length : 4}, minmax(0, 1fr)` }}
         >
@@ -171,7 +171,7 @@ const Stack: FC<{ stack: NonNullable<Post['stack']> } & PostDetailElementContent
 
 const ViewLive: FC<{ liveViews: NonNullable<Post['liveViews']> } & PostDetailElementContentProps> = ({ liveViews, dataBlockId }) => {
     return (
-        <div data-block-id={dataBlockId} dir="rtl" className="grid h-16 grid-cols-3 items-start gap-1">
+        <div data-block-id={dataBlockId} dir="rtl" className="mt-2 grid h-16 grid-cols-3 items-start gap-1">
             {liveViews.map(({ url, title, description }, idx) => (
                 <div
                     key={idx}
@@ -196,7 +196,7 @@ const ViewLive: FC<{ liveViews: NonNullable<Post['liveViews']> } & PostDetailEle
 
 const Source: FC<{ source: NonNullable<Post['source']> } & PostDetailElementContentProps> = ({ source, dataBlockId }) => {
     return (
-        <div data-block-id={dataBlockId} className="h-6">
+        <div data-block-id={dataBlockId} className="mt-2 h-6">
             <a
                 className="block w-full bg-theme-secondary-darker/20 px-2 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline hover-active:decoration-theme-text-background"
                 href={source.href}
@@ -212,11 +212,11 @@ const Clients: FC<{ clients: NonNullable<Post['clients']> } & PostDetailElementC
         <div
             dir="rtl"
             data-block-id={dataBlockId}
-            className={'relative grid h-20 gap-x-0'}
+            className="relative grid h-20 gap-x-0"
             style={{ gridTemplateColumns: `repeat(${clients.length < 4 ? clients.length : 4}, minmax(0, 1fr)` }}
         >
             {clients.map(({ abbreviation, name, svgUrl }, idx) => (
-                <div key={idx + abbreviation + name} className="group relative flex flex-col items-center justify-start">
+                <div key={idx + abbreviation + name} className="group relative size-full">
                     <div
                         className={classNames(
                             'before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-theme-text-background before:[clip-path:--hexagon-clip-path-full-wider-stroke]',
@@ -233,7 +233,7 @@ const Clients: FC<{ clients: NonNullable<Post['clients']> } & PostDetailElementC
                         )}
                     </div>
 
-                    <span className="pointer-events-none absolute top-[95%] z-10 w-full text-center font-fjalla-one text-2xs font-light tracking-wide text-theme-root-background/70 opacity-0 group-hover-active:opacity-100">
+                    <span className="pointer-events-none absolute top-full z-10 w-full text-center font-fjalla-one text-2xs font-light tracking-wide text-theme-root-background/70 opacity-0 group-hover-active:opacity-100">
                         {name}
                     </span>
                 </div>

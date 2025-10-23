@@ -6,11 +6,34 @@
         "posts": [
             {
                 "id": 0,
-                "title": "Design Your Ring",
-                "cardImage": "/images/hd_dyr/hd_dyr_card.jpg",
-                "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
-                "subTitle": "Customizable Wedding-Rings in 3D",
                 "date": "2024-09-12",
+                "title": "Design Your Ring",
+                "subTitle": "Customizable Wedding-Rings in 3D",
+                "cardImage": "/images/hd_dyr/hd_dyr_card.jpg",
+                "stack": [
+                    "react",
+                    "react-router",
+                    "react-three-fiber",
+                    "react-three-drei",
+                    "react-postprocessing",
+                    "three-bvh-csg",
+                    "glsl",
+                    "tailwindcss",
+                    "Substance Designer"
+                ],
+                "clients": [
+                    {
+                        "svgUrl": "/svg/hd_logo.svg",
+                        "abbreviation": "H | D",
+                        "name": "Henrich & Denzel"
+                    }
+                ],
+                "liveViews": [
+                    {
+                        "url": "https://configurator.henrich-denzel.com/",
+                        "title": "Henrich & Denzel Wedding Ring Configurator"
+                    }
+                ],
                 "showcases": [
                     {
                         "caption": "Ring profile selection",
@@ -47,31 +70,31 @@
                 ],
                 "textBlocks": [
                     {
-                        "text": "Likely both the most challenging, and the most interesting coding project I have worked on to date: A configurator for wedding rings - unlikely as that might sound. This project, a complete re-imagining of [Henrich & Denzel](https://www.henrich-denzel.com/)'s old ['Design Your Ring'](https://www.design-your-ring.com/) configurator, posed many, many interesting challenges in the 3D space - and equally many iteration cycles. We choose to realize the project - which also included a shop front with order forms etc - using ***react***, ***react-three-fiber*** (a ***three.js*** wrapper), as well as adjacent libraries.\nIn parallel, Vragments is developing a new Product Management System for Henrich & Denzel, and interaction between the ring-configurator and the PMS via API took on an increasingly large role.\n\nCheck out a preliminary version of the [configurator here](https://configurator.henrich-denzel.com)!"
+                        "text": "Likely both the most challenging, and the most interesting coding project I have worked on to date - unlikely as this might sound: A configurator for wedding rings.\n\nThis project, a complete re-imagining of [Henrich & Denzel](https://www.henrich-denzel.com/)'s old ['Design Your Ring'](https://www.design-your-ring.com/) configurator, posed many, many interesting challenges in the 3D space - and resulted in equally many iteration cycles.\nWe choose to realize the project - which also included a shop front - using ***react***, ***react-three-fiber***, as well as adjacent libraries.\n\nIn parallel, Vragments is developing a new Product Management System for Henrich & Denzel, and interaction between the ring-configurator and the PMS via API took on an increasingly large role.\n\nCheck out the currently deployed version under 'View Live' above."
                     },
                     {
                         "showcaseIndex": 0,
-                        "text": "Initially, our interpretation of the project's scope was limited to loading pre-modeled meshes (as *gltf* files, or more specifically: compressed *glb* files). These would ostensibly be scaled in width and diameter and look okay, within certain limits.\nLater on, the limits of scaling such meshes became apparent, and we had to return to the drawing board. While the capability to load individual rings as *GLTF* would be kept for certain rings, we would now create ring meshes on the fly, extruding 2d splines - loaded from DXF files - along a circular curve or along a provided curve of different shape."
+                        "text": "Initially, our interpretation of the project's scope was limited to loading pre-modeled meshes (as *gltf* files, or more specifically: compressed *glb* files). These would ostensibly be scaled in width and diameter and look okay, within certain limits.\n\nLater on, the limits of scaling such meshes became apparent, and we had to return to the drawing board.\n\nWhile the capability to load individual rings as *GLTF* would be kept for certain rings, we would now create ring meshes on the fly, extruding 2d splines - loaded from DXF files - along a circular curve or along a provided curve of different shape."
                     },
                     {
                         "showcaseIndex": 1,
-                        "text": "For this, I needed to dust off an older library allowing parsing of the *DXF* files which our client exported, and also, for instance, was tasked with modifying **three.js**'s *ExtrudeGeometry* class to allow for completely closed meshes.\nA customer could now initially choose a ring's width and circumference, and the mesh displayed on-screen would be created precisely according the input values, and limited by constraints set in the backend.\nIn order to realize all capabilities the client asked for, we had to implement more precise extrusion of said ring profiles, allowing for several colors/alloys on one single ring mesh - splitting the extrusion profiles according to segmentation values coming from the backend."
+                        "text": "For this, I needed to dust off an older library allowing parsing of the *DXF* files which our client exported, and also had to extend **three.js**'s *ExtrudeGeometry* class to allow for completely closed meshes.\n\nA customer could now initially choose a ring's width and circumference, and the mesh displayed on-screen would be created precisely according the input values, limited by constraints set in the backend."
                     },
                     {
                         "showcaseIndex": 2,
-                        "text": "\n\nObviously material management was an important part of achieving the desired look. Over the course of the project, I extended three.js' standard materials with a custom TriPlanar shader which allows us to display a wide range of surfaces on a ring without pre-made UV coordinates (a ring's surface can be brushed, or hammered, or any number of further techniques).\n\nUsing [Substance Designer](https://www.adobe.com/products/substance3d/apps/designer.html), I also created the necessary normal and roughness maps for the various surface looks."
+                        "text": "In order to realize all capabilities the client asked for, we had to then implement more complex extrusion options for the ring profiles.\n\nThis allowed for several colors/alloys on one single ring mesh by splitting the extrusion profiles according to segmentation values, also coming from the backend."
                     },
                     {
                         "showcaseIndex": 3,
-                        "text": "Another challenge was displaying diamonds on the ring. Visually, achieving a satisfying look for a diamond - a special type of surface whose interaction with light is costly to even *approximate* in realtime 3d applications - was a challenge. In the end, I went with a custom implementation of [react-drei](https://github.com/pmndrs/drei)'s [MeshRefractionMaterial](https://drei.docs.pmnd.rs/shaders/mesh-refraction-material), and coupled this with a hand-ported version of the 'Kawase light-streak' post-processing effect (example seen [here](https://github.com/XJINE/Unity_StarGlow))."
+                        "text": "Obviously material management was an important part of achieving the desired look. Over the course of the project, I extended three.js' standard materials with a custom TriPlanar shader which allows us to display a wide range of surfaces on a ring without pre-made UV coordinates.\n\nA ring's surface can be brushed, or hammered, or visualize any futher number of techniques by uploading a set of textures in the backend.\n\nUsing [Substance Designer](https://www.adobe.com/products/substance3d/apps/designer.html), I also created the necessary normal and roughness maps for the various surface looks."
                     },
                     {
                         "showcaseIndex": 4,
-                        "text": "For a realistic look though, diamonds would need to be 'physically' inset into the ring. For this step, we decided to use boolean operations, cutting channels or individual settings into the ring - thankfully, [three-bvh-csg](https://github.com/gkjohnson/three-bvh-csg) was making great strides, and I was able to build atop this library's boolean results. Said results would have to be worked on, merging geometry groups and juggling materials."
+                        "text": "Another challenge was displaying diamonds on the ring. Achieving a satisfying look for a diamond - a special type of surface whose interaction with light is costly to even *approximate* in realtime 3d applications - was not easy.\n\nIn the end, I went with a custom implementation of [react-drei](https://github.com/pmndrs/drei)'s [MeshRefractionMaterial](https://drei.docs.pmnd.rs/shaders/mesh-refraction-material), and coupled this with a hand-ported version of the 'Kawase light-streak' post-processing effect (an example of which can be seen [here](https://github.com/XJINE/Unity_StarGlow))."
                     },
                     {
                         "showcaseIndex": 5,
-                        "text": "I am still working on this project regularly, and new challenges keep cropping up :)\nI'll gladly provide further access on demand, the current state of the project is not yet publicly viewable, unfortunately."
+                        "text": "For a realistic look though, diamonds would need to be 'physically' inset into the ring. For this step, we decided to use boolean operations, cutting channels or individual settings into the ring - thankfully, [three-bvh-csg](https://github.com/gkjohnson/three-bvh-csg) was making great strides, and I was able to build atop this library's boolean results.\n\nThese boolean results were then processed further, merging geometry groups and juggling materials while keeping a close eye on performance.\n\nI am still working on this project regularly, and fortunately, new challenges keep cropping up."
                     }
                 ]
             },
@@ -79,16 +102,22 @@
                 "id": 1,
                 "title": "This site!",
                 "cardImage": "/images/portfolio/portfolio_featured.jpg",
-                "stack": ["react", "react-router", "react-three-fiber", "react-three-drei", "react-postprocessing", "three-bvh-csg", "tailwindcss"],
+                "stack": ["react", "react-router", "tailwindcss"],
                 "subTitle": "Rebuilt Portfolio from Scratch",
                 "date": "2024-07-30",
                 "source": {
                     "alt": "This website @ Github",
                     "href": "https://github.com/cptSwing/portfolio"
                 },
+                "liveViews": [
+                    {
+                        "url": "https://www.jbrandenburg.de/bundles/oldFolio",
+                        "title": "Previous version of this site"
+                    }
+                ],
                 "textBlocks": [
                     {
-                        "text": "My old portfolio site was geared mostly towards 3D Art - since I'd never had the time to change things around since I started working as a web developer (and wordpress didn't survive one of the more recent php upgrades), it was now time to build anew.\n\nObviously there's always stuff to do:\nMy main gripe is that I'm currently still fetching content from a static .json instead of querying my hosted SQL database, but I'd also like to add user management, WYSIWYG editing, file uploads at a later date. And I'm sure `useScrollPosition()` and related scroll logic could be worked over for better performance..\n\nSo while this site is still a Work-In-Progress, I invite you to [peruse the code here](https://github.com/cptSwing/portfolio)."
+                        "text": "My oldest portfolio site was geared mostly towards 3D Art - since I'd never had the time to change things around since I started working as a web developer (and wordpress didn't survive one of the more recent php upgrades), it was now time to build anew.\n\nObviously there's always stuff to do:\nMy main gripe is that I'm currently still fetching content from a static .json instead of querying my hosted SQL database, but I'd also like to add user management, WYSIWYG editing, file uploads at some very much later date.\n\nYou are browsing the second iteration of this 'relaunch', the previous iteration can be seen by clicking 'Live Views' above. Browse the source on my github, also linked above."
                     }
                 ]
             },
@@ -162,7 +191,7 @@
                     },
                     {
                         "showcaseIndex": 0,
-                        "text": "[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js).\n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set. Various user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
+                        "text": "[VRagments](https://vragments.com)' [old version of fader](http://app.getfader.com) was rebuilt from scratch, using *react* and *react-three-fiber* (a wrapper for three.js).\n\nIn the frontend, pre-uploaded media assets are added to (or removed from) the scene-tree - combining them in new ways to tell a story. Here they can be annotated with text, color-themed, videos and audio can be set to play automatically or not, and clickable links to other scenes are set.\n\nVarious user preferences such as scene backgrounds, visible 3d grids, or scene order can be changed."
                     },
                     {
                         "showcaseIndex": 1,
@@ -170,7 +199,7 @@
                     },
                     {
                         "showcaseIndex": 2,
-                        "text": "While the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below.\n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further.\n\nFeel free to login at [this fader dev backend instance](https://fader360.vrgmnts.net/users/login) with `jens@jbrandenburg.de` and password `!$V2&;+'i-EzrfF`, then follow [this link](https://fader360.vrgmnts.net/editor/edit?project_id=83d78046-e4dd-4679-a460-097ceb44104b) to directly enter the editor and click around, add assets to the scenes etc etc. Fader was not picked up commercially by anyone, so it's obviously rough around the edges ;-)"
+                        "text": "While the actual rebuild of the frontend took 4-5 months, during the much longer experimentation phase before that, I was also tasked with creating some prototype 3D environments to be used as backdrops for fader stories. A few of these can be seen below.\n\nAfter completion of the EU project, fader360 was [open-sourced](https://github.com/VRagments/fader360-frontend) and can be freely used or developed further.\n\nFeel free to login at [this fader dev backend instance](https://fader360.vrgmnts.net/users/login) with `jens@jbrandenburg.de` and password `!$V2&;+'i-EzrfF`, then follow [this link](https://fader360.vrgmnts.net/editor/edit?project_id=83d78046-e4dd-4679-a460-097ceb44104b) to directly enter the editor and click around, add assets to the scenes etc etc.\n\nUnfortunately, Fader was not picked up commercially by anyone, so it's obviously rough around the edges yet."
                     }
                 ]
             },
@@ -179,11 +208,27 @@
                 "title": "Brotherland",
                 "subTitle": "The lives of \"contract workers\" in the former GDR",
                 "cardImage": "/images/brotherland/brotherland_small.jpg",
+                "cardImagePosition": "10% 10%",
                 "date": "2023-06",
                 "source": {
                     "alt": "brotherland on github.com",
                     "href": "https://github.com/cptSwing/brotherland"
                 },
+                "stack": ["parcel", "posthtml", "tailwindcss"],
+                "clients": [
+                    {
+                        "svgUrl": "/svg/Amadeu_Antonio_Logo.svg",
+                        "abbreviation": "DW",
+                        "name": "Amadeu Antonio Stiftung"
+                    }
+                ],
+                "liveViews": [
+                    {
+                        "url": "https://www.brotherland.info",
+                        "title": "Brotherland",
+                        "description": ""
+                    }
+                ],
                 "showcases": [
                     {
                         "caption": "Start",
@@ -212,45 +257,73 @@
                     },
                     {
                         "showcaseIndex": 0,
-                        "text": "The site's ['virtual exhibits'](https://www.brotherland.info/html/virtual-exhibits/ve2.html) are inspired by the actual exhibit's various placards, while the large archive of [playable interviews](https://www.brotherland.info/html/interviews/intrvw_dhn01.html) and their transcriptions are linked to via QR code at actual exhibitions, and independantly browsable online.\n\nShort [biographies](https://www.brotherland.info/html/bio.html) of the interviewees round things off. Since the website is to be used as a companion the the photo exhibit (the aforementioned QR links to audio), it is mobile ready."
+                        "text": "The site's ['virtual exhibits'](https://www.brotherland.info/html/virtual-exhibits/ve2.html) are inspired by the actual exhibit's various placards, while the large archive of [playable interviews](https://www.brotherland.info/html/interviews/intrvw_dhn01.html) and their transcriptions are linked to via QR code at actual exhibitions, and independantly browsable online.\n\nShort [biographies](https://www.brotherland.info/html/bio.html) of the interviewees round things off. Since the website is to be used as a companion the the photo exhibit (the aforementioned QR links to audio), it is mobile ready.\n\nSince the exhibit has been hosted in countries all over Europe, language can be switched between English and German."
                     },
                     {
                         "showcaseIndex": 1,
-                        "text": "Since the tech stack was entirely up to me, and I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - relying heavily on css transforms in this case.\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nThe full code can be seen here on the [github repo](https://github.com/cptSwing/brotherland)."
-                    }
-                ],
-                "stack": ["parcel", "posthtml", "tailwindcss"],
-                "clients": [
-                    {
-                        "svgUrl": "/svg/Amadeu_Antonio_Logo.svg",
-                        "abbreviation": "DW",
-                        "name": "Amadeu Antonio Stiftung"
-                    },
-                    {
-                        "abbreviation": "DW",
-                        "name": "Deutsche Welle"
-                    },
-                    {
-                        "abbreviation": "DW",
-                        "name": "Deutsche Welle"
+                        "text": "The tech stack was entirely up to me, and since I felt react might be a bit too much, I went with [parcel](https://parceljs.org/) as bundler, and built some posthtml templates using [posthtml-expressions](https://github.com/posthtml/posthtml-expressions) and [posthtml-include](https://github.com/posthtml/posthtml-include).\n\nGetting Martina's layout ideas to work as well as possible at wildly varying screen resolutions was a challenge, one that would have been lots harder without [tailwind CSS](https://tailwindcss.com/) and its many preset classes - I am relying heavily on css transforms in this case.\n\nThe gallery library is [simplelightbox](https://github.com/andreknieriem/simplelightbox). \n\nCheck out the source code in the [github repo](https://github.com/cptSwing/brotherland)."
                     }
                 ]
             },
             {
                 "id": 4,
-                "title": "Scrollmersives",
+                "title": "Scrollmersive",
                 "subTitle": "Scroll through 3D experiences",
                 "cardImage": "/images/scrollmersives/scrollmersives_featured.jpg",
                 "date": "2022",
                 "stack": ["three.js", "3ds Max"],
+                "clients": [
+                    {
+                        "svgUrl": "/svg/Deutsche_Welle_Logo.svg",
+                        "abbreviation": "DW",
+                        "name": "Deutsche Welle"
+                    },
+                    {
+                        "svgUrl": "/svg/stoebich_logo.svg",
+                        "abbreviation": "",
+                        "name": "Stöbich"
+                    }
+                ],
+                "liveViews": [
+                    {
+                        "url": "https://som-stoebich.vrgmnts.net",
+                        "title": "Stöbich Fire Protection Solutions",
+                        "description": ""
+                    },
+                    {
+                        "url": "https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/",
+                        "title": "Tagesspiegel - Der BER",
+                        "description": ""
+                    },
+                    {
+                        "url": "https://3d.zdf.de/experiences/scooter/",
+                        "title": "Scooter Prototype",
+                        "description": "(hosted on zdf.de)"
+                    }
+                ],
                 "showcases": [
                     {
-                        "caption": "electric scooter, early proof of concept",
+                        "caption": "Prototype",
                         "imgUrl": "/images/scrollmersives/scooter.jpg"
+                    },
+                    {
+                        "caption": "Electric scooter, early proof of concept",
+                        "imgUrl": "/images/scrollmersives/scooter.gif",
+                        "hasThumbnail": false
                     },
                     {
                         "caption": "Deutsche Welle - Uighur Sham Trials",
                         "imgUrl": "/images/scrollmersives/dw_sham_trials.jpg"
+                    },
+                    {
+                        "caption": "Deutsche Welle - Uighur Sham Trials",
+                        "imgUrl": "/images/scrollmersives/uighurs.gif",
+                        "hasThumbnail": false
+                    },
+                    {
+                        "caption": "Tagesspiegel BER",
+                        "imgUrl": "/images/scrollmersives/tsp_03.jpg",
+                        "hasThumbnail": false
                     },
                     {
                         "caption": "Erstwhile Website for scrollmersive.com",
@@ -261,71 +334,113 @@
                         "imgUrl": "/images/scrollmersives/stoebich.jpg"
                     },
                     {
+                        "caption": "Deutsche Welle - Uighur Sham Trials",
+                        "imgUrl": "/images/scrollmersives/dw_03.jpg",
+                        "hasThumbnail": false
+                    },
+                    {
                         "caption": "Tagesspiegel BER",
                         "imgUrl": "/images/ber/ber_security.jpg"
+                    },
+                    {
+                        "caption": "Another - weird! - prototype animation",
+                        "imgUrl": "/images/scrollmersives/potato.gif",
+                        "hasThumbnail": false
+                    },
+                    {
+                        "caption": "First draft of a dedicated product page",
+                        "imgUrl": "/images/scrollmersives/scrollmersive_first_draft.png",
+                        "hasThumbnail": false
                     }
                 ],
                 "textBlocks": [
                     {
-                        "text": "[Scrollmersive](https://www.scrollmersive.com/) - developed by Vragments - tells stories via scroll-driven animations of 3d objects. These could be as simple as a rotating 3d mesh, or as complex as the camera following a path through a full 3d scene. While scrolling, animations in the 3d environment can be triggered, as well as further information presented via html cards."
-                    },
-                    {
-                        "showcaseIndex": 0,
-                        "text": "I handled a lot of the coding work on the very first [iterations of Scrollmersive](https://3d.zdf.de/experiences/scooter/) - amusingly, this version is still hosted at zdf.de as they were testing the product early on - as well as this 3d model of an electric scooter. The prototype was put together using vanilla [threeJS](https://www.threejs.org), leveraging the CSS2DRenderer for in-scene information-cards. There was a brief foray into using [babylonJS](https://www.babylonjs.com/) instead, but familiarity with threeJS won out in the end."
+                        "text": "[Scrollmersive (archived link)](https://web.archive.org/web/20250208004340/https://www.scrollmersive.com/) - developed by Vragments GmbH - tells stories via scroll-driven animations of 3d objects.\n\nThese could be as simple as a rotating 3d mesh, or as complex as the camera following a path through a full 3d scene.\n\nWhile scrolling, animations in the 3d environment can be triggered, as well as further information presented via html cards."
                     },
                     {
                         "showcaseIndex": 1,
-                        "text": "Later, I would transition more towards building the 3d content as projects came in.\n[Deutsche Welle](https://www.dw.com) commissioned Vragments to build [this 3d experience about Uyghur labor camps](https://www.scrollmersive.com/experiences/dw-uighur-sham-trials/) in China, here we worked closely with DW journalists and used provided satellite images and photos to recreate the scenery (due to small budget and little time as 'greybox' models only).\n\nLOTS of 3d work in very little time was done for the award-winning Vragments-[Tagesspiegel](https://www.tagesspiegel.de/) cooperation [\"Der BER im 3D-Modell\"](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/). Do check out the post I wrote about that particular project [here!](/1/6)"
+                        "text": "I handled a lot of the coding work on the [first iterations](https://3d.zdf.de/experiences/scooter/) of Scrollmersive (amusingly, this version is still hosted at zdf.de as they were testing the product early on)\n\nThe prototype was put together using vanilla [threeJS](https://www.threejs.org), leveraging it's CSS2DRenderer for in-scene information-cards.\n\nThere was a brief foray into using [babylonJS](https://www.babylonjs.com/) instead, but familiarity with threeJS won out in the end."
                     },
                     {
                         "showcaseIndex": 2,
-                        "text": "While never really widely used commercially since Vragments pivoted away from Scrollmersive, among other advertising content, I also created this [version of an advertising SPA](https://www.scrollmersive.com/) featuring an animated flightpath of a paper airplane down the page, moving to the front of some elements, and behind other elements during it's flight. The site was built using vanilla javascript and *threeJs*, as well as *tailwindcss*."
+                        "text": "Later, I would transition more towards building the 3d content as projects came in.\n\n[Deutsche Welle](https://www.dw.com) commissioned Vragments to build a 3d experience about Uyghur labor camps in China.\n\nWe worked closely with DW journalists and used provided satellite images and photos to recreate the scenery, and implemented a narrated camera path."
                     },
                     {
                         "showcaseIndex": 3,
-                        "text": "More recently, we were able to reuse a lot of the airport-related 3d content from the aforementioned Tagesspiegel application to showcase [Stöbich Fire Protection Solutions](https://som-stoebich.vrgmnts.net/), where I would do some more actual coding - setting up further animation triggers and shaders for highlighting (hidden) meshes and working on an automatic timeline with chapters and varying animation speeds - but also creating some simple animations in 3D Studio Max. I was moved off of this project after a while though, so the final version seen in the above link was completed by others."
+                        "text": "Due to a small budget and little time, we experimented with 'greybox' models, baked shadows, and simple posed characters to underscore DW's reporting.\n\n(Unfortunately, the surviving [version on Wayback Machine](https://web.archive.org/web/20240221094741/https://www.scrollmersive.com/experiences/dw-uighur-sham-trials/) is not working correctly)"
+                    },
+                    {
+                        "showcaseIndex": 4,
+                        "text": "LOTS of 3d work in very little time was done for the award-winning Vragments-[Tagesspiegel](https://www.tagesspiegel.de/) cooperation [\"Der BER im 3D-Modell\"](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/).\n\nI spent lots of time in 3D Studio Max on this, but also had the opportunity to add some custom material code to the codebase.\n\nDo check out the post I wrote about that particular project [here!](/1/6)"
+                    },
+                    {
+                        "showcaseIndex": 5,
+                        "text": "Vragments has since pivoted away from Scrollmersive, but among other advertising content, I also created this (now archived & broken) [advertising SPA](https://web.archive.org/web/20230604065219/https://www.scrollmersive.com/) featuring an animated flightpath of a paper airplane down the page.\n\nIt would move to the front of some elements, and behind other elements during it's flight.\n\nThe site was again built using vanilla javascript and *threeJs*, as well as *tailwindcss*."
+                    },
+                    {
+                        "showcaseIndex": 6,
+                        "text": "More recently, we were able to reuse a lot of the airport-related 3d content from the aforementioned Tagesspiegel application to showcase [Stöbich Fire Protection Solutions](https://som-stoebich.vrgmnts.net/).\n\nHere I would do some more actual coding, setting up further animation triggers and shaders for highlighting (hidden) meshes, and working on an automatic timeline with chapters and varying animation speeds.\n\nI also created some simple animations in 3D Studio Max.\nI was moved off of this project after a while though, so the final version seen in the above link was completed by others."
                     }
                 ]
             },
             {
                 "id": 5,
-                "title": "Side Projects",
-                "cardImage": "/images/projects/platecalc_mob.jpg",
-                "subTitle": "Plates-Calculator, etc etc",
+                "title": "plateCalc PWA",
+                "cardImage": "/images/plateCalc/plateCalc_card.jpg",
+                "subTitle": "Calculate weightplates for lifting",
                 "date": "2024-09-12",
+                "stack": ["react"],
+                "source": {
+                    "alt": "plateCalc on github.com",
+                    "href": "https://github.com/cptSwing/plateCalc"
+                },
+                "liveViews": [
+                    {
+                        "url": "https://www.jbrandenburg.de/bundles/plateCalc",
+                        "title": "plateCalc PWA",
+                        "description": ""
+                    }
+                ],
                 "showcases": [
                     {
                         "caption": "plateCalc mobile",
-                        "imgUrl": "/images/projects/platecalc_mob.jpg"
-                    },
-                    {
-                        "caption": "triplanar shader for threeJs",
-                        "imgUrl": "/images/updates/log_triplanar.jpg"
-                    },
-                    {
-                        "caption": "shooty bang-bang, developed in one rookie-week",
-                        "imgUrl": "/images/projects/shooter_menu.jpg"
+                        "imgUrl": "/images/plateCalc/platecalc_mob.jpg",
+                        "hasThumbnail": false
                     },
                     {
                         "caption": "plateCalc desktop",
-                        "imgUrl": "/images/projects/platecalc_desktop.jpg"
+                        "imgUrl": "/images/plateCalc/platecalc_desktop.jpg",
+                        "hasThumbnail": false
                     }
                 ],
                 "textBlocks": [
                     {
-                        "text": "While I've written macroscripts - or the occasional shader code - for apps such as 3DS Max or Substance Designer ever since I started using them in earnest (and hopefully I'll get to posting some of the more useful snippets here in the near future), this post should feature more recent side projects."
-                    },
+                        "text": "I was too lazy to keep doing additions in my head, and since my gym app does not have this functionality, I built it myself.\n\nBasically, it tells me how many weight plates of X kilograms to load on each side of a barbell (or a dumbbell, or..) in order to hit a target weight. It is what it is, but it's saved me quite some time.\n\nUsing chrome, it can be installed as a PWA on desktop or mobile as well.\n\nFeel free to [clone the repo](https://github.com/cptSwing/plateCalc), and I have it running [here](https://www.jbrandenburg.de/bundles/plateCalc), you can install it right away."
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "title": "TriplanarMapping",
+                "cardImage": "/images/triplanar/log_triplanar.jpg",
+                "subTitle": "A material for three.js",
+                "date": "2024-02-12",
+                "stack": ["three.js", "react-three-fiber", "react-three-drei"],
+                "source": {
+                    "alt": "three-triplanarmapping on github.com",
+                    "href": "https://github.com/cptSwing/three-triplanarmapping"
+                },
+                "liveViews": [
                     {
-                        "showcaseIndex": 0,
-                        "text": "Plate-Calculator: I was too lazy to keep doing additions in my head, and since my gym app does not have this functionality, I built it myself.\n\nBasically, it tells me how many weight plates of X kilograms to load on each side of a barbell (or a dumbbell, or..) in order to hit a target weight. It is what it is, and it's saved me quite some time. Using chrome, it can be installed as a PWA on desktop or mobile as well. \n\nFeel free to [clone the repo](https://github.com/cptSwing/plateCalc)\n\n, and I have it running [here](https://www.jbrandenburg.de/bundles/plateCalc)."
-                    },
+                        "url": "https://www.jbrandenburg.de/bundles/triplanar",
+                        "title": "three-triplanarmapping test scene",
+                        "description": ""
+                    }
+                ],
+                "showcases": [],
+                "textBlocks": [
                     {
-                        "showcaseIndex": 1,
-                        "text": "Seeing as there is no triplanar mapping material supporting normal maps to be found anywhere, I had previously thrown together a buggier version for [Ring Configurator](https://www.jbrandenburg.de/0/0) but navigating the multiple differences between existing solutions for other engines, and threeJs was tough (left- vs righthandedness, world- vs objectspace, do I really need to recompute the tangent/binormal/normal matrix?).\nSo I sat down and tried again from scratch.\nI wrote a little more about it [here](https://www.jbrandenburg.de/3/18)"
-                    },
-                    {
-                        "showcaseIndex": 2,
-                        "text": "On one hand I was too embarrassed to actually look at this project's code, on the other hand I was quite fond of the oldschool pixellated look of it's menus - This was my final project at SPICED full-stack bootcamp, completed in a week at the end of the program (early 2019). It was also my first encounter with threeJS, so it holds a special place in my heart. Pro forma, it even uses express in the background!\nI spent a good two or three vanity-days working on the fighter models in 3DS MAX before I actually got started on code, which in turn led to a couple of nights with less-than-optimal sleep phases, but alas."
+                        "text": "Seeing as there is no triplanar mapping material for three.js which supports normal maps, I had previously thrown together a simpler version for [Ring Configurator](https://www.jbrandenburg.de/0/0).\nTriplanar mapping is a technique to display textures on a model, disregarding it's texture coordinates. In effect, it can be used to quickly prototype models, or texture models according to the model's coordinate axes (ie top/bottom, left/right).\n\nSo I sat down again and started from scratch.\n\n For now, this uses [CustomShaderMaterial](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial) to extend a THREE.MeshStandardMaterial. It supports basecolors, normal maps, and roughness maps for now, and is currently object-space only.\n\nI'd love to build a world space shader sometime soon, but first I would like to get rid of the CSM dependency and move towards a v1 release.\n\nCheck out the source [here](https://github.com/cptSwing/three-triplanarmapping), and a test scene (built with react-three-fiber, still very unoptimized) [here](https://www.jbrandenburg.de/bundles/triplanar)"
                     }
                 ]
             }
@@ -339,9 +454,29 @@
             {
                 "id": 5,
                 "title": "Groundwater AR App",
-                "subTitle": "Learn about the water cycle & the ground below our feet",
+                "subTitle": "Learn about Groundwater and the Water Table",
                 "cardImage": "/images/dwc/dwc_featured.jpg",
-                "date": "2022-11-03",
+                "date": "2023-02-03",
+                "clients": [
+                    {
+                        "svgUrl": "/svg/KWB-Logo.svg",
+                        "abbreviation": "",
+                        "name": "Kompetenzzentrum Wasser Berlin"
+                    },
+                    {
+                        "svgUrl": "/svg/bwb-logo-farbig.svg",
+                        "abbreviation": "",
+                        "name": "Berliner Wasserbetriebe"
+                    }
+                ],
+                "stack": ["3ds Max", "Unity Engine"],
+                "liveViews": [
+                    {
+                        "url": "https://apps.apple.com/de/app/grundwasser-sichtbar-machen/id1537443189",
+                        "title": "Grundwasser sichtbar machen (Apple Appstore)",
+                        "description": "(Version from '22, might be delisted)"
+                    }
+                ],
                 "showcases": [
                     {
                         "youtubeUrl": "https://www.youtube.com/embed/4FmyfmdA9nk?start=30&end=62&autoplay=0&mute=1"
@@ -375,38 +510,73 @@
                         "imgUrl": "/images/dwc/layers.jpg"
                     },
                     {
+                        "caption": "Screenshot from the App store #1",
+                        "imgUrl": "/images/dwc/dwc_scenario_overview.jpeg",
+
+                        "hasThumbnail": false
+                    },
+                    {
+                        "caption": "Screenshot from the App store #2",
+                        "imgUrl": "/images/dwc/dwc_grundwasserstand.jpeg",
+                        "hasThumbnail": false
+                    },
+                    {
                         "caption": "Look-Dev 1",
                         "imgUrl": "/images/dwc/diorama.jpg"
                     },
                     {
                         "caption": "Look-Dev 2",
                         "imgUrl": "/images/dwc/diorama_round.jpg"
+                    },
+                    {
+                        "caption": "Testing shaders for peering below ground in AR",
+                        "imgUrl": "/images/dwc/dwc_augmented-reality-preview.jpg",
+                        "hasThumbnail": false
+                    },
+                    {
+                        "caption": "UI Mockup for a Well-Management App",
+                        "imgUrl": "/images/dwc/dwc_well_mockup.png",
+                        "hasThumbnail": false
                     }
                 ],
                 "textBlocks": [
                     {
-                        "text": "As part of EU-funded project [Digital Water City](http://www.digital-water.city/), Vragments worked with [Berliner Wasserbetriebe](https://www.bwb.de/) on a prototype of an app for [managing wells](https://www.digital-water.city/solution/mobile-application-for-asset-management-of-drinking-water-wells/), where I provided a few UI mockups. More importantly, again working with BWB, as well as [Kompetenzzentrum Wasser](https://kompetenz-wasser.de) and [Ecologic](https://www.ecologic.eu/de/16524), we built an [educational AR app](https://www.digital-water.city/solution/augmented-reality-ar-mobile-application-for-groundwater-visualization/) to inform about groundwater and the water table in Berlin."
+                        "text": "As part of EU-funded project [Digital Water City](http://www.digital-water.city/), Vragments worked with [Berliner Wasserbetriebe](https://www.bwb.de/) on a prototype of an Ipad app for [managing wells](https://www.digital-water.city/solution/mobile-application-for-asset-management-of-drinking-water-wells/), where I provided a few UI mockups.\n\nMore importantly, working again with Berliner Wasserbetriebe as well as [Kompetenzzentrum Wasser](https://kompetenz-wasser.de) and [Ecologic](https://www.ecologic.eu/de/16524), we built an [educational AR app](https://www.digital-water.city/solution/augmented-reality-ar-mobile-application-for-groundwater-visualization/) to inform about the groundwater, water filtration, and the water table in Berlin."
                     },
                     {
                         "showcaseIndex": 0,
-                        "text": "After a certain period of prototyping, we decided on an AR experience built in [Unity](https://unity.com/products/unity-engine), split into two segments: At first, the user'd be able to place a model of Berlin's geological layers via AR and step through these, as well as learn about the geology's history and groundwater's underground currents. Then, several scenarios could be activated, where slices of terrain - usually centered around water purification plants or groundwater wells - could be placed via AR, and concepts such as filtration of water at Wannsee lake and such were presented in narrated animations.\n\nThe youtube video by BWB gives some insight, the iOS app can be [downloaded here](https://apps.apple.com/us/app/grundwasser-sichtbar-machen/id1537443189)."
+                        "text": "After a certain period of prototyping, we decided on an AR experience built in [Unity](https://unity.com/products/unity-engine), split into two segments: At first, the user'd be able to place a model of Berlin's geological layers via AR and step through these, as well as learn about the geology's history and groundwater's underground currents.\n\nThen, several scenarios could be activated, where slices of terrain - usually centered around water purification plants or groundwater wells - could be placed via AR, and concepts such as filtration of water at the shore of lake Wannsee and others were presented in narrated animations.\nGetting these right required close collaboration with BWB and KWB experts.\n\nThe [Youtube video](https://www.youtube.com/watch?v=4FmyfmdA9nk&t=30s) by Berliner Wasserbetriebe gives some further insight.\nSince the [App store link](https://apps.apple.com/de/app/grundwasser-sichtbar-machen/id1537443189) might not be working anymore, here's a [mirrored version](https://apprecs.com/ios/1537443189/grundwasser-sichtbar-machen) that adds more context."
                     },
                     {
                         "showcaseIndex": 1,
-                        "text": "In this project I was responsible for anything graphics related. I developed shaders in Unity, created animation timelines, cooked up a complicated render pipeline in order to be able to meld on-screen meshes and postprocessing effects with the video stream coming in from the devices' camera.\nI also spent an insane amount of time in 3D Studio Max, editing the very heavy and hard to work with models of Berlin's geology, simplifying them for perfomance reasons, and turning non solid layers into fully watertight (ha!) meshes, ironing out a lot of bugs along the way. Back in Unity, I worked on particle effects for water currents, and tied these together with the cartooney models we had decided on for the more detailed scenerios."
+                        "text": "In this project I was responsible for anything graphics related.\nI developed shaders in Unity, created animation timelines, cooked up a complicated render pipeline to be able to fuse on-screen meshes and postprocessing effects with the video stream coming in from the devices' camera.\n\nI also spent an insane amount of time in 3D Studio Max, editing the very heavy and hard-to-work-with models of Berlin's geology, simplifying them for perfomance reasons, and turning non solid layers into solid geometry, ironing out a lot of bugs along the way.\n\nBack in Unity, I worked on particle effects for water currents, and tied these together with the cartooney models we had decided on for the more detailed scenerios."
                     },
                     {
                         "showcaseIndex": 2,
-                        "text": "In conclusion, a rewarding project. Not much in the way of coding, but I got to touch nearly all other aspects of developing a realtime application or game.\nApparently it is still in use with educators at BWB, which is nice to know - check out the gallery for more information."
+                        "text": "In conclusion, a rewarding project. Not much in the way of coding, but I got to touch nearly all other aspects of developing a realtime application or game.\n\nApparently it is still in use with educators at Berliner Wasserbetriebe, which is nice to know - check out the gallery below for more."
                     }
                 ]
             },
             {
                 "id": 6,
                 "title": "BER Airport (Tagespiegel)",
-                "subTitle": "Interactive fly-through of BER airport - and its problems",
+                "subTitle": "Interactive fly-through of BER airport's problems",
                 "cardImage": "/images/ber/ber_featured.jpg",
                 "date": "2021-09-18",
+                "stack": ["three.js", "3ds Max"],
+                "liveViews": [
+                    {
+                        "url": "https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/",
+                        "title": "3D-Besuch des Berliner Pannenflughafens BER"
+                    }
+                ],
+                "clients": [
+                    {
+                        "svgUrl": "/svg/Tagesspiegel-Logo.svg",
+                        "abbreviation": "",
+                        "name": "Tagesspiegel"
+                    }
+                ],
                 "showcases": [
                     {
                         "caption": "\"Entrauchungsanlage\"",
@@ -435,71 +605,85 @@
                 ],
                 "textBlocks": [
                     {
-                        "text": "A cooperation between Vragments and Tagesspiegel, this project won us the [\"Medienpreis Luft-](https://www.medienpreis-luft-und-raumfahrt.de/preisverleihung-2021/) [und Raumfahrt\"](https://www.tagesspiegel.de/gesellschaft/medien/der-ber-im-3d-modell-tagesspiegel-gewinnt-medienpreis-luft-und-raumfahrt-2021-5126083.html). Hendrik Lehmann and the team at Tagesspiegel also went on to win the [\"Deutsche Reporterpreis\" (Multimedia)](https://x.com/reporterforum/status/1467950400250732549).\n\nTagespiegel [hosts the experience here](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/), do check it out. We are still quite proud of it."
+                        "text": "A cooperation between Vragments and Tagesspiegel, this project won us the [\"Medienpreis Luft-](https://www.medienpreis-luft-und-raumfahrt.de/preisverleihung-2021/) [und Raumfahrt\"](https://www.tagesspiegel.de/gesellschaft/medien/der-ber-im-3d-modell-tagesspiegel-gewinnt-medienpreis-luft-und-raumfahrt-2021-5126083.html).\nHendrik Lehmann and the team at Tagesspiegel also went on to win the [\"Deutsche Reporterpreis\" (Multimedia)](https://x.com/reporterforum/status/1467950400250732549).\n\nA fast-paced project and a leap forward for scrollable-info-app Scrollmersive (I worked on, and wrote about it [here](http://www.jbrandenburg.de/0/4)), this project combined Tagesspiegel's journalism with Vragment's coding and 3d-modelling knowledge.\n\nTagespiegel [hosts the experience here](https://interaktiv.tagesspiegel.de/lab/flughafen-ber-in-3d/), do check it out. We are still quite proud of it."
                     },
                     {
                         "showcaseIndex": 0,
-                        "text": "On scroll, the camera follows a path along various stations in the airport, pausing and presenting information on construction faults or other complications that had made the airport a lot more expensive than planned, and had lengthened construction by many years. Integrating with the team at Tagesspiegel happened on several levels: Design and code would be required to link up with the journalists regularly to keep tight control of the storyline, while integration into the hosting environment at [tagesspiegel.de](https://www.tagesspiegel.de) would have to be accomplished in parallel."
+                        "text": "On scroll, the camera follows a path along various stations in the airport, pausing and presenting information on construction faults or other complications that had made the airport a lot more expensive than planned, and had lengthened construction by many years.\n\nIntegration with the team at Tagesspiegel happened on several levels:\nDesign and code would be required to link up with the journalists regularly to keep tight control of the storyline.\n\nIntegration into the hosting environment at [tagesspiegel.de](https://www.tagesspiegel.de) was accomplished in parallel."
                     },
                     {
                         "showcaseIndex": 1,
-                        "text": "A fast-paced project and a leap forward for scrollable-info-app [Scrollmersive](http://www.jbrandenburg.de/0/4), this project combined Tagesspiegel's journalism with Vragment's coding and 3d-modelling knowledge.\n\nMy focus would lie nearly exclusively on getting the 3d model of the BER into threeJS at acceptable frame rates, creating some keyframe animations and working on mesh highlights, as well as finding a suitable 'greybox' style to give the airport some visual texture (while not having to spend the time to give each and every element unique detail - which could distract from the story's narrative as well)."
+                        "text": "\n\nMy focus would lie nearly exclusively on getting the 3d model of the BER into three.js at acceptable frame rates, creating some keyframe animations and working on mesh highlighting to support the narrative.\n\nI opted for a \"greybox\" style with statically baked shadows with some lightly colored areas, to give the airport model visual texture (while not having to spend the time to give each and every element unique detail - which could distract from the story's narrative as well)."
                     },
                     {
                         "showcaseIndex": 2,
-                        "text": "While a rougher version of the 3d model already existed, created for a joint VR project between Vragments and [Lorenz Matzat](https://web.archive.org/web/20160325040004/http://vrjournalist.de/ber-vr-entwicklertagebuch-seltsame-kopfbewegungen/) (I had built it as a freelancer a long time ago, from OSM maps and a ton of of reference photos, many even collected personally by the team on guided tours of the yet unopened airport), in order to run well and look good in a browser window, lots of extra work was necessary.\nLogically, some parts of the mesh had to be reorganized differently, texture assignments changed for threeJS, scene-wide UV's created for lightmapping (before threeJS really had lightmapping as a consideration), as well some extra things built for aforementioned animations or more detailed looks at the various failing parts of the airport."
+                        "text": "A much rougher version of the 3d model already existed, created for a joint VR project between Vragments and [Lorenz Matzat](https://web.archive.org/web/20160325040004/http://vrjournalist.de/ber-vr-entwicklertagebuch-seltsame-kopfbewegungen/). I had built this model as a freelancer a long time ago, from OSM maps and a ton of of reference photos - many even collected personally by the team on guided tours of the yet unopened airport.\n\nIn order to run well and look good in a browser window, however, lots of extra work was necessary.\n\nParts of the model had to be reorganized, texture assignments changed for three.js, scene-wide UV's created for lightmapping, as well some extra things for the aforementioned animations, or other more detailed looks at the various failing parts of the airport."
                     },
                     {
                         "showcaseIndex": 3,
-                        "text": "To lock down the visual style, we decided quickly to move away from a 'realistic' look and went with threeJs's completely unlit MeshBasicMaterial's for most surfaces. The whole scene was UV-mapped to two large textures, and - in many iterations - I baked shadowmaps as well as some others from within 3D Studio Max. Layered together, these would give depth to the surfaces, defining crevices and highlighting edges. Muted colors were added via another layer, or multiplied via exported vertex colors.\nSome surfaces did use lit shading, most notably the glass areas, as well as some metals (airplane models, for instance). This iterative process, with a close eye on texture size and performance (repeating/mirroring texture detail as much as possible, cutting extra geometry into meshes in order to use areas of the already baked texture, etc) constituted a large amount of the time I spent on the project."
+                        "text": "As touched upon above, we quickly decided to move away from a 'realistic' look and went with three.js's completely unlit MeshBasicMaterial for most surfaces.\n\nThe whole scene was UV-mapped to two large textures, and I baked shadow-maps and others - in many iterations - from within 3D Studio Max.\nLayered together, these would give depth to the surfaces, defining crevices and highlighting edges.\n\nMuted colors were added via another layer, or multiplied via exported vertex colors.\nSome surfaces did use lit shading, most notably the glass areas, as well as some metals (airplane models, for instance).\n\nThis iterative process, with a close eye on texture size and performance (repeating/mirroring texture detail as much as possible, cutting extra geometry into meshes in order to use areas of the already baked texture, etc) constituted a large amount of the time I spent on the project."
                     }
                 ]
             },
             {
                 "id": 7,
-                "title": "StasiVR (Deutschlandfunk)",
-                "subTitle": "Experiencing Stasi interrogations with VR",
+                "title": "StasiVR App",
+                "subTitle": "Experience Stasi interrogations through VR",
                 "cardImage": "/images/stasi/stasi_featured_image.jpg",
+                "cardImagePosition": "right",
                 "date": "2017",
+                "stack": ["Unity Engine", "3ds Max"],
+                "clients": [
+                    {
+                        "svgUrl": "/svg/Deutschlandfunk_Kultur_Logo.svg",
+                        "abbreviation": "",
+                        "name": "Deutschlandfunk Kultur"
+                    }
+                ],
                 "showcases": [
                     {
                         "youtubeUrl": "https://www.youtube.com/watch?v=1zk0nEt0ma8"
                     },
                     {
-                        "caption": "stast 1k",
+                        "caption": "Interrogation room, Unity screenshot",
                         "imgUrl": "/images/stasi/stasi_1.jpg"
                     },
                     {
-                        "caption": "2 2 2 2",
+                        "caption": "Interrogation room, Unity screenshot",
                         "imgUrl": "/images/stasi/stasi_2.jpg"
                     },
                     {
-                        "caption": "STASI 3",
+                        "caption": "Interrogation room, Unity screenshot",
                         "imgUrl": "/images/stasi/stasi_3.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Unity Editor",
                         "imgUrl": "/images/stasi/stasi_4.jpg"
                     },
                     {
-                        "caption": "ksdkjsdk",
+                        "caption": "Interrogation room, Unity screenshot",
                         "imgUrl": "/images/stasi/stasi_5.jpg"
+                    },
+                    {
+                        "caption": "VR screenshot",
+                        "imgUrl": "/images/stasi/stasivr-screenshot-t-850x540-crop.jpg",
+                        "hasThumbnail": false
                     }
                 ],
                 "textBlocks": [
                     {
-                        "text": "StasiVR is another VR app for [Cardboard](https://vr.google.com/cardboard), built by [Vragments](http://www.vragments.com) and myself (3D content) for [Deutschlandfunk Kultur](https://www.deutschlandfunkkultur.de/), working together with Jana Wuttke, a [radio journalist](https://www.deutschlandfunkkultur.de/verhoere-als-virtual-reality-ein-ganz-andere-form-von-100.html). It places the user in an authentically recreated Stasi interrogation room, playing actual recordings of interrogations and at times injecting necessary journalistic context."
+                        "text": "StasiVR is another VR app for [Google Cardboard](https://vr.google.com/cardboard), built by [Vragments](http://www.vragments.com) and myself for [Deutschlandfunk Kultur](https://www.deutschlandfunkkultur.de/).\n\nWe worked closely with Jana Wuttke, a [radio journalist](https://www.deutschlandfunkkultur.de/verhoere-als-virtual-reality-ein-ganz-andere-form-von-100.html).\n\nThe app places the user in an authentic Stasi interrogation room, playing actual recordings of interrogations, and at times injecting necessary journalistic context.\n\nUnfortunately, all app store links (Apple and Android) are long dead, but I hear the Android version can still be found on dodgy APK download sites."
                     },
                     {
                         "showcaseIndex": 5,
-                        "text": "Using dozens of photographs from the Stasi museum in Berlin, as well as results from Jana's research, I faithfully recreated the interrogation room, within the usual constraints one encounters when developing for mobile VR.\n\nEven so, the clear-cut and smaller scope allowed for some effects, such as the still-smoldering cigarette, as well as a post-processing effect to visually separate the two people in the room from the surroundings.\n\nMost of objects seen are uniquely unwrapped - and sparsely textured, for a \"muted\" look.\n\nWe brought everything together in the Unity game engine, which also provided a fairly easy way of deploying to mobile."
+                        "text": "Using dozens of photographs from the Stasi museum in Berlin as well as results from Jana's research, I faithfully recreated the interrogation room, within the usual constraints one encounters when developing for mobile VR.\n\nEven so, the clear-cut and smaller scope allowed for some visual effects, such as the still-smoldering cigarette, as well as a post-processing effect to visually separate the two people in the room from the surroundings.\n\nMost of objects in the scene are uniquely unwrapped and sparsely textured, for a \"muted\" look.\n\nWe brought everything together in the Unity game engine, which also provided a fairly easy way of deploying to mobile."
                     },
                     {
                         "showcaseIndex": 0,
-                        "text": "While Deutschlandfunk's blog seems to have been taken offline at some point, the minisite for the project can be still be accessed [here (web archive)](https://web.archive.org/web/20231101111232/http://blogs.deutschlandradiokultur.de/stasiverhoer/).\nSurprisingly, the embedded video on the archive site does still work and gives a good first impression.\n\nEmbedded next to this text is a very short teaser of an unfinished version."
+                        "text": "While Deutschlandfunk's blog seems to have been taken offline at some point, the minisite for the project can be still be accessed [here (Web archive)](https://web.archive.org/web/20231101111232/http://blogs.deutschlandradiokultur.de/stasiverhoer/).\n\nSurprisingly, the embedded video on the archive site does still work and gives a good first impression.\n\nEmbedded next to this text is a very short teaser of an unfinished version."
                     },
                     {
-                        "text": "Time and budget constraints meant that this project couldn't be developed into a more comprehensive app detailing the Stasi's interrogation methods, but teaching staff apparently still use it to this day.\n\nFor the project this VR app was a part of, Jana Wuttke and her colleague Martin Hartwig were nominated for the [\"Deutscher Radiopreis\"](http://www.deutscher-radiopreis.de/radiopreis/gala_2017/nominierte/Nominiert-in-der-Kategorie-Beste-Innovation,innovation136.html) (2017, \"Best innovation\"), and received the [\"Crossmediapreis\" 2018](https://web.archive.org/web/20221006030907/https://www.bremische-landesmedienanstalt.de/media-news/crossmediapreis-2018-unsere-preistraeger) from radio bremen.\n\n And here's another review by Deutschlandfunk: [Stasi-Verhör zum Nachempfinden](https://www.deutschlandfunk.de/virtual-reality-stasi-verhoer-zum-nachempfinden-100.html)"
+                        "text": "Time and budget constraints meant that this project couldn't be developed into a more comprehensive app detailing the Stasi's interrogation methods, but teaching staff apparently still use it to this day.\n\nFor the project this VR app was a part of, Jana Wuttke and her colleague Martin Hartwig received the [\"Crossmediapreis\" 2018](https://web.archive.org/web/20221006030907/https://www.bremische-landesmedienanstalt.de/media-news/crossmediapreis-2018-unsere-preistraeger) from radio bremen, and were nominated for the [\"Deutscher Radiopreis\"](http://www.deutscher-radiopreis.de/radiopreis/gala_2017/nominierte/Nominiert-in-der-Kategorie-Beste-Innovation,innovation136.html) (2017, \"Best innovation\").\n\nHere is another review by Deutschlandfunk: [Stasi-Verhör zum Nachempfinden](https://www.deutschlandfunk.de/virtual-reality-stasi-verhoer-zum-nachempfinden-100.html)."
                     }
                 ]
             },
@@ -508,6 +692,27 @@
                 "title": "A 100 (RBB)",
                 "subTitle": "A 360° & VR experience for rbb|24 news",
                 "cardImage": "/images/a100/a100_featured_image.jpg",
+                "cardImagePosition": "50% 100%",
+                "stack": ["Unity Engine", "3ds Max"],
+                "liveViews": [
+                    {
+                        "url": "https://www.rbb24.de/politik/beitrag/2022/03/a100vr-web.html",
+                        "title": "17. Bauabschnitt der A100 in VR",
+                        "description": "Browser version"
+                    },
+                    {
+                        "url": "https://apps.apple.com/de/app/a100-vr/id1134883353",
+                        "title": "A100 VR, Apple App Store",
+                        "description": ""
+                    }
+                ],
+                "clients": [
+                    {
+                        "svgUrl": "/svg/Rbb24_Logo.svg",
+                        "abbreviation": "",
+                        "name": "RBB 24"
+                    }
+                ],
                 "date": "2016-06-20",
                 "showcases": [
                     {
@@ -530,11 +735,11 @@
                 ],
                 "textBlocks": [
                     {
-                        "text": "A mobile VR project about the continuing construction of the A-100 highway in and around Berlin, this time for [Rundfunk Berlin Brandenburg](http://www.rbb-online.de) and [Lorenz Matzat](https://www.datenjournalist.de/), as well as [Vragments](http://www.vragments.com). Funding was also provided by [MIZ Babelsberg](https://www.miz-babelsberg.de/foerderung/allgemeines.html). It combined interviews, videos, and 360- as well as 3d content."
+                        "text": "A mobile VR project about the continuing construction of the A-100 highway in and around Berlin, combining interviews, videos, and 360- as well as 3d content.\n\nCreated for [Rundfunk Berlin Brandenburg](http://www.rbb-online.de) and [Lorenz Matzat](https://www.datenjournalist.de/), as well as [Vragments](http://www.vragments.com).\n\nFunding was also provided by [MIZ Babelsberg](https://www.miz-babelsberg.de/foerderung/allgemeines.html)."
                     },
                     {
                         "showcaseIndex": 0,
-                        "text": "While working with the regular restrictions for mobile VR ten years ago, there were additional challenges in displaying the tunnel under the existing 3d model of the city, splicing 2d sketches into 360 panoramic images, to name just a few.\n\nStill, it was a very enjoyable project to be a part of."
+                        "text": "While working within the regular restrictions for mobile VR ten years ago, there were additional challenges like displaying the tunnel under the existing 3d model of the city, or splicing 2d sketches into 360 panoramic images.\n\nStill, it was a very enjoyable project to be a part of, and collaborating with journalists is always fun."
                     },
                     {
                         "showcaseIndex": 1,
@@ -545,19 +750,34 @@
             {
                 "id": 9,
                 "title": "U Stadtmitte (VR)",
-                "subTitle": "Featured at \"Lange Nacht der Wissenschaften\"",
+                "subTitle": "VR App at \"Lange Nacht der Wissenschaften\"",
                 "cardImage": "/images/stadtmitte/usm_featured_image.jpg",
+                "cardImagePosition": "85% 50%",
                 "date": "2016",
                 "stack": ["Unity Engine", "3ds Max", "Substance Designer"],
                 "source": {
-                    "href": "https://github.com/VRagments/StadtmitteVR"
+                    "href": "https://github.com/VRagments/StadtmitteVR",
+                    "alt": "StadmitteVR (Github)"
                 },
+                "clients": [
+                    {
+                        "svgUrl": "/svg/TechnologieStiftung-Logo.svg",
+                        "abbreviation": "",
+                        "name": "Technologiestiftung Berlin"
+                    },
+                    {
+                        "svgUrl": "/svg/BVG-Logo.svg",
+                        "abbreviation": "",
+                        "name": "BVG"
+                    }
+                ],
+
                 "showcases": [
                     {
                         "imgUrl": "/images/stadtmitte/usm_7.jpg"
                     },
                     {
-                        "youtubeUrl": "https://www.youtube.com/watch?v=_FiuSNyn1QM"
+                        "youtubeUrl": "https://www.youtube.com/embed/_FiuSNyn1QM?autoplay=0&mute=1"
                     },
                     {
                         "imgUrl": "/images/stadtmitte/usm_3.jpg"
@@ -566,27 +786,34 @@
                         "imgUrl": "/images/stadtmitte/usm_4.jpg"
                     },
                     {
+                        "imgUrl": "/images/stadtmitte/usm_2.jpg"
+                    },
+                    {
                         "imgUrl": "/images/stadtmitte/usm_6.jpg"
                     }
                 ],
                 "textBlocks": [
                     {
-                        "text": "[Technologiestiftung Berlin](https://www.technologiestiftung-berlin.de/), [BVG](http://www.bvg.de), [Vragments](http://www.vragments.com) and myself as freelancer built a mobile VR game for [Google Cardboards](https://vr.google.com/cardboard/). It was first presented at [Lange Nacht der Wissenschaften](https://www.technologiestiftung-berlin.de/profil/blog/virtuell-durch-die-lange-nacht)."
+                        "text": "[Technologiestiftung Berlin](https://www.technologiestiftung-berlin.de/), [BVG](http://www.bvg.de), [Vragments](http://www.vragments.com) and myself as freelancer built a mobile VR game for [Google Cardboards](https://vr.google.com/cardboard/).\n\nIt was first presented at [Lange Nacht der Wissenschaften](https://www.technologiestiftung-berlin.de/profil/blog/virtuell-durch-die-lange-nacht), and was built with the Unity game engine and 3d Studio Max."
                     },
                     {
                         "showcaseIndex": 0,
-                        "text": "Despite being a smaller project, it had some interesting challenges and restrictions.\n\nI enjoyed being able to build the U-Bahn station \"Stadtmitte\" from BVG's original plans, for instance.\nThe combination of purely mobile platforms and VR imposed some very strict - and fun - limits on texture and geometry budgets. \n\nVR applications render the 3d content twice, from slightly different perspectives, once for each eye. Additionally, framerates seem more important than usual as low or choppy FPS can cause vertigo or motion sickness."
+                        "text": "Despite being a smaller project, it had some interesting challenges and restrictions.\n\nI very much enjoyed being able to build the U-Bahn station \"Stadtmitte\" from BVG's original plans, for instance.\n\nThe combination of purely mobile platforms and VR imposed some very strict - and fun - limits on texture and geometry budgets.\nVR applications render the 3d content twice, from slightly different perspectives, once for each eye.\nAdditionally, framerates are more important than usual as low or choppy FPS can cause vertigo or motion sickness."
                     },
                     {
                         "showcaseIndex": 1,
-                        "text": "Lighting and shadows were almost exlusively static/baked, with carefully edited lightmaps to give the best resolution at spots that deserved it.\nMost every surface you see is a tiling texture, with painstakingly adjusted texture atlasses to keep down texture fetches.\nStill, we got away with PBR lighting - and the inclusion of normal mapping in select parts of the map allowed for some local fine detail.\n\n Vragments published the source [here](https://github.com/VRagments/StadtmitteVR), I am afraid it's long gone from any app stores. The App was built with the Unity game engine, and the 3d content using 3d Studio Max."
+                        "text": "Lighting and shadows were almost exlusively static/baked, with carefully edited lightmaps to give the best resolution at spots that most deserved it.\n\nMost every surface you see is a tiling texture, with painstakingly adjusted texture atlasses to keep down texture fetches.\n\nHence, we got away with physically-based lighting - and the inclusion of normal maps in select parts of the map allowed for some local fine detail.\n\n Vragments published the source [here](https://github.com/VRagments/StadtmitteVR), I am afraid it's long gone from any app stores."
                     }
                 ]
             },
             {
                 "id": 10,
                 "date": "2014",
+                "title": "Emergency 5",
+                "cardImage": "/images/em5/em5_equipments_featured_image.jpg",
+                "cardImagePosition": "50% 85%",
                 "showcases": [
+                    { "youtubeUrl": "https://www.youtube.com/embed/_KfDgpmfT0g?autoplay=0&mute=1" },
                     {
                         "caption": "Civilian Equipment 1",
                         "imgUrl": "/images/em5/em5_civilian_equipment_01.jpg"
@@ -648,20 +875,31 @@
                         "imgUrl": "/images/em5/hang_glider_01.jpg"
                     }
                 ],
-                "subTitle": "Some 3D assets I created while working on strategy game \"Emergency 5\"",
-                "textBlocks": [
+                "subTitle": "Assets for RTS game \"Emergency 5\"",
+                "stack": ["3ds Max"],
+                "clients": [
                     {
-                        "text": "While I did a little work on one or two other titles during my time at [Promotion Software / Sixteen Tons Entertainment](https://www.sixteen-tons.de/), the bulk of my time was dedicated to real time strategy game [\"Emergency 5\"](https://www.youtube.com/watch?v=_KfDgpmfT0g).\n\nThe following gallery showcases a couple of the models I created for this title. Apart from modelling/texturing, I was tasked with reviewing and finalising models recieved by outsourced 3d modelers, integrating cutscene animations, among a host of other things. Admittedly a very work-intensive period in my life, but working in our small, tight-knit art-team was rewarding nonetheless."
+                        "svgUrl": "/svg/sixteen-tons-logo.svg",
+                        "abbreviation": "",
+                        "name": "Sixteen Tons"
                     }
                 ],
-                "title": "Emergency 5",
-                "cardImage": "/images/em5/em5_equipments_featured_image.jpg"
+                "textBlocks": [
+                    {
+                        "text": "While I did a little work on one or two other titles during my time at [Promotion Software / Sixteen Tons Entertainment](https://www.sixteen-tons.de/), the bulk of my time was dedicated to real-time-strategy game [\"Emergency 5\" (credits)](https://www.mobygames.com/game/95782/emergency-5/credits/windows).\n\nAdmittedly a very work-intensive period in my life, but working in our small, tight-knit art-team was rewarding nonetheless."
+                    },
+                    {
+                        "showcaseIndex": 0,
+                        "text": "Apart from modelling/texturing, I was tasked with reviewing and finalising models recieved by outsourced 3d modelers, creating and integrating cutscene animations, even some light team management.\n\nAs the team was moving to a new 3D engine, us in the art department were in constant touch with the graphics programmers, providing feedback and collaborating on features.\n\nThe following gallery showcases a couple of the models I created for this title."
+                    }
+                ]
             },
             {
                 "id": 11,
-                "title": "Personal 3D Projects",
+                "title": "Personal Design Projects",
                 "subTitle": "Where WIP's come to die",
                 "cardImage": "/images/personal3d/satellite_featured_image.jpg",
+                "cardImagePosition": "50% 75%",
                 "date": "2016-05-12",
                 "showcases": [
                     {
@@ -767,19 +1005,21 @@
                 ],
                 "textBlocks": [
                     {
-                        "text": "A collection of personal 3D projects I've taken on in my free time over the last decade or so. Some I've managed to sell a couple of times (such as this model of the iconic WW2 [Soviet Mosin Nagant rifle](https://www.cgtrader.com/3d-models/military/gun/mosin-nagant-m1891-30-pbr-and-game-ready)), some were entries in pro-bono 3D art competitions (\"The Escape\", [\"VROmega\"](https://www.youtube.com/watch?v=9FIFnqfqciw)), some part of my work for Half-Life mod [\"Fortress Forever\"](https://store.steampowered.com/app/253530/Fortress_Forever/). And some I just wanted to try my hand at or did as a favor for friends.\nMy completion rate is sorely lacking, but that's to be expected I guess..\n\nSlightly more context available when clicking through the gallery - I won't clutter this post with more unneeded text."
+                        "text": "A collection of personal 3D and illustration projects I've taken on in my free time over the last decade or so.\n\nSome were entries in pro-bono 3D art competitions (\"The Escape\", [\"VROmega\"](https://www.youtube.com/watch?v=9FIFnqfqciw)), some were part of my work for Half-Life 2 mod [\"Fortress Forever\"](https://store.steampowered.com/app/253530/Fortress_Forever/).\nSome I've even managed to sell a couple of times (such as this model of the iconic WW2 [Soviet Mosin Nagant rifle](https://www.cgtrader.com/3d-models/military/gun/mosin-nagant-m1891-30-pbr-and-game-ready)).\nAnd some I just wanted to try my hand at, or designed as a favor for friends.\n\nMy completion rate is sorely lacking, but that's to be expected I guess..\n\nSlightly more context available when clicking through the gallery - I won't clutter this post with more unneeded text."
                     }
                 ]
             },
             {
                 "id": 12,
                 "title": "Student Projects",
-                "subTitle": "Throwback to my first steps as a game artist..",
-                "cardImage": "/images/student3d/student_featured_image.jpg",
+                "subTitle": "3D Art at Games Academy",
+                "cardImage": "/images/student3d/student_featured.jpg",
+                "cardImagePosition": "bottom",
+                "stack": ["3ds Max"],
                 "date": "2012",
                 "showcases": [
                     {
-                        "youtubeUrl": "https://www.youtube.com/watch?v=3Lwo2bEqa5U"
+                        "youtubeUrl": "https://www.youtube.com/embed/3Lwo2bEqa5U?autoplay=0&mute=1"
                     },
                     {
                         "caption": "Meteör Speaker-Tower",
@@ -904,11 +1144,11 @@
                 ],
                 "textBlocks": [
                     {
-                        "text": "While studying to be a Game Artist at Games Academy (their 2-year course \"3D Art & Animation\"), I created many 3d models. Some were indidivual assignments, many were also produced while working in larger group settings working on more in-depth projects. Yeah, a school for game art... many guns.\n\nThis will be more of an image dump."
+                        "text": "While studying to be a Game Artist at Games Academy (their 2-year course \"3D Art & Animation\"), I created many 3d models. \n\nSome were indidivual assignments, many were also produced while working in larger group settings, working on more in-depth projects. A school for game art - many guns.\n\nThis will be more of an image dump."
                     },
                     {
                         "showcaseIndex": 0,
-                        "text": "METEÖR was the most successful project I worked on at Games Academy. A 2 semester group effort with rookie coders, rookie game designers, rookie artists and rookie project-managers, we made it into a [RockPaperShotgun article](https://www.rockpapershotgun.com/in-tune-with-the-audience-meteor) (wow!), and were even nominated for \"Best Game Design\" alongside some heavy hitters at the [Animago Awards 2012](https://digitaleleinwand.de/2012/10/08/wer-macht-das-rennen-um-die-digitale-ehre-die-nominierten-zum-animago-award-2012-stehen-fest/)."
+                        "text": "METEÖR was the most successful project I worked on at Games Academy.\n\nA 2 semester group effort with rookie coders, rookie game designers, rookie artists and rookie project-managers, we were introduced in a [RockPaperShotgun piece](https://www.rockpapershotgun.com/in-tune-with-the-audience-meteor), and were even nominated for \"Best Game Design\" alongside some heavy hitters at the [Animago Awards 2012](https://digitaleleinwand.de/2012/10/08/wer-macht-das-rennen-um-die-digitale-ehre-die-nominierten-zum-animago-award-2012-stehen-fest/)."
                     }
                 ]
             }

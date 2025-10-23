@@ -87,7 +87,7 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
             <main className="scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pt-[5%] scrollbar-thin sm:pr-[2%]">
                 {/* (Sub-)Header, date, "Stack" etc  */}
                 <div>
-                    <div className="my-2 flex h-auto flex-wrap items-center justify-between font-lato font-semibold leading-none tracking-tight text-theme-primary-darker *:h-4 sm:text-3xs md:text-2xs xl:text-xs">
+                    <div className="my-2 flex h-auto flex-wrap items-center justify-between font-lato font-semibold leading-none tracking-tight text-theme-primary-darker sm:text-3xs md:text-2xs xl:text-xs">
                         <GetChildSize context={GetChildSizeContext}>
                             <PostDate date={parseDateString(date ?? '')} />
                         </GetChildSize>
@@ -145,7 +145,7 @@ const PostDate: FC<{ date: { year?: string; month?: string; day?: string } }> = 
     const clipPath_Memo = useMemo(() => getHexagonalClipPath(1, containerSize, { shape: 'top-right' }), [containerSize]);
 
     return (
-        <span className="block bg-theme-primary-lighter pl-2 pr-4" style={{ clipPath: clipPath_Memo }}>
+        <span className="block h-4 bg-theme-primary-lighter pl-2 pr-4" style={{ clipPath: clipPath_Memo }}>
             {day && `${day}.`}
             {month && `${month}.`}
             {year && `${year}`}
@@ -162,7 +162,7 @@ const RemainingImages: FC<{
             return (
                 <button
                     key={imgUrl + imageIndex}
-                    className="group max-h-48 w-full transform-gpu overflow-hidden shadow-md shadow-theme-primary-darker/10 transition-[transform,box-shadow] duration-75 hover-active:scale-[1.01] hover-active:shadow-theme-primary-darker/20 hover-active:brightness-110"
+                    className="group max-h-48 w-full transform-gpu overflow-hidden transition-transform duration-75 hover-active:scale-[1.01] hover-active:brightness-110"
                     onClick={handleClick}
                 >
                     <img src={hasThumbnail === false ? imgUrl : constructThumbnailUrl(imgUrl)} alt={caption} className="object-cover" />
