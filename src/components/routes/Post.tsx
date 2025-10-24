@@ -1,9 +1,9 @@
 import { CSSProperties, FC, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import Lightbox, { SlideImage } from 'yet-another-react-lightbox';
 import { Captions, Counter } from 'yet-another-react-lightbox/plugins';
-import 'yet-another-react-lightbox/styles.css';
-import 'yet-another-react-lightbox/plugins/captions.css';
-import 'yet-another-react-lightbox/plugins/counter.css';
+// import 'yet-another-react-lightbox/styles.css';
+// import 'yet-another-react-lightbox/plugins/captions.css';
+// import 'yet-another-react-lightbox/plugins/counter.css';
 import { parseDateString } from 'cpts-javascript-utilities';
 import { Post_Showcase_Image, Post as Post_T } from '../../types/types';
 import { getHexagonalClipPath } from '../../lib/shapeFunctions';

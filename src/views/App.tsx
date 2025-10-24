@@ -12,6 +12,7 @@ import { useBreakpoint } from '../hooks/useBreakPoint';
 import HexagonTiles from '../components/HexagonTiles';
 import useUpdateTheme from '../hooks/useUpdateTheme';
 import useSetHistoryRouter from '../hooks/useSetHistoryRouter';
+import '../styles/style_main.css';
 
 const store_setBreakpoint = useZustand.getState().methods.store_setBreakpoint;
 

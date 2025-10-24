@@ -3,8 +3,6 @@ import { FC, useMemo, useState } from 'react';
 import { database } from '../types/exportTyped';
 import { Link, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
-import { bars_totalDuration } from '../lib/animationValues.ts';
-import Settings from './Settings.tsx';
 import { classNames } from 'cpts-javascript-utilities';
 import { createPortal } from 'react-dom';
 
@@ -38,8 +36,6 @@ const Titles = () => {
                 createPortal(
                     <div className="absolute left-2/3 top-0">
                         <div>about yadda yadda</div>
-
-                        <Settings />
                     </div>,
                     document.getElementById('clip-shape-main')!,
                 )}
@@ -65,7 +61,7 @@ const CategoryTitle: FC<{
             animationFillMode: 'backwards',
             animationIterationCount: 1,
         },
-        startDelay: bars_totalDuration / 2,
+        startDelay: 250,
         displayAtStart: false,
     });
 

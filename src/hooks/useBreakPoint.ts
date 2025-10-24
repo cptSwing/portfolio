@@ -4,6 +4,7 @@ import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
+// @ts-expect-error tailwind config typing
 const config = resolveConfig(tailwindConfig);
 const {
     theme: { screens },
