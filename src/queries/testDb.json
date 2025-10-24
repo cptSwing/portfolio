@@ -1160,26 +1160,52 @@
         "categoryBlurb": "In other news..",
         "posts": [
             {
-                "id": 18,
-                "date": "2024-12-03",
-                "textBlocks": [
+                "id": 19,
+                "date": "2025-06-16",
+                "title": "Hovrboards!",
+                "subTitle": "Messing with an online shop",
+                "cardImage": "/images/updates/code_hovrboards.jpg",
+                "liveViews": [
                     {
-                        "text": "I sat down once more to whip up a [triplanar](https://www.martinpalko.com/triplanar-mapping/) shader in [glsl](https://en.wikipedia.org/wiki/OpenGL_Shading_Language) for [threejs](https://threejs.org/), this one uses [CustomShaderMaterial](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial) to extend a THREE.MeshStandardMaterial. It supports basecolors, normal maps, roughness maps for now.\n\nThis one is object-space only for now, I'd love to build a world space shader sometime soon.\n\n[Check it out here](https://github.com/cptSwing/three-triplanarmapping)"
+                        "url": "https://www.jbrandenburg.de/bundles/hovrboards/index.html",
+                        "title": "Pre-Alpha bundle"
                     }
                 ],
-                "title": "Triplanar Mapping ",
-                "cardImage": "/images/updates/log_triplanar.jpg",
-                "subTitle": "Object-Space Shader for threeJs"
+                "showcases": [
+                    {
+                        "caption": "Ornament switch, color select",
+                        "imgUrl": "/images/updates/hovrboard_01.jpg",
+                        "hasThumbnail": false
+                    }
+                ],
+                "textBlocks": [
+                    {
+                        "text": "I wanted to see if a configurator with lots of optional attachments etc could work.\nI'm also experimenting with various workflows from 3DS Max to gltf to React-Three-Fiber, especially regarding vertex colors and using these as masks for coloring.\nSo I'm also editing shaders left and right..\n\nNothing is remotely finished, but I want to go back to it soon enough, a fun project.\n\nCheck it out [here](https://www.jbrandenburg.de/bundles/hovrboards/index.html)!"
+                    }
+                ]
+            },
+            {
+                "id": 18,
+                "date": "2025-07-03",
+                "title": "Javascript helpers",
+                "cardImage": "/images/updates/code_utilities.jpg",
+                "textBlocks": [
+                    {
+                        "text": "I have begun to throw together a library of functions I use regularly.\nThe first release of the \"cpts-javascript-utilities\" is up on [github](https://github.com/cptSwing/cpts-javascript-utilities), feel free to check them out.\n\nI am using them on this site as well, having added them via `\"cpts-javascript-utilities\": \"cptSwing/cpts-javascript-utilities#1.0.0\"` in my package.json. At some point I might throw them up on npm, but this works for now.\n\nI am starting to collect react hooks and components, as well as common glsl methods for similar collections in these domains, my github will be updated once in a while."
+                    }
+                ],
+
+                "subTitle": "Started a collection of JS utilities"
             },
             {
                 "id": 16,
-                "title": "Tailwind - clipInset",
-                "subTitle": "Adds TW classes for clip-path: inset()",
+                "title": "Tailwind - clipInset etc",
+                "subTitle": "TW plugin for clip-path: inset()",
                 "cardImage": "/images/updates/code_clipInset.jpg",
-                "date": "2024-09-25",
+                "date": "2025-03-25",
                 "textBlocks": [
                     {
-                        "text": "So I built a little [tailwind](https://tailwindcss.com/) plugin to add css's clip-path [(inset() only, for now)](https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/inset) to the standard classes. The initial version is [here](https://github.com/cptSwing/tailwind-css-plugins/blob/main/twClipInset.ts) - I've yet to put it through it's paces and haven't actually tried any rounding, but it's currently doing it's job on this here website, for instance! \n\n Usage is easy: `clip-inset-2`, `clip-inset-1/2` etc will clip content on all sides according to the same values as used in tailwind's `w-2` or `w-1/2` respectively (I am using the predefined 'width' values actually). \n\n`clip-inset-t` and `-r`, `-b`, `-l` clip the top, right, bottom left sides. `clip-inset-x` and `clip-inset-y` take care of horizontal and vertical sides."
+                        "text": "So at first I built a little [tailwind](https://tailwindcss.com/) plugin to add css's clip-path [(inset() only, for now)](https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/inset) to the standard classes. The initial version is [here](https://github.com/cptSwing/cpts-tailwindcss-utilities) - I've yet to put it through it's paces and haven't actually tried any rounding, but it's currently doing it's job on this here website, for instance! \n\n Usage is easy: `clip-inset-2`, `clip-inset-1/2` etc will clip content on all sides according to the same values as used in tailwind's `w-2` or `w-1/2` respectively (I am using the predefined 'width' values actually). \n\n`clip-inset-t` and `-r`, `-b`, `-l` clip the top, right, bottom left sides. `clip-inset-x` and `clip-inset-y` take care of horizontal and vertical sides.\n\nI'm now adding more plugins, there is a mask-edges available now as well, equally beta but also in production use alread ;)"
                     }
                 ]
             },
