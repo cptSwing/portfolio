@@ -32,6 +32,7 @@ import {
     FunctionalButtonRouteData,
     HexagonRouteDataTransformOffsets,
     CategoryName,
+    ZustandStore,
 } from '../types/types';
 import { getMenuButtonPosition } from './menuFunctions';
 import { useZustand } from './zustand';
@@ -614,12 +615,12 @@ export const functionalButtonElements: FunctionalButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: -9,
-                y: 205.675,
+                x: -11.25,
+                y: 203.4275,
             },
             rotation: 90,
             isHalf: false,
-            scale: 0.25,
+            scale: 0.3,
             counterRotate: false,
         },
         [ROUTE.post]: {
@@ -651,12 +652,12 @@ export const functionalButtonElements: FunctionalButtonRouteData[] = [
         },
         [ROUTE.category]: {
             position: {
-                x: 2,
-                y: 225.675,
+                x: 3.25,
+                y: 227.9225,
             },
             rotation: 90,
             isHalf: false,
-            scale: 0.25,
+            scale: 0.3,
             counterRotate: false,
         },
         [ROUTE.post]: {
@@ -746,8 +747,18 @@ export const openHamburgerButtonElement: FunctionalButtonRouteData = {
     name: 'hamburger',
     title: '',
     svgIconPath: '/svg/Bars3Outline.svg',
-    target: (ev) => {
-        store_toggleHamburgerMenu(ev ? getMenuButtonPosition(ev) : null);
+    target: (routeName, ev) => {
+        let rect: ZustandStore['values']['hamburgerMenuRect'] = null;
+        if (ev) {
+            rect = getMenuButtonPosition(ev) as NonNullable<ZustandStore['values']['hamburgerMenuRect']>;
+
+            if (routeName === ROUTE.post) {
+                const documentRect = document.body.getBoundingClientRect();
+                rect = { ...rect, x: documentRect.width / 2 - rect.width, y: documentRect.height / 2 - rect.height };
+            }
+        }
+
+        store_toggleHamburgerMenu(rect);
         store_toggleActiveHamburgerItem('DEFAULT');
     },
 };
@@ -965,7 +976,7 @@ export const markActiveHexagonElement: HexagonRouteData = {
         position: hexagonGridTransformCenter,
         rotation: 0,
         isHalf: false,
-        scale: 0.1,
+        scale: 0,
     },
     [ROUTE.category]: {
         position: hexagonGridTransformCenter,

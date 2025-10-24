@@ -47,12 +47,13 @@ const Main = () => {
             className={classNames(
                 '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
                 'relative flex aspect-hex-flat items-center justify-center text-theme-text transition-[height] scrollbar-track-transparent',
+                'after:w-scree after:fixed after:left-[-0vw] after:right-[-20vw] after:top-0 after:flex after:h-[10vh] after:translate-y-full after:rotate-[30deg] after:items-center after:justify-center after:bg-red-950 after:text-neutral-300 after:content-["Mobile_version_still_incomplete.._please_use_a_wider_screen!"] after:[font-size:calc(2.5vw)] after:sm:content-none',
                 routeName === ROUTE.home
                     ? 'h-[min(70vh,70vw)] w-auto'
                     : routeName === ROUTE.category
                       ? 'h-[min(80vh,80vw)] w-auto'
                       : // ROUTE.post // TODO expand to full height?
-                        'h-[min(95vh,90vw)] w-auto',
+                        'h-[min(95vh,80vw)] w-auto lg:h-[min(95vh,90vw)]',
             )}
             style={globalCssVariables}
         >

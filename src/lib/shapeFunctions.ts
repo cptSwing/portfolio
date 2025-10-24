@@ -6,6 +6,7 @@ import {
     HexagonRouteDataTransformOffsets,
     HexagonTransformData,
     FunctionalButtonRouteData,
+    HexagonStyleObject,
 } from '../types/types';
 import roundToDecimal from './roundToDecimal';
 import { categoryCardActive, categoryCardInactive, hexagonGridTransformCenter } from './hexagonElements';
@@ -325,7 +326,7 @@ export function calcCSSVariables(
         height: number;
     },
     options?: { gutterWidth?: number; clipStroke?: boolean; clampTo?: number },
-) {
+): HexagonStyleObject {
     const { gutterWidth = strokeWidthDefault, clipStroke, clampTo: _clampTo } = options ?? {};
 
     let { width, height } = containerSize;

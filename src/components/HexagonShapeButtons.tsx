@@ -1,5 +1,12 @@
-import { CSSProperties, FC, memo, useContext, useMemo } from 'react';
-import { CategoryLinkButtonRouteData, CategoryName, FunctionalButtonRouteData, RotateShortestDistance, TransitionTargetReached } from '../types/types';
+import { CSSProperties, FC, memo, useContext, useLayoutEffect, useMemo, useState } from 'react';
+import {
+    CategoryLinkButtonRouteData,
+    CategoryName,
+    FunctionalButtonRouteData,
+    HexagonStyleObject,
+    RotateShortestDistance,
+    TransitionTargetReached,
+} from '../types/types';
 import { useZustand } from '../lib/zustand';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +15,9 @@ import { ROUTE } from '../types/enums';
 import { GlassmorphicButton } from './GlassmorphicClipped';
 import { openHamburgerMenuButtonOffsets } from '../lib/hexagonElements';
 import { classNames } from 'cpts-javascript-utilities';
+
+const _ = ' ';
+const hexagonButtonBaseClasses = 'regular-hexagon-base regular-hexagon-transitions [--regular-hexagon-transition-random-factor:0]';
 
 export const FunctionalButton: FC<{
     buttonData: FunctionalButtonRouteData;
@@ -48,10 +58,15 @@ export const FunctionalButton: FC<{
     );
 
     function handleClick(ev?: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined) {
-        const targetResult = target(ev);
+        const targetResult = target(routeName, ev);
         targetResult && navigate(...targetResult);
     }
 });
+
+const hexagonOpenHamburgerMenuBaseClasses =
+    hexagonButtonBaseClasses +
+    _ +
+    'full-hexagon-stroke-before !pointer-events-auto [--regular-hexagon-transition-random-factor:0] before:!bg-theme-secondary/10 hover-active:scale-[calc(var(--hexagon-scale-x)*1.05)] hover-active:[--glassmorphic-backdrop-saturate:3] before:hover-active:!bg-theme-secondary/50';
 
 export const FunctionalButtonOpenHamburgerMenu: FC<{
     buttonData: FunctionalButtonRouteData;
@@ -64,38 +79,69 @@ export const FunctionalButtonOpenHamburgerMenu: FC<{
     const containerSize = useContext(GetChildSizeContext);
     const navigate = useNavigate();
 
-    const cssVariables_Memo = useMemo(() => {
+    const [classes, setClasses] = useState(hexagonOpenHamburgerMenuBaseClasses);
+    const [styles, setStyles] = useState<HexagonStyleObject>(
+        calcCSSVariables(
+            buttonData[routeName].position,
+            buttonData[routeName].rotation,
+            buttonData[routeName].scale,
+            buttonData[routeName].isHalf,
+            containerSize,
+        ),
+    );
+
+    useLayoutEffect(() => {
+        let classes = hexagonOpenHamburgerMenuBaseClasses;
         let routeTransforms;
-        if (routeName === ROUTE.home && homeMenuTransitionTarget) {
-            routeTransforms = offsetHexagonTransforms(buttonData, openHamburgerMenuButtonOffsets[homeMenuTransitionTarget])[routeName];
-        } else {
-            routeTransforms = buttonData[routeName];
+        const routeOptions: {
+            gutterWidth?: number | undefined;
+            clipStroke?: boolean | undefined;
+            clampTo?: number | undefined;
+        } = {};
+
+        switch (routeName) {
+            case ROUTE.home: {
+                classes += _ + '[--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2] [--lighting-gradient-to:theme(colors.white/0.1)]';
+                if (homeMenuTransitionTarget) {
+                    routeTransforms = offsetHexagonTransforms(buttonData, openHamburgerMenuButtonOffsets[homeMenuTransitionTarget])[routeName];
+                } else {
+                    routeTransforms = buttonData[ROUTE.home];
+                }
+                break;
+            }
+            case ROUTE.category: {
+                classes +=
+                    _ +
+                    '[--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:2] [--lighting-gradient-to:theme(colors.white/0.25)] [--hexagon-fill-color:theme(colors.theme.secondary/0.25)]';
+                routeTransforms = buttonData[ROUTE.category];
+                break;
+            }
+            case ROUTE.post: {
+                classes +=
+                    _ +
+                    ' [--lighting-gradient-to:transparent] [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)]  before:!bg-transparent after:!content-none';
+                routeTransforms = buttonData[ROUTE.post];
+                break;
+            }
         }
 
+        setClasses(classes);
         const { position, rotation, scale, isHalf } = routeTransforms;
-        return calcCSSVariables(position, rotation, scale, isHalf, containerSize);
+        const newStyle = calcCSSVariables(position, rotation, scale, isHalf, containerSize, routeOptions);
+        setStyles({
+            ...newStyle,
+            '--glassmorphic-grain-scale': 0.5 / scale,
+        });
     }, [buttonData, containerSize, homeMenuTransitionTarget, routeName]);
 
     return (
-        <button
-            className={classNames(
-                'regular-hexagon-base regular-hexagon-transitions full-hexagon-stroke-before !pointer-events-auto [--regular-hexagon-transition-random-factor:0] before:!bg-theme-secondary/10 hover-active:scale-[calc(var(--hexagon-scale-x)*1.05)] hover-active:[--glassmorphic-backdrop-saturate:3] before:hover-active:!bg-theme-secondary/50',
-                routeName === ROUTE.home
-                    ? '!to-white/10 [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2]'
-                    : routeName === ROUTE.category
-                      ? '!to-white/[0.025] [--glassmorphic-backdrop-blur:8px] [--glassmorphic-backdrop-saturate:2] [--hexagon-fill-color:theme(colors.theme.secondary/0.25)]'
-                      : // ROUTE.post
-                        '!to-transparent ![--glassmorphic-backdrop-blur:0px] ![--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)] before:!bg-transparent after:!content-none',
-            )}
-            style={cssVariables_Memo as CSSProperties}
-            onClick={handleClick}
-        >
+        <button className={classes} style={styles as CSSProperties} onClick={handleClick}>
             <MaskedButton svgIconPath={svgIconPath} counterRotate={counterRotate} />
         </button>
     );
 
     function handleClick(ev: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        const targetResult = target(ev);
+        const targetResult = target(routeName, ev);
         targetResult && navigate(...targetResult);
     }
 });

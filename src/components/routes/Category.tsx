@@ -136,13 +136,13 @@ const CategoryCardClients: FC<{ clients: NonNullable<Post['clients']> }> = ({ cl
                 <div key={idx + abbreviation + name} className="group relative flex flex-col items-center justify-start">
                     <div
                         className={classNames(
-                            'before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-theme-secondary-lighter/70 before:[clip-path:--hexagon-clip-path-full]',
+                            'before:absolute before:left-0 before:top-0 before:-z-10 before:size-full before:bg-theme-secondary-lighter/90 before:[clip-path:--hexagon-clip-path-full]',
                             'pointer-events-auto relative flex aspect-hex-flat w-[--hexagon-clip-path-width] items-center justify-center',
                             'after:absolute after:left-0 after:top-0 after:-z-10 after:size-full after:bg-theme-primary after:matrix-scale-[1.02] after:[clip-path:--hexagon-clip-path-full-wider-stroke]',
                         )}
                     >
                         {svgUrl ? (
-                            <img className="size-[60%]" alt={abbreviation} src={svgUrl} />
+                            <img className="size-[65%]" alt={abbreviation} src={svgUrl} />
                         ) : (
                             <span className="absolute left-0 right-0 top-full mx-auto flex select-none items-center justify-center rounded-2xl font-lato text-lg text-theme-text-background">
                                 {abbreviation}

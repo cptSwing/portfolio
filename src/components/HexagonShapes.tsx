@@ -3,7 +3,7 @@ import { CSSProperties, FC, memo, useContext, useLayoutEffect, useMemo, useState
 import { ROUTE } from '../types/enums';
 import { calcCSSVariables, offsetHexagonTransforms, shutterAnimationTransforms } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
-import { CategoryName, HexagonRouteData, RotateShortestDistance, TransitionTargetReached } from '../types/types';
+import { CategoryName, HexagonRouteData, HexagonStyleObject, RotateShortestDistance, TransitionTargetReached } from '../types/types';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import {
     categoryCardActive,
@@ -16,7 +16,6 @@ import {
 import { database } from '../types/exportTyped';
 
 const _ = ' ';
-
 const hexagonBaseClasses = 'regular-hexagon-base regular-hexagon-transitions regular-hexagon-center-named-class [--regular-hexagon-transition-random-factor:0]';
 
 export const Hexagon: FC<{
@@ -279,15 +278,3 @@ const categoryIndices: Partial<Record<CategoryName, number>> = {};
 categoryLinkButtonElements.forEach((routeData, index) => {
     categoryIndices[routeData.name] = index;
 });
-
-type HexagonStyleObject = {
-    '--hexagon-translate-x': string;
-    '--hexagon-translate-y': string;
-    '--hexagon-rotate': string;
-    '--hexagon-scale-x': number;
-    '--hexagon-scale-y': number;
-    '--hexagon-lighting-gradient-counter-rotation': string;
-    '--hexagon-clip-path': string;
-    '--glassmorphic-grain-scale'?: number;
-    '--regular-hexagon-transition-random-factor'?: number;
-};

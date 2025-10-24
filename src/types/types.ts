@@ -143,7 +143,7 @@ interface FunctionalButtonData extends ButtonData {
     name: FunctionalButtonName;
     title?: string;
     svgIconPath: string;
-    target: (ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => [To, NavigateOptions?] | void;
+    target: (routeName?: ROUTE, ev?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => [To, NavigateOptions?] | void;
 }
 /** A Button that executes a function (which can also return a navigatable target) */
 export interface FunctionalButtonRouteData extends ButtonRouteData, FunctionalButtonData {}
@@ -153,3 +153,15 @@ export type valueof<T> = T[keyof T];
 
 export type TransitionTargetReached = boolean;
 export type RotateShortestDistance = boolean;
+
+export type HexagonStyleObject = {
+    '--hexagon-translate-x': string;
+    '--hexagon-translate-y': string;
+    '--hexagon-rotate': string;
+    '--hexagon-scale-x': number;
+    '--hexagon-scale-y': number;
+    '--hexagon-lighting-gradient-counter-rotation': string;
+    '--hexagon-clip-path': string;
+    '--glassmorphic-grain-scale'?: number;
+    '--regular-hexagon-transition-random-factor'?: number;
+};
