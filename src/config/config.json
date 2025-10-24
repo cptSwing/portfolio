@@ -1,0 +1,15 @@
+{
+    "ui": {
+        "hexagonPaths": {
+            "gutterWidth": 0.05,
+            "scaleUp": 100,
+            "clipPathWidth": 100,
+            "clipPathHeight": 86.6
+        },
+        "carousel" : {
+            "frontScale" : 1.75,
+            "frontScaleImage": 0.7
+        },
+        "animation": { "menuTransition_Ms": 250 }
+    }
+}

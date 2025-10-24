@@ -17,7 +17,7 @@ const useDebugNotice = (debugMessage: string) => {
         return () => {
             timer && clearTimeout(timer);
         };
-    }, []);
+    }, [timer]);
 
     useEffect(() => {
         if (rootRef.current && debugMessage) {

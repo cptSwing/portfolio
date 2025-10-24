@@ -1,67 +1,68 @@
-import Content from '../components/Content';
-import LogoHeader from '../components/LogoHeader';
-import Nav from '../components/Nav';
-import { BrowserRouter, Outlet, Route, Routes, useParams } from 'react-router-dom';
-import BarWrapped from '../components/BarWrapped';
-import classNames from '../lib/classNames';
-import { useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useZustand } from '../lib/zustand';
+import { classNames } from 'cpts-javascript-utilities';
+import MenuModal from '../components/MenuModal';
+import Post from '../components/routes/Post';
+import BundleRoutes from '../components/routes/BundleRoutes';
+import NoRouteMatched from '../components/routes/NoRouteMatched';
+import useSetRouteData from '../hooks/useSetRouteData';
+import { ROUTE } from '../types/enums';
+import { globalCssVariables } from '../styles/globalCssVariables';
+import { useBreakpoint } from '../hooks/useBreakPoint';
+import HexagonTiles from '../components/HexagonTiles';
+import useUpdateTheme from '../hooks/useUpdateTheme';
+import useSetHistoryRouter from '../hooks/useSetHistoryRouter';
+import '../styles/style_main.css';
+
+const store_setBreakpoint = useZustand.getState().methods.store_setBreakpoint;
 
 const App = () => {
+    useBreakpoint(store_setBreakpoint);
+    useUpdateTheme();
+
     return (
-        <BrowserRouter>
+        <BrowserRouter
+            future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+            }}
+        >
             <Routes>
-                <Route element={<RouteOutlet />}>
-                    <Route path='/:catId?' element={<NavOutlet />}>
-                        <Route path='/:catId/:postId' element={<Content />} />
-                    </Route>
-                    <Route path='/bundles/:bundlePath' element={<BundleRoutes />} />
-                </Route>
+                <Route path="/:param_categoryId?/:param_postId?" element={<Main />} />
+                <Route path="/bundles/:bundlePath" element={<BundleRoutes />} />
+                <Route path="*" element={<NoRouteMatched />} />
             </Routes>
         </BrowserRouter>
     );
 };
 
-const NavOutlet = () => {
-    return (
-        <>
-            <Nav />
-            <Outlet />
-        </>
-    );
-};
+const Main = () => {
+    const routeName = useZustand((store) => store.values.routeData.name);
 
-const RouteOutlet = () => {
-    const { postId } = useParams();
+    useSetRouteData();
+    useSetHistoryRouter();
 
     return (
+        // TODO could replace with container queries?
         <div
             className={classNames(
-                'group/app relative mx-auto flex w-fit flex-col items-center justify-start',
-                postId
-                    ? '[--header-height:theme(spacing.10)] sm:[--header-height:theme(spacing.10)]'
-                    : '[--header-height:theme(spacing.20)] sm:[--header-height:theme(spacing.28)]',
-                '[--header-transition-duration:300ms]',
-                '[--unchecked-width:80vw] sm:[--unchecked-width:66.666667vw] md:[--unchecked-width:55vw] lg:[--unchecked-width:42.5vw] xl:[--unchecked-width:35vw]',
-                '[--checked-width:95vw] sm:[--checked-width:90vw] md:[--checked-width:80vw] lg:[--checked-width:75vw] xl:[--checked-width:60vw] 2xl:[--checked-width:50vw]',
-                '[--post-width:100vw] sm:[--post-width:90vw] md:[--post-width:80vw] lg:[--post-width:75vw] xl:[--post-width:66.666666vw]',
+                '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
+                'relative flex aspect-hex-flat items-center justify-center text-theme-text transition-[height] scrollbar-track-transparent',
+                'after:w-scree after:fixed after:left-[-0vw] after:right-[-20vw] after:top-0 after:flex after:h-[10vh] after:translate-y-full after:rotate-[30deg] after:items-center after:justify-center after:bg-red-950 after:text-neutral-300 after:content-["Mobile_version_still_incomplete.._please_use_a_wider_screen!"] after:[font-size:calc(2.5vw)] after:sm:content-none',
+                routeName === ROUTE.home
+                    ? 'h-[min(70vh,70vw)] w-auto'
+                    : routeName === ROUTE.category
+                      ? 'h-[min(80vh,80vw)] w-auto'
+                      : // ROUTE.post // TODO expand to full height?
+                        'h-[min(95vh,80vw)] w-auto lg:h-[min(95vh,90vw)]',
             )}
+            style={globalCssVariables}
         >
-            <LogoHeader />
-            <BarWrapped>
-                <Outlet />
-            </BarWrapped>
+            <Post show={routeName === ROUTE.post} />
+            <HexagonTiles />
+            <MenuModal />
         </div>
     );
-};
-
-const BundleRoutes = () => {
-    const { bundlePath } = useParams();
-
-    useEffect(() => {
-        window.location.href = `https://jbrandenburg.de/bundles/${bundlePath}/index.html`;
-    }, []);
-
-    return <h3> Redirecting.... </h3>;
 };
 
 export default App;

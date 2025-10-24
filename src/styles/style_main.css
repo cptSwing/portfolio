@@ -1,67 +1,85 @@
-@import './fonts.css';
-@import './animations.css';
+@import 'themes.css';
+@import 'fonts.css';
+@import 'animations.css';
+@import 'yet-another-react-lightbox/styles.css';
+@import 'yet-another-react-lightbox/plugins/captions.css';
+@import 'yet-another-react-lightbox/plugins/counter.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-    :root {
-        @apply [--bg-color:--theme-bg-base] [--color-bars-no-post:--theme-secondary-300] [--color-bars-post:--theme-primary-500] [--color-primary-active-cat-bg:--theme-primary-300] [--color-primary-content-bg:--theme-primary-100] [--color-primary-inactive-cat-bg:--theme-primary-600] [--color-secondary-active-cat:--theme-secondary-400] [--color-secondary-inactive-cat:--theme-secondary-600];
-        @apply bg-[--bg-color];
+    html {
+        @apply scroll-smooth;
     }
 
     a {
-        @apply text-[--theme-secondary-50] visited:text-[--theme-secondary-200] hover:underline;
+        @apply text-theme-text underline decoration-theme-text/25 visited:text-theme-secondary-darker hover-active:decoration-theme-text;
     }
 
-    h1 {
-        @apply block font-protest-riot text-6xl;
+    button,
+    [role='button'] {
+        @apply focus:outline-none focus-visible:outline-none focus-visible:brightness-125 focus-visible:invert-[25%];
     }
 
-    h2 {
-        @apply relative z-0 block font-dm-serif font-semibold [font-size:1.75rem] [line-height:2.125rem] sm:text-5xl;
-    }
-
-    h3 {
-        @apply block font-besley text-xl sm:text-2xl;
-    }
-
-    h4 {
-        @apply block font-besley text-xl;
-    }
-
-    h5 {
-        @apply relative z-0 inline px-1 pb-0.5 font-barlow italic leading-none text-[--theme-secondary-600] underline underline-offset-2;
+    dialog {
+        @apply max-h-full max-w-full;
     }
 }
 
 @layer components {
-    /* Adapted from https://css-tip.com/corner-only-border-image/ : */
-    .nav-card-corners {
-        @apply [--corner-inset-x:theme(spacing.3)] [--corner-inset-y:theme(spacing.3)] [--corner-outline-color:--theme-accent-200] [--corner-size:theme(spacing.2)] [--corner-thickness:theme(spacing[0.5])];
-        @apply [mask:conic-gradient(at_var(--corner-size)_var(--corner-size),_theme(colors.transparent)_75%,_theme(colors.black)_0)_0_0_/_calc(100%-var(--corner-size))_calc(100%-var(--corner-size))];
-        /* Cut bottom left corner: */
-        /* @apply [clip-path:polygon(0_0,_100%_0,_100%_100%,_var(--corner-inset)_100%,_0_var(--corner-inset))]; */
-        @apply absolute bottom-[--corner-inset-y] left-[--corner-inset-x] right-[--corner-inset-x] top-[--corner-inset-y] outline outline-[length:--corner-thickness] outline-offset-[calc(-1*var(--corner-thickness))] outline-[color:--corner-outline-color];
-        @apply hover:[--corner-outline-color:--theme-secondary-400];
+    .after-glassmorphic-grain {
+        @apply after:absolute after:left-0 after:top-0 after:size-full after:bg-repeat after:opacity-5 after:blur-[0px] after:[background-size:calc(300%*var(--glassmorphic-grain-scale,1))] after:[z-index:-100];
+        @apply after:[background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20150%20150%22%3E%0A%20%20%20%20%3Cfilter%20id%3D%22a%22%3E%0A%20%20%20%20%20%20%20%20%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.95%22%20numOctaves%3D%221%22%20stitchTiles%3D%22stitch%22%2F%3E%0A%20%20%20%20%3C%2Ffilter%3E%0A%20%20%20%20%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23a)%22%2F%3E%0A%3C%2Fsvg%3E%0A")];
     }
 
-    .fake-border-bg {
-        @apply [--fake-border-color:theme(colors.gray.500/50%)] [--fake-border-width-side:calc(theme(spacing.1)/2)];
-        @apply absolute -bottom-[--fake-border-width-side] -left-[--fake-border-width-side] -right-[--fake-border-width-side] -top-[--fake-border-width-side] bg-gradient-to-r from-[--fake-border-color] to-[--fake-border-color];
+    .glassmorphic-backdrop {
+        @apply backdrop-blur-[--glassmorphic-backdrop-blur,4px] backdrop-saturate-[--glassmorphic-backdrop-saturate,2];
     }
 
-    /* .link-in-content {
-        @apply after:a-svg-mask after:invisible after:-mr-1 after:mb-1 after:inline-block after:size-2 after:bg-current hover:after:visible;
-    } */
-
-    .headline-bg {
-        @apply after:absolute after:left-0 after:-z-10 after:size-full after:bg-neutral-50;
+    .before-glassmorphic-backdrop {
+        @apply before:absolute before:left-0 before:top-0 before:size-full before:backdrop-blur-[--glassmorphic-backdrop-blur,4px] before:backdrop-saturate-[--glassmorphic-backdrop-saturate,1.5];
     }
 
-    .headline-skewed-bg {
-        @apply after:absolute after:left-0 after:-z-10 after:size-full after:-skew-x-6 after:bg-neutral-50;
+    .glassmorphic-off {
+        @apply !bg-none ![backdrop-filter:_] before:!content-none after:!content-none;
+    }
+
+    .lighting-gradient {
+        @apply from-transparent via-transparent to-[--lighting-gradient-to,theme(colors.white/0.4)] [background-image:linear-gradient(var(--hexagon-lighting-gradient-counter-rotation),var(--tw-gradient-stops))];
+    }
+
+    .background-gradients {
+        background-image:
+            radial-gradient(
+                    ellipse 17.5% 12.5% at var(--background-gradient-radial-3-position),
+                    theme(colors.theme.primary/0.2) 0%,
+                    theme(colors.theme.primary-darker/0.35) 30%,
+                    transparent 100%
+                )
+                /* radial-3 */,
+            radial-gradient(
+                    ellipse 50% 70% at var(--background-gradient-radial-2-position),
+                    theme(colors.theme.root-background/0.5) 0%,
+                    theme(colors.theme.root-background/0.25) 50%
+                )
+                /* radial-2 */,
+            radial-gradient(
+                    ellipse 20% 30% at var(--background-gradient-radial-1-position),
+                    theme(colors.theme.primary-lighter/0.15) 0%,
+                    theme(colors.theme.primary/0.1) 50%,
+                    transparent 100%
+                )
+                /* radial-1 */,
+            linear-gradient(
+                var(--background-gradient-linear-angle),
+                transparent 0%,
+                theme(colors.theme.primary-darker/0.8) 20% 30%,
+                theme(colors.theme.primary-darker/0.55) 45%,
+                theme(colors.theme.primary-darker/0.25) 60% 80%,
+                transparent 100%
+            );
     }
 
     .rotate-text {
@@ -70,12 +88,6 @@
 }
 
 @layer utilities {
-    .a-svg-mask {
-        mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" /></svg>');
-        mask-repeat: no-repeat;
-        mask-position: center;
-    }
-
     .writing-mode-vert-lr {
         writing-mode: vertical-lr;
     }
@@ -92,88 +104,155 @@
         scrollbar-gutter: stable;
     }
 
-    .perspective-1000px {
-        perspective: 1000px;
+    .animation-pause {
+        animation-play-state: paused;
     }
 
-    .parallax-static {
-        transform: translateZ(var(--parallax-translateZ));
-        transform-style: preserve-3d;
-        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
+    .animation-run {
+        animation-play-state: running;
     }
 
-    .parallax-rotXY {
-        transform: translateZ(var(--parallax-translateZ)) rotate3d(1, 0, 0, var(--parallax-rotateX)) rotate3d(0, 1, 0, var(--parallax-rotateY));
-        transform-style: preserve-3d;
-        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
+    .backface-hidden {
+        backface-visibility: hidden;
     }
 
-    .parallax-rotX {
-        transform: translateZ(var(--parallax-translateZ)) rotate3d(1, 0, 0, var(--parallax-rotateX));
-        transform-style: preserve-3d;
-        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
+    .backface-visible {
+        backface-visibility: visible;
     }
 
-    .parallax-rotY {
-        transform: translateZ(var(--parallax-translateZ)) rotate3d(0, 1, 0, var(--parallax-rotateY));
-        transform-style: preserve-3d;
-        transition: transform 1.5s cubic-bezier(0.05, 0.5, 0, 1);
+    .container-size {
+        container-type: size;
     }
 
-    .z-top {
-        z-index: 5000;
+    .container-inline-size {
+        container-type: inline-size;
     }
 
-    .text-stroke-outer:before {
-        content: '';
-        position: absolute;
-        display: block;
-        left: 0;
-        top: 0;
-        -webkit-text-stroke-width: 16px;
-        -webkit-text-stroke-color: theme(colors.red.300);
-        z-index: -1;
+    .container-normal {
+        container-type: normal;
+    }
+
+    .transform-3d {
+        transform: translate3d(var(--tw-translate-x), var(--tw-translate-y), var(--tw-translate-z, 0)) rotateX(var(--tw-rotate-x, 0))
+            rotateY(var(--tw-rotate-y, 0)) rotateZ(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
+            scaleY(var(--tw-scale-y));
+    }
+
+    .transform-hexagon {
+        @apply !transform-3d translate-x-[--hexagon-translate-x] translate-y-[--hexagon-translate-y] rotate-[--hexagon-rotate] scale-x-[--hexagon-scale-x] scale-y-[--hexagon-scale-y];
     }
 }
 
 #root {
-    @apply w-full overflow-hidden text-left font-barlow text-[--theme-text] scrollbar-track-transparent scrollbar-thumb-neutral-50;
+    @apply background-gradients flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather;
+    @apply [--hexagon-fill-color:theme(colors.theme.primary/0.05)] [--hexagon-inner-shadow-color:theme(colors.white/0.1)] [--hexagon-stroke-color:theme(colors.theme.secondary/0.1)];
+    animation-name: animate-linear, animate-radial-1, animate-radial-2, animate-radial-3;
+    animation-duration: 50s, 60s, 15s, 120s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
-/* 
-.nav-unchecked-width {
-    @apply w-[75dvw] sm:w-[66.666667dvw] md:w-[50dvw] lg:w-[33.333333dvw] xl:w-[25dvw];
+@property --background-gradient-radial-1-position {
+    syntax: '<percentage>+';
+    inherits: false;
+    initial-value: 70% 65%;
 }
 
-.nav-checked-width {
-    @apply w-[95dvw] sm:w-[90dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[45dvw];
-} */
-/* 
-.post-width {
-    @apply w-[95dvw] sm:w-[90dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[66.666666dvw];
-} */
-
-/* Conditional Classes */
-
-.mrkdwn > p {
-    @apply mb-4 last:mb-0 sm:mb-6;
+@property --background-gradient-radial-2-position {
+    syntax: '<percentage>+';
+    inherits: false;
+    initial-value: 30% 35%;
 }
-/* 
-.mrkdwn > p > a {
-    @apply link-in-content;
-} */
 
-.mrkdwn > h5 {
-    @apply headline-skewed-bg;
+@property --background-gradient-radial-3-position {
+    syntax: '<percentage>+';
+    inherits: false;
+    initial-value: 50% 50%;
+}
+
+@property --background-gradient-linear-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 210deg;
+}
+
+@property --hexagon-inner-shadow-color {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: red;
+}
+
+@property --hexagon-fill-color {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: green;
+}
+
+@property --hexagon-stroke-color {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: blue;
+}
+
+@property --hexagon-lighting-gradient-counter-rotation {
+    syntax: '<angle>';
+    inherits: true;
+    initial-value: 0deg;
+}
+
+@property --menu-bar-mask-marker-position-x {
+    syntax: '<length>';
+    initial-value: 0px;
+    inherits: true;
+}
+
+.regular-hexagon-base {
+    @apply glassmorphic-backdrop lighting-gradient transform-hexagon after-glassmorphic-grain pointer-events-none absolute aspect-hex-flat w-[--hexagon-clip-path-width] origin-center bg-[--hexagon-fill-color] [clip-path:--hexagon-clip-path];
+}
+
+.regular-hexagon-transitions {
+    @apply transition-[transform,--hexagon-fill-color,--hexagon-lighting-gradient-counter-rotation,clip-path,backdrop-filter] delay-[calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_calc(var(--ui-animation-menu-transition-duration)*var(--regular-hexagon-transition-random-factor)),_0ms] duration-[calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_calc(var(--ui-animation-menu-transition-duration)*(var(--regular-hexagon-transition-random-factor)+1)),_var(--ui-animation-menu-transition-duration),_var(--ui-animation-menu-transition-duration)];
+}
+
+.full-hexagon-stroke-before {
+    @apply before:absolute before:top-0 before:left-0 before:bg-[--hexagon-fill-color] before:hover-active:bg-theme-secondary/50 before:origin-center  before:transition-[background-color] before:duration-75 before:size-full before:[clip-path:--hexagon-clip-path-full-wider-stroke] before:z-10;
+}
+
+.before-menu-bar-dimensions {
+    --menu-bar-dimensions-width: 30cqw;
+    --menu-bar-dimensions-height: 14cqh;
+    --menu-bar-dimensions-left: calc((100cqw - var(--menu-bar-dimensions-width)) / 2);
+    --menu-bar-dimensions-top: calc(100cqh - var(--menu-bar-dimensions-height) - 2cqh);
+}
+
+.before\:nav-test-masks::before {
+    --menu-bar-hexagon-1: url("data:image/svg+xml,%3csvg viewBox='0 0 182 201' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M.3 65.486c0-9.196 6.687-20.063 14.211-25.078l61.86-35.946c8.36-5.016 20.899-5.016 29.258 0l61.86 35.946c8.36 5.015 14.211 15.882 14.211 25.078v71.055c0 9.196-6.687 20.063-14.211 25.079l-61.86 35.945c-8.36 4.18-20.899 4.18-29.258 0L14.51 161.62C6.151 157.44.3 145.737.3 136.54V65.486Z' fill='white' fill-opacity='1' fill-rule='nonzero'/%3e%3c/svg%3e");
+
+    --menu-bar-mask-hexagon-1-width: 11cqh;
+    --menu-bar-mask-hexagon-2-width: 13cqh;
+
+    mask-image: var(--menu-bar-hexagon-1), linear-gradient(transparent 0 40%, rgba(255, 255, 255, 0.6) 0 60%, transparent 0 100%), var(--menu-bar-hexagon-1);
+
+    mask-composite: exclude, add;
+
+    mask-position:
+        calc(var(--menu-bar-mask-marker-position-x) - var(--menu-bar-mask-hexagon-1-width) / 2)
+            calc(var(--menu-bar-mask-marker-position-y) - var(--menu-bar-mask-hexagon-1-width) / 2),
+        0 0,
+        calc(var(--menu-bar-mask-marker-position-x) - var(--menu-bar-mask-hexagon-2-width) / 2)
+            calc(var(--menu-bar-mask-marker-position-y) - var(--menu-bar-mask-hexagon-2-width) / 2);
+
+    mask-size:
+        var(--menu-bar-mask-hexagon-1-width) var(--menu-bar-mask-hexagon-1-width),
+        auto,
+        var(--menu-bar-mask-hexagon-2-width) var(--menu-bar-mask-hexagon-2-width);
+
+    mask-repeat: no-repeat;
+    mask-mode: luminance;
 }
 
 /* SVG Filters */
 
-.shadow-inner-svg {
-    filter: url(src/assets/filters.svg#shadow2);
-}
-
 .bloom-svg {
-    /* filter: saturate(200%) url(src/assets/filters.svg#bloom-svg-filter); */
-    @apply [filter:saturate(200%)_url(src/assets/filters.svg#bloom-svg-filter)];
+    @apply [filter:saturate(200%)_url(/svg/filters.svg#bloom-svg-filter)];
 }

@@ -2,8 +2,9 @@ import { CSSProperties, useCallback, useRef, useState } from 'react';
 
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config.ts';
-import { removeCssProperties, setCssProperties } from '../lib/cssProperties.ts';
+import { removeCssProperties, setCssProperties } from 'cpts-javascript-utilities';
 
+// @ts-expect-error tailwind config typing
 const themeTransitionTiming = resolveConfig(tailwindConfig).theme.transitionTimingFunction;
 
 export type AnimationProperties = Record<string, string | number | null>;

@@ -10,10 +10,10 @@ const useOutsideClick = (callback: () => void) => {
             }
         };
 
-        document.addEventListener('click', handleClick, true);
+        document.addEventListener('click', handleClick, { capture: true });
 
         return () => {
-            document.removeEventListener('click', handleClick, true);
+            document.removeEventListener('click', handleClick, { capture: true });
         };
     }, [ref, callback]);
 

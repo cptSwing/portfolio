@@ -11,9 +11,9 @@ export const usePrevious = <T>(val: T): T | undefined => {
 
 /* https://www.developerway.com/posts/implementing-advanced-use-previous-hook#part3 */
 
-export const usePreviousPersistent = <T>(val: T): T | undefined | null => {
+export const usePreviousPersistent = <T>(val: T): T | null => {
     // initialise the ref with previous and current values
-    const ref = useRef<{ val: T | undefined | null; prev: T | undefined | null }>({
+    const ref = useRef<{ val: T; prev: T | null }>({
         val,
         prev: null,
     });

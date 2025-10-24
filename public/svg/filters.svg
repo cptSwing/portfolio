@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="0" width="0" style="position:absolute;margin-left: -100%;">
+    <filter id="bloom-svg-filter" x="-5%" y="-5%" width="110%" height="110%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3" edgeMode="wrap" result="blurResult" />
+
+        <feBlend in="blurResult" in2="SourceGraphic" mode="screen" result="final" />
+        <feMerge result="merge">
+            <feMergeNode in="SourceGraphic" />
+            <feMergeNode in="final" />
+        </feMerge>
+    </filter>
+
+    <filter id="bloom-svg-filter-double-blend" x="-5%" y="-5%" width="110%" height="110%">
+
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1" edgeMode="wrap" result="blurResult1" />
+        <feGaussianBlur in="blurResult1" stdDeviation="1" edgeMode="wrap" result="blurResult2" />
+
+        <feBlend in="blurResult1" in2="blurResult2" mode="screen" result="blendedBlurs" />
+        <feBlend in="SourceGraphic" in2="blendedBlurs" mode="screen" result="final" />
+
+        <feMerge result="merge">
+            <feMergeNode in="SourceGraphic" />
+            <feMergeNode in="final" />
+        </feMerge>
+    </filter>
+
+    <filter id="shadow2" color-interpolation-filters="sRGB">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="black" flood-opacity="1" />
+        <feComponentTransfer>
+            <feFuncA type="linear" slope="2" intercept="0.1"/>
+        </feComponentTransfer>
+
+    </filter>
+
+    <!-- x="0" y="0"  -->
+    <!-- <filter id='pixelate' x='0' y='0' >
+
+        <!-- x='4' y='4' height='1' width='1' -->
+    <feFlood x='4' y='4' height='10' width='10'/>
+
+    <!-- width="10" height="10" -->
+    <feComposite id='composite1' width='10' height='10' />
+
+    <feTile result='a' />
+    <feComposite in='SourceGraphic' in2='a' operator='in' />
+
+    <!-- operator="dilate" radius="5" -->
+    <feMorphology id='morphology' operator='dilate' radius='1'  />
+</filter> -->
+</svg>
