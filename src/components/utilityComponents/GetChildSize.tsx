@@ -1,4 +1,4 @@
-import { Children, Context, FC, ReactElement, useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { Children, Context, FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { getChildSizeContextDefaultValue } from '../../contexts/GetChildSizeContext';
 import useResizeObserver from '../../hooks/useResizeObserver';
 
@@ -26,7 +26,7 @@ const GetChildSize: FC<{ children: ReactElement; context: Context<{ width: numbe
     const [size, setSize] = useState<{ width: number; height: number }>();
     const rect = useResizeObserver(element);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (rect) {
             const { width, height } = rect;
 

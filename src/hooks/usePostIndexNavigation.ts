@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
-import { useLayoutEffect } from 'react';
 import { usePrevious } from './usePrevious';
 import isNumber from '../lib/isNumber';
+import { useEffect } from 'react';
 
 const usePostIndexNavigation = (isActive = true) => {
     const postIndex = useZustand((store) => store.values.postIndex);
@@ -11,7 +11,7 @@ const usePostIndexNavigation = (isActive = true) => {
     const navigate = useNavigate();
     const previousPostIndex = usePrevious(postIndex);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (isActive) {
             if (category && post && isNumber(postIndex)) {
                 if (postIndex !== previousPostIndex) {

@@ -1,7 +1,7 @@
-import { useLayoutEffect } from 'react';
 import useMouseWheelDirection from './useMouseWheelDirection';
 import { useZustand } from '../lib/zustand';
 import { usePrevious } from './usePrevious';
+import { useEffect } from 'react';
 
 const store_setPostIndexAndTransitionTrue = useZustand.getState().methods.store_setPostIndexAndTransitionTrue;
 
@@ -11,7 +11,7 @@ const useSwitchCategoryCard = (categoryId: number, isActive = false) => {
 
     const previousCategoryId = usePrevious(categoryId);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (isActive) {
             if (categoryId !== previousCategoryId && !post?.id) {
                 store_setPostIndexAndTransitionTrue(0);

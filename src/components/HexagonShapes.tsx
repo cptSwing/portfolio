@@ -1,5 +1,5 @@
 import { classNames } from 'cpts-javascript-utilities';
-import { CSSProperties, FC, memo, useContext, useLayoutEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, memo, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { ROUTE } from '../types/enums';
 import { calcCSSVariables, offsetHexagonTransforms, shutterAnimationTransforms } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
@@ -30,7 +30,7 @@ export const Hexagon: FC<{
         calcCSSVariables(data[routeName].position, data[routeName].rotation, data[routeName].scale, data[routeName].isHalf, containerSize),
     );
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         let classes = hexagonBaseClasses;
         let routeTransforms;
 
@@ -90,7 +90,7 @@ export const CenterHexagon: FC<{
         ),
     );
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         let classes = centerHexagonBaseClasses;
         let routeTransforms;
         let routeOptions: {

@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, useContext, useLayoutEffect, useMemo, useState } from 'react';
+import { CSSProperties, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
 import {
     CategoryLinkButtonRouteData,
     CategoryName,
@@ -90,7 +90,7 @@ export const FunctionalButtonOpenHamburgerMenu: FC<{
         ),
     );
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         let classes = hexagonOpenHamburgerMenuBaseClasses;
         let routeTransforms;
         const routeOptions: {

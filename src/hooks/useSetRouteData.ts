@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
-import { useLayoutEffect } from 'react';
 import { ROUTE } from '../types/enums';
 import { database } from '../types/exportTyped';
 import isNumber from '../lib/isNumber';
+import { useEffect } from 'react';
 
 const categories = Object.values(database);
 
@@ -12,7 +12,7 @@ const { store_setRouteData, store_setPostIndexAndTransitionTrue } = useZustand.g
 function useSetRouteData() {
     const { param_categoryId, param_postId } = useParams();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (param_categoryId) {
             const category = categories.find((category) => parseInt(param_categoryId) === category.id);
             if (category) {

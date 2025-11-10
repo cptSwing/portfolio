@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CATEGORY } from '../types/enums';
 import { usePrevious } from './usePrevious';
 import { cycleThrough } from 'cpts-javascript-utilities';
@@ -15,7 +15,7 @@ const useRotateDegrees = (transitionTarget: CategoryName | null, shortestDistanc
     const [rotationDegrees, setRotationDegrees] = useState(0);
     const firstTurn = rotationDegrees === 0;
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (on) {
             if (transitionTarget && transitionTarget !== previousTransitionTarget) {
                 const targetIndex = categoryNames.indexOf(transitionTarget);

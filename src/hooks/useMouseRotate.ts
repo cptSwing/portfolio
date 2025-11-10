@@ -1,8 +1,8 @@
-import { useLayoutEffect } from 'react';
 import useMouseWheelDirection from './useMouseWheelDirection';
 import { cycleThrough } from 'cpts-javascript-utilities';
 import { CATEGORY } from '../types/enums';
 import { CategoryName, RotateShortestDistance, TransitionTargetReached } from '../types/types';
+import { useEffect } from 'react';
 
 const categoryNames = Object.keys(CATEGORY).slice(3);
 
@@ -12,7 +12,7 @@ const useMouseRotate = (
 ) => {
     const { direction, resetDirection } = useMouseWheelDirection();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (on) {
             if (direction) {
                 setTransitionState((oldTransitionState) => {

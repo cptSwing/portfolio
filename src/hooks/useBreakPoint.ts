@@ -2,7 +2,7 @@
 
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useEffect, useRef, useState } from 'react';
 
 // @ts-expect-error tailwind config typing
 const config = resolveConfig(tailwindConfig);
@@ -58,7 +58,7 @@ export const useBreakpoint = (callback?: (breakpoint: BreakpointName | null) => 
         return () => lists.forEach(({ mediaQueryList }) => mediaQueryList.removeEventListener('change', onChange));
     }, []);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (callback) {
             callback(breakpoint);
         }

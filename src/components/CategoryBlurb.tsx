@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useContext, useLayoutEffect, useState } from 'react';
+import { CSSProperties, FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { categoryLinkButtonElements } from '../lib/hexagonElements';
 import { calcCSSVariables } from '../lib/shapeFunctions';
@@ -23,7 +23,7 @@ const CategoryBlurb: FC<{ show: boolean; homeMenuTransitionTarget: CategoryName 
     const [cssVariables, setCssVariables] = useState<ReturnType<typeof calcCSSVariables> | CSSProperties>();
     const [transitionFinished, setTransitionFinished] = useState(true);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (homeMenuTransitionTarget) {
             const routeTransformsBlurb = namedRouteTransforms[homeMenuTransitionTarget]?.[routeName];
             routeTransformsBlurb &&

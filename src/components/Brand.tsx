@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, useContext, useLayoutEffect, useState } from 'react';
+import { CSSProperties, FC, memo, useContext, useEffect, useState } from 'react';
 import { calcCSSVariables, offsetHexagonTransforms } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
 import { brandElement, brandElementOffsets } from '../lib/hexagonElements';
@@ -19,7 +19,7 @@ const Brand: FC<{ homeMenuTransitionState: [CategoryName | null, TransitionTarge
         ReturnType<typeof calcCSSVariables> | CSSProperties | { '--tw-clip-inset-r'?: string; '--tw-clip-inset-l'?: string }
     >();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         let routeTransformsBrand;
         if (routeName === ROUTE.home && homeMenuTransitionTarget) {
             routeTransformsBrand = offsetHexagonTransforms(brandElement, brandElementOffsets[homeMenuTransitionTarget!])[routeName];
