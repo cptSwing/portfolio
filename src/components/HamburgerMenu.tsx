@@ -17,10 +17,13 @@ const HamburgerMenu = () => {
     const refCallback = useCallback((elem: HTMLMenuElement | null) => {
         if (elem) {
             /* delaying for one tick so <div>'s transition is triggered safely after mount */
-            const timer = setTimeout(() => {
-                setCanTransition(true);
-                clearTimeout(timer);
-            }, 10);
+            const timer = requestIdleCallback(
+                () => {
+                    setCanTransition(true);
+                    cancelIdleCallback(timer);
+                },
+                { timeout: 10 },
+            );
         }
     }, []);
 
