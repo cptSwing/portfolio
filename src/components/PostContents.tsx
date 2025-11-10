@@ -42,7 +42,7 @@ const TextImageBlock: FC<{
     const isEvenIndex = blockIndex % 2 === 0;
 
     return (
-        <div className="flow-root sm:my-4 sm:text-xs md:my-8 md:text-sm">
+        <div className="my-3 flow-root text-sm sm:text-xs md:my-8 md:text-sm">
             {isFirst && cardImage ? (
                 <CardImageClipped cardImage={cardImage} cardImagePosition={cardImagePosition} />
             ) : showcase ? (
@@ -54,7 +54,7 @@ const TextImageBlock: FC<{
                     p: ({ children }) => (
                         <p
                             className={classNames(
-                                'whitespace-normal text-pretty text-left last-of-type:mb-0 sm:mb-4 md:mb-5',
+                                'mb-4 whitespace-normal text-pretty text-left last-of-type:mb-0 md:mb-5',
                                 isFirst
                                     ? 'first-of-type:first-letter:-ml-0.5 first-of-type:first-letter:align-text-bottom first-of-type:first-letter:text-[1.5rem] first-of-type:first-letter:leading-[1.475rem] first-of-type:first-letter:text-red-800'
                                     : '',
@@ -100,8 +100,8 @@ const Showcase: FC<{
             loading="lazy"
             allowFullScreen
             className={classNames(
-                'aspect-video w-[55%] outline outline-2 outline-offset-2 outline-theme-primary-lighter hover-active:outline-theme-primary/50',
-                isEvenIndex ? 'float-right sm:ml-4 md:ml-6' : 'float-left sm:mr-4 md:mr-6',
+                'mb-3 aspect-video w-full outline outline-2 outline-offset-2 outline-theme-primary-lighter hover-active:outline-theme-primary/50 sm:mb-1 sm:w-[55%]',
+                isEvenIndex ? 'sm:float-right sm:ml-4 md:ml-6' : 'sm:float-left sm:mr-4 md:mr-6',
             )}
         />
     );
@@ -116,8 +116,8 @@ const InlineImageButton: FC<{ showcase: Post_Showcase_Image; isEvenIndex: boolea
         <button
             onClick={showcase ? handleClick : undefined}
             className={classNames(
-                'group relative aspect-video w-[55%] outline outline-2 outline-offset-2 outline-theme-primary-lighter hover-active:outline-theme-primary/50',
-                isEvenIndex ? 'float-right sm:ml-4 md:ml-6' : 'float-left sm:mr-4 md:mr-6',
+                'group relative mb-3 aspect-video w-full outline outline-2 outline-offset-2 outline-theme-primary-lighter hover-active:outline-theme-primary/50 sm:mb-1 sm:w-[55%]',
+                isEvenIndex ? 'sm:float-right sm:ml-4 md:ml-6' : 'sm:float-left sm:mr-4 md:mr-6',
                 showcase ? ' ' : 'pointer-events-none',
             )}
         >
@@ -129,7 +129,7 @@ const InlineImageButton: FC<{ showcase: Post_Showcase_Image; isEvenIndex: boolea
             {showcase.caption && (
                 <span
                     className={classNames(
-                        'absolute bottom-0 left-0 z-10 h-4 w-full bg-theme-secondary/30 font-lato text-xs font-bold text-theme-primary-darker group-hover-active:bg-theme-secondary',
+                        'absolute bottom-0 left-0 z-10 h-4 w-full bg-theme-secondary/30 font-lato text-2xs font-bold text-theme-primary-darker group-hover-active:bg-theme-secondary sm:text-xs',
                         isEvenIndex ? 'pr-1.5 text-right' : 'pl-1.5 text-left',
                     )}
                 >

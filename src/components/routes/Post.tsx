@@ -76,7 +76,7 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
     return shouldMount ? (
         <div
             ref={postRef}
-            className="absolute left-0 top-0 mx-auto aspect-hex-flat h-full bg-theme-text-background px-[4.75%] py-[1%] text-theme-text transition-[clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] clip-inset-x-[45%]"
+            className="fixed bottom-[5dvh] left-[2dvw] right-[2dvw] top-[5dvh] bg-theme-text-background px-[4.75%] py-[1%] text-theme-text transition-[clip-path] duration-[calc(var(--ui-animation-menu-transition-duration)*1.5)] clip-inset-x-[45%] sm:absolute sm:bottom-[unset] sm:left-[unset] sm:right-[unset] sm:top-[unset] sm:size-full"
         >
             <header className="pointer-events-none absolute -top-3 left-0 right-0 z-10 mx-auto flex items-start justify-center text-center">
                 <GetChildSize context={GetChildSizeContext}>
@@ -84,10 +84,10 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
                 </GetChildSize>
             </header>
 
-            <main className="scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pt-[5%] scrollbar-thin sm:pr-[2%]">
+            <main className="scroll-gutter-both flex size-full origin-center flex-col overflow-y-scroll pr-[2%] pt-[5%] scrollbar-thin">
                 {/* (Sub-)Header, date, "Stack" etc  */}
                 <div>
-                    <div className="my-2 flex h-auto flex-wrap items-center justify-between font-lato font-semibold leading-none tracking-tight text-theme-primary-darker sm:text-3xs md:text-2xs xl:text-xs">
+                    <div className="my-2 flex h-auto flex-wrap items-end justify-between font-lato text-xs font-semibold leading-none tracking-tight text-theme-primary-darker sm:text-3xs md:text-2xs xl:text-xs">
                         <GetChildSize context={GetChildSizeContext}>
                             <PostDate date={parseDateString(date ?? '')} />
                         </GetChildSize>
@@ -105,7 +105,7 @@ const Post: FC<{ show: boolean }> = ({ show }) => {
                 />
 
                 {/* Gallery below text */}
-                {remainingImages && <RemainingImages remainingImages={remainingImages} setLightBoxSlide={setLightBoxSlide_Cb} />}
+                {remainingImages && <RemainingImageGallery remainingImages={remainingImages} setLightBoxSlide={setLightBoxSlide_Cb} />}
 
                 <Lightbox
                     open={Number.isInteger(lightboxTo)}
@@ -128,7 +128,7 @@ const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
 
     return (
         <div
-            className="before-glassmorphic-backdrop relative select-none px-[4%] font-fjalla-one font-semibold text-theme-text-background before:absolute before:!top-1.5 before:left-[-10%] before:-z-10 before:!h-[90%] before:!w-[120%] before:bg-theme-primary-darker/15 before:[--glassmorphic-backdrop-blur:4px] before:[--glassmorphic-backdrop-saturate:2.5] before:[clip-path:--post-title-clip-path] sm:text-2xl sm:tracking-wider lg:text-4xl lg:tracking-wide"
+            className="before-glassmorphic-backdrop relative select-none px-[4%] font-fjalla-one text-2xl font-semibold text-theme-text-background before:absolute before:!top-1.5 before:left-[-10%] before:-z-10 before:!h-[90%] before:!w-[120%] before:bg-theme-primary-darker/15 before:[--glassmorphic-backdrop-blur:4px] before:[--glassmorphic-backdrop-saturate:2.5] before:[clip-path:--post-title-clip-path] sm:tracking-wider lg:text-4xl lg:tracking-wide"
             style={
                 {
                     '--post-title-clip-path': clipPath_Memo,
@@ -145,7 +145,7 @@ const PostDate: FC<{ date: { year?: string; month?: string; day?: string } }> = 
     const clipPath_Memo = useMemo(() => getHexagonalClipPath(1, containerSize, { shape: 'top-right' }), [containerSize]);
 
     return (
-        <span className="block h-4 bg-theme-primary-lighter pl-2 pr-4" style={{ clipPath: clipPath_Memo }}>
+        <span className="flex h-4 items-center justify-center bg-theme-primary-lighter pl-2 pr-4" style={{ clipPath: clipPath_Memo }}>
             {day && `${day}.`}
             {month && `${month}.`}
             {year && `${year}`}
@@ -153,11 +153,11 @@ const PostDate: FC<{ date: { year?: string; month?: string; day?: string } }> = 
     );
 };
 
-const RemainingImages: FC<{
+const RemainingImageGallery: FC<{
     remainingImages: [Post_Showcase_Image, number][];
     setLightBoxSlide: (showcaseIndex: number) => void;
 }> = ({ remainingImages, setLightBoxSlide }) => (
-    <div className="mt-12 grid items-start gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div className="mt-12 grid gap-3 sm:grid-cols-2 sm:items-start md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {remainingImages.map(([{ imgUrl, caption, hasThumbnail }, imageIndex]) => {
             return (
                 <button
@@ -165,7 +165,7 @@ const RemainingImages: FC<{
                     className="group max-h-48 w-full transform-gpu overflow-hidden transition-transform duration-75 hover-active:scale-[1.01] hover-active:brightness-110"
                     onClick={handleClick}
                 >
-                    <img src={hasThumbnail === false ? imgUrl : constructThumbnailUrl(imgUrl)} alt={caption} className="object-cover" />
+                    <img src={hasThumbnail === false ? imgUrl : constructThumbnailUrl(imgUrl)} alt={caption} className="size-full object-cover" />
                 </button>
             );
 

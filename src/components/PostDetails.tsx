@@ -7,6 +7,7 @@ import GetChildSize from './utilityComponents/GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
 import { getHexagonalClipPath } from '../lib/shapeFunctions';
 import { TOOL } from '../types/enums';
+import { useBreakpoint } from '../hooks/useBreakPoint';
 
 const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; liveViews: Post['liveViews']; source: Post['source'] }> = ({
     stack,
@@ -19,7 +20,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; liveView
 
     return (
         <>
-            <div className="relative flex h-4 select-none items-start justify-end">
+            <div className="relative flex select-none flex-col items-stretch justify-start gap-y-1 sm:flex-row sm:items-start sm:justify-end">
                 {stack && (
                     <GetChildSize context={GetChildSizeContext}>
                         <SinglePostDetailElement
@@ -70,7 +71,7 @@ const PostDetails: FC<{ stack: Post['stack']; clients: Post['clients']; liveView
             </div>
 
             {/* Line Break in flexbox */}
-            <div className="size-0 basis-full" />
+            <div className="w-full sm:size-0 sm:basis-full" />
 
             <div
                 className={classNames(
@@ -96,17 +97,23 @@ const SinglePostDetailElement: FC<{
     const isSelected = jsx.props.dataBlockId === content?.props.dataBlockId;
 
     const containerSize = useContext(GetChildSizeContext);
+    const breakpoint = useBreakpoint();
     const clipPath_Memo = useMemo(
-        () => getHexagonalClipPath(1, { width: containerSize.width, height: containerSize.height }, { shape: isLast ? 'top-left' : 'slant-right' }),
-        [isLast, containerSize.width, containerSize.height],
+        () =>
+            getHexagonalClipPath(
+                1,
+                { width: containerSize.width, height: containerSize.height },
+                { shape: breakpoint ? (isLast ? 'top-left' : 'slant-right') : 'top-left' },
+            ),
+        [isLast, breakpoint, containerSize.width, containerSize.height],
     );
 
     return (
         <div
             className={classNames(
-                'group flex size-full cursor-pointer items-center justify-end pb-px pl-4 hover-active:bg-theme-primary/75 sm:-ml-1.5 xl:-ml-1',
+                'group ml-auto flex h-4 cursor-pointer items-center justify-end pb-px pl-4 hover-active:bg-theme-primary/75 sm:-ml-1.5 xl:-ml-1',
                 isSelected ? 'bg-theme-primary' : 'bg-theme-primary-lighter',
-                isLast ? 'pr-0.5' : 'pr-3',
+                isLast ? 'sm:pr-0.5' : 'sm:pr-3',
             )}
             style={{
                 clipPath: clipPath_Memo,
@@ -160,7 +167,7 @@ const Stack: FC<{ stack: NonNullable<Post['stack']> } & PostDetailElementContent
                 <a
                     key={idx}
                     href={TOOL[stackEntry]}
-                    className="block w-full bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline hover-active:decoration-theme-text-background"
+                    className="flex w-full items-center justify-center bg-theme-secondary-darker/20 px-1.5 py-1 text-center text-theme-primary-darker no-underline outline outline-1 -outline-offset-2 outline-theme-text-background hover-active:bg-theme-primary/50 hover-active:text-theme-text-background hover-active:underline hover-active:decoration-theme-text-background"
                 >
                     {stackEntry}
                 </a>

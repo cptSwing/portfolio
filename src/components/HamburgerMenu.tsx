@@ -33,14 +33,11 @@ const HamburgerMenu = () => {
     return (
         <menu
             ref={refCallback}
-            className="absolute"
+            className="absolute left-[50dvw] top-[50dvh]"
             style={
                 hamburgerMenuRect
                     ? ({
-                          width: hamburgerMenuRect.width + 'px',
-                          height: hamburgerMenuRect.height + 'px',
-                          left: hamburgerMenuRect.x + 'px',
-                          top: hamburgerMenuRect.y + 'px',
+                          transform: `translate(calc(${hamburgerMenuRect.width}px / -2), calc(${hamburgerMenuRect.height}px / -2))`,
                       } as CSSProperties)
                     : undefined
             }
