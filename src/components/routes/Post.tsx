@@ -128,7 +128,7 @@ const FloatingHeader: FC<{ title: string | undefined }> = ({ title }) => {
 
     return (
         <div
-            className="before-glassmorphic-backdrop relative select-none px-[4%] font-fjalla-one text-2xl font-semibold text-theme-text-background before:absolute before:!top-1.5 before:left-[-10%] before:-z-10 before:!h-[90%] before:!w-[120%] before:bg-theme-primary-darker/15 before:[--glassmorphic-backdrop-blur:4px] before:[--glassmorphic-backdrop-saturate:2.5] before:[clip-path:--post-title-clip-path] sm:tracking-wider lg:text-4xl lg:tracking-wide"
+            className="before-glassmorphic-backdrop relative select-none px-[4%] font-fjalla-one text-2xl font-semibold text-white before:absolute before:!top-1.5 before:left-[-10%] before:-z-10 before:!h-[90%] before:!w-[120%] before:bg-theme-primary-darker/15 before:[--glassmorphic-backdrop-blur:4px] before:[--glassmorphic-backdrop-saturate:2.5] before:[clip-path:--post-title-clip-path] sm:tracking-wider lg:text-4xl lg:tracking-wide"
             style={
                 {
                     '--post-title-clip-path': clipPath_Memo,

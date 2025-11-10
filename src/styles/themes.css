@@ -3,13 +3,13 @@ body[data-theme='yellow'] {
     --theme-primary-lighter: 255 227 136 /* 200 */;
     --theme-primary-darker: 189 147 10 /* 800 */;
 
-    --theme-secondary: 42 166 182; /* 500 */
-    --theme-secondary-lighter: 113 218 232; /* 200 */
-    --theme-secondary-darker: 8 98 110 /* 800 */;
+    --theme-secondary: 67 254 210; /* 500 */
+    --theme-secondary-lighter: 219 255 247; /* 200 */
+    --theme-secondary-darker: 0 51 39 /* 800 */;
 
     --theme-accent: 204 55 35; /* 500 */
     --theme-text: 239 239 239;
-    --theme-text-background: 64 64 64;
+    --theme-text-background: 72 72 72;
     --theme-root-background: 23 23 23;
 }
 
@@ -18,9 +18,9 @@ body[data-theme='pink'] {
     --theme-primary-lighter: 240 191 219 /* 200 */;
     --theme-primary-darker: 114 33 79 /* 800 */;
 
-    --theme-secondary: 214 198 133; /* 500 */
-    --theme-secondary-lighter: 251 246 222; /* 200 */
-    --theme-secondary-darker: 119 107 55; /* 800 */
+    --theme-secondary: 46 136 204; /* 500 */
+    --theme-secondary-lighter: 230 241 249; /* 200 */
+    --theme-secondary-darker: 31 91 138; /* 800 */
 
     --theme-accent: 20 157 242; /* 500 */
     --theme-text: 64 64 64;
@@ -29,17 +29,17 @@ body[data-theme='pink'] {
 }
 
 body[data-theme='orange'] {
-    --theme-primary: 215 203 181; /* 500 */
-    --theme-primary-lighter: 242 232 213 /* 200 */;
-    --theme-primary-darker: 171 155 126 /* 800 */;
+    --theme-primary: 251 111 14; /* 500 */
+    --theme-primary-lighter: 251 220 198 /* 200 */;
+    --theme-primary-darker: 141 59 2 /* 800 */;
 
-    --theme-secondary: 211 99 16;
-    --theme-secondary-lighter: 244 132 48; /* 200 */
-    --theme-secondary-darker: 128 55 1; /* 800 */
+    --theme-secondary: 64 201 156;
+    --theme-secondary-lighter: 231 248 243; /* 200 */
+    --theme-secondary-darker: 19 68 52; /* 800 */
 
     --theme-accent: 88 180 96; /* 500 */
     --theme-text: 243 251 248;
-    --theme-text-background: 30 47 41;
+    --theme-text-background: 83 105 95;
     --theme-root-background: 20 26 23;
 }
 
@@ -53,7 +53,7 @@ body[data-theme='bw'] {
     --theme-secondary-darker: 33 33 33;
 
     --theme-accent: 255 255 255; /* 500 */
-    --theme-text: 18 18 18;
-    --theme-text-background: 255 255 255;
+    --theme-text: 242 242 242;
+    --theme-text-background: 51 51 51;
     --theme-root-background: 40 40 40;
 }
