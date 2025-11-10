@@ -1,5 +1,4 @@
 import { NavigateOptions, To } from 'react-router-dom';
-import { BreakpointName } from '../hooks/useBreakPoint';
 import { CATEGORY, HAMBURGERMENUITEMS, ROUTE, TOOL } from './enums';
 
 export type Config = {
@@ -28,8 +27,7 @@ export type ZustandStore = {
         theme: Theme;
         routeData: RouteData;
         cardTransition: boolean;
-        breakpoint: BreakpointName | null;
-        hamburgerMenuRect: Pick<DOMRect, 'x' | 'y' | 'width' | 'height'> | null;
+        hamburgerMenuRect: Pick<DOMRect, 'width' | 'height'> | null;
         activeHamburgerMenuItemName: HamburgerMenuItem['name'];
         postIndex: number | null;
         debug: {
@@ -40,7 +38,6 @@ export type ZustandStore = {
         store_cycleTheme: () => void;
         store_setRouteData: (routeData: RouteData) => void;
         store_setTimedCardTransition: (isReady: boolean) => void;
-        store_setBreakpoint: (breakpoint: BreakpointName | null) => void;
         store_toggleHamburgerMenu: (rect: ZustandStore['values']['hamburgerMenuRect']) => void;
         store_toggleActiveHamburgerItem: (newMenuState: ZustandStore['values']['activeHamburgerMenuItemName']) => void;
         store_setPostIndexAndTransitionTrue: (directionOrIndex: ('previous' | 'next') | number) => void;

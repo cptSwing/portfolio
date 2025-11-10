@@ -747,15 +747,10 @@ export const openHamburgerButtonElement: FunctionalButtonRouteData = {
     name: 'hamburger',
     title: '',
     svgIconPath: '/svg/Bars3Outline.svg',
-    target: (routeName, ev) => {
+    target: (_routeName, ev) => {
         let rect: ZustandStore['values']['hamburgerMenuRect'] = null;
         if (ev) {
             rect = getMenuButtonPosition(ev) as NonNullable<ZustandStore['values']['hamburgerMenuRect']>;
-
-            if (routeName === ROUTE.post) {
-                const documentRect = document.body.getBoundingClientRect();
-                rect = { ...rect, x: documentRect.width / 2 - rect.width, y: documentRect.height / 2 - rect.height };
-            }
         }
 
         store_toggleHamburgerMenu(rect);

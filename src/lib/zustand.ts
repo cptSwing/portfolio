@@ -14,7 +14,6 @@ export const useZustand = create<ZustandStore>()(
             theme: 'pink',
             routeData: { name: ROUTE.home, content: {} },
             cardTransition: false,
-            breakpoint: null,
             hamburgerMenuRect: null,
             activeHamburgerMenuItemName: 'DEFAULT',
             postIndex: null,
@@ -54,12 +53,6 @@ export const useZustand = create<ZustandStore>()(
                     });
                     clearTimeout(timer);
                 }, transitionDuration_MS);
-            },
-
-            store_setBreakpoint: (newBreakpoint) => {
-                set((draftState) => {
-                    draftState.values.breakpoint = newBreakpoint;
-                });
             },
 
             store_toggleHamburgerMenu: (hamburgerMenuRect) => {

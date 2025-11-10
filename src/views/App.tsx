@@ -8,16 +8,12 @@ import NoRouteMatched from '../components/routes/NoRouteMatched';
 import useSetRouteData from '../hooks/useSetRouteData';
 import { ROUTE } from '../types/enums';
 import { globalCssVariables } from '../styles/globalCssVariables';
-import { useBreakpoint } from '../hooks/useBreakPoint';
 import HexagonTiles from '../components/HexagonTiles';
 import useUpdateTheme from '../hooks/useUpdateTheme';
 import useSetHistoryRouter from '../hooks/useSetHistoryRouter';
 import '../styles/style_main.css';
 
-const store_setBreakpoint = useZustand.getState().methods.store_setBreakpoint;
-
 const App = () => {
-    useBreakpoint(store_setBreakpoint);
     useUpdateTheme();
 
     return (
@@ -47,14 +43,14 @@ const Main = () => {
         <div
             className={classNames(
                 '[--scrollbar-thumb:theme(colors.theme.primary-darker)]',
-                'relative flex aspect-hex-flat items-center justify-center text-theme-text transition-[height] scrollbar-track-transparent',
-                'after:w-scree after:fixed after:left-[-0vw] after:right-[-20vw] after:top-0 after:flex after:h-[10vh] after:translate-y-full after:rotate-[30deg] after:items-center after:justify-center after:bg-red-950 after:text-neutral-300 after:content-["Mobile_version_still_incomplete.._please_use_a_wider_screen!"] after:[font-size:calc(2.5vw)] after:sm:content-none',
+                'relative aspect-hex-flat text-theme-text transition-[height] scrollbar-track-transparent',
+                'after:pointer-events-none after:fixed after:bottom-[9dvh] after:left-[-20dvw] after:right-[-20dvw] after:flex after:h-[8dvh] after:translate-y-full after:rotate-[-10deg] after:items-center after:justify-center after:bg-red-950 after:text-neutral-300 after:opacity-70 after:content-["Mobile_version_still_incomplete.._try_using_a_wider_screen_:)"] after:[font-size:3dvw] after:sm:content-none',
                 routeName === ROUTE.home
-                    ? 'h-[min(70vh,70vw)] w-auto'
+                    ? 'h-[min(70dvh,70dvw)]'
                     : routeName === ROUTE.category
-                      ? 'h-[min(80vh,80vw)] w-auto'
-                      : // ROUTE.post // TODO expand to full height?
-                        'h-[min(95vh,80vw)] w-auto lg:h-[min(95vh,90vw)]',
+                      ? 'h-[min(80dvh,80dvw)]'
+                      : // ROUTE.post
+                        'h-[min(95dvh,82.5dvw)] sm:mt-[unset] sm:h-[min(95dvh,80dvw)] lg:h-[min(95dvh,90dvw)]',
             )}
             style={globalCssVariables}
         >
