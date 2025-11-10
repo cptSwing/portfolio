@@ -53,13 +53,6 @@
     .background-gradients {
         background-image:
             radial-gradient(
-                    ellipse 17.5% 12.5% at var(--background-gradient-radial-3-position),
-                    theme(colors.theme.primary/0.2) 0%,
-                    theme(colors.theme.primary-darker/0.35) 30%,
-                    transparent 100%
-                )
-                /* radial-3 */,
-            radial-gradient(
                     ellipse 50% 70% at var(--background-gradient-radial-2-position),
                     theme(colors.theme.root-background/0.5) 0%,
                     theme(colors.theme.root-background/0.25) 50%
@@ -146,8 +139,8 @@
 #root {
     @apply background-gradients flex h-dvh w-dvw items-center justify-center overflow-hidden bg-theme-root-background font-merriweather;
     @apply [--hexagon-fill-color:theme(colors.theme.primary/0.05)] [--hexagon-inner-shadow-color:theme(colors.white/0.1)] [--hexagon-stroke-color:theme(colors.theme.secondary/0.1)];
-    animation-name: animate-linear, animate-radial-1, animate-radial-2, animate-radial-3;
-    animation-duration: 50s, 60s, 15s, 120s;
+    animation-name: animate-linear, animate-radial-1, animate-radial-2;
+    animation-duration: 50s, 60s, 90s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
@@ -162,12 +155,6 @@
     syntax: '<percentage>+';
     inherits: false;
     initial-value: 30% 35%;
-}
-
-@property --background-gradient-radial-3-position {
-    syntax: '<percentage>+';
-    inherits: false;
-    initial-value: 50% 50%;
 }
 
 @property --background-gradient-linear-angle {

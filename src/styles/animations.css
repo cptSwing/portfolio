@@ -28,21 +28,6 @@
     }
 }
 
-@keyframes animate-radial-3 {
-    20% {
-        --background-gradient-radial-3-position: 65% 25%;
-    }
-    40% {
-        --background-gradient-radial-3-position: 30% 45%;
-    }
-    60% {
-        --background-gradient-radial-3-position: 60% 70%;
-    }
-    80% {
-        --background-gradient-radial-3-position: 40% 75%;
-    }
-}
-
 @keyframes streak-to-right {
     from {
         @apply z-20 opacity-0;
