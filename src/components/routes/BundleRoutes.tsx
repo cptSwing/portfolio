@@ -1,14 +1,9 @@
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const BundleRoutes = () => {
     const { bundlePath } = useParams();
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        // navigate(`/bundles/${bundlePath}/index.html`);
-        window.location.assign(`${window.location.protocol}//${window.location.host}/bundles/${bundlePath}/index.html`);
-    }, [bundlePath, navigate]);
+    bundlePath && window.location.assign(`${window.location.protocol}//${window.location.host}/bundles/${bundlePath}/index.html`);
 
     return <h3> Redirecting to {bundlePath}.... </h3>;
 };
