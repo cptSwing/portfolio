@@ -12,11 +12,15 @@ import HexagonTiles from '../components/HexagonTiles';
 import useUpdateTheme from '../hooks/useUpdateTheme';
 import useSetHistoryRouter from '../hooks/useSetHistoryRouter';
 import '../styles/style_main.css';
+import useFetchApiContent from '../hooks/useFetchApiContent';
 
 const App = () => {
+    const apiContent = useZustand((s) => s.apiContent);
+
+    useFetchApiContent();
     useUpdateTheme();
 
-    return (
+    return apiContent ? (
         <BrowserRouter
             future={{
                 v7_startTransition: true,
@@ -29,7 +33,7 @@ const App = () => {
                 <Route path="*" element={<NoRouteMatched />} />
             </Routes>
         </BrowserRouter>
-    );
+    ) : null;
 };
 
 const Main = () => {

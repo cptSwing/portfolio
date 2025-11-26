@@ -10,6 +10,7 @@ const transitionDuration_MS = config.ui.animation.menuTransition_Ms;
 
 export const useZustand = create<ZustandStore>()(
     immer((set, get) => ({
+        apiContent: null,
         values: {
             theme: 'pink',
             routeData: { name: ROUTE.home, content: {} },
@@ -22,6 +23,12 @@ export const useZustand = create<ZustandStore>()(
             },
         },
         methods: {
+            store_apiContent: (content) => {
+                set((draftState) => {
+                    draftState.apiContent = content;
+                });
+            },
+
             store_cycleTheme: () => {
                 const current = get().values.theme;
                 const nextTheme = cycleThrough<Theme>(themes, current, 'next');

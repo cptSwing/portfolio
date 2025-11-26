@@ -1,20 +1,20 @@
 import { Category } from '../types/types';
 import { FC, useMemo, useState } from 'react';
-import { database } from '../types/exportTyped';
 import { Link, useParams } from 'react-router-dom';
 import useAnimationOnMount from '../hooks/useAnimationOnMount.ts';
 import { classNames } from 'cpts-javascript-utilities';
 import { createPortal } from 'react-dom';
-
-const categories = Object.values(database);
+import { useZustand } from '../lib/zustand.ts';
 
 const Titles = () => {
+    const apiContent = useZustand((store) => store.apiContent!);
+
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     return (
         <header className="pointer-events-auto transition-transform duration-500 [--nav-title-animation-duration:300ms]">
             {/* Code, 3D, Log */}
-            {categories.map((cardData) => (
+            {Object.values(apiContent).map((cardData) => (
                 <CategoryTitle key={cardData.title} cardData={cardData} />
             ))}
 

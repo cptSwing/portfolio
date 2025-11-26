@@ -13,7 +13,6 @@ import {
     markActiveHexagonElement,
     markActiveHexagonElementOffsets,
 } from '../lib/hexagonElements';
-import { database } from '../types/exportTyped';
 
 const _ = ' ';
 const hexagonBaseClasses = 'regular-hexagon-base regular-hexagon-transitions regular-hexagon-center-named-class [--regular-hexagon-transition-random-factor:0]';
@@ -217,6 +216,7 @@ export const MarkActiveCategoryHexagon: FC<{
     homeMenuTransitionState: [CategoryName | null, TransitionTargetReached, RotateShortestDistance];
 }> = ({ homeMenuTransitionState }) => {
     const [homeMenuTransitionTarget, homeMenuTransitionTargetReached] = homeMenuTransitionState;
+    const apiContent = useZustand((store) => store.apiContent!);
 
     const cardTransition = useZustand((state) => state.values.cardTransition);
     const {
@@ -231,10 +231,10 @@ export const MarkActiveCategoryHexagon: FC<{
         if (routeName === ROUTE.home && homeMenuTransitionTargetReached) {
             setActiveCategory(homeMenuTransitionTarget);
         } else if (routeName === ROUTE.category && category) {
-            const activeCategory = Object.keys(database).find((categoryName) => database[categoryName as CategoryName].id === category.id) as CategoryName;
+            const activeCategory = Object.keys(apiContent).find((categoryName) => apiContent[categoryName as CategoryName].id === category.id) as CategoryName;
             setActiveCategory(activeCategory);
         }
-    }, [category, homeMenuTransitionTarget, homeMenuTransitionTargetReached, routeName]);
+    }, [apiContent, category, homeMenuTransitionTarget, homeMenuTransitionTargetReached, routeName]);
 
     const cssVariables_Memo = useMemo(() => {
         let routeTransforms = markActiveHexagonElement[routeName];

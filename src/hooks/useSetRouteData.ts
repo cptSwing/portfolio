@@ -1,20 +1,18 @@
 import { useParams } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
 import { ROUTE } from '../types/enums';
-import { database } from '../types/exportTyped';
 import isNumber from '../lib/isNumber';
 import { useEffect } from 'react';
-
-const categories = Object.values(database);
 
 const { store_setRouteData, store_setPostIndexAndTransitionTrue } = useZustand.getState().methods;
 
 function useSetRouteData() {
     const { param_categoryId, param_postId } = useParams();
+    const apiContent = useZustand((store) => store.apiContent);
 
     useEffect(() => {
-        if (param_categoryId) {
-            const category = categories.find((category) => parseInt(param_categoryId) === category.id);
+        if (apiContent && param_categoryId) {
+            const category = Object.values(apiContent).find((category) => parseInt(param_categoryId) === category.id);
             if (category) {
                 if (param_postId) {
                     let postIndex: number | null = null;
@@ -36,7 +34,7 @@ function useSetRouteData() {
         } else {
             store_setRouteData({ name: ROUTE.home, content: {} });
         }
-    }, [param_categoryId, param_postId]);
+    }, [apiContent, param_categoryId, param_postId]);
 }
 
 export default useSetRouteData;

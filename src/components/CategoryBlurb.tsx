@@ -4,7 +4,7 @@ import { categoryLinkButtonElements } from '../lib/hexagonElements';
 import { calcCSSVariables } from '../lib/shapeFunctions';
 import { useZustand } from '../lib/zustand';
 import { CategoryName, CategoryLinkButtonRouteData } from '../types/types';
-import { config, database } from '../types/exportTyped';
+import { config } from '../types/exportTyped';
 import { classNames } from 'cpts-javascript-utilities';
 import useTimeout from '../hooks/useTimeout';
 
@@ -16,6 +16,8 @@ categoryLinkButtonElements.forEach((categoryLinkButtonElem) => {
 });
 
 const CategoryBlurb: FC<{ show: boolean; homeMenuTransitionTarget: CategoryName | null }> = ({ show, homeMenuTransitionTarget }) => {
+    const apiContent = useZustand((store) => store.apiContent!);
+
     const routeName = useZustand((store) => store.values.routeData.name);
     const cardTransition = useZustand((state) => state.values.cardTransition);
 
@@ -60,7 +62,7 @@ const CategoryBlurb: FC<{ show: boolean; homeMenuTransitionTarget: CategoryName 
             style={cssVariables as CSSProperties}
         >
             <span className="inline-block h-full w-[200%] translate-y-[125%] text-center font-fjalla-one text-sm leading-tight tracking-tight text-theme-root-background/50">
-                {homeMenuTransitionTarget && database[homeMenuTransitionTarget].categoryBlurb}
+                {homeMenuTransitionTarget && apiContent[homeMenuTransitionTarget].categoryBlurb}
             </span>
         </div>
     ) : null;

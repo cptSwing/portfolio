@@ -23,6 +23,7 @@ export const themes = ['pink', 'orange', 'bw', 'yellow'] as const;
 export type Theme = (typeof themes)[number];
 
 export type ZustandStore = {
+    apiContent: DataBase | null;
     values: {
         theme: Theme;
         routeData: RouteData;
@@ -35,6 +36,7 @@ export type ZustandStore = {
         };
     };
     methods: {
+        store_apiContent: (content: DataBase) => void;
         store_cycleTheme: () => void;
         store_setRouteData: (routeData: RouteData) => void;
         store_setTimedCardTransition: (isReady: boolean) => void;

@@ -1,7 +1,7 @@
 import { DataBase, Config } from '../types/types';
 import configUntyped from '../config/config.json';
 
-function getDatabaseSynchronous(): DataBase {
+function _getDatabaseSynchronous(): DataBase {
     const request = new XMLHttpRequest();
     request.open('GET', '/queries/testDb.json', false);
     request.send(null);
@@ -34,5 +34,4 @@ function getDatabaseSynchronous(): DataBase {
     }
 }
 
-export const database = getDatabaseSynchronous();
 export const config = configUntyped as Config;
