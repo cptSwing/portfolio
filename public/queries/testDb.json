@@ -111,7 +111,7 @@
                 },
                 "liveViews": [
                     {
-                        "url": "https://www.jbrandenburg.de/bundles/oldFolio",
+                        "url": "https://www.jbrandenburg.de/bundles/oldfolio",
                         "title": "Previous version of this site"
                     }
                 ],
@@ -396,7 +396,7 @@
                 },
                 "liveViews": [
                     {
-                        "url": "https://www.jbrandenburg.de/bundles/plateCalc",
+                        "url": "https://www.jbrandenburg.de/bundles/platecalc",
                         "title": "plateCalc PWA",
                         "description": ""
                     }
@@ -441,6 +441,31 @@
                 "textBlocks": [
                     {
                         "text": "Seeing as there is no triplanar mapping material for three.js which supports normal maps, I had previously thrown together a simpler version for [Ring Configurator](https://www.jbrandenburg.de/0/0).\nTriplanar mapping is a technique to display textures on a model, disregarding it's texture coordinates. In effect, it can be used to quickly prototype models, or texture models according to the model's coordinate axes (ie top/bottom, left/right).\n\nSo I sat down again and started from scratch.\n\n For now, this uses [CustomShaderMaterial](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial) to extend a THREE.MeshStandardMaterial. It supports basecolors, normal maps, and roughness maps for now, and is currently object-space only.\n\nI'd love to build a world space shader sometime soon, but first I would like to get rid of the CSM dependency and move towards a v1 release.\n\nCheck out the source [here](https://github.com/cptSwing/three-triplanarmapping), and a test scene (built with react-three-fiber, still very unoptimized) [here](https://www.jbrandenburg.de/bundles/triplanar)"
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "title": "Tranquil Travels",
+                "cardImage": "/images/tranquiltravels/screenshot_1.jpg",
+                "subTitle": "Travel when everybody else isn't!",
+                "date": "2025-11-25",
+                "stack": ["react", "tailwindcss"],
+                "source": {
+                    "alt": "tranquilTravels on github.com",
+                    "href": "https://github.com/cptSwing/tranquilTravels"
+                },
+                "liveViews": [
+                    {
+                        "url": "https://www.jbrandenburg.de/bundles/tranquiltravels",
+                        "title": "Hosted on this site",
+                        "description": ""
+                    }
+                ],
+                "showcases": [],
+                "textBlocks": [
+                    {
+                        "text": "I built a little site to query [OpenHolidays'](https://www.openholidaysapi.org/) REST API for school- and public holidays, and find out when the best time to go on a vacation would be. You can pick up to five countries to show merged results for, and choose a time-range of up to 11 months.\n\nIn retrospect I could likely have saved a lot of time if I hadn't built the calender-view from scratch (and it's buggy still), but hey another learning experience.\n\nThanks to [Gradient.page](https://gradient.page/ui-gradients) as well (there's a switcher to cycle through different gradients in the top right)."
                     }
                 ]
             }
