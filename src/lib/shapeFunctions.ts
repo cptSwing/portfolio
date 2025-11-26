@@ -63,7 +63,7 @@ const halfStrokedRoundedHexagonPath = getHexagonPath({
     cornerRadius: hexHalfWidth / 5,
     isHalf: true,
     inner: 'stroke',
-    innerSize: 0.9,
+    innerSize: 0.75,
 });
 // const hexagonalEndsRectanglePath = getHexagonPath({ sideLength: hexHalfWidth / 2, cornerRadius: hexHalfWidth / 10, width: 4 });
 const hexagonalEndsRectanglePath = getHexagonPath({ sideLength: hexHalfWidth, cornerRadius: hexHalfWidth / 15 });

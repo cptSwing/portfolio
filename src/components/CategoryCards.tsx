@@ -58,7 +58,7 @@ const CategoryHexagon: FC<{
     return (
         <button
             className={classNames(
-                'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform,background-color,backdrop-filter] hover-active:!duration-75',
+                'transform-hexagon group pointer-events-auto absolute aspect-hex-flat w-[--hexagon-clip-path-width] transition-[transform] hover-active:!duration-75',
                 isAtFront
                     ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
                         ? '!delay-0 !duration-[--ui-animation-menu-transition-duration]'
@@ -83,7 +83,7 @@ const CategoryHexagon: FC<{
                         ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
                             ? 'bg-theme-primary/20 delay-0 duration-[--ui-animation-menu-transition-duration] [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1.25] ' +
                               'after:bg-white/10 after:matrix-scale-[1.029] after:[clip-path:--hexagon-clip-path-full-stroke]'
-                            : 'bg-theme-primary/10 duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*4),calc(var(--ui-animation-menu-transition-duration)*8)] [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5] ' +
+                            : 'bg-theme-primary/40 duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*4),calc(var(--ui-animation-menu-transition-duration)*8)] [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:4] ' +
                               'after:bg-white/20 after:matrix-translate-x-[-0.075] after:matrix-translate-y-[-0.05] after:matrix-scale-[1.029] after:[clip-path:--hexagon-clip-path-full-stroke]'
                         : 'bg-none backdrop-filter-none duration-[--ui-animation-menu-transition-duration] ' +
                               'after:bg-theme-primary-darker after:[clip-path:--hexagon-clip-path-full-wider-stroke] after:group-hover-active:bg-theme-primary',

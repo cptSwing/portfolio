@@ -181,7 +181,7 @@ export const HalfHexagon: FC<{
                 routeName === ROUTE.home
                     ? '[--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:2] [--lighting-gradient-to:theme(colors.white/0.1)]'
                     : routeName === ROUTE.category
-                      ? '[--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:1.5] [--hexagon-fill-color:theme(colors.theme.secondary-darker/0.5)] [--lighting-gradient-to:theme(colors.transparent)]'
+                      ? '[--glassmorphic-backdrop-blur:3px] [--glassmorphic-backdrop-saturate:2] [--hexagon-fill-color:theme(colors.theme.secondary-darker/0.05)] [--lighting-gradient-to:theme(colors.transparent)]'
                       : // ROUTE.post
                         '[--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.text-background)]',
             )}
