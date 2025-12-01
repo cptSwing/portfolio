@@ -77,13 +77,13 @@ const CategoryHexagon: FC<{
             {/* Glassmorphism Segment, thin 'rim' for depth in the :after element */}
             <div
                 className={classNames(
-                    'glassmorphic-backdrop absolute left-0 top-0 -z-10 aspect-hex-flat size-full w-[--hexagon-clip-path-width] transition-[transform,background-color,backdrop-filter] [clip-path:--hexagon-clip-path-full] group-hover-active:!duration-75',
+                    'absolute left-0 top-0 -z-10 aspect-hex-flat size-full w-[--hexagon-clip-path-width] transition-[transform,background-color,backdrop-filter] [clip-path:--hexagon-clip-path-full] group-hover-active:!duration-75',
                     'after:absolute after:left-0 after:top-0 after:size-full after:transition-[transform,clip-path,background-color] after:duration-[--ui-animation-menu-transition-duration]',
                     isAtFront
                         ? cardTransition // must have transition-duration synced to store_setTimedCardTransition(), and no delay!
-                            ? 'bg-theme-primary/20 delay-0 duration-[--ui-animation-menu-transition-duration] [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1.25] ' +
+                            ? 'bg-theme-primary/10 delay-0 duration-[--ui-animation-menu-transition-duration] ' +
                               'after:bg-white/10 after:matrix-scale-[1.029] after:[clip-path:--hexagon-clip-path-full-stroke]'
-                            : 'bg-theme-primary/40 duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*4),calc(var(--ui-animation-menu-transition-duration)*8)] [--glassmorphic-backdrop-blur:2px] [--glassmorphic-backdrop-saturate:4] ' +
+                            : 'bg-theme-primary/60 duration-[var(--ui-animation-menu-transition-duration),calc(var(--ui-animation-menu-transition-duration)*4),calc(var(--ui-animation-menu-transition-duration)*8)] ' +
                               'after:bg-white/20 after:matrix-translate-x-[-0.075] after:matrix-translate-y-[-0.05] after:matrix-scale-[1.029] after:[clip-path:--hexagon-clip-path-full-stroke]'
                         : 'bg-none backdrop-filter-none duration-[--ui-animation-menu-transition-duration] ' +
                               'after:bg-theme-primary-darker after:[clip-path:--hexagon-clip-path-full-wider-stroke] after:group-hover-active:bg-theme-primary',

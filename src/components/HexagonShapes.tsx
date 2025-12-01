@@ -42,7 +42,7 @@ export const Hexagon: FC<{
             case ROUTE.category: {
                 classes +=
                     _ +
-                    '[--lighting-gradient-to:theme(colors.white/0.025)] backdrop-blur-none [--glassmorphic-backdrop-saturate:1.5] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]';
+                    '[--lighting-gradient-to:theme(colors.white/0.025)]  [--glassmorphic-backdrop-blur:0px] [--glassmorphic-backdrop-saturate:1] [--hexagon-fill-color:theme(colors.theme.root-background/0.666)]';
                 routeTransforms = data[ROUTE.category];
                 break;
             }
