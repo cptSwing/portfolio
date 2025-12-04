@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useZustand } from '../lib/zustand';
 import { classNames } from 'cpts-javascript-utilities';
 import MenuModal from '../components/MenuModal';
-import Post from '../components/routes/Post';
 import BundleRoutes from '../components/routes/BundleRoutes';
 import NoRouteMatched from '../components/routes/NoRouteMatched';
 import useSetRouteData from '../hooks/useSetRouteData';
@@ -13,6 +12,7 @@ import useUpdateTheme from '../hooks/useUpdateTheme';
 import useSetHistoryRouter from '../hooks/useSetHistoryRouter';
 import '../styles/style_main.css';
 import useFetchApiContent from '../hooks/useFetchApiContent';
+import { lazy, Suspense } from 'react';
 
 const App = () => {
     const apiContent = useZustand((s) => s.apiContent);
@@ -36,6 +36,8 @@ const App = () => {
     ) : null;
 };
 
+const Post = lazy(() => import('../components/routes/Post'));
+
 const Main = () => {
     const routeName = useZustand((store) => store.values.routeData.name);
 
@@ -58,7 +60,12 @@ const Main = () => {
             )}
             style={globalCssVariables}
         >
-            <Post show={routeName === ROUTE.post} />
+            {routeName === ROUTE.post && (
+                <Suspense fallback={<div>Loading</div>}>
+                    <Post show={routeName === ROUTE.post} />
+                </Suspense>
+            )}
+
             <HexagonTiles />
             <MenuModal />
         </div>

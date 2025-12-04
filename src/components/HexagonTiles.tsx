@@ -1,4 +1,4 @@
-import { CSSProperties, useLayoutEffect, useMemo, useState } from 'react';
+import { CSSProperties, lazy, Suspense, useLayoutEffect, useMemo, useState } from 'react';
 import { classNames } from 'cpts-javascript-utilities';
 import { CategoryName, RotateShortestDistance, TransitionTargetReached } from '../types/types';
 import {
@@ -12,7 +12,6 @@ import { useZustand } from '../lib/zustand';
 import { getCurrentElementRotation } from 'cpts-javascript-utilities';
 import { CATEGORY, ROUTE } from '../types/enums';
 import { CenterHexagon, HalfHexagon, Hexagon, MarkActiveCategoryHexagon } from './HexagonShapes';
-import Category from './routes/Category';
 import Brand from './Brand';
 import GetChildSize from './utilityComponents/GetChildSize';
 import GetChildSizeContext from '../contexts/GetChildSizeContext';
@@ -20,6 +19,8 @@ import useRotateDegrees from '../hooks/useRotateDegrees';
 import useMouseRotate from '../hooks/useMouseRotate';
 import CategoryBlurb from './CategoryBlurb';
 import { CategoryLinkButton, FunctionalButton, FunctionalButtonOpenHamburgerMenu } from './HexagonShapeButtons';
+
+const Category = lazy(() => import('./routes/Category'));
 
 const HexagonTiles = () => {
     const routeName = useZustand((store) => store.values.routeData.name);
@@ -72,7 +73,11 @@ const HexagonTiles = () => {
                     <HalfHexagon key={`hex-half-regular-index-${idx}`} data={regularHexagonData} routeName={routeName} />
                 ))}
 
-                <Category show={routeName === ROUTE.category} />
+                {routeName === ROUTE.category && (
+                    <Suspense fallback={<div>Loading</div>}>
+                        <Category show={routeName === ROUTE.category} />
+                    </Suspense>
+                )}
 
                 <Brand homeMenuTransitionState={homeMenuTransitionState} />
 
