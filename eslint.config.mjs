@@ -1,38 +1,85 @@
-import tsEslint from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import astro from 'eslint-plugin-astro';
-import preact from 'eslint-plugin-preact';
-import reactHooks from 'eslint-plugin-react-hooks';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import prettier from 'eslint-config-prettier';
+import { defineConfig } from 'eslint/config';
 
-export default [
+import globals from 'globals';
+import eslintPluginTypescript from 'typescript-eslint';
+import eslintPluginAstro from 'eslint-plugin-astro';
+import eslintPluginJs from '@eslint/js';
+import eslintConfigPreact from 'eslint-config-preact';
+import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
+import eslintConfigPrettier from 'eslint-config-prettier';
+
+/* WARN eslint-config-preact contains @eslint/js (as well as eslint-plugin-react-hooks), so to prevent overwriting, these rules need to be applied in both entries */
+const jsRules = {
+    'no-empty': 'off',
+    'object-shorthand': 'warn',
+    'no-console': 'warn',
+    'no-unused-vars': 'off',
+    'no-unused-expressions': 'off',
+    'no-unreachable': 'warn',
+};
+
+const config = defineConfig([
     {
-        files: ['**/*.{ts,tsx,astro}'],
+        name: 'languageOptions',
         languageOptions: {
-            parser: tsParser,
-        },
-        plugins: {
-            '@typescript-eslint': tsEslint,
-            preact,
-            'react-hooks': reactHooks,
-            'jsx-a11y': jsxA11y,
-        },
-        rules: {
-            // Preact Hooks rules
-            'react-hooks/rules-of-hooks': 'error',
-            'react-hooks/exhaustive-deps': 'warn',
-
-            // A11y rules example
-            'jsx-a11y/alt-text': 'warn',
-            'jsx-a11y/anchor-is-valid': 'warn',
-            'jsx-a11y/no-static-element-interactions': 'warn',
+            globals: {
+                ...globals.browser,
+            },
         },
     },
 
-    // Astro recommended
-    ...astro.configs['jsx-a11y-recommended'],
+    {
+        name: 'ignores',
+        ignores: ['dist/**/*', 'node_modules'],
+    },
+
+    {
+        name: '@eslint/js',
+        files: ['**/*.{js,mjs,cjs,ts,tsx}'],
+        plugins: {
+            js: eslintPluginJs,
+        },
+        extends: ['js/recommended'],
+        rules: jsRules,
+    },
+
+    {
+        name: 'all typescript / preact + typescript files',
+        files: ['**/*.{ts,tsx}'],
+        plugins: {
+            '@typescript-eslint': eslintPluginTypescript.plugin,
+        },
+        extends: ['@typescript-eslint/recommended', eslintConfigPreact, eslintPluginJsxA11y.flatConfigs.recommended],
+        rules: {
+            '@typescript-eslint/no-unused-vars': [
+                'warn',
+                {
+                    args: 'all',
+                    argsIgnorePattern: '^_',
+                    vars: 'all',
+                    varsIgnorePattern: '^_',
+                    caughtErrors: 'all',
+                    caughtErrorsIgnorePattern: '^_',
+                    destructuredArrayIgnorePattern: '^_',
+                },
+            ],
+            '@typescript-eslint/no-unused-expressions': ['error', { allowTernary: true, allowShortCircuit: true }],
+
+            ...jsRules,
+        },
+    },
+
+    {
+        name: 'eslint-plugin-astro',
+        files: ['**/*.astro'],
+        plugins: {
+            astro: eslintPluginAstro,
+        },
+        extends: ['astro/jsx-a11y-recommended'],
+    },
 
     // Prettier last to disable conflicts
-    prettier,
-];
+    eslintConfigPrettier,
+]);
+
+export default config;
