@@ -6,6 +6,8 @@ import eslintPluginAstro from 'eslint-plugin-astro';
 import eslintPluginJs from '@eslint/js';
 import eslintConfigPreact from 'eslint-config-preact';
 import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
+import eslintPluginCss from '@eslint/css';
+import { tailwind4 } from 'tailwind-csstree';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
 /* WARN eslint-config-preact contains @eslint/js (as well as eslint-plugin-react-hooks), so to prevent overwriting, these rules need to be applied in both entries */
@@ -76,6 +78,18 @@ const config = defineConfig([
             astro: eslintPluginAstro,
         },
         extends: ['astro/jsx-a11y-recommended'],
+    },
+
+    {
+        name: '@eslint/css',
+        files: ['**/*.css'],
+        language: 'css/css',
+        languageOptions: {
+            tolerant: true,
+            customSyntax: tailwind4,
+        },
+        plugins: { css: eslintPluginCss },
+        extends: ['css/recommended'],
     },
 
     // Prettier last to disable conflicts
