@@ -51,23 +51,19 @@ const config = defineConfig([
         plugins: {
             '@typescript-eslint': eslintPluginTypescript.plugin,
         },
-        extends: ['@typescript-eslint/recommended', eslintConfigPreact, eslintPluginJsxA11y.flatConfigs.recommended],
+        extends: [eslintConfigPreact, '@typescript-eslint/recommended', eslintPluginJsxA11y.flatConfigs.recommended],
         rules: {
+            ...jsRules,
+            'react/jsx-no-bind': ['warn', {}],
+
             '@typescript-eslint/no-unused-vars': [
                 'warn',
                 {
-                    args: 'all',
                     argsIgnorePattern: '^_',
-                    vars: 'all',
                     varsIgnorePattern: '^_',
-                    caughtErrors: 'all',
-                    caughtErrorsIgnorePattern: '^_',
-                    destructuredArrayIgnorePattern: '^_',
                 },
             ],
             '@typescript-eslint/no-unused-expressions': ['error', { allowTernary: true, allowShortCircuit: true }],
-
-            ...jsRules,
         },
     },
 
