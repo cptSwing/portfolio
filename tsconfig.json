@@ -2,7 +2,7 @@
     "extends": "astro/tsconfigs/strict",
     "include": [
         ".astro/types.d.ts",
-        "src/**/*",
+        "src/**/*"
     ],
     "exclude": [
         "dist"
@@ -10,7 +10,9 @@
     "compilerOptions": {
         "jsx": "react-jsx",
         "jsxImportSource": "preact",
+        "allowImportingTsExtensions": true,
+        // "noEmit": true, // needed for the above to work?
         "moduleResolution": "node16",
-        "module": "node16",
+        "module": "node16"
     }
 }
