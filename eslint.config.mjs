@@ -9,6 +9,9 @@ import eslintPluginCss from '@eslint/css';
 import { tailwind4 } from 'tailwind-csstree';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
+/** @typedef {import("@eslint/config-helpers").ConfigWithExtends} eslintConfigPreactTyped */
+const eslintConfigPreactTyped = eslintConfigPreact;
+
 // WARN eslint-config-preact contains @eslint/js (as well as eslint-plugin-react-hooks), so to prevent overwriting, these rules need to be applied in both entries
 
 /** @type {import("eslint").Linter.RulesRecord} jsRules */
@@ -21,6 +24,7 @@ const jsRules = {
     'no-unreachable': 'warn',
 };
 
+/** @type {import("@eslint/config-helpers").ConfigWithExtends[]} config */
 const config = defineConfig([
     {
         name: 'languageOptions',
@@ -33,7 +37,7 @@ const config = defineConfig([
 
     {
         name: 'ignores',
-        ignores: ['dist/**/*', 'node_modules'],
+        ignores: ['dist', 'node_modules', '.astro', '.vscode'],
     },
 
     {
@@ -52,10 +56,10 @@ const config = defineConfig([
         plugins: {
             '@typescript-eslint': eslintPluginTypescript.plugin,
         },
-        extends: [eslintConfigPreact, '@typescript-eslint/recommended', eslintPluginJsxA11y.flatConfigs.recommended],
+        extends: [eslintConfigPreactTyped, '@typescript-eslint/recommended', eslintPluginJsxA11y.flatConfigs.recommended],
         rules: {
             ...jsRules,
-            'react/jsx-no-bind': ['warn', {}],
+            'react/jsx-no-bind': ['warn', { ignoreRefs: true }],
 
             '@typescript-eslint/no-unused-vars': [
                 'warn',

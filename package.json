@@ -6,12 +6,16 @@
     "private": true,
     "scripts": {
         "dev": "astro dev",
-        "build": "rm -rf ./dist && astro build",
+        "build": "astro build --verbose",
         "preview": "astro preview",
-        "astro": "astro",
-        "lint": "eslint .",
+        "lint": "eslint --fix .",
         "format": "prettier --write .",
-        "codegen": "graphql-codegen-esm --config codegen.ts --verbose"
+        "lint-and-format": "yarn lint && yarn format",
+        "generate-codegen": "rm -rf ./src/api/graphqlGenerated && graphql-codegen-esm --verbose --config ./graphqlConfig/codegen.ts",
+        "check-codegen": "echo 'Checking if generated GraphQL Types are up-to-date' && graphql-codegen-esm --check --config ./graphqlConfig/codegen.ts",
+        "test-eslint": "vitest run --dir ./tests",
+        "predev": "yarn check-codegen || (echo 'Need to regenerate GraphQL Types!' && yarn generate-codegen)",
+        "prebuild": "rm -rf ./dist && yarn generate-codegen && yarn lint-and-format"
     },
     "dependencies": {
         "@astrojs/preact": "^5.1.1",
@@ -34,6 +38,7 @@
         "prettier-plugin-tailwindcss": "^0.7.2",
         "tailwind-csstree": "^0.3.1",
         "typescript": "^6.0.2",
-        "typescript-eslint": "^8.58.1"
+        "typescript-eslint": "^8.58.1",
+        "vitest": "^4.1.4"
     }
 }
