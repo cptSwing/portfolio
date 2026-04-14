@@ -6,7 +6,7 @@ const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), 'ASTRO
 const config: CodegenConfig = {
     overwrite: true,
     schema: env.ASTRO_GRAPHQL_ENDPOINT,
-    documents: 'src/**/*.{astro,graphql}',
+    documents: ['src/**/*.{astro,graphql}', '!*.schema.graphql'],
     generates: {
         'src/api/gql/': { preset: 'client' },
     },
