@@ -1,5 +1,4 @@
 import { defineConfig } from 'eslint/config';
-
 import globals from 'globals';
 import eslintPluginTypescript from 'typescript-eslint';
 import eslintPluginAstro from 'eslint-plugin-astro';
@@ -10,7 +9,9 @@ import eslintPluginCss from '@eslint/css';
 import { tailwind4 } from 'tailwind-csstree';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
-/* WARN eslint-config-preact contains @eslint/js (as well as eslint-plugin-react-hooks), so to prevent overwriting, these rules need to be applied in both entries */
+// WARN eslint-config-preact contains @eslint/js (as well as eslint-plugin-react-hooks), so to prevent overwriting, these rules need to be applied in both entries
+
+/** @type {import("eslint").Linter.RulesRecord} jsRules */
 const jsRules = {
     'no-empty': 'off',
     'object-shorthand': 'warn',
