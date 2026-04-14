@@ -1,0 +1,8 @@
+query GetAllPostsTitlesSlugs {
+    posts {
+        nodes {
+            title
+            slug
+        }
+    }
+}

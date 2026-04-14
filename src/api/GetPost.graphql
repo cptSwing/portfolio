@@ -1,0 +1,8 @@
+query GetPost($slug: ID!) {
+    post(id: $slug, idType: SLUG) {
+        title
+        slug
+        content
+        # subtitle
+    }
+}
