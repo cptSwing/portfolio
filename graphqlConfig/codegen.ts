@@ -6,9 +6,14 @@ const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), 'ASTRO
 const config: CodegenConfig = {
     overwrite: true,
     schema: env.ASTRO_GRAPHQL_ENDPOINT,
-    documents: ['src/**/*.{astro,graphql}', '!*.schema.graphql'],
+    documents: ['./graphqlConfig/*.graphql', '!./graphqlConfig/*.schema.graphql', './src/**/*.{ts,tsx,astro}', '!./src/api/graphqlGenerated/**/*'], // Relative to yarn root
     generates: {
-        'src/api/gql/': { preset: 'client' },
+        './src/api/graphqlGenerated/': {
+            preset: 'client',
+            presetConfig: {
+                fragmentMasking: false,
+            },
+        },
     },
     config: {
         enumsAsConst: true,
@@ -16,6 +21,7 @@ const config: CodegenConfig = {
         pureMagicComment: true,
         printFieldsOnNewLines: true,
         extractAllFieldsToTypes: true,
+        avoidOptionals: true,
     },
     importExtension: '.ts',
 };

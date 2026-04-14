@@ -1,0 +1,13 @@
+query GetAllPostsSlugsTitlesCategories {
+    posts {
+        nodes {
+            slug
+            title
+            categories {
+                nodes {
+                    slug
+                }
+            }
+        }
+    }
+}

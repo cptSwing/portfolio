@@ -15,11 +15,15 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 type Documents = {
     "query GetAllPostsSlugs {\n  posts {\n    nodes {\n      slug\n    }\n  }\n}": typeof types.GetAllPostsSlugsDocument,
+    "query GetAllPostsSlugsCategories {\n  posts {\n    nodes {\n      slug\n      categories {\n        nodes {\n          slug\n        }\n      }\n    }\n  }\n}": typeof types.GetAllPostsSlugsCategoriesDocument,
+    "query GetAllPostsSlugsTitlesCategories {\n  posts {\n    nodes {\n      slug\n      title\n      categories {\n        nodes {\n          slug\n        }\n      }\n    }\n  }\n}": typeof types.GetAllPostsSlugsTitlesCategoriesDocument,
     "query GetAllPostsTitlesSlugs {\n  posts {\n    nodes {\n      title\n      slug\n    }\n  }\n}": typeof types.GetAllPostsTitlesSlugsDocument,
     "query GetPost($slug: ID!) {\n  post(id: $slug, idType: SLUG) {\n    title\n    slug\n    content\n  }\n}": typeof types.GetPostDocument,
 };
 const documents: Documents = {
     "query GetAllPostsSlugs {\n  posts {\n    nodes {\n      slug\n    }\n  }\n}": types.GetAllPostsSlugsDocument,
+    "query GetAllPostsSlugsCategories {\n  posts {\n    nodes {\n      slug\n      categories {\n        nodes {\n          slug\n        }\n      }\n    }\n  }\n}": types.GetAllPostsSlugsCategoriesDocument,
+    "query GetAllPostsSlugsTitlesCategories {\n  posts {\n    nodes {\n      slug\n      title\n      categories {\n        nodes {\n          slug\n        }\n      }\n    }\n  }\n}": types.GetAllPostsSlugsTitlesCategoriesDocument,
     "query GetAllPostsTitlesSlugs {\n  posts {\n    nodes {\n      title\n      slug\n    }\n  }\n}": types.GetAllPostsTitlesSlugsDocument,
     "query GetPost($slug: ID!) {\n  post(id: $slug, idType: SLUG) {\n    title\n    slug\n    content\n  }\n}": types.GetPostDocument,
 };
@@ -42,6 +46,14 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query GetAllPostsSlugs {\n  posts {\n    nodes {\n      slug\n    }\n  }\n}"): (typeof documents)["query GetAllPostsSlugs {\n  posts {\n    nodes {\n      slug\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query GetAllPostsSlugsCategories {\n  posts {\n    nodes {\n      slug\n      categories {\n        nodes {\n          slug\n        }\n      }\n    }\n  }\n}"): (typeof documents)["query GetAllPostsSlugsCategories {\n  posts {\n    nodes {\n      slug\n      categories {\n        nodes {\n          slug\n        }\n      }\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query GetAllPostsSlugsTitlesCategories {\n  posts {\n    nodes {\n      slug\n      title\n      categories {\n        nodes {\n          slug\n        }\n      }\n    }\n  }\n}"): (typeof documents)["query GetAllPostsSlugsTitlesCategories {\n  posts {\n    nodes {\n      slug\n      title\n      categories {\n        nodes {\n          slug\n        }\n      }\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
