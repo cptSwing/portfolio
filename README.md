@@ -1,3 +1,9 @@
+# Using GraphQL Code Generator (generate Schema Types)
+
+`npx graphql-codegen init`
+`yarn codegen`
+
+
 # Astro Starter Kit: Minimal
 
 ```sh

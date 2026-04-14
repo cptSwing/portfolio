@@ -1,38 +1,25 @@
 ---
-import { client } from '../api/graphql';
+import PageShell from '../layouts/PageShell.astro';
+import { clientRequest } from '../api/graphqlClient.ts';
+import { GetAllPostsTitlesSlugsDocument } from '../api/gql/graphql.ts';
 
-type Post = {
-    title: string;
-    slug: string;
-    acf?: {
-        subtitle?: string;
-    };
-};
-const query = `
-{
-  posts {
-    nodes {
-      title
-      slug
-     
-    }
-  }
-}
-`;
-const data = await client.request<{ posts: { nodes: Post[] } }>(query);
-const posts = data.posts.nodes;
+const data = await clientRequest(GetAllPostsTitlesSlugsDocument);
+const posts = data.posts?.nodes;
 ---
 
-<h1 class="text-3xl font-bold">Blog</h1>
-<ul class="space-y-4 mt-6">
-    {
-        posts.map((post) => (
-            <li>
-                <a class="text-xl text-blue-600 hover:underline" href={`/blog/${post.slug}/`}>
-                    {post.title}
-                </a>
-                {post.acf?.subtitle && <p class="text-gray-500">{post.acf.subtitle}</p>}
-            </li>
-        ))
-    }
-</ul>
+<PageShell pageTitle="Blog">
+    <h1 class="text-3xl font-bold">Blog</h1>
+    <ul class="space-y-4 mt-6">
+        {
+            posts &&
+                posts.map((post) => (
+                    <li>
+                        <a class="text-xl text-blue-600 hover:underline" href={`/categories/${post.slug}/`}>
+                            {post.title}
+                        </a>
+                        {/* {post.acf?.subtitle && <p class="text-gray-500">{post.acf.subtitle}</p>} */}
+                    </li>
+                ))
+        }
+    </ul>
+</PageShell>
