@@ -1,10 +1,12 @@
 ---
 import PageShell from '../layouts/PageShell.astro';
-import { clientRequest } from '../api/graphqlClient.ts';
-import { GetAllPostsTitlesSlugsDocument } from '../api/gql/graphql.ts';
+import { clientRequest } from '../api/graphqlRequestClient.ts';
+import { GetAllPostsSlugsTitlesCategoriesDocument } from '../api/graphqlGenerated/graphql.ts';
 
-const data = await clientRequest(GetAllPostsTitlesSlugsDocument);
+const data = await clientRequest(GetAllPostsSlugsTitlesCategoriesDocument);
 const posts = data.posts?.nodes;
+
+const fooberer = 'lol'
 ---
 
 <PageShell pageTitle="Blog">
@@ -12,13 +14,13 @@ const posts = data.posts?.nodes;
     <ul class="space-y-4 mt-6">
         {
             posts &&
-                posts.map((post) => (
+                posts.map((post) => (post.categories ? 
                     <li>
-                        <a class="text-xl text-blue-600 hover:underline" href={`/categories/${post.slug}/`}>
+                        <a class="text-xl text-blue-600 hover:underline" href={`/${post.categories.nodes[0].slug}/${post.slug}/`}>
                             {post.title}
                         </a>
                         {/* {post.acf?.subtitle && <p class="text-gray-500">{post.acf.subtitle}</p>} */}
-                    </li>
+                    </li> : <></>
                 ))
         }
     </ul>

@@ -1,0 +1,29 @@
+---
+import PageShell from '../../layouts/PageShell.astro';
+import { clientRequest } from '../../api/graphqlRequestClient.ts';
+import { GetPostDocument, GetAllPostsSlugsCategoriesDocument } from '../../api/graphqlGenerated/graphql.ts';
+
+export async function getStaticPaths() {
+    const res = await clientRequest(GetAllPostsSlugsCategoriesDocument);
+
+    if (!res.posts) {
+        return null;
+    } else {
+        return res.posts.nodes.map((post) => ({
+            params: { slug: post.slug, category: post.categories?.nodes[0].slug },
+        }));
+    }
+}
+
+const { slug } = Astro.params;
+const { post } = await clientRequest(GetPostDocument, { slug });
+---
+
+{
+    slug && (
+        <PageShell pageTitle={slug}>
+            <h1 set:html={post?.title} class="text-4xl font-bold" />
+            <Fragment set:html={post?.content} />
+        </PageShell>
+    )
+}
