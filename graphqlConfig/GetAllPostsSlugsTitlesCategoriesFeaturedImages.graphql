@@ -1,4 +1,4 @@
-query GetAllPostsSlugsTitlesCategories {
+query GetAllPostsSlugsTitlesCategoriesFeaturedImages {
     posts {
         nodes {
             slug
@@ -6,6 +6,11 @@ query GetAllPostsSlugsTitlesCategories {
             categories {
                 nodes {
                     slug
+                }
+            }
+            featuredImage {
+                node {
+                    sourceUrl
                 }
             }
         }

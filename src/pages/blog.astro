@@ -1,12 +1,11 @@
 ---
 import PageShell from '../layouts/PageShell.astro';
 import { clientRequest } from '../api/graphqlRequestClient.ts';
-import { GetAllPostsSlugsTitlesCategoriesDocument } from '../api/graphqlGenerated/graphql.ts';
+import { GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument } from '../api/graphqlGenerated/graphql.ts';
+import { Image } from 'astro:assets';
 
-const data = await clientRequest(GetAllPostsSlugsTitlesCategoriesDocument);
+const data = await clientRequest(GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument);
 const posts = data.posts?.nodes;
-
-const fooberer = 'lol'
 ---
 
 <PageShell pageTitle="Blog">
@@ -14,14 +13,28 @@ const fooberer = 'lol'
     <ul class="space-y-4 mt-6">
         {
             posts &&
-                posts.map((post) => (post.categories ? 
-                    <li>
-                        <a class="text-xl text-blue-600 hover:underline" href={`/${post.categories.nodes[0].slug}/${post.slug}/`}>
-                            {post.title}
-                        </a>
-                        {/* {post.acf?.subtitle && <p class="text-gray-500">{post.acf.subtitle}</p>} */}
-                    </li> : <></>
-                ))
+                posts.map(
+                    (post) =>
+                        post.categories && (
+                            <li>
+                                {post.featuredImage?.node.sourceUrl ? (
+                                    <Image
+                                        class="object-cover aspect-square inline-block"
+                                        alt=""
+                                        src={post.featuredImage.node.sourceUrl}
+                                        width={200}
+                                        height={200}
+                                    />
+                                ) : (
+                                    <div class="inline-block size-[200px] bg-gray-200" />
+                                )}
+                                <a class="text-xl text-blue-600 hover:underline" href={`/${post.categories.nodes[0].slug}/${post.slug}/`}>
+                                    {post.title}
+                                </a>
+                                {/* {post.acf?.subtitle && <p class="text-gray-500">{post.acf.subtitle}</p>} */}
+                            </li>
+                        )
+                )
         }
     </ul>
 </PageShell>
