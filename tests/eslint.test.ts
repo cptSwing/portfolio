@@ -31,13 +31,11 @@ test('eslint-plugin-astro (recommended) -> correctly flags deprecated Astro.cano
     expect(messages?.some((msg) => msg.ruleId === 'astro/no-deprecated-astro-canonicalurl')).toBe(true);
 });
 
-
 // defaults to "error" in recommended ruleset
 test('astro/jsx-a11y-recommended -> correctly flags headings with no content ("astro/jsx-a11y/heading-has-content")', async () => {
     const messages = await lintText('<h1 />', 'astro');
     expect(messages?.some((msg) => msg.ruleId === 'astro/jsx-a11y/heading-has-content')).toBe(true);
 });
-
 
 // defaults to "error" in recommended ruleset
 test('@eslint/css (recommended) -> correctly flags duplicate imports ("css/no-duplicate-imports")', async () => {
