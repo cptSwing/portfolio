@@ -1,14 +1,18 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import preact from '@astrojs/preact';
+import showTailwindCSSBreakpoint from 'astro-show-tailwindcss-breakpoint';
+import purgecss from 'astro-purgecss';
 
 export default defineConfig({
     site: 'https://www.jbrandenburg.de',
     output: 'static',
-    build: { format: 'preserve' },
-    integrations: [preact()],
-    vite: { plugins: [tailwindcss()] },
-    devToolbar: { enabled: false },
+    build: { format: 'preserve', inlineStylesheets: 'never' },
+    integrations: [preact(), showTailwindCSSBreakpoint(), purgecss()],
+    vite: {
+        plugins: [tailwindcss()],
+    },
+    devToolbar: { enabled: true },
     prefetch: {
         prefetchAll: true,
         defaultStrategy: 'tap',
