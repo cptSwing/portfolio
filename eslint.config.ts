@@ -7,14 +7,10 @@ import eslintConfigPreact from 'eslint-config-preact';
 import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginCss from '@eslint/css';
 import { tailwind4 } from 'tailwind-csstree';
-import eslintConfigPrettier from 'eslint-config-prettier';
-
-/** @typedef {import("@eslint/config-helpers").ConfigWithExtends} eslintConfigPreactTyped */
-const eslintConfigPreactTyped = eslintConfigPreact;
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
+import { Linter } from 'eslint';
 
 // WARN eslint-config-preact contains @eslint/js (as well as eslint-plugin-react-hooks), so to prevent overwriting, these rules need to be applied in both entries
-
-/** @type {import("eslint").Linter.RulesRecord} jsRules */
 const jsRules = {
     'no-empty': 'off',
     'object-shorthand': 'warn',
@@ -22,9 +18,8 @@ const jsRules = {
     'no-unused-vars': 'off',
     'no-unused-expressions': 'off',
     'no-unreachable': 'warn',
-};
+} satisfies Linter.RulesRecord;
 
-/** @type {import("@eslint/config-helpers").ConfigWithExtends[]} config */
 const config = defineConfig([
     {
         name: 'languageOptions',
@@ -51,12 +46,12 @@ const config = defineConfig([
     },
 
     {
-        name: 'all typescript / preact + typescript files',
+        name: 'all typescript / preact-tsx files',
         files: ['**/*.{ts,tsx}'],
         plugins: {
             '@typescript-eslint': eslintPluginTypescript.plugin,
         },
-        extends: [eslintConfigPreactTyped, '@typescript-eslint/recommended', eslintPluginJsxA11y.flatConfigs.recommended],
+        extends: [...eslintConfigPreact, '@typescript-eslint/recommended', eslintPluginJsxA11y.flatConfigs.recommended],
         rules: {
             ...jsRules,
             'react/jsx-no-bind': ['warn', { ignoreRefs: true }],
@@ -78,7 +73,7 @@ const config = defineConfig([
         plugins: {
             astro: eslintPluginAstro,
         },
-        extends: ['astro/jsx-a11y-recommended'],
+        extends: [...eslintPluginAstro.configs.recommended, 'astro/jsx-a11y-recommended'],
     },
 
     {
@@ -91,6 +86,9 @@ const config = defineConfig([
         },
         plugins: { css: eslintPluginCss },
         extends: ['css/recommended'],
+        rules: {
+            'css/no-important': 'warn',
+        },
     },
 
     // Prettier last to disable conflicts
