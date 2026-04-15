@@ -3,12 +3,27 @@ import tailwindcss from '@tailwindcss/vite';
 import preact from '@astrojs/preact';
 import showTailwindCSSBreakpoint from 'astro-show-tailwindcss-breakpoint';
 import purgecss from 'astro-purgecss';
+import { loadEnv } from 'vite';
+import process from 'node:process';
+
+const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), 'ASTRO');
 
 export default defineConfig({
     site: 'https://www.jbrandenburg.de',
     output: 'static',
     build: { format: 'preserve', inlineStylesheets: 'never' },
-    integrations: [preact(), showTailwindCSSBreakpoint(), purgecss()],
+    integrations: [
+        preact(),
+        showTailwindCSSBreakpoint(),
+        purgecss({
+            extractors: [
+                {
+                    extractor: (content) => content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || [],
+                    extensions: ['astro', 'html'],
+                },
+            ],
+        }),
+    ],
     vite: {
         plugins: [tailwindcss()],
     },
@@ -28,4 +43,8 @@ export default defineConfig({
             fallbacks: ['sans-serif'],
         },
     ],
+    image: {
+        domains: ['astro.build', env.ASTRO_GRAPHQL_ENDPOINT],
+        remotePatterns: [{ protocol: 'http' }],
+    },
 });
