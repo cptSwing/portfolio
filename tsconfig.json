@@ -1,7 +1,7 @@
 {
     "extends": "astro/tsconfigs/strict",
-    "include": ["src/**/*", ".astro/types.d.ts", "eslint.config.ts"],
-    "exclude": ["dist"],
+    "include": ["**/*", ".astro/types.d.ts", "eslint.config.ts"],
+    "exclude": ["dist", ".vscode"],
     "compilerOptions": {
         "target": "es2023",
         "jsx": "react-jsx",
@@ -10,5 +10,7 @@
         "noEmit": true,
         "moduleResolution": "node16",
         "module": "node16"
+        // "noUnusedLocals": false,
+        // "noUnusedParameters": false
     }
 }

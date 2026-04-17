@@ -1,6 +1,7 @@
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import eslintPluginTypescript from 'typescript-eslint';
+import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import eslintPluginJs from '@eslint/js';
 import eslintConfigPreact from 'eslint-config-preact';
@@ -17,7 +18,7 @@ const config = defineConfig([
 
     {
         // extracted from the below config in order to not have it flag jsx-similar code in .astro files
-        name: 'preact',
+        name: 'preact & a11y',
         files: ['**/*.tsx'],
         extends: [...eslintConfigPreact],
         rules: {
@@ -27,6 +28,9 @@ const config = defineConfig([
                     ignoreRefs: true,
                 },
             ],
+
+            // just the rules, instead of extending as per setup help, because .plugin here and the same .plugin down below (astro a11y) try to overwrite eaach other and eslint errors out
+            ...eslintPluginJsxA11y.flatConfigs.recommended.rules,
         },
     },
 
