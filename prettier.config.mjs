@@ -1,6 +1,6 @@
 /** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions} */
-export default {
-    semi: true,
+
+const config = {
     singleQuote: true,
     trailingComma: 'es5',
     printWidth: 160,
@@ -10,3 +10,5 @@ export default {
     tailwindStylesheet: './src/styles/global.css',
     tailwindFunctions: ['classNames'],
 };
+
+export default config;

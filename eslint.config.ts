@@ -4,57 +4,53 @@ import eslintPluginTypescript from 'typescript-eslint';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import eslintPluginJs from '@eslint/js';
 import eslintConfigPreact from 'eslint-config-preact';
-import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginCss from '@eslint/css';
 import { tailwind4 } from 'tailwind-csstree';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
-import { Linter } from 'eslint';
-
-// WARN eslint-config-preact contains @eslint/js (as well as eslint-plugin-react-hooks), so to prevent overwriting, these rules need to be applied in both entries
-const jsRules = {
-    'no-empty': 'off',
-    'object-shorthand': 'warn',
-    'no-console': 'warn',
-    'no-unused-vars': 'off',
-    'no-unused-expressions': 'off',
-    'no-unreachable': 'warn',
-} satisfies Linter.RulesRecord;
 
 const config = defineConfig([
     {
-        name: 'languageOptions',
+        // Acts as global ignore if no other keys (except for 'name')
+        name: 'ignores',
+        ignores: ['dist/', 'node_modules/', '.astro/', '.vscode/'],
+    },
+
+    {
+        // extracted from the below config in order to not have it flag jsx-similar code in .astro files
+        name: 'preact',
+        files: ['**/*.tsx'],
+        extends: [...eslintConfigPreact],
+        rules: {
+            'react/jsx-no-bind': [
+                'warn',
+                {
+                    ignoreRefs: true,
+                },
+            ],
+        },
+    },
+
+    {
+        name: 'js/ts/astro',
+        files: ['**/*.{js,mjs,cjs,ts,tsx,astro}'],
         languageOptions: {
             globals: {
                 ...globals.browser,
             },
         },
-    },
-
-    {
-        name: 'ignores',
-        ignores: ['dist', 'node_modules', '.astro', '.vscode'],
-    },
-
-    {
-        name: '@eslint/js',
-        files: ['**/*.{js,mjs,cjs,ts,tsx}'],
         plugins: {
             js: eslintPluginJs,
-        },
-        extends: ['js/recommended'],
-        rules: jsRules,
-    },
-
-    {
-        name: 'all typescript / preact-tsx files',
-        files: ['**/*.{ts,tsx}'],
-        plugins: {
             '@typescript-eslint': eslintPluginTypescript.plugin,
+            astro: eslintPluginAstro,
         },
-        extends: [...eslintConfigPreact, '@typescript-eslint/recommended', eslintPluginJsxA11y.flatConfigs.recommended],
+        extends: ['js/recommended', '@typescript-eslint/recommended', ...eslintPluginAstro.configs.recommended, 'astro/jsx-a11y-recommended'],
         rules: {
-            ...jsRules,
-            'react/jsx-no-bind': ['warn', { ignoreRefs: true }],
+            'no-empty': 'off',
+            'object-shorthand': 'warn',
+            'no-console': 'warn',
+            'no-unused-vars': 'off',
+            'no-unused-expressions': 'off',
+            'no-unreachable': 'warn',
 
             '@typescript-eslint/no-unused-vars': [
                 'warn',
@@ -63,17 +59,14 @@ const config = defineConfig([
                     varsIgnorePattern: '^_',
                 },
             ],
-            '@typescript-eslint/no-unused-expressions': ['error', { allowTernary: true, allowShortCircuit: true }],
+            '@typescript-eslint/no-unused-expressions': [
+                'error',
+                {
+                    allowTernary: true,
+                    allowShortCircuit: true,
+                },
+            ],
         },
-    },
-
-    {
-        name: 'eslint-plugin-astro',
-        files: ['**/*.astro'],
-        plugins: {
-            astro: eslintPluginAstro,
-        },
-        extends: [...eslintPluginAstro.configs.recommended, 'astro/jsx-a11y-recommended'],
     },
 
     {
@@ -84,7 +77,9 @@ const config = defineConfig([
             tolerant: true,
             customSyntax: tailwind4,
         },
-        plugins: { css: eslintPluginCss },
+        plugins: {
+            css: eslintPluginCss,
+        },
         extends: ['css/recommended'],
         rules: {
             'css/no-important': 'warn',

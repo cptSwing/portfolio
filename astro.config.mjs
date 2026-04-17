@@ -17,9 +17,10 @@ export default defineConfig({
         showTailwindCSSBreakpoint(),
         purgecss({
             extractors: [
+                // Necessary for tailwind to not delete my custom classes (w-[200px] for instance)
                 {
                     extractor: (content) => content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || [],
-                    extensions: ['astro', 'html'],
+                    extensions: ['astro', 'html', 'tsx'],
                 },
             ],
         }),
@@ -30,7 +31,7 @@ export default defineConfig({
     devToolbar: { enabled: true },
     prefetch: {
         prefetchAll: true,
-        defaultStrategy: 'tap',
+        defaultStrategy: 'hover',
     },
     fonts: [
         {

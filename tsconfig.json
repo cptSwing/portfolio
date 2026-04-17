@@ -1,12 +1,13 @@
 {
     "extends": "astro/tsconfigs/strict",
-    "include": [".astro/types.d.ts", "src/**/*", "eslint.config.ts"],
+    "include": ["src/**/*", ".astro/types.d.ts", "eslint.config.ts"],
     "exclude": ["dist"],
     "compilerOptions": {
+        "target": "es2023",
         "jsx": "react-jsx",
         "jsxImportSource": "preact",
         "allowImportingTsExtensions": true,
-        // "noEmit": true, // needed for the above to work?
+        "noEmit": true,
         "moduleResolution": "node16",
         "module": "node16"
     }
