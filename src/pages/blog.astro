@@ -2,7 +2,7 @@
 import PageShell from '../layouts/PageShell.astro';
 import { clientRequest } from '../api/graphqlRequestClient.ts';
 import { GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument } from '../api/graphqlGenerated/graphql.ts';
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 
 const data = await clientRequest(GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument);
 const posts = data.posts?.nodes;
@@ -17,17 +17,18 @@ const posts = data.posts?.nodes;
                     (post) =>
                         post.categories && (
                             <li>
-                                {post.featuredImage?.node.sourceUrl ? (
-                                    <Image
+                                {post.featuredImage?.node.sourceUrl ?
+                                    <Picture
                                         class="object-cover aspect-square inline-block"
                                         alt=""
                                         src={post.featuredImage.node.sourceUrl}
+                                        formats={['webp']}
                                         width={200}
                                         height={200}
+                                        decoding="async"
+                                        loading="lazy"
                                     />
-                                ) : (
-                                    <div class="inline-block size-[200px] bg-gray-200" />
-                                )}
+                                :   <div class="inline-block size-[200px] bg-gray-200" />}
                                 <a class="text-xl text-blue-600 hover:underline" href={`/${post.categories.nodes[0].slug}/${post.slug}/`}>
                                     {post.title}
                                 </a>

@@ -1,1 +1,1 @@
-export * from './gql.ts';
+export * from "./gql.ts";
