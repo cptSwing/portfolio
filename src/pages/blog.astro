@@ -1,7 +1,7 @@
 ---
 import PageShell from '../layouts/PageShell.astro';
 import { clientRequest } from '../api/graphqlRequestClient.ts';
-import { GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument } from '../api/graphqlGenerated/graphql.ts';
+import { GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument } from '@graphql-generated';
 import { Picture } from 'astro:assets';
 
 const data = await clientRequest(GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument);

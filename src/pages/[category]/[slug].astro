@@ -1,7 +1,7 @@
 ---
 import PageShell from '../../layouts/PageShell.astro';
 import { clientRequest } from '../../api/graphqlRequestClient.ts';
-import { GetPostDocument, GetAllPostsSlugsCategoriesDocument } from '../../api/graphqlGenerated/graphql.ts';
+import { GetPostDocument, GetAllPostsSlugsCategoriesDocument } from '@graphql-generated';
 
 export async function getStaticPaths() {
     const res = await clientRequest(GetAllPostsSlugsCategoriesDocument);
