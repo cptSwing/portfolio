@@ -6,9 +6,9 @@ const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), 'ASTRO
 const config: CodegenConfig = {
     overwrite: true,
     schema: env.ASTRO_GRAPHQL_ENDPOINT,
-    documents: ['./graphqlConfig/*.graphql', '!./graphqlConfig/*.schema.graphql', './src/**/*.{ts,tsx,astro}', '!./src/api/graphqlGenerated/**/*'], // Relative to yarn root
+    documents: ['graphqlConfig/*.graphql', '!graphqlConfig/*.schema.graphql', 'src/**/*.{ts,tsx,astro}', `!${env.ASTRO_GRAPHQL_CODEGEN_OUTPUT}/*`], // Relative to yarn root
     generates: {
-        './src/api/graphqlGenerated/': {
+        [`${env.ASTRO_GRAPHQL_CODEGEN_OUTPUT}/`]: {
             preset: 'client',
             presetConfig: {
                 fragmentMasking: false,
