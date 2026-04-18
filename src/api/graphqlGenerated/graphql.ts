@@ -1,7 +1,6 @@
-/* eslint-disable */
 import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
-export type InputMaybe<T> = T | null | undefined;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -9640,36 +9639,148 @@ export type WritingSettings = {
   useSmilies: Maybe<Scalars['Boolean']['output']>;
 };
 
+export type GetAllPostsSlugsQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post = {
+  __typename?: 'Post',
+  slug: string | null
+};
+
+export type GetAllPostsSlugsQuery_RootQuery_posts_RootQueryToPostConnection = {
+  __typename?: 'RootQueryToPostConnection',
+  nodes: Array<GetAllPostsSlugsQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post>
+};
+
+export type GetAllPostsSlugsQuery_RootQuery = {
+  __typename?: 'RootQuery',
+  posts: GetAllPostsSlugsQuery_RootQuery_posts_RootQueryToPostConnection | null
+};
+
+
 export type GetAllPostsSlugsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPostsSlugsQuery = { __typename?: 'RootQuery', posts: { __typename?: 'RootQueryToPostConnection', nodes: Array<{ __typename?: 'Post', slug: string | null }> } | null };
+export type GetAllPostsSlugsQuery = GetAllPostsSlugsQuery_RootQuery;
+
+export type GetAllPostsSlugsCategoriesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection_nodes_Category = {
+  __typename?: 'Category',
+  slug: string | null
+};
+
+export type GetAllPostsSlugsCategoriesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection = {
+  __typename?: 'PostToCategoryConnection',
+  nodes: Array<GetAllPostsSlugsCategoriesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection_nodes_Category>
+};
+
+export type GetAllPostsSlugsCategoriesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post = {
+  __typename?: 'Post',
+  slug: string | null,
+  categories: GetAllPostsSlugsCategoriesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection | null
+};
+
+export type GetAllPostsSlugsCategoriesQuery_RootQuery_posts_RootQueryToPostConnection = {
+  __typename?: 'RootQueryToPostConnection',
+  nodes: Array<GetAllPostsSlugsCategoriesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post>
+};
+
+export type GetAllPostsSlugsCategoriesQuery_RootQuery = {
+  __typename?: 'RootQuery',
+  posts: GetAllPostsSlugsCategoriesQuery_RootQuery_posts_RootQueryToPostConnection | null
+};
+
 
 export type GetAllPostsSlugsCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPostsSlugsCategoriesQuery = { __typename?: 'RootQuery', posts: { __typename?: 'RootQueryToPostConnection', nodes: Array<{ __typename?: 'Post', slug: string | null, categories: { __typename?: 'PostToCategoryConnection', nodes: Array<{ __typename?: 'Category', slug: string | null }> } | null }> } | null };
+export type GetAllPostsSlugsCategoriesQuery = GetAllPostsSlugsCategoriesQuery_RootQuery;
+
+export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection_nodes_Category = {
+  __typename?: 'Category',
+  slug: string | null
+};
+
+export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection = {
+  __typename?: 'PostToCategoryConnection',
+  nodes: Array<GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection_nodes_Category>
+};
+
+export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_featuredImage_NodeWithFeaturedImageToMediaItemConnectionEdge_node_MediaItem = {
+  __typename?: 'MediaItem',
+  sourceUrl: string | null
+};
+
+export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_featuredImage_NodeWithFeaturedImageToMediaItemConnectionEdge = {
+  __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge',
+  node: GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_featuredImage_NodeWithFeaturedImageToMediaItemConnectionEdge_node_MediaItem
+};
+
+export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post = {
+  __typename?: 'Post',
+  slug: string | null,
+  title: string | null,
+  categories: GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection | null,
+  featuredImage: GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_featuredImage_NodeWithFeaturedImageToMediaItemConnectionEdge | null
+};
+
+export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection = {
+  __typename?: 'RootQueryToPostConnection',
+  nodes: Array<GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post>
+};
+
+export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery = {
+  __typename?: 'RootQuery',
+  posts: GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery_posts_RootQueryToPostConnection | null
+};
+
 
 export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery = { __typename?: 'RootQuery', posts: { __typename?: 'RootQueryToPostConnection', nodes: Array<{ __typename?: 'Post', slug: string | null, title: string | null, categories: { __typename?: 'PostToCategoryConnection', nodes: Array<{ __typename?: 'Category', slug: string | null }> } | null, featuredImage: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl: string | null } } | null }> } | null };
+export type GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery = GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery_RootQuery;
+
+export type GetAllPostsTitlesSlugsQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post = {
+  __typename?: 'Post',
+  title: string | null,
+  slug: string | null
+};
+
+export type GetAllPostsTitlesSlugsQuery_RootQuery_posts_RootQueryToPostConnection = {
+  __typename?: 'RootQueryToPostConnection',
+  nodes: Array<GetAllPostsTitlesSlugsQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post>
+};
+
+export type GetAllPostsTitlesSlugsQuery_RootQuery = {
+  __typename?: 'RootQuery',
+  posts: GetAllPostsTitlesSlugsQuery_RootQuery_posts_RootQueryToPostConnection | null
+};
+
 
 export type GetAllPostsTitlesSlugsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPostsTitlesSlugsQuery = { __typename?: 'RootQuery', posts: { __typename?: 'RootQueryToPostConnection', nodes: Array<{ __typename?: 'Post', title: string | null, slug: string | null }> } | null };
+export type GetAllPostsTitlesSlugsQuery = GetAllPostsTitlesSlugsQuery_RootQuery;
+
+export type GetPostQuery_RootQuery_post_Post = {
+  __typename?: 'Post',
+  title: string | null,
+  slug: string | null,
+  content: string | null
+};
+
+export type GetPostQuery_RootQuery = {
+  __typename?: 'RootQuery',
+  post: GetPostQuery_RootQuery_post_Post | null
+};
+
 
 export type GetPostQueryVariables = Exact<{
   slug: Scalars['ID']['input'];
 }>;
 
 
-export type GetPostQuery = { __typename?: 'RootQuery', post: { __typename?: 'Post', title: string | null, slug: string | null, content: string | null } | null };
+export type GetPostQuery = GetPostQuery_RootQuery;
 
 
-export const GetAllPostsSlugsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsSlugs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsSlugsQuery, GetAllPostsSlugsQueryVariables>;
-export const GetAllPostsSlugsCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsSlugsCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsSlugsCategoriesQuery, GetAllPostsSlugsCategoriesQueryVariables>;
-export const GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsSlugsTitlesCategoriesFeaturedImages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery, GetAllPostsSlugsTitlesCategoriesFeaturedImagesQueryVariables>;
-export const GetAllPostsTitlesSlugsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsTitlesSlugs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsTitlesSlugsQuery, GetAllPostsTitlesSlugsQueryVariables>;
-export const GetPostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"post"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}},{"kind":"Argument","name":{"kind":"Name","value":"idType"},"value":{"kind":"EnumValue","value":"SLUG"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"content"}}]}}]}}]} as unknown as DocumentNode<GetPostQuery, GetPostQueryVariables>;
+export const GetAllPostsSlugsDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsSlugs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsSlugsQuery, GetAllPostsSlugsQueryVariables>;
+export const GetAllPostsSlugsCategoriesDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsSlugsCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsSlugsCategoriesQuery, GetAllPostsSlugsCategoriesQueryVariables>;
+export const GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsSlugsTitlesCategoriesFeaturedImages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery, GetAllPostsSlugsTitlesCategoriesFeaturedImagesQueryVariables>;
+export const GetAllPostsTitlesSlugsDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsTitlesSlugs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsTitlesSlugsQuery, GetAllPostsTitlesSlugsQueryVariables>;
+export const GetPostDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"post"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}},{"kind":"Argument","name":{"kind":"Name","value":"idType"},"value":{"kind":"EnumValue","value":"SLUG"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"content"}}]}}]}}]} as unknown as DocumentNode<GetPostQuery, GetPostQueryVariables>;
