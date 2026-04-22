@@ -28,14 +28,21 @@ export async function updatePost(root) {
     if (latest.modified === currentModified) return;
     // TODO else fetch with different query
 
-    const map = {
-        title: (el, v) => (el.textContent = v),
-        content: (el, v) => (el.innerHTML = v),
-        modified: (el, v) => (el.textContent = v),
-    };
+    // 1. show loading state
+    root.classList.add('is-loading');
 
-    Object.entries(map).forEach(([field, apply]) => {
-        const el = root.querySelector(`[data-field="${field}"]`);
-        if (el) apply(el, latest[field]);
-    });
+    try {
+        const map = {
+            title: (el, v) => (el.textContent = v),
+            content: (el, v) => (el.innerHTML = v),
+            modified: (el, v) => (el.textContent = v),
+        };
+
+        Object.entries(map).forEach(([field, apply]) => {
+            const el = root.querySelector(`[data-field="${field}"]`);
+            if (el) apply(el, latest[field]);
+        });
+    } finally {
+        root.classList.remove('is-loading');
+    }
 }

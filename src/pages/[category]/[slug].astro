@@ -32,6 +32,9 @@ const { id, title, content, modified } = Astro.props;
             </PageShell>
 
             {modified && <PostUpdater client:load postId={id} initialModified={modified} />}
+
+            {/* or : */}
+            <script type="module">/* fetch updated graphql etc */</script>
         </>
     )
 }
