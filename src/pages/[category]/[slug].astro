@@ -2,6 +2,7 @@
 import PageShell from '../../layouts/PageShell.astro';
 import { clientRequest } from '../../api/graphqlRequestClient.ts';
 import { GetAllPostsComprehensiveDocument } from '@graphql-generated';
+import PostUpdater from '../../components/preact/PostUpdater.tsx';
 
 export async function getStaticPaths() {
     const res = await clientRequest(GetAllPostsComprehensiveDocument);
@@ -11,20 +12,26 @@ export async function getStaticPaths() {
     } else {
         return res.posts.nodes.map((post) => ({
             params: { slug: post.slug, category: post.categories?.nodes[0].slug },
-            props: { title: post.title, content: post.content },
+            props: { id: post.id, title: post.title, content: post.content, modified: post.modified },
         }));
     }
 }
 
 const { slug } = Astro.params;
-const { title, content } = Astro.props;
+const { id, title, content, modified } = Astro.props;
 ---
 
 {
     slug && (
-        <PageShell title={title}>
-            <h1 set:html={title} class="text-4xl font-bold" />
-            <Fragment set:html={content} />
-        </PageShell>
+        <>
+            <PageShell title={title}>
+                <h1 data-field="title" class="text-4xl font-bold">
+                    {title}
+                </h1>
+                <div data-field="content" set:html={content} />
+            </PageShell>
+
+            {modified && <PostUpdater client:load postId={id} initialModified={modified} />}
+        </>
     )
 }

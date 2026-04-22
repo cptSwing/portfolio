@@ -1,8 +1,11 @@
 ---
 import PageShell from '../layouts/PageShell.astro';
+import Greeting from '../components/preact/Greeting.tsx';
 ---
 
-<PageShell pageTitle="Home">
+<PageShell title="Home">
     <div class="animate-pulse bg-green-400/50 italic p-2 rounded-lg">Tailwind Test</div>
     <a href="/blog">Blog</a>
+    <hr class="h-4 w-2/3 text-red-500" />
+    <Greeting client:load messages={['Hi', 'Hello', 'Howdy', 'Hey there']} />
 </PageShell>

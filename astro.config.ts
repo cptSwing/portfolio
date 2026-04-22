@@ -30,12 +30,12 @@ export default defineConfig({
     devToolbar: { enabled: true },
     prefetch: {
         prefetchAll: true,
-        defaultStrategy: 'hover',
+        defaultStrategy: 'tap',
     },
     fonts: [
         {
             provider: fontProviders.google(),
-            name: 'Roboto',
+            name: 'Teko',
             weights: [200, '400', 'bold'],
             styles: ['normal', 'italic', 'oblique'],
             display: 'swap',

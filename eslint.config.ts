@@ -82,6 +82,7 @@ const config = defineConfig([
             customSyntax: tailwind4,
         },
         plugins: {
+            // @ts-expect-error eslint v9+ interoperability is a nightmare
             css: eslintPluginCss,
         },
         extends: ['css/recommended'],

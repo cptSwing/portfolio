@@ -1,9 +1,11 @@
 query GetAllPostsComprehensive {
     posts {
         nodes {
+            id
             slug
             title
             content
+            modified
             categories {
                 nodes {
                     slug
