@@ -9639,6 +9639,40 @@ export type WritingSettings = {
   useSmilies: Maybe<Scalars['Boolean']['output']>;
 };
 
+export type GetAllPostsComprehensiveQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection_nodes_Category = {
+  __typename?: 'Category',
+  slug: string | null
+};
+
+export type GetAllPostsComprehensiveQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection = {
+  __typename?: 'PostToCategoryConnection',
+  nodes: Array<GetAllPostsComprehensiveQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection_nodes_Category>
+};
+
+export type GetAllPostsComprehensiveQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post = {
+  __typename?: 'Post',
+  slug: string | null,
+  title: string | null,
+  content: string | null,
+  categories: GetAllPostsComprehensiveQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post_categories_PostToCategoryConnection | null
+};
+
+export type GetAllPostsComprehensiveQuery_RootQuery_posts_RootQueryToPostConnection = {
+  __typename?: 'RootQueryToPostConnection',
+  nodes: Array<GetAllPostsComprehensiveQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post>
+};
+
+export type GetAllPostsComprehensiveQuery_RootQuery = {
+  __typename?: 'RootQuery',
+  posts: GetAllPostsComprehensiveQuery_RootQuery_posts_RootQueryToPostConnection | null
+};
+
+
+export type GetAllPostsComprehensiveQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPostsComprehensiveQuery = GetAllPostsComprehensiveQuery_RootQuery;
+
 export type GetAllPostsSlugsQuery_RootQuery_posts_RootQueryToPostConnection_nodes_Post = {
   __typename?: 'Post',
   slug: string | null
@@ -9779,6 +9813,7 @@ export type GetPostQueryVariables = Exact<{
 export type GetPostQuery = GetPostQuery_RootQuery;
 
 
+export const GetAllPostsComprehensiveDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsComprehensive"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsComprehensiveQuery, GetAllPostsComprehensiveQueryVariables>;
 export const GetAllPostsSlugsDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsSlugs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsSlugsQuery, GetAllPostsSlugsQueryVariables>;
 export const GetAllPostsSlugsCategoriesDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsSlugsCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsSlugsCategoriesQuery, GetAllPostsSlugsCategoriesQueryVariables>;
 export const GetAllPostsSlugsTitlesCategoriesFeaturedImagesDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPostsSlugsTitlesCategoriesFeaturedImages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPostsSlugsTitlesCategoriesFeaturedImagesQuery, GetAllPostsSlugsTitlesCategoriesFeaturedImagesQueryVariables>;

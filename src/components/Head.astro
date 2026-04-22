@@ -1,9 +1,9 @@
 ---
 interface Props {
-    pageTitle: string;
+    title: string | null;
 }
 
-const { pageTitle } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <head>
@@ -12,7 +12,7 @@ const { pageTitle } = Astro.props;
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle}</title>
+    <title>{title}</title>
 
     <!-- supposedly blocks until the view transition is loadable? -->
     <link rel="expect" href="#the_unexpected" blocking="render" />

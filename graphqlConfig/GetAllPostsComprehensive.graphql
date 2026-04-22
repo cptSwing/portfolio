@@ -1,0 +1,14 @@
+query GetAllPostsComprehensive {
+    posts {
+        nodes {
+            slug
+            title
+            content
+            categories {
+                nodes {
+                    slug
+                }
+            }
+        }
+    }
+}

@@ -3,6 +3,5 @@ query GetPost($slug: ID!) {
         title
         slug
         content
-        # subtitle
     }
 }

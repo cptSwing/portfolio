@@ -3,16 +3,16 @@ import '../styles/global.css';
 import Head from '../components/Head.astro';
 
 interface Props {
-    pageTitle: string;
+    title: string | null;
 }
 
-const { pageTitle } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <html lang="en">
-    <Head pageTitle={pageTitle} />
+    <Head title={title} />
 
-    <body class="flex h-screen w-screen flex-col items-center justify-center">
+    <body class="flex h-screen w-screen flex-col items-center justify-center bg-theme-background font-teko">
         <slot />
     </body>
 </html>
