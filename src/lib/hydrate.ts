@@ -46,4 +46,3 @@ export async function updatePost(root) {
         root.classList.remove('is-loading');
     }
 }
-// sjdd
